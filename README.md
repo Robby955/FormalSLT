@@ -40,10 +40,11 @@ steps.
 - **For contributors:** read [Contributing](./CONTRIBUTING.md), then
   [Good first issues](./docs/good-first-issues.md).
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
-  FormalSLT is complementary to
-  [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory),
-  which builds deeper empirical-process infrastructure; this repo focuses on a
-  readable finite-class theorem spine.
+  For other Lean formalization work in this space, see
+  [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory).
+  That project takes a different approach, developing empirical-process
+  infrastructure; FormalSLT targets finite-sample PAC, Rademacher, and stability
+  bounds directly.
 
 ## Why this matters
 
