@@ -1382,6 +1382,494 @@ theorem finite_epsilonizedSup_dudley_totalBounded_of_finiteCoverSupremumBoundary
       (entropyAtRadius := entropyAtRadius)
       (supFunctional := supFunctional) hfiniteCover⟩
 
+/-- Real-order closure for epsilonized upper bounds.
+
+If `x` is at most `y + eta` for every positive `eta`, then `x ≤ y`.
+This small analytic adapter is the final bookkeeping step used to remove the
+explicit boundary error from epsilonized Dudley statements under a uniform
+finite-budget hypothesis.
+-/
+lemma le_of_forall_pos_le_add {x y : ℝ}
+    (h : ∀ eta : ℝ, 0 < eta → x ≤ y + eta) :
+    x ≤ y := by
+  by_contra hxy
+  have hyx : y < x := lt_of_not_ge hxy
+  have heta : 0 < (x - y) / 2 := by
+    linarith
+  have hxle := h ((x - y) / 2) heta
+  linarith
+
+/-- Global-budget form of the epsilonized total-bounded Dudley boundary adapter.
+
+The epsilonized theorem gives, for every positive boundary budget `eta`, a
+finite skeleton and dyadic terminal scale whose bound has an additional
+`+ eta` term. This theorem removes that explicit error term when a single
+`globalBudget` uniformly dominates the finite Dudley budget at every selected
+terminal scale.
+
+The statement is still a boundary-layer result: it keeps finite outcome
+support, finite skeletons chosen through `EpsilonizedSupremumBoundaryChoice`,
+finite dyadic scales, explicit entropy-budget assumptions, and no claim of
+arbitrary measurable suprema or full continuous Dudley.
+-/
+theorem finite_epsilonizedSup_modulus_dudley_totalBounded_globalBudget
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (globalBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        EpsilonizedSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m)
+    (hbudget : ∀ m : ℕ,
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) ≤
+      globalBudget) :
+    finiteExpectation P.weight supFunctional ≤ globalBudget := by
+  refine le_of_forall_pos_le_add ?_
+  intro eta heta
+  rcases
+    finite_epsilonizedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hradiusScale hdistP hvariance
+      hentropy_antitone hchoose eta heta with
+    ⟨m, hfinite⟩
+  have hbudget_eta :
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + eta ≤
+        globalBudget + eta := by
+    simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right (hbudget m) eta
+  exact hfinite.trans hbudget_eta
+
+/-- Global-budget finite-cover form of the total-bounded Dudley boundary
+adapter.
+
+Finite-cover/pathwise-modulus certificates discharge the epsilonized boundary
+choice hypotheses. If the resulting finite Dudley budgets are uniformly
+dominated by `globalBudget`, the supplied supremum functional is bounded by
+that global budget, with no remaining `+ eta` term.
+
+This is a finite-choice continuous-boundary statement, not a theorem about
+arbitrary measurable suprema, separability, or full continuous Dudley.
+-/
+theorem finite_epsilonizedSup_dudley_totalBounded_globalBudget_of_finiteCoverSupremumBoundaryChoice
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (globalBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        FiniteCoverSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m)
+    (hbudget : ∀ m : ℕ,
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) ≤
+      globalBudget) :
+    finiteExpectation P.weight supFunctional ≤ globalBudget := by
+  refine
+    finite_epsilonizedSup_modulus_dudley_totalBounded_globalBudget
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) (globalBudget := globalBudget)
+      hradiusScale hdistP hvariance hentropy_antitone ?_ hbudget
+  intro eta heta
+  rcases hchoose eta heta with ⟨m, hfiniteCover⟩
+  exact ⟨m,
+    epsilonizedSupremumBoundaryChoice_of_finiteCoverSupremumBoundaryChoice
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hfiniteCover⟩
+
+/-- A separability/terminal-projection certificate for the epsilonized
+total-bounded Dudley boundary step.
+
+Compared with `EpsilonizedSupremumBoundaryChoice`, this predicate exposes the
+cleaner boundary hypotheses used in continuous Dudley arguments:
+* a finite skeleton `K` embedded in the index space;
+* a supplied supremum functional bounded by that finite skeleton up to a
+  separability error;
+* terminal dyadic projection approximation on that skeleton;
+* finite entropy side conditions and a coarse-scale projected budget.
+
+It is still a finite-choice boundary certificate. It does not construct an
+arbitrary measurable supremum, prove separability from a dense sequence, or
+claim the full continuous Dudley theorem.
+-/
+def SeparableTerminalSupremumBoundaryChoice
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (eta : ℝ) (m : ℕ) : Prop :=
+  ∃ (K : Type u), ∃ (_instK : Fintype K), ∃ (_nonemptyK : Nonempty K),
+  ∃ (embed : K → T), ∃ (separabilityError : ℝ), ∃ (terminalError : ℝ),
+    separabilityError + terminalError ≤ eta ∧
+    (∀ j ∈ Finset.range m,
+      1 < Fintype.card (FiniteNet.ProjectionPair
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale j).net
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale (j + 1)).net)) ∧
+    (∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ ω : Ω,
+      supFunctional ω ≤
+        finiteSup (fun k : K => P.X ω (embed k)) + separabilityError) ∧
+    (∀ ω : Ω, ∀ k : K,
+      P.X ω (embed k) ≤
+        P.X ω
+          ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale m).net.projection (embed k)) +
+          terminalError) ∧
+    (finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale m).net =>
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net.projection
+              (FiniteNet.ProjectedIndex.source
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget m)
+
+/-- A pathwise terminal modulus discharges the terminal-projection
+approximation required by the separable Dudley boundary certificate.
+
+The terminal dyadic net already covers every skeleton point at radius
+`dyadicChainingNetRadius radiusScale m`; this lemma packages the direct
+one-sided continuity/modulus step needed to move from a skeleton point to its
+terminal projection. -/
+lemma terminalApprox_of_pathwiseTerminalModulus
+    {Ω : Type*} {K : Type u} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (radiusScale terminalError : ℝ)
+    (hradiusScale : 0 < radiusScale) (m : ℕ)
+    (embed : K → T)
+    (hmodulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError) :
+    ∀ ω : Ω, ∀ k : K,
+      P.X ω (embed k) ≤
+        P.X ω
+          ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale m).net.projection (embed k)) +
+          terminalError := by
+  intro ω k
+  exact hmodulus ω (embed k)
+    ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale m).net.projection (embed k))
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
+      (T := T) hT hradiusScale m (embed k))
+
+/-- Build a separability/terminal-projection Dudley boundary certificate from
+explicit finite-skeleton and pathwise terminal-modulus hypotheses.
+
+This constructor is the clean boundary interface used on the path toward
+continuous Dudley: a finite skeleton controls the supplied supremum functional,
+and a pathwise terminal modulus controls projection to the terminal dyadic net.
+It is still a finite certificate, not a theorem about arbitrary measurable
+suprema or separability by itself. -/
+theorem separableTerminalSupremumBoundaryChoice_of_pathwiseTerminalModulus
+    {Ω : Type*} [Fintype Ω]
+    {K : Type u} [Fintype K] [Nonempty K]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (embed : K → T)
+    (separabilityError terminalError : ℝ)
+    (herror : separabilityError + terminalError ≤ eta)
+    (hcard : ∀ j ∈ Finset.range m,
+      1 < Fintype.card (FiniteNet.ProjectionPair
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale j).net
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale (j + 1)).net))
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hseparable :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup (fun k : K => P.X ω (embed k)) + separabilityError)
+    (hterminalModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget m) :
+    SeparableTerminalSupremumBoundaryChoice
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) eta m := by
+  refine ⟨K, inferInstance, inferInstance, embed, separabilityError,
+    terminalError, herror, hcard, hentropyAtRadius, hintervalIntegrable,
+    hseparable, ?_, hcoarse⟩
+  exact terminalApprox_of_pathwiseTerminalModulus
+    (P := P) (hT := hT) (radiusScale := radiusScale)
+    (terminalError := terminalError) (hradiusScale := hradiusScale)
+    (m := m) (embed := embed) hterminalModulus
+
+/-- A finite-cover/pathwise-modulus certificate also gives the cleaner
+separability/terminal-projection certificate.
+
+This bridges the usable finite-cover hypotheses in
+`FiniteCoverSupremumBoundaryChoice` to the more continuous-looking
+`SeparableTerminalSupremumBoundaryChoice` interface. The finite cover and
+pathwise modulus discharge the separability error; the terminal dyadic modulus
+discharges terminal projection on the finite skeleton.
+
+The result is still a finite-choice boundary adapter. It does not construct an
+arbitrary measurable supremum, prove separability from a dense sequence, or
+claim a continuous Dudley theorem.
+-/
+theorem separableTerminalSupremumBoundaryChoice_of_finiteCoverSupremumBoundaryChoice
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (hchoice :
+      FiniteCoverSupremumBoundaryChoice
+        (P := P) (hT := hT) (coarseBudget := coarseBudget)
+        (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+        (entropyAtRadius := entropyAtRadius)
+        (supFunctional := supFunctional) eta m) :
+    SeparableTerminalSupremumBoundaryChoice
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) eta m := by
+  rcases hchoice with
+    ⟨K, instK, nonemptyK, embed, nearest, witness,
+      witnessError, skeletonRadius, skeletonError, terminalError,
+      herror, hcard, hentropyAtRadius, hintervalIntegrable, hcover,
+      hskeletonModulus, hwitness, hterminalModulus, hcoarse⟩
+  letI : Fintype K := instK
+  letI : Nonempty K := nonemptyK
+  have hskeletonApprox :
+      ∀ ω : Ω, ∀ t : T,
+        P.X ω t ≤ P.X ω (embed (nearest t)) + skeletonError :=
+    skeletonApprox_of_finiteCover_pathwiseModulus
+      (P := P) embed nearest skeletonRadius skeletonError hcover
+      hskeletonModulus
+  refine ⟨K, instK, nonemptyK, embed, witnessError + skeletonError,
+    terminalError, ?_, hcard, hentropyAtRadius, hintervalIntegrable, ?_,
+    ?_, hcoarse⟩
+  · simpa [add_assoc] using herror
+  · exact supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx
+      (embed := embed) (nearest := nearest) (Y := P.X)
+      (supFunctional := supFunctional) (witness := witness)
+      (witnessError := witnessError) (skeletonError := skeletonError)
+      hwitness hskeletonApprox
+  · intro ω k
+    exact hterminalModulus ω (embed k)
+      ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+        (T := T) hT hradiusScale m).net.projection (embed k))
+      (dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
+        (T := T) hT hradiusScale m (embed k))
+
+/-- Epsilonized Dudley boundary bound from separability and terminal-projection
+certificates.
+
+For every positive boundary budget, assume a finite skeleton and terminal scale
+whose separability and terminal-projection errors fit inside that budget. Then
+the supplied supremum functional satisfies the truncated-interval Dudley bound
+with the corresponding `+ eta` boundary term.
+
+This is a continuous-boundary adapter, not a theorem about arbitrary measurable
+suprema or full continuous Dudley.
+-/
+theorem finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        finiteExpectation P.weight supFunctional ≤
+          coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+            (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+              entropyAtRadius ε) + eta := by
+  intro eta heta
+  rcases hchoose eta heta with ⟨m, hchoice⟩
+  rcases hchoice with
+    ⟨K, instK, nonemptyK, embed, separabilityError, terminalError,
+      herror, hcard, hentropyAtRadius, hintervalIntegrable, hseparable,
+      hterminalApprox, hcoarse⟩
+  letI : Fintype K := instK
+  letI : Nonempty K := nonemptyK
+  refine ⟨m, ?_⟩
+  have hbase :
+      finiteExpectation P.weight supFunctional ≤
+        coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + (separabilityError + terminalError) := by
+    exact
+      finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison
+        (P := P) (hT := hT) (m := m) (coarseBudget := coarseBudget m)
+        (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+        (embed := embed) (supFunctional := supFunctional)
+        (separabilityError := separabilityError)
+        (terminalError := terminalError)
+        (hradiusScale := hradiusScale) (hdistP := hdistP)
+        (hvariance := hvariance) (hcard := hcard)
+        (hentropyAtRadius := hentropyAtRadius)
+        (hentropy_antitone := hentropy_antitone)
+        (hintervalIntegrable := hintervalIntegrable)
+        (hseparable := hseparable) (hterminalApprox := hterminalApprox)
+        (hcoarse := hcoarse)
+  have herror_budget :
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + (separabilityError + terminalError) ≤
+        coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + eta := by
+    simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right herror
+      (coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε))
+  exact hbase.trans herror_budget
+
+/-- Global-budget form of the separability/terminal-projection Dudley boundary
+adapter.
+
+This removes the explicit epsilon from
+`finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison`
+when a single `globalBudget` uniformly dominates the finite Dudley budgets at
+all selected terminal scales.
+
+The hypotheses are explicit: finite outcome support, a finite skeleton chosen
+for each positive boundary budget, terminal dyadic projection approximation,
+finite entropy side conditions, and a uniform global finite-budget bound. It
+does not construct arbitrary measurable suprema, prove separability, or claim
+full continuous Dudley.
+-/
+theorem finite_separableTerminal_dudley_totalBounded_globalBudget
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (globalBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m)
+    (hbudget : ∀ m : ℕ,
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) ≤
+      globalBudget) :
+    finiteExpectation P.weight supFunctional ≤ globalBudget := by
+  refine le_of_forall_pos_le_add ?_
+  intro eta heta
+  rcases
+    finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hradiusScale hdistP hvariance
+      hentropy_antitone hchoose eta heta with
+    ⟨m, hfinite⟩
+  have hbudget_eta :
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + eta ≤
+        globalBudget + eta := by
+    simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right (hbudget m) eta
+  exact hfinite.trans hbudget_eta
+
 /-- Finite projected total-bounded dyadic Dudley wrapper.
 
 This theorem composes the total-bounded dyadic finite-net schedule with the

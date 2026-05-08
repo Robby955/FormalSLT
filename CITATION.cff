@@ -7,5 +7,11 @@ authors:
     given-names: Robert
 year: 2026
 url: "https://github.com/Robby955/FormalSLT"
-abstract: "Lean 4 formalization of finite-sample statistical learning theory bounds — PAC learning, Rademacher complexity, uniform stability, and Dudley entropy integrals. Zero sorry, canonical axioms."
+repository-code: "https://github.com/Robby955/FormalSLT"
 license: MIT
+abstract: >-
+  Lean 4 formalization of finite-sample statistical learning theory bounds,
+  including ERM, Rademacher symmetrization, VC-style generalization,
+  finite contraction, linear predictors, finite sub-Gaussian chaining,
+  algorithmic stability, finite PAC-Bayes confidence bounds, and
+  total-bounded Dudley boundary adapters.

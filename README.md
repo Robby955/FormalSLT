@@ -40,16 +40,15 @@ steps.
 - **For contributors:** read [Contributing](./CONTRIBUTING.md), then
   [Good first issues](./docs/good-first-issues.md).
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
-  For other Lean formalization work in this space, see
-  [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory).
-  That project takes a different approach, developing empirical-process
-  infrastructure; FormalSLT targets finite-sample PAC, Rademacher, and stability
-  bounds directly.
+  FormalSLT is complementary to
+  [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory),
+  which builds deeper empirical-process infrastructure; this repo focuses on a
+  readable finite-class theorem spine.
 
 ## Why this matters
 
-Statistical learning theory has many beautiful paper proofs whose assumptions
-are easy to blur in prose. FormalSLT turns a readable finite-sample route into
+Finite-sample proofs in statistical learning theory carry assumptions that are
+easy to blur in prose. FormalSLT turns a readable finite-sample route into
 machine-checked Lean statements, so each bound carries its hypotheses,
 constants, and finite-class scope in the theorem signature. The motivations:
 
@@ -230,6 +229,14 @@ The expected result is:
   can be discharged by a finite skeleton and terminal dyadic scale certificate
 - [x] Finite-cover/pathwise-modulus certificate for the epsilonized
   total-bounded Dudley boundary layer
+- [x] Dudley boundary epsilon elimination under a uniform global finite-budget
+  hypothesis
+- [x] Separable-terminal Dudley boundary adapter under explicit finite-skeleton
+  and terminal-projection hypotheses
+- [x] Pathwise terminal-modulus constructor for separable-terminal Dudley
+  boundary certificates
+- [x] Finite-cover/pathwise-modulus bridge into the separable-terminal Dudley
+  boundary interface
 - [x] Finite-terminal total-bounded dyadic Dudley wrapper
 - [ ] Continuous Dudley entropy-integral theorem over total-bounded classes
 - [x] Measure-theoretic iid algorithmic stability expected bound, with explicit
@@ -267,9 +274,9 @@ If you use FormalSLT in academic work, please cite:
 ```bibtex
 @software{formal_slt,
   title  = {FormalSLT: Formal Statistical Learning Theory in Lean 4},
-  author = {Sneiderman, Robby},
+  author = {Sneiderman, Robert},
   year   = {2026},
-  url    = {https://github.com/Robby955/lean-statistical-learning},
+  url    = {https://github.com/Robby955/FormalSLT},
   note   = {Lean 4 formalization of finite-sample SLT bounds.}
 }
 ```
