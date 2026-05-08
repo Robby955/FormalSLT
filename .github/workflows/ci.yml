@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [release-candidate, main]
+  pull_request:
+    branches: [release-candidate, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Get Mathlib cache
+        run: lake exe cache get
+
+      - name: Build
+        run: lake build FormalSLT
+
+      - name: Check examples
+        run: |
+          for f in examples/*.lean; do
+            echo "$f"
+            lake env lean "$f"
+          done
+
+      - name: Verify no sorry
+        run: |
+          # Match 'sorry' as a standalone tactic (not in comments or strings)
+          if grep -rnE --include="*.lean" '^[[:space:]]*sorry([[:space:]]|$)' FormalSLT/ FormalSLT.lean; then
+            echo "ERROR: sorry found in source files"
+            exit 1
+          fi
+
+      - name: Verify no admit
+        run: |
+          if grep -rnE --include="*.lean" '^[[:space:]]*admit([[:space:]]|$)' FormalSLT/ FormalSLT.lean; then
+            echo "ERROR: admit found in source files"
+            exit 1
+          fi
+
+      - name: Verify no custom axioms
+        run: |
+          if grep -rnE --include="*.lean" '^[[:space:]]*axiom[[:space:]]+' FormalSLT/ FormalSLT.lean; then
+            echo "ERROR: custom axiom found in source files"
+            exit 1
+          fi
+
+      - name: Verify no custom constants
+        run: |
+          if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean; then
+            echo "ERROR: custom constant found in source files"
+            exit 1
+          fi
+
+      - name: Count lines
+        run: |
+          echo "Total Lean lines:"
+          find FormalSLT/ -name '*.lean' -exec cat {} + | wc -l
+          echo "Module count:"
+          find FormalSLT/ -name '*.lean' | wc -l

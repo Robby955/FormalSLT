@@ -1,0 +1,20 @@
+import FormalSLT.PACBayesFiniteProductMGF
+
+/-!
+# PAC-Bayes finite-product MGF audit
+
+This file checks the finite iid product-measure exponential-moment layer used
+as the next bridge from finite KL/Donsker-Varadhan toward McAllester/Catoni
+PAC-Bayes bounds.
+-/
+
+#check FormalSLT.PACBayesFiniteProductMGF.finiteEmpiricalRisk
+
+#check FormalSLT.PACBayesFiniteProductMGF.finiteProduct_mgf_empiricalRiskDeviation_eq_pow
+#print axioms FormalSLT.PACBayesFiniteProductMGF.finiteProduct_mgf_empiricalRiskDeviation_eq_pow
+
+#check FormalSLT.PACBayesFiniteProductMGF.finiteProduct_mgf_empiricalRiskDeviation_le_of_single
+#print axioms FormalSLT.PACBayesFiniteProductMGF.finiteProduct_mgf_empiricalRiskDeviation_le_of_single
+
+#check FormalSLT.PACBayesFiniteProductMGF.finitePriorAveraged_mgf_empiricalRiskDeviation_le
+#print axioms FormalSLT.PACBayesFiniteProductMGF.finitePriorAveraged_mgf_empiricalRiskDeviation_le

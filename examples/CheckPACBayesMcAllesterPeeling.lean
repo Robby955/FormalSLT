@@ -1,0 +1,20 @@
+import FormalSLT.PACBayesBoundedLoss
+
+/-!
+# PAC-Bayes finite-grid McAllester peeling audit
+
+Checks the finite-grid peeling layer that removes the single fixed-budget
+restriction from the bounded-loss McAllester-style corollary.
+-/
+
+#check FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridPeeling_badEventMass_le_sum_delta
+#print axioms FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridPeeling_badEventMass_le_sum_delta
+
+#check FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridPeeling_badEventMass_le_delta
+#print axioms FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridPeeling_badEventMass_le_delta
+
+#check FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridOptimized_badEventMass_le_sum_delta
+#print axioms FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridOptimized_badEventMass_le_sum_delta
+
+#check FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridOptimized_badEventMass_le_delta
+#print axioms FormalSLT.PACBayesBoundedLoss.finiteMcAllesterGridOptimized_badEventMass_le_delta

@@ -1,0 +1,55 @@
+-- Formal Statistical Learning Theory in Lean 4
+-- All results verified. No stub tactics. No custom axioms.
+-- Axioms: [propext, Classical.choice, Quot.sound] only.
+
+import FormalSLT.Risk
+import FormalSLT.ERM
+import FormalSLT.UniformConvergence
+import FormalSLT.GhostSample
+
+import FormalSLT.Probability.Concentration
+import FormalSLT.Probability.FiniteUnionBound
+import FormalSLT.Probability.FiniteExpectation
+
+import FormalSLT.Rademacher.FiniteSample
+import FormalSLT.Rademacher.FiniteSampleSymmetrization
+import FormalSLT.Rademacher.ProbabilityBridge
+import FormalSLT.Rademacher.Decoupling
+import FormalSLT.Rademacher.Symmetrization
+import FormalSLT.Rademacher.Massart
+import FormalSLT.Rademacher.HighProbability
+import FormalSLT.Rademacher.FiniteClassHighProb
+import FormalSLT.Rademacher.UniformDeviation
+import FormalSLT.Rademacher.ERMGeneralization
+import FormalSLT.Rademacher.Contraction
+import FormalSLT.Rademacher.LinearPredictor
+import FormalSLT.Rademacher.Localized
+
+import FormalSLT.Azuma.ExposureMartingale
+import FormalSLT.Azuma.BoundedDifferences
+import FormalSLT.Azuma.BoundedDiffMartingale
+import FormalSLT.Azuma.BoundedDiffsAzumaInput
+import FormalSLT.Azuma.BoundedIncrementBound
+import FormalSLT.Azuma.HasBoundedDifferences
+import FormalSLT.Azuma.ExposureIncrementHoeffding
+import FormalSLT.Azuma.ExposureIncrementCondMGF
+import FormalSLT.Azuma.GenGapTail
+
+import FormalSLT.VC.Dimension
+import FormalSLT.VC.PACBridge
+import FormalSLT.VC.SauerShelah
+import FormalSLT.VC.Rademacher
+import FormalSLT.VC.SampleComplexity
+import FormalSLT.VC.BinaryVCBridge
+
+import FormalSLT.Covering.Rademacher
+import FormalSLT.Covering.DudleyChaining
+import FormalSLT.Covering.FiniteSubGaussianChaining
+import FormalSLT.Covering.TotalBoundedDudley
+
+import FormalSLT.AlgorithmicStability
+import FormalSLT.Stability.BousquetElisseeff
+import FormalSLT.PACBayesKL
+import FormalSLT.PACBayesFiniteProductMGF
+import FormalSLT.PACBayesBoundedLoss
+import FormalSLT.PACBayesMcAllester

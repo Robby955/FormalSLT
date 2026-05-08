@@ -1,0 +1,41 @@
+name: Formalization task
+description: Propose a focused Lean theorem, helper lemma, example, or doc fix.
+title: "[task] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve FormalSLT. Please keep the scope small and concrete.
+  - type: textarea
+    id: task
+    attributes:
+      label: Task
+      description: What should be proved, improved, or documented?
+      placeholder: "Example: add #check/#print axioms coverage for theorem X."
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and assumptions
+      description: List the finite/sample/class/topological assumptions that should stay explicit.
+      placeholder: "Finite sample; finite hypothesis class; bounded scalar loss."
+    validations:
+      required: false
+  - type: textarea
+    id: files
+    attributes:
+      label: Likely files
+      description: Which modules or docs are probably involved?
+      placeholder: "FormalSLT/Rademacher/Localized.lean, examples/CheckShowcaseTheorems.lean"
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Expected checks
+      options:
+        - label: "`lake build FormalSLT` should pass"
+        - label: "`examples/CheckShowcaseTheorems.lean` should pass if public theorem coverage changes"
+        - label: "No `sorry`, no `admit`, no custom axioms/constants"

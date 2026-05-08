@@ -1,0 +1,86 @@
+import FormalSLT.Rademacher.Localized
+
+/-!
+# Localized Rademacher scaffold audit
+
+Checks the finite-class localized Rademacher/Bernstein scaffold used as the
+first step toward fast-rate localized-complexity theorems.
+-/
+
+#check FormalSLT.Rademacher.Localized.excessLoss
+#print axioms FormalSLT.Rademacher.Localized.excessLoss
+
+#check FormalSLT.Rademacher.Localized.finiteSecondMoment
+#print axioms FormalSLT.Rademacher.Localized.finiteSecondMoment
+
+#check FormalSLT.Rademacher.Localized.finiteExcessRisk
+#print axioms FormalSLT.Rademacher.Localized.finiteExcessRisk
+
+#check FormalSLT.Rademacher.Localized.empiricalMean
+#print axioms FormalSLT.Rademacher.Localized.empiricalMean
+
+#check FormalSLT.Rademacher.Localized.empiricalExcessRisk
+#print axioms FormalSLT.Rademacher.Localized.empiricalExcessRisk
+
+#check FormalSLT.Rademacher.Localized.empiricalExcessRisk_self
+#print axioms FormalSLT.Rademacher.Localized.empiricalExcessRisk_self
+
+#check FormalSLT.Rademacher.Localized.BernsteinCondition
+#print axioms FormalSLT.Rademacher.Localized.BernsteinCondition
+
+#check FormalSLT.Rademacher.Localized.LocalizedBySecondMoment
+#print axioms FormalSLT.Rademacher.Localized.LocalizedBySecondMoment
+
+#check FormalSLT.Rademacher.Localized.LocalizedByExcessRisk
+#print axioms FormalSLT.Rademacher.Localized.LocalizedByExcessRisk
+
+#check FormalSLT.Rademacher.Localized.finiteSecondMoment_nonneg
+#print axioms FormalSLT.Rademacher.Localized.finiteSecondMoment_nonneg
+
+#check FormalSLT.Rademacher.Localized.excessLoss_self
+#print axioms FormalSLT.Rademacher.Localized.excessLoss_self
+
+#check FormalSLT.Rademacher.Localized.self_mem_localizedBySecondMoment
+#print axioms FormalSLT.Rademacher.Localized.self_mem_localizedBySecondMoment
+
+#check FormalSLT.Rademacher.Localized.self_mem_localizedByExcessRisk
+#print axioms FormalSLT.Rademacher.Localized.self_mem_localizedByExcessRisk
+
+#check FormalSLT.Rademacher.Localized.bernstein_excessRisk_nonneg
+#print axioms FormalSLT.Rademacher.Localized.bernstein_excessRisk_nonneg
+
+#check FormalSLT.Rademacher.Localized.localizedBySecondMoment_of_excessRisk_le
+#print axioms FormalSLT.Rademacher.Localized.localizedBySecondMoment_of_excessRisk_le
+
+#check FormalSLT.Rademacher.Localized.localizedEmpiricalRademacherComplexity
+#print axioms FormalSLT.Rademacher.Localized.localizedEmpiricalRademacherComplexity
+
+#check FormalSLT.Rademacher.Localized.localizedEmpiricalRademacherComplexity_mono
+#print axioms FormalSLT.Rademacher.Localized.localizedEmpiricalRademacherComplexity_mono
+
+#check FormalSLT.Rademacher.Localized.localizedSecondMomentEmpiricalRademacherComplexity
+#print axioms FormalSLT.Rademacher.Localized.localizedSecondMomentEmpiricalRademacherComplexity
+
+#check FormalSLT.Rademacher.Localized.localizedExcessRiskEmpiricalRademacherComplexity
+#print axioms FormalSLT.Rademacher.Localized.localizedExcessRiskEmpiricalRademacherComplexity
+
+#check FormalSLT.Rademacher.Localized.localizedExcessRiskEmpiricalRademacherComplexity_le_secondMoment
+#print axioms FormalSLT.Rademacher.Localized.localizedExcessRiskEmpiricalRademacherComplexity_le_secondMoment
+
+#check FormalSLT.Rademacher.Localized.FixedPointUpperCertificate
+#print axioms FormalSLT.Rademacher.Localized.FixedPointUpperCertificate
+
+#check FormalSLT.Rademacher.Localized.localizedSecondMomentEmpiricalRademacherComplexity_le_of_fixedPointCertificate
+#print axioms FormalSLT.Rademacher.Localized.localizedSecondMomentEmpiricalRademacherComplexity_le_of_fixedPointCertificate
+
+#check FormalSLT.Rademacher.Localized.localizedExcessRiskEmpiricalRademacherComplexity_le_of_bernstein_fixedPointCertificate
+#print axioms FormalSLT.Rademacher.Localized.localizedExcessRiskEmpiricalRademacherComplexity_le_of_bernstein_fixedPointCertificate
+
+#check FormalSLT.Rademacher.Localized.LocalizedDeviationCertificate
+#print axioms FormalSLT.Rademacher.Localized.LocalizedDeviationCertificate
+
+#check FormalSLT.Rademacher.Localized.finiteExcessRisk_le_of_localizedDeviation_empirical_nonpos
+#print axioms FormalSLT.Rademacher.Localized.finiteExcessRisk_le_of_localizedDeviation_empirical_nonpos
+
+#check FormalSLT.Rademacher.Localized.finiteExcessRisk_le_of_localizedDeviation_bernstein_fixedPoint
+#print axioms FormalSLT.Rademacher.Localized.finiteExcessRisk_le_of_localizedDeviation_bernstein_fixedPoint
