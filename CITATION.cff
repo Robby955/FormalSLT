@@ -1,16 +1,11 @@
 cff-version: 1.2.0
-message: "If you use FormalSLT in academic work, please cite it as below."
+message: "If you use FormalSLT, please cite it as below."
+type: software
 title: "FormalSLT: Formal Statistical Learning Theory in Lean 4"
 authors:
   - family-names: Sneiderman
-    given-names: Robby
+    given-names: Robert
 year: 2026
-url: "https://github.com/Robby955/lean-statistical-learning"
-repository-code: "https://github.com/Robby955/lean-statistical-learning"
+url: "https://github.com/Robby955/FormalSLT"
+abstract: "Lean 4 formalization of finite-sample statistical learning theory bounds — PAC learning, Rademacher complexity, uniform stability, and Dudley entropy integrals. Zero sorry, canonical axioms."
 license: MIT
-type: software
-abstract: >-
-  Lean 4 formalization of finite-sample statistical learning theory bounds,
-  including ERM, Rademacher symmetrization, VC-style generalization,
-  finite contraction, linear predictors, finite sub-Gaussian chaining,
-  algorithmic stability, and finite PAC-Bayes confidence bounds.
