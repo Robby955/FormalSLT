@@ -449,7 +449,7 @@ lemma supFunctional_le_projectedSup_add_of_skeleton_terminal
 /--
 Finite expectation form of the separable/dense-net boundary adapter.
 
-This is the first reusable projected-sup-to-true-sup bridge: the true supremum
+This is a reusable projected-sup-to-true-sup bridge: the true supremum
 is represented by a caller-supplied scalar functional, and all continuous
 content is isolated in the explicit finite-skeleton and terminal-approximation
 hypotheses.

@@ -93,9 +93,9 @@ and are the intended dependency boundary of the new layer:
 
 Everything below is **new** and built on top of these.
 
-## First bridge now available
+## Initial bridge now available
 
-The first bridge lives in
+The initial bridge lives in
 [FormalSLT/Covering/TotalBoundedDudley.lean](../FormalSLT/Covering/TotalBoundedDudley.lean):
 
 - `finiteMetricCoverOfTotallyBoundedUniv` extracts finite metric covers from

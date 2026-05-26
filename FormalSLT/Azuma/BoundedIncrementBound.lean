@@ -42,7 +42,7 @@ Azuma-Hoeffding consumer expected by mathlib's
   `Filtration ℕ`-indexed Azuma-Hoeffding can apply.
 * McDiarmid concentration / `genGap` specialization (Stage B3).
 * High-probability Rademacher generalization bound (Stage C, the first
-  public flagship).
+  public theorem in this lane).
 
 ## Constraints respected
 

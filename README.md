@@ -1,6 +1,6 @@
 # Formal Statistical Learning Theory in Lean 4
 
-[![CI](https://github.com/Robby955/lean-statistical-learning/actions/workflows/ci.yml/badge.svg?branch=release-candidate)](https://github.com/Robby955/lean-statistical-learning/actions/workflows/ci.yml)
+[![CI](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml)
 [![Lean 4](https://img.shields.io/badge/Lean-4.30.0--rc2-blue.svg)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-25b7ac7-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
@@ -11,10 +11,10 @@ FormalSLT is a compact Lean 4 library for the finite-sample statistical
 learning theory route from empirical risk minimization to VC-style
 generalization bounds, with recent extensions for contraction, linear
 predictors, finite sub-Gaussian chaining, algorithmic stability, and
-finite PAC-Bayes confidence bounds, and a first total-bounded finite-net
-bridge for the Dudley lane.
+finite PAC-Bayes confidence bounds, and an initial total-bounded finite-net
+bridge in this repo for the Dudley lane.
 
-**45 Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**46 Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
 Axioms used by the public theorem spine:
 `[propext, Classical.choice, Quot.sound]`.
@@ -35,15 +35,15 @@ steps.
   then [Intuition](./docs/intuition.md).
 - **For proof structure:** see [Diagrams](./docs/diagrams.md).
 - **For exact theorem names:** use [Theorem map](./docs/theorem-map.md).
+- **For a generated proof-surface index:** see
+  [Proof frontier manifest](./docs/proof-frontier.md).
 - **For scope and assumptions:** read
   [Assumptions and current boundaries](./docs/assumptions-and-nonclaims.md).
 - **For contributors:** read [Contributing](./CONTRIBUTING.md), then
   [Good first issues](./docs/good-first-issues.md).
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
-  FormalSLT is complementary to
-  [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory),
-  which builds deeper empirical-process infrastructure; this repo focuses on a
-  readable finite-class theorem spine.
+  FormalSLT is scoped as a finite-class theorem spine and is complementary to
+  existing empirical-process and Rademacher-generalization formalizations.
 
 ## Why this matters
 
@@ -52,17 +52,15 @@ easy to blur in prose. FormalSLT turns a readable finite-sample route into
 machine-checked Lean statements, so each bound carries its hypotheses,
 constants, and finite-class scope in the theorem signature. The motivations:
 
-- **Reproducibility.** Every constant — the `8B²` exponent, the `2 * E[Rad]`
-  factor, the `(en/d)^d` Sauer-Shelah closed form — is a Lean term that the
-  kernel re-checks on every build. There is no implicit "without loss of
-  generality" or "up to constants".
-- **Curriculum.** A graduate student reading the README can click through to
-  the exact Lean statement for any bound they have seen on a chalkboard, with
-  the assumptions made explicit in the type signature.
-- **Frontier ML.** As learning theory increasingly feeds back into modern
-  deep-learning analyses (PAC-Bayes generalization, stability, chaining),
-  having a checked finite scaffold is the first step toward formal guarantees
-  on the methods themselves.
+- **Reproducibility.** Representative constants, such as the `8B²` exponent,
+  the `2 * E[Rad]` factor, and the `(en/d)^d` Sauer-Shelah form, appear in
+  checked Lean statements rather than only asymptotic prose.
+- **Curriculum.** A reader can click from each implemented bound in the README
+  to the corresponding Lean declaration, with assumptions visible in the type
+  signature.
+- **Modern ML theory.** As learning theory feeds into contemporary analyses
+  such as PAC-Bayes generalization, stability, and chaining, a checked finite
+  scaffold gives later formalization work a precise starting point.
 
 ## Theorem families
 
@@ -75,7 +73,8 @@ constants, and finite-class scope in the theorem signature. The motivations:
 | Binary VC route | `VC.SauerShelah`, `VC.BinaryVCBridge`, `VC.SampleComplexity` | VC-style ERM excess-risk tail and closed sample-complexity form via effective classes | Verified |
 | Finite contraction | `Rademacher.Contraction` | `Rad_S(φ ∘ F) ≤ L * Rad_S(F)` for scalar finite samples/classes | Verified |
 | Linear predictors | `Rademacher.LinearPredictor` | `Rad ≤ R * n⁻¹ * sqrt(∑ k, ‖z k‖²)` and `Rad ≤ R * B / sqrt n` | Verified |
-| Localized Rademacher scaffold | `Rademacher.Localized` | Bernstein excess-risk localization embeds into second-moment localized empirical Rademacher complexity | Verified finite scaffold |
+| Finite Bernstein concentration | `Probability.BernsteinMGF`, `Rademacher.Localized` | finite Bennett/Bernstein MGF, averaged Bernstein tail, and finite localized Bernstein high-confidence theorem | Verified finite route |
+| Localized Rademacher scaffold | `Rademacher.Localized` | Bernstein localization, localized upper-deviation events, shifted-moment adapters, bounded-excess MGF instantiation, finite product-weight bad-event adapters, and event-facing wrappers | Verified finite scaffold |
 | Finite covering and two-scale chaining | `Covering.Rademacher`, `Covering.DudleyChaining` | ε-net peeling and two-scale finite chaining | Verified |
 | Finite sub-Gaussian chaining foundation | `Covering.FiniteSubGaussianChaining` | finite-max entropy bounds and finite Dudley-style entropy-budget sums | Verified finite infrastructure |
 | Total-bounded Dudley bridge | `Covering.TotalBoundedDudley` | totally bounded metric spaces yield dyadic finite-net schedules, projected finite-net wrappers, truncated interval-integral entropy comparisons, and supplied-supremum / finite-skeleton / pathwise-modulus / epsilonized boundary adapters | Verified bridge |
@@ -125,8 +124,8 @@ toolchain manager. `elan` will read [`lean-toolchain`](./lean-toolchain) and
 fetch the pinned Lean version automatically.
 
 ```bash
-git clone https://github.com/Robby955/lean-statistical-learning.git
-cd lean-statistical-learning
+git clone https://github.com/Robby955/FormalSLT.git
+cd FormalSLT
 lake exe cache get      # download pre-built Mathlib oleans
 lake build FormalSLT    # build the library
 ```
@@ -149,6 +148,7 @@ Run these before treating a branch as a showcase candidate:
 lake exe cache get
 lake build FormalSLT
 lake env lean examples/CheckShowcaseTheorems.lean
+python3 scripts/generate_proof_frontier_manifest.py --check
 ```
 
 ## Audit commands
@@ -159,6 +159,7 @@ audits:
 ```bash
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
+python3 scripts/generate_proof_frontier_manifest.py --check
 git diff --check
 ```
 
@@ -169,6 +170,7 @@ The expected result is:
   for selected public theorems;
 - the `rg` commands find no executable `sorry`, no executable `admit`, and no
   custom axioms/constants in `FormalSLT` or `examples`;
+- the proof-frontier manifest is in sync with the theorem map and source counts;
 - `git diff --check` reports no whitespace errors.
 
 ## Module map

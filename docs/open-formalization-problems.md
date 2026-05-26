@@ -19,9 +19,9 @@ schedules, per-scale entropy-budget wrappers, a uniform-entropy discrete
 Dudley corollary, a finite dyadic annulus-budget bridge, total-bounded
 finite-net extraction, truncated interval-integral comparisons, and a
 supplied-supremum boundary adapter with an explicit terminal approximation
-error. The next step is the genuine continuous-integral layer, and it should
-only be stated after choosing assumptions for measurability and separability
-or keeping the supremum as an explicit supplied functional.
+error. The next step is the continuous-integral layer, and it should only be
+stated after choosing assumptions for measurability and separability or
+keeping the supremum as an explicit supplied functional.
 
 **Likely branch.** `feat/lean-continuous-dudley-total-bounded`.
 
@@ -36,10 +36,10 @@ or keeping the supremum as an explicit supplied functional.
 **Boundary.** Do not state an arbitrary infinite-class empirical-process
 theorem until the topological and measurability assumptions are explicit.
 
-### 2. Algorithmic stability expected bound
+### 2. Algorithmic stability refinements
 
-**Target.** If a learning algorithm has uniform stability `β`, prove the
-expected generalization-gap bound `E[R(A(S)) - Rhat(A(S),S)] <= β`.
+**Target.** Extend the verified expected-gap and Azuma-constant stability
+surface with sharper constants and reusable algorithm-specific interfaces.
 
 The current repo proves bounded-differences scaffolding, a finite expected-gap
 adapter under a finite coordinate-swap identity, the finite iid product-weight
@@ -49,7 +49,7 @@ integrability assumptions for finite measurable hypothesis interfaces, and
 bounded-loss wrappers for the Azuma-constant high-probability stability
 surface.
 
-**Dependencies.**
+**Dependencies for the next refinements.**
 
 - product-measure decomposition by coordinate;
 - a formal algorithm-as-map interface from samples to hypotheses;
@@ -128,17 +128,73 @@ admissible sequences or γ₂-style functionals.
 
 ### 7. Localized Rademacher complexities
 
-The repo now has the finite first layer: excess-loss bookkeeping, finite
+The repo now has the initial finite layer: excess-loss bookkeeping, finite
 second-moment localization, finite Bernstein conditions, localized empirical
 Rademacher wrappers, monotonicity under predicate inclusion, and the bridge
 from excess-risk localization to second-moment localization under Bernstein.
 It also has the deterministic fixed-point and localized deviation certificate
-interfaces needed to state the finite fast-rate shell without yet proving the
-probabilistic concentration event.
+interfaces needed to state the finite fast-rate shell, plus a finite
+localized upper-deviation event adapter whose membership constructs the
+certificate and feeds an event-facing finite fast-rate theorem. The finite
+weighted concentration adapter now controls the localized bad-event mass from
+supplied pointwise tail budgets over the localized subtype, and the pointwise
+Markov layer converts exponential-moment budgets into those tail budgets. The
+finite iid product bridge reduces the localized pointwise exponential moments
+to one-coordinate MGF budgets for the excess-loss class, and the
+product-weight wrapper packages this into a localized bad-event mass bound.
+The bounded-excess instantiation now closes the one-coordinate MGF budget for
+pointwise `[-1,1]` excess losses and yields a finite iid product-weight
+localized bad-event mass bound, including a fixed-threshold delta form.
+The fixed-threshold event payoff is also closed: on the localized
+upper-deviation event, empirical competitors with nonpositive empirical excess
+risk have population excess risk bounded by the event threshold.
+These now compose into
+`localizedFiniteClassHighConfidence_empirical_nonpos_boundedExcess`, a named
+fixed-threshold finite-class theorem pairing bad-event mass at most `δ` with
+the deterministic good-event payoff.
+The sample-dependent boundary is now explicit as well:
+`localizedSampleDependentUpperDeviationEvent` and
+`localizedSampleDependentUpperDeviationBadEventMass` name the random-threshold
+event and its bad-event mass, while
+`localizedSampleDependentHighConfidence_empirical_nonpos` records the
+deterministic payoff from any supplied bad-event mass bound. The existing
+fast-rate shell now also has the named event wrapper
+`localizedFastRateUpperDeviationEvent`.
+The conservative finite product-mass bridge is closed as well:
+`localizedFastRateUpperDeviationBadEventMass_le_fixed_epsilon` reduces the
+named fast-rate bad-event mass to the fixed-`ε` bad-event mass using
+nonnegativity of the localized empirical Rademacher term, and
+`localizedFastRateUpperDeviationBadEventMass_finiteProduct_le_delta_boundedExcess`
+then composes that reduction with the existing bounded-excess finite product
+bound.
+The random-threshold interface now also has pointwise sample-dependent
+bad-event masses, shifted exponential moments, a sample-dependent union-bound
+adapter, and a summed shifted-moment bad-event bound. A conservative
+shifted-moment instantiation is also closed: pointwise lower bounds on the
+random threshold control the shifted moment by the fixed-threshold exponential
+moment, and the named fast-rate event has a bounded-excess finite-product
+shifted-moment budget through its fixed-`ε` lower envelope. These statements
+also have an algebraic "centered" interface: the fixed slack factors out while
+the empirical localized complexity term stays syntactically inside the shifted
+moment. This interface is conservative-only — because the localized complexity
+is nonnegative, each per-hypothesis centered moment is pointwise at most the
+fixed moment, so the union bound over it cannot beat the conservative bound. It
+exposes the next probability-theorem interface without proving that theorem.
 
-**Remaining target.** Prove a high-probability finite localized concentration
-theorem that constructs the localized deviation certificate, then package the
-certificate shell as a finite oracle-inequality statement.
+The finite Bernstein variance-localization route is now closed locally:
+`localizedFiniteClassBernsteinHighConfidence_empirical_nonpos` uses a
+variance-aware Bennett/Bernstein MGF layer, an averaged Bernstein tail, the
+localized variance proxy `c·r`, a finite localized union bound, and the
+fixed-threshold payoff. It still assumes global `[-1,1]` excess-loss bounds and
+`0 < c·r`.
+
+**Remaining target.** The next non-conservative direction is whole-supremum
+random-threshold concentration of
+  `localizedUpperDeviation - 2·R̂_loc`, combining localized symmetrization
+  (`expected_genGap_le_two_expected_empiricalRademacherComplexity`) with the
+  McDiarmid/Azuma generalisation-gap tail (`genGap_tail_bound_azuma`). Both
+  ingredients exist for the global gap but in the measure-theoretic layer; the
+  open work is bridging them to the finite-weight localized layer.
 
 ### 8. Sparse regression oracle inequalities
 

@@ -26,7 +26,7 @@ to obtain:
 
 ## Interpretation
 
-This is the **first public-threshold theorem** of FormalSLT. It says:
+This is the public-threshold theorem for the finite Rademacher spine. It says:
 with probability at least `1 - exp(-ε² n / (8 B²))` over an iid sample
 `S ~ μⁿ`, the generalization gap satisfies
 

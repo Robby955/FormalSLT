@@ -1,0 +1,1277 @@
+{
+  "audit": {
+    "custom_axiom_or_constant": [],
+    "expected_public_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "sorry_or_admit": []
+  },
+  "frontier_lanes": [
+    {
+      "boundary": "The current finite Bernstein theorem is not an infinite-class, measurable-supremum, or full oracle-inequality theorem; it assumes bounded excess losses, a Bernstein condition, and 0 < c*r.",
+      "difficulty": "medium",
+      "id": "localized-rademacher-finite-concentration",
+      "next_step": "The finite Bernstein variance-localization route is now closed locally. The next deeper target is a whole-supremum random-threshold concentration bound for localized upper deviations.",
+      "scope": "finite classes",
+      "source": "docs/roadmap.md#near-term",
+      "status": "partially_closed"
+    },
+    {
+      "boundary": "Do not claim separability, measurable arbitrary suprema, or a continuous Dudley theorem until those layers are proved.",
+      "difficulty": "hard",
+      "id": "continuous-dudley-entropy-integral",
+      "next_step": "Prove an analytic domination theorem from the finite dyadic upper sum to an actual entropy integral under explicit assumptions.",
+      "scope": "total-bounded bridge beyond the current finite-scale wrappers",
+      "source": "docs/next-lane.md",
+      "status": "open"
+    },
+    {
+      "boundary": "The current PAC-Bayes layer is finite-grid and finite-hypothesis; continuous posterior claims remain future work.",
+      "difficulty": "medium-hard",
+      "id": "pac-bayes-all-real-lambda",
+      "next_step": "Extend the finite-grid confidence layer toward an all-real lambda optimization statement with explicit post-sample optimization rules.",
+      "scope": "finite hypotheses first; continuous posteriors later",
+      "source": "docs/open-formalization-problems.md#near-term",
+      "status": "open"
+    },
+    {
+      "boundary": "The current high-probability bounds use the Azuma constant; sharp McDiarmid should wait for the required measure-theoretic layer.",
+      "difficulty": "hard",
+      "id": "sharp-mcdiarmid-product-kernel",
+      "next_step": "Identify or build the product-kernel conditional-expectation decomposition needed for a range-based Hoeffding route.",
+      "scope": "bounded-differences concentration",
+      "source": "docs/roadmap.md#near-term",
+      "status": "blocked"
+    }
+  ],
+  "generation": {
+    "command": "python3 scripts/generate_proof_frontier_manifest.py",
+    "output": "docs/proof-frontier-manifest.json",
+    "sources": [
+      "FormalSLT/**/*.lean",
+      "FormalSLT.lean",
+      "examples/*.lean",
+      "docs/theorem-map.md",
+      "docs/roadmap.md",
+      "docs/next-lane.md",
+      "docs/open-formalization-problems.md",
+      "lakefile.lean",
+      "lean-toolchain"
+    ]
+  },
+  "repository": {
+    "default_branch": "main",
+    "name": "Robby955/FormalSLT"
+  },
+  "schema": "FormalSLT.proof_frontier.v1",
+  "source_counts": {
+    "example_lean_files": 17,
+    "library_and_example_lean_lines": 23341,
+    "library_lean_lines": 22247,
+    "library_modules": 46,
+    "theorem_map_entries": 195
+  },
+  "theorem_families": [
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "Risk",
+          "name": "risk",
+          "summary": "Expected loss under a measure"
+        },
+        {
+          "kind": "definition",
+          "module": "Risk",
+          "name": "empiricalRisk",
+          "summary": "Sample average loss"
+        },
+        {
+          "kind": "definition",
+          "module": "ERM",
+          "name": "IsERM",
+          "summary": "Predicate selecting empirical risk minimizers over a finite class"
+        },
+        {
+          "kind": "definition",
+          "module": "ERM",
+          "name": "excessRisk",
+          "summary": "Risk above the best-in-class comparator"
+        },
+        {
+          "kind": "definition",
+          "module": "GhostSample",
+          "name": "genGap",
+          "summary": "One-sided uniform generalization gap"
+        },
+        {
+          "kind": "definition",
+          "module": "GhostSample",
+          "name": "piMeasure",
+          "summary": "IID product measure on Fin n -> Z"
+        },
+        {
+          "kind": "definition",
+          "module": "Rademacher.FiniteSample",
+          "name": "empiricalRademacherComplexity",
+          "summary": "Finite-sample empirical Rademacher complexity"
+        },
+        {
+          "kind": "definition",
+          "module": "VC.Rademacher",
+          "name": "effectiveClass",
+          "summary": "Distinct loss vectors realized on a sample"
+        },
+        {
+          "kind": "definition",
+          "module": "VC.PACBridge",
+          "name": "binaryClassTrace",
+          "summary": "Binary label patterns realized on a sample"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "FiniteNet",
+          "summary": "Finite net with an explicit nearest projection"
+        }
+      ],
+      "name": "Core definitions"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Symmetrization",
+          "name": "expected_genGap_le_two_expected_empiricalRademacherComplexity",
+          "summary": "E[genGap] <= 2 * E[Rad]"
+        },
+        {
+          "kind": "theorem",
+          "module": "Azuma.GenGapTail",
+          "name": "genGap_tail_bound_azuma_explicit",
+          "summary": "P(genGap - E[genGap] >= \u03b5) <= exp(-\u03b5\u00b2 n / (8B\u00b2))"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Massart",
+          "name": "massart_finite_class",
+          "summary": "Rad(H,S) <= B * sqrt(2 * log card(H) / n)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.HighProbability",
+          "name": "genGap_highProb_rademacher",
+          "summary": "P(genGap >= 2 * E[Rad] + \u03b5) <= exp(-\u03b5\u00b2 n / (8B\u00b2))"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.FiniteClassHighProb",
+          "name": "genGap_highProb_finiteClass",
+          "summary": "Massart plus high-probability Rademacher"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.UniformDeviation",
+          "name": "uniformDeviation_highProb_finiteClass",
+          "summary": "Two-sided finite-class uniform deviation"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.SauerShelah",
+          "name": "sauerShelah_polynomial_bound",
+          "summary": "sum_{k<=d} C(n,k) <= (en/d)^d"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.Rademacher",
+          "name": "empiricalRademacherComplexity_le_massart_effective",
+          "summary": "Effective-class Massart bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.SampleComplexity",
+          "name": "vcRademacher_pointwise",
+          "summary": "Rad <= B * sqrt(2d * log(en/d) / n)"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.SampleComplexity",
+          "name": "genGap_highProb_vcClass",
+          "summary": "VC-style one-sided genGap tail"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.SampleComplexity",
+          "name": "uniformDeviation_highProb_vcClass",
+          "summary": "VC-style two-sided uniform deviation"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.SampleComplexity",
+          "name": "vc_erm_excessRisk_tail",
+          "summary": "VC-style ERM excess-risk tail"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.SampleComplexity",
+          "name": "vc_erm_sample_complexity",
+          "summary": "Closed-form VC ERM sample-complexity theorem with explicit 128 * B^2 constant"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.BinaryVCBridge",
+          "name": "effectiveClass_zeroOneLoss_card_eq_binaryClassTrace",
+          "summary": "Effective 0-1 loss patterns equal binary traces"
+        },
+        {
+          "kind": "theorem",
+          "module": "VC.BinaryVCBridge",
+          "name": "effectiveClass_zeroOneLoss_card_le_sauerShelah",
+          "summary": "Binary VC Sauer-Shelah corollary"
+        }
+      ],
+      "name": "Rademacher and VC spine"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Contraction",
+          "name": "one_step_contraction",
+          "summary": "One coordinate replacement step for the finite contraction proof"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Contraction",
+          "name": "contraction_1lip",
+          "summary": "Finite-sample scalar contraction for 1-Lipschitz transforms"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Contraction",
+          "name": "contraction_empirical",
+          "summary": "Empirical Rademacher wrapper for 1-Lipschitz transforms"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Contraction",
+          "name": "empiricalRademacherComplexity_contraction_lipschitz",
+          "summary": "Rad_S(\u03c6 \u2218 F) <= L * Rad_S(F) for finite scalar classes"
+        }
+      ],
+      "name": "Contraction and linear predictors"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Covering.Rademacher",
+          "name": "rademacher_covering_bound",
+          "summary": "Rad(F) <= \u03b5 + Rad(N_\u03b5)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.Rademacher",
+          "name": "rademacher_covering_massart",
+          "summary": "Covering plus Massart"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.DudleyChaining",
+          "name": "rademacher_two_step_chaining",
+          "summary": "Two-scale finite chaining bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_expectedSup_le_of_mgf_log",
+          "summary": "MGF control gives finite expected-sup entropy budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_expectedSup_le_of_subGaussian_mgf_sqrt",
+          "summary": "Optimized finite sub-Gaussian max bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_chaining_expectation_bound",
+          "summary": "Finite multiscale chaining decomposition in expectation"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projected_chaining_expectation_bound",
+          "summary": "Finite projected-supremum chaining without an identity terminal projection"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_chaining_expectation_bound_of_radius_sqrt",
+          "summary": "Radius-bounded finite chaining with square-root entropy budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_chaining_expectation_bound_of_net_sequence_pairs_sqrt",
+          "summary": "Projection-pair entropy version for finite net sequences"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt",
+          "summary": "Covering-number version for finite net sequences"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projected_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt",
+          "summary": "Projected finite-net chaining bound with covering-number entropy budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "FiniteNet.ProjectedIndex",
+          "summary": "Finite image of a net projection, used to avoid a finite ambient index assumption"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projectedNet_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt",
+          "summary": "Projected finite-net-image chaining bound without [Fintype T]"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_projection_pairs",
+          "summary": "Finite Dudley-style entropy sum over projection-pair families"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers",
+          "summary": "Finite Dudley-style entropy sum with covering-number products"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_projection_pairs_geometric_radius",
+          "summary": "Dyadic/geometric radius schedule for projection pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers_geometric_radius",
+          "summary": "Dyadic/geometric radius schedule for covering numbers"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_projection_pairs_geometric_entropy_budget",
+          "summary": "Per-scale entropy-budget wrapper for projection pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget",
+          "summary": "Per-scale entropy-budget wrapper for covering numbers"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_projection_pairs_geometric_uniform_entropy",
+          "summary": "Uniform entropy cap collapses the dyadic sum to a 2 * radiusScale budget for projection pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers_geometric_uniform_entropy",
+          "summary": "Uniform entropy cap collapses the dyadic covering-number sum to a 2 * radiusScale budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_projection_pairs_geometric_annulus_budget",
+          "summary": "Finite dyadic annulus-budget bridge for projection pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers_geometric_annulus_budget",
+          "summary": "Finite dyadic annulus-budget bridge for covering numbers"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_projection_pairs_geometric_integral_budget",
+          "summary": "Finite dyadic entropy-integral budget for projection pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers_geometric_integral_budget",
+          "summary": "Finite dyadic entropy-integral budget for covering numbers"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteDyadicEntropyAtRadiusUpperSum",
+          "summary": "Finite dyadic entropy-at-radius upper sum sampled at lower annulus endpoints"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteDyadicEntropyIntegralBudget_le_entropyAtRadiusUpperSum",
+          "summary": "Finite dyadic budget comparison to an entropy-at-radius upper sum"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope",
+          "summary": "Finite covering-count wrapper with a monotone prefix-sup entropy envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projected_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope",
+          "summary": "Projected finite Dudley wrapper with a monotone prefix-sup entropy envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope",
+          "summary": "Projected finite-net-image Dudley wrapper without [Fintype T]"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_integral_comparison",
+          "summary": "Projected finite-net Dudley wrapper compared to a supplied finite entropy-at-radius integral budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "shiftedDyadicIntervalIntegralSum_eq_truncatedIntervalIntegral",
+          "summary": "Shifted finite dyadic annulus integrals compose into one truncated interval integral"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteDyadicEntropyAtRadiusUpperSum_le_two_mul_truncatedIntervalIntegral",
+          "summary": "Finite entropy-at-radius upper sum dominated by a single truncated interval integral"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Projected finite-net Dudley wrapper with a truncated interval-integral entropy budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteExpectation_supFunctional_le_projected_add_terminalError",
+          "summary": "Finite expectation adapter from a supplied supremum functional to a projected finite-supremum surrogate"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteSup_skeleton_le_projectedSup_add_terminalError",
+          "summary": "Finite skeleton supremum controlled by terminal projected finite-net supremum plus explicit error"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteExpectation_supFunctional_le_projected_add_skeleton_terminalError",
+          "summary": "Expected supplied supremum controlled through explicit finite-skeleton and terminal-projection errors"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "terminalApprox_of_pathwise_modulus",
+          "summary": "Terminal net radius plus pathwise modulus discharges the terminal-projection approximation hypothesis"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "terminalApprox_of_pathwise_modulus_radiusBound",
+          "summary": "Radius-bound variant of terminal pathwise-modulus approximation"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteSup_le_skeletonSup_add_of_pointwise_approx",
+          "summary": "Finite ambient supremum controlled by a finite skeleton under pointwise approximation"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx",
+          "summary": "Supplied supremum functional controlled by an approximate witness and finite skeleton selector"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_supFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Boundary-layer finite Dudley wrapper for a supplied supremum functional plus terminal error"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finite_separableSupFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Boundary-layer finite Dudley wrapper with explicit finite-skeleton and terminal-projection hypotheses"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finiteMetricCoverOfTotallyBoundedUniv",
+          "summary": "Totally bounded metric spaces admit finite covers at every positive real radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finiteNetOfTotallyBoundedUniv",
+          "summary": "Extracts the repo's bundled finite-net record from total boundedness"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le",
+          "summary": "Dyadic total-bounded net schedule satisfies the adjacent-radius budget used by finite chaining"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers",
+          "summary": "Total-bounded dyadic wrapper over the terminal projected finite-net image, without [Fintype T]"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_integral_comparison",
+          "summary": "Total-bounded projected finite-net wrapper compared to a supplied finite entropy-at-radius integral budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Total-bounded projected finite-net wrapper with one truncated interval-integral entropy budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Total-bounded boundary wrapper for a supplied supremum functional under explicit terminal approximation"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Total-bounded boundary wrapper with explicit finite-skeleton/dense-net and terminal-projection assumptions"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_witnessedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "Total-bounded Dudley boundary wrapper using approximate witnesses, finite skeleton selectors, and pathwise modulus"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "EpsilonizedSupremumBoundaryChoice",
+          "summary": "Finite skeleton and terminal-scale certificate for an epsilonized Dudley boundary step"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_epsilonizedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison",
+          "summary": "For every positive error budget, a finite skeleton/terminal-scale certificate yields a Dudley bound with + eta"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "skeletonApprox_of_finiteCover_pathwiseModulus",
+          "summary": "Finite-cover radius plus pathwise modulus gives the finite-skeleton approximation hypothesis"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "FiniteCoverSupremumBoundaryChoice",
+          "summary": "Finite-cover/pathwise-modulus certificate for the epsilonized Dudley boundary step"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_epsilonizedSup_dudley_totalBounded_of_finiteCoverSupremumBoundaryChoice",
+          "summary": "Epsilonized total-bounded Dudley wrapper from finite-cover and pathwise-modulus certificates"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_projected_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers",
+          "summary": "Total-bounded dyadic wrapper for the terminal projected supremum, without an identity terminal net"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finite_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers",
+          "summary": "Finite-terminal total-bounded dyadic wrapper composed with the finite Dudley entropy-budget theorem"
+        }
+      ],
+      "name": "Covering and finite chaining"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "trainingLoss_hasBoundedDifferences",
+          "summary": "Uniform stability gives bounded differences for training loss"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "stability_genGap_hasBoundedDifferences",
+          "summary": "Uniform stability gives bounded differences for the gen gap scaffold"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "FiniteCoordinateSwapIdentity",
+          "summary": "Finite coordinate-swap symmetry predicate for explicit sample weights"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "finiteProductSampleWeight",
+          "summary": "Iid finite product sample weights \u220f k, p (S k)"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "finiteProductSampleWeight_coordinateSwapIdentity",
+          "summary": "Finite iid product weights satisfy the coordinate-swap identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "expectedFiniteStabilityGap_le_uniformStability_of_coordinateSwap",
+          "summary": "Uniform stability gives finite expected gap \u2264 \u03b2 under a finite swap identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "expectedFiniteStabilityGap_le_uniformStability_finiteProduct",
+          "summary": "Uniform stability gives finite iid product-weight expected gap \u2264 \u03b2"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "abs_expectedFiniteStabilityGap_le_uniformStability_of_coordinateSwap",
+          "summary": "Uniform stability gives finite two-sided expected stability gap \u2264 \u03b2 under a finite swap identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "abs_expectedFiniteStabilityGap_le_uniformStability_finiteProduct",
+          "summary": "Uniform stability gives finite iid two-sided expected stability gap \u2264 \u03b2"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "expectedFiniteGeneralizationGap_le_uniformStability_of_coordinateSwap",
+          "summary": "Literal finite E[R(A(S)) - Rhat_S(A(S))] \u2264 \u03b2 wrapper under a finite swap identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "expectedFiniteGeneralizationGap_le_uniformStability_finiteProduct",
+          "summary": "Literal finite iid product-weight E[R(A(S)) - Rhat_S(A(S))] \u2264 \u03b2 wrapper"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "abs_expectedFiniteGeneralizationGap_le_uniformStability_of_coordinateSwap",
+          "summary": "Literal finite absolute expected generalization-gap wrapper under a finite swap identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "abs_expectedFiniteGeneralizationGap_le_uniformStability_finiteProduct",
+          "summary": "Literal finite iid product-weight absolute expected generalization-gap wrapper"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "finiteClass_loss_measurable",
+          "summary": "Finite per-hypothesis loss measurability gives joint loss measurability"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "boundedLoss_selectedLoss_integrable",
+          "summary": "Bounded finite-class selected loss is integrable under \u03bc\u207f \u00d7 \u03bc"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "boundedLoss_updateSelectedLoss_integrable",
+          "summary": "Bounded coordinate-updated selected loss is integrable under \u03bc\u207f \u00d7 \u03bc"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "boundedLoss_coordinateSelectedLoss_integrable",
+          "summary": "Bounded empirical coordinate loss is integrable under \u03bc\u207f"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "expectedStabilityGap_le_uniformStability_piMeasure_of_boundedLoss",
+          "summary": "Product-measure expected gap \u2264 \u03b2 with bounded-loss integrability discharged"
+        },
+        {
+          "kind": "theorem",
+          "module": "AlgorithmicStability",
+          "name": "abs_expectedStabilityGap_le_uniformStability_piMeasure_of_boundedLoss",
+          "summary": "Product-measure two-sided expected gap \u2264 \u03b2 with bounded-loss integrability discharged"
+        },
+        {
+          "kind": "theorem",
+          "module": "Stability.BousquetElisseeff",
+          "name": "mcdiarmid_inequality_iid_const_width",
+          "summary": "Iid bounded-differences upper tail with the Azuma constant"
+        },
+        {
+          "kind": "theorem",
+          "module": "Stability.BousquetElisseeff",
+          "name": "bousquet_elisseeff_azuma_expectedGap_variant",
+          "summary": "Stability high-probability bound with explicit expected-gap and measurability hypotheses"
+        },
+        {
+          "kind": "theorem",
+          "module": "Stability.BousquetElisseeff",
+          "name": "bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss",
+          "summary": "Bounded-loss finite-class wrapper for the Azuma-constant stability high-probability theorem"
+        },
+        {
+          "kind": "theorem",
+          "module": "Stability.BousquetElisseeff",
+          "name": "bousquet_elisseeff_uniform_stability_corollary",
+          "summary": "\u03b2 = c0 / n stability corollary for the Azuma-constant variant"
+        },
+        {
+          "kind": "theorem",
+          "module": "Stability.BousquetElisseeff",
+          "name": "bousquet_elisseeff_uniform_stability_corollary_of_boundedLoss",
+          "summary": "Bounded-loss finite-class \u03b2 = c0 / n high-probability stability corollary"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.BernsteinMGF",
+          "name": "exp_le_quadratic_of_le",
+          "summary": "Pointwise Bennett inequality for a centered bounded variable"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.BernsteinMGF",
+          "name": "bennett_mgf",
+          "summary": "Finite centered bounded-variance Bennett MGF"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.BernsteinMGF",
+          "name": "bennett_mgf_subgamma",
+          "summary": "Sub-Gamma denominator form of the finite Bennett MGF"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.BernsteinMGF",
+          "name": "bernstein_tail",
+          "summary": "One-sample finite Bernstein upper-tail bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.BernsteinMGF",
+          "name": "averaged_bernstein_tail",
+          "summary": "Iid product-weight Bernstein tail with the n * eps^2 exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "BernsteinCondition",
+          "summary": "Finite Bernstein condition: excess-loss second moment controlled by excess risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedEmpiricalRademacherComplexity_nonneg_of_zero",
+          "summary": "Localized empirical Rademacher complexity is nonnegative when the class contains an identically zero excess-loss comparator"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedEmpiricalRademacherComplexity_mono",
+          "summary": "Finite localized empirical Rademacher complexity is monotone under predicate inclusion"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedExcessRiskEmpiricalRademacherComplexity_nonneg",
+          "summary": "Excess-risk localized empirical Rademacher complexity is nonnegative because the comparator belongs to every nonnegative radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedExcessRiskEmpiricalRademacherComplexity_le_secondMoment",
+          "summary": "Bernstein embeds excess-risk localized complexity into second-moment localized complexity"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "FixedPointUpperCertificate",
+          "summary": "Deterministic envelope certificate: above rStar, the localized envelope is below the identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSecondMomentEmpiricalRademacherComplexity_le_of_fixedPointCertificate",
+          "summary": "Envelope bound plus fixed-point certificate controls second-moment localized empirical complexity by its radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedExcessRiskEmpiricalRademacherComplexity_le_of_bernstein_fixedPointCertificate",
+          "summary": "Bernstein bridge plus fixed-point certificate controls excess-risk localized empirical complexity by c * r"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "LocalizedDeviationCertificate",
+          "summary": "Deterministic localized concentration-event interface for population excess risk versus empirical excess risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviation",
+          "summary": "Finite localized supremum of population-minus-empirical excess-risk gaps"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationEvent",
+          "summary": "Sample event where the localized upper-deviation statistic is bounded"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentUpperDeviationEvent",
+          "summary": "Sample-dependent localized upper-deviation event for random-threshold arguments"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateUpperDeviationEvent",
+          "summary": "Named random-threshold event used by the finite fast-rate shell"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseUpperDeviationBadEventMass",
+          "summary": "Finite weighted mass of one pointwise upper-deviation bad event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseSampleDependentUpperDeviationBadEventMass",
+          "summary": "Finite weighted mass of one pointwise upper-deviation bad event with a sample-dependent threshold"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass",
+          "summary": "Finite weighted mass outside the localized upper-deviation event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentUpperDeviationBadEventMass",
+          "summary": "Finite weighted mass outside a sample-dependent localized upper-deviation event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateUpperDeviationBadEventMass",
+          "summary": "Finite weighted mass outside the named fast-rate random-threshold localized event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseUpperDeviationExpMoment",
+          "summary": "Finite weighted exponential moment for one localized upper-deviation gap"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseSampleDependentUpperDeviationShiftedExpMoment",
+          "summary": "Shifted exponential moment for one localized upper-deviation gap with a sample-dependent threshold"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseUpperDeviationBadEventMass_le_expMoment_div",
+          "summary": "Pointwise Markov adapter from an exponential-moment budget to an upper-deviation bad-event mass"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseSampleDependentUpperDeviationBadEventMass_le_shiftedExpMoment",
+          "summary": "Pointwise sample-dependent bad-event mass controlled by its shifted exponential moment"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseSampleDependentUpperDeviationShiftedExpMoment_le_fixedExpMoment_div",
+          "summary": "Sample-dependent shifted moment controlled by a fixed-threshold exponential moment under a pointwise lower bound on the random threshold"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseSampleDependentUpperDeviationShiftedExpMoment_add_const",
+          "summary": "Fixed slack added to a sample-dependent threshold factors out of the shifted exponential moment"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedPointwiseUpperDeviationExpMoment_finiteProduct_le_of_single",
+          "summary": "Finite iid product MGF bridge for one localized upper-deviation gap from a one-coordinate MGF budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedOneCoordinateDeviationMGF_le_of_excessLoss_mem_Icc_neg_one_one",
+          "summary": "Bounded excess losses in [-1,1] supply the localized one-coordinate MGF budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass_le_sum_pointwise",
+          "summary": "Finite weighted union bound: localized upper-deviation bad-event mass is controlled by pointwise localized bad-event masses"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentUpperDeviationBadEventMass_le_sum_pointwise",
+          "summary": "Sample-dependent localized upper-deviation bad-event mass is controlled by pointwise sample-dependent bad-event masses"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass_le_sum_tails",
+          "summary": "Localized bad-event mass controlled by supplied pointwise tail budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentUpperDeviationBadEventMass_le_sum_tails",
+          "summary": "Sample-dependent localized bad-event mass controlled by supplied pointwise tail budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass_le_sum_expMoment_div",
+          "summary": "Localized bad-event mass controlled by summed pointwise exponential-moment budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentUpperDeviationBadEventMass_le_sum_shiftedExpMoment",
+          "summary": "Sample-dependent localized bad-event mass controlled by summed shifted exponential-moment budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateUpperDeviationBadEventMass_le_sum_shiftedExpMoment",
+          "summary": "Named fast-rate bad-event mass controlled by shifted exponential-moment budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRatePointwiseShiftedExpMoment_le_centered_div",
+          "summary": "Algebraic interface: factors the fixed slack out of the shifted moment. Conservative-only (per-hypothesis centered moment \u2264 fixed moment); names the whole-supremum obligation, does not discharge it"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateUpperDeviationBadEventMass_le_sum_centeredShiftedExpMoment_div",
+          "summary": "Algebraic interface: bad-event mass via summed centered moments and a fixed-slack denominator. Conservative-only union bound; not a non-conservative concentration result"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRatePointwiseShiftedExpMoment_finiteProduct_le_boundedExcess",
+          "summary": "Bounded-excess finite-product shifted-moment budget for one hypothesis in the named fast-rate random-threshold event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass_finiteProduct_le_sum_boundedExcess",
+          "summary": "Iid product-weight localized bad-event mass bound under pointwise [-1,1] excess-loss assumptions"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass_finiteProduct_le_delta_boundedExcess",
+          "summary": "Delta-form iid product-weight localized concentration bound under pointwise [-1,1] excess-loss assumptions"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedUpperDeviationBadEventMass_le_delta",
+          "summary": "Delta-form finite localized concentration adapter from supplied pointwise tail budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentUpperDeviationBadEventMass_le_fixed",
+          "summary": "Sample-dependent bad-event mass is controlled by a fixed-threshold bad-event mass when the random threshold is pointwise larger"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateUpperDeviationBadEventMass_le_fixed_epsilon",
+          "summary": "Named fast-rate bad-event mass is controlled by the fixed-\u03b5 bad-event mass using nonnegativity of the empirical localized complexity"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateUpperDeviationBadEventMass_finiteProduct_le_delta_boundedExcess",
+          "summary": "Conservative finite product-mass bound for the named fast-rate event by reduction to the fixed-threshold bounded-excess theorem"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedDeviationCertificate_of_mem_upperDeviationEvent",
+          "summary": "Event membership constructs the deterministic localized deviation certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "finiteExcessRisk_le_of_localizedDeviation_empirical_nonpos",
+          "summary": "Localized deviation plus nonpositive empirical excess risk controls population excess risk by the deviation slack"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "finiteExcessRisk_le_of_localizedUpperDeviationEvent_empirical_nonpos",
+          "summary": "Fixed-threshold localized upper-deviation event payoff for empirical competitors"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFiniteClassHighConfidence_empirical_nonpos_boundedExcess",
+          "summary": "Fixed-threshold finite high-confidence localized statement combining bounded-excess bad-event mass with the empirical-competitor payoff"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "centeredSecondMoment_le_of_bernstein_localized",
+          "summary": "Variance proxy for the centered excess-loss deviation is bounded by c * r on the localized class"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFiniteClassBernsteinHighConfidence_empirical_nonpos",
+          "summary": "Finite localized Bernstein high-confidence theorem with bad-event mass bounded by the averaged Bernstein tail and fixed-threshold payoff"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "finiteExcessRisk_le_of_localizedSampleDependentUpperDeviationEvent_empirical_nonpos",
+          "summary": "Sample-dependent localized upper-deviation event payoff for empirical competitors"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentHighConfidence_empirical_nonpos",
+          "summary": "Supplied-mass high-confidence adapter for sample-dependent localized upper-deviation events"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedSampleDependentHighConfidence_empirical_nonpos_of_shiftedExpMoment",
+          "summary": "Sample-dependent high-confidence adapter from shifted exponential-moment budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "finiteExcessRisk_le_of_localizedDeviation_bernstein_fixedPoint",
+          "summary": "Localized deviation plus Bernstein/fixed-point control gives a finite fast-rate shell"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "finiteExcessRisk_le_of_localizedUpperDeviationEvent_bernstein_fixedPoint",
+          "summary": "Event-facing finite fast-rate shell, reducing the remaining localized task to proving the upper-deviation event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "finiteExcessRisk_le_of_localizedFastRateUpperDeviationEvent_bernstein_fixedPoint",
+          "summary": "Fast-rate shell stated through the named sample-dependent upper-deviation event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateHighConfidence_bernstein_fixedPoint_of_shiftedExpMoment",
+          "summary": "Assumption-facing high-confidence finite fast-rate wrapper from shifted exponential-moment budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateHighConfidence_bernstein_fixedPoint_of_centeredShiftedExpMoment",
+          "summary": "Assumption-facing high-confidence wrapper from supplied centered shifted-moment budgets. Interface only \u2014 the budgets it consumes are conservative-only per hypothesis"
+        },
+        {
+          "kind": "theorem",
+          "module": "Rademacher.Localized",
+          "name": "localizedFastRateHighConfidence_bernstein_fixedPoint_boundedExcess",
+          "summary": "Conservative finite fast-rate high-confidence wrapper pairing the bounded-excess bad-event mass with the Bernstein/fixed-point payoff"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesKL",
+          "name": "klDiv_nonneg",
+          "summary": "Finite KL divergence is nonnegative under full support"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMcAllester",
+          "name": "pacbayes_changeOfMeasure",
+          "summary": "Rescaled finite Donsker-Varadhan change-of-measure inequality"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMcAllester",
+          "name": "pacbayes_mcallester_deterministic",
+          "summary": "Deterministic PAC-Bayes posterior bound from a prior log-MGF certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMcAllester",
+          "name": "pacbayes_mcallester_subGaussian",
+          "summary": "Fixed-\u03bb sub-Gaussian deterministic PAC-Bayes bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMcAllester",
+          "name": "pacbayes_mcallester_sqrt",
+          "summary": "Deterministic sqrt-form bound under a uniform-in-\u03bb MGF certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesFiniteProductMGF",
+          "name": "finiteEmpiricalRisk",
+          "summary": "Finite empirical risk for a real-valued loss"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesFiniteProductMGF",
+          "name": "finiteProduct_mgf_empiricalRiskDeviation_eq_pow",
+          "summary": "Exact iid product factorization of E exp(lam * (R_i - Rhat_i))"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesFiniteProductMGF",
+          "name": "finiteProduct_mgf_empiricalRiskDeviation_le_of_single",
+          "summary": "Single-coordinate MGF budget lifts to the finite sample-average MGF"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesFiniteProductMGF",
+          "name": "finitePriorAveraged_mgf_empiricalRiskDeviation_le",
+          "summary": "Prior-averaged finite iid empirical-risk-deviation MGF bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "oneCoordinate_boundedLoss_mgf",
+          "summary": "[0,1] bounded-loss one-coordinate MGF instantiation"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "sampleAverage_boundedLoss_mgf",
+          "summary": "Finite sample-average bounded-loss MGF bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "priorAveraged_boundedLoss_mgf",
+          "summary": "Prior-averaged bounded-loss MGF bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "priorAveraged_boundedLoss_mgf_badEventMass_le_delta",
+          "summary": "Finite Markov bad-event bound for the prior MGF"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "posteriorRisk_bound_of_priorDeviationMGF_le",
+          "summary": "Deterministic posterior-risk adapter from a prior MGF certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "finiteCatoni_badEventMass_le_delta",
+          "summary": "Finite [0,1] Catoni-style PAC-Bayes posterior-risk bad-event bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "catoni_fixedLambda_budget_eq_sqrt",
+          "summary": "Fixed-\u03bb Catoni penalty optimized to a square-root budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "posteriorRisk_bound_of_priorDeviationMGF_le_complexity_sqrt",
+          "summary": "Deterministic fixed-budget McAllester-style posterior-risk adapter"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "finiteMcAllesterBoundedComplexity_badEventMass_le_delta",
+          "summary": "Finite [0,1] fixed-budget McAllester-style bad-event bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "finiteMcAllesterGridPeeling_badEventMass_le_delta",
+          "summary": "Finite-grid McAllester peeling bound with allocated confidence mass"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "finiteMcAllesterGridOptimized_badEventMass_le_delta",
+          "summary": "Posterior-dependent finite-grid McAllester wrapper under an explicit bucket certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBoundedLoss",
+          "name": "pac_bayes_generalization",
+          "summary": "Closed PAC-Bayes good-event theorem: with product-sample mass at least 1 - delta, every posterior satisfies the Catoni-form risk bound"
+        }
+      ],
+      "name": "Stability and PAC-Bayes foundations"
+    }
+  ],
+  "toolchain": {
+    "lean": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_revision": "25b7ac7d0cf8eef34ced5525f4a62b7613ad649b"
+  }
+}
