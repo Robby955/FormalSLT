@@ -1194,7 +1194,7 @@ theorem localizedUpperDeviationBadEventMass_finiteProduct_le_sum_singleMGF
 
 /-- Iid product-weight localized bad-event mass under bounded excess losses.
 
-This is the first concrete MGF instantiation for the localized upper-deviation
+This is a concrete MGF instantiation for the localized upper-deviation
 event layer. It remains finite and pointwise: each member of the localized
 subtype supplies a `[-1,1]` excess-loss bound. -/
 theorem localizedUpperDeviationBadEventMass_finiteProduct_le_sum_boundedExcess

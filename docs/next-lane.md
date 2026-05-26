@@ -46,7 +46,7 @@ the covering number at scale `ε`, and the integral is the Riemann/Lebesgue
 entropy integral.
 
 For this lane we are not yet aiming at the full continuous Dudley integral;
-the first concrete target is a **total-bounded dyadic Dudley wrapper** that
+the concrete target is a **total-bounded dyadic Dudley wrapper** that
 replaces `[Fintype T]` and explicit per-scale finite nets with an existence
 hypothesis "for every `j ≤ m`, there is a `2^{-j}·D`-net of size at most
 `Nj`". This isolates the topological lift from the analytic step of passing
@@ -216,17 +216,17 @@ This is the "true" continuous Dudley statement. It should be reached
 
 The lane should land in this order, one PR per step:
 
-0. **Step C0 — total-bounded finite-net extraction.** Closed as the first
+0. **Step C0 — total-bounded finite-net extraction.** Closed as an initial
    bridge layer: total boundedness gives bundled finite nets at positive
    radii, plus a dyadic schedule compatible with the finite chaining radius
    hypothesis.
 
-0.5. **Step C0.5 — finite-terminal dyadic wrapper.** Closed as the first
+0.5. **Step C0.5 — finite-terminal dyadic wrapper.** Closed as an initial
    composition theorem: the total-bounded dyadic schedule feeds the existing
    finite Dudley entropy-budget theorem, with an identity terminal net on a
    finite index type.
 
-0.75. **Step C0.75 — projected-sup dyadic wrapper.** Closed as the first
+0.75. **Step C0.75 — projected-sup dyadic wrapper.** Closed as an initial
    non-identity-terminal theorem: the total-bounded dyadic schedule feeds a
    projected finite Dudley entropy-budget theorem and bounds the terminal
    projected supremum.

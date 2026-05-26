@@ -1887,7 +1887,7 @@ theorem finite_projected_chaining_expectation_bound_of_net_sequence_coveringNumb
 The ambient process index type `T` is not assumed finite; the finite supremum
 ranges over the indices actually hit by the terminal net projection.
 
-This is the first projected-net boundary lift toward total-bounded Dudley:
+This is a projected-net boundary lift toward total-bounded Dudley:
 finite terminal image, finite scale range, scalar process, no measurable
 supremum over arbitrary classes. -/
 theorem finite_projectedNet_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt

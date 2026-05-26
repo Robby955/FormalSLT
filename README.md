@@ -101,7 +101,7 @@ Short version:
 - The main Rademacher and VC results are finite-class / finite-sample theorems.
 - High-probability Rademacher bounds use the Azuma `8B²` exponent; the sharper
   McDiarmid constant is future work.
-- The chaining layer proves finite entropy-budget infrastructure and a first
+- The chaining layer proves finite entropy-budget infrastructure and an initial
   total-bounded finite-net extraction bridge, not the continuous Dudley
   integral.
 - PAC-Bayes includes a finite `[0,1]` bounded-loss Catoni-style confidence
