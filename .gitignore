@@ -17,6 +17,8 @@ build/
 .env
 .env.*
 !.env.example
+__pycache__/
+*.py[cod]
 
 # LaTeX build artifacts (paper/)
 paper/*.aux
