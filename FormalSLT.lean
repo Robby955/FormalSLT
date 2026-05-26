@@ -10,6 +10,7 @@ import FormalSLT.GhostSample
 import FormalSLT.Probability.Concentration
 import FormalSLT.Probability.FiniteUnionBound
 import FormalSLT.Probability.FiniteExpectation
+import FormalSLT.Probability.BernsteinMGF
 
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization
