@@ -20,8 +20,8 @@ universe u
 These are finite statement/proof seeds, not verified page theorems.
 
 They deliberately use finite weighted supports rather than the full
-measure-theoretic random-variable setting from the topic page. This keeps the
-first Lean artifact small enough to audit while preserving the mathematical
+measure-theoretic random-variable setting from the topic page. This keeps an
+initial Lean artifact small enough to audit while preserving the mathematical
 shape that later proofs should refine.
 -/
 

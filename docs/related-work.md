@@ -1,61 +1,46 @@
-# Related work
+# Related Work
 
 Existing Lean 4 formalizations of statistical learning theory and probability.
+FormalSLT is intended to be complementary to these projects, not a replacement
+for them.
 
-## YuanheZ/lean-stat-learning-theory
+## Adjacent Lean Projects
 
-A comprehensive Lean 4 formalization of statistical learning theory grounded in empirical processes. Includes:
+| Project | Scope | Relation to FormalSLT |
+|---|---|---|
+| [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory) / [arXiv:2602.02285](https://arxiv.org/abs/2602.02285) | Empirical-process formalization: Gaussian Lipschitz concentration, Dudley's entropy integral for sub-Gaussian processes, localized Gaussian complexity, critical radii, and least-squares rates. | Strong adjacent prior art for localized SLT formalization. FormalSLT's finite Bernstein/localization route is a different bounded-excess-loss path. |
+| [auto-res/lean-rademacher](https://github.com/auto-res/lean-rademacher) / [arXiv:2503.19605](https://arxiv.org/abs/2503.19605) | Rademacher-complexity generalization bounds, symmetrization, McDiarmid/Hoeffding-style concentration, and Dudley/Rademacher infrastructure. | Prior Lean infrastructure for Rademacher and Dudley-style generalization. FormalSLT overlaps in theme but keeps a finite-class theorem spine. |
+| [formal-learning-theory-kernel](https://github.com/Zetetic-Dhruv/formal-learning-theory-kernel) | PAC/VC characterization, compression, PAC-Bayes, learning paradigms, measurability, and finite-support machinery. | Adjacent finite learning-theory formalization. FormalSLT shares VC/PAC/PAC-Bayes themes but organizes them around a checked finite-sample route. |
 
-- Gaussian Lipschitz concentration
-- Dudley's entropy integral for sub-Gaussian processes
-- Sparse least-squares regression with sharp rates
-- Lean proof trace datasets for ML-assisted formalization
+## Current Boundary
 
-**Scope:** Broad empirical-process infrastructure aiming at infinite-class results. Around 30,000 lines of Lean.
+FormalSLT does not claim to be the first formalization of statistical learning
+theory. The current release candidate is scoped more narrowly:
 
-**Reference:** [Statistical Learning Theory in Lean 4: Empirical Processes from Scratch](https://huggingface.co/papers/2602.02285) (2025).
+```text
+finite-class empirical-risk and Rademacher/VC/PAC-Bayes infrastructure,
+plus a finite localized Bernstein high-confidence theorem under explicit
+boundedness and Bernstein-type assumptions.
+```
 
-## MohanadAhmed/lean-rademacher-generalization
+The localized Bernstein theorem should be cited alongside the projects above:
+Sonoda et al. for Rademacher/Dudley infrastructure, Zhang et al. for localized
+empirical-process and Gaussian/Dudley machinery, and
+`formal-learning-theory-kernel` for PAC/VC/PAC-Bayes and measurability
+infrastructure.
 
-Lean 4 formalization of generalization error bounds via Rademacher complexity. Includes:
+## Complementary, Not Competitive
 
-- Empirical and population Rademacher complexity definitions
-- Symmetrization inequality
-- McDiarmid's inequality
-- Hoeffding's inequality
+The checked sources do not show an exact duplicate of FormalSLT's finite
+localized Bernstein route, but this is not a broad novelty claim. The useful
+comparison is by scope:
 
-**Scope:** Rademacher-route generalization bounds through high-probability results.
+- Zhang et al. develop deeper Gaussian/Dudley and critical-radius machinery.
+- `lean-rademacher` develops a Rademacher-generalization route.
+- `formal-learning-theory-kernel` develops PAC/VC/PAC-Bayes and measurability
+  infrastructure.
+- FormalSLT emphasizes a readable finite-class theorem spine, explicit
+  assumptions, examples, theorem maps, and auditable finite-sample bounds.
 
-**Reference:** [Lean Formalization of Generalization Error Bound by Rademacher Complexity](https://www.emergentmind.com/papers/2503.19605) (2025).
-
-## How this repo differs
-
-This repo (`lean-statistical-learning` / FormalSLT) occupies a different lane:
-
-| Dimension | YuanheZ | MohanadAhmed | This repo |
-|---|---|---|---|
-| **Scope** | Broad empirical-process theory | Rademacher route | Compact finite-class VC/Rademacher spine |
-| **Target audience** | Research formalization | Formalization | ML people learning SLT formally |
-| **Infinite classes** | Yes | Partial | No (finite index types) |
-| **Dudley/chaining** | Yes | No | Finite chaining and finite entropy-budget wrappers |
-| **VC dimension** | Not in scope | No | Yes (Sauer-Shelah + binary bridge) |
-| **ERM bounds** | Via sparse regression | No | Yes (full VC-style ERM tail) |
-| **Diagrams/docs** | Minimal | Minimal | Extensive |
-| **Examples** | No | No | Yes |
-| **Assumption tables** | No | No | Yes |
-| **Scope tables** | No | No | Yes |
-
-### Our positioning
-
-We do not claim to be the first formalization of statistical learning theory. We aim to be the **cleanest, most readable, contributor-friendly** Lean 4 finite-class SLT library:
-
-1. A stranger can understand the theorem spine in 60 seconds (README diagram).
-2. The repo builds with one command (`lake build FormalSLT`).
-3. Every theorem family has an informal statement, Lean declaration, and scoped assumptions.
-4. There are examples showing how to import and use the theorems.
-5. The roadmap separates closed theorems from current boundaries and future work.
-6. Open formalization problems invite contribution.
-
-### Complementary, not competitive
-
-These projects are complementary. YuanheZ builds deep empirical-process infrastructure for research-level results. We build a readable theorem spine for the finite-class route that ML practitioners encounter first. Both contribute to the broader goal of machine-checked statistical learning theory.
+Public wording should avoid claims such as "first Lean SLT formalization",
+"first localized theorem in Lean", or "solves localized Rademacher theory".

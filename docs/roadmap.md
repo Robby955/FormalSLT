@@ -135,6 +135,69 @@
   empirical excess-risk bookkeeping, a localized upper-deviation certificate,
   and a finite fast-rate shell that composes localized deviation with the
   Bernstein/fixed-point certificate
+- [x] Localized Rademacher upper-deviation event adapter:
+  a finite localized upper-deviation statistic, the sample event where it is
+  bounded, monotonicity of deviation certificates under predicate restriction,
+  an adapter from that event to the deterministic localized deviation
+  certificate, and an event-facing finite fast-rate theorem
+- [x] Localized Rademacher finite concentration adapter:
+  a weighted finite union bound controls the localized upper-deviation bad-event
+  mass from supplied pointwise tail budgets over the localized subtype
+- [x] Localized Rademacher pointwise MGF tail adapter:
+  a finite Markov/exponential-moment layer converts each pointwise upper-deviation
+  MGF budget into a bad-event mass and composes those budgets over the localized
+  subtype
+- [x] Localized Rademacher finite iid product MGF bridge:
+  the pointwise localized exponential moment under finite product sample weights
+  is controlled by a supplied one-coordinate MGF budget for the excess-loss class
+- [x] Localized Rademacher bounded-excess concentration wrapper:
+  pointwise `[-1,1]` excess-loss assumptions instantiate the one-coordinate MGF
+  budget and yield finite iid product-weight localized bad-event mass and
+  delta-form concentration bounds
+- [x] Localized Rademacher fixed-threshold event payoff:
+  membership in a localized upper-deviation event plus nonpositive empirical
+  excess risk gives a deterministic population excess-risk bound at that fixed
+  threshold
+- [x] Localized Rademacher fixed-threshold high-confidence statement:
+  the bounded-excess finite product bad-event mass bound now composes with the
+  fixed-threshold event payoff into one named finite-class theorem
+- [x] Localized Rademacher sample-dependent event interface:
+  random-threshold upper-deviation events now have a named event, bad-event
+  mass, supplied-mass high-confidence adapter, and fast-rate event wrapper
+- [x] Localized Rademacher conservative fast-rate bad-event bridge:
+  nonnegativity of the localized empirical Rademacher term gives a pointwise
+  lower envelope by the fixed `ε` threshold, so the named fast-rate bad-event
+  mass is controlled by the existing fixed-threshold bounded-excess finite
+  product theorem. This is a conservative finite statement, not the sharp
+  random-threshold concentration theorem.
+- [x] Localized Rademacher conservative fast-rate high-confidence wrapper:
+  the conservative fast-rate bad-event mass bound now composes with the
+  Bernstein/fixed-point event payoff into one named finite theorem, keeping
+  the finite product-mass bound separate from the deterministic payoff
+  hypotheses.
+- [x] Localized Rademacher sample-dependent union and shifted-moment adapters:
+  sample-dependent localized bad-event mass now has a pointwise union-bound
+  adapter and a shifted exponential-moment interface. This is the exact
+  assumption-facing surface needed for sharper random-threshold concentration
+  work, without claiming that concentration theorem yet.
+- [x] Localized Rademacher conservative shifted-moment instantiation:
+  a sample-dependent shifted moment is controlled by the fixed-threshold
+  exponential moment whenever the random threshold has a pointwise lower
+  envelope, and the named fast-rate random-threshold event now has a
+  bounded-excess finite-product shifted-moment budget through that fixed-`ε`
+  lower envelope.
+- [x] Localized Rademacher centered shifted-moment interface (algebraic):
+  fixed slack added to a sample-dependent threshold factors out of the shifted
+  exponential moment, yielding a named fast-rate high-confidence wrapper from
+  supplied centered random-threshold shifted-moment budgets. This leaves the
+  empirical localized complexity term syntactically inside the moment. It is an
+  interface, not a non-conservative result: because the localized complexity is
+  nonnegative, each per-hypothesis centered moment is pointwise at most the
+  fixed moment, so the union bound over these budgets cannot improve on the
+  conservative fixed-threshold bound. The genuine non-conservative obligation is
+  a whole-supremum random-threshold concentration of
+  `localizedUpperDeviation - 2·R̂_loc`, which this interface names but does not
+  discharge.
 
 ## Planned
 
@@ -163,11 +226,47 @@
     product-kernel decomposition, or add concrete algorithm-specific
     stability examples.
 
-- [ ] **Localized Rademacher — finite fixed-point layer**
+- [ ] **Localized Rademacher — random-threshold concentration refinement**
   - The deterministic fixed-point certificate layer is closed.
   - The deterministic localized deviation certificate shell is closed.
-  - Next prove a high-probability construction of the localized deviation
-    certificate for finite classes.
+  - The localized upper-deviation event adapter is closed.
+  - The event-facing finite fast-rate wrapper is closed.
+  - The finite weighted concentration adapter for the localized
+    upper-deviation event is closed.
+  - The pointwise exponential-moment-to-tail adapter is closed.
+  - The finite iid product MGF bridge for localized excess losses is closed.
+  - The bounded-excess one-coordinate MGF instantiation is closed for
+    pointwise `[-1,1]` excess losses.
+  - The fixed-threshold event payoff is closed.
+  - The fixed-threshold high-confidence finite-class theorem is closed.
+  - The sample-dependent fast-rate event interface is closed.
+  - A conservative bad-event mass bridge for the named sample-dependent
+    fast-rate event is closed by reducing it to the fixed-`ε` bounded-excess
+    theorem.
+  - The sample-dependent pointwise union-bound and shifted exponential-moment
+    adapters are closed.
+  - The conservative shifted-moment instantiation through the fixed-`ε`
+    lower envelope is closed under bounded excess losses.
+  - The centered shifted-moment interface is closed as an *algebraic* layer:
+    only the fixed slack is factored out, while the empirical localized
+    complexity term stays syntactically inside the pointwise moment budget.
+    This layer is conservative-only — each per-hypothesis centered moment is
+    pointwise at most the fixed moment (nonnegativity of `R̂_loc`), so the
+    union bound over it cannot beat the conservative fixed-threshold bound.
+  - The finite Bernstein variance-localization route is now closed locally:
+    `localizedFiniteClassBernsteinHighConfidence_empirical_nonpos` combines a
+    reusable Bennett/Bernstein MGF layer, an averaged Bernstein tail, the
+    localized variance proxy `c·r`, a finite union bound, and the fixed-threshold
+    payoff. The theorem still assumes global `[-1,1]` excess-loss bounds and
+    `0 < c·r`.
+  - Next non-conservative direction: whole-supremum random-threshold
+      concentration of `localizedUpperDeviation - 2·R̂_loc`, via localized
+      symmetrization (`expected_genGap_le_two_expected_empiricalRademacherComplexity`)
+      and McDiarmid/Azuma (`genGap_tail_bound_azuma`). Both ingredients already
+      exist for the global generalization gap but in the measure-theoretic
+      world; the work is bridging them to the finite-weight localized layer.
+  - Then consider sub-Gaussian or Bernstein-style excess-loss MGF
+    instantiations if the hypotheses can be stated cleanly.
   - Target a finite fast-rate/oracle-inequality scaffold without claiming
     infinite-class or measurable-supremum generality.
 

@@ -3,15 +3,14 @@
 This repo currently serves three related but distinct goals. Keep them
 separate when writing docs, opening PRs, and preparing artifacts.
 
-## 1. AI-assisted research workflow submission
+## 1. Research workflow submission
 
-The workshop paper should be framed as a reproducible workflow for
-AI-assisted formalization, not just as a list of Lean theorems. The central
-claim is:
+The workshop paper should be framed as a reproducible formalization workflow,
+not just as a list of Lean theorems. The central claim is:
 
-- AI agents can accelerate research formalization when their work is routed
-  through small theorem slices, explicit assumptions, cache-aware builds,
-  full Lean verification, no-sorry/no-admit audits, and human review.
+- Small theorem slices, explicit assumptions, cache-aware builds, full Lean
+  verification, no-sorry/no-admit audits, and human review make the artifact
+  inspectable and reproducible.
 
 The paper should show:
 
@@ -26,8 +25,8 @@ The paper should show:
   `sorry`/`admit`, no custom axioms/constants, and conservative non-claims.
 
 Do not pitch this as autonomous research or pure software engineering. The
-workshop fit is the human-directed, tool-augmented research workflow:
-LLMs propose and edit; Lean, CI, and review decide what is true.
+workshop fit is the human-directed, verification-first research workflow:
+the Lean kernel, CI, and human mathematical review decide what is accepted.
 
 ## 2. Public Lean repository
 
@@ -46,7 +45,7 @@ Before public launch:
 - use the tag or commit SHA in the paper artifact paragraph;
 - ensure public branch names, badges, repo description, release notes, and
   docs all match the launch snapshot;
-- keep internal agent worktrees and branch names out of the public mirror if
+- keep internal scratch worktrees and branch names out of the public mirror if
   using a clean-history public repo.
 
 ## 3. Later archival or full-paper venues

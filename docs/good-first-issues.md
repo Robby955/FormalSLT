@@ -1,7 +1,7 @@
 # Good First Issues
 
 This list is for contributors who want a useful first PR without taking on a
-flagship theorem. Keep PRs small and include the checks you ran.
+large theorem family. Keep PRs small and include the checks you ran.
 
 ## Documentation
 

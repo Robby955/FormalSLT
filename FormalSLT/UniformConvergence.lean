@@ -192,7 +192,7 @@ theorem probabilityMeasureEventLeOfRealLe
 /--
 Fixed-hypothesis empirical-average upper-tail bridge from Hoeffding.
 
-This is the first sampling-facing step toward finite-class uniform convergence:
+This is a sampling-facing step toward finite-class uniform convergence:
 for one fixed hypothesis, a finite independent family of bounded losses gives a
 one-sided tail bound for the true-risk minus empirical-risk average. The theorem
 keeps the ordinary true-risk sum and makes the expectation-negation step

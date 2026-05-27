@@ -3,7 +3,7 @@ import FormalSLT
 /-!
 # Total-bounded Dudley bridge audit
 
-Checks the first topology bridge for the continuous/total-bounded Dudley lane:
+Checks the initial topology bridge for the continuous/total-bounded Dudley lane:
 turning a totally bounded metric index space into bundled finite nets that can
 feed the existing finite chaining infrastructure.
 -/

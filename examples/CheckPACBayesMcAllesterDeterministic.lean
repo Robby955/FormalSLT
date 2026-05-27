@@ -7,12 +7,10 @@ This file checks that the deterministic core of the McAllester (1999)
 PAC-Bayes generalization bound is fully machine-checked, with only the
 standard kernel axioms `propext`, `Classical.choice`, `Quot.sound`.
 
-The probabilistic shell — the "with probability ≥ 1-δ over `S ~ D^m`"
-quantifier — is intentionally **not** included here: it requires
-measure-theoretic infrastructure (Markov's inequality on a joint
-distribution over samples) outside the finite, discrete scope of this
-module. The deterministic core below is the algebraic content of
-McAllester's proof.
+This audit is limited to the deterministic `PACBayesMcAllester` core.
+Finite product-weight confidence wrappers live in `PACBayesBoundedLoss`;
+all-real-`lambda`, infinite-hypothesis, and continuous-posterior variants
+remain out of scope.
 -/
 
 #check FormalSLT.PACBayesMcAllester.pacbayes_changeOfMeasure

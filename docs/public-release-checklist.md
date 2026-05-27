@@ -1,11 +1,10 @@
-# Public Release Checklist
+# Release Audit Checklist
 
-Use this before cutting a public showcase mirror or release candidate tag.
+Use this before cutting a release candidate tag or public artifact snapshot.
 
 ## Repository settings
 
-- Default branch is clear. For the private preview repo this may be
-  `release-candidate`; for a public showcase repo, prefer `main`.
+- Default branch is clear, normally `main`.
 - Default branch is protected before public launch:
   - require PRs before merging;
   - require CI to pass;
@@ -17,20 +16,16 @@ Use this before cutting a public showcase mirror or release candidate tag.
   > symmetrization, Massart, binary VC bounds, contraction, linear predictors,
   > finite chaining, stability, PAC-Bayes, and Dudley bridge infrastructure.
 
-- Release tag exists for the launch snapshot, for example `v0.1.0-rc2`.
-- Stale draft PRs and internal worktree branches are not part of the public
-  story.
-- If publishing by flipping this private repository public, delete or archive
-  stale internal branches first. If using a clean public mirror, push only the
-  launch branch and release tags that should be part of the public artifact.
-- CI badge branch matches the public default branch. Use `release-candidate`
-  for the private preview repo and `main` for a clean public mirror.
+- Release tag exists for the snapshot, for example `v0.1.0`.
+- Stale draft PRs and local worktree branches are not part of the release
+  artifact.
+- CI badge branch matches the public default branch.
 
 ## Source hygiene
 
-- `.gitignore` excludes local Lean build artifacts, editor folders, agent
-  scratch folders, environment files, and LaTeX build outputs.
-- No `.lake/`, `.claude/`, `.codex/`, local cache, or generated build output is
+- `.gitignore` excludes local Lean build artifacts, editor folders, scratch
+  folders, environment files, and LaTeX build outputs.
+- No local config directories, local cache, or generated build output is
   staged.
 - `git status --short` is clean before tagging.
 - The launch branch is synced with `origin`, and `gh pr list --state open`
@@ -42,6 +37,7 @@ Use this before cutting a public showcase mirror or release candidate tag.
 lake exe cache get
 lake build FormalSLT
 lake env lean examples/CheckShowcaseTheorems.lean
+python3 scripts/generate_proof_frontier_manifest.py --check
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 git diff --check
@@ -52,6 +48,7 @@ Expected result:
 - full Lean build passes;
 - showcase checker prints only the standard Lean/Mathlib axioms for the public
   spine;
+- proof-frontier manifest is in sync with the theorem map and source counts;
 - no executable `sorry`, no executable `admit`, no custom axioms, and no custom
   constants are found;
 - whitespace check passes.
@@ -65,23 +62,25 @@ source build is not part of the release checklist.
 - README theorem table renders correctly on GitHub.
 - SVG theorem chain renders without overlapping text.
 - "Current boundaries" is short in the README and links to the full scope doc.
+- Public summaries state only checked theorem facts and explicit non-claims;
+  keep internal process notes, private branches, and unverifiable attribution
+  out of release copy.
 - Claims about continuous Dudley, infinite classes, separability, sharp
   McDiarmid, and continuous-posterior PAC-Bayes remain future work unless the
   exact theorem is proved.
-- Contributing guide mentions AI-assisted contributions, branch flow, required
-  checks, and good first issues.
-- README and paper copy use exact human-readable line counts after the count
+- Contributing guide mentions contribution responsibility, branch flow,
+  required checks, and good first issues.
+- README and public docs use exact human-readable line counts after the count
   command has been rerun on the launch snapshot.
-- Paper submission notes point reviewers to a tag or exact commit SHA, not a
-  moving branch.
+- External references point readers to a tag or exact commit SHA, not a moving
+  branch.
 
-## Paper and artifact split
+## Artifact split
 
-- Workshop paper branches may be formatted or compressed differently from the
-  public repo docs. Keep them synced on theorem facts, counts, and non-claims,
-  but do not mix paper formatting changes into theorem PRs.
-- The public artifact should be understandable without the paper: README,
+- If a separate manuscript or report cites the repository, keep theorem facts,
+  counts, and non-claims synced with the tagged artifact.
+- The repository artifact should be understandable on its own: README,
   theorem map, examples, assumptions/nonclaims, related work, and contributor
   instructions should stand on their own.
-- The paper should cite the artifact by public URL plus tag or commit once the
-  launch snapshot is frozen.
+- External writing should cite the artifact by public URL plus tag or commit
+  once the snapshot is frozen.

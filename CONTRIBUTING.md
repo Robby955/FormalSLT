@@ -19,23 +19,19 @@ assumptions, reproducible builds, and careful public claims.
 - Chained PRs are fine when there is a real dependency. Say clearly which PR
   your branch builds on and whether it can be reviewed independently.
 
-## AI-assisted contributions
+## Contribution responsibility
 
-AI and LLM tools are allowed. The project does not reject contributions because
-they were AI-assisted; review focuses on correctness, clarity, maintainability,
-and fit with the theorem roadmap.
-
-The standard is the same for every contribution:
+Review focuses on correctness, clarity, maintainability, and fit with the
+theorem roadmap. The standard is the same for every contribution:
 
 - You are responsible for the final code, proof, prose, and citations.
 - Every Lean declaration must compile with no `sorry`, no `admit`, and no
   custom axioms or constants.
 - Do not paste private data, proprietary text, or unverifiable citations into
   the repo.
-- If an AI tool helped substantially, mention that briefly in the PR
-  description and describe the checks you ran. Prompt logs are not required.
-- Remove generated phrasing that overstates the result, sounds promotional, or
-  hides assumptions. Prefer precise labels such as "Scope", "Assumptions", and
+- Describe the checks you ran in the PR description.
+- Remove phrasing that overstates the result, sounds promotional, or hides
+  assumptions. Prefer precise labels such as "Scope", "Assumptions", and
   "Current boundaries".
 
 ## Proof style

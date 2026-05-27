@@ -89,7 +89,7 @@ expectation): a learner's worst-case generalization gap stays within
 `2·E[Rad] + ε` of its expectation with probability at least
 `1 − exp(−ε²n / 8B²)`.
 
-This is the first theorem in the chain that gives a finite-sample,
+This is the theorem in the chain that turns the earlier expectation work into a finite-sample,
 high-probability statement. Everything before this is either an expectation
 bound or a single concentration step.
 
@@ -185,8 +185,8 @@ that fits the current library spine.
 signed sample sum. The public corollary gives `Rad ≤ R·B / √n` when every
 input satisfies `‖xᵢ‖ ≤ B`.
 
-**Why this matters.** This is the first theorem in the repo that looks like a
-standard ML model class rather than an abstract finite hypothesis class. It
+**Why this matters.** This theorem connects the repo to a standard ML model
+class rather than only an abstract finite hypothesis class. It
 connects the Rademacher machinery to linear prediction in finite-dimensional
 Euclidean spaces.
 

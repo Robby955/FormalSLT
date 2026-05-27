@@ -41,8 +41,8 @@ Azuma-Hoeffding consumer expected by mathlib's
 * Filtration index adapter `Fin (n+1) → ℕ` so mathlib's
   `Filtration ℕ`-indexed Azuma-Hoeffding can apply.
 * McDiarmid concentration / `genGap` specialization (Stage B3).
-* High-probability Rademacher generalization bound (Stage C, the first
-  public flagship).
+* High-probability Rademacher generalization bound (Stage C, the initial
+  public theorem in this lane).
 
 ## Constraints respected
 

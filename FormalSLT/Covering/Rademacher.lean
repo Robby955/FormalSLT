@@ -17,7 +17,7 @@ Corollary with Massart on the finite net:
 
   `R̂_S(F) ≤ ε + B · √(2 · log|N| / n)`
 
-This is the first step toward the Dudley integral bound.
+This is an initial step toward the Dudley integral bound.
 
 No `sorry`, no `admit`, no custom `axiom`.
 -/
