@@ -25,7 +25,7 @@ Use this before cutting a release candidate tag or public artifact snapshot.
 
 - `.gitignore` excludes local Lean build artifacts, editor folders, scratch
   folders, environment files, and LaTeX build outputs.
-- No `.lake/`, `.claude/`, `.codex/`, local cache, or generated build output is
+- No local config directories, local cache, or generated build output is
   staged.
 - `git status --short` is clean before tagging.
 - The launch branch is synced with `origin`, and `gh pr list --state open`
@@ -70,7 +70,7 @@ source build is not part of the release checklist.
   exact theorem is proved.
 - Contributing guide mentions contribution responsibility, branch flow,
   required checks, and good first issues.
-- README and paper copy use exact human-readable line counts after the count
+- README and public docs use exact human-readable line counts after the count
   command has been rerun on the launch snapshot.
 - External references point readers to a tag or exact commit SHA, not a moving
   branch.
