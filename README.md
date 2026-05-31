@@ -12,9 +12,10 @@ learning theory route from empirical risk minimization to VC-style
 generalization bounds, with recent extensions for contraction, linear
 predictors, finite sub-Gaussian chaining, algorithmic stability, and
 finite PAC-Bayes confidence bounds, and an initial total-bounded finite-net
-bridge in this repo for the Dudley lane.
+bridge in this repo for the Dudley lane, plus conditional sub-Gamma
+probability infrastructure for bounded, conditionally centered increments.
 
-**46 Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**53 Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
 Axioms used by the public theorem spine:
 `[propext, Classical.choice, Quot.sound]`.
@@ -26,8 +27,8 @@ high-probability Rademacher bounds, Massart, Sauer-Shelah, the binary VC
 bridge, finite contraction, linear predictors, finite sub-Gaussian chaining,
 finite Dudley entropy-budget wrappers, finite algorithmic stability, finite
 localized-Rademacher scaffolding, finite PAC-Bayes KL/DV/MGF and bounded-loss
-confidence bounds, and total-bounded finite-net adapters for the next Dudley
-steps.
+confidence bounds, conditional sub-Gamma MGF extraction, and total-bounded
+finite-net adapters for the next Dudley steps.
 
 ## Where to start
 
@@ -35,6 +36,8 @@ steps.
   then [Intuition](./docs/intuition.md).
 - **For proof structure:** see [Diagrams](./docs/diagrams.md).
 - **For exact theorem names:** use [Theorem map](./docs/theorem-map.md).
+- **For the conditional sub-Gamma extractor:** see
+  [Conditional Sub-Gamma Extractor](./docs/subgamma-extractor.md).
 - **For a generated proof-surface index:** see
   [Proof frontier manifest](./docs/proof-frontier.md).
 - **For scope and assumptions:** read
@@ -74,6 +77,7 @@ constants, and finite-class scope in the theorem signature. The motivations:
 | Finite contraction | `Rademacher.Contraction` | `Rad_S(φ ∘ F) ≤ L * Rad_S(F)` for scalar finite samples/classes | Verified |
 | Linear predictors | `Rademacher.LinearPredictor` | `Rad ≤ R * n⁻¹ * sqrt(∑ k, ‖z k‖²)` and `Rad ≤ R * B / sqrt n` | Verified |
 | Finite Bernstein concentration | `Probability.BernsteinMGF`, `Rademacher.Localized` | finite Bennett/Bernstein MGF, averaged Bernstein tail, and finite localized Bernstein high-confidence theorem | Verified finite route |
+| Conditional sub-Gamma extraction | `Concentration.SubGamma.*` | `condSubGammaMGF_of_bounded_centered_condVariance`: bounded, conditionally centered increments with a conditional second-moment proxy satisfy a conditional sub-Gamma MGF bound | Verified probability infrastructure |
 | Localized Rademacher scaffold | `Rademacher.Localized` | Bernstein localization, localized upper-deviation events, shifted-moment adapters, bounded-excess MGF instantiation, finite product-weight bad-event adapters, and event-facing wrappers | Verified finite scaffold |
 | Finite covering and two-scale chaining | `Covering.Rademacher`, `Covering.DudleyChaining` | ε-net peeling and two-scale finite chaining | Verified |
 | Finite sub-Gaussian chaining foundation | `Covering.FiniteSubGaussianChaining` | finite-max entropy bounds and finite Dudley-style entropy-budget sums | Verified finite infrastructure |
@@ -90,6 +94,7 @@ The main generalization theorems are intentionally finite and explicit.
 | Hypothesis classes | Finite index types unless a theorem states a separate finite net/family |
 | Samples | Finite iid samples through product measures |
 | Losses/processes | Scalar real-valued, with boundedness or finite sub-Gaussian MGF assumptions |
+| Conditional MGF layer | Bounded, conditionally centered real increments with an explicit conditional second-moment proxy |
 | Constants | High-probability Rademacher bounds use the Azuma `8B²` exponent |
 | Chaining | Finite nets/images, finite support/outcome spaces, finite entropy sums |
 | Public axiom target | `[propext, Classical.choice, Quot.sound]` only |
@@ -148,6 +153,7 @@ Run these before treating a branch as a showcase candidate:
 lake exe cache get
 lake build FormalSLT
 lake env lean examples/CheckShowcaseTheorems.lean
+lake env lean examples/CheckSubGammaExtractor.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 ```
 
@@ -168,6 +174,8 @@ The expected result is:
 - `lake build FormalSLT` exits successfully;
 - `examples/CheckShowcaseTheorems.lean` prints standard Lean/Mathlib axioms
   for selected public theorems;
+- `examples/CheckSubGammaExtractor.lean` prints standard Lean/Mathlib axioms
+  for the conditional sub-Gamma extractor and its helper lemmas;
 - the `rg` commands find no executable `sorry`, no executable `admit`, and no
   custom axioms/constants in `FormalSLT` or `examples`;
 - the proof-frontier manifest is in sync with the theorem map and source counts;
@@ -179,6 +187,7 @@ The expected result is:
 |---|---|
 | Core definitions | `Risk`, `ERM`, `UniformConvergence`, `GhostSample` |
 | Probability utilities | `Probability.Concentration`, `Probability.FiniteUnionBound`, `Probability.FiniteExpectation` |
+| Conditional sub-Gamma infrastructure | `Concentration.SubGamma.BennettBound`, `Concentration.SubGamma.BoundedExpIntegrable`, `Concentration.SubGamma.CondExpProduct`, `Concentration.SubGamma.CondJensen`, `Concentration.SubGamma.CondMarkov`, `Concentration.SubGamma.CondVarianceFromSquare`, `Concentration.SubGamma.Extractor` |
 | Rademacher route | `Rademacher.FiniteSample`, `Rademacher.FiniteSampleSymmetrization`, `Rademacher.ProbabilityBridge`, `Rademacher.Decoupling`, `Rademacher.Symmetrization`, `Rademacher.Massart`, `Rademacher.HighProbability`, `Rademacher.FiniteClassHighProb`, `Rademacher.UniformDeviation`, `Rademacher.ERMGeneralization`, `Rademacher.Contraction`, `Rademacher.LinearPredictor`, `Rademacher.Localized` |
 | Azuma infrastructure | `Azuma.ExposureMartingale`, `Azuma.BoundedDifferences`, `Azuma.BoundedDiffMartingale`, `Azuma.BoundedDiffsAzumaInput`, `Azuma.BoundedIncrementBound`, `Azuma.HasBoundedDifferences`, `Azuma.ExposureIncrementHoeffding`, `Azuma.ExposureIncrementCondMGF`, `Azuma.GenGapTail` |
 | VC route | `VC.Dimension`, `VC.PACBridge`, `VC.SauerShelah`, `VC.Rademacher`, `VC.SampleComplexity`, `VC.BinaryVCBridge` |
@@ -200,6 +209,8 @@ The expected result is:
 - [x] Finite-sample scalar contraction
 - [x] Finite-dimensional linear predictor Rademacher bound
 - [x] Finite localized Rademacher/Bernstein variance-localization scaffold
+- [x] Conditional sub-Gamma MGF extractor from boundedness, conditional
+  centering, and a conditional second-moment proxy
 - [x] Covering number peeling and two-scale chaining
 - [x] Finite sub-Gaussian max and finite chaining entropy budgets
 - [x] Algorithmic stability bounded-differences scaffold

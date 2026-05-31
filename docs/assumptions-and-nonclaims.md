@@ -76,6 +76,21 @@ generic VC bridge is not yet part of the library.
 It is a foundation for Dudley-style arguments. It is not the continuous
 Dudley entropy integral.
 
+### Conditional sub-Gamma extraction
+
+`Concentration.SubGamma.Extractor` proves a conditional MGF bound for a
+single bounded real increment. The headline theorem
+`condSubGammaMGF_of_bounded_centered_condVariance` assumes:
+
+- an a.s. bound `|X| ≤ b`;
+- conditional centering `μ[X | m] = 0`;
+- a conditional second-moment proxy `μ[X² | m] ≤ σ²`;
+- the parameter regime `0 ≤ λ` and `b * λ < 3`.
+
+The theorem converts those assumptions into a conditional sub-Gamma MGF bound.
+It does not by itself construct a filtration, prove independence, or state a
+full sequential concentration inequality.
+
 ## Current Boundaries
 
 ### VC-to-PAC equivalence
