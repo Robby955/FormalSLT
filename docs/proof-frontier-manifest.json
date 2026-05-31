@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 17,
-    "library_and_example_lean_lines": 23341,
-    "library_lean_lines": 22247,
-    "library_modules": 46,
-    "theorem_map_entries": 195
+    "example_lean_files": 18,
+    "library_and_example_lean_lines": 24150,
+    "library_lean_lines": 23009,
+    "library_modules": 53,
+    "theorem_map_entries": 202
   },
   "theorem_families": [
     {
@@ -1268,6 +1268,53 @@
         }
       ],
       "name": "Stability and PAC-Bayes foundations"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.BennettBound",
+          "name": "bennett_taylor_bound",
+          "summary": "Pointwise Bennett Taylor bound for bounded increments in the regime b * \u03bb < 3"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.BoundedExpIntegrable",
+          "name": "integrable_exp_mul_of_bounded",
+          "summary": "Bounded real increments have integrable exponential tilts under a finite measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.CondExpProduct",
+          "name": "condExp_mul_bounded_left",
+          "summary": "Pulls a bounded measurable factor through conditional expectation under the stated integrability hypotheses"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.CondJensen",
+          "name": "condJensen_real",
+          "summary": "Conditional Jensen inequality for real-valued conditional expectations"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.CondMarkov",
+          "name": "cond_markov_of_nonneg",
+          "summary": "Conditional Markov-style inequality for nonnegative real functions"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.CondVarianceFromSquare",
+          "name": "condExp_sq_eq_condVar_of_centered",
+          "summary": "Under conditional centering, the conditional second moment is the conditional variance proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SubGamma.Extractor",
+          "name": "condSubGammaMGF_of_bounded_centered_condVariance",
+          "summary": "Boundedness, conditional centering, and a conditional second-moment proxy imply a conditional sub-Gamma MGF bound"
+        }
+      ],
+      "name": "Conditional sub-Gamma extractor"
     }
   ],
   "toolchain": {
