@@ -37,6 +37,8 @@ Use this before cutting a release candidate tag or public artifact snapshot.
 lake exe cache get
 lake build FormalSLT
 lake env lean examples/CheckShowcaseTheorems.lean
+lake env lean examples/CheckSubGammaExtractor.lean
+lake env lean examples/CheckUnitIntervalDudley.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
@@ -48,6 +50,8 @@ Expected result:
 - full Lean build passes;
 - showcase checker prints only the standard Lean/Mathlib axioms for the public
   spine;
+- conditional sub-Gamma and unit-interval Dudley checkers print only the
+  standard Lean/Mathlib axioms for their public theorem surfaces;
 - proof-frontier manifest is in sync with the theorem map and source counts;
 - no executable `sorry`, no executable `admit`, no custom axioms, and no custom
   constants are found;

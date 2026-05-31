@@ -11,11 +11,12 @@ FormalSLT is a compact Lean 4 library for the finite-sample statistical
 learning theory route from empirical risk minimization to VC-style
 generalization bounds, with recent extensions for contraction, linear
 predictors, finite sub-Gaussian chaining, algorithmic stability, and
-finite PAC-Bayes confidence bounds, and an initial total-bounded finite-net
-bridge in this repo for the Dudley lane, plus conditional sub-Gamma
-probability infrastructure for bounded, conditionally centered increments.
+finite PAC-Bayes confidence bounds, an initial total-bounded finite-net bridge
+for the Dudley lane, a concrete unit-interval Dudley example, and conditional
+sub-Gamma probability infrastructure for bounded, conditionally centered
+increments.
 
-**53 Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**54 Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
 Axioms used by the public theorem spine:
 `[propext, Classical.choice, Quot.sound]`.
@@ -28,7 +29,9 @@ bridge, finite contraction, linear predictors, finite sub-Gaussian chaining,
 finite Dudley entropy-budget wrappers, finite algorithmic stability, finite
 localized-Rademacher scaffolding, finite PAC-Bayes KL/DV/MGF and bounded-loss
 confidence bounds, conditional sub-Gamma MGF extraction, and total-bounded
-finite-net adapters for the next Dudley steps.
+finite-net adapters for the next Dudley steps. The Dudley lane now includes a
+unit-interval example with explicit finite meshes and a checked
+projected-mesh bound for a nonzero supplied supremum.
 
 ## Where to start
 
@@ -38,6 +41,8 @@ finite-net adapters for the next Dudley steps.
 - **For exact theorem names:** use [Theorem map](./docs/theorem-map.md).
 - **For the conditional sub-Gamma extractor:** see
   [Conditional Sub-Gamma Extractor](./docs/subgamma-extractor.md).
+- **For the non-finite unit-interval Dudley example:** see
+  [Unit-Interval Dudley Example](./docs/unit-interval-dudley.md).
 - **For a generated proof-surface index:** see
   [Proof frontier manifest](./docs/proof-frontier.md).
 - **For scope and assumptions:** read
@@ -78,6 +83,7 @@ with explicit hypotheses and constants. The current public spine includes:
 | Finite covering and two-scale chaining | `Covering.Rademacher`, `Covering.DudleyChaining` | ε-net peeling and two-scale finite chaining | Verified |
 | Finite sub-Gaussian chaining foundation | `Covering.FiniteSubGaussianChaining` | finite-max entropy bounds and finite Dudley-style entropy-budget sums | Verified finite infrastructure |
 | Total-bounded Dudley bridge | `Covering.TotalBoundedDudley` | totally bounded metric spaces yield dyadic finite-net schedules, projected finite-net wrappers, truncated interval-integral entropy comparisons, and supplied-supremum / finite-skeleton / pathwise-modulus / epsilonized boundary adapters | Verified bridge |
+| Unit-interval Dudley example | `Covering.UnitIntervalDudley` | `[0,1]` as a non-finite index space with explicit half/quarter meshes, `log 15` projection-pair entropy, and a supplied-supremum projected-mesh Dudley bound for `X(b,t)=sign(b)*t` | Verified example |
 | Algorithmic stability | `AlgorithmicStability`, `Stability.BousquetElisseeff` | bounded-differences constants, finite and product-measure expected-gap wrappers with bound `β`, bounded-loss measurability adapters, and bounded-loss Azuma-constant concentration wrappers | Verified finite scaffold |
 | PAC-Bayes finite confidence layer | `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` | finite KL/DV change-of-measure, bounded-loss Catoni-style bound, closed PAC-Bayes good-event payoff, fixed-budget McAllester corollary, and finite-grid McAllester peeling wrapper | Verified finite layer |
 
@@ -92,7 +98,7 @@ The main generalization theorems are intentionally finite and explicit.
 | Losses/processes | Scalar real-valued, with boundedness or finite sub-Gaussian MGF assumptions |
 | Conditional MGF layer | Bounded, conditionally centered real increments with an explicit conditional second-moment proxy |
 | Constants | High-probability Rademacher bounds use the Azuma `8B²` exponent |
-| Chaining | Finite nets/images, finite support/outcome spaces, finite entropy sums |
+| Chaining | Finite nets/images, finite support/outcome spaces, finite entropy sums; the unit-interval example instantiates the bridge on a non-finite metric index space with explicit finite meshes |
 | Public axiom target | `[propext, Classical.choice, Quot.sound]` only |
 
 ## Open work
@@ -151,6 +157,7 @@ lake exe cache get
 lake build FormalSLT
 lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
+lake env lean examples/CheckUnitIntervalDudley.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 ```
 
@@ -173,6 +180,8 @@ The expected result is:
   for selected public theorems;
 - `examples/CheckSubGammaExtractor.lean` prints standard Lean/Mathlib axioms
   for the conditional sub-Gamma extractor and its helper lemmas;
+- `examples/CheckUnitIntervalDudley.lean` prints standard Lean/Mathlib axioms
+  for the concrete unit-interval Dudley example;
 - the `rg` commands find no executable `sorry`, no executable `admit`, and no
   custom axioms/constants in `FormalSLT` or `examples`;
 - the proof-frontier manifest is in sync with the theorem map and source counts;
@@ -188,7 +197,7 @@ The expected result is:
 | Rademacher route | `Rademacher.FiniteSample`, `Rademacher.FiniteSampleSymmetrization`, `Rademacher.ProbabilityBridge`, `Rademacher.Decoupling`, `Rademacher.Symmetrization`, `Rademacher.Massart`, `Rademacher.HighProbability`, `Rademacher.FiniteClassHighProb`, `Rademacher.UniformDeviation`, `Rademacher.ERMGeneralization`, `Rademacher.Contraction`, `Rademacher.LinearPredictor`, `Rademacher.Localized` |
 | Azuma infrastructure | `Azuma.ExposureMartingale`, `Azuma.BoundedDifferences`, `Azuma.BoundedDiffMartingale`, `Azuma.BoundedDiffsAzumaInput`, `Azuma.BoundedIncrementBound`, `Azuma.HasBoundedDifferences`, `Azuma.ExposureIncrementHoeffding`, `Azuma.ExposureIncrementCondMGF`, `Azuma.GenGapTail` |
 | VC route | `VC.Dimension`, `VC.PACBridge`, `VC.SauerShelah`, `VC.Rademacher`, `VC.SampleComplexity`, `VC.BinaryVCBridge` |
-| Covering and chaining | `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley` |
+| Covering and chaining | `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley`, `Covering.UnitIntervalDudley` |
 | Stability and PAC-Bayes foundations | `AlgorithmicStability`, `Stability.BousquetElisseeff`, `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` |
 
 ## Roadmap
@@ -248,6 +257,8 @@ The expected result is:
 - [x] Finite-cover/pathwise-modulus bridge into the separable-terminal Dudley
   boundary interface
 - [x] Finite-terminal total-bounded dyadic Dudley wrapper
+- [x] Concrete unit-interval Dudley example with explicit half/quarter meshes
+  and a supplied-supremum projected-mesh bound
 - [ ] Continuous Dudley entropy-integral theorem over total-bounded classes
 - [x] Measure-theoretic iid algorithmic stability expected bound, with explicit
   integrability assumptions

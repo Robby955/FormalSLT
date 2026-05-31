@@ -94,6 +94,31 @@ flowchart TD
     max_sqrt --> chain --> sum --> dyadic --> budget --> future
 ```
 
+## Unit-interval Dudley example
+
+```mermaid
+flowchart LR
+    unit["UnitInterval = [0,1]"]
+    tb["TotallyBounded Set.univ"]
+    half["half mesh<br/>3 centers, radius 1/4"]
+    quarter["quarter mesh<br/>5 centers, radius 1/8"]
+    process["Rademacher linear process<br/>X(b,t)=sign(b)*t"]
+    mgf["increment MGF"]
+    inc["projection-pair increment<br/>sqrt(log 15)"]
+    projected["projected quarter-mesh Dudley bound"]
+    supplied["supplied supremum bound<br/>E[sup] <= projected bound"]
+
+    unit --> tb
+    unit --> half --> inc
+    unit --> quarter --> inc
+    process --> mgf --> inc --> projected --> supplied
+
+    classDef index fill:#eff6ff,stroke:#2563eb,color:#1e3a8a;
+    classDef checked fill:#f0fdf4,stroke:#16a34a,color:#14532d;
+    class unit,tb index;
+    class half,quarter,process,mgf,inc,projected,supplied checked;
+```
+
 ## Where each definition first appears
 
 ```mermaid

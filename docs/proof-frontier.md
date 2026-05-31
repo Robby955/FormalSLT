@@ -19,6 +19,7 @@ python3 scripts/generate_proof_frontier_manifest.py
 python3 scripts/generate_proof_frontier_manifest.py --check
 lake build FormalSLT
 lake env lean examples/CheckShowcaseTheorems.lean
+lake env lean examples/CheckUnitIntervalDudley.lean
 ```
 
 The generated audit section should report empty `sorry_or_admit` and
@@ -54,7 +55,10 @@ files.
   The next deeper theorem target is the whole-supremum bound, not a broader
   claim about the finite Bernstein theorem.
 - `continuous-dudley-entropy-integral`: requires analytic and measurability
-  assumptions beyond the current finite-scale wrappers.
+  assumptions beyond the current finite-scale wrappers. The unit-interval
+  example now verifies the total-bounded bridge on a concrete non-finite
+  metric index space, with explicit half/quarter meshes and a supplied
+  supremum bound through the projected quarter-mesh Dudley theorem.
 - `pac-bayes-all-real-lambda`: finite-grid extension toward all-real lambda
   optimization.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel

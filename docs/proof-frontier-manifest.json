@@ -19,13 +19,13 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "Do not claim separability, measurable arbitrary suprema, or a continuous Dudley theorem until those layers are proved.",
+      "boundary": "The unit-interval example exercises the non-finite metric index route, but it does not claim separability, measurable arbitrary suprema, or a continuous Dudley theorem.",
       "difficulty": "hard",
       "id": "continuous-dudley-entropy-integral",
-      "next_step": "Prove an analytic domination theorem from the finite dyadic upper sum to an actual entropy integral under explicit assumptions.",
-      "scope": "total-bounded bridge beyond the current finite-scale wrappers",
+      "next_step": "Package the unit-interval Dudley example and then generalize the endpoint-mesh terminal step beyond the exact half/quarter meshes. The full continuous entropy-integral theorem still needs analytic and measurability assumptions.",
+      "scope": "unit-interval example plus total-bounded bridge; continuous integral remains open",
       "source": "docs/next-lane.md",
-      "status": "open"
+      "status": "partially_closed"
     },
     {
       "boundary": "The current PAC-Bayes layer is finite-grid and finite-hypothesis; continuous posterior claims remain future work.",
@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 18,
-    "library_and_example_lean_lines": 24150,
-    "library_lean_lines": 23009,
-    "library_modules": 53,
-    "theorem_map_entries": 202
+    "example_lean_files": 19,
+    "library_and_example_lean_lines": 25384,
+    "library_lean_lines": 24144,
+    "library_modules": 54,
+    "theorem_map_entries": 221
   },
   "theorem_families": [
     {
@@ -621,6 +621,125 @@
         }
       ],
       "name": "Covering and finite chaining"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "UnitInterval",
+          "summary": "The closed interval [0,1] as a metric index type"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitInterval_totallyBounded_univ",
+          "summary": "The unit interval is totally bounded"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalFiniteNet_covers",
+          "summary": "Total-bounded finite net covers the unit interval at a supplied radius"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicFiniteNet_covers",
+          "summary": "Dyadic total-bounded finite net covers the unit interval at the dyadic chaining radius"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalHalfMeshNet_covers",
+          "summary": "Explicit three-point mesh covers [0,1] at radius 1/4"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalHalfMeshNet_coveringNumber",
+          "summary": "Explicit half mesh has covering number 3"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalQuarterMeshNet_covers",
+          "summary": "Explicit five-point mesh covers [0,1] at radius 1/8"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalQuarterMeshNet_coveringNumber",
+          "summary": "Explicit quarter mesh has covering number 5"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalHalfQuarterPair_card_gt_one",
+          "summary": "Adjacent half/quarter projection-pair family is nontrivial"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalHalfQuarter_coveringNumber_product",
+          "summary": "Half/quarter covering-number product is 15"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitInterval_rademacherLinear_mgf_bound",
+          "summary": "Rademacher linear process increment satisfies the sub-Gaussian MGF bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearProcess_increment_mgf",
+          "summary": "The packaged finite sub-Gaussian process has the required increment MGF"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_expectation",
+          "summary": "The supplied supremum has expectation 1/2"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_halfQuarter_increment_log15_bound",
+          "summary": "Half/quarter projection-pair increment pays the concrete log 15 entropy term"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_projectedQuarterMesh_dudley_log15_bound",
+          "summary": "Projected quarter-mesh supremum satisfies the finite-net Dudley bound with a sqrt(log 15) prefix envelope"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound",
+          "summary": "The nonzero supplied supremum routes through the projected quarter-mesh Dudley bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_dudley_m0_bound",
+          "summary": "Coarse finite-horizon m = 0 Dudley bound for the supplied supremum"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_dudley_m1_bound_of_entropy",
+          "summary": "First-scale supplied-supremum Dudley bound under an explicit entropy envelope"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval",
+          "summary": "Constant-envelope first-scale bound evaluated to a scalar expression"
+        }
+      ],
+      "name": "Unit-interval Dudley example"
     },
     {
       "entries": [
