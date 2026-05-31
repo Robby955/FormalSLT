@@ -1,4 +1,5 @@
 import FormalSLT.Concentration.SubGamma.Extractor
+import FormalSLT.Concentration.SubGamma.BoundedExpIntegrable
 import FormalSLT.Concentration.SubGamma.CondExpProduct
 import FormalSLT.Concentration.SubGamma.CondJensen
 import FormalSLT.Concentration.SubGamma.CondMarkov
@@ -22,6 +23,9 @@ lake env lean examples/CheckSubGammaExtractor.lean
 
 #check @FormalSLT.Concentration.SubGamma.bennett_taylor_bound
 #print axioms FormalSLT.Concentration.SubGamma.bennett_taylor_bound
+
+#check @FormalSLT.Concentration.SubGamma.integrable_exp_mul_of_bounded
+#print axioms FormalSLT.Concentration.SubGamma.integrable_exp_mul_of_bounded
 
 /-! ## Conditional-expectation helpers -/
 
