@@ -41,29 +41,25 @@ finite-net adapters for the next Dudley steps.
 - **For a generated proof-surface index:** see
   [Proof frontier manifest](./docs/proof-frontier.md).
 - **For scope and assumptions:** read
-  [Assumptions and current boundaries](./docs/assumptions-and-nonclaims.md).
+  [Scope and assumptions](./docs/assumptions-and-nonclaims.md).
 - **For contributors:** read [Contributing](./CONTRIBUTING.md), then
   [Good first issues](./docs/good-first-issues.md).
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
   FormalSLT is scoped as a finite-class theorem spine and is complementary to
   existing empirical-process and Rademacher-generalization formalizations.
 
-## Why this matters
+## Checked theorem spine
 
-Finite-sample proofs in statistical learning theory carry assumptions that are
-easy to blur in prose. FormalSLT turns a readable finite-sample route into
-machine-checked Lean statements, so each bound carries its hypotheses,
-constants, and finite-class scope in the theorem signature. The motivations:
+FormalSLT records finite-sample statistical learning bounds as Lean theorems
+with explicit hypotheses and constants. The current public spine includes:
 
-- **Reproducibility.** Representative constants, such as the `8B²` exponent,
-  the `2 * E[Rad]` factor, and the `(en/d)^d` Sauer-Shelah form, appear in
-  checked Lean statements rather than only asymptotic prose.
-- **Curriculum.** A reader can click from each implemented bound in the README
-  to the corresponding Lean declaration, with assumptions visible in the type
-  signature.
-- **Modern ML theory.** As learning theory feeds into contemporary analyses
-  such as PAC-Bayes generalization, stability, and chaining, a checked finite
-  scaffold gives later formalization work a precise starting point.
+- finite-class ERM, symmetrization, Massart, Sauer-Shelah, and VC-style
+  sample-complexity bounds;
+- high-probability Rademacher bounds with the Azuma `8B²` exponent;
+- finite contraction, linear-predictor, chaining, stability, and PAC-Bayes
+  components;
+- a conditional sub-Gamma MGF extractor for bounded, conditionally centered
+  real increments with an explicit conditional second-moment proxy.
 
 ## Theorem families
 
@@ -99,13 +95,14 @@ The main generalization theorems are intentionally finite and explicit.
 | Chaining | Finite nets/images, finite support/outcome spaces, finite entropy sums |
 | Public axiom target | `[propext, Classical.choice, Quot.sound]` only |
 
-## Current boundaries
+## Open work
 
 Short version:
 
-- The main Rademacher and VC results are finite-class / finite-sample theorems.
+- The main Rademacher and VC results are finite-class and finite-sample
+  theorems.
 - High-probability Rademacher bounds use the Azuma `8B²` exponent; the sharper
-  McDiarmid constant is future work.
+  McDiarmid constant is not yet implemented.
 - The chaining layer proves finite entropy-budget infrastructure and an initial
   total-bounded finite-net extraction bridge, not the continuous Dudley
   integral.
@@ -113,14 +110,14 @@ Short version:
   bound, a closed high-confidence good-event theorem, a fixed-budget
   McAllester-style square-root corollary, and a
   finite-grid peeling wrapper for posterior-dependent penalties. Exact
-  all-real-`λ`, infinite-hypothesis, and continuous-posterior variants remain
-  future work.
+  all-real-`λ`, infinite-hypothesis, and continuous-posterior variants are not
+  yet implemented.
 - Algorithmic stability includes finite iid and measure-theoretic iid
   expected-gap wrappers, plus bounded-loss high-probability wrappers for
   finite measurable hypothesis interfaces.
 
 For the full scope statement, see
-[Assumptions and current boundaries](./docs/assumptions-and-nonclaims.md).
+[Scope and assumptions](./docs/assumptions-and-nonclaims.md).
 
 ## Installation
 

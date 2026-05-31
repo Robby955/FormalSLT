@@ -7,11 +7,12 @@ large theorem family. Keep PRs small and include the checks you ran.
 
 - Add a missing theorem-map row for a theorem that already appears in a module.
 - Improve a module docstring so it states the theorem, assumptions, proof
-  strategy, and current boundaries more clearly.
+  strategy, and scope more clearly.
 - Add one short example to `docs/how-to-read-the-proofs.md` showing how to find
   a theorem from the README table.
 - Check public-facing wording for overclaims. Prefer "finite scaffold",
-  "finite bridge", and "current boundary" when those phrases match the theorem.
+  "finite bridge", and explicit scope statements when those phrases match the
+  theorem.
 
 ## Examples and audits
 

@@ -1,7 +1,6 @@
-# Assumptions and Current Boundaries
+# Scope and Assumptions
 
-This page records the assumptions behind the current theorem spine and the
-current boundaries for public summaries.
+This page records the assumptions behind the current theorem spine.
 
 ## Scope
 
@@ -46,7 +45,7 @@ The high-probability Rademacher bounds use
 `P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (8 * B²))`.
 
 The sharper McDiarmid route would improve the exponent constant. The current
-Azuma route is valid and compositional, but its constant is conservative.
+Azuma route is valid, with the constant shown above.
 
 ### Effective-class growth assumptions
 
@@ -73,8 +72,8 @@ generic VC bridge is not yet part of the library.
 - finite multiscale chains;
 - finite entropy sums and entropy-budget wrappers.
 
-It is a foundation for Dudley-style arguments. It is not the continuous
-Dudley entropy integral.
+It is finite infrastructure for Dudley-style arguments. It is not the
+continuous Dudley entropy integral.
 
 ### Conditional sub-Gamma extraction
 
@@ -91,7 +90,7 @@ The theorem converts those assumptions into a conditional sub-Gamma MGF bound.
 It does not by itself construct a filtration, prove independence, or state a
 full sequential concentration inequality.
 
-## Current Boundaries
+## Open Work
 
 ### VC-to-PAC equivalence
 
@@ -133,7 +132,7 @@ posterior-dependent penalties certified by that finite grid. The closed
 `pac_bayes_generalization` theorem complements the Catoni bad event against
 total iid product mass to state the finite high-confidence good event directly.
 Exact all-real `λ`, infinite-hypothesis, and continuous-posterior PAC-Bayes
-theorems remain future work.
+theorems are not yet implemented.
 
 ### Algorithmic stability expected bound
 

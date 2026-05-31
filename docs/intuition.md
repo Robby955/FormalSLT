@@ -20,8 +20,8 @@ genGap(H, S) = sup_{h ∈ H} ( populationRisk(h) − empiricalRisk(h, S) )
 
 How wrong can a worst-case hypothesis look on the training set compared to
 its true risk? `genGap` is the *one-sided* worst-case discrepancy: a learner
-that minimizes empirical risk can only be fooled into picking a bad
-hypothesis when some `h ∈ H` looks better on `S` than it really is. Bounding
+that minimizes empirical risk can select a bad hypothesis only when some
+`h ∈ H` looks better on `S` than it really is. Bounding
 `genGap` from above bounds how badly empirical risk minimization can do.
 
 ## Rademacher symmetrization — `E[genGap] ≤ 2·E[Rad]`
@@ -58,7 +58,7 @@ grows like `B·√(2·log K / n)` by a union argument that is sharp up to
 constants. There is no `√|H|` in finite-class learning theory because the
 log is what governs the scaling.
 
-**Why this matters.** Plugging Massart into symmetrization gives
+**Use in the proof.** Plugging Massart into symmetrization gives
 `E[genGap] ≤ 2B·√(2·log|H| / n)` with no further work. The price of
 finiteness is logarithmic; the price of `n` is square-root.
 
@@ -71,8 +71,8 @@ sample-exposure martingale where each step changes the gap by at most
 `2B/n` and there are `n` steps.
 
 **The Azuma constant is loose by 4× compared to the sharp McDiarmid
-constant** (which would give `2ε²n / B²`). This repo deliberately ships the
-Azuma route because it composes cleanly with the high-probability layer
+constant** (which would give `2ε²n / B²`). This repo currently uses the
+Azuma route because it composes directly with the high-probability layer
 above. The [`assumptions-and-nonclaims.md`](./assumptions-and-nonclaims.md)
 doc records this constant choice explicitly.
 
@@ -161,7 +161,7 @@ labelings hypotheses produce). This is a small bridge result that lets
 the VC machinery for 0-1 loss reuse the effective-class machinery built
 for general bounded loss.
 
-**Why this matters.** Without this bridge, the VC sample-complexity
+**Use in the proof.** Without this bridge, the VC sample-complexity
 results would have to be re-proved for the 0-1 case from scratch.
 With it, a one-line corollary gives the classical PAC bound for binary
 classification.
@@ -173,7 +173,7 @@ then composing a finite real-valued function class with `φ` does not increase
 empirical Rademacher complexity by more than the Lipschitz constant. This is
 the finite-sample, finite-class scalar contraction theorem.
 
-**Why this matters.** Contraction is the tool that lets Rademacher bounds
+**Use in the proof.** Contraction is the tool that lets Rademacher bounds
 move from raw scores to losses or margins. The formalized theorem is not the
 full general Talagrand contraction theorem; it is the finite scalar result
 that fits the current library spine.
@@ -185,7 +185,7 @@ that fits the current library spine.
 signed sample sum. The public corollary gives `Rad ≤ R·B / √n` when every
 input satisfies `‖xᵢ‖ ≤ B`.
 
-**Why this matters.** This theorem connects the repo to a standard ML model
+**Use in the proof.** This theorem connects the repo to a standard ML model
 class rather than only an abstract finite hypothesis class. It
 connects the Rademacher machinery to linear prediction in finite-dimensional
 Euclidean spaces.
@@ -197,7 +197,7 @@ finite sub-Gaussian process, turns that into expected finite-supremum bounds,
 and composes those bounds across finite net projections. The endpoint is a
 finite Dudley-style entropy-budget wrapper under a dyadic radius schedule.
 
-**Why this matters.** This is the finite infrastructure needed before a
+**Use in the proof.** This is the finite infrastructure needed before a
 continuous Dudley integral theorem can be stated responsibly. It proves the
 bookkeeping for finite nets, projection pairs, finite entropy sums, and
 per-scale entropy budgets.

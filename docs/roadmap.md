@@ -326,4 +326,4 @@
 3. **Axioms: [propext, Classical.choice, Quot.sound] only.**
 4. **Assumptions stated in types.** If a theorem requires bounded loss, the type signature says so.
 5. **Scope documented.** Public summaries distinguish closed theorems from
-   current boundaries and future work.
+   scope and open work.

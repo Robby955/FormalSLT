@@ -35,7 +35,7 @@ able to inspect independently. Its goals are different from the paper:
 
 - build quickly from a fresh checkout using Mathlib cache;
 - expose a clean theorem spine with exact theorem names;
-- separate closed theorem families from current boundaries;
+- separate closed theorem families from open work;
 - invite small, reviewable contributions without exposing internal branch
   churn as the public story.
 

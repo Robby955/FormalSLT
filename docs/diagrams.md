@@ -119,5 +119,5 @@ flowchart LR
 
 - [`theorem-map.md`](./theorem-map.md) for exact theorem names and statements.
 - [`proof-spine.md`](./proof-spine.md) for a narrative walkthrough.
-- [`assumptions-and-nonclaims.md`](./assumptions-and-nonclaims.md) for assumptions and current boundaries.
+- [`assumptions-and-nonclaims.md`](./assumptions-and-nonclaims.md) for scope and assumptions.
 - [`intuition.md`](./intuition.md) for plain-English explanations.

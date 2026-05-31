@@ -12,7 +12,7 @@ for them.
 | [auto-res/lean-rademacher](https://github.com/auto-res/lean-rademacher) / [arXiv:2503.19605](https://arxiv.org/abs/2503.19605) | Rademacher-complexity generalization bounds, symmetrization, McDiarmid/Hoeffding-style concentration, and Dudley/Rademacher infrastructure. | Prior Lean infrastructure for Rademacher and Dudley-style generalization. FormalSLT overlaps in theme but keeps a finite-class theorem spine. |
 | [formal-learning-theory-kernel](https://github.com/Zetetic-Dhruv/formal-learning-theory-kernel) | PAC/VC characterization, compression, PAC-Bayes, learning paradigms, measurability, and finite-support machinery. | Adjacent finite learning-theory formalization. FormalSLT shares VC/PAC/PAC-Bayes themes but organizes them around a checked finite-sample route. |
 
-## Current Boundary
+## Scope
 
 FormalSLT does not claim to be the first formalization of statistical learning
 theory. The current release candidate is scoped more narrowly:
@@ -39,7 +39,7 @@ comparison is by scope:
 - `lean-rademacher` develops a Rademacher-generalization route.
 - `formal-learning-theory-kernel` develops PAC/VC/PAC-Bayes and measurability
   infrastructure.
-- FormalSLT emphasizes a readable finite-class theorem spine, explicit
+- FormalSLT emphasizes a finite-class theorem spine, explicit
   assumptions, examples, theorem maps, and auditable finite-sample bounds.
 
 Public wording should avoid claims such as "first Lean SLT formalization",
