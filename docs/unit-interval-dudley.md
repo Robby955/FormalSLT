@@ -22,6 +22,7 @@ flowchart LR
   Nets["finite nets"]
   Proc["Rademacher process X(b,t)=sign(b)*t"]
   MGF["increment MGF"]
+  Exact["least upper bound over [0,1]"]
   Mesh["half/quarter meshes, product count 15"]
   Inc["log 15 increment bound"]
   Proj["projected quarter-mesh Dudley bound"]
@@ -29,6 +30,7 @@ flowchart LR
 
   T --> TB --> Nets
   T --> Proc --> MGF
+  Proc --> Exact --> Sup
   Nets --> Mesh --> Inc --> Proj --> Sup
   MGF --> Inc
 ```
@@ -61,6 +63,9 @@ Rademacher process:
 - `unitIntervalRademacherLinearProcess_increment_mgf`
 - `unitIntervalRademacherLinearSup`
 - `unitIntervalRademacherLinearSup_expectation`
+- `unitIntervalRademacherLinearSup_upper`
+- `unitIntervalRademacherLinearSup_attained`
+- `unitIntervalRademacherLinearSup_isLeastUpperBound`
 
 Dudley instantiations:
 
@@ -86,6 +91,13 @@ nonzero:
 
 ```text
 E[unitIntervalRademacherLinearSup] = 1/2
+```
+
+The module also proves that this supplied functional is the least upper bound of
+the full non-finite index family:
+
+```text
+unitIntervalRademacherLinearSup_isLeastUpperBound
 ```
 
 The explicit half and quarter meshes have covering numbers `3` and `5`, so the

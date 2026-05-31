@@ -31,7 +31,8 @@ localized-Rademacher scaffolding, finite PAC-Bayes KL/DV/MGF and bounded-loss
 confidence bounds, conditional sub-Gamma MGF extraction, and total-bounded
 finite-net adapters for the next Dudley steps. The Dudley lane now includes a
 unit-interval example with explicit finite meshes and a checked
-projected-mesh bound for a nonzero supplied supremum.
+projected-mesh bound for a nonzero supremum whose least-upper-bound property is
+proved over the full unit interval.
 
 ## Where to start
 

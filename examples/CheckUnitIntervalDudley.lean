@@ -45,6 +45,15 @@ total-bounded finite-net bridge.
 #check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_expectation
 #print axioms FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_expectation
 
+#check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_upper
+#print axioms FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_upper
+
+#check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_attained
+#print axioms FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_attained
+
+#check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_isLeastUpperBound
+#print axioms FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_isLeastUpperBound
+
 #check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_dudley_m0_bound
 #print axioms FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_dudley_m0_bound
 

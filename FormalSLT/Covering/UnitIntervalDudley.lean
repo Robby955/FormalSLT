@@ -527,6 +527,47 @@ private lemma unitInterval_value_nonneg (t : UnitInterval) : 0 ≤ (t : ℝ) :=
 private lemma unitInterval_value_le_one (t : UnitInterval) : (t : ℝ) ≤ 1 :=
   t.2.2
 
+/-- The supplied supremum is an upper bound for the full non-finite
+unit-interval index family. -/
+theorem unitIntervalRademacherLinearSup_upper (ω : Bool) (t : UnitInterval) :
+    unitIntervalRademacherLinearProcess.X ω t ≤
+      unitIntervalRademacherLinearSup ω := by
+  cases ω
+  · have ht : 0 ≤ (t : ℝ) := unitInterval_value_nonneg t
+    simp [unitIntervalRademacherLinearProcess, unitIntervalRademacherLinearSup,
+      signOfBool]
+    linarith
+  · simpa [unitIntervalRademacherLinearProcess,
+      unitIntervalRademacherLinearSup, signOfBool] using
+      unitInterval_value_le_one t
+
+/-- The supplied supremum is attained by an endpoint of the unit interval. -/
+theorem unitIntervalRademacherLinearSup_attained (ω : Bool) :
+    ∃ t : UnitInterval,
+      unitIntervalRademacherLinearProcess.X ω t =
+        unitIntervalRademacherLinearSup ω := by
+  cases ω
+  · refine ⟨unitIntervalZero, ?_⟩
+    norm_num [unitIntervalRademacherLinearProcess,
+      unitIntervalRademacherLinearSup, unitIntervalZero, signOfBool]
+  · refine ⟨unitIntervalOne, ?_⟩
+    norm_num [unitIntervalRademacherLinearProcess,
+      unitIntervalRademacherLinearSup, unitIntervalOne, signOfBool]
+
+/-- The supplied supremum is the least upper bound of the non-finite
+unit-interval index family. -/
+theorem unitIntervalRademacherLinearSup_isLeastUpperBound (ω : Bool) :
+    IsLeast
+      {c : ℝ | ∀ t : UnitInterval,
+        unitIntervalRademacherLinearProcess.X ω t ≤ c}
+      (unitIntervalRademacherLinearSup ω) := by
+  constructor
+  · exact unitIntervalRademacherLinearSup_upper ω
+  · intro c hc
+    obtain ⟨t, ht⟩ := unitIntervalRademacherLinearSup_attained ω
+    rw [← ht]
+    exact hc t
+
 private lemma rademacherLinear_value_le_one (ω : Bool) (t : UnitInterval) :
     signOfBool ω * (t : ℝ) ≤ 1 := by
   cases ω

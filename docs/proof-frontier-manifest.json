@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 19,
-    "library_and_example_lean_lines": 25384,
-    "library_lean_lines": 24144,
+    "library_and_example_lean_lines": 25434,
+    "library_lean_lines": 24185,
     "library_modules": 54,
-    "theorem_map_entries": 221
+    "theorem_map_entries": 224
   },
   "theorem_families": [
     {
@@ -701,6 +701,24 @@
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_expectation",
           "summary": "The supplied supremum has expectation 1/2"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_upper",
+          "summary": "The supplied supremum upper-bounds the full non-finite unit-interval family"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_attained",
+          "summary": "The supplied supremum is attained at an endpoint"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_isLeastUpperBound",
+          "summary": "The supplied supremum is the least upper bound over the non-finite unit-interval family"
         },
         {
           "kind": "definition",
