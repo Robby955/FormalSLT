@@ -383,13 +383,13 @@ theorem vc_erm_excessRisk_tail
 /-- **VC-ERM closed-form sample complexity.**
 
 For a hypothesis class with VC dimension ≤ d, uniformly `B`-bounded loss,
-an iid sample `S ~ μⁿ`, and any exact ERM `ĥ(S)`, if the sample size satisfies
+an iid sample `S ~ μⁿ`, and any exact ERM `h_hat(S)`, if the sample size satisfies
 
     n · ε² ≥ 128 · B² · (d · log(en/d) + log(2/δ))
 
 then with probability at least 1 − δ over S, the ERM has excess risk ≤ ε:
 
-    P(risk(ĥ(S)) − risk(i★) ≥ ε) ≤ δ
+    P(risk(h_hat(S)) − risk(i★) ≥ ε) ≤ δ
 
 This is the classical PAC sample-complexity statement for finite VC classes,
 expressed with the explicit constant **C = 128 B²**.
@@ -399,9 +399,9 @@ yielding the bound on the event {excess ≥ 4B·√(2d·log(en/d)/n) + ε/2}. Th
 hypothesis splits into two halves (each ≤ n·ε² since the discarded summand is
 nonnegative):
 
-* `128 B² · d · log(en/d) ≤ n ε²` — ensures `4B·√(2d·log(en/d)/n) ≤ ε/2`, so
+* `128 B² · d · log(en/d) ≤ n ε²`: ensures `4B·√(2d·log(en/d)/n) ≤ ε/2`, so
   the deterministic VC piece is absorbed.
-* `128 B² · log(2/δ) ≤ n ε²` — ensures `2 · exp(-(ε/4)² n / (8B²)) ≤ δ`,
+* `128 B² · log(2/δ) ≤ n ε²`: ensures `2 · exp(-(ε/4)² n / (8B²)) ≤ δ`,
   i.e. the concentration tail is at most δ.
 
 Combining via subset monotonicity gives the closed-form statement. -/
