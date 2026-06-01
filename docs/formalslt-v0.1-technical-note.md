@@ -7,18 +7,21 @@ Status: local draft
 
 FormalSLT is a Lean 4 library for machine-checking theorem chains from
 statistical learning theory. The current v0.1 surface contains two checked
-endpoints. First, it proves a finite-class countable-time Hoeffding
+endpoints and one reusable-API check. First, it proves a finite-class countable-time Hoeffding
 confidence-sequence wrapper for `[0,1]` losses, using explicit dyadic failure
 budgets and finite union bounds. Second, it proves a concrete non-finite
 `[0,1]` Dudley bridge: a Rademacher linear process indexed by the unit interval
 is routed through rounded dyadic finite nets and finite sub-Gaussian chaining.
+The dyadic-net API is also instantiated on a two-point discrete metric space,
+showing that the wrapper is not only a unit-interval-specific proof script.
 
 The contribution is deliberately finite-scale. The library does not yet prove
 the continuous Dudley entropy integral, construct arbitrary measurable suprema,
 or discharge general separability assumptions. The v0.1 result is a checked
 foundation layer: finite-class concentration, finite-net chaining, and one
 worked non-finite index-space example with explicit theorem anchors and axiom
-checks.
+checks. A separate quickstart checker gives a short import-and-verify path for
+the v0.1 surface.
 
 ## 1. Motivation
 
@@ -42,6 +45,8 @@ interfaces:
 2. A non-finite unit-interval Dudley bridge shows how finite sub-Gaussian
    chaining can be connected to a total-bounded metric index space through
    explicit finite nets.
+3. A two-point dyadic-net example checks that the generic finite dyadic-net API
+   is reusable outside the unit interval.
 
 Together, these endpoints make the library more than a collection of isolated
 lemmas. They show checked theorem chains from assumptions to named
@@ -49,7 +54,7 @@ route-facing theorems.
 
 ## 2. Architecture
 
-The v0.1 surface is distributed across five modules.
+The v0.1 surface is distributed across six modules.
 
 | Module | Role |
 |---|---|
@@ -58,18 +63,21 @@ The v0.1 surface is distributed across five modules.
 | `FormalSLT/Covering/FiniteSubGaussianChaining.lean` | finite expected-sup bounds and finite Dudley-style entropy budgets |
 | `FormalSLT/Covering/TotalBoundedDudley.lean` | adapters from total boundedness to finite-net Dudley wrappers |
 | `FormalSLT/Covering/UnitIntervalDudley.lean` | concrete non-finite `[0,1]` example using rounded dyadic grids |
+| `FormalSLT/Covering/TwoPointDudley.lean` | second `FiniteDyadicNetSequence` instance over a two-point metric space |
 
 The proof surface is checked by:
 
 ```bash
+lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
 ```
 
 Those example files do not replace `lake build`; they give a focused
-declaration-level checker for the v0.1 endpoints and print the axiom profiles
-for the headline theorems.
+declaration-level checker for the v0.1 endpoints and API surfaces, and print
+the axiom profiles for the headline theorems.
 
 ## 3. Result I: Countable-Time Finite-Class Hoeffding
 
@@ -285,7 +293,41 @@ nearest-grid radius:
 That radius is the finite-net scale needed to make the Dudley chain reusable
 instead of being only a hand-built `m = 1` example.
 
-## 5. Verification and Axiom Profile
+## 5. Reusable Dyadic-Net API Check
+
+The unit-interval module is the main non-finite example. The supporting
+reusability check is:
+
+```lean
+twoPointDyadicNetSequence
+```
+
+Anchor:
+
+```text
+FormalSLT/Covering/TwoPointDudley.lean:175
+```
+
+This declaration instantiates the same generic finite dyadic-net sequence API
+on the two-point discrete metric space:
+
+```lean
+FiniteDyadicNetSequence
+```
+
+The two-point module then routes through the generic projected and
+supplied-supremum wrappers:
+
+```lean
+twoPointRademacher_projected_dudley_m_bound
+twoPointRademacherSup_dudley_m_bound
+```
+
+This is not a stronger empirical-process result than the unit-interval
+example. Its purpose is usability: downstream readers can see which hypotheses
+the generic wrapper needs, then compare two concrete instances.
+
+## 6. Verification and Axiom Profile
 
 The v0.1 declarations are checked by the example files and by the proof-frontier
 manifest.
@@ -293,7 +335,9 @@ manifest.
 Fresh commands:
 
 ```bash
+lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
@@ -303,7 +347,9 @@ git diff --check
 Observed results:
 
 ```text
+CHECK_V01_EXIT=0
 CHECK_UNIT_EXIT=0
+CHECK_TWO_POINT_EXIT=0
 CHECK_UNION_EXIT=0
 CHECK_UNIFORM_EXIT=0
 MANIFEST_CHECK_EXIT=0
@@ -321,7 +367,19 @@ The executable proof-debt scan over `FormalSLT/**/*.lean` and
 use words such as `sorry` while discussing proof policy; those are not Lean
 proof holes.
 
-## 6. Limitations
+For the shortest reader path, run:
+
+```bash
+lake env lean examples/CheckV01Usability.lean
+```
+
+and read:
+
+```text
+docs/formalslt-v0.1-quickstart.md
+```
+
+## 7. Limitations
 
 The limitations are part of the result. They should stay visible in any public
 summary.
@@ -338,11 +396,11 @@ summary.
 7. The confidence-sequence bundle is an API boundary, not a new probability
    theorem beyond the checked Hoeffding chain it wraps.
 
-## 7. Roadmap
+## 8. Roadmap
 
 The next theorem work should improve usability or close a named proof boundary.
 
-### 7.1 Use the confidence-sequence bundle downstream
+### 8.1 Use the confidence-sequence bundle downstream
 
 The theorem now has a reusable assumption bundle:
 
@@ -353,7 +411,7 @@ FiniteClassConfidenceSequence.failure_probability_le
 The next API task is to use this object in future formal statements instead of
 restating the long measure-theoretic signature.
 
-### 7.2 Abstract the rounded dyadic-net wrapper
+### 8.2 Abstract the rounded dyadic-net wrapper
 
 The unit-interval rounded-grid proof should become an instance of a more
 general theorem over any rounded dyadic net family satisfying:
@@ -367,7 +425,7 @@ general theorem over any rounded dyadic net family satisfying:
 That would turn `UnitIntervalDudley.lean` into a model instance rather than the
 only home of the argument.
 
-### 7.3 Move toward the continuous Dudley integral
+### 8.3 Move toward the continuous Dudley integral
 
 The next analytic step is an interval-integral domination theorem converting a
 finite dyadic entropy upper sum into a continuous entropy integral under stated
@@ -375,7 +433,7 @@ monotonicity and integrability assumptions.
 
 This should remain separate from measurable-supremum and separability work.
 
-### 7.4 Continue localized Rademacher concentration
+### 8.4 Continue localized Rademacher concentration
 
 The finite Bernstein route is already closed locally. The non-conservative
 random-threshold target is a whole-supremum concentration theorem for:
@@ -406,7 +464,9 @@ Before calling this v0.1 public-ready:
 
 ```bash
 lake build
+lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 python3 scripts/generate_proof_frontier_manifest.py --check

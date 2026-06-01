@@ -3,7 +3,7 @@
 Date: 2026-06-01
 Worktree: `/private/tmp/formalslt-nonfinite-unit-interval`
 Branch: `local/nonfinite-unit-interval-20260531`
-HEAD: `4635c83c77c5438134f15d5b5fc18add9ab1e84d`
+Snapshot: local working tree. Run `git rev-parse HEAD` before citing a commit.
 
 This map turns the current checked FormalSLT state into a v0.1 research
 artifact plan. It is not a release note and not a public announcement. Its job
@@ -28,8 +28,10 @@ Fresh checks run from this worktree:
 
 ```bash
 lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
+lake env lean examples/CheckV01Usability.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 git diff --check
 ```
@@ -37,8 +39,10 @@ git diff --check
 Results:
 
 - `CheckUnitIntervalDudley.lean`: `CHECK_UNIT_EXIT=0`
+- `CheckTwoPointDudley.lean`: `CHECK_TWO_POINT_EXIT=0`
 - `CheckFiniteUnionBound.lean`: `CHECK_UNION_EXIT=0`
 - `CheckUniformConvergence.lean`: `CHECK_UNIFORM_EXIT=0`
+- `CheckV01Usability.lean`: `CHECK_V01_EXIT=0`
 - Proof-frontier manifest check: `MANIFEST_CHECK_EXIT=0`
 - Diff whitespace check: `DIFF_CHECK_EXIT=0`
 - Executable proof-debt scan over `FormalSLT/**/*.lean` and

@@ -5,7 +5,7 @@ slug: "formalslt-v0-1-checked-statistical-learning-theory"
 date: "2026-06-01"
 author: "Robert Sneiderman"
 status: "draft"
-description: "A theorem-faithful TheoremPath draft explaining the checked FormalSLT v0.1 chains: a finite-class Hoeffding confidence sequence and a unit-interval Dudley finite-net bridge."
+description: "A theorem-faithful TheoremPath draft explaining the checked FormalSLT v0.1 chains: a finite-class Hoeffding confidence sequence, a unit-interval Dudley finite-net bridge, and a reusable dyadic-net API check."
 tags:
   - lean4
   - statistical-learning-theory
@@ -20,12 +20,15 @@ relatedTopics:
 ---
 
 FormalSLT is a Lean 4 library for checking theorem chains from statistical
-learning theory. The v0.1 surface has two useful endpoints:
+learning theory. The v0.1 surface has two useful endpoints and one API
+reusability check:
 
 1. a finite-class countable-time Hoeffding confidence-sequence wrapper for
    `[0,1]` losses;
 2. a concrete non-finite `[0,1]` Dudley bridge through rounded dyadic finite
    nets.
+3. a second dyadic-net instance over a two-point metric space, showing that the
+   generic wrapper is not tied to `[0,1]`.
 
 This page explains what is checked, what remains outside scope, and how to
 verify the claims locally.
@@ -236,6 +239,10 @@ a theorem constructing arbitrary measurable suprema for all non-finite classes.
   `examples/CheckFiniteUnionBound.lean`.
 - The unit-interval Dudley bridge compiles and is covered by
   `examples/CheckUnitIntervalDudley.lean`.
+- The reusable dyadic-net sequence API and both concrete instances are covered
+  by `examples/CheckV01Usability.lean`.
+- The two-point dyadic-net example is covered by
+  `examples/CheckTwoPointDudley.lean`.
 - The printed axiom profile for the headline declarations stays inside:
 
 ```text
@@ -261,10 +268,24 @@ From the FormalSLT worktree:
 
 ```bash
 lake build
+lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
+```
+
+For the shortest import check, use:
+
+```bash
+lake env lean examples/CheckV01Usability.lean
+```
+
+The quickstart is:
+
+```text
+docs/formalslt-v0.1-quickstart.md
 ```
 
 The v0.1 artifact map is:
@@ -283,9 +304,11 @@ docs/formalslt-v0.1-technical-note.md
 
 Two next steps would make the checked surface easier to use:
 
-1. Use the `FiniteClassConfidenceSequence` bundle in downstream notes and
-   route metadata instead of restating the long theorem signature.
-2. Abstract the rounded dyadic-net Dudley wrapper so the unit-interval proof is
+1. Use the `FiniteClassConfidenceSequence` bundle in downstream formal
+   statements instead of restating the long theorem signature.
+2. Instantiate the dyadic-net API on a finite family with more than two points,
+   so the cover-count bookkeeping is tested outside constant-size examples.
+3. Abstract the rounded dyadic-net Dudley wrapper so the unit-interval proof is
    one instance of a reusable finite-horizon theorem.
 
 Those are theorem-engineering steps, not page polish. The page should move only

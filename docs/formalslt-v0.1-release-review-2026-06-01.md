@@ -1,36 +1,30 @@
 # FormalSLT v0.1 Release Review
 
 Date: 2026-06-01
-Status: local release candidate, not pushed
+Status: local release-candidate memo, not a public-action approval
 
 ## Verdict
 
 FormalSLT v0.1 is locally reviewable as a release candidate. The checked
 surface is coherent enough for review: the Lean build passes, all example
 checkers pass, the theorem map and proof-frontier manifest are in sync, and the
-TheoremPath Stage A branch now cites the bundled confidence-sequence API
-directly.
+v0.1 quickstart checker imports the bundled confidence-sequence API, the
+unit-interval Dudley bridge, and the reusable dyadic-net sequence API.
 
 This is not a public release decision. No push, pull request, merge, post, or
 external comment has been made.
 
-## Current Commits
+## Local Snapshot
 
 FormalSLT worktree:
 
 - Path: `/private/tmp/formalslt-nonfinite-unit-interval`
 - Branch: `local/nonfinite-unit-interval-20260531`
-- HEAD: `a44aba99ed52f41dd9279855d00445b70e017f79`
-- Subject: `docs: polish confidence sequence API note`
+- HEAD: run `git rev-parse HEAD` before citing a commit
 - Author: `Rob Sneiderman <robbysneiderman@gmail.com>`
 
-TheoremPath worktree:
-
-- Path: `/Users/robsneiderman/.config/superpowers/worktrees/theorem-path/feature-stage-a-hoeffding-display-2026-06-01`
-- Branch: `feature/stage-a-hoeffding-display-2026-06-01`
-- HEAD: `6f970618bcdfdaeb94299215dca83f4917c84c05`
-- Subject: `fix(formal-slt): cite confidence sequence API`
-- Author: `Rob Sneiderman <robbysneiderman@gmail.com>`
+This memo records the FormalSLT verification surface. TheoremPath branch state
+must be checked in the TheoremPath worktree before any TheoremPath action.
 
 ## What Is Proved
 
@@ -86,9 +80,24 @@ index space, the unit interval, through supplied supremum and rounded dyadic
 finite-grid certificates. The result is a finite-horizon bridge, not a full
 continuous Dudley theorem.
 
+### Two-Point Dyadic-Net API Check
+
+Main local declarations:
+
+- `twoPointDyadicNetSequence`
+  (`FormalSLT/Covering/TwoPointDudley.lean:175`)
+- `twoPointRademacher_projected_dudley_m_bound`
+  (`FormalSLT/Covering/TwoPointDudley.lean:211`)
+- `twoPointRademacherSup_dudley_m_bound`
+  (`FormalSLT/Covering/TwoPointDudley.lean:256`)
+
+Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated on a
+second metric index family. This is an API-usability check, not a stronger
+Dudley theorem.
+
 ## TheoremPath Stage A Alignment
 
-TheoremPath now points the Stage A "Verified in Lean" link at:
+TheoremPath Stage A should point the "Verified in Lean" link at:
 
 ```text
 FormalSLT.UniformConvergence.FiniteClassConfidenceSequence.failure_probability_le
@@ -103,10 +112,10 @@ Touched TheoremPath files:
 The dyadic sample-size theorem is still available as a direct helper link, but
 the default Stage A citation target is now the bundled API theorem.
 
-Release note: the new Stage A link is hardcoded because the theorem is outside
-the current TheoremPath claim manifest. The local test pins the exact URL. A
-public PR should mention this as an infrastructure adjustment unless a later
-manifest ingestion step removes the hardcoded path.
+Release note: if the Stage A link is hardcoded because the theorem is outside
+the current TheoremPath claim manifest, a public PR should mention this as an
+infrastructure adjustment unless a later manifest ingestion step removes the
+hardcoded path.
 
 ## Verification Commands
 
@@ -116,12 +125,15 @@ FormalSLT:
 ~/.elan/bin/lake exe cache get
 ~/.elan/bin/lake build FormalSLT
 for f in examples/*.lean; do ~/.elan/bin/lake env lean "$f"; done
+~/.elan/bin/lake env lean examples/CheckV01Usability.lean
+~/.elan/bin/lake env lean examples/CheckTwoPointDudley.lean
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
 git diff --check
-~/.elan/bin/lake exe lint-style FormalSLT/UniformConvergence.lean FormalSLT/Covering/UnitIntervalDudley.lean
 python3 /Users/robsneiderman/Desktop/AI4MATH/scripts/audit_public_writing.py \
+  README.md \
+  docs/formalslt-v0.1-quickstart.md \
   docs/formalslt-v0.1-technical-note.md \
   docs/theorem-map.md \
   docs/theorempath-formalslt-v0.1-page-draft.mdx \
@@ -131,14 +143,14 @@ python3 /Users/robsneiderman/Desktop/AI4MATH/scripts/audit_public_writing.py \
 FormalSLT results:
 
 - Mathlib cache: no files to download.
-- `lake build FormalSLT`: success, `2947` jobs.
-- Example checkers: `21` files, all `EXIT=0`.
+- `lake build FormalSLT`: success, `2948` jobs.
+- Example checkers: `23` files, all `EXIT=0`.
+- `CheckV01Usability.lean`: exit `0`.
+- `CheckTwoPointDudley.lean`: exit `0`.
 - `sorry` / `admit` scan: no matches.
 - custom `axiom` / `constant` scan: no matches.
 - proof-frontier manifest check: exit `0`.
 - `git diff --check`: exit `0`.
-- `lint-style`: exit `0`; warning only that `scripts/nolints-style.txt` could
-  not be read and was treated as empty.
 - public-writing audit: passed.
 
 The full build still prints existing unused-variable and unused-section-variable
@@ -178,9 +190,8 @@ TheoremPath results:
   strength beyond the checked Hoeffding chain it wraps.
 - The localized Rademacher random-threshold layer remains conservative; the
   sharper whole-supremum theorem remains future work.
-- TheoremPath Stage A uses a hardcoded FormalSLT theorem link for the new
-  bundled API. The existing TheoremPath manifest remains valid but does not yet
-  ingest this new FormalSLT declaration as a manifest entry.
+- A TheoremPath page may use a hardcoded FormalSLT theorem link until the
+  FormalSLT declaration is ingested into a site manifest.
 
 ## What Can Be Shown Publicly After Review
 
@@ -192,6 +203,8 @@ summary can safely say:
   `FiniteClassConfidenceSequence.failure_probability_le`.
 - FormalSLT contains a checked unit-interval rounded-dyadic finite-net Dudley
   bridge for a concrete non-finite metric index space.
+- FormalSLT contains a second concrete finite dyadic-net sequence instance over
+  a two-point metric space, showing that the dyadic-net wrapper is reusable.
 - TheoremPath Stage A can display a dyadic Hoeffding review-count calculation
   and cite the bundled FormalSLT theorem as the Lean-backed endpoint.
 
@@ -200,24 +213,13 @@ Do not publicly say:
 - that FormalSLT proves a full continuous Dudley theorem;
 - that FormalSLT proves general empirical-process theory;
 - that the unit-interval bridge constructs arbitrary measurable suprema;
-- that TheoremPath's current manifest ingests the new bundled theorem as a
-  first-class manifest entry.
+- that TheoremPath's current manifest ingests the bundled theorem as a
+  first-class manifest entry unless that has been checked in TheoremPath.
 
 ## Push and PR Decision
 
-Decision: hold TheoremPath push/PR for now.
-
-Reason: TheoremPath HEAD `6f970618bcdfdaeb94299215dca83f4917c84c05` cites a
-FormalSLT theorem that exists in local FormalSLT HEAD
-`a44aba99ed52f41dd9279855d00445b70e017f79`. The safer public sequence is:
-
-1. review the FormalSLT v0.1 release-candidate packet locally;
-2. if approved, push a FormalSLT review branch containing `a44aba9`;
-3. then push the TheoremPath branch and open a PR only after the FormalSLT
-   theorem target is public or the PR explicitly notes the temporary
-   hardcoded-link boundary.
-
-No public action is recommended from this memo alone.
+This memo does not approve a push, pull request, release tag, website update, or
+external comment. Public action still requires separate exact approval.
 
 ## Next Theorem Target
 
