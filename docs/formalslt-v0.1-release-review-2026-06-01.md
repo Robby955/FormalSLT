@@ -1,0 +1,234 @@
+# FormalSLT v0.1 Release Review
+
+Date: 2026-06-01
+Status: local release candidate, not pushed
+
+## Verdict
+
+FormalSLT v0.1 is locally reviewable as a release candidate. The checked
+surface is coherent enough for review: the Lean build passes, all example
+checkers pass, the theorem map and proof-frontier manifest are in sync, and the
+TheoremPath Stage A branch now cites the bundled confidence-sequence API
+directly.
+
+This is not a public release decision. No push, pull request, merge, post, or
+external comment has been made.
+
+## Current Commits
+
+FormalSLT worktree:
+
+- Path: `/private/tmp/formalslt-nonfinite-unit-interval`
+- Branch: `local/nonfinite-unit-interval-20260531`
+- HEAD: `a44aba99ed52f41dd9279855d00445b70e017f79`
+- Subject: `docs: polish confidence sequence API note`
+- Author: `Rob Sneiderman <robbysneiderman@gmail.com>`
+
+TheoremPath worktree:
+
+- Path: `/Users/robsneiderman/.config/superpowers/worktrees/theorem-path/feature-stage-a-hoeffding-display-2026-06-01`
+- Branch: `feature/stage-a-hoeffding-display-2026-06-01`
+- HEAD: `6f970618bcdfdaeb94299215dca83f4917c84c05`
+- Subject: `fix(formal-slt): cite confidence sequence API`
+- Author: `Rob Sneiderman <robbysneiderman@gmail.com>`
+
+## What Is Proved
+
+### Countable-Time Finite-Class Hoeffding
+
+Main bundled API:
+
+- `FiniteClassConfidenceSequence.failure_probability_le`
+- Anchor: `FormalSLT/UniformConvergence.lean:3718`
+
+Supporting declarations:
+
+- `finiteClassConfidenceSequenceFailureEvent`
+  (`FormalSLT/UniformConvergence.lean:3624`)
+- `FiniteClassConfidenceSequence`
+  (`FormalSLT/UniformConvergence.lean:3641`)
+- `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`
+  (`FormalSLT/UniformConvergence.lean:3663`)
+- `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge`
+  (`FormalSLT/UniformConvergence.lean:3748`)
+
+Meaning: for a finite nonempty hypothesis class, a fixed finite sample, a
+probability measure, coordinate-wise independent `[0,1]` losses, a risk identity,
+and a positive real failure budget, the named all-times/all-hypotheses
+confidence-sequence failure event has measure at most `ENNReal.ofReal δ`.
+
+The sample-size theorem gives the displayed review-count bridge used by
+TheoremPath Stage A:
+
+```text
+(log 2 - log(δ * 2^(-1-t) / card(H))) / (2 * ε^2) ≤ sampleSize
+```
+
+implies the named dyadic radius is at most `ε`.
+
+### UnitInterval Dudley Bridge
+
+Main local declarations:
+
+- `unitIntervalRademacherLinearSup_expectation`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:912`)
+- `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2021`)
+- `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2055`)
+- `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2096`)
+- `unitIntervalRademacherLinearSup_dudley_m0_bound`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2161`)
+
+Meaning: the finite-net Dudley machinery reaches a concrete non-finite metric
+index space, the unit interval, through supplied supremum and rounded dyadic
+finite-grid certificates. The result is a finite-horizon bridge, not a full
+continuous Dudley theorem.
+
+## TheoremPath Stage A Alignment
+
+TheoremPath now points the Stage A "Verified in Lean" link at:
+
+```text
+FormalSLT.UniformConvergence.FiniteClassConfidenceSequence.failure_probability_le
+```
+
+Touched TheoremPath files:
+
+- `src/lib/formal-slt/manifest-link.ts`
+- `src/components/mastery/hoeffding-confidence-display.tsx`
+- `tests/formal-slt/manifest-link.test.ts`
+
+The dyadic sample-size theorem is still available as a direct helper link, but
+the default Stage A citation target is now the bundled API theorem.
+
+Release note: the new Stage A link is hardcoded because the theorem is outside
+the current TheoremPath claim manifest. The local test pins the exact URL. A
+public PR should mention this as an infrastructure adjustment unless a later
+manifest ingestion step removes the hardcoded path.
+
+## Verification Commands
+
+FormalSLT:
+
+```bash
+~/.elan/bin/lake exe cache get
+~/.elan/bin/lake build FormalSLT
+for f in examples/*.lean; do ~/.elan/bin/lake env lean "$f"; done
+rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
+rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
+python3 scripts/generate_proof_frontier_manifest.py --check
+git diff --check
+~/.elan/bin/lake exe lint-style FormalSLT/UniformConvergence.lean FormalSLT/Covering/UnitIntervalDudley.lean
+python3 /Users/robsneiderman/Desktop/AI4MATH/scripts/audit_public_writing.py \
+  docs/formalslt-v0.1-technical-note.md \
+  docs/theorem-map.md \
+  docs/theorempath-formalslt-v0.1-page-draft.mdx \
+  docs/formalslt-v0.1-artifact-map-2026-06-01.md
+```
+
+FormalSLT results:
+
+- Mathlib cache: no files to download.
+- `lake build FormalSLT`: success, `2947` jobs.
+- Example checkers: `21` files, all `EXIT=0`.
+- `sorry` / `admit` scan: no matches.
+- custom `axiom` / `constant` scan: no matches.
+- proof-frontier manifest check: exit `0`.
+- `git diff --check`: exit `0`.
+- `lint-style`: exit `0`; warning only that `scripts/nolints-style.txt` could
+  not be read and was treated as empty.
+- public-writing audit: passed.
+
+The full build still prints existing unused-variable and unused-section-variable
+warnings in unrelated Rademacher/Azuma files. They do not come from the v0.1
+release-review memo or the confidence-sequence API changes.
+
+TheoremPath:
+
+```bash
+npm test -- tests/formal-slt/manifest-link.test.ts tests/formal-slt/hoeffding-sample-size.test.ts tests/adaptive-feature-flags.test.ts
+npm run typecheck
+npm run audit:lean-manifest
+npm run audit:public-copy
+npx eslint src/lib/formal-slt/manifest-link.ts src/components/mastery/hoeffding-confidence-display.tsx tests/formal-slt/manifest-link.test.ts
+git diff --check
+```
+
+TheoremPath results:
+
+- Focused tests: `3` files, `39` tests passed.
+- Typecheck: exit `0`.
+- Lean manifest audit: valid, `56` entries, `56` Lean verified, `113` formal
+  statements, `0` broken.
+- Public-copy audit: passed across `27` page files.
+- Targeted ESLint on touched files: exit `0`.
+- `git diff --check`: exit `0`.
+
+## What Is Not Proved
+
+- No full continuous Dudley entropy-integral theorem is proved.
+- No arbitrary measurable-supremum construction over non-finite classes is
+  proved.
+- No general separability theorem is proved.
+- The confidence-sequence theorem is finite-class; it is not an infinite-class
+  empirical-process theorem.
+- The confidence-sequence bundle is an API boundary. It does not add probability
+  strength beyond the checked Hoeffding chain it wraps.
+- The localized Rademacher random-threshold layer remains conservative; the
+  sharper whole-supremum theorem remains future work.
+- TheoremPath Stage A uses a hardcoded FormalSLT theorem link for the new
+  bundled API. The existing TheoremPath manifest remains valid but does not yet
+  ingest this new FormalSLT declaration as a manifest entry.
+
+## What Can Be Shown Publicly After Review
+
+After Rob's review and a separate explicit public-action approval, a public
+summary can safely say:
+
+- FormalSLT contains a checked finite-class countable-time Hoeffding confidence
+  sequence with a bundled API object,
+  `FiniteClassConfidenceSequence.failure_probability_le`.
+- FormalSLT contains a checked unit-interval rounded-dyadic finite-net Dudley
+  bridge for a concrete non-finite metric index space.
+- TheoremPath Stage A can display a dyadic Hoeffding review-count calculation
+  and cite the bundled FormalSLT theorem as the Lean-backed endpoint.
+
+Do not publicly say:
+
+- that FormalSLT proves a full continuous Dudley theorem;
+- that FormalSLT proves general empirical-process theory;
+- that the unit-interval bridge constructs arbitrary measurable suprema;
+- that TheoremPath's current manifest ingests the new bundled theorem as a
+  first-class manifest entry.
+
+## Push and PR Decision
+
+Decision: hold TheoremPath push/PR for now.
+
+Reason: TheoremPath HEAD `6f970618bcdfdaeb94299215dca83f4917c84c05` cites a
+FormalSLT theorem that exists in local FormalSLT HEAD
+`a44aba99ed52f41dd9279855d00445b70e017f79`. The safer public sequence is:
+
+1. review the FormalSLT v0.1 release-candidate packet locally;
+2. if approved, push a FormalSLT review branch containing `a44aba9`;
+3. then push the TheoremPath branch and open a PR only after the FormalSLT
+   theorem target is public or the PR explicitly notes the temporary
+   hardcoded-link boundary.
+
+No public action is recommended from this memo alone.
+
+## Next Theorem Target
+
+After v0.1 packaging review, the next theorem target is:
+
+```text
+Abstract the rounded dyadic-net Dudley wrapper away from [0,1].
+```
+
+The goal is to turn the unit-interval rounded-grid proof into an instance of a
+general finite-horizon theorem over a rounded dyadic-net family satisfying the
+radius, projection-pair cover-count, entropy-envelope, and terminal supplied
+supremum hypotheses. This is higher leverage than adding more one-off
+`m = k` corollaries.
