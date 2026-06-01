@@ -105,6 +105,16 @@ scope:
 The theorem states that the measure of the event where some time and some
 hypothesis violates the named radius is bounded by `ENNReal.ofReal delta`.
 
+The bundle separates two roles that were previously compressed into the long
+theorem statement:
+
+- `FiniteClassConfidenceSequence` packages the assumptions: finite hypothesis
+  class, shared sample, independence, measurability, `[0,1]` range control,
+  risk identity, nonempty sample, and positive failure budget.
+- `finiteClassConfidenceSequenceFailureEvent` names the bad event.
+- `FiniteClassConfidenceSequence.failure_probability_le` is the citation target
+  for downstream notes and TheoremPath route metadata.
+
 ### Theorem Chain
 
 ```mermaid
@@ -115,8 +125,9 @@ flowchart LR
   D["finitePrefixFiniteClassDeviationFromHoeffding"]
   E["zeroOneDyadicFiniteClassConfidenceRadius"]
   F["confidenceSequence_fromHoeffding"]
+  G["FiniteClassConfidenceSequence.failure_probability_le"]
 
-  A --> B --> C --> D --> E --> F
+  A --> B --> C --> D --> E --> F --> G
 ```
 
 The core anchors are:
@@ -148,10 +159,17 @@ between three common arguments:
 In informal writing, these steps are often collapsed. In Lean, each step is a
 separate theorem. That separation is the point of the v0.1 proof chain.
 
-### TheoremPath-facing sample-size form
+### TheoremPath-facing form
 
-The route-facing display does not need the full confidence-sequence theorem
-signature. It needs the checked sample-size inversion:
+The route-facing display uses the bundled theorem as its Lean citation target
+and uses a separate checked sample-size inversion for the numeric review count.
+The citation target is:
+
+```lean
+FiniteClassConfidenceSequence.failure_probability_le
+```
+
+The numeric bridge is:
 
 ```lean
 zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
@@ -317,8 +335,8 @@ summary.
    or martingale/e-process result.
 6. The localized Rademacher random-threshold layer is still conservative; the
    sharper whole-supremum concentration theorem remains future work.
-7. The new confidence-sequence bundle packages the caller-facing hypotheses,
-   but downstream consumers still need to adopt it.
+7. The confidence-sequence bundle is an API boundary, not a new probability
+   theorem beyond the checked Hoeffding chain it wraps.
 
 ## 7. Roadmap
 
@@ -332,8 +350,8 @@ The theorem now has a reusable assumption bundle:
 FiniteClassConfidenceSequence.failure_probability_le
 ```
 
-The next API task is to use this object in TheoremPath-facing notes and future
-formal statements instead of restating the long measure-theoretic signature.
+The next API task is to use this object in future formal statements instead of
+restating the long measure-theoretic signature.
 
 ### 7.2 Abstract the rounded dyadic-net wrapper
 
