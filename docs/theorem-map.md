@@ -101,7 +101,10 @@ declarations; modules are relative to `FormalSLT`.
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `UniformConvergence` | Countable-time finite-class Hoeffding theorem for `[0,1]` losses with dyadic per-time radii |
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding` | `UniformConvergence` | Existential-event version of the countable-time finite-class Hoeffding theorem |
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `UniformConvergence` | Existential-event anytime theorem using the named dyadic confidence radius |
+| `finiteClassConfidenceSequenceFailureEvent` | `UniformConvergence` | Named failure event for the `[0,1]` finite-class dyadic confidence sequence |
+| `FiniteClassConfidenceSequence` | `UniformConvergence` | Bundled assumptions for the `[0,1]` finite-class dyadic confidence sequence |
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `UniformConvergence` | Confidence-sequence failure-probability theorem for all natural times and finite hypotheses |
+| `FiniteClassConfidenceSequence.failure_probability_le` | `UniformConvergence` | Bundled API theorem bounding the named confidence-sequence failure event |
 
 ## Rademacher and VC spine
 

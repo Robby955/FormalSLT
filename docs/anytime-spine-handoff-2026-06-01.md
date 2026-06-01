@@ -84,8 +84,14 @@ Countable-time confidence-sequence surface:
   `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding`
 - `FormalSLT/UniformConvergence.lean:3582`
   `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding`
-- `FormalSLT/UniformConvergence.lean:3626`
+- `FormalSLT/UniformConvergence.lean:3624`
+  `finiteClassConfidenceSequenceFailureEvent`
+- `FormalSLT/UniformConvergence.lean:3641`
+  `FiniteClassConfidenceSequence`
+- `FormalSLT/UniformConvergence.lean:3663`
   `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`
+- `FormalSLT/UniformConvergence.lean:3718`
+  `FiniteClassConfidenceSequence.failure_probability_le`
 
 Rounded dyadic-grid Dudley chain:
 
@@ -139,21 +145,19 @@ word `sorry`; those are not proof holes.
 
 ## Next theorem suggestion
 
-The next theorem step should not be another display wrapper. The useful step is
-to make the countable-time finite-class Hoeffding theorem consume a cleaner
-statistical object:
+The countable-time finite-class Hoeffding theorem now has a cleaner statistical
+object:
 
 ```lean
 FiniteClassConfidenceSequence
 ```
 
-or an equivalent structure bundling the finite hypothesis class, `[0,1]` loss
-condition, shared sample, risk functional, named dyadic radius, and failure
-budget. That would reduce caller-side hypotheses and give TheoremPath a stable
-API surface to reference without restating the long measure-theoretic theorem
-signature.
+It bundles the finite hypothesis class, `[0,1]` loss condition, shared sample,
+risk functional, named dyadic radius, and failure budget. The next useful step
+is to make downstream notes and route metadata cite
+`FiniteClassConfidenceSequence.failure_probability_le` instead of the long
+measure-theoretic theorem signature.
 
 For the Dudley lane, the next useful step is a total-bounded wrapper that takes
 a rounded dyadic-net family abstractly and reuses the UnitInterval proof as the
 model instance, instead of adding more named `m = k` corollaries.
-

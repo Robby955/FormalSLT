@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 21,
-    "library_and_example_lean_lines": 30539,
-    "library_lean_lines": 28915,
+    "library_and_example_lean_lines": 30612,
+    "library_lean_lines": 28981,
     "library_modules": 54,
-    "theorem_map_entries": 355
+    "theorem_map_entries": 358
   },
   "theorem_families": [
     {
@@ -593,8 +593,26 @@
         {
           "kind": "theorem",
           "module": "UniformConvergence",
+          "name": "finiteClassConfidenceSequenceFailureEvent",
+          "summary": "Named failure event for the [0,1] finite-class dyadic confidence sequence"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "FiniteClassConfidenceSequence",
+          "summary": "Bundled assumptions for the [0,1] finite-class dyadic confidence sequence"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
           "name": "anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding",
           "summary": "Confidence-sequence failure-probability theorem for all natural times and finite hypotheses"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "FiniteClassConfidenceSequence.failure_probability_le",
+          "summary": "Bundled API theorem bounding the named confidence-sequence failure event"
         }
       ],
       "name": "Uniform-convergence probability bridges"

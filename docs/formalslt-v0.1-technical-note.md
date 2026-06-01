@@ -79,10 +79,16 @@ The finite-class endpoint is:
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding
 ```
 
+The ergonomic API endpoint is:
+
+```lean
+FiniteClassConfidenceSequence.failure_probability_le
+```
+
 Anchor:
 
 ```text
-FormalSLT/UniformConvergence.lean:3626
+FormalSLT/UniformConvergence.lean:3718
 ```
 
 The theorem controls the failure event for a simultaneous all-times,
@@ -121,11 +127,14 @@ The core anchors are:
 | Dyadic countable time budget | `finiteDyadicTimeBudget_tsum_le` | `FormalSLT/UniformConvergence.lean:244` |
 | Countable-time class union bound | `countableTimeClassUnionBound_dyadicBudget` | `FormalSLT/UniformConvergence.lean:286` |
 | Named confidence radius | `zeroOneDyadicFiniteClassConfidenceRadius` | `FormalSLT/UniformConvergence.lean:333` |
-| Named-radius sample-size inversion | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `FormalSLT/UniformConvergence.lean:3682` |
 | Finite-prefix variable-radius wrapper | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3202` |
 | Countable-time variable-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3318` |
 | Exists-form named-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3582` |
-| Confidence-sequence failure bound | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3626` |
+| Named confidence-sequence failure event | `finiteClassConfidenceSequenceFailureEvent` | `FormalSLT/UniformConvergence.lean:3624` |
+| Confidence-sequence assumption bundle | `FiniteClassConfidenceSequence` | `FormalSLT/UniformConvergence.lean:3641` |
+| Confidence-sequence failure bound | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3663` |
+| Bundled confidence-sequence API | `FiniteClassConfidenceSequence.failure_probability_le` | `FormalSLT/UniformConvergence.lean:3718` |
+| Named-radius sample-size inversion | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `FormalSLT/UniformConvergence.lean:3748` |
 
 ### Interpretation
 
@@ -308,24 +317,23 @@ summary.
    or martingale/e-process result.
 6. The localized Rademacher random-threshold layer is still conservative; the
    sharper whole-supremum concentration theorem remains future work.
-7. The confidence-sequence theorem has a long caller-facing signature. A
-   bundled structure would make it easier to reuse and explain.
+7. The new confidence-sequence bundle packages the caller-facing hypotheses,
+   but downstream consumers still need to adopt it.
 
 ## 7. Roadmap
 
 The next theorem work should improve usability or close a named proof boundary.
 
-### 7.1 Bundle the confidence-sequence theorem
+### 7.1 Use the confidence-sequence bundle downstream
 
-Define a structure such as:
+The theorem now has a reusable assumption bundle:
 
 ```lean
-structure FiniteClassConfidenceSequence where
-  -- finite class, shared sample, loss, risk, boundedness, and delta fields
+FiniteClassConfidenceSequence.failure_probability_le
 ```
 
-This is API work: the checked theorem should be usable without restating its
-long measure-theoretic signature.
+The next API task is to use this object in TheoremPath-facing notes and future
+formal statements instead of restating the long measure-theoretic signature.
 
 ### 7.2 Abstract the rounded dyadic-net wrapper
 

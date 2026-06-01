@@ -3616,6 +3616,43 @@ theorem anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists
       hδ_real_pos
 
 /--
+Failure event for the `[0,1]` finite-class dyadic confidence sequence.
+
+This names the event used by
+`anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`.
+-/
+def finiteClassConfidenceSequenceFailureEvent
+    {Ω ι H : Type*} [Fintype H]
+    (loss : ℕ → H → ι → Ω → ℝ) (s : Finset ι)
+    (risk : ℕ → H → ℝ) (δ_real : ℝ) : Set Ω :=
+  {ω |
+    ¬ ∀ t : ℕ, ∀ h : H,
+      |risk t h / (s.card : ℝ) -
+        (∑ i ∈ s, loss t h i ω) / (s.card : ℝ)| <
+        zeroOneDyadicFiniteClassConfidenceRadius
+          (H := H) (s.card : ℝ) δ_real t}
+
+/--
+Bundled assumptions for the `[0,1]` finite-class dyadic confidence sequence.
+
+The structure packages the independence, measurability, range, risk, sample-size,
+and confidence-level hypotheses used by the countable-time Hoeffding wrapper.
+-/
+structure FiniteClassConfidenceSequence
+    (Ω ι H : Type*) [MeasurableSpace Ω] (μ : Measure Ω)
+    [Fintype H] [Nonempty H]
+    (loss : ℕ → H → ι → Ω → ℝ) (s : Finset ι)
+    (risk : ℕ → H → ℝ) (δ_real : ℝ) : Prop where
+  indep : ∀ t h, iIndepFun (loss t h) μ
+  measurable : ∀ t h i, i ∈ s → AEMeasurable (loss t h i) μ
+  bounded01 :
+    ∀ t h i, i ∈ s →
+      ∀ᵐ ω ∂μ, loss t h i ω ∈ Set.Icc (0 : ℝ) 1
+  risk_eq : ∀ t h, risk t h = ∑ i ∈ s, μ[loss t h i]
+  nonempty_sample : 0 < s.card
+  delta_pos : 0 < δ_real
+
+/--
 Confidence-sequence form of the anytime finite-class Hoeffding theorem.
 
 The event is phrased as failure of the simultaneous statement: for every
@@ -3671,6 +3708,35 @@ theorem anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence
       ENNReal.ofReal δ_real
   rw [countableTimeClass_not_forall_lt_eq_exists_ge deviation threshold]
   exact hCrossing
+
+/--
+Bundled API for the `[0,1]` finite-class dyadic confidence sequence.
+
+Supplying a `FiniteClassConfidenceSequence` object gives the probability bound
+for the named failure event without restating the full theorem signature.
+-/
+theorem FiniteClassConfidenceSequence.failure_probability_le
+    {Ω ι H : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
+    [Fintype H] [Nonempty H]
+    {loss : ℕ → H → ι → Ω → ℝ}
+    {s : Finset ι}
+    {risk : ℕ → H → ℝ} {δ_real : ℝ}
+    (cfg : FiniteClassConfidenceSequence Ω ι H μ loss s risk δ_real) :
+    μ (finiteClassConfidenceSequenceFailureEvent loss s risk δ_real) ≤
+      ENNReal.ofReal δ_real := by
+  simpa [finiteClassConfidenceSequenceFailureEvent] using
+    anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding
+      (μ := μ)
+      (loss := loss)
+      cfg.indep
+      (s := s)
+      (risk := risk)
+      (δ_real := δ_real)
+      cfg.measurable
+      cfg.bounded01
+      cfg.risk_eq
+      cfg.nonempty_sample
+      cfg.delta_pos
 
 /--
 Sample-size inversion for the displayed dyadic confidence radius.

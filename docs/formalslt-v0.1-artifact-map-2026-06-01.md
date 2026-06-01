@@ -79,12 +79,15 @@ Main anchors:
 | Countable dyadic budget sum | `finiteDyadicTimeBudget_tsum_le` | `FormalSLT/UniformConvergence.lean:244` |
 | Countable-time class union bound | `countableTimeClassUnionBound_dyadicBudget` | `FormalSLT/UniformConvergence.lean:286` |
 | Route-facing named radius | `zeroOneDyadicFiniteClassConfidenceRadius` | `FormalSLT/UniformConvergence.lean:333` |
-| Named-radius sample-size inversion | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `FormalSLT/UniformConvergence.lean:3682` |
+| Named-radius sample-size inversion | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `FormalSLT/UniformConvergence.lean:3748` |
 | Finite-prefix variable-radius event | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius` | `FormalSLT/UniformConvergence.lean:3127` |
 | Finite-prefix Hoeffding discharge | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3202` |
 | Countable-time Hoeffding wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3318` |
 | Exists-form named-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3582` |
-| Confidence-sequence failure bound | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3626` |
+| Confidence-sequence failure event | `finiteClassConfidenceSequenceFailureEvent` | `FormalSLT/UniformConvergence.lean:3624` |
+| Confidence-sequence assumption bundle | `FiniteClassConfidenceSequence` | `FormalSLT/UniformConvergence.lean:3641` |
+| Confidence-sequence failure bound | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3663` |
+| Bundled confidence-sequence API | `FiniteClassConfidenceSequence.failure_probability_le` | `FormalSLT/UniformConvergence.lean:3718` |
 
 What this proves:
 
@@ -193,9 +196,9 @@ These are the exact gaps the note and TheoremPath page should state.
 6. **Sharp McDiarmid/product-kernel route.** The current high-probability
    route uses available finite and Azuma-style scaffolding; the sharper
    product-kernel conditional-expectation route is not closed.
-7. **API ergonomics.** The countable-time confidence-sequence theorem has a
-   long theorem signature. A bundled `FiniteClassConfidenceSequence` structure
-   would make it easier to use and easier to present.
+7. **API ergonomics.** The countable-time confidence-sequence theorem now has a
+   bundled `FiniteClassConfidenceSequence` API. Downstream notes still need to
+   cite the bundle instead of the long theorem signature.
 
 ## Diagrams Needed
 
@@ -338,7 +341,7 @@ from sounding like a full formalization of empirical-process theory.
 
 Near-term theorem work:
 
-1. Bundle the long confidence-sequence theorem into an ergonomic structure.
+1. Use the confidence-sequence bundle in downstream route metadata and notes.
 2. Generalize the rounded dyadic-net wrapper away from the unit interval.
 3. Prove the analytic domination step toward the continuous Dudley integral.
 4. Continue localized Rademacher whole-supremum concentration work.
@@ -368,8 +371,8 @@ Sections:
 3. **The `[0,1]` example.** Rounded grid visual plus process definition.
 4. **What is not claimed.** Same proof-gap boundary as the paper.
 5. **How to verify.** Commands and checker files.
-6. **Next theorem.** `FiniteClassConfidenceSequence` bundle and abstract
-   rounded dyadic-net wrapper.
+6. **Next theorem.** Downstream use of the `FiniteClassConfidenceSequence`
+   bundle and the abstract rounded dyadic-net wrapper.
 
 Required assets:
 

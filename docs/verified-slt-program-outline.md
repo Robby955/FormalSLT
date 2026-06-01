@@ -152,7 +152,10 @@ Core declarations:
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding`
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding`
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding`
+- `finiteClassConfidenceSequenceFailureEvent`
+- `FiniteClassConfidenceSequence`
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`
+- `FiniteClassConfidenceSequence.failure_probability_le`
 
 Role: these declarations replace per-hypothesis finite range sums with one
 uniform range width `R` and one closed-form proxy `card(s) * (R / 2)^2`, while
@@ -580,7 +583,10 @@ anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_f
 zeroOneDyadicFiniteClassConfidenceRadius
 zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding
+finiteClassConfidenceSequenceFailureEvent
+FiniteClassConfidenceSequence
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding
+FiniteClassConfidenceSequence.failure_probability_le
 ```
 
 Target statement shape:

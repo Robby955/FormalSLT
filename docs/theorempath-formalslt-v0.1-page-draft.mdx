@@ -60,13 +60,13 @@ for one concrete non-finite metric index space.
 The endpoint theorem is:
 
 ```lean
-anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding
+FiniteClassConfidenceSequence.failure_probability_le
 ```
 
 Lean anchor:
 
 ```text
-FormalSLT/UniformConvergence.lean:3626
+FormalSLT/UniformConvergence.lean:3718
 ```
 
 It bounds the probability that there exists a time `t` and a hypothesis `h`
@@ -83,7 +83,10 @@ The proof chain is:
 | finite-prefix Hoeffding wrapper | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` |
 | named confidence radius | `zeroOneDyadicFiniteClassConfidenceRadius` |
 | sample-size to radius bridge | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` |
+| named failure event | `finiteClassConfidenceSequenceFailureEvent` |
+| bundled assumption object | `FiniteClassConfidenceSequence` |
 | final failure-event theorem | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` |
+| bundled API theorem | `FiniteClassConfidenceSequence.failure_probability_le` |
 
 The theorem is finite-class. The hypothesis type has `[Fintype H]` and
 `[Nonempty H]`, and the sample is a fixed finite set of coordinates. The loss
@@ -280,8 +283,8 @@ docs/formalslt-v0.1-technical-note.md
 
 Two next steps would make the checked surface easier to use:
 
-1. Bundle the long confidence-sequence theorem into a
-   `FiniteClassConfidenceSequence` structure.
+1. Use the `FiniteClassConfidenceSequence` bundle in downstream notes and
+   route metadata instead of restating the long theorem signature.
 2. Abstract the rounded dyadic-net Dudley wrapper so the unit-interval proof is
    one instance of a reusable finite-horizon theorem.
 
