@@ -80,6 +80,391 @@ theorem unitIntervalDyadicFiniteNet_covers {radiusScale : ℝ}
   exact dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
     (T := UnitInterval) unitInterval_totallyBounded_univ hradiusScale j t
 
+/-! ## Reusable dyadic grid skeleton -/
+
+/-- Index type for the dyadic grid `{0, 1 / 2^level, ..., 1}`. -/
+abbrev unitIntervalDyadicGridIndex (level : ℕ) : Type :=
+  Fin ((2 : ℕ) ^ level + 1)
+
+/-- The left endpoint index in the dyadic grid. -/
+def unitIntervalDyadicGridLeftIndex (level : ℕ) :
+    unitIntervalDyadicGridIndex level :=
+  ⟨0, Nat.succ_pos _⟩
+
+/-- The right endpoint index in the dyadic grid. -/
+def unitIntervalDyadicGridRightIndex (level : ℕ) :
+    unitIntervalDyadicGridIndex level :=
+  ⟨(2 : ℕ) ^ level, Nat.lt_succ_self _⟩
+
+/-- Center map for the dyadic grid `{0, 1 / 2^level, ..., 1}` on `[0,1]`. -/
+def unitIntervalDyadicGridCenter (level : ℕ)
+    (i : unitIntervalDyadicGridIndex level) : UnitInterval :=
+  ⟨(i.1 : ℝ) / (((2 : ℕ) ^ level : ℕ) : ℝ), by
+    have hden_nat_pos : 0 < (2 : ℕ) ^ level :=
+      pow_pos (by norm_num : (0 : ℕ) < 2) level
+    have hden_pos : 0 < (((2 : ℕ) ^ level : ℕ) : ℝ) := by
+      exact_mod_cast hden_nat_pos
+    have hden_nonneg : 0 ≤ (((2 : ℕ) ^ level : ℕ) : ℝ) :=
+      le_of_lt hden_pos
+    constructor
+    · exact div_nonneg (Nat.cast_nonneg i.1) hden_nonneg
+    · have hi_nat : i.1 ≤ (2 : ℕ) ^ level := Nat.le_of_lt_succ i.2
+      have hi_real :
+          (i.1 : ℝ) ≤ (((2 : ℕ) ^ level : ℕ) : ℝ) := by
+        exact_mod_cast hi_nat
+      have hle := div_le_div_of_nonneg_right hi_real hden_nonneg
+      rw [div_self (ne_of_gt hden_pos)] at hle
+      exact hle⟩
+
+@[simp] theorem unitIntervalDyadicGridCenter_leftEndpoint (level : ℕ) :
+    unitIntervalDyadicGridCenter level
+        (unitIntervalDyadicGridLeftIndex level) =
+      unitIntervalZero := by
+  ext
+  simp [unitIntervalDyadicGridCenter, unitIntervalDyadicGridLeftIndex,
+    unitIntervalZero]
+
+@[simp] theorem unitIntervalDyadicGridCenter_rightEndpoint (level : ℕ) :
+    unitIntervalDyadicGridCenter level
+        (unitIntervalDyadicGridRightIndex level) =
+      unitIntervalOne := by
+  ext
+  change
+    (((2 : ℕ) ^ level : ℕ) : ℝ) /
+        (((2 : ℕ) ^ level : ℕ) : ℝ) = 1
+  rw [div_self]
+  exact_mod_cast pow_ne_zero level (by norm_num : (2 : ℕ) ≠ 0)
+
+/-- Cardinality of the dyadic grid at level `level`. -/
+theorem unitIntervalDyadicGrid_card (level : ℕ) :
+    Fintype.card (unitIntervalDyadicGridIndex level) =
+      (2 : ℕ) ^ level + 1 := by
+  simp [unitIntervalDyadicGridIndex]
+
+/-- Product cover-count for adjacent dyadic grids at levels `j + 1` and
+`j + 2`. -/
+def unitIntervalDyadicGridPairCoverCount (j : ℕ) : ℕ :=
+  ((2 : ℕ) ^ (j + 1) + 1) * ((2 : ℕ) ^ (j + 2) + 1)
+
+/-- The first adjacent dyadic grid pair, levels `1` and `2`, has product count
+`15`. -/
+theorem unitIntervalDyadicGridPairCoverCount_zero :
+    unitIntervalDyadicGridPairCoverCount 0 = 15 := by
+  norm_num [unitIntervalDyadicGridPairCoverCount]
+
+/-- Left-bin projection to the dyadic grid. It sends `t` to
+`floor (2^level * t) / 2^level`, clipped automatically by `t <= 1`. -/
+def unitIntervalDyadicGridFloorProject (level : ℕ) (t : UnitInterval) :
+    unitIntervalDyadicGridIndex level :=
+  ⟨Nat.floor ((((2 : ℕ) ^ level : ℕ) : ℝ) * t.1), by
+    have hden_nonneg :
+        0 ≤ ((((2 : ℕ) ^ level : ℕ) : ℝ)) := by
+      exact_mod_cast Nat.zero_le ((2 : ℕ) ^ level)
+    have hmul_le :
+        (((2 : ℕ) ^ level : ℕ) : ℝ) * t.1 ≤
+          (((2 : ℕ) ^ level : ℕ) : ℝ) := by
+      exact mul_le_of_le_one_right hden_nonneg t.2.2
+    have hfloor_le :
+        Nat.floor ((((2 : ℕ) ^ level : ℕ) : ℝ) * t.1) ≤
+          (2 : ℕ) ^ level :=
+      Nat.floor_le_of_le hmul_le
+    exact Nat.lt_succ_of_le hfloor_le⟩
+
+/-- The floor-projected dyadic grid covers `[0,1]` at the grid spacing
+`1 / 2^level`. This is a reusable generic coverage theorem; the sharper
+half-spacing nearest-grid theorem is left to the explicit half/quarter meshes
+or a later rounded projection. -/
+theorem unitIntervalDyadicGridFloorProject_dist_le
+    (level : ℕ) (t : UnitInterval) :
+    dist t
+        (unitIntervalDyadicGridCenter level
+          (unitIntervalDyadicGridFloorProject level t)) ≤
+      (1 : ℝ) / (((2 : ℕ) ^ level : ℕ) : ℝ) := by
+  let n : ℕ := (2 : ℕ) ^ level
+  have hn_nat_pos : 0 < n := by
+    dsimp [n]
+    exact pow_pos (by norm_num : (0 : ℕ) < 2) level
+  have hn_pos : 0 < (n : ℝ) := by
+    exact_mod_cast hn_nat_pos
+  have hn_nonneg : 0 ≤ (n : ℝ) := le_of_lt hn_pos
+  let a : ℝ := (n : ℝ) * t.1
+  have ha_nonneg : 0 ≤ a := by
+    dsimp [a]
+    exact mul_nonneg hn_nonneg t.2.1
+  have hfloor_le :
+      ((Nat.floor a : ℕ) : ℝ) ≤ a :=
+    Nat.floor_le ha_nonneg
+  have hlt_floor_add :
+      a < ((Nat.floor a : ℕ) : ℝ) + 1 :=
+    Nat.lt_floor_add_one a
+  have hleft :
+      ((Nat.floor a : ℕ) : ℝ) / (n : ℝ) ≤ t.1 := by
+    have hmul :
+        ((Nat.floor a : ℕ) : ℝ) ≤ (n : ℝ) * t.1 := by
+      simpa [a] using hfloor_le
+    rw [div_le_iff₀ hn_pos]
+    simpa [mul_comm] using hmul
+  have hright :
+      t.1 - ((Nat.floor a : ℕ) : ℝ) / (n : ℝ) ≤
+        (1 : ℝ) / (n : ℝ) := by
+    have hmul :
+        (n : ℝ) * t.1 < ((Nat.floor a : ℕ) : ℝ) + 1 := by
+      simpa [a] using hlt_floor_add
+    have ht_le :
+        t.1 ≤ (((Nat.floor a : ℕ) : ℝ) + 1) / (n : ℝ) := by
+      rw [le_div_iff₀ hn_pos]
+      simpa [mul_comm] using le_of_lt hmul
+    calc
+      t.1 - ((Nat.floor a : ℕ) : ℝ) / (n : ℝ) ≤
+          (((Nat.floor a : ℕ) : ℝ) + 1) / (n : ℝ) -
+            ((Nat.floor a : ℕ) : ℝ) / (n : ℝ) :=
+        sub_le_sub_right ht_le _
+      _ = (1 : ℝ) / (n : ℝ) := by
+        field_simp [ne_of_gt hn_pos]
+        ring
+  have habs :
+      |t.1 - ((Nat.floor a : ℕ) : ℝ) / (n : ℝ)| ≤
+        (1 : ℝ) / (n : ℝ) := by
+    apply abs_le.mpr
+    constructor
+    · have hnonneg :
+          0 ≤ t.1 - ((Nat.floor a : ℕ) : ℝ) / (n : ℝ) := by
+        linarith [hleft]
+      have hradius_nonneg : 0 ≤ (1 : ℝ) / (n : ℝ) :=
+        div_nonneg zero_le_one hn_nonneg
+      linarith
+    · exact hright
+  rw [Subtype.dist_eq, Real.dist_eq]
+  simpa [unitIntervalDyadicGridCenter, unitIntervalDyadicGridFloorProject,
+    n, a] using habs
+
+/-- The generic dyadic grid as a finite net over `[0,1]`, with the floor
+projection and spacing radius `1 / 2^level`. -/
+def unitIntervalDyadicGridNet (level : ℕ) :
+    FiniteNet UnitInterval (unitIntervalDyadicGridIndex level) :=
+  { dist := fun s t => dist s t
+    dist_nonneg := fun s t => dist_nonneg
+    center := unitIntervalDyadicGridCenter level
+    project := unitIntervalDyadicGridFloorProject level
+    radius := (1 : ℝ) / (((2 : ℕ) ^ level : ℕ) : ℝ)
+    radius_nonneg := by
+      have hden_nat_pos : 0 < (2 : ℕ) ^ level :=
+        pow_pos (by norm_num : (0 : ℕ) < 2) level
+      have hden_nonneg :
+          0 ≤ ((((2 : ℕ) ^ level : ℕ) : ℝ)) := by
+        exact_mod_cast (le_of_lt hden_nat_pos)
+      exact div_nonneg zero_le_one hden_nonneg
+    covers := unitIntervalDyadicGridFloorProject_dist_le level }
+
+/-- The generic dyadic grid finite net covers the unit interval at spacing
+`1 / 2^level`. -/
+theorem unitIntervalDyadicGridNet_covers (level : ℕ) (t : UnitInterval) :
+    dist t ((unitIntervalDyadicGridNet level).projection t) ≤
+      (1 : ℝ) / (((2 : ℕ) ^ level : ℕ) : ℝ) :=
+  (unitIntervalDyadicGridNet level).projection_dist_le t
+
+/-- The generic dyadic grid finite net has `2^level + 1` centers. -/
+theorem unitIntervalDyadicGridNet_coveringNumber (level : ℕ) :
+    (unitIntervalDyadicGridNet level).coveringNumber =
+      (2 : ℕ) ^ level + 1 := by
+  simp [FiniteNet.coveringNumber, unitIntervalDyadicGridIndex]
+
+/-- The level-`1` generic dyadic grid finite net has three centers. -/
+theorem unitIntervalDyadicGridNet_coveringNumber_one :
+    (unitIntervalDyadicGridNet 1).coveringNumber = 3 := by
+  rw [unitIntervalDyadicGridNet_coveringNumber]
+  norm_num
+
+/-- The level-`2` generic dyadic grid finite net has five centers. -/
+theorem unitIntervalDyadicGridNet_coveringNumber_two :
+    (unitIntervalDyadicGridNet 2).coveringNumber = 5 := by
+  rw [unitIntervalDyadicGridNet_coveringNumber]
+  norm_num
+
+/-- The first adjacent generic dyadic grid-net covering-number product is the
+same `15` count used by the explicit half/quarter mesh pair. -/
+theorem unitIntervalDyadicGridNet_coveringNumberPair_zero :
+    (unitIntervalDyadicGridNet 1).coveringNumber *
+        (unitIntervalDyadicGridNet 2).coveringNumber =
+      unitIntervalDyadicGridPairCoverCount 0 := by
+  rw [unitIntervalDyadicGridNet_coveringNumber_one,
+    unitIntervalDyadicGridNet_coveringNumber_two,
+    unitIntervalDyadicGridPairCoverCount_zero]
+
+/-- Nearest-grid projection to the dyadic grid. It rounds `2^level * t` to the
+nearest integer by taking `floor (2^level * t + 1/2)`. -/
+def unitIntervalDyadicGridRoundProject (level : ℕ) (t : UnitInterval) :
+    unitIntervalDyadicGridIndex level :=
+  let n : ℕ := (2 : ℕ) ^ level
+  ⟨Nat.floor ((n : ℝ) * t.1 + (1 : ℝ) / 2), by
+    have hn_nat_pos : 0 < n := by
+      dsimp [n]
+      exact pow_pos (by norm_num : (0 : ℕ) < 2) level
+    have hn_nonneg : 0 ≤ (n : ℝ) := by
+      exact_mod_cast le_of_lt hn_nat_pos
+    have hmul_le : (n : ℝ) * t.1 ≤ (n : ℝ) := by
+      exact mul_le_of_le_one_right hn_nonneg t.2.2
+    have harg_nonneg : 0 ≤ (n : ℝ) * t.1 + (1 : ℝ) / 2 := by
+      have hmul_nonneg : 0 ≤ (n : ℝ) * t.1 :=
+        mul_nonneg hn_nonneg t.2.1
+      linarith
+    have harg_lt :
+        (n : ℝ) * t.1 + (1 : ℝ) / 2 < ((n + 1 : ℕ) : ℝ) := by
+      have : (n : ℝ) * t.1 + (1 : ℝ) / 2 < (n : ℝ) + 1 := by
+        linarith
+      simpa using this
+    have hfloor_lt :
+        Nat.floor ((n : ℝ) * t.1 + (1 : ℝ) / 2) < n + 1 :=
+      (Nat.floor_lt harg_nonneg).2 harg_lt
+    simpa [n, unitIntervalDyadicGridIndex] using hfloor_lt⟩
+
+/-- The rounded dyadic grid projection covers `[0,1]` at half the grid spacing,
+`1 / 2^(level + 1)`. -/
+theorem unitIntervalDyadicGridRoundProject_dist_le
+    (level : ℕ) (t : UnitInterval) :
+    dist t
+        (unitIntervalDyadicGridCenter level
+          (unitIntervalDyadicGridRoundProject level t)) ≤
+      (1 : ℝ) / (((2 : ℕ) ^ (level + 1) : ℕ) : ℝ) := by
+  let n : ℕ := (2 : ℕ) ^ level
+  have hn_nat_pos : 0 < n := by
+    dsimp [n]
+    exact pow_pos (by norm_num : (0 : ℕ) < 2) level
+  have hn_pos : 0 < (n : ℝ) := by
+    exact_mod_cast hn_nat_pos
+  have hn_nonneg : 0 ≤ (n : ℝ) := le_of_lt hn_pos
+  let a : ℝ := (n : ℝ) * t.1
+  let m : ℕ := Nat.floor (a + (1 : ℝ) / 2)
+  have ha_nonneg : 0 ≤ a := by
+    dsimp [a]
+    exact mul_nonneg hn_nonneg t.2.1
+  have harg_nonneg : 0 ≤ a + (1 : ℝ) / 2 := by
+    linarith
+  have hm_le :
+      (m : ℝ) ≤ a + (1 : ℝ) / 2 := by
+    dsimp [m]
+    exact Nat.floor_le harg_nonneg
+  have harg_lt :
+      a + (1 : ℝ) / 2 < (m : ℝ) + 1 := by
+    dsimp [m]
+    exact Nat.lt_floor_add_one (a + (1 : ℝ) / 2)
+  have hleft : -((1 : ℝ) / 2) ≤ a - (m : ℝ) := by
+    linarith
+  have hright : a - (m : ℝ) ≤ (1 : ℝ) / 2 := by
+    linarith
+  have habs_a : |a - (m : ℝ)| ≤ (1 : ℝ) / 2 :=
+    abs_le.mpr ⟨hleft, hright⟩
+  have hscaled :
+      |t.1 - (m : ℝ) / (n : ℝ)| ≤ ((1 : ℝ) / 2) / (n : ℝ) := by
+    have hrewrite :
+        t.1 - (m : ℝ) / (n : ℝ) =
+          (a - (m : ℝ)) / (n : ℝ) := by
+      dsimp [a]
+      field_simp [ne_of_gt hn_pos]
+    rw [hrewrite]
+    calc
+      |(a - (m : ℝ)) / (n : ℝ)| =
+          |a - (m : ℝ)| / (n : ℝ) := by
+        rw [abs_div, abs_of_pos hn_pos]
+      _ ≤ ((1 : ℝ) / 2) / (n : ℝ) :=
+        div_le_div_of_nonneg_right habs_a hn_nonneg
+  have hradius :
+      ((1 : ℝ) / 2) / (n : ℝ) =
+        (1 : ℝ) / (((2 : ℕ) ^ (level + 1) : ℕ) : ℝ) := by
+    have hpow_nat :
+        (2 : ℕ) ^ (level + 1) = (2 : ℕ) * (2 : ℕ) ^ level := by
+      rw [pow_succ']
+    have hpow_real :
+        (((2 : ℕ) ^ (level + 1) : ℕ) : ℝ) = 2 * (n : ℝ) := by
+      dsimp [n]
+      norm_num [hpow_nat]
+    rw [hpow_real]
+    field_simp [ne_of_gt hn_pos]
+  rw [hradius] at hscaled
+  rw [Subtype.dist_eq, Real.dist_eq]
+  simpa [unitIntervalDyadicGridCenter, unitIntervalDyadicGridRoundProject,
+    n, a, m] using hscaled
+
+@[simp] theorem unitIntervalDyadicGridRoundProject_zero (level : ℕ) :
+    unitIntervalDyadicGridRoundProject level unitIntervalZero =
+      unitIntervalDyadicGridLeftIndex level := by
+  ext
+  change
+    Nat.floor
+      ((((2 : ℕ) ^ level : ℕ) : ℝ) * (0 : ℝ) + (1 : ℝ) / 2) = 0
+  norm_num [Nat.floor_eq_iff]
+
+@[simp] theorem unitIntervalDyadicGridRoundProject_one (level : ℕ) :
+    unitIntervalDyadicGridRoundProject level unitIntervalOne =
+      unitIntervalDyadicGridRightIndex level := by
+  ext
+  change
+    Nat.floor
+      ((((2 : ℕ) ^ level : ℕ) : ℝ) * (1 : ℝ) + (1 : ℝ) / 2) =
+        (2 : ℕ) ^ level
+  have harg_nonneg :
+      0 ≤ (((2 : ℕ) ^ level : ℕ) : ℝ) * (1 : ℝ) + (1 : ℝ) / 2 := by
+    positivity
+  rw [Nat.floor_eq_iff harg_nonneg]
+  constructor
+  · norm_num
+  · have hpow_nonneg : 0 ≤ (((2 : ℕ) ^ level : ℕ) : ℝ) := by
+      positivity
+    linarith
+
+/-- The generic dyadic grid as a rounded finite net over `[0,1]`, with
+nearest-grid projection and half-spacing radius `1 / 2^(level + 1)`. -/
+def unitIntervalDyadicRoundedGridNet (level : ℕ) :
+    FiniteNet UnitInterval (unitIntervalDyadicGridIndex level) :=
+  { dist := fun s t => dist s t
+    dist_nonneg := fun s t => dist_nonneg
+    center := unitIntervalDyadicGridCenter level
+    project := unitIntervalDyadicGridRoundProject level
+    radius := (1 : ℝ) / (((2 : ℕ) ^ (level + 1) : ℕ) : ℝ)
+    radius_nonneg := by
+      have hden_nat_pos : 0 < (2 : ℕ) ^ (level + 1) :=
+        pow_pos (by norm_num : (0 : ℕ) < 2) (level + 1)
+      have hden_nonneg :
+          0 ≤ ((((2 : ℕ) ^ (level + 1) : ℕ) : ℝ)) := by
+        exact_mod_cast (le_of_lt hden_nat_pos)
+      exact div_nonneg zero_le_one hden_nonneg
+    covers := unitIntervalDyadicGridRoundProject_dist_le level }
+
+/-- The rounded generic dyadic grid finite net covers `[0,1]` at half-spacing
+radius `1 / 2^(level + 1)`. -/
+theorem unitIntervalDyadicRoundedGridNet_covers (level : ℕ) (t : UnitInterval) :
+    dist t ((unitIntervalDyadicRoundedGridNet level).projection t) ≤
+      (1 : ℝ) / (((2 : ℕ) ^ (level + 1) : ℕ) : ℝ) :=
+  (unitIntervalDyadicRoundedGridNet level).projection_dist_le t
+
+/-- The rounded generic dyadic grid finite net has `2^level + 1` centers. -/
+theorem unitIntervalDyadicRoundedGridNet_coveringNumber (level : ℕ) :
+    (unitIntervalDyadicRoundedGridNet level).coveringNumber =
+      (2 : ℕ) ^ level + 1 := by
+  simp [FiniteNet.coveringNumber, unitIntervalDyadicGridIndex]
+
+/-- The level-`1` rounded generic dyadic grid finite net has three centers. -/
+theorem unitIntervalDyadicRoundedGridNet_coveringNumber_one :
+    (unitIntervalDyadicRoundedGridNet 1).coveringNumber = 3 := by
+  rw [unitIntervalDyadicRoundedGridNet_coveringNumber]
+  norm_num
+
+/-- The level-`2` rounded generic dyadic grid finite net has five centers. -/
+theorem unitIntervalDyadicRoundedGridNet_coveringNumber_two :
+    (unitIntervalDyadicRoundedGridNet 2).coveringNumber = 5 := by
+  rw [unitIntervalDyadicRoundedGridNet_coveringNumber]
+  norm_num
+
+/-- The first adjacent rounded generic dyadic grid-net covering-number product
+is the same `15` count used by the explicit half/quarter mesh pair. -/
+theorem unitIntervalDyadicRoundedGridNet_coveringNumberPair_zero :
+    (unitIntervalDyadicRoundedGridNet 1).coveringNumber *
+        (unitIntervalDyadicRoundedGridNet 2).coveringNumber =
+      unitIntervalDyadicGridPairCoverCount 0 := by
+  rw [unitIntervalDyadicRoundedGridNet_coveringNumber_one,
+    unitIntervalDyadicRoundedGridNet_coveringNumber_two,
+    unitIntervalDyadicGridPairCoverCount_zero]
+
 /-! ## Explicit finite meshes for the unit interval -/
 
 /-- The five-point mesh `{0, 1/4, 1/2, 3/4, 1}` as centers in the unit
@@ -243,6 +628,15 @@ theorem unitIntervalHalfQuarter_coveringNumber_product :
         unitIntervalQuarterMeshNet.coveringNumber = 15 := by
   simp [unitIntervalHalfMeshNet_coveringNumber,
     unitIntervalQuarterMeshNet_coveringNumber]
+
+/-- The explicit half/quarter covering-number product is the first adjacent
+dyadic grid pair count. -/
+theorem unitIntervalHalfQuarter_coveringNumber_product_eq_dyadicGridPairCoverCount_zero :
+    unitIntervalHalfMeshNet.coveringNumber *
+        unitIntervalQuarterMeshNet.coveringNumber =
+      unitIntervalDyadicGridPairCoverCount 0 := by
+  rw [unitIntervalHalfQuarter_coveringNumber_product,
+    unitIntervalDyadicGridPairCoverCount_zero]
 
 /-- The zero process over the unit interval.
 
@@ -568,6 +962,31 @@ theorem unitIntervalRademacherLinearSup_isLeastUpperBound (ω : Bool) :
     rw [← ht]
     exact hc t
 
+/-- The supplied supremum is the least upper bound of the actual range of the
+unit-interval Rademacher process. -/
+theorem unitIntervalRademacherLinearSup_isLUB_range (ω : Bool) :
+    IsLUB
+      (Set.range (fun t : UnitInterval =>
+        unitIntervalRademacherLinearProcess.X ω t))
+      (unitIntervalRademacherLinearSup ω) := by
+  constructor
+  · intro x hx
+    rcases hx with ⟨t, rfl⟩
+    exact unitIntervalRademacherLinearSup_upper ω t
+  · intro c hc
+    obtain ⟨t, ht⟩ := unitIntervalRademacherLinearSup_attained ω
+    rw [← ht]
+    exact hc ⟨t, rfl⟩
+
+/-- The supplied supremum is equal to the order supremum of the range of the
+unit-interval Rademacher process. -/
+theorem unitIntervalRademacherLinearSup_sSup_range (ω : Bool) :
+    sSup
+      (Set.range (fun t : UnitInterval =>
+        unitIntervalRademacherLinearProcess.X ω t)) =
+      unitIntervalRademacherLinearSup ω :=
+  (unitIntervalRademacherLinearSup_isLUB_range ω).csSup_eq (Set.range_nonempty _)
+
 private lemma rademacherLinear_value_le_one (ω : Bool) (t : UnitInterval) :
     signOfBool ω * (t : ℝ) ≤ 1 := by
   cases ω
@@ -747,6 +1166,519 @@ theorem unitIntervalRademacherLinear_projectedQuarterMesh_dudley_log15_bound :
   simpa [unitIntervalExplicitMeshNet, unitIntervalExplicitMeshIndex,
     unitIntervalRademacherLinearProcess] using hbase
 
+/-! ## Rounded generic dyadic grid sequence -/
+
+/-- The generic rounded dyadic grid sequence starts at level `1`, then moves to
+level `2`, and so on. Thus its first two nets have `3` and `5` centers and
+the same covering radii as the explicit half/quarter meshes. -/
+abbrev unitIntervalRoundedDyadicGridIndex (j : ℕ) : Type :=
+  unitIntervalDyadicGridIndex (j + 1)
+
+/-- The shifted rounded dyadic net sequence used by the finite-scale Dudley
+chain. Net `j` is the rounded dyadic grid at level `j + 1`. -/
+def unitIntervalRoundedDyadicGridNet (j : ℕ) :
+    FiniteNet UnitInterval (unitIntervalRoundedDyadicGridIndex j) :=
+  unitIntervalDyadicRoundedGridNet (j + 1)
+
+/-- Product-count envelope for adjacent shifted rounded dyadic grid levels. -/
+def unitIntervalRoundedDyadicGridCoverCount (j : ℕ) : ℕ :=
+  (2 ^ (j + 1) + 1) * (2 ^ (j + 2) + 1)
+
+/-- The adjacent rounded-dyadic-grid product-count envelope is monotone in the
+scale. -/
+theorem monotone_unitIntervalRoundedDyadicGridCoverCount :
+    Monotone unitIntervalRoundedDyadicGridCoverCount := by
+  intro i j hij
+  dsimp [unitIntervalRoundedDyadicGridCoverCount]
+  have hpow_left : 2 ^ (i + 1) ≤ 2 ^ (j + 1) :=
+    Nat.pow_le_pow_right (by norm_num : 0 < 2)
+      (Nat.add_le_add_right hij 1)
+  have hpow_right : 2 ^ (i + 2) ≤ 2 ^ (j + 2) :=
+    Nat.pow_le_pow_right (by norm_num : 0 < 2)
+      (Nat.add_le_add_right hij 2)
+  exact Nat.mul_le_mul
+    (Nat.add_le_add_right hpow_left 1)
+    (Nat.add_le_add_right hpow_right 1)
+
+/-- The rounded-dyadic-grid entropy-at-scale sequence is monotone, so the
+finite prefix-sup envelope can be eliminated from arbitrary finite-horizon
+bounds. -/
+theorem monotone_unitIntervalRoundedDyadicGridEntropy :
+    Monotone
+      (fun j : ℕ =>
+        Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) := by
+  intro i j hij
+  have hcount_pos_nat : 0 < unitIntervalRoundedDyadicGridCoverCount i := by
+    dsimp [unitIntervalRoundedDyadicGridCoverCount]
+    positivity
+  have hcount_pos : 0 < (unitIntervalRoundedDyadicGridCoverCount i : ℝ) := by
+    exact_mod_cast hcount_pos_nat
+  exact Real.sqrt_le_sqrt
+    (Real.log_le_log hcount_pos
+      (by
+        exact_mod_cast monotone_unitIntervalRoundedDyadicGridCoverCount hij))
+
+/-- Prefix-sup simplification for the rounded-dyadic-grid entropy sequence. -/
+theorem unitIntervalRoundedDyadicGridEntropy_prefixSup :
+    FiniteSubGaussianProcess.finitePrefixSupEnvelope
+        (fun j : ℕ =>
+          Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) =
+      (fun j : ℕ =>
+          Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) :=
+  FiniteSubGaussianProcess.finitePrefixSupEnvelope_eq_self_of_monotone
+    monotone_unitIntervalRoundedDyadicGridEntropy
+
+theorem unitIntervalRoundedDyadicGridNet_dist
+    (j : ℕ) :
+    (unitIntervalRoundedDyadicGridNet j).dist =
+      unitIntervalRademacherLinearProcess.dist := by
+  rfl
+
+theorem unitIntervalRoundedDyadicGridNet_radius_pos (j : ℕ) :
+    0 < (unitIntervalRoundedDyadicGridNet j).radius +
+      (unitIntervalRoundedDyadicGridNet (j + 1)).radius := by
+  have hleft : 0 < (unitIntervalRoundedDyadicGridNet j).radius := by
+    simp [unitIntervalRoundedDyadicGridNet, unitIntervalDyadicRoundedGridNet]
+  have hright : 0 ≤ (unitIntervalRoundedDyadicGridNet (j + 1)).radius :=
+    (unitIntervalRoundedDyadicGridNet (j + 1)).radius_nonneg
+  exact add_pos_of_pos_of_nonneg hleft hright
+
+theorem unitIntervalRoundedDyadicGridNet_radius_geometric (j : ℕ) :
+    (unitIntervalRoundedDyadicGridNet j).radius +
+        (unitIntervalRoundedDyadicGridNet (j + 1)).radius ≤
+      (1 : ℝ) / (2 : ℝ) ^ j := by
+  have hpow_pos : 0 < (2 : ℝ) ^ j := by positivity
+  have hleft :
+      (unitIntervalRoundedDyadicGridNet j).radius =
+        (1 : ℝ) / ((2 : ℝ) ^ (j + 2)) := by
+    simp [unitIntervalRoundedDyadicGridNet, unitIntervalDyadicRoundedGridNet,
+      Nat.cast_pow]
+  have hright :
+      (unitIntervalRoundedDyadicGridNet (j + 1)).radius =
+        (1 : ℝ) / ((2 : ℝ) ^ (j + 3)) := by
+    simp [unitIntervalRoundedDyadicGridNet, unitIntervalDyadicRoundedGridNet,
+      Nat.cast_pow]
+  rw [hleft, hright]
+  have hscaled :
+      (1 : ℝ) / ((2 : ℝ) ^ (j + 2)) +
+          (1 : ℝ) / ((2 : ℝ) ^ (j + 3)) =
+        (3 : ℝ) / (8 * (2 : ℝ) ^ j) := by
+    field_simp [hpow_pos.ne']
+    ring
+  rw [hscaled]
+  have hmul : (3 : ℝ) ≤ 8 := by norm_num
+  have hden_pos : 0 < (8 : ℝ) * (2 : ℝ) ^ j := by positivity
+  calc
+    (3 : ℝ) / (8 * (2 : ℝ) ^ j)
+        ≤ 8 / (8 * (2 : ℝ) ^ j) :=
+          div_le_div_of_nonneg_right hmul hden_pos.le
+    _ = (1 : ℝ) / (2 : ℝ) ^ j := by
+          field_simp [hpow_pos.ne']
+
+theorem unitIntervalRoundedDyadicGridNet_coveringNumber_product (j : ℕ) :
+    (unitIntervalRoundedDyadicGridNet j).coveringNumber *
+        (unitIntervalRoundedDyadicGridNet (j + 1)).coveringNumber =
+      unitIntervalRoundedDyadicGridCoverCount j := by
+  rw [unitIntervalRoundedDyadicGridNet, unitIntervalRoundedDyadicGridNet,
+    unitIntervalDyadicRoundedGridNet_coveringNumber,
+    unitIntervalDyadicRoundedGridNet_coveringNumber]
+  simp [unitIntervalRoundedDyadicGridCoverCount, add_comm, add_left_comm]
+
+private theorem unitIntervalRoundedDyadicGridNet_radius_le_quarter (j : ℕ) :
+    (unitIntervalRoundedDyadicGridNet j).radius ≤ (1 : ℝ) / 4 := by
+  have hpow_nat : 4 ≤ (2 : ℕ) ^ (j + 2) := by
+    have h := Nat.pow_le_pow_right (n := 2) (by norm_num) (by omega : 2 ≤ j + 2)
+    norm_num at h
+    exact h
+  have hden_ge : (4 : ℝ) ≤ (((2 : ℕ) ^ (j + 2) : ℕ) : ℝ) := by
+    exact_mod_cast hpow_nat
+  have hden_pos : 0 < ((((2 : ℕ) ^ (j + 2) : ℕ) : ℝ)) := by
+    positivity
+  have hle :
+      (1 : ℝ) / ((((2 : ℕ) ^ (j + 2) : ℕ) : ℝ)) ≤ (1 : ℝ) / 4 :=
+    div_le_div_of_nonneg_left zero_le_one (by norm_num) hden_ge
+  simpa [unitIntervalRoundedDyadicGridNet, unitIntervalDyadicRoundedGridNet,
+    Nat.add_assoc] using hle
+
+theorem unitIntervalRoundedDyadicGridNet_pair_card_gt_one (j : ℕ) :
+    1 < Fintype.card
+      (FiniteNet.ProjectionPair
+        (unitIntervalRoundedDyadicGridNet j)
+        (unitIntervalRoundedDyadicGridNet (j + 1))) := by
+  classical
+  let N0 := unitIntervalRoundedDyadicGridNet j
+  let N1 := unitIntervalRoundedDyadicGridNet (j + 1)
+  let p0 : FiniteNet.ProjectionPair N0 N1 :=
+    FiniteNet.projectionPairOf N0 N1 unitIntervalZero
+  let p1 : FiniteNet.ProjectionPair N0 N1 :=
+    FiniteNet.projectionPairOf N0 N1 unitIntervalOne
+  refine Fintype.one_lt_card_iff.mpr ⟨p0, p1, ?_⟩
+  intro hp
+  have hproj :
+      N0.project unitIntervalZero = N0.project unitIntervalOne := by
+    exact congrArg (fun p : FiniteNet.ProjectionPair N0 N1 => p.1.1) hp
+  have hcenter :
+      N0.projection unitIntervalZero = N0.projection unitIntervalOne := by
+    simp [FiniteNet.projection, hproj]
+  have hzero :
+      dist unitIntervalZero (N0.projection unitIntervalZero) ≤ N0.radius :=
+    N0.projection_dist_le unitIntervalZero
+  have hone :
+      dist (N0.projection unitIntervalZero) unitIntervalOne ≤ N0.radius := by
+    have h := N0.projection_dist_le unitIntervalOne
+    rw [hcenter]
+    simpa [dist_comm] using h
+  have hdist_le :
+      dist unitIntervalZero unitIntervalOne ≤ N0.radius + N0.radius := by
+    calc
+      dist unitIntervalZero unitIntervalOne
+          ≤ dist unitIntervalZero (N0.projection unitIntervalZero) +
+              dist (N0.projection unitIntervalZero) unitIntervalOne :=
+            dist_triangle unitIntervalZero (N0.projection unitIntervalZero)
+              unitIntervalOne
+      _ ≤ N0.radius + N0.radius := add_le_add hzero hone
+  have hradius_le :
+      N0.radius + N0.radius ≤ (1 : ℝ) / 2 := by
+    have h := unitIntervalRoundedDyadicGridNet_radius_le_quarter j
+    nlinarith
+  have hdist_half :
+      dist unitIntervalZero unitIntervalOne ≤ (1 : ℝ) / 2 :=
+    hdist_le.trans hradius_le
+  norm_num [dist_unitIntervalZero_unitIntervalOne] at hdist_half
+
+theorem unitIntervalRoundedDyadicGridNet_coverCount_le (j : ℕ) :
+    (unitIntervalRoundedDyadicGridNet j).coveringNumber *
+        (unitIntervalRoundedDyadicGridNet (j + 1)).coveringNumber ≤
+      unitIntervalRoundedDyadicGridCoverCount j := by
+  rw [unitIntervalRoundedDyadicGridNet_coveringNumber_product]
+
+theorem unitIntervalRoundedDyadicGridNet_radius_pos_range (m : ℕ) :
+    ∀ j ∈ Finset.range m,
+      0 < (unitIntervalRoundedDyadicGridNet j).radius +
+        (unitIntervalRoundedDyadicGridNet (j + 1)).radius := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_radius_pos j
+
+theorem unitIntervalRoundedDyadicGridNet_radius_geometric_range (m : ℕ) :
+    ∀ j ∈ Finset.range m,
+      (unitIntervalRoundedDyadicGridNet j).radius +
+          (unitIntervalRoundedDyadicGridNet (j + 1)).radius ≤
+        (1 : ℝ) / (2 : ℝ) ^ j := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_radius_geometric j
+
+theorem unitIntervalRoundedDyadicGridNet_pair_card_gt_one_range (m : ℕ) :
+    ∀ j ∈ Finset.range m,
+      1 < Fintype.card
+        (FiniteNet.ProjectionPair
+          (unitIntervalRoundedDyadicGridNet j)
+          (unitIntervalRoundedDyadicGridNet (j + 1))) := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_pair_card_gt_one j
+
+theorem unitIntervalRoundedDyadicGridNet_coverCount_le_range (m : ℕ) :
+    ∀ j ∈ Finset.range m,
+      (unitIntervalRoundedDyadicGridNet j).coveringNumber *
+          (unitIntervalRoundedDyadicGridNet (j + 1)).coveringNumber ≤
+        unitIntervalRoundedDyadicGridCoverCount j := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_coverCount_le j
+
+private theorem unitIntervalRoundedDyadicGridNet_radius_pos_m1 :
+    ∀ j ∈ Finset.range 1,
+      0 < (unitIntervalRoundedDyadicGridNet j).radius +
+        (unitIntervalRoundedDyadicGridNet (j + 1)).radius := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_radius_pos j
+
+private theorem unitIntervalRoundedDyadicGridNet_radius_geometric_m1 :
+    ∀ j ∈ Finset.range 1,
+      (unitIntervalRoundedDyadicGridNet j).radius +
+          (unitIntervalRoundedDyadicGridNet (j + 1)).radius ≤
+        (1 : ℝ) / (2 : ℝ) ^ j := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_radius_geometric j
+
+private theorem unitIntervalRoundedDyadicGridNet_pair_card_gt_one_m1 :
+    ∀ j ∈ Finset.range 1,
+      1 < Fintype.card
+        (FiniteNet.ProjectionPair
+          (unitIntervalRoundedDyadicGridNet j)
+          (unitIntervalRoundedDyadicGridNet (j + 1))) := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_pair_card_gt_one j
+
+private theorem unitIntervalRoundedDyadicGridNet_coverCount_le_15_m1 :
+    ∀ j ∈ Finset.range 1,
+      (unitIntervalRoundedDyadicGridNet j).coveringNumber *
+          (unitIntervalRoundedDyadicGridNet (j + 1)).coveringNumber ≤
+        (fun _ : ℕ => 15) j := by
+  intro j hj
+  simp at hj
+  subst j
+  change
+    (unitIntervalDyadicRoundedGridNet 1).coveringNumber *
+        (unitIntervalDyadicRoundedGridNet 2).coveringNumber ≤
+      15
+  rw [unitIntervalDyadicRoundedGridNet_coveringNumber_one,
+    unitIntervalDyadicRoundedGridNet_coveringNumber_two]
+
+private theorem unitIntervalRoundedDyadicGridNet_radius_pos_m2 :
+    ∀ j ∈ Finset.range 2,
+      0 < (unitIntervalRoundedDyadicGridNet j).radius +
+        (unitIntervalRoundedDyadicGridNet (j + 1)).radius := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_radius_pos j
+
+private theorem unitIntervalRoundedDyadicGridNet_radius_geometric_m2 :
+    ∀ j ∈ Finset.range 2,
+      (unitIntervalRoundedDyadicGridNet j).radius +
+          (unitIntervalRoundedDyadicGridNet (j + 1)).radius ≤
+        (1 : ℝ) / (2 : ℝ) ^ j := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_radius_geometric j
+
+private theorem unitIntervalRoundedDyadicGridNet_pair_card_gt_one_m2 :
+    ∀ j ∈ Finset.range 2,
+      1 < Fintype.card
+        (FiniteNet.ProjectionPair
+          (unitIntervalRoundedDyadicGridNet j)
+          (unitIntervalRoundedDyadicGridNet (j + 1))) := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_pair_card_gt_one j
+
+private theorem unitIntervalRoundedDyadicGridNet_coverCount_le_m2 :
+    ∀ j ∈ Finset.range 2,
+      (unitIntervalRoundedDyadicGridNet j).coveringNumber *
+          (unitIntervalRoundedDyadicGridNet (j + 1)).coveringNumber ≤
+        unitIntervalRoundedDyadicGridCoverCount j := by
+  intro j _hj
+  exact unitIntervalRoundedDyadicGridNet_coverCount_le j
+
+private theorem unitIntervalRademacherLinear_roundedDyadicGrid_coarse_m1 :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalRoundedDyadicGridNet 1) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalRoundedDyadicGridNet 0).projection
+              (FiniteNet.ProjectedIndex.source
+                (unitIntervalRoundedDyadicGridNet 1) u)))) ≤
+      (1 : ℝ) := by
+  calc
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalRoundedDyadicGridNet 1) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalRoundedDyadicGridNet 0).projection
+              (FiniteNet.ProjectedIndex.source
+                (unitIntervalRoundedDyadicGridNet 1) u))))
+        ≤ finiteExpectation unitIntervalRademacherLinearProcess.weight
+            (fun _ω : Bool => (1 : ℝ)) := by
+          refine finiteExpectation_mono
+            unitIntervalRademacherLinearProcess.weight_nonneg ?_
+          intro ω
+          simpa [unitIntervalRademacherLinearProcess] using
+            finiteSup_rademacherLinear_le_one ω
+              (fun u : FiniteNet.ProjectedIndex
+                  (unitIntervalRoundedDyadicGridNet 1) =>
+                (unitIntervalRoundedDyadicGridNet 0).projection
+                  (FiniteNet.ProjectedIndex.source
+                    (unitIntervalRoundedDyadicGridNet 1) u))
+    _ = (1 : ℝ) := by
+          exact finiteExpectation_const_of_sum_one
+            unitIntervalRademacherLinearProcess.weight 1
+            unitIntervalRademacherLinearProcess.weight_sum_one
+
+private theorem unitIntervalRademacherLinear_roundedDyadicGrid_coarse
+    (m : ℕ) :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalRoundedDyadicGridNet m) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalRoundedDyadicGridNet 0).projection
+              (FiniteNet.ProjectedIndex.source
+                (unitIntervalRoundedDyadicGridNet m) u)))) ≤
+      (1 : ℝ) := by
+  calc
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalRoundedDyadicGridNet m) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalRoundedDyadicGridNet 0).projection
+              (FiniteNet.ProjectedIndex.source
+                (unitIntervalRoundedDyadicGridNet m) u))))
+        ≤ finiteExpectation unitIntervalRademacherLinearProcess.weight
+            (fun _ω : Bool => (1 : ℝ)) := by
+          refine finiteExpectation_mono
+            unitIntervalRademacherLinearProcess.weight_nonneg ?_
+          intro ω
+          simpa [unitIntervalRademacherLinearProcess] using
+            finiteSup_rademacherLinear_le_one ω
+              (fun u : FiniteNet.ProjectedIndex
+                  (unitIntervalRoundedDyadicGridNet m) =>
+                (unitIntervalRoundedDyadicGridNet 0).projection
+                  (FiniteNet.ProjectedIndex.source
+                    (unitIntervalRoundedDyadicGridNet m) u))
+    _ = (1 : ℝ) := by
+          exact finiteExpectation_const_of_sum_one
+            unitIntervalRademacherLinearProcess.weight 1
+            unitIntervalRademacherLinearProcess.weight_sum_one
+
+/-- Generic rounded-dyadic-grid `m = 1` projected finite-net Dudley bound for
+the unit-interval Rademacher process. This replaces the bespoke half/quarter
+mesh sequence with `unitIntervalDyadicRoundedGridNet 1` and
+`unitIntervalDyadicRoundedGridNet 2`. -/
+theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_log15_bound :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 2) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalDyadicRoundedGridNet 2).center u.1))) ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 1
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun _ : ℕ => Real.sqrt (Real.log (15 : ℝ)))) := by
+  have hbase :=
+    FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope
+      (P := unitIntervalRademacherLinearProcess)
+      (A := unitIntervalRoundedDyadicGridIndex)
+      (N := unitIntervalRoundedDyadicGridNet)
+      (m := 1) (coarseBudget := (1 : ℝ)) (radiusScale := (1 : ℝ))
+      (coverCount := fun _ : ℕ => 15)
+      unitIntervalRoundedDyadicGridNet_dist
+      (by intro s t; exact dist_comm s t)
+      (by intro x y z; exact dist_triangle x y z)
+      (by norm_num [unitIntervalRademacherLinearProcess])
+      (by norm_num)
+      unitIntervalRoundedDyadicGridNet_radius_pos_m1
+      unitIntervalRoundedDyadicGridNet_radius_geometric_m1
+      unitIntervalRoundedDyadicGridNet_pair_card_gt_one_m1
+      unitIntervalRoundedDyadicGridNet_coverCount_le_15_m1
+      unitIntervalRademacherLinear_roundedDyadicGrid_coarse_m1
+  simpa [unitIntervalRoundedDyadicGridNet,
+    unitIntervalRoundedDyadicGridIndex,
+    unitIntervalRademacherLinearProcess] using hbase
+
+/-- Generic rounded-dyadic-grid `m = 2` projected finite-net Dudley bound for
+the unit-interval Rademacher process. This is the first finite-scale theorem
+using three rounded dyadic levels, with adjacent product counts supplied by
+`unitIntervalRoundedDyadicGridCoverCount`. -/
+theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m2_bound :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 3) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalDyadicRoundedGridNet 3).center u.1))) ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 2
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
+  have hbase :=
+    FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope
+      (P := unitIntervalRademacherLinearProcess)
+      (A := unitIntervalRoundedDyadicGridIndex)
+      (N := unitIntervalRoundedDyadicGridNet)
+      (m := 2) (coarseBudget := (1 : ℝ)) (radiusScale := (1 : ℝ))
+      (coverCount := unitIntervalRoundedDyadicGridCoverCount)
+      unitIntervalRoundedDyadicGridNet_dist
+      (by intro s t; exact dist_comm s t)
+      (by intro x y z; exact dist_triangle x y z)
+      (by norm_num [unitIntervalRademacherLinearProcess])
+      (by norm_num)
+      unitIntervalRoundedDyadicGridNet_radius_pos_m2
+      unitIntervalRoundedDyadicGridNet_radius_geometric_m2
+      unitIntervalRoundedDyadicGridNet_pair_card_gt_one_m2
+      unitIntervalRoundedDyadicGridNet_coverCount_le_m2
+      (unitIntervalRademacherLinear_roundedDyadicGrid_coarse 2)
+  simpa [unitIntervalRoundedDyadicGridNet,
+    unitIntervalRoundedDyadicGridIndex,
+    unitIntervalRademacherLinearProcess] using hbase
+
+/-- Generic finite-horizon rounded-dyadic-grid projected Dudley bound for the
+unit-interval Rademacher process. The terminal grid is the shifted rounded
+dyadic net `unitIntervalRoundedDyadicGridNet m`, and the entropy envelope is
+built from the adjacent rounded-grid covering products. -/
+theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound
+    (m : ℕ) :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalRoundedDyadicGridNet m) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalRoundedDyadicGridNet m).center u.1))) ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
+  have hbase :=
+    FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope
+      (P := unitIntervalRademacherLinearProcess)
+      (A := unitIntervalRoundedDyadicGridIndex)
+      (N := unitIntervalRoundedDyadicGridNet)
+      (m := m) (coarseBudget := (1 : ℝ)) (radiusScale := (1 : ℝ))
+      (coverCount := unitIntervalRoundedDyadicGridCoverCount)
+      unitIntervalRoundedDyadicGridNet_dist
+      (by intro s t; exact dist_comm s t)
+      (by intro x y z; exact dist_triangle x y z)
+      (by norm_num [unitIntervalRademacherLinearProcess])
+      (by norm_num)
+      (unitIntervalRoundedDyadicGridNet_radius_pos_range m)
+      (unitIntervalRoundedDyadicGridNet_radius_geometric_range m)
+      (unitIntervalRoundedDyadicGridNet_pair_card_gt_one_range m)
+      (unitIntervalRoundedDyadicGridNet_coverCount_le_range m)
+      (unitIntervalRademacherLinear_roundedDyadicGrid_coarse m)
+  simpa [unitIntervalRademacherLinearProcess] using hbase
+
+/-- Prefix-free finite-horizon rounded-dyadic-grid projected Dudley bound.
+
+The rounded-grid product-count entropy is monotone, so the generic prefix-sup
+envelope in the chaining theorem simplifies to the scale entropy itself. -/
+theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound_prefixFree
+    (m : ℕ) :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalRoundedDyadicGridNet m) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalRoundedDyadicGridNet m).center u.1))) ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
+          (fun j : ℕ =>
+            Real.sqrt
+              (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) := by
+  simpa [unitIntervalRoundedDyadicGridEntropy_prefixSup] using
+    unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound m
+
+/-- The `m = 3` projected rounded-dyadic-grid Dudley bound. This is a named
+corollary of the arbitrary finite-horizon theorem, using terminal level `4`. -/
+theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m3_bound :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 4) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalDyadicRoundedGridNet 4).center u.1))) ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 3
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
+  simpa [unitIntervalRoundedDyadicGridNet,
+    unitIntervalRoundedDyadicGridIndex,
+    unitIntervalRademacherLinearProcess] using
+    unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound 3
+
 private lemma unitIntervalRademacherLinearSup_le_projectedQuarterMeshSup
     (ω : Bool) :
     unitIntervalRademacherLinearSup ω ≤
@@ -831,6 +1763,389 @@ theorem unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound 
           (FiniteSubGaussianProcess.finitePrefixSupEnvelope
             (fun _ : ℕ => Real.sqrt (Real.log (15 : ℝ)))) :=
         unitIntervalRademacherLinear_projectedQuarterMesh_dudley_log15_bound
+
+/-- Any rounded dyadic grid contains both endpoints, so the supplied supremum
+for the Rademacher linear process is pointwise bounded by the projected finite
+supremum over that grid. -/
+theorem unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup
+    (level : ℕ) (ω : Bool) :
+    unitIntervalRademacherLinearSup ω ≤
+      finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet level) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalDyadicRoundedGridNet level).center u.1)) := by
+  classical
+  cases ω
+  · let u0 : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet level) :=
+      ⟨(unitIntervalDyadicRoundedGridNet level).project unitIntervalZero,
+        ⟨unitIntervalZero, rfl⟩⟩
+    have hle :=
+      Finset.le_sup'
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet level) =>
+          unitIntervalRademacherLinearProcess.X false
+            ((unitIntervalDyadicRoundedGridNet level).center u.1))
+        (Finset.mem_univ u0)
+    have hval :
+        unitIntervalRademacherLinearProcess.X false
+            ((unitIntervalDyadicRoundedGridNet level).center u0.1) = 0 := by
+      change unitIntervalRademacherLinearProcess.X false
+          (unitIntervalDyadicGridCenter level
+            (unitIntervalDyadicGridRoundProject level unitIntervalZero)) = 0
+      rw [unitIntervalDyadicGridRoundProject_zero,
+        unitIntervalDyadicGridCenter_leftEndpoint]
+      norm_num [unitIntervalRademacherLinearProcess, unitIntervalZero,
+        signOfBool]
+    have hle0 :
+        0 ≤ finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet level) =>
+            unitIntervalRademacherLinearProcess.X false
+              ((unitIntervalDyadicRoundedGridNet level).center u.1)) := by
+      unfold finiteSup
+      simpa [hval] using hle
+    simpa [unitIntervalRademacherLinearSup] using hle0
+  · let u1 : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet level) :=
+      ⟨(unitIntervalDyadicRoundedGridNet level).project unitIntervalOne,
+        ⟨unitIntervalOne, rfl⟩⟩
+    have hle :=
+      Finset.le_sup'
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet level) =>
+          unitIntervalRademacherLinearProcess.X true
+            ((unitIntervalDyadicRoundedGridNet level).center u.1))
+        (Finset.mem_univ u1)
+    have hval :
+        unitIntervalRademacherLinearProcess.X true
+            ((unitIntervalDyadicRoundedGridNet level).center u1.1) = 1 := by
+      change unitIntervalRademacherLinearProcess.X true
+          (unitIntervalDyadicGridCenter level
+            (unitIntervalDyadicGridRoundProject level unitIntervalOne)) = 1
+      rw [unitIntervalDyadicGridRoundProject_one,
+        unitIntervalDyadicGridCenter_rightEndpoint]
+      norm_num [unitIntervalRademacherLinearProcess, unitIntervalOne,
+        signOfBool]
+    have hle1 :
+        1 ≤ finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet level) =>
+            unitIntervalRademacherLinearProcess.X true
+              ((unitIntervalDyadicRoundedGridNet level).center u.1)) := by
+      unfold finiteSup
+      simpa [hval] using hle
+    simpa [unitIntervalRademacherLinearSup] using hle1
+
+/-- Any rounded dyadic projected finite supremum is exactly the supplied
+supremum for the unit-interval Rademacher linear process.
+
+The reverse inequality uses the fact that rounded dyadic grids contain both
+endpoints, while the forward inequality uses the range-level upper bound over
+the full unit interval. -/
+theorem unitIntervalRademacherLinear_projectedRoundedDyadicGridSup_eq
+    (level : ℕ) (ω : Bool) :
+    finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet level) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalDyadicRoundedGridNet level).center u.1)) =
+      unitIntervalRademacherLinearSup ω := by
+  classical
+  apply le_antisymm
+  · unfold finiteSup
+    exact Finset.sup'_le Finset.univ_nonempty _ fun u _hu =>
+      unitIntervalRademacherLinearSup_upper ω
+        ((unitIntervalDyadicRoundedGridNet level).center u.1)
+  · exact unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup level ω
+
+/-- The rounded level-`2` generic dyadic grid contains the endpoints, so the
+supplied supremum is pointwise bounded by its projected finite supremum. -/
+private lemma unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridLevelTwoSup
+    (ω : Bool) :
+    unitIntervalRademacherLinearSup ω ≤
+      finiteSup
+        (fun u : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet 2) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalDyadicRoundedGridNet 2).center u.1)) := by
+  classical
+  cases ω
+  · let u0 : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet 2) :=
+      ⟨(unitIntervalDyadicRoundedGridNet 2).project unitIntervalZero,
+        ⟨unitIntervalZero, rfl⟩⟩
+    have hle :=
+      Finset.le_sup'
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet 2) =>
+          unitIntervalRademacherLinearProcess.X false
+            ((unitIntervalDyadicRoundedGridNet 2).center u.1))
+        (Finset.mem_univ u0)
+    have hval :
+        unitIntervalRademacherLinearProcess.X false
+            ((unitIntervalDyadicRoundedGridNet 2).center u0.1) = 0 := by
+      norm_num [u0, unitIntervalRademacherLinearProcess,
+        unitIntervalDyadicRoundedGridNet, unitIntervalDyadicGridRoundProject,
+        unitIntervalDyadicGridCenter, unitIntervalZero, signOfBool]
+    have hle0 :
+        0 ≤ finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 2) =>
+            unitIntervalRademacherLinearProcess.X false
+              ((unitIntervalDyadicRoundedGridNet 2).center u.1)) := by
+      unfold finiteSup
+      simpa [hval] using hle
+    simpa [unitIntervalRademacherLinearSup] using hle0
+  · let u1 : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet 2) :=
+      ⟨(unitIntervalDyadicRoundedGridNet 2).project unitIntervalOne,
+        ⟨unitIntervalOne, rfl⟩⟩
+    have hle :=
+      Finset.le_sup'
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet 2) =>
+          unitIntervalRademacherLinearProcess.X true
+            ((unitIntervalDyadicRoundedGridNet 2).center u.1))
+        (Finset.mem_univ u1)
+    have hval :
+        unitIntervalRademacherLinearProcess.X true
+            ((unitIntervalDyadicRoundedGridNet 2).center u1.1) = 1 := by
+      have hfloor : Nat.floor ((9 : ℝ) / 2) = 4 := by
+        norm_num [Nat.floor_eq_iff]
+      norm_num [u1, unitIntervalRademacherLinearProcess,
+        unitIntervalDyadicRoundedGridNet, unitIntervalDyadicGridRoundProject,
+        unitIntervalDyadicGridCenter, unitIntervalOne, signOfBool,
+        hfloor]
+    have hle1 :
+        1 ≤ finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 2) =>
+            unitIntervalRademacherLinearProcess.X true
+              ((unitIntervalDyadicRoundedGridNet 2).center u.1)) := by
+      unfold finiteSup
+      simpa [hval] using hle
+    simpa [unitIntervalRademacherLinearSup] using hle1
+
+/-- Rounded generic-dyadic-grid Dudley bound for the supplied nonzero supremum
+of the unit-interval Rademacher process. This routes the supplied supremum
+through the generic rounded grid at levels `1` and `2`, rather than through the
+bespoke half/quarter mesh sequence. -/
+theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 1
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun _ : ℕ => Real.sqrt (Real.log (15 : ℝ)))) := by
+  calc
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 2) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalDyadicRoundedGridNet 2).center u.1))) := by
+        exact finiteExpectation_mono
+          unitIntervalRademacherLinearProcess.weight_nonneg
+          (unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup 2)
+    _ ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 1
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun _ : ℕ => Real.sqrt (Real.log (15 : ℝ)))) :=
+        unitIntervalRademacherLinear_roundedDyadicGrid_dudley_log15_bound
+
+private lemma unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridLevelThreeSup
+    (ω : Bool) :
+    unitIntervalRademacherLinearSup ω ≤
+      finiteSup
+        (fun u : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet 3) =>
+          unitIntervalRademacherLinearProcess.X ω
+            ((unitIntervalDyadicRoundedGridNet 3).center u.1)) := by
+  classical
+  cases ω
+  · let u0 : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet 3) :=
+      ⟨(unitIntervalDyadicRoundedGridNet 3).project unitIntervalZero,
+        ⟨unitIntervalZero, rfl⟩⟩
+    have hle :=
+      Finset.le_sup'
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet 3) =>
+          unitIntervalRademacherLinearProcess.X false
+            ((unitIntervalDyadicRoundedGridNet 3).center u.1))
+        (Finset.mem_univ u0)
+    have hval :
+        unitIntervalRademacherLinearProcess.X false
+            ((unitIntervalDyadicRoundedGridNet 3).center u0.1) = 0 := by
+      norm_num [u0, unitIntervalRademacherLinearProcess,
+        unitIntervalDyadicRoundedGridNet, unitIntervalDyadicGridRoundProject,
+        unitIntervalDyadicGridCenter, unitIntervalZero, signOfBool]
+    have hle0 :
+        0 ≤ finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 3) =>
+            unitIntervalRademacherLinearProcess.X false
+              ((unitIntervalDyadicRoundedGridNet 3).center u.1)) := by
+      unfold finiteSup
+      simpa [hval] using hle
+    simpa [unitIntervalRademacherLinearSup] using hle0
+  · let u1 : FiniteNet.ProjectedIndex (unitIntervalDyadicRoundedGridNet 3) :=
+      ⟨(unitIntervalDyadicRoundedGridNet 3).project unitIntervalOne,
+        ⟨unitIntervalOne, rfl⟩⟩
+    have hle :=
+      Finset.le_sup'
+        (fun u : FiniteNet.ProjectedIndex
+            (unitIntervalDyadicRoundedGridNet 3) =>
+          unitIntervalRademacherLinearProcess.X true
+            ((unitIntervalDyadicRoundedGridNet 3).center u.1))
+        (Finset.mem_univ u1)
+    have hval :
+        unitIntervalRademacherLinearProcess.X true
+            ((unitIntervalDyadicRoundedGridNet 3).center u1.1) = 1 := by
+      have hfloor : Nat.floor ((17 : ℝ) / 2) = 8 := by
+        norm_num [Nat.floor_eq_iff]
+      norm_num [u1, unitIntervalRademacherLinearProcess,
+        unitIntervalDyadicRoundedGridNet, unitIntervalDyadicGridRoundProject,
+        unitIntervalDyadicGridCenter, unitIntervalOne, signOfBool,
+        hfloor]
+    have hle1 :
+        1 ≤ finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 3) =>
+            unitIntervalRademacherLinearProcess.X true
+              ((unitIntervalDyadicRoundedGridNet 3).center u.1)) := by
+      unfold finiteSup
+      simpa [hval] using hle
+    simpa [unitIntervalRademacherLinearSup] using hle1
+
+/-- Rounded generic-dyadic-grid `m = 2` Dudley bound for the supplied nonzero
+supremum of the unit-interval Rademacher process. -/
+theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 2
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
+  calc
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalDyadicRoundedGridNet 3) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalDyadicRoundedGridNet 3).center u.1))) := by
+        exact finiteExpectation_mono
+          unitIntervalRademacherLinearProcess.weight_nonneg
+          unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridLevelThreeSup
+    _ ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 2
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) :=
+        unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m2_bound
+
+/-- Generic finite-horizon rounded-dyadic-grid Dudley bound for the supplied
+nonzero supremum of the unit-interval Rademacher process. This composes the
+arbitrary projected-grid theorem with the endpoint supremum adapter for the
+terminal rounded dyadic grid. -/
+theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound
+    (m : ℕ) :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
+  calc
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      finiteExpectation unitIntervalRademacherLinearProcess.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (unitIntervalRoundedDyadicGridNet m) =>
+            unitIntervalRademacherLinearProcess.X ω
+              ((unitIntervalRoundedDyadicGridNet m).center u.1))) := by
+        refine finiteExpectation_mono
+          unitIntervalRademacherLinearProcess.weight_nonneg ?_
+        intro ω
+        simpa [unitIntervalRoundedDyadicGridNet] using
+          unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup
+            (m + 1) ω
+    _ ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) :=
+        unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound m
+
+/-- Prefix-free arbitrary finite-horizon rounded-dyadic-grid Dudley bound for
+the supplied nonzero supremum.
+
+This is the same arbitrary-`m` theorem as
+`unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`, but with
+the monotone rounded-grid entropy sequence replacing the generic prefix-sup
+envelope. -/
+theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
+    (m : ℕ) :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
+          (fun j : ℕ =>
+            Real.sqrt
+              (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) := by
+  simpa [unitIntervalRoundedDyadicGridEntropy_prefixSup] using
+    unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound m
+
+/-- The `m = 3` rounded-dyadic-grid Dudley bound for the supplied nonzero
+supremum. This is the first named supplied-supremum corollary beyond the
+existing `m = 1` and `m = 2` examples. -/
+theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m3_bound :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 3
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
+  exact unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound 3
+
+/-- The rounded generic-dyadic-grid Dudley bound for the supplied supremum,
+with the one-step dyadic entropy budget evaluated. -/
+theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound_eval :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + Real.sqrt 2 * Real.sqrt (Real.log (15 : ℝ)) := by
+  have h :=
+    unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound
+  convert h using 1
+  · rw [FiniteSubGaussianProcess.finitePrefixSupEnvelope_const,
+      FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget_one_const]
+    simp [unitIntervalRademacherLinearProcess]
+    ring_nf
+
+/-- The projected-quarter finite-net Dudley bound for the supplied supremum,
+with the one-step dyadic entropy budget evaluated. -/
+theorem unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound_eval :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + Real.sqrt 2 * Real.sqrt (Real.log (15 : ℝ)) := by
+  have h :=
+    unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound
+  convert h using 1
+  · rw [FiniteSubGaussianProcess.finitePrefixSupEnvelope_const,
+      FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget_one_const]
+    simp [unitIntervalRademacherLinearProcess]
+    ring_nf
 
 private lemma unitIntervalRademacherLinearSup_le_one (ω : Bool) :
     unitIntervalRademacherLinearSup ω ≤ 1 := by

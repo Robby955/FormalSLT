@@ -2495,6 +2495,15 @@ def finiteDyadicEntropyIntegralBudget (radiusScale : ℝ) (m : ℕ)
     (radiusScale / (2 : ℝ) ^ j - radiusScale / (2 : ℝ) ^ (j + 1)) *
       entropyEnvelope j
 
+/-- One-step dyadic entropy budget for a constant entropy envelope. -/
+theorem finiteDyadicEntropyIntegralBudget_one_const
+    (radiusScale entropy : ℝ) :
+    finiteDyadicEntropyIntegralBudget radiusScale 1 (fun _ : ℕ => entropy) =
+      (radiusScale / 2) * entropy := by
+  rw [finiteDyadicEntropyIntegralBudget]
+  simp only [Finset.range_one, Finset.sum_singleton, pow_zero]
+  ring
+
 /-- Finite dyadic entropy-at-radius upper sum. The value
 `entropyAtRadius (radiusScale / 2^(j+1))` is sampled at the lower endpoint of
 the dyadic annulus `(radiusScale / 2^(j+1), radiusScale / 2^j]`.
@@ -2700,11 +2709,29 @@ it is not a continuous metric-entropy function. -/
 def finitePrefixSupEnvelope (entropyAtScale : ℕ → ℝ) : ℕ → ℝ :=
   fun j => (Finset.range (j + 1)).sup' (by simp) entropyAtScale
 
+/-- The finite prefix-sup envelope of a constant scale budget is constant. -/
+theorem finitePrefixSupEnvelope_const (entropy : ℝ) :
+    finitePrefixSupEnvelope (fun _ : ℕ => entropy) =
+      (fun _ : ℕ => entropy) := by
+  funext j
+  simp [finitePrefixSupEnvelope]
+
 /-- Each scale budget is bounded by its finite prefix-sup envelope. -/
 lemma le_finitePrefixSupEnvelope (entropyAtScale : ℕ → ℝ) (j : ℕ) :
     entropyAtScale j ≤ finitePrefixSupEnvelope entropyAtScale j := by
   unfold finitePrefixSupEnvelope
   exact Finset.le_sup' entropyAtScale (by simp)
+
+/-- A monotone finite scale budget is already equal to its prefix-sup envelope. -/
+theorem finitePrefixSupEnvelope_eq_self_of_monotone
+    {entropyAtScale : ℕ → ℝ} (hmono : Monotone entropyAtScale) :
+    finitePrefixSupEnvelope entropyAtScale = entropyAtScale := by
+  funext j
+  apply le_antisymm
+  · unfold finitePrefixSupEnvelope
+    exact Finset.sup'_le _ _ fun k hk =>
+      hmono (Nat.le_of_lt_succ (Finset.mem_range.mp hk))
+  · exact le_finitePrefixSupEnvelope entropyAtScale j
 
 /-- The finite prefix-sup envelope is monotone in the scale index. -/
 lemma monotone_finitePrefixSupEnvelope (entropyAtScale : ℕ → ℝ) :
