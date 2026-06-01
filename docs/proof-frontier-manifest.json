@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 23,
-    "library_and_example_lean_lines": 31137,
-    "library_lean_lines": 29386,
-    "library_modules": 55,
-    "theorem_map_entries": 372
+    "example_lean_files": 24,
+    "library_and_example_lean_lines": 31471,
+    "library_lean_lines": 29663,
+    "library_modules": 56,
+    "theorem_map_entries": 387
   },
   "theorem_families": [
     {
@@ -1206,6 +1206,101 @@
         }
       ],
       "name": "Two-point Dudley example"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDist",
+          "summary": "Discrete metric on Fin n"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDist_nonneg",
+          "summary": "The finite discrete metric is nonnegative"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDist_symm",
+          "summary": "The finite discrete metric is symmetric"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDist_triangle",
+          "summary": "The finite discrete metric satisfies the triangle inequality"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteZero_mgf_bound",
+          "summary": "Zero-process increments satisfy the sub-Gaussian MGF bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteZeroProcess",
+          "summary": "The zero process packaged as a finite sub-Gaussian process over Fin n"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDyadicNet",
+          "summary": "Full finite net on Fin n at every dyadic scale"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDyadicCoverCount",
+          "summary": "Explicit adjacent-scale cover-count envelope n * n"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDyadicNet_dist",
+          "summary": "Finite discrete nets use the process metric"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDyadicNet_coveringNumber",
+          "summary": "The full finite discrete net has covering number n"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDyadicNet_coverCount_le",
+          "summary": "Adjacent finite-discrete covering-number products are bounded by the n * n envelope"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDyadicNetSequence",
+          "summary": "General FiniteDyadicNetSequence instance for Fin n with [Fact (2 \u2264 n)]"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteZero_projected_dudley_m_bound",
+          "summary": "Arbitrary finite-horizon projected Dudley bound for the zero process routed through the generic dyadic-net API"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteZeroSup_le_projectedSup",
+          "summary": "Terminal projected-net adapter for the finite-discrete supplied supremum"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteZeroSup_dudley_m_bound",
+          "summary": "Supplied-supremum finite Dudley bound for the zero process routed through the generic dyadic-net API"
+        }
+      ],
+      "name": "Finite discrete Dudley family"
     },
     {
       "entries": [

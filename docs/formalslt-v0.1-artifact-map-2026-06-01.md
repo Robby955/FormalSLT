@@ -29,6 +29,7 @@ Fresh checks run from this worktree:
 ```bash
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 lake env lean examples/CheckV01Usability.lean
@@ -40,6 +41,7 @@ Results:
 
 - `CheckUnitIntervalDudley.lean`: `CHECK_UNIT_EXIT=0`
 - `CheckTwoPointDudley.lean`: `CHECK_TWO_POINT_EXIT=0`
+- `CheckFiniteDiscreteDudley.lean`: `CHECK_FIN_DISCRETE_EXIT=0`
 - `CheckFiniteUnionBound.lean`: `CHECK_UNION_EXIT=0`
 - `CheckUniformConvergence.lean`: `CHECK_UNIFORM_EXIT=0`
 - `CheckV01Usability.lean`: `CHECK_V01_EXIT=0`
@@ -172,6 +174,8 @@ What it does not prove:
 
 The v0.1 note should mention, but not headline, these already checked families:
 
+- The reusable dyadic-net API has concrete instances over the unit interval,
+  the two-point discrete metric, and the finite discrete family `Fin n`.
 - Rademacher symmetrization and finite-class high-probability bounds.
 - VC sample-complexity wrappers.
 - PAC-Bayes finite bounded-loss and finite-grid peeling wrappers.

@@ -16,7 +16,7 @@ for the Dudley lane, a concrete unit-interval Dudley example, and conditional
 sub-Gamma probability infrastructure for bounded, conditionally centered
 increments.
 
-**55 `FormalSLT/` Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**56 `FormalSLT/` Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
 Axioms used by the public theorem spine:
 `[propext, Classical.choice, Quot.sound]`.
@@ -48,6 +48,8 @@ proved over the full unit interval.
   [Unit-Interval Dudley Example](./docs/unit-interval-dudley.md).
 - **For the second reusable dyadic-net instantiation:** see
   [the two-point handoff note](./docs/formalslt-goal7-second-dyadic-net-instantiation-2026-06-01.md).
+- **For the finite discrete dyadic-net family:** see
+  [FormalSLT v0.1 quickstart](./docs/formalslt-v0.1-quickstart.md).
 - **For a generated proof-surface index:** see
   [Proof frontier manifest](./docs/proof-frontier.md).
 - **For scope and assumptions:** read
@@ -90,6 +92,7 @@ with explicit hypotheses and constants. The current public spine includes:
 | Total-bounded Dudley bridge | `Covering.TotalBoundedDudley` | totally bounded metric spaces yield dyadic finite-net schedules, projected finite-net wrappers, truncated interval-integral entropy comparisons, and supplied-supremum / finite-skeleton / pathwise-modulus / epsilonized boundary adapters | Verified bridge |
 | Unit-interval Dudley example | `Covering.UnitIntervalDudley` | `[0,1]` as a non-finite index space with rounded dyadic meshes, projection-pair entropy, and a supplied-supremum projected-mesh Dudley bound for `X(b,t)=sign(b)*t` | Verified example |
 | Two-point dyadic-net example | `Covering.TwoPointDudley` | second concrete `FiniteDyadicNetSequence` instance, showing the reusable dyadic-net wrapper is not tied to `[0,1]` | Verified example |
+| Finite discrete dyadic-net family | `Covering.FiniteDiscreteDudley` | general `FiniteDyadicNetSequence` instance for `Fin n` with the discrete metric and explicit `n * n` cover-count envelope | Verified API example |
 | Algorithmic stability | `AlgorithmicStability`, `Stability.BousquetElisseeff` | bounded-differences constants, finite and product-measure expected-gap wrappers with bound `β`, bounded-loss measurability adapters, and bounded-loss Azuma-constant concentration wrappers | Verified finite scaffold |
 | PAC-Bayes finite confidence layer | `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` | finite KL/DV change-of-measure, bounded-loss Catoni-style bound, closed PAC-Bayes good-event payoff, fixed-budget McAllester corollary, and finite-grid McAllester peeling wrapper | Verified finite layer |
 
@@ -166,6 +169,7 @@ lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 python3 scripts/check_doc_anchors.py \
   docs/formalslt-v0.1-technical-note.md \
@@ -196,7 +200,7 @@ The expected result is:
 - `lake build FormalSLT` exits successfully;
 - `examples/CheckV01Usability.lean` resolves the v0.1 citation targets and
   prints standard Lean/Mathlib axioms for the bundled confidence-sequence API,
-  the dyadic-net sequence API, and the two concrete dyadic-net instances;
+  the dyadic-net sequence API, and the concrete dyadic-net instances;
 - `examples/CheckShowcaseTheorems.lean` prints standard Lean/Mathlib axioms
   for selected public theorems;
 - `examples/CheckSubGammaExtractor.lean` prints standard Lean/Mathlib axioms
@@ -205,6 +209,8 @@ The expected result is:
   for the concrete unit-interval Dudley example;
 - `examples/CheckTwoPointDudley.lean` prints standard Lean/Mathlib axioms
   for the second dyadic-net example;
+- `examples/CheckFiniteDiscreteDudley.lean` prints standard Lean/Mathlib
+  axioms for the finite discrete dyadic-net family;
 - the `rg` commands find no executable `sorry`, no executable `admit`, and no
   custom axioms/constants in `FormalSLT` or `examples`;
 - the proof-frontier manifest is in sync with the theorem map and source counts;
@@ -221,7 +227,7 @@ The expected result is:
 | Rademacher route | `Rademacher.FiniteSample`, `Rademacher.FiniteSampleSymmetrization`, `Rademacher.ProbabilityBridge`, `Rademacher.Decoupling`, `Rademacher.Symmetrization`, `Rademacher.Massart`, `Rademacher.HighProbability`, `Rademacher.FiniteClassHighProb`, `Rademacher.UniformDeviation`, `Rademacher.ERMGeneralization`, `Rademacher.Contraction`, `Rademacher.LinearPredictor`, `Rademacher.Localized` |
 | Azuma infrastructure | `Azuma.ExposureMartingale`, `Azuma.BoundedDifferences`, `Azuma.BoundedDiffMartingale`, `Azuma.BoundedDiffsAzumaInput`, `Azuma.BoundedIncrementBound`, `Azuma.HasBoundedDifferences`, `Azuma.ExposureIncrementHoeffding`, `Azuma.ExposureIncrementCondMGF`, `Azuma.GenGapTail` |
 | VC route | `VC.Dimension`, `VC.PACBridge`, `VC.SauerShelah`, `VC.Rademacher`, `VC.SampleComplexity`, `VC.BinaryVCBridge` |
-| Covering and chaining | `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley`, `Covering.UnitIntervalDudley`, `Covering.TwoPointDudley` |
+| Covering and chaining | `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley`, `Covering.UnitIntervalDudley`, `Covering.TwoPointDudley`, `Covering.FiniteDiscreteDudley` |
 | Stability and PAC-Bayes foundations | `AlgorithmicStability`, `Stability.BousquetElisseeff`, `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` |
 
 ## Roadmap

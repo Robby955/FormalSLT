@@ -20,15 +20,17 @@ relatedTopics:
 ---
 
 FormalSLT is a Lean 4 library for checking theorem chains from statistical
-learning theory. The v0.1 surface has two useful endpoints and one API
-reusability check:
+learning theory. The v0.1 surface has two useful endpoints and two API
+reusability checks:
 
 1. a finite-class countable-time Hoeffding confidence-sequence wrapper for
    `[0,1]` losses;
 2. a concrete non-finite `[0,1]` Dudley bridge through rounded dyadic finite
-   nets.
+   nets;
 3. a second dyadic-net instance over a two-point metric space, showing that the
-   generic wrapper is not tied to `[0,1]`.
+   generic wrapper is not tied to `[0,1]`;
+4. a finite discrete `Fin n` dyadic-net family, showing the same wrapper with
+   explicit nonconstant cover-count bookkeeping.
 
 This page explains what is checked, what remains outside scope, and how to
 verify the claims locally.
@@ -238,6 +240,8 @@ a theorem constructing arbitrary measurable suprema for all non-finite classes.
   by `examples/CheckV01Usability.lean`.
 - The two-point dyadic-net example is covered by
   `examples/CheckTwoPointDudley.lean`.
+- The finite discrete `Fin n` dyadic-net family is covered by
+  `examples/CheckFiniteDiscreteDudley.lean`.
 - The printed axiom profile for the headline declarations stays inside:
 
 ```text
@@ -266,6 +270,7 @@ lake build
 lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
@@ -301,8 +306,9 @@ Two next steps would make the checked surface easier to use:
 
 1. Use the `FiniteClassConfidenceSequence` bundle in downstream formal
    statements instead of restating the long theorem signature.
-2. Instantiate the dyadic-net API on a finite family with more than two points,
-   so the cover-count bookkeeping is tested outside constant-size examples.
+2. Replace the finite-discrete zero-process example with a nonzero finite
+   process, so the finite-family API check also exercises a nontrivial
+   supremum.
 3. Abstract the rounded dyadic-net Dudley wrapper so the unit-interval proof is
    one instance of a reusable finite-horizon theorem.
 

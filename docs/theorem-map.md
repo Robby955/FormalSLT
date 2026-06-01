@@ -223,6 +223,26 @@ declarations; modules are relative to `FormalSLT`.
 | `twoPointRademacherSup_le_projectedSup` | `Covering.TwoPointDudley` | Terminal projected-net adapter for the two-point supplied supremum |
 | `twoPointRademacherSup_dudley_m_bound` | `Covering.TwoPointDudley` | Supplied-supremum finite Dudley bound routed through the generic dyadic-net sequence API |
 
+## Finite discrete Dudley family
+
+| Declaration | Module | Role |
+|---|---|---|
+| `finDiscreteDist` | `Covering.FiniteDiscreteDudley` | Discrete metric on `Fin n` |
+| `finDiscreteDist_nonneg` | `Covering.FiniteDiscreteDudley` | The finite discrete metric is nonnegative |
+| `finDiscreteDist_symm` | `Covering.FiniteDiscreteDudley` | The finite discrete metric is symmetric |
+| `finDiscreteDist_triangle` | `Covering.FiniteDiscreteDudley` | The finite discrete metric satisfies the triangle inequality |
+| `finDiscreteZero_mgf_bound` | `Covering.FiniteDiscreteDudley` | Zero-process increments satisfy the sub-Gaussian MGF bound |
+| `finDiscreteZeroProcess` | `Covering.FiniteDiscreteDudley` | The zero process packaged as a finite sub-Gaussian process over `Fin n` |
+| `finDiscreteDyadicNet` | `Covering.FiniteDiscreteDudley` | Full finite net on `Fin n` at every dyadic scale |
+| `finDiscreteDyadicCoverCount` | `Covering.FiniteDiscreteDudley` | Explicit adjacent-scale cover-count envelope `n * n` |
+| `finDiscreteDyadicNet_dist` | `Covering.FiniteDiscreteDudley` | Finite discrete nets use the process metric |
+| `finDiscreteDyadicNet_coveringNumber` | `Covering.FiniteDiscreteDudley` | The full finite discrete net has covering number `n` |
+| `finDiscreteDyadicNet_coverCount_le` | `Covering.FiniteDiscreteDudley` | Adjacent finite-discrete covering-number products are bounded by the `n * n` envelope |
+| `finDiscreteDyadicNetSequence` | `Covering.FiniteDiscreteDudley` | General `FiniteDyadicNetSequence` instance for `Fin n` with `[Fact (2 ≤ n)]` |
+| `finDiscreteZero_projected_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Arbitrary finite-horizon projected Dudley bound for the zero process routed through the generic dyadic-net API |
+| `finDiscreteZeroSup_le_projectedSup` | `Covering.FiniteDiscreteDudley` | Terminal projected-net adapter for the finite-discrete supplied supremum |
+| `finDiscreteZeroSup_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Supplied-supremum finite Dudley bound for the zero process routed through the generic dyadic-net API |
+
 ## Unit-interval Dudley example
 
 | Declaration | Module | Role |

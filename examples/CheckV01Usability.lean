@@ -1,4 +1,5 @@
 import FormalSLT
+import FormalSLT.Covering.FiniteDiscreteDudley
 
 /-!
 # FormalSLT v0.1 usability checker
@@ -9,7 +10,7 @@ should cite:
 
 * the finite-class countable-time Hoeffding confidence-sequence API;
 * the unit-interval rounded-dyadic Dudley bridge;
-* the reusable finite dyadic-net sequence API, instantiated on two examples.
+* the reusable finite dyadic-net sequence API, instantiated on three examples.
 
 Run it directly with:
 
@@ -60,3 +61,14 @@ lake env lean examples/CheckV01Usability.lean
 
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound
+
+/-! ## Finite discrete dyadic-net family -/
+
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
+
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZero_projected_dudley_m_bound
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZero_projected_dudley_m_bound
+
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZeroSup_dudley_m_bound
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZeroSup_dudley_m_bound

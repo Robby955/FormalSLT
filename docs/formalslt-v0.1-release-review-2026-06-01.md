@@ -10,6 +10,8 @@ surface is coherent enough for review: the Lean build passes, all example
 checkers pass, the theorem map and proof-frontier manifest are in sync, and the
 v0.1 quickstart checker imports the bundled confidence-sequence API, the
 unit-interval Dudley bridge, and the reusable dyadic-net sequence API.
+The reusable dyadic-net surface now includes both the two-point discrete
+instance and the general finite discrete `Fin n` family.
 
 This is not a public release decision. No push, pull request, merge, post, or
 external comment has been made.
@@ -95,6 +97,25 @@ Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated on a
 second metric index family. This is an API-usability check, not a stronger
 Dudley theorem.
 
+### Finite Discrete Dyadic-Net API Check
+
+Main local declarations:
+
+- `finDiscreteDyadicNetSequence`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:187`)
+- `finDiscreteDyadicCoverCount`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:103`)
+- `finDiscreteZero_projected_dudley_m_bound`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:221`)
+- `finDiscreteZeroSup_dudley_m_bound`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:254`)
+
+Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated for
+`Fin n` with the discrete metric under `[Fact (2 ≤ n)]`. The example uses the
+full finite set as every net and exposes the nonconstant cover-count envelope
+`n * n`. This checks the generic wrapper's finite-family ergonomics; it is not
+a stronger Dudley theorem than the unit-interval bridge.
+
 ## TheoremPath Stage A Alignment
 
 TheoremPath Stage A should point the "Verified in Lean" link at:
@@ -127,6 +148,7 @@ FormalSLT:
 for f in examples/*.lean; do ~/.elan/bin/lake env lean "$f"; done
 ~/.elan/bin/lake env lean examples/CheckV01Usability.lean
 ~/.elan/bin/lake env lean examples/CheckTwoPointDudley.lean
+~/.elan/bin/lake env lean examples/CheckFiniteDiscreteDudley.lean
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
@@ -147,6 +169,7 @@ FormalSLT results:
 - Example checkers: `23` files, all `EXIT=0`.
 - `CheckV01Usability.lean`: exit `0`.
 - `CheckTwoPointDudley.lean`: exit `0`.
+- `CheckFiniteDiscreteDudley.lean`: exit `0`.
 - `sorry` / `admit` scan: no matches.
 - custom `axiom` / `constant` scan: no matches.
 - proof-frontier manifest check: exit `0`.
@@ -205,6 +228,8 @@ summary can safely say:
   bridge for a concrete non-finite metric index space.
 - FormalSLT contains a second concrete finite dyadic-net sequence instance over
   a two-point metric space, showing that the dyadic-net wrapper is reusable.
+- FormalSLT contains a general finite discrete dyadic-net sequence instance over
+  `Fin n`, checking the same wrapper with explicit nonconstant cover counts.
 - TheoremPath Stage A can display a dyadic Hoeffding review-count calculation
   and cite the bundled FormalSLT theorem as the Lean-backed endpoint.
 

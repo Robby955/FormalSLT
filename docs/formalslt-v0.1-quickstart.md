@@ -15,13 +15,15 @@ The v0.1 surface has three citation targets.
 | Finite-class countable-time Hoeffding confidence sequence | `FiniteClassConfidenceSequence.failure_probability_le` | `examples/CheckUniformConvergence.lean` |
 | Unit-interval rounded-dyadic Dudley bridge | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `examples/CheckUnitIntervalDudley.lean` |
 | Reusable finite dyadic-net sequence API | `FiniteDyadicNetSequence.supFunctional_dudley_bound` | `examples/CheckV01Usability.lean` |
+| Finite discrete dyadic-net family | `finDiscreteDyadicNetSequence` | `examples/CheckFiniteDiscreteDudley.lean` |
 
-The two concrete dyadic-net instances are:
+The three concrete dyadic-net instances are:
 
 | Instance | Declaration | Role |
 |---|---|---|
 | Unit interval | `unitIntervalRoundedDyadicGridNetSequence` | Non-finite index-space example over `[0,1]` |
 | Two-point discrete space | `twoPointDyadicNetSequence` | Second API instantiation, independent of `[0,1]` |
+| Finite discrete spaces | `finDiscreteDyadicNetSequence` | General `Fin n` discrete-metric family, testing cover-count scaling beyond constant-size examples |
 
 ## Ten-Minute Verification Path
 
@@ -61,6 +63,7 @@ import FormalSLT
 #check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
 #check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
 #check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
 ```
 
 For narrower imports:
@@ -69,6 +72,7 @@ For narrower imports:
 import FormalSLT.UniformConvergence
 import FormalSLT.Covering.UnitIntervalDudley
 import FormalSLT.Covering.TwoPointDudley
+import FormalSLT.Covering.FiniteDiscreteDudley
 ```
 
 ## Full Local Verification
@@ -80,6 +84,7 @@ lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUniformConvergence.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 ```
 
 Run the full library and manifest checks:

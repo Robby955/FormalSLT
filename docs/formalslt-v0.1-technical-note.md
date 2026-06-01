@@ -7,13 +7,15 @@ Status: local release-candidate note
 
 FormalSLT is a Lean 4 library for machine-checking theorem chains from
 statistical learning theory. The current v0.1 surface contains two checked
-endpoints and one reusable-API check. First, it proves a finite-class countable-time Hoeffding
+endpoints and two reusable-API checks. First, it proves a finite-class countable-time Hoeffding
 confidence-sequence wrapper for `[0,1]` losses, using explicit dyadic failure
 budgets and finite union bounds. Second, it proves a concrete non-finite
 `[0,1]` Dudley bridge: a Rademacher linear process indexed by the unit interval
 is routed through rounded dyadic finite nets and finite sub-Gaussian chaining.
 The dyadic-net API is also instantiated on a two-point discrete metric space,
-showing that the wrapper is not only a unit-interval-specific proof script.
+and on the finite discrete family `Fin n`, showing that the wrapper is not only
+a unit-interval-specific proof script and that the cover-count interface scales
+past constant-size examples.
 
 The contribution is deliberately finite-scale. The library does not yet prove
 the continuous Dudley entropy integral, construct arbitrary measurable suprema,
@@ -47,6 +49,8 @@ interfaces:
    explicit finite nets.
 3. A two-point dyadic-net example checks that the generic finite dyadic-net API
    is reusable outside the unit interval.
+4. A `Fin n` discrete-metric example checks the same API on a finite family
+   with nonconstant cover counts.
 
 Together, these endpoints make the library more than a collection of isolated
 lemmas. They show checked theorem chains from assumptions to named
@@ -54,7 +58,7 @@ route-facing theorems.
 
 ## 2. Architecture
 
-The v0.1 surface is distributed across six modules.
+The v0.1 surface is distributed across seven modules.
 
 | Module | Role |
 |---|---|
@@ -64,6 +68,7 @@ The v0.1 surface is distributed across six modules.
 | `FormalSLT/Covering/TotalBoundedDudley.lean` | adapters from total boundedness to finite-net Dudley wrappers |
 | `FormalSLT/Covering/UnitIntervalDudley.lean` | concrete non-finite `[0,1]` example using rounded dyadic grids |
 | `FormalSLT/Covering/TwoPointDudley.lean` | second `FiniteDyadicNetSequence` instance over a two-point metric space |
+| `FormalSLT/Covering/FiniteDiscreteDudley.lean` | general `FiniteDyadicNetSequence` instance over finite discrete spaces `Fin n` |
 
 The proof surface is checked by:
 
@@ -73,6 +78,7 @@ lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 ```
 
 Those example files do not replace `lake build`; they give a focused
@@ -288,10 +294,10 @@ nearest-grid radius:
 That radius is the finite-net scale needed to make the Dudley chain reusable
 instead of being only a hand-built `m = 1` example.
 
-## 5. Reusable Dyadic-Net API Check
+## 5. Reusable Dyadic-Net API Checks
 
 The unit-interval module is the main non-finite example. The supporting
-reusability check is:
+constant-size reusability check is:
 
 ```lean
 twoPointDyadicNetSequence
@@ -317,7 +323,47 @@ twoPointRademacherSup_dudley_m_bound
 
 This is not a stronger empirical-process result than the unit-interval
 example. Its purpose is usability: downstream readers can see which hypotheses
-the generic wrapper needs, then compare two concrete instances.
+the generic wrapper needs, then compare multiple concrete instances.
+
+The finite-family reusability check is:
+
+```lean
+finDiscreteDyadicNetSequence
+```
+
+Anchor: `finDiscreteDyadicNetSequence` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:187`.
+
+This declaration instantiates `FiniteDyadicNetSequence` for `Fin n` with the
+discrete metric under the nondegeneracy assumption `[Fact (2 ≤ n)]`. The full
+finite set is used as the net at every scale, so the cover-count envelope is
+explicit:
+
+```lean
+finDiscreteDyadicCoverCount n j = n * n
+```
+
+Anchor: `finDiscreteDyadicCoverCount` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:103`.
+
+The module then routes the zero process through the generic projected and
+supplied-supremum wrappers:
+
+```lean
+finDiscreteZero_projected_dudley_m_bound
+finDiscreteZeroSup_dudley_m_bound
+```
+
+Anchors:
+`finDiscreteZero_projected_dudley_m_bound` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:221`, and
+`finDiscreteZeroSup_dudley_m_bound` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:254`.
+
+This finite-discrete example is deliberately a zero-process theorem. Its role
+is API pressure: it checks that the finite dyadic-net wrapper can be
+instantiated for a whole finite family with a declared metric, finite nets,
+cover-count bounds, and supplied-supremum routing.
 
 ## 6. Verification and Axiom Profile
 
@@ -330,6 +376,7 @@ Fresh commands:
 lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
@@ -342,6 +389,7 @@ Observed results:
 CHECK_V01_EXIT=0
 CHECK_UNIT_EXIT=0
 CHECK_TWO_POINT_EXIT=0
+CHECK_FIN_DISCRETE_EXIT=0
 CHECK_UNION_EXIT=0
 CHECK_UNIFORM_EXIT=0
 MANIFEST_CHECK_EXIT=0
@@ -459,6 +507,7 @@ lake build
 lake env lean examples/CheckV01Usability.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
 lake env lean examples/CheckFiniteUnionBound.lean
 lake env lean examples/CheckUniformConvergence.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
