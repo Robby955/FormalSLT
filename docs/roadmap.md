@@ -1,5 +1,8 @@
 # Roadmap
 
+For the current finite-class and finite-net proof spine, see
+[`verified-slt-program-outline.md`](verified-slt-program-outline.md).
+
 ## Completed
 
 - [x] Population risk, empirical risk, ERM definitions
@@ -207,14 +210,14 @@
   - Improve 8B² → 2B² in the exponent
   - Current proofs bound the sub-Gaussian parameter by ‖c_k‖₊², giving
     exp(-ε²/(2·∑c_k²)). The sharp bound uses the range 2c_k with classical
-    Hoeffding, giving exp(-2ε²/(∑(2c_k)²)) = exp(-ε²/(2·∑c_k²)) — same
+    Hoeffding, giving exp(-2ε²/(∑(2c_k)²)) = exp(-ε²/(2·∑c_k²)), same
     numerics but obtained via a different decomposition.
   - Actual gap: our proof uses |Δ_k| ≤ c_k as sub-Gaussian with param c_k²,
     while the sharp route needs conditional Hoeffding on [a_k, b_k] with
     b_k - a_k ≤ 2c_k. This requires `MeasureTheory.condExpKernel` (product-
     measure disintegration) which Mathlib does not yet export in usable form.
 
-- [x] **Algorithmic stability — expected bound**
+- [x] **Algorithmic stability: expected bound**
   - Measure-theoretic iid `E[R(A(S)) − R̂(A(S),S)] ≤ β` via product-measure
     coordinate-swap symmetry, with explicit integrability assumptions.
   - Bounded-loss adapters now discharge those integrability assumptions for
@@ -226,7 +229,7 @@
     product-kernel decomposition, or add concrete algorithm-specific
     stability examples.
 
-- [ ] **Localized Rademacher — random-threshold concentration refinement**
+- [ ] **Localized Rademacher: random-threshold concentration refinement**
   - The deterministic fixed-point certificate layer is closed.
   - The deterministic localized deviation certificate shell is closed.
   - The localized upper-deviation event adapter is closed.
@@ -250,7 +253,7 @@
   - The centered shifted-moment interface is closed as an *algebraic* layer:
     only the fixed slack is factored out, while the empirical localized
     complexity term stays syntactically inside the pointwise moment budget.
-    This layer is conservative-only — each per-hypothesis centered moment is
+    This layer is conservative-only: each per-hypothesis centered moment is
     pointwise at most the fixed moment (nonnegativity of `R̂_loc`), so the
     union bound over it cannot beat the conservative fixed-threshold bound.
   - The finite Bernstein variance-localization route is now closed locally:

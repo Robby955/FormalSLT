@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 19,
-    "library_and_example_lean_lines": 25434,
-    "library_lean_lines": 24185,
+    "example_lean_files": 21,
+    "library_and_example_lean_lines": 30491,
+    "library_lean_lines": 28870,
     "library_modules": 54,
-    "theorem_map_entries": 224
+    "theorem_map_entries": 354
   },
   "theorem_families": [
     {
@@ -138,6 +138,460 @@
         }
       ],
       "name": "Core definitions"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Probability.FiniteUnionBound",
+          "name": "finiteMeasureUnionBound",
+          "summary": "Finite-index measure union bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.FiniteUnionBound",
+          "name": "finiteMeasureUnionBound_budget",
+          "summary": "Supplied finite per-event budgets whose sum is bounded by a total budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.FiniteUnionBound",
+          "name": "finiteMeasureUnionBound_const",
+          "summary": "Common per-event budget gives card * \u03b2 total mass"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.FiniteUnionBound",
+          "name": "finiteMeasureUnionBound_equalBudget",
+          "summary": "Explicit per-event budget whose finite sum is bounded by a total budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.FiniteUnionBound",
+          "name": "finiteMeasureUnionBound_cardInv",
+          "summary": "Nonempty finite class with per-event budget \u03b1 / card has union mass \u2264 \u03b1"
+        }
+      ],
+      "name": "Finite union and budget allocation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteClassUniformDeviationUnionBound",
+          "summary": "Pointwise finite-class bad-event tails imply a simultaneous card * tail bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteClassUniformDeviationUnionBound_cardInv",
+          "summary": "Equal split of a target failure budget gives simultaneous mass \u2264 \u03b4"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteClassTwoSidedUniformDeviationUnionBound",
+          "summary": "Pointwise absolute-deviation tails imply a simultaneous finite-class bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteClassTwoSidedUniformDeviationUnionBound_cardInv",
+          "summary": "Equal-budget absolute-deviation bridge for finite hypothesis classes"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassUnionBound_cardInv",
+          "summary": "Equal-budget union bound over a finite time horizon and finite hypothesis class"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassTwoSidedUniformDeviationUnionBound_cardInv",
+          "summary": "Finite-horizon absolute-deviation shell over all (time, hypothesis) pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassUnionBound_timeBudget",
+          "summary": "Finite time budgets whose sum is \u2264 \u03b4, with each time split across hypotheses"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassTwoSidedUniformDeviationUnionBound_timeBudget",
+          "summary": "Finite-horizon absolute-deviation shell with a supplied time-budget sequence"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassTwoSidedUniformDeviationUnionBound_timeBudget_threshold",
+          "summary": "Finite-horizon absolute-deviation shell with a threshold depending on (time, hypothesis)"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteDyadicTimeBudget",
+          "summary": "Standard dyadic time-budget schedule \u03b4 * 2^(-1-t)"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteDyadicTimeBudget_sum_fin_le",
+          "summary": "Every finite prefix of the dyadic time-budget schedule sums to at most \u03b4"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteDyadicTimeBudget_tsum_le",
+          "summary": "The full natural-time dyadic schedule has total budget at most \u03b4"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "countableTimeClassUnionBound_timeBudget",
+          "summary": "Countable-time finite-class union shell with a supplied summable time-budget sequence"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "countableTimeClassUnionBound_dyadicBudget",
+          "summary": "Countable-time finite-class union shell using the standard dyadic schedule"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "countableTimeClassTwoSidedUniformDeviationUnionBound_dyadicBudget_threshold",
+          "summary": "Countable-time dyadic absolute-deviation shell with time-varying thresholds"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "countableTimeClass_iUnion_eq_exists",
+          "summary": "Rewrites a countable time-class indexed union as an existential event"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "countableTimeClass_not_forall_lt_eq_exists_ge",
+          "summary": "Rewrites failure of an all-times/all-hypotheses strict bound as an existential crossing event"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassUnionBound_dyadicBudget",
+          "summary": "Finite-prefix time-class union shell using the standard dyadic schedule"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassTwoSidedUniformDeviationUnionBound_dyadicBudget",
+          "summary": "Finite-prefix absolute-deviation shell using the standard dyadic schedule"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassTwoSidedUniformDeviationUnionBound_dyadicBudget_threshold",
+          "summary": "Finite-prefix dyadic absolute-deviation shell with time-varying thresholds"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassTwoSidedUnionBoundFromOneSidedTails_dyadicBudget",
+          "summary": "Finite-prefix dyadic shell from one-sided upper and lower pointwise tails"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUpperHoeffdingTail",
+          "summary": "Named ENNReal upper-tail budget produced by the fixed-hypothesis Hoeffding wrapper"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageLowerHoeffdingTail",
+          "summary": "Named ENNReal lower-tail budget produced by the fixed-hypothesis Hoeffding wrapper"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassEmpiricalAverageDeviationFromHoeffding_dyadicBudget",
+          "summary": "Finite-prefix dyadic finite-class deviation bound from bounded independent empirical-average losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_dyadicBudget",
+          "summary": "Shared-sample finite-prefix wrapper for bounded independent empirical-average losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUpperHoeffdingTail_eq_lower",
+          "summary": "Normalizes the upper-tail Hoeffding range expression to the lower-tail expression"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageTwoSidedHoeffdingTail",
+          "summary": "Combined two-sided empirical-average Hoeffding budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_twoSidedTailBudget",
+          "summary": "Shared-sample finite-prefix wrapper using one combined two-sided Hoeffding budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeTwoSidedHoeffdingTail",
+          "summary": "Uniform-range two-sided empirical-average Hoeffding budget with one denominator proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageTwoSidedHoeffdingTail_le_uniformRangeTwoSidedHoeffdingTail",
+          "summary": "Algebraic bridge from the concrete finite sum of squared half-ranges to the uniform range proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageRangeSum_le_card_mul_uniformRange",
+          "summary": "Finite-sum range envelope from a pointwise uniform range-width bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageRangeSum_pos_of_exists_range_pos",
+          "summary": "Positive finite-sum denominator certificate from one sampled coordinate with positive range"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageTwoSidedHoeffdingTail_le_uniformRangeTwoSidedHoeffdingTail_of_rangeBound",
+          "summary": "Two-sided Hoeffding tail bridge from a pointwise range-width bound and closed-form proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageTwoSidedHoeffdingTail_le_uniformRangeTwoSidedHoeffdingTail_of_rangeBound_of_exists_range_pos",
+          "summary": "Two-sided Hoeffding tail bridge using pointwise range width and an explicit nondegenerate sample coordinate"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_uniformRangeBudget",
+          "summary": "Shared-sample finite-prefix wrapper using one uniform range proxy and dyadic time budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_uniformRangeBudget_of_rangeBound",
+          "summary": "Shared-sample finite-prefix wrapper with pointwise uniform range width and one closed-form proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_uniformRangeBudget_of_rangeBound_of_exists_range_pos",
+          "summary": "Shared-sample finite-prefix wrapper with pointwise uniform range width and nondegenerate sample-coordinate certificates"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail",
+          "summary": "Displayed two-sided Hoeffding budget 2 * exp(-2 * sampleSize * \u03b5^2 / R^2)"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeTwoSidedHoeffdingTail_eq_sampleSizeTail",
+          "summary": "Algebraic identification between the range-proxy budget and the sample-size display"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize",
+          "summary": "Shared-sample finite-prefix wrapper using the displayed sample-size Hoeffding budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_threshold",
+          "summary": "Shared-sample finite-prefix wrapper using a displayed sample-size Hoeffding budget and time-varying thresholds"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_logBudget",
+          "summary": "Real log-budget condition implies the displayed Hoeffding tail fits a target budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_explicitRadius",
+          "summary": "Unit-range displayed Hoeffding tail is bounded at the inverted square-root confidence radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_sampleSize_ge",
+          "summary": "Explicit sample-size lower bound implies the displayed Hoeffding tail fits a target budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_from_logBudget",
+          "summary": "Shared-sample finite-prefix wrapper using real log budgets below the dyadic ENNReal budget split"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_ge",
+          "summary": "Shared-sample finite-prefix wrapper using explicit sample-size lower bounds and real budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_dyadicRealBudget",
+          "summary": "Shared-sample finite-prefix wrapper using explicit sample-size lower bounds and the concrete dyadic real budget \u03b4 * 2^(-1-t) / card(H)"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteDyadicRealBudget_classBudget_ofReal",
+          "summary": "Concrete real dyadic class budget maps exactly to the ENNReal dyadic time/class split"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "empiricalAverageUniformRangeSampleSize_ge_of_sqrtBudget_le",
+          "summary": "Algebraic bridge from a square-root radius condition to the displayed sample-size lower bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_epsilonOfSampleSize_dyadicRealBudget",
+          "summary": "Shared-sample finite-prefix wrapper using a radius-style condition and the concrete dyadic real budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteDyadicRealBudget_horizon_le_time",
+          "summary": "Finite-horizon dyadic real-budget monotonicity: the horizon budget is no larger than any prefix time budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_horizonUniformRadius_dyadicRealBudget",
+          "summary": "Shared-sample finite-prefix wrapper using one horizon-level radius condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteDyadicRealBudget_horizon_logBudget_eq_closedForm",
+          "summary": "Closed-form rewrite of the finite-horizon dyadic log-budget term"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_closedFormHorizonRadius_dyadicRealBudget",
+          "summary": "Shared-sample finite-prefix wrapper using a closed-form horizon/class/budget radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_closedFormHorizonSampleSize_dyadicRealBudget",
+          "summary": "Shared-sample finite-prefix wrapper using a closed-form horizon/class/budget sample-size condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_closedForm",
+          "summary": "Route-facing finite-prefix finite-class Hoeffding deviation theorem with the closed-form sample-size condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_closedForm_cardSample",
+          "summary": "Route-facing finite-prefix finite-class Hoeffding theorem with denominator written directly as (s.card : \u211d)"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_closedForm_unitRange",
+          "summary": "Route-facing unit-range finite-prefix finite-class Hoeffding theorem with compact log(card/time/budget) / (2 * \u03b5^2) sample-size condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_unitRange_radius",
+          "summary": "Route-facing unit-range finite-prefix finite-class Hoeffding theorem in confidence-radius form"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_unitRange_explicitRadius",
+          "summary": "Route-facing unit-range finite-prefix finite-class Hoeffding theorem with the confidence radius written directly in the deviation event"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_unitRange_explicitRadius_nonemptySample",
+          "summary": "Route-facing explicit-radius theorem with radius positivity discharged by nonempty sample and strict finite-prefix budget assumptions"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_explicitRadius",
+          "summary": "Route-facing explicit-radius theorem for losses bounded in [0,1], removing caller-supplied lower and upper range functions and discharging the negative-integral identity internally"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius",
+          "summary": "Finite-prefix time-varying dyadic-radius event from supplied pointwise tails and checked dyadic budget conversion"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding",
+          "summary": "Finite-prefix time-varying dyadic-radius theorem for [0,1] losses with the pointwise tails discharged from Hoeffding"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "zeroOneDyadicFiniteClassConfidenceRadius",
+          "summary": "Named dyadic confidence radius for [0,1] finite-class empirical-average deviations"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding",
+          "summary": "Countable-time finite-class Hoeffding theorem for [0,1] losses with dyadic per-time radii"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding",
+          "summary": "Existential-event version of the countable-time finite-class Hoeffding theorem"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding",
+          "summary": "Existential-event anytime theorem using the named dyadic confidence radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding",
+          "summary": "Confidence-sequence failure-probability theorem for all natural times and finite hypotheses"
+        }
+      ],
+      "name": "Uniform-convergence probability bridges"
     },
     {
       "entries": [
@@ -424,8 +878,26 @@
         {
           "kind": "theorem",
           "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finiteDyadicEntropyIntegralBudget_one_const",
+          "summary": "One-step dyadic entropy budget for a constant entropy envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
           "name": "finiteDyadicEntropyIntegralBudget_le_entropyAtRadiusUpperSum",
           "summary": "Finite dyadic budget comparison to an entropy-at-radius upper sum"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finitePrefixSupEnvelope_const",
+          "summary": "Constant scale budgets remain constant under the finite prefix-sup envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "finitePrefixSupEnvelope_eq_self_of_monotone",
+          "summary": "Monotone scale budgets equal their finite prefix-sup envelope"
         },
         {
           "kind": "theorem",
@@ -651,6 +1123,222 @@
         {
           "kind": "definition",
           "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridCenter_leftEndpoint",
+          "summary": "The reusable dyadic grid center map contains the left endpoint"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridCenter_rightEndpoint",
+          "summary": "The reusable dyadic grid center map contains the right endpoint"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGrid_card",
+          "summary": "Level-k dyadic grid has cardinality 2^k + 1"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridPairCoverCount_zero",
+          "summary": "The first adjacent dyadic grid pair count is 15"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridFloorProject",
+          "summary": "Floor projection from [0,1] to the level-k dyadic grid"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridFloorProject_dist_le",
+          "summary": "Floor-projected dyadic grid covers [0,1] at spacing radius 1 / 2^k"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridNet_covers",
+          "summary": "Generic dyadic finite net covers [0,1] at spacing radius 1 / 2^k"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridNet_coveringNumber",
+          "summary": "Generic dyadic finite net has 2^k + 1 centers"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridNet_coveringNumber_one",
+          "summary": "Level-1 generic dyadic finite net has 3 centers"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridNet_coveringNumber_two",
+          "summary": "Level-2 generic dyadic finite net has 5 centers"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridNet_coveringNumberPair_zero",
+          "summary": "Level-1 and level-2 generic dyadic finite-net covering-number product is the first dyadic pair count"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridRoundProject",
+          "summary": "Rounded nearest-grid projection from [0,1] to the level-k dyadic grid"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridRoundProject_zero",
+          "summary": "Rounded dyadic projection fixes the left endpoint"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridRoundProject_one",
+          "summary": "Rounded dyadic projection fixes the right endpoint"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicGridRoundProject_dist_le",
+          "summary": "Rounded dyadic grid covers [0,1] at half-spacing radius 1 / 2^(k+1)"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicRoundedGridNet_covers",
+          "summary": "Rounded generic dyadic finite net covers [0,1] at half-spacing radius 1 / 2^(k+1)"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicRoundedGridNet_coveringNumber",
+          "summary": "Rounded generic dyadic finite net has 2^k + 1 centers"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicRoundedGridNet_coveringNumber_one",
+          "summary": "Level-1 rounded dyadic finite net has 3 centers"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicRoundedGridNet_coveringNumber_two",
+          "summary": "Level-2 rounded dyadic finite net has 5 centers"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalDyadicRoundedGridNet_coveringNumberPair_zero",
+          "summary": "Level-1 and level-2 rounded dyadic finite-net covering-number product is the first dyadic pair count"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridIndex",
+          "summary": "Shifted rounded dyadic grid index sequence, starting at level 1"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet",
+          "summary": "Shifted rounded dyadic finite-net sequence for finite-scale Dudley chaining"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridCoverCount",
+          "summary": "Adjacent-level covering-product envelope for the shifted rounded dyadic sequence"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "monotone_unitIntervalRoundedDyadicGridCoverCount",
+          "summary": "Rounded dyadic adjacent-level cover counts are monotone in the scale"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "monotone_unitIntervalRoundedDyadicGridEntropy",
+          "summary": "Rounded dyadic entropy-at-scale sequence is monotone"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridEntropy_prefixSup",
+          "summary": "Prefix-sup envelope collapses for the rounded dyadic entropy sequence"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_dist",
+          "summary": "Shifted rounded dyadic finite nets use the Rademacher process metric"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_radius_pos",
+          "summary": "Adjacent rounded dyadic radii have positive sum at every scale"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_radius_geometric",
+          "summary": "Adjacent rounded dyadic radii satisfy the geometric chaining radius budget"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_pair_card_gt_one",
+          "summary": "Adjacent rounded dyadic projection-pair family is nontrivial at every scale"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_coveringNumber_product",
+          "summary": "Adjacent rounded dyadic covering-number product equals the reusable cover-count envelope"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_coverCount_le",
+          "summary": "Adjacent rounded dyadic covering-number product is bounded by the cover-count envelope"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_radius_pos_range",
+          "summary": "Range wrapper for positive adjacent rounded dyadic radii over any finite horizon"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_radius_geometric_range",
+          "summary": "Range wrapper for the geometric radius budget over any finite horizon"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_pair_card_gt_one_range",
+          "summary": "Range wrapper for nontrivial adjacent projection-pair families over any finite horizon"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridNet_coverCount_le_range",
+          "summary": "Range wrapper for the adjacent rounded-grid covering-product envelope over any finite horizon"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfMeshNet_covers",
           "summary": "Explicit three-point mesh covers [0,1] at radius 1/4"
         },
@@ -683,6 +1371,12 @@
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfQuarter_coveringNumber_product",
           "summary": "Half/quarter covering-number product is 15"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalHalfQuarter_coveringNumber_product_eq_dyadicGridPairCoverCount_zero",
+          "summary": "The half/quarter product is identified with the first adjacent dyadic grid pair count"
         },
         {
           "kind": "definition",
@@ -723,6 +1417,18 @@
         {
           "kind": "definition",
           "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_isLUB_range",
+          "summary": "The supplied supremum is the least upper bound of the actual process range"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_sSup_range",
+          "summary": "The supplied supremum equals the order supremum of the actual process range"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_halfQuarter_increment_log15_bound",
           "summary": "Half/quarter projection-pair increment pays the concrete log 15 entropy term"
         },
@@ -737,6 +1443,90 @@
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound",
           "summary": "The nonzero supplied supremum routes through the projected quarter-mesh Dudley bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound_eval",
+          "summary": "The projected quarter-mesh supplied-supremum bound evaluated to 1 + sqrt 2 * sqrt(log 15)"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_log15_bound",
+          "summary": "Rounded generic dyadic-grid projected supremum satisfies the finite-net Dudley bound with a sqrt(log 15) prefix envelope"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound",
+          "summary": "The nonzero supplied supremum routes through the rounded generic dyadic-grid Dudley bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound_eval",
+          "summary": "The rounded-grid supplied-supremum bound evaluated to 1 + sqrt 2 * sqrt(log 15)"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m2_bound",
+          "summary": "Three-level rounded dyadic-grid projected supremum satisfies the finite-net Dudley bound with reusable adjacent cover counts"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound",
+          "summary": "The nonzero supplied supremum routes through the m = 2 rounded dyadic-grid Dudley bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound",
+          "summary": "Arbitrary finite-horizon rounded dyadic-grid projected supremum Dudley bound"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound_prefixFree",
+          "summary": "Arbitrary finite-horizon projected rounded-grid Dudley bound with the prefix-sup envelope removed"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup",
+          "summary": "Endpoint adapter from the supplied supremum to any rounded dyadic projected finite supremum"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_projectedRoundedDyadicGridSup_eq",
+          "summary": "Projected finite supremum over any rounded dyadic grid equals the supplied supremum"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound",
+          "summary": "Arbitrary finite-horizon rounded dyadic-grid Dudley bound for the supplied supremum"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree",
+          "summary": "Arbitrary finite-horizon supplied-supremum rounded-grid Dudley bound with the prefix-sup envelope removed"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m3_bound",
+          "summary": "Named m = 3 projected rounded dyadic-grid Dudley corollary"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m3_bound",
+          "summary": "Named m = 3 supplied-supremum rounded dyadic-grid Dudley corollary"
         },
         {
           "kind": "definition",

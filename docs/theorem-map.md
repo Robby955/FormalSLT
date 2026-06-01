@@ -18,6 +18,90 @@ declarations; modules are relative to `FormalSLT`.
 | `binaryClassTrace` | `VC.PACBridge` | Binary label patterns realized on a sample |
 | `FiniteNet` | `Covering.FiniteSubGaussianChaining` | Finite net with an explicit nearest projection |
 
+## Finite union and budget allocation
+
+| Theorem | Module | Bound |
+|---|---|---|
+| `finiteMeasureUnionBound` | `Probability.FiniteUnionBound` | Finite-index measure union bound |
+| `finiteMeasureUnionBound_budget` | `Probability.FiniteUnionBound` | Supplied finite per-event budgets whose sum is bounded by a total budget |
+| `finiteMeasureUnionBound_const` | `Probability.FiniteUnionBound` | Common per-event budget gives `card * β` total mass |
+| `finiteMeasureUnionBound_equalBudget` | `Probability.FiniteUnionBound` | Explicit per-event budget whose finite sum is bounded by a total budget |
+| `finiteMeasureUnionBound_cardInv` | `Probability.FiniteUnionBound` | Nonempty finite class with per-event budget `α / card` has union mass `≤ α` |
+
+## Uniform-convergence probability bridges
+
+| Theorem | Module | Bound |
+|---|---|---|
+| `finiteClassUniformDeviationUnionBound` | `UniformConvergence` | Pointwise finite-class bad-event tails imply a simultaneous `card * tail` bound |
+| `finiteClassUniformDeviationUnionBound_cardInv` | `UniformConvergence` | Equal split of a target failure budget gives simultaneous mass `≤ δ` |
+| `finiteClassTwoSidedUniformDeviationUnionBound` | `UniformConvergence` | Pointwise absolute-deviation tails imply a simultaneous finite-class bound |
+| `finiteClassTwoSidedUniformDeviationUnionBound_cardInv` | `UniformConvergence` | Equal-budget absolute-deviation bridge for finite hypothesis classes |
+| `finiteTimeClassUnionBound_cardInv` | `UniformConvergence` | Equal-budget union bound over a finite time horizon and finite hypothesis class |
+| `finiteTimeClassTwoSidedUniformDeviationUnionBound_cardInv` | `UniformConvergence` | Finite-horizon absolute-deviation shell over all `(time, hypothesis)` pairs |
+| `finiteTimeClassUnionBound_timeBudget` | `UniformConvergence` | Finite time budgets whose sum is `≤ δ`, with each time split across hypotheses |
+| `finiteTimeClassTwoSidedUniformDeviationUnionBound_timeBudget` | `UniformConvergence` | Finite-horizon absolute-deviation shell with a supplied time-budget sequence |
+| `finiteTimeClassTwoSidedUniformDeviationUnionBound_timeBudget_threshold` | `UniformConvergence` | Finite-horizon absolute-deviation shell with a threshold depending on `(time, hypothesis)` |
+| `finiteDyadicTimeBudget` | `UniformConvergence` | Standard dyadic time-budget schedule `δ * 2^(-1-t)` |
+| `finiteDyadicTimeBudget_sum_fin_le` | `UniformConvergence` | Every finite prefix of the dyadic time-budget schedule sums to at most `δ` |
+| `finiteDyadicTimeBudget_tsum_le` | `UniformConvergence` | The full natural-time dyadic schedule has total budget at most `δ` |
+| `countableTimeClassUnionBound_timeBudget` | `UniformConvergence` | Countable-time finite-class union shell with a supplied summable time-budget sequence |
+| `countableTimeClassUnionBound_dyadicBudget` | `UniformConvergence` | Countable-time finite-class union shell using the standard dyadic schedule |
+| `countableTimeClassTwoSidedUniformDeviationUnionBound_dyadicBudget_threshold` | `UniformConvergence` | Countable-time dyadic absolute-deviation shell with time-varying thresholds |
+| `countableTimeClass_iUnion_eq_exists` | `UniformConvergence` | Rewrites a countable time-class indexed union as an existential event |
+| `countableTimeClass_not_forall_lt_eq_exists_ge` | `UniformConvergence` | Rewrites failure of an all-times/all-hypotheses strict bound as an existential crossing event |
+| `finiteTimeClassUnionBound_dyadicBudget` | `UniformConvergence` | Finite-prefix time-class union shell using the standard dyadic schedule |
+| `finiteTimeClassTwoSidedUniformDeviationUnionBound_dyadicBudget` | `UniformConvergence` | Finite-prefix absolute-deviation shell using the standard dyadic schedule |
+| `finiteTimeClassTwoSidedUniformDeviationUnionBound_dyadicBudget_threshold` | `UniformConvergence` | Finite-prefix dyadic absolute-deviation shell with time-varying thresholds |
+| `finiteTimeClassTwoSidedUnionBoundFromOneSidedTails_dyadicBudget` | `UniformConvergence` | Finite-prefix dyadic shell from one-sided upper and lower pointwise tails |
+| `empiricalAverageUpperHoeffdingTail` | `UniformConvergence` | Named `ENNReal` upper-tail budget produced by the fixed-hypothesis Hoeffding wrapper |
+| `empiricalAverageLowerHoeffdingTail` | `UniformConvergence` | Named `ENNReal` lower-tail budget produced by the fixed-hypothesis Hoeffding wrapper |
+| `finiteTimeClassEmpiricalAverageDeviationFromHoeffding_dyadicBudget` | `UniformConvergence` | Finite-prefix dyadic finite-class deviation bound from bounded independent empirical-average losses |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_dyadicBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper for bounded independent empirical-average losses |
+| `empiricalAverageUpperHoeffdingTail_eq_lower` | `UniformConvergence` | Normalizes the upper-tail Hoeffding range expression to the lower-tail expression |
+| `empiricalAverageTwoSidedHoeffdingTail` | `UniformConvergence` | Combined two-sided empirical-average Hoeffding budget |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_twoSidedTailBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using one combined two-sided Hoeffding budget |
+| `empiricalAverageUniformRangeTwoSidedHoeffdingTail` | `UniformConvergence` | Uniform-range two-sided empirical-average Hoeffding budget with one denominator proxy |
+| `empiricalAverageTwoSidedHoeffdingTail_le_uniformRangeTwoSidedHoeffdingTail` | `UniformConvergence` | Algebraic bridge from the concrete finite sum of squared half-ranges to the uniform range proxy |
+| `empiricalAverageRangeSum_le_card_mul_uniformRange` | `UniformConvergence` | Finite-sum range envelope from a pointwise uniform range-width bound |
+| `empiricalAverageRangeSum_pos_of_exists_range_pos` | `UniformConvergence` | Positive finite-sum denominator certificate from one sampled coordinate with positive range |
+| `empiricalAverageTwoSidedHoeffdingTail_le_uniformRangeTwoSidedHoeffdingTail_of_rangeBound` | `UniformConvergence` | Two-sided Hoeffding tail bridge from a pointwise range-width bound and closed-form proxy |
+| `empiricalAverageTwoSidedHoeffdingTail_le_uniformRangeTwoSidedHoeffdingTail_of_rangeBound_of_exists_range_pos` | `UniformConvergence` | Two-sided Hoeffding tail bridge using pointwise range width and an explicit nondegenerate sample coordinate |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_uniformRangeBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using one uniform range proxy and dyadic time budgets |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_uniformRangeBudget_of_rangeBound` | `UniformConvergence` | Shared-sample finite-prefix wrapper with pointwise uniform range width and one closed-form proxy |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_uniformRangeBudget_of_rangeBound_of_exists_range_pos` | `UniformConvergence` | Shared-sample finite-prefix wrapper with pointwise uniform range width and nondegenerate sample-coordinate certificates |
+| `empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail` | `UniformConvergence` | Displayed two-sided Hoeffding budget `2 * exp(-2 * sampleSize * ε^2 / R^2)` |
+| `empiricalAverageUniformRangeTwoSidedHoeffdingTail_eq_sampleSizeTail` | `UniformConvergence` | Algebraic identification between the range-proxy budget and the sample-size display |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize` | `UniformConvergence` | Shared-sample finite-prefix wrapper using the displayed sample-size Hoeffding budget |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_threshold` | `UniformConvergence` | Shared-sample finite-prefix wrapper using a displayed sample-size Hoeffding budget and time-varying thresholds |
+| `empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_logBudget` | `UniformConvergence` | Real log-budget condition implies the displayed Hoeffding tail fits a target budget |
+| `empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_explicitRadius` | `UniformConvergence` | Unit-range displayed Hoeffding tail is bounded at the inverted square-root confidence radius |
+| `empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_sampleSize_ge` | `UniformConvergence` | Explicit sample-size lower bound implies the displayed Hoeffding tail fits a target budget |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_from_logBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using real log budgets below the dyadic ENNReal budget split |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_ge` | `UniformConvergence` | Shared-sample finite-prefix wrapper using explicit sample-size lower bounds and real budgets |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_sampleSize_dyadicRealBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using explicit sample-size lower bounds and the concrete dyadic real budget `δ * 2^(-1-t) / card(H)` |
+| `finiteDyadicRealBudget_classBudget_ofReal` | `UniformConvergence` | Concrete real dyadic class budget maps exactly to the `ENNReal` dyadic time/class split |
+| `empiricalAverageUniformRangeSampleSize_ge_of_sqrtBudget_le` | `UniformConvergence` | Algebraic bridge from a square-root radius condition to the displayed sample-size lower bound |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_epsilonOfSampleSize_dyadicRealBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using a radius-style condition and the concrete dyadic real budget |
+| `finiteDyadicRealBudget_horizon_le_time` | `UniformConvergence` | Finite-horizon dyadic real-budget monotonicity: the horizon budget is no larger than any prefix time budget |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_horizonUniformRadius_dyadicRealBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using one horizon-level radius condition |
+| `finiteDyadicRealBudget_horizon_logBudget_eq_closedForm` | `UniformConvergence` | Closed-form rewrite of the finite-horizon dyadic log-budget term |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_closedFormHorizonRadius_dyadicRealBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using a closed-form horizon/class/budget radius |
+| `finiteTimeClassSharedSampleEmpiricalAverageDeviationFromHoeffding_closedFormHorizonSampleSize_dyadicRealBudget` | `UniformConvergence` | Shared-sample finite-prefix wrapper using a closed-form horizon/class/budget sample-size condition |
+| `finitePrefixFiniteClassDeviationFromHoeffding_closedForm` | `UniformConvergence` | Route-facing finite-prefix finite-class Hoeffding deviation theorem with the closed-form sample-size condition |
+| `finitePrefixFiniteClassDeviationFromHoeffding_closedForm_cardSample` | `UniformConvergence` | Route-facing finite-prefix finite-class Hoeffding theorem with denominator written directly as `(s.card : ℝ)` |
+| `finitePrefixFiniteClassDeviationFromHoeffding_closedForm_unitRange` | `UniformConvergence` | Route-facing unit-range finite-prefix finite-class Hoeffding theorem with compact `log(card/time/budget) / (2 * ε^2)` sample-size condition |
+| `finitePrefixFiniteClassDeviationFromHoeffding_unitRange_radius` | `UniformConvergence` | Route-facing unit-range finite-prefix finite-class Hoeffding theorem in confidence-radius form |
+| `finitePrefixFiniteClassDeviationFromHoeffding_unitRange_explicitRadius` | `UniformConvergence` | Route-facing unit-range finite-prefix finite-class Hoeffding theorem with the confidence radius written directly in the deviation event |
+| `finitePrefixFiniteClassDeviationFromHoeffding_unitRange_explicitRadius_nonemptySample` | `UniformConvergence` | Route-facing explicit-radius theorem with radius positivity discharged by nonempty sample and strict finite-prefix budget assumptions |
+| `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_explicitRadius` | `UniformConvergence` | Route-facing explicit-radius theorem for losses bounded in `[0,1]`, removing caller-supplied lower and upper range functions and discharging the negative-integral identity internally |
+| `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius` | `UniformConvergence` | Finite-prefix time-varying dyadic-radius event from supplied pointwise tails and checked dyadic budget conversion |
+| `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `UniformConvergence` | Finite-prefix time-varying dyadic-radius theorem for `[0,1]` losses with the pointwise tails discharged from Hoeffding |
+| `zeroOneDyadicFiniteClassConfidenceRadius` | `UniformConvergence` | Named dyadic confidence radius for `[0,1]` finite-class empirical-average deviations |
+| `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `UniformConvergence` | Countable-time finite-class Hoeffding theorem for `[0,1]` losses with dyadic per-time radii |
+| `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding` | `UniformConvergence` | Existential-event version of the countable-time finite-class Hoeffding theorem |
+| `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `UniformConvergence` | Existential-event anytime theorem using the named dyadic confidence radius |
+| `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `UniformConvergence` | Confidence-sequence failure-probability theorem for all natural times and finite hypotheses |
+
 ## Rademacher and VC spine
 
 | Theorem | Module | Bound |
@@ -79,7 +163,10 @@ declarations; modules are relative to `FormalSLT`.
 | `finite_dudley_entropy_sum_projection_pairs_geometric_integral_budget` | `Covering.FiniteSubGaussianChaining` | Finite dyadic entropy-integral budget for projection pairs |
 | `finite_dudley_entropy_sum_coveringNumbers_geometric_integral_budget` | `Covering.FiniteSubGaussianChaining` | Finite dyadic entropy-integral budget for covering numbers |
 | `finiteDyadicEntropyAtRadiusUpperSum` | `Covering.FiniteSubGaussianChaining` | Finite dyadic entropy-at-radius upper sum sampled at lower annulus endpoints |
+| `finiteDyadicEntropyIntegralBudget_one_const` | `Covering.FiniteSubGaussianChaining` | One-step dyadic entropy budget for a constant entropy envelope |
 | `finiteDyadicEntropyIntegralBudget_le_entropyAtRadiusUpperSum` | `Covering.FiniteSubGaussianChaining` | Finite dyadic budget comparison to an entropy-at-radius upper sum |
+| `finitePrefixSupEnvelope_const` | `Covering.FiniteSubGaussianChaining` | Constant scale budgets remain constant under the finite prefix-sup envelope |
+| `finitePrefixSupEnvelope_eq_self_of_monotone` | `Covering.FiniteSubGaussianChaining` | Monotone scale budgets equal their finite prefix-sup envelope |
 | `finite_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope` | `Covering.FiniteSubGaussianChaining` | Finite covering-count wrapper with a monotone prefix-sup entropy envelope |
 | `finite_projected_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope` | `Covering.FiniteSubGaussianChaining` | Projected finite Dudley wrapper with a monotone prefix-sup entropy envelope |
 | `finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope` | `Covering.FiniteSubGaussianChaining` | Projected finite-net-image Dudley wrapper without `[Fintype T]` |
@@ -121,21 +208,74 @@ declarations; modules are relative to `FormalSLT`.
 | `unitInterval_totallyBounded_univ` | `Covering.UnitIntervalDudley` | The unit interval is totally bounded |
 | `unitIntervalFiniteNet_covers` | `Covering.UnitIntervalDudley` | Total-bounded finite net covers the unit interval at a supplied radius |
 | `unitIntervalDyadicFiniteNet_covers` | `Covering.UnitIntervalDudley` | Dyadic total-bounded finite net covers the unit interval at the dyadic chaining radius |
+| `unitIntervalDyadicGridCenter_leftEndpoint` | `Covering.UnitIntervalDudley` | The reusable dyadic grid center map contains the left endpoint |
+| `unitIntervalDyadicGridCenter_rightEndpoint` | `Covering.UnitIntervalDudley` | The reusable dyadic grid center map contains the right endpoint |
+| `unitIntervalDyadicGrid_card` | `Covering.UnitIntervalDudley` | Level-`k` dyadic grid has cardinality `2^k + 1` |
+| `unitIntervalDyadicGridPairCoverCount_zero` | `Covering.UnitIntervalDudley` | The first adjacent dyadic grid pair count is `15` |
+| `unitIntervalDyadicGridFloorProject` | `Covering.UnitIntervalDudley` | Floor projection from `[0,1]` to the level-`k` dyadic grid |
+| `unitIntervalDyadicGridFloorProject_dist_le` | `Covering.UnitIntervalDudley` | Floor-projected dyadic grid covers `[0,1]` at spacing radius `1 / 2^k` |
+| `unitIntervalDyadicGridNet_covers` | `Covering.UnitIntervalDudley` | Generic dyadic finite net covers `[0,1]` at spacing radius `1 / 2^k` |
+| `unitIntervalDyadicGridNet_coveringNumber` | `Covering.UnitIntervalDudley` | Generic dyadic finite net has `2^k + 1` centers |
+| `unitIntervalDyadicGridNet_coveringNumber_one` | `Covering.UnitIntervalDudley` | Level-`1` generic dyadic finite net has `3` centers |
+| `unitIntervalDyadicGridNet_coveringNumber_two` | `Covering.UnitIntervalDudley` | Level-`2` generic dyadic finite net has `5` centers |
+| `unitIntervalDyadicGridNet_coveringNumberPair_zero` | `Covering.UnitIntervalDudley` | Level-`1` and level-`2` generic dyadic finite-net covering-number product is the first dyadic pair count |
+| `unitIntervalDyadicGridRoundProject` | `Covering.UnitIntervalDudley` | Rounded nearest-grid projection from `[0,1]` to the level-`k` dyadic grid |
+| `unitIntervalDyadicGridRoundProject_zero` | `Covering.UnitIntervalDudley` | Rounded dyadic projection fixes the left endpoint |
+| `unitIntervalDyadicGridRoundProject_one` | `Covering.UnitIntervalDudley` | Rounded dyadic projection fixes the right endpoint |
+| `unitIntervalDyadicGridRoundProject_dist_le` | `Covering.UnitIntervalDudley` | Rounded dyadic grid covers `[0,1]` at half-spacing radius `1 / 2^(k+1)` |
+| `unitIntervalDyadicRoundedGridNet_covers` | `Covering.UnitIntervalDudley` | Rounded generic dyadic finite net covers `[0,1]` at half-spacing radius `1 / 2^(k+1)` |
+| `unitIntervalDyadicRoundedGridNet_coveringNumber` | `Covering.UnitIntervalDudley` | Rounded generic dyadic finite net has `2^k + 1` centers |
+| `unitIntervalDyadicRoundedGridNet_coveringNumber_one` | `Covering.UnitIntervalDudley` | Level-`1` rounded dyadic finite net has `3` centers |
+| `unitIntervalDyadicRoundedGridNet_coveringNumber_two` | `Covering.UnitIntervalDudley` | Level-`2` rounded dyadic finite net has `5` centers |
+| `unitIntervalDyadicRoundedGridNet_coveringNumberPair_zero` | `Covering.UnitIntervalDudley` | Level-`1` and level-`2` rounded dyadic finite-net covering-number product is the first dyadic pair count |
+| `unitIntervalRoundedDyadicGridIndex` | `Covering.UnitIntervalDudley` | Shifted rounded dyadic grid index sequence, starting at level `1` |
+| `unitIntervalRoundedDyadicGridNet` | `Covering.UnitIntervalDudley` | Shifted rounded dyadic finite-net sequence for finite-scale Dudley chaining |
+| `unitIntervalRoundedDyadicGridCoverCount` | `Covering.UnitIntervalDudley` | Adjacent-level covering-product envelope for the shifted rounded dyadic sequence |
+| `monotone_unitIntervalRoundedDyadicGridCoverCount` | `Covering.UnitIntervalDudley` | Rounded dyadic adjacent-level cover counts are monotone in the scale |
+| `monotone_unitIntervalRoundedDyadicGridEntropy` | `Covering.UnitIntervalDudley` | Rounded dyadic entropy-at-scale sequence is monotone |
+| `unitIntervalRoundedDyadicGridEntropy_prefixSup` | `Covering.UnitIntervalDudley` | Prefix-sup envelope collapses for the rounded dyadic entropy sequence |
+| `unitIntervalRoundedDyadicGridNet_dist` | `Covering.UnitIntervalDudley` | Shifted rounded dyadic finite nets use the Rademacher process metric |
+| `unitIntervalRoundedDyadicGridNet_radius_pos` | `Covering.UnitIntervalDudley` | Adjacent rounded dyadic radii have positive sum at every scale |
+| `unitIntervalRoundedDyadicGridNet_radius_geometric` | `Covering.UnitIntervalDudley` | Adjacent rounded dyadic radii satisfy the geometric chaining radius budget |
+| `unitIntervalRoundedDyadicGridNet_pair_card_gt_one` | `Covering.UnitIntervalDudley` | Adjacent rounded dyadic projection-pair family is nontrivial at every scale |
+| `unitIntervalRoundedDyadicGridNet_coveringNumber_product` | `Covering.UnitIntervalDudley` | Adjacent rounded dyadic covering-number product equals the reusable cover-count envelope |
+| `unitIntervalRoundedDyadicGridNet_coverCount_le` | `Covering.UnitIntervalDudley` | Adjacent rounded dyadic covering-number product is bounded by the cover-count envelope |
+| `unitIntervalRoundedDyadicGridNet_radius_pos_range` | `Covering.UnitIntervalDudley` | Range wrapper for positive adjacent rounded dyadic radii over any finite horizon |
+| `unitIntervalRoundedDyadicGridNet_radius_geometric_range` | `Covering.UnitIntervalDudley` | Range wrapper for the geometric radius budget over any finite horizon |
+| `unitIntervalRoundedDyadicGridNet_pair_card_gt_one_range` | `Covering.UnitIntervalDudley` | Range wrapper for nontrivial adjacent projection-pair families over any finite horizon |
+| `unitIntervalRoundedDyadicGridNet_coverCount_le_range` | `Covering.UnitIntervalDudley` | Range wrapper for the adjacent rounded-grid covering-product envelope over any finite horizon |
 | `unitIntervalHalfMeshNet_covers` | `Covering.UnitIntervalDudley` | Explicit three-point mesh covers `[0,1]` at radius `1/4` |
 | `unitIntervalHalfMeshNet_coveringNumber` | `Covering.UnitIntervalDudley` | Explicit half mesh has covering number `3` |
 | `unitIntervalQuarterMeshNet_covers` | `Covering.UnitIntervalDudley` | Explicit five-point mesh covers `[0,1]` at radius `1/8` |
 | `unitIntervalQuarterMeshNet_coveringNumber` | `Covering.UnitIntervalDudley` | Explicit quarter mesh has covering number `5` |
 | `unitIntervalHalfQuarterPair_card_gt_one` | `Covering.UnitIntervalDudley` | Adjacent half/quarter projection-pair family is nontrivial |
 | `unitIntervalHalfQuarter_coveringNumber_product` | `Covering.UnitIntervalDudley` | Half/quarter covering-number product is `15` |
+| `unitIntervalHalfQuarter_coveringNumber_product_eq_dyadicGridPairCoverCount_zero` | `Covering.UnitIntervalDudley` | The half/quarter product is identified with the first adjacent dyadic grid pair count |
 | `unitInterval_rademacherLinear_mgf_bound` | `Covering.UnitIntervalDudley` | Rademacher linear process increment satisfies the sub-Gaussian MGF bound |
 | `unitIntervalRademacherLinearProcess_increment_mgf` | `Covering.UnitIntervalDudley` | The packaged finite sub-Gaussian process has the required increment MGF |
 | `unitIntervalRademacherLinearSup_expectation` | `Covering.UnitIntervalDudley` | The supplied supremum has expectation `1/2` |
 | `unitIntervalRademacherLinearSup_upper` | `Covering.UnitIntervalDudley` | The supplied supremum upper-bounds the full non-finite unit-interval family |
 | `unitIntervalRademacherLinearSup_attained` | `Covering.UnitIntervalDudley` | The supplied supremum is attained at an endpoint |
 | `unitIntervalRademacherLinearSup_isLeastUpperBound` | `Covering.UnitIntervalDudley` | The supplied supremum is the least upper bound over the non-finite unit-interval family |
+| `unitIntervalRademacherLinearSup_isLUB_range` | `Covering.UnitIntervalDudley` | The supplied supremum is the least upper bound of the actual process range |
+| `unitIntervalRademacherLinearSup_sSup_range` | `Covering.UnitIntervalDudley` | The supplied supremum equals the order supremum of the actual process range |
 | `unitIntervalRademacherLinear_halfQuarter_increment_log15_bound` | `Covering.UnitIntervalDudley` | Half/quarter projection-pair increment pays the concrete `log 15` entropy term |
 | `unitIntervalRademacherLinear_projectedQuarterMesh_dudley_log15_bound` | `Covering.UnitIntervalDudley` | Projected quarter-mesh supremum satisfies the finite-net Dudley bound with a `sqrt(log 15)` prefix envelope |
 | `unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound` | `Covering.UnitIntervalDudley` | The nonzero supplied supremum routes through the projected quarter-mesh Dudley bound |
+| `unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound_eval` | `Covering.UnitIntervalDudley` | The projected quarter-mesh supplied-supremum bound evaluated to `1 + sqrt 2 * sqrt(log 15)` |
+| `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_log15_bound` | `Covering.UnitIntervalDudley` | Rounded generic dyadic-grid projected supremum satisfies the finite-net Dudley bound with a `sqrt(log 15)` prefix envelope |
+| `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound` | `Covering.UnitIntervalDudley` | The nonzero supplied supremum routes through the rounded generic dyadic-grid Dudley bound |
+| `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound_eval` | `Covering.UnitIntervalDudley` | The rounded-grid supplied-supremum bound evaluated to `1 + sqrt 2 * sqrt(log 15)` |
+| `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m2_bound` | `Covering.UnitIntervalDudley` | Three-level rounded dyadic-grid projected supremum satisfies the finite-net Dudley bound with reusable adjacent cover counts |
+| `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound` | `Covering.UnitIntervalDudley` | The nonzero supplied supremum routes through the `m = 2` rounded dyadic-grid Dudley bound |
+| `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `Covering.UnitIntervalDudley` | Arbitrary finite-horizon rounded dyadic-grid projected supremum Dudley bound |
+| `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound_prefixFree` | `Covering.UnitIntervalDudley` | Arbitrary finite-horizon projected rounded-grid Dudley bound with the prefix-sup envelope removed |
+| `unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup` | `Covering.UnitIntervalDudley` | Endpoint adapter from the supplied supremum to any rounded dyadic projected finite supremum |
+| `unitIntervalRademacherLinear_projectedRoundedDyadicGridSup_eq` | `Covering.UnitIntervalDudley` | Projected finite supremum over any rounded dyadic grid equals the supplied supremum |
+| `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `Covering.UnitIntervalDudley` | Arbitrary finite-horizon rounded dyadic-grid Dudley bound for the supplied supremum |
+| `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `Covering.UnitIntervalDudley` | Arbitrary finite-horizon supplied-supremum rounded-grid Dudley bound with the prefix-sup envelope removed |
+| `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m3_bound` | `Covering.UnitIntervalDudley` | Named `m = 3` projected rounded dyadic-grid Dudley corollary |
+| `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m3_bound` | `Covering.UnitIntervalDudley` | Named `m = 3` supplied-supremum rounded dyadic-grid Dudley corollary |
 | `unitIntervalRademacherLinearSup_dudley_m0_bound` | `Covering.UnitIntervalDudley` | Coarse finite-horizon `m = 0` Dudley bound for the supplied supremum |
 | `unitIntervalRademacherLinearSup_dudley_m1_bound_of_entropy` | `Covering.UnitIntervalDudley` | First-scale supplied-supremum Dudley bound under an explicit entropy envelope |
 | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `Covering.UnitIntervalDudley` | Constant-envelope first-scale bound evaluated to a scalar expression |
