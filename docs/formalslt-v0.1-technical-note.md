@@ -139,6 +139,34 @@ between three common arguments:
 In informal writing, these steps are often collapsed. In Lean, each step is a
 separate theorem. That separation is the point of the v0.1 proof chain.
 
+### TheoremPath-facing sample-size form
+
+The route-facing display does not need the full confidence-sequence theorem
+signature. It needs the checked sample-size inversion:
+
+```lean
+zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
+```
+
+This theorem states that the named dyadic radius is at most `ε` once
+
+```text
+(log 2 - log(delta * 2^(-1-t) / card(H))) / (2 * ε^2) ≤ sampleSize.
+```
+
+For the TheoremPath Stage A surface with `t = 0`, `card(H) = 1`, and
+`delta = 0.05`, this gives:
+
+| Target half-width | Sufficient reviews |
+|---|---:|
+| `ε = 0.30` | `25` |
+| `ε = 0.20` | `55` |
+| `ε = 0.10` | `220` |
+
+This is deliberately more conservative than the fixed-time two-sided
+Hoeffding example because it spends failure probability through a dyadic
+time budget.
+
 ## 4. Result II: Non-Finite Unit-Interval Dudley Bridge
 
 The Dudley endpoint is:
@@ -296,8 +324,8 @@ structure FiniteClassConfidenceSequence where
   -- finite class, shared sample, loss, risk, boundedness, and delta fields
 ```
 
-The goal is not mathematical novelty. The goal is to make the checked theorem
-usable without restating its long measure-theoretic signature.
+This is API work: the checked theorem should be usable without restating its
+long measure-theoretic signature.
 
 ### 7.2 Abstract the rounded dyadic-net wrapper
 

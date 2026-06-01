@@ -90,6 +90,17 @@ The theorem is finite-class. The hypothesis type has `[Fintype H]` and
 assumption is visible in the statement: losses are almost surely in `Set.Icc 0
 1`.
 
+The display-facing sample-size theorem is:
+
+```lean
+zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
+```
+
+For `t = 0`, one hypothesis, and failure budget `δ = 0.05`, the checked
+dyadic radius needs 25 reviews for half-width 0.30, 55 reviews for half-width
+0.20, and 220 reviews for half-width 0.10. These are dyadic confidence-sequence
+numbers, not the looser fixed-time Hoeffding examples on the topic page.
+
 ## The Dyadic Budget
 
 The countable-time step allocates failure probability across times using a
