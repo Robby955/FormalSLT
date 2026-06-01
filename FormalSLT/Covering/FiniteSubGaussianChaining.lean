@@ -3589,6 +3589,127 @@ theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integra
             finiteDyadicEntropyIntegralBudget radiusScale m entropyEnvelope := by
           exact add_le_add le_rfl hsum_integral
 
+/-- A reusable finite dyadic net sequence for projected finite-net Dudley
+bounds.
+
+The bundle records only finite-scale data: a sequence of finite nets, adjacent
+cover-count bounds, a dyadic radius scale, and the metric hypotheses needed by
+the chaining theorem. It does not assert total boundedness, separability, or a
+continuous entropy integral. -/
+structure FiniteDyadicNetSequence
+    [Fintype Ω]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)] where
+  N : ∀ j : ℕ, FiniteNet T (A j)
+  coverCount : ℕ → ℕ
+  radiusScale : ℝ
+  dist_eq : ∀ j : ℕ, (N j).dist = P.dist
+  dist_symm : ∀ s t : T, P.dist s t = P.dist t s
+  dist_triangle : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z
+  radiusScale_nonneg : 0 ≤ radiusScale
+  radius_pos : ∀ j : ℕ, 0 < (N j).radius + (N (j + 1)).radius
+  radius_geometric : ∀ j : ℕ,
+    (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j
+  pair_card_gt_one : ∀ j : ℕ,
+    1 < Fintype.card (FiniteNet.ProjectionPair (N j) (N (j + 1)))
+  coverCount_le : ∀ j : ℕ,
+    (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j
+
+namespace FiniteDyadicNetSequence
+
+/-- Projected finite-net Dudley bound from a bundled dyadic net sequence.
+
+The conclusion is the same finite projected-net supremum controlled by
+`finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope`,
+but callers instantiate one reusable sequence object instead of restating the
+geometry and cover-count hypotheses at every use site. -/
+theorem projectedNet_dudley_bound
+    [Fintype Ω] [Nonempty T]
+    {P : FiniteSubGaussianProcess Ω T}
+    {A : ℕ → Type*} [∀ j, Fintype (A j)]
+    (S : FiniteDyadicNetSequence P A)
+    (m : ℕ) (coarseBudget : ℝ)
+    (hvariance : 0 < P.varianceProxy)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (S.N m) =>
+            P.X ω ((S.N 0).projection
+              (FiniteNet.ProjectedIndex.source (S.N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (S.N m) =>
+            P.X ω ((S.N m).center u.1))) ≤
+      coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+        finiteDyadicEntropyIntegralBudget S.radiusScale m
+          (finitePrefixSupEnvelope
+            (fun j => Real.sqrt (Real.log (S.coverCount j : ℝ)))) := by
+  exact
+    finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope
+      (P := P) (A := A) (N := S.N) (m := m) (coarseBudget := coarseBudget)
+      (radiusScale := S.radiusScale) (coverCount := S.coverCount)
+      S.dist_eq S.dist_symm S.dist_triangle hvariance S.radiusScale_nonneg
+      (by intro j _hj; exact S.radius_pos j)
+      (by intro j _hj; exact S.radius_geometric j)
+      (by intro j _hj; exact S.pair_card_gt_one j)
+      (by intro j _hj; exact S.coverCount_le j)
+      hcoarse
+
+/-- Supplied-supremum finite-budget Dudley bound from a bundled dyadic net
+sequence.
+
+The caller supplies the terminal finite-net approximation of `supFunctional`.
+This is the finite-budget analogue of the later integral-boundary adapters and
+keeps the same limitation: no arbitrary measurable supremum is constructed. -/
+theorem supFunctional_dudley_bound
+    [Fintype Ω] [Nonempty T]
+    {P : FiniteSubGaussianProcess Ω T}
+    {A : ℕ → Type*} [∀ j, Fintype (A j)]
+    (S : FiniteDyadicNetSequence P A)
+    (m : ℕ) (coarseBudget : ℝ)
+    (supFunctional : Ω → ℝ) (terminalError : ℝ)
+    (hvariance : 0 < P.varianceProxy)
+    (hterminal :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup
+            (fun u : FiniteNet.ProjectedIndex (S.N m) =>
+              P.X ω ((S.N m).center u.1)) + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (S.N m) =>
+            P.X ω ((S.N 0).projection
+              (FiniteNet.ProjectedIndex.source (S.N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+        finiteDyadicEntropyIntegralBudget S.radiusScale m
+          (finitePrefixSupEnvelope
+            (fun j => Real.sqrt (Real.log (S.coverCount j : ℝ)))) +
+        terminalError := by
+  let projectedSup : Ω → ℝ :=
+    fun ω => finiteSup
+      (fun u : FiniteNet.ProjectedIndex (S.N m) =>
+        P.X ω ((S.N m).center u.1))
+  have hadapter :
+      finiteExpectation P.weight supFunctional ≤
+        finiteExpectation P.weight projectedSup + terminalError :=
+    finiteExpectation_supFunctional_le_projected_add_terminalError
+      P.weight_nonneg P.weight_sum_one supFunctional projectedSup terminalError
+      hterminal
+  have hprojected :
+      finiteExpectation P.weight projectedSup ≤
+        coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+          finiteDyadicEntropyIntegralBudget S.radiusScale m
+            (finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log (S.coverCount j : ℝ)))) :=
+    S.projectedNet_dudley_bound m coarseBudget hvariance hcoarse
+  linarith
+
+end FiniteDyadicNetSequence
+
 /-- Projected finite-net Dudley-style covering-number bound compared against a
 finite entropy-at-radius upper-sum/integral budget. The hypothesis
 `hentropyAtRadius` says the finite prefix-sup covering envelope at scale `j` is

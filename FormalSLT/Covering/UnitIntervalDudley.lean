@@ -1384,6 +1384,28 @@ theorem unitIntervalRoundedDyadicGridNet_coverCount_le_range (m : ℕ) :
   intro j _hj
   exact unitIntervalRoundedDyadicGridNet_coverCount_le j
 
+/-- The rounded dyadic grid sequence packaged for the generic finite
+dyadic-net Dudley API. This is the reusable bridge between the concrete
+`[0,1]` rounded grids and the ambient finite-net chaining theorem. -/
+def unitIntervalRoundedDyadicGridNetSequence :
+    FiniteSubGaussianProcess.FiniteDyadicNetSequence
+      unitIntervalRademacherLinearProcess unitIntervalRoundedDyadicGridIndex where
+  N := unitIntervalRoundedDyadicGridNet
+  coverCount := unitIntervalRoundedDyadicGridCoverCount
+  radiusScale := 1
+  dist_eq := unitIntervalRoundedDyadicGridNet_dist
+  dist_symm := by
+    intro s t
+    exact dist_comm s t
+  dist_triangle := by
+    intro x y z
+    exact dist_triangle x y z
+  radiusScale_nonneg := by norm_num
+  radius_pos := unitIntervalRoundedDyadicGridNet_radius_pos
+  radius_geometric := unitIntervalRoundedDyadicGridNet_radius_geometric
+  pair_card_gt_one := unitIntervalRoundedDyadicGridNet_pair_card_gt_one
+  coverCount_le := unitIntervalRoundedDyadicGridNet_coverCount_le
+
 private theorem unitIntervalRoundedDyadicGridNet_radius_pos_m1 :
     ∀ j ∈ Finset.range 1,
       0 < (unitIntervalRoundedDyadicGridNet j).radius +
@@ -1621,21 +1643,10 @@ theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound
               Real.sqrt
                 (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope
-      (P := unitIntervalRademacherLinearProcess)
-      (A := unitIntervalRoundedDyadicGridIndex)
-      (N := unitIntervalRoundedDyadicGridNet)
-      (m := m) (coarseBudget := (1 : ℝ)) (radiusScale := (1 : ℝ))
-      (coverCount := unitIntervalRoundedDyadicGridCoverCount)
-      unitIntervalRoundedDyadicGridNet_dist
-      (by intro s t; exact dist_comm s t)
-      (by intro x y z; exact dist_triangle x y z)
+    FiniteSubGaussianProcess.FiniteDyadicNetSequence.projectedNet_dudley_bound
+      (S := unitIntervalRoundedDyadicGridNetSequence)
+      (m := m) (coarseBudget := (1 : ℝ))
       (by norm_num [unitIntervalRademacherLinearProcess])
-      (by norm_num)
-      (unitIntervalRoundedDyadicGridNet_radius_pos_range m)
-      (unitIntervalRoundedDyadicGridNet_radius_geometric_range m)
-      (unitIntervalRoundedDyadicGridNet_pair_card_gt_one_range m)
-      (unitIntervalRoundedDyadicGridNet_coverCount_le_range m)
       (unitIntervalRademacherLinear_roundedDyadicGrid_coarse m)
   simpa [unitIntervalRademacherLinearProcess] using hbase
 
@@ -2062,29 +2073,20 @@ theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound
             (fun j : ℕ =>
               Real.sqrt
                 (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
-  calc
-    finiteExpectation unitIntervalRademacherLinearProcess.weight
-        unitIntervalRademacherLinearSup ≤
-      finiteExpectation unitIntervalRademacherLinearProcess.weight
-        (fun ω => finiteSup
-          (fun u : FiniteNet.ProjectedIndex
-              (unitIntervalRoundedDyadicGridNet m) =>
-            unitIntervalRademacherLinearProcess.X ω
-              ((unitIntervalRoundedDyadicGridNet m).center u.1))) := by
-        refine finiteExpectation_mono
-          unitIntervalRademacherLinearProcess.weight_nonneg ?_
+  have hbase :=
+    FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
+      (S := unitIntervalRoundedDyadicGridNetSequence)
+      (m := m) (coarseBudget := (1 : ℝ))
+      (supFunctional := unitIntervalRademacherLinearSup)
+      (terminalError := (0 : ℝ))
+      (by norm_num [unitIntervalRademacherLinearProcess])
+      (by
         intro ω
         simpa [unitIntervalRoundedDyadicGridNet] using
           unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup
-            (m + 1) ω
-    _ ≤
-      1 + 2 * Real.sqrt (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
-        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
-          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
-            (fun j : ℕ =>
-              Real.sqrt
-                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) :=
-        unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound m
+            (m + 1) ω)
+      (unitIntervalRademacherLinear_roundedDyadicGrid_coarse m)
+  simpa [unitIntervalRademacherLinearProcess] using hbase
 
 /-- Prefix-free arbitrary finite-horizon rounded-dyadic-grid Dudley bound for
 the supplied nonzero supremum.
