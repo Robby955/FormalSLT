@@ -2,6 +2,9 @@
 
 For the current finite-class and finite-net proof spine, see
 [`verified-slt-program-outline.md`](verified-slt-program-outline.md).
+For the v0.1 artifact map tying the checked theorem chains to a technical note
+and TheoremPath page, see
+[`formalslt-v0.1-artifact-map-2026-06-01.md`](formalslt-v0.1-artifact-map-2026-06-01.md).
 
 ## Completed
 
