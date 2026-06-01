@@ -1,7 +1,7 @@
 # FormalSLT v0.1 Quickstart
 
 Date: 2026-06-01
-Status: local draft
+Status: local release-candidate quickstart
 
 This is the shortest path for a reader to import and verify the current v0.1
 surface.
@@ -87,6 +87,11 @@ Run the full library and manifest checks:
 ```bash
 lake build FormalSLT
 python3 scripts/generate_proof_frontier_manifest.py --check
+python3 scripts/check_doc_anchors.py \
+  docs/formalslt-v0.1-technical-note.md \
+  docs/formalslt-v0.1-artifact-map-2026-06-01.md \
+  docs/formalslt-v0.1-release-review-2026-06-01.md \
+  docs/theorempath-formalslt-v0.1-page-draft.mdx
 git diff --check
 ```
 

@@ -1,7 +1,7 @@
 # FormalSLT v0.1: Checked Finite-Class and Finite-Net Bounds
 
 Date: 2026-06-01
-Status: local draft
+Status: local release-candidate note
 
 ## Abstract
 
@@ -93,11 +93,8 @@ The ergonomic API endpoint is:
 FiniteClassConfidenceSequence.failure_probability_le
 ```
 
-Anchor:
-
-```text
-FormalSLT/UniformConvergence.lean:3718
-```
+Anchor: `FiniteClassConfidenceSequence.failure_probability_le` at
+`FormalSLT/UniformConvergence.lean:3718`.
 
 The theorem controls the failure event for a simultaneous all-times,
 all-hypotheses confidence sequence. Its hypotheses expose the finite-class
@@ -211,10 +208,8 @@ unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
 ```
 
 Anchor:
-
-```text
-FormalSLT/Covering/UnitIntervalDudley.lean:2096
-```
+`unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
+at `FormalSLT/Covering/UnitIntervalDudley.lean:2098`.
 
 This theorem applies finite sub-Gaussian chaining infrastructure to a process
 indexed by the unit interval:
@@ -270,10 +265,10 @@ Unit-interval anchors:
 | Rounded projection radius | `unitIntervalDyadicGridRoundProject_dist_le` | `FormalSLT/Covering/UnitIntervalDudley.lean:323` |
 | Rounded-grid distance match | `unitIntervalRoundedDyadicGridNet_dist` | `FormalSLT/Covering/UnitIntervalDudley.lean:1231` |
 | Supremum as range `sSup` | `unitIntervalRademacherLinearSup_sSup_range` | `FormalSLT/Covering/UnitIntervalDudley.lean:983` |
-| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1609` |
-| Supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2055` |
-| Prefix-free supplied-supremum bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2096` |
-| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2480` |
+| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1631` |
+| Supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2066` |
+| Prefix-free supplied-supremum bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2098` |
+| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2482` |
 
 ### Interpretation
 
@@ -302,11 +297,8 @@ reusability check is:
 twoPointDyadicNetSequence
 ```
 
-Anchor:
-
-```text
-FormalSLT/Covering/TwoPointDudley.lean:175
-```
+Anchor: `twoPointDyadicNetSequence` at
+`FormalSLT/Covering/TwoPointDudley.lean:174`.
 
 This declaration instantiates the same generic finite dyadic-net sequence API
 on the two-point discrete metric space:

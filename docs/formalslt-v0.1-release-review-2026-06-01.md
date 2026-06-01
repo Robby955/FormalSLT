@@ -67,13 +67,13 @@ Main local declarations:
 - `unitIntervalRademacherLinearSup_expectation`
   (`FormalSLT/Covering/UnitIntervalDudley.lean:912`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2021`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2032`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2055`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2066`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2096`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2098`)
 - `unitIntervalRademacherLinearSup_dudley_m0_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2161`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2163`)
 
 Meaning: the finite-net Dudley machinery reaches a concrete non-finite metric
 index space, the unit interval, through supplied supremum and rounded dyadic
@@ -85,11 +85,11 @@ continuous Dudley theorem.
 Main local declarations:
 
 - `twoPointDyadicNetSequence`
-  (`FormalSLT/Covering/TwoPointDudley.lean:175`)
+  (`FormalSLT/Covering/TwoPointDudley.lean:174`)
 - `twoPointRademacher_projected_dudley_m_bound`
-  (`FormalSLT/Covering/TwoPointDudley.lean:211`)
+  (`FormalSLT/Covering/TwoPointDudley.lean:220`)
 - `twoPointRademacherSup_dudley_m_bound`
-  (`FormalSLT/Covering/TwoPointDudley.lean:256`)
+  (`FormalSLT/Covering/TwoPointDudley.lean:260`)
 
 Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated on a
 second metric index family. This is an API-usability check, not a stronger

@@ -167,6 +167,11 @@ lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
+python3 scripts/check_doc_anchors.py \
+  docs/formalslt-v0.1-technical-note.md \
+  docs/formalslt-v0.1-artifact-map-2026-06-01.md \
+  docs/formalslt-v0.1-release-review-2026-06-01.md \
+  docs/theorempath-formalslt-v0.1-page-draft.mdx
 ```
 
 ## Audit commands
@@ -178,6 +183,11 @@ audits:
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
+python3 scripts/check_doc_anchors.py \
+  docs/formalslt-v0.1-technical-note.md \
+  docs/formalslt-v0.1-artifact-map-2026-06-01.md \
+  docs/formalslt-v0.1-release-review-2026-06-01.md \
+  docs/theorempath-formalslt-v0.1-page-draft.mdx
 git diff --check
 ```
 
@@ -198,6 +208,7 @@ The expected result is:
 - the `rg` commands find no executable `sorry`, no executable `admit`, and no
   custom axioms/constants in `FormalSLT` or `examples`;
 - the proof-frontier manifest is in sync with the theorem map and source counts;
+- documented `FormalSLT/...lean:line` anchors point at the named declarations;
 - `git diff --check` reports no whitespace errors.
 
 ## Module map
