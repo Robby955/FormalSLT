@@ -1,0 +1,48 @@
+import FormalSLT.Covering.TwoPointDudley
+
+/-!
+# Two-point dyadic-net Dudley checker
+
+Checks the second concrete `FiniteDyadicNetSequence` instantiation. This file
+keeps the generic dyadic-net API from being exercised only by the unit interval.
+-/
+
+#check FormalSLT.Covering.TwoPointDudley.TwoPoint
+#check FormalSLT.Covering.TwoPointDudley.twoPointDist
+#check FormalSLT.Covering.TwoPointDudley.twoPointDist_nonneg
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDist_nonneg
+#check FormalSLT.Covering.TwoPointDudley.twoPointDist_symm
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDist_symm
+#check FormalSLT.Covering.TwoPointDudley.twoPointDist_triangle
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDist_triangle
+
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherValue
+#check FormalSLT.Covering.TwoPointDudley.twoPoint_rademacher_mgf_bound
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPoint_rademacher_mgf_bound
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherProcess
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherProcess.increment_mgf
+
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicCoverCount
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_dist
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_dist
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_radius_pos
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_radius_pos
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_radius_geometric
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_radius_geometric
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_pair_card_gt_one
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_pair_card_gt_one
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_coveringNumber
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_coveringNumber
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_coverCount_le
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNet_coverCount_le
+
+#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacher_projected_dudley_m_bound
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacher_projected_dudley_m_bound
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_le_projectedSup
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_le_projectedSup
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound

@@ -204,6 +204,25 @@ declarations; modules are relative to `FormalSLT`.
 | `finite_projected_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers` | `Covering.TotalBoundedDudley` | Total-bounded dyadic wrapper for the terminal projected supremum, without an identity terminal net |
 | `finite_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers` | `Covering.TotalBoundedDudley` | Finite-terminal total-bounded dyadic wrapper composed with the finite Dudley entropy-budget theorem |
 
+## Two-point Dudley example
+
+| Declaration | Module | Role |
+|---|---|---|
+| `TwoPoint` | `Covering.TwoPointDudley` | The two-point discrete metric index type |
+| `twoPointDist_nonneg` | `Covering.TwoPointDudley` | The two-point discrete metric is nonnegative |
+| `twoPointDist_symm` | `Covering.TwoPointDudley` | The two-point discrete metric is symmetric |
+| `twoPointDist_triangle` | `Covering.TwoPointDudley` | The two-point discrete metric satisfies the triangle inequality |
+| `twoPoint_rademacher_mgf_bound` | `Covering.TwoPointDudley` | One-coordinate Rademacher process increments satisfy the sub-Gaussian MGF bound |
+| `twoPointRademacherProcess` | `Covering.TwoPointDudley` | The two-point Rademacher process packaged as a finite sub-Gaussian process |
+| `twoPointDyadicNet` | `Covering.TwoPointDudley` | Full two-point finite net with dyadic positive radius |
+| `twoPointDyadicNet_radius_geometric` | `Covering.TwoPointDudley` | Adjacent two-point dyadic radii satisfy the geometric chaining budget |
+| `twoPointDyadicNet_pair_card_gt_one` | `Covering.TwoPointDudley` | Adjacent two-point projection-pair families are nontrivial |
+| `twoPointDyadicNet_coverCount_le` | `Covering.TwoPointDudley` | Adjacent two-point covering-number products are bounded by the constant cover-count envelope |
+| `twoPointDyadicNetSequence` | `Covering.TwoPointDudley` | A second concrete `FiniteDyadicNetSequence` instantiation, independent of `[0,1]` |
+| `twoPointRademacher_projected_dudley_m_bound` | `Covering.TwoPointDudley` | Arbitrary finite-horizon projected Dudley bound routed through the generic dyadic-net sequence API |
+| `twoPointRademacherSup_le_projectedSup` | `Covering.TwoPointDudley` | Terminal projected-net adapter for the two-point supplied supremum |
+| `twoPointRademacherSup_dudley_m_bound` | `Covering.TwoPointDudley` | Supplied-supremum finite Dudley bound routed through the generic dyadic-net sequence API |
+
 ## Unit-interval Dudley example
 
 | Declaration | Module | Role |

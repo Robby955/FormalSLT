@@ -56,6 +56,7 @@ import FormalSLT.Covering.DudleyChaining
 import FormalSLT.Covering.FiniteSubGaussianChaining
 import FormalSLT.Covering.TotalBoundedDudley
 import FormalSLT.Covering.UnitIntervalDudley
+import FormalSLT.Covering.TwoPointDudley
 
 import FormalSLT.AlgorithmicStability
 import FormalSLT.Stability.BousquetElisseeff
