@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 21,
-    "library_and_example_lean_lines": 30491,
-    "library_lean_lines": 28870,
+    "library_and_example_lean_lines": 30539,
+    "library_lean_lines": 28915,
     "library_modules": 54,
-    "theorem_map_entries": 354
+    "theorem_map_entries": 355
   },
   "theorem_families": [
     {
@@ -565,6 +565,12 @@
           "module": "UniformConvergence",
           "name": "zeroOneDyadicFiniteClassConfidenceRadius",
           "summary": "Named dyadic confidence radius for [0,1] finite-class empirical-average deviations"
+        },
+        {
+          "kind": "theorem",
+          "module": "UniformConvergence",
+          "name": "zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge",
+          "summary": "Sample-size lower bound implies the named dyadic confidence radius is at most a target \u03b5"
         },
         {
           "kind": "theorem",

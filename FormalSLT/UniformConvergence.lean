@@ -3672,6 +3672,51 @@ theorem anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence
   rw [countableTimeClass_not_forall_lt_eq_exists_ge deviation threshold]
   exact hCrossing
 
+/--
+Sample-size inversion for the displayed dyadic confidence radius.
+
+If the sample size clears the usual
+`(log 2 - log budget) / (2 * ε^2)` lower bound at time `t`, then the named
+dyadic radius used in the confidence-sequence theorem is at most `ε`.
+-/
+theorem zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
+    {H : Type*} [Fintype H] [Nonempty H]
+    {sampleSize ε δ_real : ℝ} {t : ℕ}
+    (hSampleSize_pos : 0 < sampleSize)
+    (hε_pos : 0 < ε)
+    (hSampleSize_ge :
+      (Real.log 2 -
+          Real.log
+            (δ_real * (2 : ℝ) ^ (-1 - (t : ℤ)) /
+              (Fintype.card H : ℝ))) /
+          (2 * ε ^ (2 : ℕ)) ≤ sampleSize) :
+    zeroOneDyadicFiniteClassConfidenceRadius (H := H) sampleSize δ_real t ≤ ε := by
+  unfold zeroOneDyadicFiniteClassConfidenceRadius
+  rw [Real.sqrt_le_iff]
+  constructor
+  · exact hε_pos.le
+  let logBudget : ℝ :=
+    Real.log 2 -
+      Real.log
+        (δ_real * (2 : ℝ) ^ (-1 - (t : ℤ)) /
+          (Fintype.card H : ℝ))
+  have hε_sq_pos : 0 < ε ^ (2 : ℕ) := sq_pos_of_pos hε_pos
+  have hden_eps_pos : 0 < 2 * ε ^ (2 : ℕ) :=
+    mul_pos (by norm_num : (0 : ℝ) < 2) hε_sq_pos
+  have hden_sample_pos : 0 < 2 * sampleSize :=
+    mul_pos (by norm_num : (0 : ℝ) < 2) hSampleSize_pos
+  change logBudget / (2 * sampleSize) ≤ ε ^ (2 : ℕ)
+  by_cases hLogBudget_nonpos : logBudget ≤ 0
+  · have hInside_nonpos : logBudget / (2 * sampleSize) ≤ 0 :=
+      div_nonpos_of_nonpos_of_nonneg hLogBudget_nonpos hden_sample_pos.le
+    exact hInside_nonpos.trans (sq_nonneg ε)
+  · have hLogBudget_pos : 0 < logBudget := lt_of_not_ge hLogBudget_nonpos
+    have hLog_le_sample : logBudget ≤ sampleSize * (2 * ε ^ (2 : ℕ)) := by
+      rw [div_le_iff₀ hden_eps_pos] at hSampleSize_ge
+      simpa [logBudget, mul_comm, mul_left_comm, mul_assoc] using hSampleSize_ge
+    rw [div_le_iff₀ hden_sample_pos]
+    nlinarith
+
 end
 
 end FormalSLT.UniformConvergence

@@ -148,6 +148,7 @@ Core declarations:
 - `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius`
 - `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding`
 - `zeroOneDyadicFiniteClassConfidenceRadius`
+- `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge`
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding`
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding`
 - `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding`
@@ -577,6 +578,7 @@ finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fro
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding
 zeroOneDyadicFiniteClassConfidenceRadius
+zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding
 anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding
 ```
@@ -589,6 +591,11 @@ radius by the per-time dyadic radius
 ```text
 sqrt((log 2 - log(δ_real * 2^(-1-t) / card(H))) / (2 * card(s))).
 ```
+
+The sample-size inversion theorem gives the corresponding display rule: once
+`card(s)` clears
+`(log 2 - log(δ_real * 2^(-1-t) / card(H))) / (2 * ε^2)`, the named radius is
+at most `ε`.
 
 The first theorem assumes the pointwise tail bound at this radius and proves
 the simultaneous finite-prefix event over `Fin T × H`. The second theorem

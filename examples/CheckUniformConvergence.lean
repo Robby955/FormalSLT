@@ -202,6 +202,9 @@ lake env lean examples/CheckUniformConvergence.lean
 
 #check FormalSLT.UniformConvergence.zeroOneDyadicFiniteClassConfidenceRadius
 
+#check FormalSLT.UniformConvergence.zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
+#print axioms FormalSLT.UniformConvergence.zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
+
 #check FormalSLT.UniformConvergence.countableTimeClass_not_forall_lt_eq_exists_ge
 #print axioms FormalSLT.UniformConvergence.countableTimeClass_not_forall_lt_eq_exists_ge
 

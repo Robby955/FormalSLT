@@ -97,6 +97,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius` | `UniformConvergence` | Finite-prefix time-varying dyadic-radius event from supplied pointwise tails and checked dyadic budget conversion |
 | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `UniformConvergence` | Finite-prefix time-varying dyadic-radius theorem for `[0,1]` losses with the pointwise tails discharged from Hoeffding |
 | `zeroOneDyadicFiniteClassConfidenceRadius` | `UniformConvergence` | Named dyadic confidence radius for `[0,1]` finite-class empirical-average deviations |
+| `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `UniformConvergence` | Sample-size lower bound implies the named dyadic confidence radius is at most a target `ε` |
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `UniformConvergence` | Countable-time finite-class Hoeffding theorem for `[0,1]` losses with dyadic per-time radii |
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_exists_fromHoeffding` | `UniformConvergence` | Existential-event version of the countable-time finite-class Hoeffding theorem |
 | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `UniformConvergence` | Existential-event anytime theorem using the named dyadic confidence radius |
