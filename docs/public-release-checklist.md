@@ -48,7 +48,7 @@ git diff --check
 Expected result:
 
 - full Lean build passes;
-- showcase checker prints only the standard Lean/Mathlib axioms for the public
+- public theorem checker prints only the standard Lean/Mathlib axioms for the public
   spine;
 - conditional sub-Gamma and unit-interval Dudley checkers print only the
   standard Lean/Mathlib axioms for their public theorem surfaces;

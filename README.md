@@ -189,7 +189,6 @@ Run these before treating a branch as a release candidate:
 lake exe cache get
 lake build FormalSLT
 lake env lean examples/CheckV01Usability.lean
-lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean

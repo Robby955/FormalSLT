@@ -7,7 +7,7 @@ assumptions, reproducible builds, and careful public claims.
 ## Branch and PR flow
 
 - Open pull requests against the repository default branch. In the private
-  preview repo this is currently `release-candidate`; in a public showcase
+  preview repo this is currently `release-candidate`; in a public release
   mirror it may be `main`.
 - Use a topic branch with a descriptive name, for example
   `feat/lean-small-helper-lemma` or `docs/theorem-map-cleanup`.
@@ -78,8 +78,8 @@ Every module must have a `/-! ... -/` docstring that states:
 lake exe cache get
 lake build FormalSLT
 
-# Run the showcase theorem and axiom checker:
-lake env lean examples/CheckShowcaseTheorems.lean
+# Run the v0.1 theorem and axiom checker:
+lake env lean examples/CheckV01Usability.lean
 
 # Verify axioms for a specific theorem:
 printf 'import FormalSLT\n#print axioms FormalSLT.VC.SampleComplexity.vc_erm_excessRisk_tail\n' | lake env lean --stdin
