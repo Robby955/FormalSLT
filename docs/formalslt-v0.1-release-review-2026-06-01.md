@@ -300,6 +300,6 @@ Connect the total-bounded and unit-interval boundary layer to the packaged Dudle
 ```
 
 The goal is to keep future Dudley examples from restating the same process,
-net-sequence, coarse-budget, and terminal-supremum data. This is higher leverage
+net-sequence, coarse-budget, and terminal-supremum data. This generalizes further
 than adding more one-off `m = k` corollaries. It is not a theorem constructing
 arbitrary measurable suprema for all non-finite classes.
