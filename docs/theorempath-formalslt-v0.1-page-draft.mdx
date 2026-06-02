@@ -1,0 +1,318 @@
+---
+title: "FormalSLT v0.1: verified finite-class confidence sequences and a finite-net Dudley bridge"
+subtitle: "Two checked theorem chains for finite-class concentration and finite-net empirical-process bounds"
+slug: "formalslt-v0-1-checked-statistical-learning-theory"
+date: "2026-06-01"
+author: "Robert Sneiderman"
+status: "route-ready"
+description: "A theorem-faithful TheoremPath page explaining the checked FormalSLT v0.1 chains: a finite-class Hoeffding confidence sequence, a unit-interval Dudley finite-net bridge, and reusable dyadic-net API checks."
+tags:
+  - lean4
+  - statistical-learning-theory
+  - concentration
+  - dudley-chaining
+  - formal-methods
+relatedTopics:
+  - "/topics/concentration-inequalities"
+  - "/topics/hoeffdings-inequality"
+  - "/topics/rademacher-complexity"
+  - "/compare/covering-vs-packing-numbers"
+---
+
+FormalSLT is a Lean 4 library for checking theorem chains from statistical
+learning theory. The v0.1 surface has two headline endpoints and supporting API
+checks:
+
+1. a finite-class countable-time Hoeffding confidence-sequence wrapper for
+   `[0,1]` losses;
+2. a concrete non-finite `[0,1]` Dudley bridge through rounded dyadic finite
+   nets;
+3. reusable dyadic-net instances over a two-point metric space and finite
+   discrete spaces `Fin n`, showing that the wrapper is not tied to the
+   unit-interval file.
+
+This page explains what is checked, what remains outside scope, and how to
+verify the claims locally.
+
+## The v0.1 Backbone
+
+```mermaid
+flowchart LR
+  subgraph Confidence["Finite-class concentration"]
+    U["finite union budgets"]
+    T["dyadic time budgets"]
+    H["Hoeffding wrappers"]
+    C["confidence-sequence failure bound"]
+    U --> T --> H --> C
+  end
+
+  subgraph Dudley["Finite-net chaining"]
+    M["finite sub-Gaussian max"]
+    E["finite Dudley entropy budget"]
+    G["rounded dyadic grids"]
+    S["unit-interval supplied supremum"]
+    M --> E --> G --> S
+  end
+```
+
+The two chains are separate. The confidence-sequence theorem is a finite-class
+concentration statement. The Dudley theorem is a finite-net chaining statement
+for one concrete non-finite metric index space.
+
+## Chain 1: Countable-Time Finite-Class Hoeffding
+
+The endpoint theorem is:
+
+```lean
+FiniteClassConfidenceSequence.failure_probability_le
+```
+
+Lean anchor: `FiniteClassConfidenceSequence.failure_probability_le` at
+`FormalSLT/UniformConvergence.lean:3718`.
+
+It bounds the probability that there exists a time `t` and a hypothesis `h`
+whose empirical average deviates from its risk by at least the named dyadic
+radius.
+
+The proof chain is:
+
+| Step | Lean declaration |
+|---|---|
+| finite event budgets | `finiteMeasureUnionBound_budget` |
+| summable dyadic time allocation | `finiteDyadicTimeBudget_tsum_le` |
+| countable-time class union bound | `countableTimeClassUnionBound_dyadicBudget` |
+| finite-prefix Hoeffding wrapper | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` |
+| named confidence radius | `zeroOneDyadicFiniteClassConfidenceRadius` |
+| sample-size to radius bridge | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` |
+| named failure event | `finiteClassConfidenceSequenceFailureEvent` |
+| bundled assumption object | `FiniteClassConfidenceSequence` |
+| final failure-event theorem | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` |
+| bundled API theorem | `FiniteClassConfidenceSequence.failure_probability_le` |
+
+The theorem is finite-class. The hypothesis type has `[Fintype H]` and
+`[Nonempty H]`, and the sample is a fixed finite set of coordinates. The loss
+assumption is visible in the statement: losses are almost surely in `Set.Icc 0
+1`.
+
+The display-facing sample-size theorem is:
+
+```lean
+zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
+```
+
+For `t = 0`, one hypothesis, and failure budget `δ = 0.05`, the checked
+dyadic radius needs 25 reviews for half-width 0.30, 55 reviews for half-width
+0.20, and 220 reviews for half-width 0.10. These are dyadic confidence-sequence
+numbers, not the classic fixed-time Hoeffding examples on the topic page.
+
+## The Dyadic Budget
+
+The countable-time step allocates failure probability across times using a
+summable dyadic budget:
+
+```text
+time 0: delta / 2
+time 1: delta / 4
+time 2: delta / 8
+...
+```
+
+At each time, the budget is split over the finite hypothesis class.
+
+```mermaid
+flowchart TB
+  D["total failure budget delta"]
+  T0["time 0 budget"]
+  T1["time 1 budget"]
+  T2["time 2 budget"]
+  H0["split over finite H"]
+  H1["split over finite H"]
+  H2["split over finite H"]
+
+  D --> T0 --> H0
+  D --> T1 --> H1
+  D --> T2 --> H2
+```
+
+## Chain 2: A Concrete Non-Finite Dudley Bridge
+
+The endpoint theorem is:
+
+```lean
+unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
+```
+
+Lean anchor:
+`unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
+at `FormalSLT/Covering/UnitIntervalDudley.lean:2113`.
+
+The index type is the unit interval:
+
+```lean
+abbrev UnitInterval : Type :=
+  {x : ℝ // x ∈ Set.Icc (0 : ℝ) 1}
+```
+
+The process is:
+
+```text
+X(b,t) = signOfBool b * t
+```
+
+where `b : Bool` and `t : [0,1]`.
+
+The proof chain is:
+
+| Step | Lean declaration |
+|---|---|
+| finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` |
+| finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` |
+| packaged rounded-grid instance | `unitIntervalRoundedDyadicGridDudleyInstance` |
+| total-bounded supplied-supremum adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` |
+| `[0,1]` total boundedness | `unitInterval_totallyBounded_univ` |
+| nearest rounded-grid projection | `unitIntervalDyadicGridRoundProject_dist_le` |
+| supplied-supremum adapter | `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` |
+| concrete range supremum | `unitIntervalRademacherLinearSup_sSup_range` |
+| final supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` |
+
+## Rounded Dyadic Grids
+
+The rounded dyadic grid at level `k` contains points of the form:
+
+```text
+i / 2^k,    i = 0, ..., 2^k
+```
+
+The checked nearest-grid theorem proves radius:
+
+```text
+1 / 2^(k + 1)
+```
+
+```mermaid
+flowchart LR
+  L1["level 1: 0, 1/2, 1"]
+  L2["level 2: 0, 1/4, 1/2, 3/4, 1"]
+  LK["level k: i / 2^k"]
+  R["nearest-grid radius 1 / 2^(k+1)"]
+
+  L1 --> L2 --> LK --> R
+```
+
+This matters because the generic finite-net Dudley machinery consumes finite
+nets at adjacent scales. The rounded-grid family makes those scales reusable
+instead of relying only on one-off half and quarter meshes.
+
+## Supremum Adapter
+
+The unit-interval theorem still uses a supplied supremum functional, but in
+this concrete process the supplied functional is tied to the actual range
+supremum by checked Lean declarations:
+
+```lean
+unitIntervalRademacherLinearSup_isLeastUpperBound
+unitIntervalRademacherLinearSup_isLUB_range
+unitIntervalRademacherLinearSup_sSup_range
+```
+
+```mermaid
+flowchart LR
+  F["full non-finite index family"]
+  P["projected finite grid supremum"]
+  S["supplied supremum functional"]
+  E["expected-sup bound"]
+
+  F --> S
+  P --> S --> E
+```
+
+The checked statement is concrete to this Rademacher linear process. It is not
+a theorem constructing arbitrary measurable suprema for all non-finite classes.
+
+## What Is Checked
+
+- The finite-class confidence-sequence theorem compiles and is covered by
+  `examples/CheckUniformConvergence.lean`.
+- The finite union-budget layer compiles and is covered by
+  `examples/CheckFiniteUnionBound.lean`.
+- The unit-interval Dudley bridge compiles and is covered by
+  `examples/CheckUnitIntervalDudley.lean`.
+- The reusable packaged finite dyadic Dudley API and both concrete instances are
+  covered by `examples/CheckV01Usability.lean`.
+- The two-point dyadic-net example is covered by
+  `examples/CheckTwoPointDudley.lean`.
+- The finite discrete `Fin n` embedded Rademacher dyadic-net family is covered by
+  `examples/CheckFiniteDiscreteDudley.lean`.
+- The printed axiom profile for the headline declarations stays inside:
+
+```text
+[propext, Classical.choice, Quot.sound]
+```
+
+## What Is Not Claimed
+
+The current FormalSLT v0.1 surface does not prove:
+
+- the full continuous Dudley entropy integral;
+- a general separability theorem;
+- arbitrary measurable suprema over non-finite classes;
+- infinite-class confidence sequences;
+- a martingale or e-process anytime theorem;
+- neural-network generalization bounds.
+
+These are not hidden caveats. They are the current proof boundary.
+
+## How to Verify
+
+From the FormalSLT worktree:
+
+```bash
+lake build
+lake env lean examples/CheckV01Usability.lean
+lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
+lake env lean examples/CheckFiniteUnionBound.lean
+lake env lean examples/CheckUniformConvergence.lean
+python3 scripts/generate_proof_frontier_manifest.py --check
+```
+
+For the shortest import check, use:
+
+```bash
+lake env lean examples/CheckV01Usability.lean
+```
+
+The quickstart is:
+
+```text
+docs/formalslt-v0.1-quickstart.md
+```
+
+The v0.1 artifact map is:
+
+```text
+docs/formalslt-v0.1-artifact-map-2026-06-01.md
+```
+
+The technical note draft is:
+
+```text
+docs/formalslt-v0.1-technical-note.md
+```
+
+## Next Theorem Work
+
+Two next steps would make the checked surface easier to use:
+
+1. Use the `FiniteClassConfidenceSequence` bundle in downstream formal
+   statements instead of restating the long theorem signature.
+2. Use the packaged `FiniteDyadicDudleyInstance` surface in future finite
+   Dudley examples instead of restating the net sequence, coarse budget,
+   variance, and supplied-supremum adapter data.
+3. Connect more of the total-bounded and unit-interval boundary layer to the
+   packaged Dudley API where the hypotheses match.
+
+Those are theorem-engineering steps, not page polish. This page is route-ready
+when the checked theorem surface, displayed constants, and limitations stay
+aligned.

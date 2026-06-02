@@ -295,7 +295,7 @@ merge to `release-candidate` when:
 
 ## Branch protection (pre-public-launch)
 
-Before flipping the showcase repo to public, the maintainer should
+Before flipping the release repo to public, the maintainer should
 configure GitHub branch protection on `release-candidate`:
 
 - **Settings → Branches → Add rule** for branch name pattern

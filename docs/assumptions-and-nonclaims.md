@@ -75,6 +75,19 @@ generic VC bridge is not yet part of the library.
 It is finite infrastructure for Dudley-style arguments. It is not the
 continuous Dudley entropy integral.
 
+### Unit-interval Dudley example
+
+`Covering.UnitIntervalDudley` instantiates the total-bounded finite-net bridge
+on the non-finite metric index space `[0,1]`. It constructs explicit half and
+quarter meshes, packages the Rademacher process
+`X(b,t) = signOfBool b * t`, and routes a nonzero supplied supremum through a
+projected finite-net Dudley bound with a concrete `sqrt (log 15)` entropy
+envelope.
+
+This example still uses the supplied-supremum interface. It does not construct
+arbitrary measurable suprema, prove a general separability theorem, or state
+the full continuous Dudley entropy integral.
+
 ### Conditional sub-Gamma extraction
 
 `Concentration.SubGamma.Extractor` proves a conditional MGF bound for a
@@ -104,6 +117,11 @@ The main Rademacher and VC statements are finite-index theorems. Moving to
 general infinite classes requires covering-number APIs, measurable suprema,
 separability assumptions, and approximation arguments that are outside the
 current theorem spine.
+
+The unit-interval Dudley example is the current concrete bridge beyond a
+finite ambient index type. It verifies finite-net machinery on `[0,1]`, but it
+does not remove the remaining measurable-supremum and separability obligations
+for arbitrary non-finite classes.
 
 ### Sharp McDiarmid constant
 

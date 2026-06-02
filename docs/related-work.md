@@ -14,8 +14,8 @@ for them.
 
 ## Scope
 
-FormalSLT does not claim to be the first formalization of statistical learning
-theory. The current release candidate is scoped more narrowly:
+FormalSLT makes no priority claim. The current release candidate is scoped
+more narrowly:
 
 ```text
 finite-class empirical-risk and Rademacher/VC/PAC-Bayes infrastructure,
@@ -42,5 +42,5 @@ comparison is by scope:
 - FormalSLT emphasizes a finite-class theorem spine, explicit
   assumptions, examples, theorem maps, and auditable finite-sample bounds.
 
-Public wording should avoid claims such as "first Lean SLT formalization",
-"first localized theorem in Lean", or "solves localized Rademacher theory".
+Public wording should avoid priority claims, broad novelty claims, or claims
+that the project solves localized Rademacher theory.

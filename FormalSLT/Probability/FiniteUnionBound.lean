@@ -1,10 +1,11 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
+import Mathlib.Data.ENNReal.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.MeasureSpace
 import Mathlib.MeasureTheory.OuterMeasure.Basic
 
-open scoped BigOperators
+open scoped BigOperators ENNReal
 open MeasureTheory
 
 namespace FormalSLT.Probability.FiniteUnionBound
@@ -131,6 +132,85 @@ theorem finiteMeasureUnionBound
     (events : ι → Set Ω) :
     μ (⋃ i, events i) ≤ ∑ i, μ (events i) :=
   MeasureTheory.measure_iUnion_fintype_le μ events
+
+/--
+Finite measure union bound with a supplied per-event budget sequence.
+
+This is the finite budget-allocation form: if event `i` has mass at most
+`budget i`, and the finite budget sum is bounded by `α`, then the union has
+mass at most `α`.
+-/
+theorem finiteMeasureUnionBound_budget
+    {Ω ι : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [Fintype ι]
+    (events : ι → Set Ω) (budget : ι → ℝ≥0∞) {α : ℝ≥0∞}
+    (hbudget : ∀ i, μ (events i) ≤ budget i)
+    (hsum : ∑ i, budget i ≤ α) :
+    μ (⋃ i, events i) ≤ α := by
+  calc
+    μ (⋃ i, events i) ≤ ∑ i, μ (events i) :=
+      finiteMeasureUnionBound events
+    _ ≤ ∑ i, budget i := by
+      exact Finset.sum_le_sum (by intro i _hi; exact hbudget i)
+    _ ≤ α := hsum
+
+/--
+Finite measure union bound with a common per-event budget.
+
+This is the finite-class skeleton used by anytime-valid arguments: if every
+event in a finite family has measure at most `β`, then the union has measure at
+most the number of events times `β`.
+-/
+theorem finiteMeasureUnionBound_const
+    {Ω ι : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [Fintype ι]
+    (events : ι → Set Ω) {β : ℝ≥0∞}
+    (hβ : ∀ i, μ (events i) ≤ β) :
+    μ (⋃ i, events i) ≤ (Fintype.card ι : ℝ≥0∞) * β := by
+  calc
+    μ (⋃ i, events i) ≤ ∑ i, μ (events i) :=
+      finiteMeasureUnionBound events
+    _ ≤ ∑ _i : ι, β := by
+      exact Finset.sum_le_sum (by intro i _hi; exact hβ i)
+    _ = (Fintype.card ι : ℝ≥0∞) * β := by
+      simp
+
+/--
+Finite measure union bound with an equal split of a total budget.
+
+The hypotheses keep the arithmetic explicit: `inv_card` is a chosen reciprocal
+for the finite index count and `hbudget` records that the count times the
+per-event budget is bounded by the desired total budget.
+-/
+theorem finiteMeasureUnionBound_equalBudget
+    {Ω ι : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [Fintype ι]
+    (events : ι → Set Ω) {α inv_card : ℝ≥0∞}
+    (hbudget : (Fintype.card ι : ℝ≥0∞) * inv_card ≤ α)
+    (hα : ∀ i, μ (events i) ≤ inv_card) :
+    μ (⋃ i, events i) ≤ α := by
+  calc
+    μ (⋃ i, events i) ≤ (Fintype.card ι : ℝ≥0∞) * inv_card :=
+      finiteMeasureUnionBound_const events hα
+    _ ≤ α := hbudget
+
+/--
+Finite measure union bound with the total budget split equally across a
+nonempty finite index type.
+-/
+theorem finiteMeasureUnionBound_cardInv
+    {Ω ι : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [Fintype ι] [Nonempty ι]
+    (events : ι → Set Ω) {α : ℝ≥0∞}
+    (hα : ∀ i, μ (events i) ≤ α * (Fintype.card ι : ℝ≥0∞)⁻¹) :
+    μ (⋃ i, events i) ≤ α := by
+  have hcard_ne_zero : (Fintype.card ι : ℝ≥0∞) ≠ 0 := by
+    exact_mod_cast (Fintype.card_ne_zero : Fintype.card ι ≠ 0)
+  have hcard_ne_top : (Fintype.card ι : ℝ≥0∞) ≠ ⊤ := by
+    exact ENNReal.coe_ne_top
+  calc
+    μ (⋃ i, events i)
+        ≤ (Fintype.card ι : ℝ≥0∞) * (α * (Fintype.card ι : ℝ≥0∞)⁻¹) :=
+      finiteMeasureUnionBound_const events hα
+    _ = α := by
+      rw [mul_comm (Fintype.card ι : ℝ≥0∞) (α * (Fintype.card ι : ℝ≥0∞)⁻¹),
+        ENNReal.inv_mul_cancel_right hcard_ne_zero hcard_ne_top]
 
 /--
 Countable measure-theoretic union bound.

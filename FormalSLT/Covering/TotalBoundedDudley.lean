@@ -327,6 +327,106 @@ def dyadicChainingCoverCount
   (dyadicChainingFiniteNetOfTotallyBoundedUniv
     (T := T) hT hradiusScale (j + 1)).net.coveringNumber
 
+/-- Total-bounded dyadic finite-net schedule packaged as a reusable
+`FiniteDyadicNetSequence`.
+
+The caller supplies the global nontrivial projection-pair cardinality
+hypothesis. The existing total-bounded wrappers only need this on
+`Finset.range m`; this packaged object is deliberately stronger because it is
+intended for examples or APIs that want one reusable all-scale sequence. -/
+def dyadicChainingFiniteNetSequenceOfTotallyBounded
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hcard : ∀ j : ℕ,
+      1 < Fintype.card
+        (FiniteNet.ProjectionPair
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale j).net
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale (j + 1)).net)) :
+    FiniteSubGaussianProcess.FiniteDyadicNetSequence P
+      (fun j : ℕ =>
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale j).A) where
+  N := fun j => (dyadicChainingFiniteNetOfTotallyBoundedUniv
+    (T := T) hT hradiusScale j).net
+  coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j
+  radiusScale := radiusScale
+  dist_eq := by
+    intro j
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  dist_symm := by
+    intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  dist_triangle := by
+    intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  radiusScale_nonneg := hradiusScale.le
+  radius_pos := by
+    intro j
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  radius_geometric := by
+    intro j
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
+  pair_card_gt_one := hcard
+  coverCount_le := by
+    intro j
+    rfl
+
+/-- Total-bounded dyadic finite-net schedule packaged as a reusable
+`FiniteDyadicDudleyInstance`.
+
+This is the bridge from the total-bounded boundary layer to the packaged finite
+Dudley API. It intentionally requires a global coarse projected-supremum budget;
+single-scale total-bounded wrappers keep their older direct theorem shape. -/
+def finiteDyadicDudleyInstanceOfTotallyBounded
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    (coarseBudget : ℝ)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcard : ∀ j : ℕ,
+      1 < Fintype.card
+        (FiniteNet.ProjectionPair
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale j).net
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale (j + 1)).net))
+    (hcoarse : ∀ m : ℕ,
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+        coarseBudget) :
+    FiniteSubGaussianProcess.FiniteDyadicDudleyInstance P
+      (fun j : ℕ =>
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale j).A) where
+  netSequence :=
+    dyadicChainingFiniteNetSequenceOfTotallyBounded
+      P hT hradiusScale hdistP hcard
+  coarseBudget := coarseBudget
+  variance_pos := hvariance
+  coarse_bound := hcoarse
+
 /-- Finite projected-net total-bounded dyadic Dudley wrapper without a finite
 ambient index type.
 

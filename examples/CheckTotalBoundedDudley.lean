@@ -44,6 +44,12 @@ feed the existing finite chaining infrastructure.
 #check FormalSLT.Covering.TotalBoundedDudley.dyadicChainingCoverCount
 #print axioms FormalSLT.Covering.TotalBoundedDudley.dyadicChainingCoverCount
 
+#check FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetSequenceOfTotallyBounded
+#print axioms FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetSequenceOfTotallyBounded
+
+#check FormalSLT.Covering.TotalBoundedDudley.finiteDyadicDudleyInstanceOfTotallyBounded
+#print axioms FormalSLT.Covering.TotalBoundedDudley.finiteDyadicDudleyInstanceOfTotallyBounded
+
 #check FormalSLT.Covering.TotalBoundedDudley.finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers
 #print axioms FormalSLT.Covering.TotalBoundedDudley.finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers
 

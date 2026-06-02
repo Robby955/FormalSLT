@@ -43,17 +43,20 @@ FRONTIER_LANES: list[dict[str, str]] = [
     },
     {
         "id": "continuous-dudley-entropy-integral",
-        "status": "open",
-        "scope": "total-bounded bridge beyond the current finite-scale wrappers",
+        "status": "partially_closed",
+        "scope": "unit-interval example plus total-bounded bridge; continuous integral remains open",
         "difficulty": "hard",
         "source": "docs/next-lane.md",
         "next_step": (
-            "Prove an analytic domination theorem from the finite dyadic "
-            "upper sum to an actual entropy integral under explicit assumptions."
+            "Package the unit-interval Dudley example and then generalize the "
+            "endpoint-mesh terminal step beyond the exact half/quarter meshes. "
+            "The full continuous entropy-integral theorem still needs analytic "
+            "and measurability assumptions."
         ),
         "boundary": (
-            "Do not claim separability, measurable arbitrary suprema, or a "
-            "continuous Dudley theorem until those layers are proved."
+            "The unit-interval example exercises the non-finite metric index "
+            "route, but it does not claim separability, measurable arbitrary "
+            "suprema, or a continuous Dudley theorem."
         ),
     },
     {
