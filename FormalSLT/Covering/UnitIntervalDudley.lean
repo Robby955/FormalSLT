@@ -1550,6 +1550,16 @@ private theorem unitIntervalRademacherLinear_roundedDyadicGrid_coarse
             unitIntervalRademacherLinearProcess.weight 1
             unitIntervalRademacherLinearProcess.weight_sum_one
 
+/-- Packaged finite-dyadic Dudley instance for the rounded-grid unit-interval
+Rademacher linear process. -/
+def unitIntervalRoundedDyadicGridDudleyInstance :
+    FiniteSubGaussianProcess.FiniteDyadicDudleyInstance
+      unitIntervalRademacherLinearProcess unitIntervalRoundedDyadicGridIndex where
+  netSequence := unitIntervalRoundedDyadicGridNetSequence
+  coarseBudget := 1
+  variance_pos := by norm_num [unitIntervalRademacherLinearProcess]
+  coarse_bound := unitIntervalRademacherLinear_roundedDyadicGrid_coarse
+
 /-- Generic rounded-dyadic-grid `m = 1` projected finite-net Dudley bound for
 the unit-interval Rademacher process. This replaces the bespoke half/quarter
 mesh sequence with `unitIntervalDyadicRoundedGridNet 1` and
@@ -1643,12 +1653,10 @@ theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound
               Real.sqrt
                 (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.FiniteDyadicNetSequence.projectedNet_dudley_bound
-      (S := unitIntervalRoundedDyadicGridNetSequence)
-      (m := m) (coarseBudget := (1 : ℝ))
-      (by norm_num [unitIntervalRademacherLinearProcess])
-      (unitIntervalRademacherLinear_roundedDyadicGrid_coarse m)
-  simpa [unitIntervalRademacherLinearProcess] using hbase
+    FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.projected_dudley_bound
+      unitIntervalRoundedDyadicGridDudleyInstance m
+  simpa [unitIntervalRoundedDyadicGridDudleyInstance,
+    unitIntervalRademacherLinearProcess] using hbase
 
 /-- Prefix-free finite-horizon rounded-dyadic-grid projected Dudley bound.
 
@@ -1869,6 +1877,20 @@ theorem unitIntervalRademacherLinear_projectedRoundedDyadicGridSup_eq
         ((unitIntervalDyadicRoundedGridNet level).center u.1)
   · exact unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup level ω
 
+/-- Supplied-supremum adapter for the rounded-grid unit-interval Rademacher
+linear process. The rounded grids contain both endpoints, so the terminal error
+is zero. -/
+def unitIntervalRademacherLinearSupRoundedDyadicGridAdapter :
+    FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.SupremumAdapter
+      unitIntervalRoundedDyadicGridDudleyInstance where
+  supFunctional := unitIntervalRademacherLinearSup
+  terminalError := 0
+  terminal_bound := by
+    intro m ω
+    simpa [unitIntervalRoundedDyadicGridNet] using
+      unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup
+        (m + 1) ω
+
 /-- The rounded level-`2` generic dyadic grid contains the endpoints, so the
 supplied supremum is pointwise bounded by its projected finite supremum. -/
 private lemma unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridLevelTwoSup
@@ -2074,19 +2096,12 @@ theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound
               Real.sqrt
                 (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
-      (S := unitIntervalRoundedDyadicGridNetSequence)
-      (m := m) (coarseBudget := (1 : ℝ))
-      (supFunctional := unitIntervalRademacherLinearSup)
-      (terminalError := (0 : ℝ))
-      (by norm_num [unitIntervalRademacherLinearProcess])
-      (by
-        intro ω
-        simpa [unitIntervalRoundedDyadicGridNet] using
-          unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup
-            (m + 1) ω)
-      (unitIntervalRademacherLinear_roundedDyadicGrid_coarse m)
-  simpa [unitIntervalRademacherLinearProcess] using hbase
+    FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+      unitIntervalRoundedDyadicGridDudleyInstance
+      unitIntervalRademacherLinearSupRoundedDyadicGridAdapter m
+  simpa [unitIntervalRoundedDyadicGridDudleyInstance,
+    unitIntervalRademacherLinearSupRoundedDyadicGridAdapter,
+    unitIntervalRademacherLinearProcess] using hbase
 
 /-- Prefix-free arbitrary finite-horizon rounded-dyadic-grid Dudley bound for
 the supplied nonzero supremum.

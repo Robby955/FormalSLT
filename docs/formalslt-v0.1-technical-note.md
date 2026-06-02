@@ -215,7 +215,7 @@ unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
 
 Anchor:
 `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
-at `FormalSLT/Covering/UnitIntervalDudley.lean:2098`.
+at `FormalSLT/Covering/UnitIntervalDudley.lean:2113`.
 
 This theorem applies finite sub-Gaussian chaining infrastructure to a process
 indexed by the unit interval:
@@ -261,7 +261,9 @@ Finite-chaining anchors:
 | Finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:744` |
 | Sub-Gaussian finite max wrapper | `finite_expectedSup_le_of_subGaussian_mgf_sqrt` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:839` |
 | Finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:2343` |
-| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:751` |
+| Total-bounded dyadic net-sequence constructor | `dyadicChainingFiniteNetSequenceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:337` |
+| Total-bounded packaged Dudley constructor | `finiteDyadicDudleyInstanceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:390` |
+| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:851` |
 
 Unit-interval anchors:
 
@@ -271,10 +273,12 @@ Unit-interval anchors:
 | Rounded projection radius | `unitIntervalDyadicGridRoundProject_dist_le` | `FormalSLT/Covering/UnitIntervalDudley.lean:323` |
 | Rounded-grid distance match | `unitIntervalRoundedDyadicGridNet_dist` | `FormalSLT/Covering/UnitIntervalDudley.lean:1231` |
 | Supremum as range `sSup` | `unitIntervalRademacherLinearSup_sSup_range` | `FormalSLT/Covering/UnitIntervalDudley.lean:983` |
-| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1631` |
-| Supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2066` |
-| Prefix-free supplied-supremum bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2098` |
-| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2482` |
+| Packaged rounded-grid Dudley instance | `unitIntervalRoundedDyadicGridDudleyInstance` | `FormalSLT/Covering/UnitIntervalDudley.lean:1555` |
+| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1641` |
+| Supplied-supremum adapter | `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` | `FormalSLT/Covering/UnitIntervalDudley.lean:1883` |
+| Supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2088` |
+| Prefix-free supplied-supremum bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2113` |
+| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2497` |
 
 ### Interpretation
 
@@ -284,8 +288,9 @@ finite-net bridge on a non-finite metric index type and records the proof
 boundary in Lean.
 
 The rounded grid theorem is also an API improvement over the earlier one-off
-half and quarter meshes. It gives a reusable finite-horizon dyadic family with
-nearest-grid radius:
+half and quarter meshes. It now routes through the packaged
+`FiniteDyadicDudleyInstance` surface, giving a reusable finite-horizon dyadic
+family with nearest-grid radius:
 
 ```text
 1 / 2^(level + 1)
@@ -356,6 +361,17 @@ twoPointRademacherSup_dudley_m_bound
 This is not a stronger empirical-process result than the unit-interval
 example. Its purpose is usability: downstream readers can see which hypotheses
 the generic wrapper needs, then compare multiple concrete instances.
+
+The total-bounded layer also exposes constructors into the same packaged API:
+
+```lean
+dyadicChainingFiniteNetSequenceOfTotallyBounded
+finiteDyadicDudleyInstanceOfTotallyBounded
+```
+
+These constructors require global projection-pair nontriviality and a global
+coarse-budget hypothesis. Existing single-scale total-bounded wrappers keep
+their direct theorem shape.
 
 The finite-family reusability check is:
 

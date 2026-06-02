@@ -30,10 +30,11 @@ finite Dudley entropy-budget wrappers, finite algorithmic stability, finite
 localized-Rademacher scaffolding, finite PAC-Bayes KL/DV/MGF and bounded-loss
 confidence bounds, conditional sub-Gamma MGF extraction, and total-bounded
 finite-net adapters for the next Dudley steps. The Dudley lane now includes a
-unit-interval example with explicit rounded finite meshes, plus a packaged
-finite dyadic Dudley API used by the two-point and `Fin n` discrete examples.
-The unit-interval supplied supremum has its least-upper-bound property proved
-over the full unit interval.
+unit-interval example with explicit rounded finite meshes, a packaged
+unit-interval dyadic Dudley instance, and reusable finite dyadic Dudley API
+instances for the two-point and `Fin n` discrete examples. The unit-interval
+supplied supremum has its least-upper-bound property proved over the full unit
+interval.
 
 ## Where to start
 
@@ -47,8 +48,8 @@ over the full unit interval.
   [Conditional Sub-Gamma Extractor](./docs/subgamma-extractor.md).
 - **For the non-finite unit-interval Dudley example:** see
   [Unit-Interval Dudley Example](./docs/unit-interval-dudley.md).
-- **For the second reusable dyadic-net instantiation:** see
-  [the two-point handoff note](./docs/formalslt-goal7-second-dyadic-net-instantiation-2026-06-01.md).
+- **For reusable dyadic Dudley API packaging:** see
+  [FormalSLT v0.1 quickstart](./docs/formalslt-v0.1-quickstart.md).
 - **For the finite discrete dyadic-net family:** see
   [FormalSLT v0.1 quickstart](./docs/formalslt-v0.1-quickstart.md).
 - **For a generated proof-surface index:** see

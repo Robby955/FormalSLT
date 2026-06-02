@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 24,
-    "library_and_example_lean_lines": 31692,
-    "library_lean_lines": 29848,
+    "library_and_example_lean_lines": 31831,
+    "library_lean_lines": 29963,
     "library_modules": 56,
-    "theorem_map_entries": 398
+    "theorem_map_entries": 402
   },
   "theorem_families": [
     {
@@ -1064,6 +1064,18 @@
         {
           "kind": "theorem",
           "module": "Covering.TotalBoundedDudley",
+          "name": "dyadicChainingFiniteNetSequenceOfTotallyBounded",
+          "summary": "Packages the total-bounded dyadic net schedule as a FiniteDyadicNetSequence under global projection-pair hypotheses"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
+          "name": "finiteDyadicDudleyInstanceOfTotallyBounded",
+          "summary": "Packages the total-bounded dyadic net schedule as a FiniteDyadicDudleyInstance when global coarse-budget and projection-pair hypotheses are available"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudley",
           "name": "finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers",
           "summary": "Total-bounded dyadic wrapper over the terminal projected finite-net image, without [Fintype T]"
         },
@@ -1553,6 +1565,12 @@
         {
           "kind": "definition",
           "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRoundedDyadicGridDudleyInstance",
+          "summary": "Packaged finite dyadic Dudley instance for the rounded unit-interval grid sequence"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_dist",
           "summary": "Shifted rounded dyadic finite nets use the Rademacher process metric"
         },
@@ -1758,7 +1776,7 @@
           "kind": "definition",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound",
-          "summary": "Arbitrary finite-horizon rounded dyadic-grid projected supremum Dudley bound"
+          "summary": "Arbitrary finite-horizon rounded dyadic-grid projected supremum Dudley bound routed through the packaged API"
         },
         {
           "kind": "definition",
@@ -1781,8 +1799,14 @@
         {
           "kind": "definition",
           "module": "Covering.UnitIntervalDudley",
+          "name": "unitIntervalRademacherLinearSupRoundedDyadicGridAdapter",
+          "summary": "Supplied-supremum adapter for the packaged rounded unit-interval Dudley instance"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound",
-          "summary": "Arbitrary finite-horizon rounded dyadic-grid Dudley bound for the supplied supremum"
+          "summary": "Arbitrary finite-horizon rounded dyadic-grid Dudley bound for the supplied supremum routed through the packaged API"
         },
         {
           "kind": "definition",

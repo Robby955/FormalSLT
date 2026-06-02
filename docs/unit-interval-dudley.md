@@ -82,6 +82,7 @@ Reusable dyadic grid skeleton:
 - `monotone_unitIntervalRoundedDyadicGridCoverCount`
 - `monotone_unitIntervalRoundedDyadicGridEntropy`
 - `unitIntervalRoundedDyadicGridEntropy_prefixSup`
+- `unitIntervalRoundedDyadicGridDudleyInstance`
 - `unitIntervalRoundedDyadicGridNet_dist`
 - `unitIntervalRoundedDyadicGridNet_radius_pos`
 - `unitIntervalRoundedDyadicGridNet_radius_geometric`
@@ -133,6 +134,7 @@ Dudley instantiations:
 - `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound_prefixFree`
 - `unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup`
 - `unitIntervalRademacherLinear_projectedRoundedDyadicGridSup_eq`
+- `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter`
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
 - `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m3_bound`
@@ -180,9 +182,13 @@ packages the adjacent-radius, nontrivial projection-pair, and covering-product
 facts needed by finite-scale chaining at arbitrary adjacent levels. The rounded
 dyadic grid now carries both the checked `m = 1` Dudley chain, using levels `1`
 and `2`, an `m = 2` Dudley chain, using levels `1`, `2`, and `3`, and a named
-`m = 3` corollary using levels `1` through `4`. The theorem
-`unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` packages the
-same rounded-grid chain for arbitrary finite `m`, with the adjacent product
+`m = 3` corollary using levels `1` through `4`. The declaration
+`unitIntervalRoundedDyadicGridDudleyInstance` packages the same rounded-grid
+data as a reusable `FiniteDyadicDudleyInstance`, and
+`unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` packages the supplied
+supremum boundary. The theorem
+`unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` routes the
+arbitrary finite `m` chain through that packaged API, with the adjacent product
 counts supplied by `unitIntervalRoundedDyadicGridCoverCount`.
 The monotonicity lemmas `monotone_unitIntervalRoundedDyadicGridCoverCount` and
 `monotone_unitIntervalRoundedDyadicGridEntropy` now remove the generic

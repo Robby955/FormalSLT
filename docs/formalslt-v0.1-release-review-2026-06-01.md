@@ -71,18 +71,23 @@ Main local declarations:
 - `unitIntervalRademacherLinearSup_expectation`
   (`FormalSLT/Covering/UnitIntervalDudley.lean:912`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2032`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2054`)
+- `unitIntervalRoundedDyadicGridDudleyInstance`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:1555`)
+- `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter`
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:1883`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2066`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2088`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2098`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2113`)
 - `unitIntervalRademacherLinearSup_dudley_m0_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2163`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2178`)
 
 Meaning: the finite-net Dudley machinery reaches a concrete non-finite metric
 index space, the unit interval, through supplied supremum and rounded dyadic
 finite-grid certificates. The result is a finite-horizon bridge, not a full
-continuous Dudley theorem.
+continuous Dudley theorem. The rounded-grid bridge also now routes through the
+packaged `FiniteDyadicDudleyInstance` API.
 
 ### Packaged Finite Dyadic Dudley API
 
@@ -96,6 +101,10 @@ Main local declarations:
   (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3756`)
 - `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound`
   (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3775`)
+- `dyadicChainingFiniteNetSequenceOfTotallyBounded`
+  (`FormalSLT/Covering/TotalBoundedDudley.lean:337`)
+- `finiteDyadicDudleyInstanceOfTotallyBounded`
+  (`FormalSLT/Covering/TotalBoundedDudley.lean:390`)
 
 Meaning: the finite examples package the finite sub-Gaussian process, dyadic
 net sequence, coarse budget, variance positivity, and terminal supplied-supremum

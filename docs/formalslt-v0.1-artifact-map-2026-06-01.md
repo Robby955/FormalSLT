@@ -139,7 +139,9 @@ Main finite-chaining anchors:
 | Finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:744` |
 | Sub-Gaussian finite max wrapper | `finite_expectedSup_le_of_subGaussian_mgf_sqrt` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:839` |
 | Finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:2343` |
-| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:751` |
+| Total-bounded dyadic net-sequence constructor | `dyadicChainingFiniteNetSequenceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:337` |
+| Total-bounded packaged Dudley constructor | `finiteDyadicDudleyInstanceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:390` |
+| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:851` |
 
 Main `[0,1]` anchors:
 
@@ -149,10 +151,12 @@ Main `[0,1]` anchors:
 | Rounded projection radius `1 / 2^(level+1)` | `unitIntervalDyadicGridRoundProject_dist_le` | `FormalSLT/Covering/UnitIntervalDudley.lean:323` |
 | Rounded-grid net uses process distance | `unitIntervalRoundedDyadicGridNet_dist` | `FormalSLT/Covering/UnitIntervalDudley.lean:1231` |
 | Supremum equals range `sSup` for this process | `unitIntervalRademacherLinearSup_sSup_range` | `FormalSLT/Covering/UnitIntervalDudley.lean:983` |
-| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1631` |
-| Supplied-supremum rounded-grid Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2066` |
-| Prefix-free supplied-supremum version | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2098` |
-| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2482` |
+| Packaged rounded-grid Dudley instance | `unitIntervalRoundedDyadicGridDudleyInstance` | `FormalSLT/Covering/UnitIntervalDudley.lean:1555` |
+| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1641` |
+| Supplied-supremum rounded-grid adapter | `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` | `FormalSLT/Covering/UnitIntervalDudley.lean:1883` |
+| Supplied-supremum rounded-grid Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2088` |
+| Prefix-free supplied-supremum version | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2113` |
+| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2497` |
 
 What this proves:
 
@@ -175,8 +179,10 @@ What it does not prove:
 The v0.1 note should mention, but not headline, these already checked families:
 
 - The reusable dyadic-net API now has a packaged `FiniteDyadicDudleyInstance`
-  surface used by the two-point discrete metric and finite discrete `Fin n`
-  examples; the unit-interval bridge remains the main non-finite example.
+  surface used by the unit-interval bridge, the two-point discrete metric, and
+  finite discrete `Fin n` examples. The total-bounded layer also exposes
+  packaged constructors when global projection-pair and coarse-budget
+  hypotheses are available.
 - Rademacher symmetrization and finite-class high-probability bounds.
 - VC sample-complexity wrappers.
 - PAC-Bayes finite bounded-loss and finite-grid peeling wrappers.

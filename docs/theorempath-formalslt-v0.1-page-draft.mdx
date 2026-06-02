@@ -146,7 +146,7 @@ unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
 
 Lean anchor:
 `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
-at `FormalSLT/Covering/UnitIntervalDudley.lean:2098`.
+at `FormalSLT/Covering/UnitIntervalDudley.lean:2113`.
 
 The index type is the unit interval:
 
@@ -169,9 +169,11 @@ The proof chain is:
 |---|---|
 | finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` |
 | finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` |
+| packaged rounded-grid instance | `unitIntervalRoundedDyadicGridDudleyInstance` |
 | total-bounded supplied-supremum adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` |
 | `[0,1]` total boundedness | `unitInterval_totallyBounded_univ` |
 | nearest rounded-grid projection | `unitIntervalDyadicGridRoundProject_dist_le` |
+| supplied-supremum adapter | `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` |
 | concrete range supremum | `unitIntervalRademacherLinearSup_sSup_range` |
 | final supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` |
 
