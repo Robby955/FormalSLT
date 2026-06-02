@@ -30,9 +30,10 @@ finite Dudley entropy-budget wrappers, finite algorithmic stability, finite
 localized-Rademacher scaffolding, finite PAC-Bayes KL/DV/MGF and bounded-loss
 confidence bounds, conditional sub-Gamma MGF extraction, and total-bounded
 finite-net adapters for the next Dudley steps. The Dudley lane now includes a
-unit-interval example with explicit finite meshes and a checked
-projected-mesh bound for a nonzero supremum whose least-upper-bound property is
-proved over the full unit interval.
+unit-interval example with explicit rounded finite meshes, plus a packaged
+finite dyadic Dudley API used by the two-point and `Fin n` discrete examples.
+The unit-interval supplied supremum has its least-upper-bound property proved
+over the full unit interval.
 
 ## Where to start
 
@@ -88,11 +89,11 @@ with explicit hypotheses and constants. The current public spine includes:
 | Conditional sub-Gamma extraction | `Concentration.SubGamma.*` | `condSubGammaMGF_of_bounded_centered_condVariance`: bounded, conditionally centered increments with a conditional second-moment proxy satisfy a conditional sub-Gamma MGF bound | Verified probability infrastructure |
 | Localized Rademacher scaffold | `Rademacher.Localized` | Bernstein localization, localized upper-deviation events, shifted-moment adapters, bounded-excess MGF instantiation, finite product-weight bad-event adapters, and event-facing wrappers | Verified finite scaffold |
 | Finite covering and two-scale chaining | `Covering.Rademacher`, `Covering.DudleyChaining` | ε-net peeling and two-scale finite chaining | Verified |
-| Finite sub-Gaussian chaining foundation | `Covering.FiniteSubGaussianChaining` | finite-max entropy bounds and finite Dudley-style entropy-budget sums | Verified finite infrastructure |
+| Finite sub-Gaussian chaining foundation | `Covering.FiniteSubGaussianChaining` | finite-max entropy bounds, finite Dudley-style entropy-budget sums, and the packaged `FiniteDyadicDudleyInstance` API | Verified finite infrastructure |
 | Total-bounded Dudley bridge | `Covering.TotalBoundedDudley` | totally bounded metric spaces yield dyadic finite-net schedules, projected finite-net wrappers, truncated interval-integral entropy comparisons, and supplied-supremum / finite-skeleton / pathwise-modulus / epsilonized boundary adapters | Verified bridge |
 | Unit-interval Dudley example | `Covering.UnitIntervalDudley` | `[0,1]` as a non-finite index space with rounded dyadic meshes, projection-pair entropy, and a supplied-supremum projected-mesh Dudley bound for `X(b,t)=sign(b)*t` | Verified example |
-| Two-point dyadic-net example | `Covering.TwoPointDudley` | second concrete `FiniteDyadicNetSequence` instance, showing the reusable dyadic-net wrapper is not tied to `[0,1]` | Verified example |
-| Finite discrete dyadic-net family | `Covering.FiniteDiscreteDudley` | general `FiniteDyadicNetSequence` instance for `Fin n` with the discrete metric, an embedded Rademacher process, and explicit `n * n` cover-count envelope | Verified API example |
+| Two-point dyadic-net example | `Covering.TwoPointDudley` | second concrete `FiniteDyadicDudleyInstance`, showing the packaged finite Dudley wrapper is not tied to `[0,1]` | Verified example |
+| Finite discrete dyadic-net family | `Covering.FiniteDiscreteDudley` | general `FiniteDyadicDudleyInstance` for `Fin n` with the discrete metric, an embedded Rademacher process, and explicit `n * n` cover-count envelope | Verified API example |
 | Algorithmic stability | `AlgorithmicStability`, `Stability.BousquetElisseeff` | bounded-differences constants, finite and product-measure expected-gap wrappers with bound `β`, bounded-loss measurability adapters, and bounded-loss Azuma-constant concentration wrappers | Verified finite scaffold |
 | PAC-Bayes finite confidence layer | `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` | finite KL/DV change-of-measure, bounded-loss Catoni-style bound, closed PAC-Bayes good-event payoff, fixed-budget McAllester corollary, and finite-grid McAllester peeling wrapper | Verified finite layer |
 

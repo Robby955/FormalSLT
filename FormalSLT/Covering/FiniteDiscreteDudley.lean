@@ -281,8 +281,17 @@ private theorem finDiscreteRademacher_coarse {n : ℕ} [Fact (2 ≤ n)] (m : ℕ
             (finDiscreteRademacherProcess n).weight 1
             (finDiscreteRademacherProcess n).weight_sum_one
 
+/-- Packaged finite-dyadic Dudley instance for the embedded Rademacher process
+on `Fin n`. -/
+def finDiscreteDudleyInstance (n : ℕ) [Fact (2 ≤ n)] :
+    FiniteDyadicDudleyInstance (finDiscreteRademacherProcess n) (fun _j : ℕ => Fin n) where
+  netSequence := finDiscreteDyadicNetSequence n
+  coarseBudget := 1
+  variance_pos := by norm_num [finDiscreteRademacherProcess]
+  coarse_bound := finDiscreteRademacher_coarse
+
 /-- Projected finite-net Dudley bound for the embedded Rademacher process on
-`Fin n`, routed through the generic dyadic-net sequence API. -/
+`Fin n`, routed through the packaged finite-dyadic Dudley API. -/
 theorem finDiscreteRademacher_projected_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
     finiteExpectation (finDiscreteRademacherProcess n).weight
         (fun ω => finiteSup
@@ -294,12 +303,9 @@ theorem finDiscreteRademacher_projected_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)
             (fun j : ℕ =>
               Real.sqrt (Real.log (finDiscreteDyadicCoverCount n j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.FiniteDyadicNetSequence.projectedNet_dudley_bound
-      (S := finDiscreteDyadicNetSequence n)
-      (m := m) (coarseBudget := (1 : ℝ))
-      (by norm_num [finDiscreteRademacherProcess])
-      (finDiscreteRademacher_coarse m)
-  simpa [finDiscreteRademacherProcess] using hbase
+    FiniteDyadicDudleyInstance.projected_dudley_bound
+      (finDiscreteDudleyInstance n) m
+  simpa [finDiscreteDudleyInstance, finDiscreteRademacherProcess] using hbase
 
 /-- Supremum functional for the embedded Rademacher process on `Fin n`. -/
 def finDiscreteRademacherSup {n : ℕ} [Fact (2 ≤ n)] (ω : Bool) : ℝ :=
@@ -337,8 +343,17 @@ theorem finDiscreteRademacherSup_le_projectedSup {n : ℕ} [Fact (2 ≤ n)] (m :
       (Finset.mem_univ u)
   simpa [u, finDiscreteDyadicNet] using hle
 
+/-- Supplied-supremum adapter for the embedded Rademacher process on `Fin n`. -/
+def finDiscreteRademacherSupAdapter (n : ℕ) [Fact (2 ≤ n)] :
+    FiniteDyadicDudleyInstance.SupremumAdapter (finDiscreteDudleyInstance n) where
+  supFunctional := finDiscreteRademacherSup (n := n)
+  terminalError := 0
+  terminal_bound := by
+    intro m ω
+    simpa using finDiscreteRademacherSup_le_projectedSup (n := n) m ω
+
 /-- Supplied-supremum Dudley bound for the embedded Rademacher process on
-`Fin n`, routed through the generic dyadic-net sequence API. -/
+`Fin n`, routed through the packaged finite-dyadic Dudley API. -/
 theorem finDiscreteRademacherSup_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
     finiteExpectation (finDiscreteRademacherProcess n).weight
         (finDiscreteRademacherSup (n := n)) ≤
@@ -348,17 +363,10 @@ theorem finDiscreteRademacherSup_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : 
             (fun j : ℕ =>
               Real.sqrt (Real.log (finDiscreteDyadicCoverCount n j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
-      (S := finDiscreteDyadicNetSequence n)
-      (m := m) (coarseBudget := (1 : ℝ))
-      (supFunctional := finDiscreteRademacherSup (n := n))
-      (terminalError := (0 : ℝ))
-      (by norm_num [finDiscreteRademacherProcess])
-      (by
-        intro ω
-        simpa using finDiscreteRademacherSup_le_projectedSup (n := n) m ω)
-      (finDiscreteRademacher_coarse m)
-  simpa [finDiscreteRademacherProcess] using hbase
+    FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+      (finDiscreteDudleyInstance n) (finDiscreteRademacherSupAdapter n) m
+  simpa [finDiscreteDudleyInstance, finDiscreteRademacherSupAdapter,
+    finDiscreteRademacherProcess] using hbase
 
 end
 

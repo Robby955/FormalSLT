@@ -154,6 +154,10 @@ declarations; modules are relative to `FormalSLT`.
 | `finite_projected_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt` | `Covering.FiniteSubGaussianChaining` | Projected finite-net chaining bound with covering-number entropy budgets |
 | `FiniteNet.ProjectedIndex` | `Covering.FiniteSubGaussianChaining` | Finite image of a net projection, used to avoid a finite ambient index assumption |
 | `finite_projectedNet_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt` | `Covering.FiniteSubGaussianChaining` | Projected finite-net-image chaining bound without `[Fintype T]` |
+| `FiniteDyadicDudleyInstance` | `Covering.FiniteSubGaussianChaining` | Packaged reusable finite dyadic Dudley instance: net sequence, coarse budget, variance positivity, and coarse projected-supremum bound |
+| `FiniteDyadicDudleyInstance.SupremumAdapter` | `Covering.FiniteSubGaussianChaining` | Optional supplied-supremum adapter to a terminal projected finite-net supremum plus explicit terminal error |
+| `FiniteDyadicDudleyInstance.projected_dudley_bound` | `Covering.FiniteSubGaussianChaining` | Projected finite-net Dudley bound from a packaged finite dyadic Dudley instance |
+| `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` | `Covering.FiniteSubGaussianChaining` | Supplied-supremum finite Dudley bound from a packaged instance and adapter |
 | `finite_dudley_entropy_sum_projection_pairs` | `Covering.FiniteSubGaussianChaining` | Finite Dudley-style entropy sum over projection-pair families |
 | `finite_dudley_entropy_sum_coveringNumbers` | `Covering.FiniteSubGaussianChaining` | Finite Dudley-style entropy sum with covering-number products |
 | `finite_dudley_entropy_sum_projection_pairs_geometric_radius` | `Covering.FiniteSubGaussianChaining` | Dyadic/geometric radius schedule for projection pairs |
@@ -219,9 +223,11 @@ declarations; modules are relative to `FormalSLT`.
 | `twoPointDyadicNet_pair_card_gt_one` | `Covering.TwoPointDudley` | Adjacent two-point projection-pair families are nontrivial |
 | `twoPointDyadicNet_coverCount_le` | `Covering.TwoPointDudley` | Adjacent two-point covering-number products are bounded by the constant cover-count envelope |
 | `twoPointDyadicNetSequence` | `Covering.TwoPointDudley` | A second concrete `FiniteDyadicNetSequence` instantiation, independent of `[0,1]` |
-| `twoPointRademacher_projected_dudley_m_bound` | `Covering.TwoPointDudley` | Arbitrary finite-horizon projected Dudley bound routed through the generic dyadic-net sequence API |
+| `twoPointDudleyInstance` | `Covering.TwoPointDudley` | Packaged finite dyadic Dudley instance for the two-point Rademacher process |
+| `twoPointRademacher_projected_dudley_m_bound` | `Covering.TwoPointDudley` | Arbitrary finite-horizon projected Dudley bound routed through the packaged finite dyadic Dudley API |
 | `twoPointRademacherSup_le_projectedSup` | `Covering.TwoPointDudley` | Terminal projected-net adapter for the two-point supplied supremum |
-| `twoPointRademacherSup_dudley_m_bound` | `Covering.TwoPointDudley` | Supplied-supremum finite Dudley bound routed through the generic dyadic-net sequence API |
+| `twoPointRademacherSupAdapter` | `Covering.TwoPointDudley` | Supplied-supremum adapter for the two-point packaged Dudley instance |
+| `twoPointRademacherSup_dudley_m_bound` | `Covering.TwoPointDudley` | Supplied-supremum finite Dudley bound routed through the packaged finite dyadic Dudley API |
 
 ## Finite discrete Dudley family
 
@@ -240,11 +246,13 @@ declarations; modules are relative to `FormalSLT`.
 | `finDiscreteDyadicNet_coveringNumber` | `Covering.FiniteDiscreteDudley` | The full finite discrete net has covering number `n` |
 | `finDiscreteDyadicNet_coverCount_le` | `Covering.FiniteDiscreteDudley` | Adjacent finite-discrete covering-number products are bounded by the `n * n` envelope |
 | `finDiscreteDyadicNetSequence` | `Covering.FiniteDiscreteDudley` | General `FiniteDyadicNetSequence` instance for `Fin n` with `[Fact (2 ≤ n)]` |
-| `finDiscreteRademacher_projected_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Arbitrary finite-horizon projected Dudley bound for the embedded Rademacher process routed through the generic dyadic-net API |
+| `finDiscreteDudleyInstance` | `Covering.FiniteDiscreteDudley` | Packaged finite dyadic Dudley instance for the `Fin n` embedded Rademacher process |
+| `finDiscreteRademacher_projected_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Arbitrary finite-horizon projected Dudley bound for the embedded Rademacher process routed through the packaged finite dyadic Dudley API |
 | `finDiscreteRademacherSup` | `Covering.FiniteDiscreteDudley` | Supremum functional for the embedded Rademacher process over `Fin n` |
 | `finDiscreteRademacherSup_true` | `Covering.FiniteDiscreteDudley` | The supplied supremum is nontrivial: it equals `1` on the positive Rademacher outcome |
 | `finDiscreteRademacherSup_le_projectedSup` | `Covering.FiniteDiscreteDudley` | Terminal projected-net adapter for the finite-discrete supplied supremum |
-| `finDiscreteRademacherSup_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Supplied-supremum finite Dudley bound for the embedded Rademacher process routed through the generic dyadic-net API |
+| `finDiscreteRademacherSupAdapter` | `Covering.FiniteDiscreteDudley` | Supplied-supremum adapter for the finite-discrete packaged Dudley instance |
+| `finDiscreteRademacherSup_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Supplied-supremum finite Dudley bound for the embedded Rademacher process routed through the packaged finite dyadic Dudley API |
 
 ## Unit-interval Dudley example
 

@@ -215,8 +215,17 @@ private theorem twoPointRademacher_coarse (m : ℕ) :
             twoPointRademacherProcess.weight 1
             twoPointRademacherProcess.weight_sum_one
 
+/-- Packaged finite-dyadic Dudley instance for the two-point Rademacher
+process. -/
+def twoPointDudleyInstance :
+    FiniteDyadicDudleyInstance twoPointRademacherProcess (fun _j : ℕ => Bool) where
+  netSequence := twoPointDyadicNetSequence
+  coarseBudget := 1
+  variance_pos := by norm_num [twoPointRademacherProcess]
+  coarse_bound := twoPointRademacher_coarse
+
 /-- Projected finite-net Dudley bound for the two-point process through the
-generic dyadic-net sequence API. -/
+packaged finite-dyadic Dudley API. -/
 theorem twoPointRademacher_projected_dudley_m_bound (m : ℕ) :
     finiteExpectation twoPointRademacherProcess.weight
         (fun ω => finiteSup
@@ -228,12 +237,9 @@ theorem twoPointRademacher_projected_dudley_m_bound (m : ℕ) :
             (fun j : ℕ =>
               Real.sqrt (Real.log (twoPointDyadicCoverCount j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.FiniteDyadicNetSequence.projectedNet_dudley_bound
-      (S := twoPointDyadicNetSequence)
-      (m := m) (coarseBudget := (1 : ℝ))
-      (by norm_num [twoPointRademacherProcess])
-      (twoPointRademacher_coarse m)
-  simpa [twoPointRademacherProcess] using hbase
+    FiniteDyadicDudleyInstance.projected_dudley_bound
+      twoPointDudleyInstance m
+  simpa [twoPointDudleyInstance, twoPointRademacherProcess] using hbase
 
 /-- Supremum functional for the two-point Rademacher process. -/
 def twoPointRademacherSup (ω : Bool) : ℝ :=
@@ -255,8 +261,17 @@ theorem twoPointRademacherSup_le_projectedSup (m : ℕ) (ω : Bool) :
       (Finset.mem_univ u)
   simpa [u, twoPointDyadicNet] using hle
 
+/-- Supplied-supremum adapter for the two-point Rademacher process. -/
+def twoPointRademacherSupAdapter :
+    FiniteDyadicDudleyInstance.SupremumAdapter twoPointDudleyInstance where
+  supFunctional := twoPointRademacherSup
+  terminalError := 0
+  terminal_bound := by
+    intro m ω
+    simpa using twoPointRademacherSup_le_projectedSup m ω
+
 /-- Supplied-supremum Dudley bound for the two-point process through the
-generic dyadic-net sequence API. -/
+packaged finite-dyadic Dudley API. -/
 theorem twoPointRademacherSup_dudley_m_bound (m : ℕ) :
     finiteExpectation twoPointRademacherProcess.weight twoPointRademacherSup ≤
       1 + 2 * Real.sqrt (2 * twoPointRademacherProcess.varianceProxy) *
@@ -265,17 +280,10 @@ theorem twoPointRademacherSup_dudley_m_bound (m : ℕ) :
             (fun j : ℕ =>
               Real.sqrt (Real.log (twoPointDyadicCoverCount j : ℝ)))) := by
   have hbase :=
-    FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
-      (S := twoPointDyadicNetSequence)
-      (m := m) (coarseBudget := (1 : ℝ))
-      (supFunctional := twoPointRademacherSup)
-      (terminalError := (0 : ℝ))
-      (by norm_num [twoPointRademacherProcess])
-      (by
-        intro ω
-        simpa using twoPointRademacherSup_le_projectedSup m ω)
-      (twoPointRademacher_coarse m)
-  simpa [twoPointRademacherProcess] using hbase
+    FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+      twoPointDudleyInstance twoPointRademacherSupAdapter m
+  simpa [twoPointDudleyInstance, twoPointRademacherSupAdapter,
+    twoPointRademacherProcess] using hbase
 
 end
 

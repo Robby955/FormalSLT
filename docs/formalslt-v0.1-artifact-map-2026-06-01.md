@@ -174,9 +174,9 @@ What it does not prove:
 
 The v0.1 note should mention, but not headline, these already checked families:
 
-- The reusable dyadic-net API has concrete instances over the unit interval,
-  the two-point discrete metric, and the finite discrete family `Fin n` with an
-  embedded Rademacher process.
+- The reusable dyadic-net API now has a packaged `FiniteDyadicDudleyInstance`
+  surface used by the two-point discrete metric and finite discrete `Fin n`
+  examples; the unit-interval bridge remains the main non-finite example.
 - Rademacher symmetrization and finite-class high-probability bounds.
 - VC sample-complexity wrappers.
 - PAC-Bayes finite bounded-loss and finite-grid peeling wrappers.
@@ -351,7 +351,8 @@ from sounding like a full formalization of empirical-process theory.
 Near-term theorem work:
 
 1. Use the confidence-sequence bundle in downstream route metadata and notes.
-2. Generalize the rounded dyadic-net wrapper away from the unit interval.
+2. Connect more of the total-bounded and unit-interval boundary layer to the
+   packaged finite dyadic Dudley API where the hypotheses match.
 3. Prove the analytic domination step toward the continuous Dudley integral.
 4. Continue localized Rademacher whole-supremum concentration work.
 
@@ -381,7 +382,7 @@ Sections:
 4. **What is not claimed.** Same proof-gap boundary as the paper.
 5. **How to verify.** Commands and checker files.
 6. **Next theorem.** Downstream use of the `FiniteClassConfidenceSequence`
-   bundle and the abstract rounded dyadic-net wrapper.
+   bundle and the packaged finite dyadic Dudley API.
 
 Required assets:
 
@@ -411,7 +412,7 @@ python3 scripts/audit_public_writing.py docs/formalslt-v0.1-artifact-map-2026-06
 
 plus the same gate on the technical note and TheoremPath draft.
 
-The next theorem step remains separate from the writing step: bundle the
-confidence-sequence theorem into a smaller API surface, or abstract the rounded
-dyadic-grid wrapper so the unit-interval proof becomes an instance rather than
-the only place the argument lives.
+The next theorem step remains separate from the writing step: use the bundled
+confidence-sequence theorem in downstream formal statements, and connect more
+of the total-bounded/unit-interval boundary layer to the packaged finite dyadic
+Dudley API where the hypotheses match.

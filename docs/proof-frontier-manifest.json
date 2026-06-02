@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 24,
-    "library_and_example_lean_lines": 31564,
-    "library_lean_lines": 29751,
+    "library_and_example_lean_lines": 31692,
+    "library_lean_lines": 29848,
     "library_modules": 56,
-    "theorem_map_entries": 390
+    "theorem_map_entries": 398
   },
   "theorem_families": [
     {
@@ -824,6 +824,30 @@
         {
           "kind": "theorem",
           "module": "Covering.FiniteSubGaussianChaining",
+          "name": "FiniteDyadicDudleyInstance",
+          "summary": "Packaged reusable finite dyadic Dudley instance: net sequence, coarse budget, variance positivity, and coarse projected-supremum bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "FiniteDyadicDudleyInstance.SupremumAdapter",
+          "summary": "Optional supplied-supremum adapter to a terminal projected finite-net supremum plus explicit terminal error"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "FiniteDyadicDudleyInstance.projected_dudley_bound",
+          "summary": "Projected finite-net Dudley bound from a packaged finite dyadic Dudley instance"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
+          "name": "FiniteDyadicDudleyInstance.suppliedSup_dudley_bound",
+          "summary": "Supplied-supremum finite Dudley bound from a packaged instance and adapter"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.FiniteSubGaussianChaining",
           "name": "finite_dudley_entropy_sum_projection_pairs",
           "summary": "Finite Dudley-style entropy sum over projection-pair families"
         },
@@ -1189,8 +1213,14 @@
         {
           "kind": "definition",
           "module": "Covering.TwoPointDudley",
+          "name": "twoPointDudleyInstance",
+          "summary": "Packaged finite dyadic Dudley instance for the two-point Rademacher process"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.TwoPointDudley",
           "name": "twoPointRademacher_projected_dudley_m_bound",
-          "summary": "Arbitrary finite-horizon projected Dudley bound routed through the generic dyadic-net sequence API"
+          "summary": "Arbitrary finite-horizon projected Dudley bound routed through the packaged finite dyadic Dudley API"
         },
         {
           "kind": "definition",
@@ -1201,8 +1231,14 @@
         {
           "kind": "definition",
           "module": "Covering.TwoPointDudley",
+          "name": "twoPointRademacherSupAdapter",
+          "summary": "Supplied-supremum adapter for the two-point packaged Dudley instance"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.TwoPointDudley",
           "name": "twoPointRademacherSup_dudley_m_bound",
-          "summary": "Supplied-supremum finite Dudley bound routed through the generic dyadic-net sequence API"
+          "summary": "Supplied-supremum finite Dudley bound routed through the packaged finite dyadic Dudley API"
         }
       ],
       "name": "Two-point Dudley example"
@@ -1290,8 +1326,14 @@
         {
           "kind": "definition",
           "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteDudleyInstance",
+          "summary": "Packaged finite dyadic Dudley instance for the Fin n embedded Rademacher process"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteRademacher_projected_dudley_m_bound",
-          "summary": "Arbitrary finite-horizon projected Dudley bound for the embedded Rademacher process routed through the generic dyadic-net API"
+          "summary": "Arbitrary finite-horizon projected Dudley bound for the embedded Rademacher process routed through the packaged finite dyadic Dudley API"
         },
         {
           "kind": "definition",
@@ -1314,8 +1356,14 @@
         {
           "kind": "definition",
           "module": "Covering.FiniteDiscreteDudley",
+          "name": "finDiscreteRademacherSupAdapter",
+          "summary": "Supplied-supremum adapter for the finite-discrete packaged Dudley instance"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteRademacherSup_dudley_m_bound",
-          "summary": "Supplied-supremum finite Dudley bound for the embedded Rademacher process routed through the generic dyadic-net API"
+          "summary": "Supplied-supremum finite Dudley bound for the embedded Rademacher process routed through the packaged finite dyadic Dudley API"
         }
       ],
       "name": "Finite discrete Dudley family"

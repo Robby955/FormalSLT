@@ -41,6 +41,16 @@ lake env lean examples/CheckV01Usability.lean
 #check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
 #print axioms FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
 
+#check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance
+
+#check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.SupremumAdapter
+
+#check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.projected_dudley_bound
+#print axioms FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.projected_dudley_bound
+
+#check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+#print axioms FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+
 /-! ## Unit-interval non-finite Dudley bridge -/
 
 #check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRoundedDyadicGridNetSequence
@@ -56,8 +66,14 @@ lake env lean examples/CheckV01Usability.lean
 #check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
 
+#check FormalSLT.Covering.TwoPointDudley.twoPointDudleyInstance
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDudleyInstance
+
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacher_projected_dudley_m_bound
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacher_projected_dudley_m_bound
+
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSupAdapter
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSupAdapter
 
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound
@@ -67,11 +83,17 @@ lake env lean examples/CheckV01Usability.lean
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
 
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDudleyInstance
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDudleyInstance
+
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacher_projected_dudley_m_bound
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacher_projected_dudley_m_bound
 
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_true
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_true
+
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSupAdapter
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSupAdapter
 
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_dudley_m_bound
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_dudley_m_bound

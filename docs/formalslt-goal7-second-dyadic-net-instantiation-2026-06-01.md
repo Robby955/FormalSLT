@@ -18,6 +18,8 @@ instantiation outside the unit interval:
 The key declarations are:
 
 - `twoPointDyadicNetSequence`
+- `twoPointDudleyInstance`
+- `twoPointRademacherSupAdapter`
 - `twoPointRademacher_projected_dudley_m_bound`
 - `twoPointRademacherSup_dudley_m_bound`
 
@@ -32,7 +34,7 @@ finite and intentionally small, but it exercises the same public API:
 2. prove adjacent geometric radius bounds,
 3. prove adjacent projection-pair nontriviality,
 4. bound adjacent covering products, and
-5. call the generic projected and supplied-supremum Dudley wrappers.
+5. call the packaged projected and supplied-supremum Dudley wrappers.
 
 ## What is not claimed
 
@@ -55,7 +57,8 @@ Expected theorem axiom surface remains:
 
 ## Next theorem target
 
-The next useful target is a nontrivial finite family with more than two index
-points, for example a `Fin n` discrete metric family or a finite grid product.
-That would test whether the abstraction remains ergonomic when cover-count
-bookkeeping is not constant.
+This follow-up has landed as `FormalSLT/Covering/FiniteDiscreteDudley.lean`,
+which gives a `Fin n` discrete metric family with nonconstant cover-count
+bookkeeping and a nonzero embedded Rademacher process. The next theorem target
+is to connect more of the total-bounded and unit-interval boundary layer to the
+packaged `FiniteDyadicDudleyInstance` API where the hypotheses match.

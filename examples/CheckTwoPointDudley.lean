@@ -3,8 +3,9 @@ import FormalSLT.Covering.TwoPointDudley
 /-!
 # Two-point dyadic-net Dudley checker
 
-Checks the second concrete `FiniteDyadicNetSequence` instantiation. This file
-keeps the generic dyadic-net API from being exercised only by the unit interval.
+Checks the second concrete `FiniteDyadicNetSequence` instantiation and packaged
+`FiniteDyadicDudleyInstance`. This file keeps the reusable dyadic-net API from
+being exercised only by the unit interval.
 -/
 
 #check FormalSLT.Covering.TwoPointDudley.TwoPoint
@@ -39,10 +40,14 @@ keeps the generic dyadic-net API from being exercised only by the unit interval.
 
 #check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
+#check FormalSLT.Covering.TwoPointDudley.twoPointDudleyInstance
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointDudleyInstance
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacher_projected_dudley_m_bound
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacher_projected_dudley_m_bound
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_le_projectedSup
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_le_projectedSup
+#check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSupAdapter
+#print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSupAdapter
 #check FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound
 #print axioms FormalSLT.Covering.TwoPointDudley.twoPointRademacherSup_dudley_m_bound

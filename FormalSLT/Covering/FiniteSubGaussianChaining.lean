@@ -3710,6 +3710,87 @@ theorem supFunctional_dudley_bound
 
 end FiniteDyadicNetSequence
 
+/-- A reusable finite-dyadic Dudley instance for a fixed finite
+sub-Gaussian process.
+
+This packages the data that examples otherwise repeat at every use site:
+the dyadic net sequence, a coarse expected-supremum budget, positivity of the
+variance proxy, and the proof that the terminal projected image at scale `m`
+has the stated coarse budget. Supplied suprema are optional and are packaged by
+`FiniteDyadicDudleyInstance.SupremumAdapter`.
+-/
+structure FiniteDyadicDudleyInstance
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)] where
+  netSequence : FiniteDyadicNetSequence P A
+  coarseBudget : ℝ
+  variance_pos : 0 < P.varianceProxy
+  coarse_bound : ∀ m : ℕ,
+    finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex (netSequence.N m) =>
+          P.X ω ((netSequence.N 0).projection
+            (FiniteNet.ProjectedIndex.source (netSequence.N m) u)))) ≤
+      coarseBudget
+
+namespace FiniteDyadicDudleyInstance
+
+/-- Optional terminal adapter from a supplied supremum functional to the
+terminal projected finite-net supremum of a `FiniteDyadicDudleyInstance`. -/
+structure SupremumAdapter
+    [Fintype Ω] [Nonempty T]
+    {P : FiniteSubGaussianProcess Ω T}
+    {A : ℕ → Type*} [∀ j, Fintype (A j)]
+    (I : FiniteDyadicDudleyInstance P A) where
+  supFunctional : Ω → ℝ
+  terminalError : ℝ
+  terminal_bound : ∀ m : ℕ, ∀ ω : Ω,
+    supFunctional ω ≤
+      finiteSup
+        (fun u : FiniteNet.ProjectedIndex (I.netSequence.N m) =>
+          P.X ω ((I.netSequence.N m).center u.1)) + terminalError
+
+/-- Projected finite-net Dudley bound from a packaged
+`FiniteDyadicDudleyInstance`. -/
+theorem projected_dudley_bound
+    [Fintype Ω] [Nonempty T]
+    {P : FiniteSubGaussianProcess Ω T}
+    {A : ℕ → Type*} [∀ j, Fintype (A j)]
+    (I : FiniteDyadicDudleyInstance P A) (m : ℕ) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (I.netSequence.N m) =>
+            P.X ω ((I.netSequence.N m).center u.1))) ≤
+      I.coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+        finiteDyadicEntropyIntegralBudget I.netSequence.radiusScale m
+          (finitePrefixSupEnvelope
+            (fun j => Real.sqrt (Real.log (I.netSequence.coverCount j : ℝ)))) := by
+  exact
+    I.netSequence.projectedNet_dudley_bound
+      m I.coarseBudget I.variance_pos (I.coarse_bound m)
+
+/-- Supplied-supremum finite Dudley bound from a packaged
+`FiniteDyadicDudleyInstance` and its optional terminal adapter. -/
+theorem suppliedSup_dudley_bound
+    [Fintype Ω] [Nonempty T]
+    {P : FiniteSubGaussianProcess Ω T}
+    {A : ℕ → Type*} [∀ j, Fintype (A j)]
+    (I : FiniteDyadicDudleyInstance P A)
+    (adapter : SupremumAdapter I) (m : ℕ) :
+    finiteExpectation P.weight adapter.supFunctional ≤
+      I.coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+        finiteDyadicEntropyIntegralBudget I.netSequence.radiusScale m
+          (finitePrefixSupEnvelope
+            (fun j => Real.sqrt (Real.log (I.netSequence.coverCount j : ℝ)))) +
+        adapter.terminalError := by
+  exact
+    I.netSequence.supFunctional_dudley_bound
+      m I.coarseBudget adapter.supFunctional adapter.terminalError
+      I.variance_pos (adapter.terminal_bound m) (I.coarse_bound m)
+
+end FiniteDyadicDudleyInstance
+
 /-- Projected finite-net Dudley-style covering-number bound compared against a
 finite entropy-at-radius upper-sum/integral budget. The hypothesis
 `hentropyAtRadius` says the finite prefix-sup covering envelope at scale `j` is

@@ -14,7 +14,7 @@ The v0.1 surface has three citation targets.
 |---|---|---|
 | Finite-class countable-time Hoeffding confidence sequence | `FiniteClassConfidenceSequence.failure_probability_le` | `examples/CheckUniformConvergence.lean` |
 | Unit-interval rounded-dyadic Dudley bridge | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `examples/CheckUnitIntervalDudley.lean` |
-| Reusable finite dyadic-net sequence API | `FiniteDyadicNetSequence.supFunctional_dudley_bound` | `examples/CheckV01Usability.lean` |
+| Reusable packaged finite dyadic Dudley API | `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` | `examples/CheckV01Usability.lean` |
 | Finite discrete dyadic-net family | `finDiscreteDyadicNetSequence` | `examples/CheckFiniteDiscreteDudley.lean` |
 
 The three concrete dyadic-net instances are:
@@ -22,8 +22,8 @@ The three concrete dyadic-net instances are:
 | Instance | Declaration | Role |
 |---|---|---|
 | Unit interval | `unitIntervalRoundedDyadicGridNetSequence` | Non-finite index-space example over `[0,1]` |
-| Two-point discrete space | `twoPointDyadicNetSequence` | Second API instantiation, independent of `[0,1]` |
-| Finite discrete spaces | `finDiscreteDyadicNetSequence` | General `Fin n` discrete-metric family with a nonzero embedded Rademacher process and nonconstant cover counts |
+| Two-point discrete space | `twoPointDudleyInstance` | Packaged finite dyadic Dudley instance, independent of `[0,1]` |
+| Finite discrete spaces | `finDiscreteDudleyInstance` | General `Fin n` packaged Dudley instance with a nonzero embedded Rademacher process and nonconstant cover counts |
 
 ## Ten-Minute Verification Path
 
@@ -61,9 +61,9 @@ import FormalSLT
 
 #check FormalSLT.UniformConvergence.FiniteClassConfidenceSequence.failure_probability_le
 #check FormalSLT.Covering.UnitIntervalDudley.unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
-#check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
-#check FormalSLT.Covering.TwoPointDudley.twoPointDyadicNetSequence
-#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
+#check FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+#check FormalSLT.Covering.TwoPointDudley.twoPointDudleyInstance
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDudleyInstance
 ```
 
 For narrower imports:

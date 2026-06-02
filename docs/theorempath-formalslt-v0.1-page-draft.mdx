@@ -237,8 +237,8 @@ a theorem constructing arbitrary measurable suprema for all non-finite classes.
   `examples/CheckFiniteUnionBound.lean`.
 - The unit-interval Dudley bridge compiles and is covered by
   `examples/CheckUnitIntervalDudley.lean`.
-- The reusable dyadic-net sequence API and both concrete instances are covered
-  by `examples/CheckV01Usability.lean`.
+- The reusable packaged finite dyadic Dudley API and both concrete instances are
+  covered by `examples/CheckV01Usability.lean`.
 - The two-point dyadic-net example is covered by
   `examples/CheckTwoPointDudley.lean`.
 - The finite discrete `Fin n` embedded Rademacher dyadic-net family is covered by
@@ -307,11 +307,11 @@ Two next steps would make the checked surface easier to use:
 
 1. Use the `FiniteClassConfidenceSequence` bundle in downstream formal
    statements instead of restating the long theorem signature.
-2. Strengthen the finite-discrete embedded Rademacher example with an evaluated
-   finite-horizon scalar corollary, analogous to the unit-interval display
-   corollaries.
-3. Abstract the rounded dyadic-net Dudley wrapper so the unit-interval proof is
-   one instance of a reusable finite-horizon theorem.
+2. Use the packaged `FiniteDyadicDudleyInstance` surface in future finite
+   Dudley examples instead of restating the net sequence, coarse budget,
+   variance, and supplied-supremum adapter data.
+3. Connect more of the total-bounded and unit-interval boundary layer to the
+   packaged Dudley API where the hypotheses match.
 
 Those are theorem-engineering steps, not page polish. The page should move only
 after the checked theorem surface and limitations stay aligned.

@@ -36,6 +36,8 @@ Declaration-level checker for the `Fin n` discrete metric dyadic-net example.
 
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDudleyInstance
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDudleyInstance
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacher_projected_dudley_m_bound
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacher_projected_dudley_m_bound
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup
@@ -43,5 +45,7 @@ Declaration-level checker for the `Fin n` discrete metric dyadic-net example.
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_true
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_le_projectedSup
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_le_projectedSup
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSupAdapter
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSupAdapter
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_dudley_m_bound
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_dudley_m_bound

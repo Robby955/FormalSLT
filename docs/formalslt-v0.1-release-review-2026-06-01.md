@@ -10,9 +10,10 @@ surface is coherent enough for review: the Lean build passes, all example
 checkers pass, the theorem map and proof-frontier manifest are in sync, and the
 v0.1 quickstart checker imports the bundled confidence-sequence API, the
 unit-interval Dudley bridge, and the reusable dyadic-net sequence API.
-The reusable dyadic-net surface now includes both the two-point discrete
-instance and the general finite discrete `Fin n` family with a nonzero embedded
-Rademacher process.
+The reusable dyadic-net surface now includes the packaged
+`FiniteDyadicDudleyInstance` API, a two-point discrete instance, and the
+general finite discrete `Fin n` family with a nonzero embedded Rademacher
+process.
 
 This is not a public release decision. No push, pull request, merge, post, or
 external comment has been made.
@@ -83,20 +84,42 @@ index space, the unit interval, through supplied supremum and rounded dyadic
 finite-grid certificates. The result is a finite-horizon bridge, not a full
 continuous Dudley theorem.
 
+### Packaged Finite Dyadic Dudley API
+
+Main local declarations:
+
+- `FiniteDyadicDudleyInstance`
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3722`)
+- `FiniteDyadicDudleyInstance.SupremumAdapter`
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3741`)
+- `FiniteDyadicDudleyInstance.projected_dudley_bound`
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3756`)
+- `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound`
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3775`)
+
+Meaning: the finite examples package the finite sub-Gaussian process, dyadic
+net sequence, coarse budget, variance positivity, and terminal supplied-supremum
+adapter once, then route through the packaged projected and supplied-supremum
+Dudley theorems.
+
 ### Two-Point Dyadic-Net API Check
 
 Main local declarations:
 
 - `twoPointDyadicNetSequence`
   (`FormalSLT/Covering/TwoPointDudley.lean:174`)
-- `twoPointRademacher_projected_dudley_m_bound`
+- `twoPointDudleyInstance`
   (`FormalSLT/Covering/TwoPointDudley.lean:220`)
+- `twoPointRademacher_projected_dudley_m_bound`
+  (`FormalSLT/Covering/TwoPointDudley.lean:229`)
+- `twoPointRademacherSupAdapter`
+  (`FormalSLT/Covering/TwoPointDudley.lean:265`)
 - `twoPointRademacherSup_dudley_m_bound`
-  (`FormalSLT/Covering/TwoPointDudley.lean:260`)
+  (`FormalSLT/Covering/TwoPointDudley.lean:275`)
 
-Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated on a
-second metric index family. This is an API-usability check, not a stronger
-Dudley theorem.
+Meaning: the generic `FiniteDyadicNetSequence` and packaged
+`FiniteDyadicDudleyInstance` wrappers are instantiated on a second metric index
+family. This is an API-usability check, not a stronger Dudley theorem.
 
 ### Finite Discrete Dyadic-Net API Check
 
@@ -106,12 +129,16 @@ Main local declarations:
   (`FormalSLT/Covering/FiniteDiscreteDudley.lean:240`)
 - `finDiscreteDyadicCoverCount`
   (`FormalSLT/Covering/FiniteDiscreteDudley.lean:171`)
-- `finDiscreteRademacher_projected_dudley_m_bound`
+- `finDiscreteDudleyInstance`
   (`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`)
+- `finDiscreteRademacher_projected_dudley_m_bound`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:295`)
 - `finDiscreteRademacherSup_true`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:308`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:314`)
+- `finDiscreteRademacherSupAdapter`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:347`)
 - `finDiscreteRademacherSup_dudley_m_bound`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:342`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:357`)
 
 Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated for
 `Fin n` with the discrete metric under `[Fact (2 ≤ n)]`. The example embeds a
@@ -232,9 +259,11 @@ summary can safely say:
   `FiniteClassConfidenceSequence.failure_probability_le`.
 - FormalSLT contains a checked unit-interval rounded-dyadic finite-net Dudley
   bridge for a concrete non-finite metric index space.
-- FormalSLT contains a second concrete finite dyadic-net sequence instance over
-  a two-point metric space, showing that the dyadic-net wrapper is reusable.
-- FormalSLT contains a general finite discrete dyadic-net sequence instance over
+- FormalSLT contains a packaged finite dyadic Dudley API used by the two-point
+  and finite-discrete examples.
+- FormalSLT contains a second concrete finite dyadic Dudley instance over a
+  two-point metric space, showing that the wrapper is reusable.
+- FormalSLT contains a general finite discrete dyadic Dudley instance over
   `Fin n`, checking the same wrapper with a nonzero embedded Rademacher process
   and explicit nonconstant cover counts.
 - TheoremPath Stage A can display a dyadic Hoeffding review-count calculation
@@ -258,11 +287,10 @@ external comment. Public action still requires separate exact approval.
 After v0.1 packaging review, the next theorem target is:
 
 ```text
-Abstract the rounded dyadic-net Dudley wrapper away from [0,1].
+Connect the total-bounded and unit-interval boundary layer to the packaged Dudley API where the hypotheses match.
 ```
 
-The goal is to turn the unit-interval rounded-grid proof into an instance of a
-general finite-horizon theorem over a rounded dyadic-net family satisfying the
-radius, projection-pair cover-count, entropy-envelope, and terminal supplied
-supremum hypotheses. This is higher leverage than adding more one-off
-`m = k` corollaries.
+The goal is to keep future Dudley examples from restating the same process,
+net-sequence, coarse-budget, and terminal-supremum data. This is higher leverage
+than adding more one-off `m = k` corollaries. It is not a theorem constructing
+arbitrary measurable suprema for all non-finite classes.

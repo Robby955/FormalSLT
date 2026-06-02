@@ -62,7 +62,12 @@ Expected axiom surface for the new theorem checks remains:
 
 ## Next theorem target
 
-The next useful theorem is a second concrete instantiation of
-`FiniteDyadicNetSequence` for a metric index family other than `[0,1]`. A good
-candidate should keep the process simple and force the API to prove that it is
-not merely a unit-interval rename.
+This target has been followed by two API-pressure examples:
+
+- `twoPointDudleyInstance`, over a two-point metric index type;
+- `finDiscreteDudleyInstance`, over `Fin n` with the discrete metric and a
+  nonzero embedded Rademacher process.
+
+The next useful theorem step is to connect more of the total-bounded and
+unit-interval boundary layer to the packaged `FiniteDyadicDudleyInstance` API
+where the hypotheses match.

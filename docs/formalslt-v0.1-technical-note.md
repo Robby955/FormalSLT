@@ -64,11 +64,11 @@ The v0.1 surface is distributed across seven modules.
 |---|---|
 | `FormalSLT/Probability/FiniteUnionBound.lean` | finite union-bound bookkeeping with explicit event budgets |
 | `FormalSLT/UniformConvergence.lean` | finite-class and countable-time uniform-deviation wrappers |
-| `FormalSLT/Covering/FiniteSubGaussianChaining.lean` | finite expected-sup bounds and finite Dudley-style entropy budgets |
+| `FormalSLT/Covering/FiniteSubGaussianChaining.lean` | finite expected-sup bounds, finite Dudley-style entropy budgets, and the packaged `FiniteDyadicDudleyInstance` API |
 | `FormalSLT/Covering/TotalBoundedDudley.lean` | adapters from total boundedness to finite-net Dudley wrappers |
 | `FormalSLT/Covering/UnitIntervalDudley.lean` | concrete non-finite `[0,1]` example using rounded dyadic grids |
-| `FormalSLT/Covering/TwoPointDudley.lean` | second `FiniteDyadicNetSequence` instance over a two-point metric space |
-| `FormalSLT/Covering/FiniteDiscreteDudley.lean` | general `FiniteDyadicNetSequence` instance over finite discrete spaces `Fin n` with an embedded Rademacher process |
+| `FormalSLT/Covering/TwoPointDudley.lean` | second packaged finite dyadic Dudley instance over a two-point metric space |
+| `FormalSLT/Covering/FiniteDiscreteDudley.lean` | general packaged finite dyadic Dudley instance over finite discrete spaces `Fin n` with an embedded Rademacher process |
 
 The proof surface is checked by:
 
@@ -294,7 +294,7 @@ nearest-grid radius:
 That radius is the finite-net scale needed to make the Dudley chain reusable
 instead of being only a hand-built `m = 1` example.
 
-## 5. Reusable Dyadic-Net API Checks
+## 5. Reusable Packaged Dudley API Checks
 
 The unit-interval module is the main non-finite example. The supporting
 constant-size reusability check is:
@@ -313,7 +313,39 @@ on the two-point discrete metric space:
 FiniteDyadicNetSequence
 ```
 
-The two-point module then routes through the generic projected and
+The reusable packaged API is:
+
+```lean
+FiniteDyadicDudleyInstance
+FiniteDyadicDudleyInstance.SupremumAdapter
+FiniteDyadicDudleyInstance.projected_dudley_bound
+FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
+```
+
+Anchors:
+`FiniteDyadicDudleyInstance` at
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3722`,
+`FiniteDyadicDudleyInstance.SupremumAdapter` at
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3741`,
+`FiniteDyadicDudleyInstance.projected_dudley_bound` at
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3756`, and
+`FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` at
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3775`.
+
+The two-point module packages the data as:
+
+```lean
+twoPointDudleyInstance
+twoPointRademacherSupAdapter
+```
+
+Anchors:
+`twoPointDudleyInstance` at
+`FormalSLT/Covering/TwoPointDudley.lean:220`, and
+`twoPointRademacherSupAdapter` at
+`FormalSLT/Covering/TwoPointDudley.lean:265`.
+
+The two-point module then routes through the packaged projected and
 supplied-supremum wrappers:
 
 ```lean
@@ -348,7 +380,20 @@ finDiscreteDyadicCoverCount n j = n * n
 Anchor: `finDiscreteDyadicCoverCount` at
 `FormalSLT/Covering/FiniteDiscreteDudley.lean:171`.
 
-The module then routes the embedded Rademacher process through the generic
+The module packages the data as:
+
+```lean
+finDiscreteDudleyInstance
+finDiscreteRademacherSupAdapter
+```
+
+Anchors:
+`finDiscreteDudleyInstance` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`, and
+`finDiscreteRademacherSupAdapter` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:347`.
+
+The module then routes the embedded Rademacher process through the packaged
 projected and supplied-supremum wrappers:
 
 ```lean
@@ -359,11 +404,11 @@ finDiscreteRademacherSup_dudley_m_bound
 
 Anchors:
 `finDiscreteRademacher_projected_dudley_m_bound` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`, and
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:295`, and
 `finDiscreteRademacherSup_true` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:308`, and
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:314`, and
 `finDiscreteRademacherSup_dudley_m_bound` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:342`.
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:357`.
 
 This finite-discrete example is still deliberately simple. Its role is API
 pressure: it checks that the finite dyadic-net wrapper can be instantiated for
@@ -456,19 +501,13 @@ FiniteClassConfidenceSequence.failure_probability_le
 The next API task is to use this object in future formal statements instead of
 restating the long measure-theoretic signature.
 
-### 8.2 Abstract the rounded dyadic-net wrapper
+### 8.2 Extend the packaged Dudley API
 
-The unit-interval rounded-grid proof should become an instance of a more
-general theorem over any rounded dyadic net family satisfying:
-
-- radius positivity;
-- adjacent-radius geometric control;
-- finite projection-pair cover counts;
-- monotone entropy envelope;
-- terminal supplied-supremum adapter.
-
-That would turn `UnitIntervalDudley.lean` into a model instance rather than the
-only home of the argument.
+The finite examples now route through `FiniteDyadicDudleyInstance`. The next API
+step is to connect more of the total-bounded and unit-interval boundary layer to
+the same packaged surface where the hypotheses match. That keeps future
+examples from restating the net sequence, coarse budget, variance, and terminal
+supremum data at every theorem call.
 
 ### 8.3 Move toward the continuous Dudley integral
 
