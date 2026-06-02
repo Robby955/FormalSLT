@@ -1,29 +1,29 @@
-# FormalSLT v0.1: Checked Finite-Class and Finite-Net Bounds
+# FormalSLT v0.1: Verified Finite-Class Confidence Sequences and a Finite-Net Dudley Bridge
 
 Date: 2026-06-01
 Status: local release-candidate note
 
 ## Abstract
 
-FormalSLT is a Lean 4 library for machine-checking theorem chains from
-statistical learning theory. The current v0.1 surface contains two checked
-endpoints and two reusable-API checks. First, it proves a finite-class countable-time Hoeffding
-confidence-sequence wrapper for `[0,1]` losses, using explicit dyadic failure
-budgets and finite union bounds. Second, it proves a concrete non-finite
-`[0,1]` Dudley bridge: a Rademacher linear process indexed by the unit interval
-is routed through rounded dyadic finite nets and finite sub-Gaussian chaining.
-The dyadic-net API is also instantiated on a two-point discrete metric space,
-and on the finite discrete family `Fin n` using a nonzero embedded Rademacher
-process, showing that the wrapper is not only a unit-interval-specific proof
-script and that the cover-count interface scales past constant-size examples.
+FormalSLT is a Lean 4 library for checking theorem chains from statistical
+learning theory. The current v0.1 surface is organized around two endpoints.
+First, it proves a finite-class countable-time Hoeffding confidence-sequence
+wrapper for `[0,1]` losses, using explicit dyadic failure budgets and finite
+union bounds. Second, it proves a finite-net Dudley bridge for a concrete
+Rademacher linear process indexed by the non-finite unit interval `[0,1]`.
 
-The contribution is deliberately finite-scale. The library does not yet prove
-the continuous Dudley entropy integral, construct arbitrary measurable suprema,
-or discharge general separability assumptions. The v0.1 result is a checked
-foundation layer: finite-class concentration, finite-net chaining, and one
-worked non-finite index-space example with explicit theorem anchors and axiom
-checks. A separate quickstart checker gives a short import-and-verify path for
-the v0.1 surface.
+The v0.1 release-candidate surface also packages a reusable dyadic Dudley API.
+That API is instantiated on the unit interval, on a two-point discrete metric
+space, and on the finite discrete family `Fin n` using a nonzero embedded
+Rademacher process. These instances are not separate headline results. They
+are usability checks showing that downstream files can cite a packaged object
+instead of rebuilding the same finite-net hypotheses.
+
+The scope is finite-scale by design. The library does not yet prove the
+continuous Dudley entropy integral, construct arbitrary measurable suprema, or
+discharge general separability assumptions. The v0.1 result is a checked
+foundation layer with explicit theorem anchors, focused checker files, and
+standard Lean/Mathlib axiom profiles.
 
 ## 1. Motivation
 
@@ -36,7 +36,7 @@ argument, with different assumptions and constants.
 FormalSLT v0.1 focuses on making those boundaries explicit. The current library
 does not try to formalize all of statistical learning theory. It instead
 formalizes reusable proof spines where the assumptions are visible in Lean
-types and the endpoint theorem can be checked by small example files.
+types and the endpoint theorem can be checked by focused example files.
 
 The two v0.1 endpoints were chosen because they exercise different proof
 interfaces:
@@ -47,10 +47,8 @@ interfaces:
 2. A non-finite unit-interval Dudley bridge shows how finite sub-Gaussian
    chaining can be connected to a total-bounded metric index space through
    explicit finite nets.
-3. A two-point dyadic-net example checks that the generic finite dyadic-net API
-   is reusable outside the unit interval.
-4. A `Fin n` discrete-metric example checks the same API on a finite family
-   with a nonzero process and nonconstant cover counts.
+3. Supporting two-point and `Fin n` examples check that the generic
+   finite dyadic-net API is reusable outside the unit interval.
 
 Together, these endpoints make the library more than a collection of isolated
 lemmas. They show checked theorem chains from assumptions to named

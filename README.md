@@ -7,39 +7,78 @@
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-FormalSLT is a compact Lean 4 library for the finite-sample statistical
-learning theory route from empirical risk minimization to VC-style
-generalization bounds, with recent extensions for contraction, linear
-predictors, finite sub-Gaussian chaining, algorithmic stability, and
-finite PAC-Bayes confidence bounds, an initial total-bounded finite-net bridge
-for the Dudley lane, a concrete unit-interval Dudley example, and conditional
-sub-Gamma probability infrastructure for bounded, conditionally centered
-increments.
+FormalSLT is a Lean 4 library for checking finite-sample statistical learning
+theory proof chains. The current v0.1 surface is organized around two checked
+endpoints:
+
+1. a finite-class, countable-time Hoeffding confidence sequence for `[0,1]`
+   losses; and
+2. a finite-net Dudley bridge for a concrete process indexed by the non-finite
+   unit interval `[0,1]`.
+
+The repository also packages reusable dyadic Dudley API instances for a
+two-point metric space and for finite discrete spaces `Fin n`. Those examples
+are API checks: they show that the finite-net wrapper is reusable outside the
+unit-interval file.
 
 **56 `FormalSLT/` Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
-Axioms used by the public theorem spine:
+The printed axiom profile for the v0.1 headline surface stays inside:
 `[propext, Classical.choice, Quot.sound]`.
 
 ![FormalSLT theorem chain](./docs/theorem-chain.svg)
 
-The core path runs from ERM through Rademacher symmetrization,
-high-probability Rademacher bounds, Massart, Sauer-Shelah, the binary VC
-bridge, finite contraction, linear predictors, finite sub-Gaussian chaining,
-finite Dudley entropy-budget wrappers, finite algorithmic stability, finite
-localized-Rademacher scaffolding, finite PAC-Bayes KL/DV/MGF and bounded-loss
-confidence bounds, conditional sub-Gamma MGF extraction, and total-bounded
-finite-net adapters for the next Dudley steps. The Dudley lane now includes a
-unit-interval example with explicit rounded finite meshes, a packaged
-unit-interval dyadic Dudley instance, and reusable finite dyadic Dudley API
-instances for the two-point and `Fin n` discrete examples. The unit-interval
-supplied supremum has its least-upper-bound property proved over the full unit
-interval.
+## What v0.1 Proves
+
+| Surface | Main checked endpoint | Checker |
+|---|---|---|
+| Finite-class Hoeffding confidence sequence | `FiniteClassConfidenceSequence.failure_probability_le` | `examples/CheckUniformConvergence.lean` |
+| Unit-interval finite-net Dudley bridge | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `examples/CheckUnitIntervalDudley.lean` |
+| Packaged finite dyadic Dudley API | `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` | `examples/CheckV01Usability.lean` |
+| Two-point dyadic Dudley instance | `twoPointDudleyInstance` | `examples/CheckTwoPointDudley.lean` |
+| `Fin n` discrete dyadic Dudley instance | `finDiscreteDudleyInstance` | `examples/CheckFiniteDiscreteDudley.lean` |
+
+The confidence-sequence chain makes the finite-class and countable-time union
+bound explicit. The Dudley chain connects finite sub-Gaussian chaining to a
+non-finite metric index space by constructing rounded dyadic finite nets and
+checking the supplied supremum for the concrete process
+`X(b,t) = signOfBool b * t`.
+
+## Fast Verification
+
+From the repository root:
+
+```bash
+lake exe cache get
+lake build FormalSLT
+lake env lean examples/CheckV01Usability.lean
+lake env lean examples/CheckUniformConvergence.lean
+lake env lean examples/CheckUnitIntervalDudley.lean
+lake env lean examples/CheckTwoPointDudley.lean
+lake env lean examples/CheckFiniteDiscreteDudley.lean
+python3 scripts/generate_proof_frontier_manifest.py --check
+```
+
+If `lake` is not on the shell path, use `~/.elan/bin/lake`.
+
+## What v0.1 Does Not Prove
+
+- No full continuous Dudley entropy-integral theorem.
+- No arbitrary measurable-supremum construction over non-finite classes.
+- No general separability theorem.
+- No infinite-class confidence sequence.
+- No martingale or e-process stopping theorem in the v0.1 confidence-sequence
+  surface.
+- No neural-network generalization theorem.
 
 ## Where to start
 
 - **For the v0.1 proof surface:** start with
   [FormalSLT v0.1 quickstart](./docs/formalslt-v0.1-quickstart.md).
+- **For the v0.1 technical note:** read
+  [FormalSLT v0.1 technical note](./docs/formalslt-v0.1-technical-note.md).
+- **For TheoremPath packaging:** read
+  [TheoremPath FormalSLT v0.1 draft](./docs/theorempath-formalslt-v0.1-page-draft.mdx).
 - **For ML readers:** start with [How to read the proofs](./docs/how-to-read-the-proofs.md),
   then [Intuition](./docs/intuition.md).
 - **For proof structure:** see [Diagrams](./docs/diagrams.md).
@@ -62,41 +101,24 @@ interval.
   FormalSLT is scoped as a finite-class theorem spine and is complementary to
   existing empirical-process and Rademacher-generalization formalizations.
 
-## Checked theorem spine
+## Library Map
 
 FormalSLT records finite-sample statistical learning bounds as Lean theorems
-with explicit hypotheses and constants. The current public spine includes:
+with explicit hypotheses and constants. Beyond the v0.1 headline chains, the
+library contains checked finite routes for:
 
-- finite-class ERM, symmetrization, Massart, Sauer-Shelah, and VC-style
-  sample-complexity bounds;
+- finite-class ERM, Rademacher symmetrization, Massart, Sauer-Shelah, and
+  VC-style sample-complexity wrappers;
 - high-probability Rademacher bounds with the Azuma `8B²` exponent;
-- finite contraction, linear-predictor, chaining, stability, and PAC-Bayes
-  components;
-- a conditional sub-Gamma MGF extractor for bounded, conditionally centered
-  real increments with an explicit conditional second-moment proxy.
-
-## Theorem families
-
-| Family | Main modules | Representative result | Status |
-|---|---|---|---|
-| Finite-class ERM | `Risk`, `ERM`, `Rademacher.ERMGeneralization` | Excess risk controlled by uniform deviation | Verified |
-| Rademacher symmetrization | `GhostSample`, `Rademacher.Symmetrization` | `E[genGap] ≤ 2 * E[Rad]` | Verified |
-| High-probability Rademacher | `Azuma.*`, `Rademacher.HighProbability` | `P(genGap ≥ 2 * E[Rad] + ε) ≤ exp(-ε² n / (8B²))` | Verified |
-| Massart finite-class bound | `Rademacher.Massart` | `Rad(H,S) ≤ B * sqrt(2 * log card(H) / n)` | Verified |
-| Binary VC route | `VC.SauerShelah`, `VC.BinaryVCBridge`, `VC.SampleComplexity` | VC-style ERM excess-risk tail and closed sample-complexity form via effective classes | Verified |
-| Finite contraction | `Rademacher.Contraction` | `Rad_S(φ ∘ F) ≤ L * Rad_S(F)` for scalar finite samples/classes | Verified |
-| Linear predictors | `Rademacher.LinearPredictor` | `Rad ≤ R * n⁻¹ * sqrt(∑ k, ‖z k‖²)` and `Rad ≤ R * B / sqrt n` | Verified |
-| Finite Bernstein concentration | `Probability.BernsteinMGF`, `Rademacher.Localized` | finite Bennett/Bernstein MGF, averaged Bernstein tail, and finite localized Bernstein high-confidence theorem | Verified finite route |
-| Conditional sub-Gamma extraction | `Concentration.SubGamma.*` | `condSubGammaMGF_of_bounded_centered_condVariance`: bounded, conditionally centered increments with a conditional second-moment proxy satisfy a conditional sub-Gamma MGF bound | Verified probability infrastructure |
-| Localized Rademacher scaffold | `Rademacher.Localized` | Bernstein localization, localized upper-deviation events, shifted-moment adapters, bounded-excess MGF instantiation, finite product-weight bad-event adapters, and event-facing wrappers | Verified finite scaffold |
-| Finite covering and two-scale chaining | `Covering.Rademacher`, `Covering.DudleyChaining` | ε-net peeling and two-scale finite chaining | Verified |
-| Finite sub-Gaussian chaining foundation | `Covering.FiniteSubGaussianChaining` | finite-max entropy bounds, finite Dudley-style entropy-budget sums, and the packaged `FiniteDyadicDudleyInstance` API | Verified finite infrastructure |
-| Total-bounded Dudley bridge | `Covering.TotalBoundedDudley` | totally bounded metric spaces yield dyadic finite-net schedules, projected finite-net wrappers, truncated interval-integral entropy comparisons, and supplied-supremum / finite-skeleton / pathwise-modulus / epsilonized boundary adapters | Verified bridge |
-| Unit-interval Dudley example | `Covering.UnitIntervalDudley` | `[0,1]` as a non-finite index space with rounded dyadic meshes, projection-pair entropy, and a supplied-supremum projected-mesh Dudley bound for `X(b,t)=sign(b)*t` | Verified example |
-| Two-point dyadic-net example | `Covering.TwoPointDudley` | second concrete `FiniteDyadicDudleyInstance`, showing the packaged finite Dudley wrapper is not tied to `[0,1]` | Verified example |
-| Finite discrete dyadic-net family | `Covering.FiniteDiscreteDudley` | general `FiniteDyadicDudleyInstance` for `Fin n` with the discrete metric, an embedded Rademacher process, and explicit `n * n` cover-count envelope | Verified API example |
-| Algorithmic stability | `AlgorithmicStability`, `Stability.BousquetElisseeff` | bounded-differences constants, finite and product-measure expected-gap wrappers with bound `β`, bounded-loss measurability adapters, and bounded-loss Azuma-constant concentration wrappers | Verified finite scaffold |
-| PAC-Bayes finite confidence layer | `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` | finite KL/DV change-of-measure, bounded-loss Catoni-style bound, closed PAC-Bayes good-event payoff, fixed-budget McAllester corollary, and finite-grid McAllester peeling wrapper | Verified finite layer |
+- finite contraction and linear-predictor Rademacher bounds;
+- finite Bennett/Bernstein and localized-Rademacher scaffolding;
+- conditional sub-Gamma MGF extraction for bounded, conditionally centered
+  increments with an explicit conditional second-moment proxy;
+- finite covering, finite sub-Gaussian chaining, and finite Dudley
+  entropy-budget wrappers;
+- finite algorithmic stability expected-gap and high-probability wrappers;
+- finite PAC-Bayes KL/DV/MGF, bounded-loss confidence bounds, and finite-grid
+  peeling wrappers.
 
 ## Scope and assumptions
 
@@ -161,7 +183,7 @@ that, builds are incremental.
 
 ## Release-candidate checks
 
-Run these before treating a branch as a showcase candidate:
+Run these before treating a branch as a release candidate:
 
 ```bash
 lake exe cache get

@@ -1,11 +1,11 @@
 ---
-title: "FormalSLT v0.1: checked statistical learning theory spines"
-subtitle: "Finite-class concentration, finite-net chaining, and a concrete non-finite Dudley bridge"
+title: "FormalSLT v0.1: verified finite-class confidence sequences and a finite-net Dudley bridge"
+subtitle: "Two checked theorem chains for finite-class concentration and finite-net empirical-process bounds"
 slug: "formalslt-v0-1-checked-statistical-learning-theory"
 date: "2026-06-01"
 author: "Robert Sneiderman"
-status: "draft"
-description: "A theorem-faithful TheoremPath draft explaining the checked FormalSLT v0.1 chains: a finite-class Hoeffding confidence sequence, a unit-interval Dudley finite-net bridge, and a reusable dyadic-net API check."
+status: "route-ready"
+description: "A theorem-faithful TheoremPath page explaining the checked FormalSLT v0.1 chains: a finite-class Hoeffding confidence sequence, a unit-interval Dudley finite-net bridge, and reusable dyadic-net API checks."
 tags:
   - lean4
   - statistical-learning-theory
@@ -20,18 +20,16 @@ relatedTopics:
 ---
 
 FormalSLT is a Lean 4 library for checking theorem chains from statistical
-learning theory. The v0.1 surface has two useful endpoints and two API
-reusability checks:
+learning theory. The v0.1 surface has two headline endpoints and supporting API
+checks:
 
 1. a finite-class countable-time Hoeffding confidence-sequence wrapper for
    `[0,1]` losses;
 2. a concrete non-finite `[0,1]` Dudley bridge through rounded dyadic finite
    nets;
-3. a second dyadic-net instance over a two-point metric space, showing that the
-   generic wrapper is not tied to `[0,1]`;
-4. a finite discrete `Fin n` dyadic-net family with an embedded Rademacher
-   process, showing the same wrapper with explicit nonconstant cover-count
-   bookkeeping and nontrivial supplied-supremum routing.
+3. reusable dyadic-net instances over a two-point metric space and finite
+   discrete spaces `Fin n`, showing that the wrapper is not tied to the
+   unit-interval file.
 
 This page explains what is checked, what remains outside scope, and how to
 verify the claims locally.
@@ -105,7 +103,7 @@ zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge
 For `t = 0`, one hypothesis, and failure budget `δ = 0.05`, the checked
 dyadic radius needs 25 reviews for half-width 0.30, 55 reviews for half-width
 0.20, and 220 reviews for half-width 0.10. These are dyadic confidence-sequence
-numbers, not the looser fixed-time Hoeffding examples on the topic page.
+numbers, not the classic fixed-time Hoeffding examples on the topic page.
 
 ## The Dyadic Budget
 
@@ -315,5 +313,6 @@ Two next steps would make the checked surface easier to use:
 3. Connect more of the total-bounded and unit-interval boundary layer to the
    packaged Dudley API where the hypotheses match.
 
-Those are theorem-engineering steps, not page polish. The page should move only
-after the checked theorem surface and limitations stay aligned.
+Those are theorem-engineering steps, not page polish. This page is route-ready
+when the checked theorem surface, displayed constants, and limitations stay
+aligned.
