@@ -79,6 +79,8 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
   [FormalSLT v0.1 technical note](./docs/formalslt-v0.1-technical-note.md).
 - **For TheoremPath packaging:** read
   [TheoremPath FormalSLT v0.1 draft](./docs/theorempath-formalslt-v0.1-page-draft.mdx).
+- **For the live walkthrough:** see
+  [theorempath.com/theorems/formalslt-v0-1](https://theorempath.com/theorems/formalslt-v0-1).
 - **For ML readers:** start with [How to read the proofs](./docs/how-to-read-the-proofs.md),
   then [Intuition](./docs/intuition.md).
 - **For proof structure:** see [Diagrams](./docs/diagrams.md).
