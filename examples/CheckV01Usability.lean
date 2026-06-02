@@ -67,8 +67,11 @@ lake env lean examples/CheckV01Usability.lean
 #check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
 #print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteDyadicNetSequence
 
-#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZero_projected_dudley_m_bound
-#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZero_projected_dudley_m_bound
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacher_projected_dudley_m_bound
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacher_projected_dudley_m_bound
 
-#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZeroSup_dudley_m_bound
-#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteZeroSup_dudley_m_bound
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_true
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_true
+
+#check FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_dudley_m_bound
+#print axioms FormalSLT.Covering.FiniteDiscreteDudley.finDiscreteRademacherSup_dudley_m_bound

@@ -13,9 +13,9 @@ budgets and finite union bounds. Second, it proves a concrete non-finite
 `[0,1]` Dudley bridge: a Rademacher linear process indexed by the unit interval
 is routed through rounded dyadic finite nets and finite sub-Gaussian chaining.
 The dyadic-net API is also instantiated on a two-point discrete metric space,
-and on the finite discrete family `Fin n`, showing that the wrapper is not only
-a unit-interval-specific proof script and that the cover-count interface scales
-past constant-size examples.
+and on the finite discrete family `Fin n` using a nonzero embedded Rademacher
+process, showing that the wrapper is not only a unit-interval-specific proof
+script and that the cover-count interface scales past constant-size examples.
 
 The contribution is deliberately finite-scale. The library does not yet prove
 the continuous Dudley entropy integral, construct arbitrary measurable suprema,
@@ -50,7 +50,7 @@ interfaces:
 3. A two-point dyadic-net example checks that the generic finite dyadic-net API
    is reusable outside the unit interval.
 4. A `Fin n` discrete-metric example checks the same API on a finite family
-   with nonconstant cover counts.
+   with a nonzero process and nonconstant cover counts.
 
 Together, these endpoints make the library more than a collection of isolated
 lemmas. They show checked theorem chains from assumptions to named
@@ -68,7 +68,7 @@ The v0.1 surface is distributed across seven modules.
 | `FormalSLT/Covering/TotalBoundedDudley.lean` | adapters from total boundedness to finite-net Dudley wrappers |
 | `FormalSLT/Covering/UnitIntervalDudley.lean` | concrete non-finite `[0,1]` example using rounded dyadic grids |
 | `FormalSLT/Covering/TwoPointDudley.lean` | second `FiniteDyadicNetSequence` instance over a two-point metric space |
-| `FormalSLT/Covering/FiniteDiscreteDudley.lean` | general `FiniteDyadicNetSequence` instance over finite discrete spaces `Fin n` |
+| `FormalSLT/Covering/FiniteDiscreteDudley.lean` | general `FiniteDyadicNetSequence` instance over finite discrete spaces `Fin n` with an embedded Rademacher process |
 
 The proof surface is checked by:
 
@@ -332,38 +332,43 @@ finDiscreteDyadicNetSequence
 ```
 
 Anchor: `finDiscreteDyadicNetSequence` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:187`.
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:240`.
 
 This declaration instantiates `FiniteDyadicNetSequence` for `Fin n` with the
-discrete metric under the nondegeneracy assumption `[Fact (2 ≤ n)]`. The full
-finite set is used as the net at every scale, so the cover-count envelope is
-explicit:
+discrete metric under the nondegeneracy assumption `[Fact (2 ≤ n)]`. The
+process is a one-coordinate Rademacher process embedded at a distinguished
+point of `Fin n`, so the supplied supremum is no longer the constant zero
+functional. The full finite set is used as the net at every scale, so the
+cover-count envelope is explicit:
 
 ```lean
 finDiscreteDyadicCoverCount n j = n * n
 ```
 
 Anchor: `finDiscreteDyadicCoverCount` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:103`.
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:171`.
 
-The module then routes the zero process through the generic projected and
-supplied-supremum wrappers:
+The module then routes the embedded Rademacher process through the generic
+projected and supplied-supremum wrappers:
 
 ```lean
-finDiscreteZero_projected_dudley_m_bound
-finDiscreteZeroSup_dudley_m_bound
+finDiscreteRademacher_projected_dudley_m_bound
+finDiscreteRademacherSup_true
+finDiscreteRademacherSup_dudley_m_bound
 ```
 
 Anchors:
-`finDiscreteZero_projected_dudley_m_bound` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:221`, and
-`finDiscreteZeroSup_dudley_m_bound` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:254`.
+`finDiscreteRademacher_projected_dudley_m_bound` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`, and
+`finDiscreteRademacherSup_true` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:308`, and
+`finDiscreteRademacherSup_dudley_m_bound` at
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:342`.
 
-This finite-discrete example is deliberately a zero-process theorem. Its role
-is API pressure: it checks that the finite dyadic-net wrapper can be
-instantiated for a whole finite family with a declared metric, finite nets,
-cover-count bounds, and supplied-supremum routing.
+This finite-discrete example is still deliberately simple. Its role is API
+pressure: it checks that the finite dyadic-net wrapper can be instantiated for
+a whole finite family with a declared metric, finite nets, cover-count bounds,
+and nontrivial supplied-supremum routing.
 
 ## 6. Verification and Axiom Profile
 

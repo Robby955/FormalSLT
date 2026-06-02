@@ -23,7 +23,7 @@ The three concrete dyadic-net instances are:
 |---|---|---|
 | Unit interval | `unitIntervalRoundedDyadicGridNetSequence` | Non-finite index-space example over `[0,1]` |
 | Two-point discrete space | `twoPointDyadicNetSequence` | Second API instantiation, independent of `[0,1]` |
-| Finite discrete spaces | `finDiscreteDyadicNetSequence` | General `Fin n` discrete-metric family, testing cover-count scaling beyond constant-size examples |
+| Finite discrete spaces | `finDiscreteDyadicNetSequence` | General `Fin n` discrete-metric family with a nonzero embedded Rademacher process and nonconstant cover counts |
 
 ## Ten-Minute Verification Path
 

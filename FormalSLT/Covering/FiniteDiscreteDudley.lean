@@ -1,4 +1,5 @@
 import FormalSLT.Covering.FiniteSubGaussianChaining
+import FormalSLT.Rademacher.Massart
 
 /-!
 # Finite discrete dyadic-net Dudley example
@@ -9,15 +10,16 @@ cover-count envelope is `n * n`, so the generic dyadic-net wrapper is exercised
 with a nonconstant finite family rather than only `[0,1]` or the two-point
 space.
 
-The process used here is the zero process. That keeps the stochastic part
-deliberately trivial so the file tests the metric-net bookkeeping and the
-generic Dudley wrappers directly.
+The process is a nonzero one-coordinate Rademacher process embedded in `Fin n`.
+It keeps the metric-net bookkeeping simple while making the supplied supremum
+nontrivial.
 -/
 
 namespace FormalSLT.Covering.FiniteDiscreteDudley
 
 open FormalSLT.Covering.FiniteSubGaussianChaining
 open FormalSLT.Covering.FiniteSubGaussianChaining.FiniteSubGaussianProcess
+open FormalSLT.Rademacher.FiniteSample
 open scoped BigOperators
 
 noncomputable section
@@ -54,38 +56,104 @@ theorem finDiscreteDist_triangle {n : ℕ} (x y z : Fin n) :
         simp [finDiscreteDist, hxz]
       · simp [finDiscreteDist, hxz, hxy, hyz]
 
-/-- The zero process on a finite discrete index family. -/
-def finDiscreteZeroValue {n : ℕ} (_ω : PUnit) (_t : Fin n) : ℝ :=
-  0
+instance finNonempty_of_fact_two_le (n : ℕ) [Fact (2 ≤ n)] : Nonempty (Fin n) :=
+  ⟨⟨0, Nat.lt_of_lt_of_le (by norm_num) (Fact.out : 2 ≤ n)⟩⟩
 
-theorem finDiscreteZero_mgf_bound {n : ℕ} (s t : Fin n) (lam : ℝ) :
-    finiteExpectation (fun _ : PUnit => (1 : ℝ))
+private def finZero {n : ℕ} [Fact (2 ≤ n)] : Fin n :=
+  ⟨0, Nat.lt_of_lt_of_le (by norm_num) (Fact.out : 2 ≤ n)⟩
+
+private def finOne {n : ℕ} [Fact (2 ≤ n)] : Fin n :=
+  ⟨1, Nat.lt_of_lt_of_le (by norm_num) (Fact.out : 2 ≤ n)⟩
+
+private theorem finZero_ne_finOne {n : ℕ} [Fact (2 ≤ n)] :
+    (finZero : Fin n) ≠ finOne := by
+  intro h
+  have hval := congrArg Fin.val h
+  norm_num [finZero, finOne] at hval
+
+/-- A one-coordinate Rademacher process embedded in the finite discrete family. -/
+def finDiscreteRademacherValue {n : ℕ} [Fact (2 ≤ n)] (ω : Bool) (t : Fin n) : ℝ :=
+  if t = finOne then signOfBool ω else 0
+
+private theorem finDiscreteRademacherValue_le_one {n : ℕ} [Fact (2 ≤ n)]
+    (ω : Bool) (t : Fin n) :
+    finDiscreteRademacherValue ω t ≤ 1 := by
+  by_cases ht : t = finOne
+  · cases ω <;> simp [finDiscreteRademacherValue, ht, signOfBool]
+  · simp [finDiscreteRademacherValue, ht]
+
+theorem finDiscrete_rademacher_mgf_bound {n : ℕ} [Fact (2 ≤ n)]
+    (s t : Fin n) (lam : ℝ) :
+    finiteExpectation (fun _ : Bool => (1 : ℝ) / 2)
         (fun ω => Real.exp
-          (lam * (finDiscreteZeroValue ω t - finDiscreteZeroValue ω s))) ≤
+          (lam * (finDiscreteRademacherValue ω t - finDiscreteRademacherValue ω s))) ≤
       Real.exp (lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2) := by
-  have hnonneg :
-      0 ≤ lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2 := by
-    nlinarith [sq_nonneg lam, sq_nonneg (finDiscreteDist s t)]
-  calc
-    finiteExpectation (fun _ : PUnit => (1 : ℝ))
-        (fun ω => Real.exp
-          (lam * (finDiscreteZeroValue ω t - finDiscreteZeroValue ω s)))
-        = 1 := by
-          simp [finiteExpectation, finDiscreteZeroValue]
-    _ ≤ Real.exp (lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2) :=
-          Real.one_le_exp hnonneg
+  by_cases hst : s = t
+  · subst hst
+    norm_num [finiteExpectation, finDiscreteRademacherValue, finDiscreteDist]
+  · have hdist : finDiscreteDist s t = 1 := by
+      simp [finDiscreteDist, hst]
+    by_cases ht : t = finOne
+    · by_cases hs : s = finOne
+      · have hst' : s = t := by
+          rw [hs, ht]
+        exact (hst hst').elim
+      · calc
+          finiteExpectation (fun _ : Bool => (1 : ℝ) / 2)
+              (fun ω => Real.exp
+                (lam *
+                  (finDiscreteRademacherValue ω t -
+                    finDiscreteRademacherValue ω s)))
+              = (∑ b : Bool, Real.exp (lam * signOfBool b * (1 : ℝ))) / 2 := by
+                  simp [finiteExpectation, finDiscreteRademacherValue, ht, hs]
+                  ring
+          _ ≤ Real.exp (lam ^ 2 * (1 : ℝ) ^ 2 / 2) := by
+                  rw [FormalSLT.Rademacher.Massart.avg_exp_sign]
+                  exact FormalSLT.Rademacher.Massart.cosh_le_exp_sq_half lam 1
+          _ = Real.exp (lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2) := by
+                  norm_num [hdist]
+    · by_cases hs : s = finOne
+      · calc
+          finiteExpectation (fun _ : Bool => (1 : ℝ) / 2)
+              (fun ω => Real.exp
+                (lam *
+                  (finDiscreteRademacherValue ω t -
+                    finDiscreteRademacherValue ω s)))
+              = (∑ b : Bool, Real.exp (lam * signOfBool b * (-1 : ℝ))) / 2 := by
+                  simp [finiteExpectation, finDiscreteRademacherValue, ht, hs]
+                  ring
+          _ ≤ Real.exp (lam ^ 2 * (-1 : ℝ) ^ 2 / 2) := by
+                  rw [FormalSLT.Rademacher.Massart.avg_exp_sign]
+                  exact FormalSLT.Rademacher.Massart.cosh_le_exp_sq_half lam (-1)
+          _ = Real.exp (lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2) := by
+                  norm_num [hdist]
+      · have hnonneg :
+            0 ≤ lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2 := by
+          nlinarith [sq_nonneg lam, sq_nonneg (finDiscreteDist s t)]
+        calc
+          finiteExpectation (fun _ : Bool => (1 : ℝ) / 2)
+              (fun ω => Real.exp
+                (lam *
+                  (finDiscreteRademacherValue ω t -
+                    finDiscreteRademacherValue ω s)))
+              = 1 := by
+                  simp [finiteExpectation, finDiscreteRademacherValue, ht, hs]
+          _ ≤ Real.exp (lam ^ 2 * (1 : ℝ) * finDiscreteDist s t ^ 2 / 2) :=
+                  Real.one_le_exp hnonneg
 
-/-- The zero process packaged as a finite sub-Gaussian process on `Fin n`. -/
-def finDiscreteZeroProcess (n : ℕ) : FiniteSubGaussianProcess PUnit (Fin n) where
-  weight := fun _ => (1 : ℝ)
+/-- The embedded Rademacher process packaged as a finite sub-Gaussian process
+on `Fin n`. -/
+def finDiscreteRademacherProcess (n : ℕ) [Fact (2 ≤ n)] :
+    FiniteSubGaussianProcess Bool (Fin n) where
+  weight := fun _ => (1 : ℝ) / 2
   weight_nonneg := by intro ω; norm_num
-  weight_sum_one := by simp
-  X := finDiscreteZeroValue
+  weight_sum_one := by norm_num [Fintype.sum_bool]
+  X := finDiscreteRademacherValue
   dist := finDiscreteDist
   dist_nonneg := finDiscreteDist_nonneg
   varianceProxy := 1
   varianceProxy_nonneg := by norm_num
-  mgf_increment := finDiscreteZero_mgf_bound
+  mgf_increment := finDiscrete_rademacher_mgf_bound
 
 /-- The full finite discrete net at dyadic level `j`. -/
 def finDiscreteDyadicNet (n : ℕ) (j : ℕ) : FiniteNet (Fin n) (Fin n) where
@@ -103,8 +171,8 @@ def finDiscreteDyadicNet (n : ℕ) (j : ℕ) : FiniteNet (Fin n) (Fin n) where
 def finDiscreteDyadicCoverCount (n : ℕ) (_j : ℕ) : ℕ :=
   n * n
 
-theorem finDiscreteDyadicNet_dist (n : ℕ) (j : ℕ) :
-    (finDiscreteDyadicNet n j).dist = (finDiscreteZeroProcess n).dist := by
+theorem finDiscreteDyadicNet_dist (n : ℕ) [Fact (2 ≤ n)] (j : ℕ) :
+    (finDiscreteDyadicNet n j).dist = (finDiscreteRademacherProcess n).dist := by
   rfl
 
 theorem finDiscreteDyadicNet_radius_pos (n : ℕ) (j : ℕ) :
@@ -140,21 +208,6 @@ theorem finDiscreteDyadicNet_radius_geometric (n : ℕ) (j : ℕ) :
     _ = (1 : ℝ) / (2 : ℝ) ^ j := by
           field_simp [hpow_pos.ne']
 
-instance finNonempty_of_fact_two_le (n : ℕ) [Fact (2 ≤ n)] : Nonempty (Fin n) :=
-  ⟨⟨0, Nat.lt_of_lt_of_le (by norm_num) (Fact.out : 2 ≤ n)⟩⟩
-
-private def finZero {n : ℕ} [Fact (2 ≤ n)] : Fin n :=
-  ⟨0, Nat.lt_of_lt_of_le (by norm_num) (Fact.out : 2 ≤ n)⟩
-
-private def finOne {n : ℕ} [Fact (2 ≤ n)] : Fin n :=
-  ⟨1, Nat.lt_of_lt_of_le (by norm_num) (Fact.out : 2 ≤ n)⟩
-
-private theorem finZero_ne_finOne {n : ℕ} [Fact (2 ≤ n)] :
-    (finZero : Fin n) ≠ finOne := by
-  intro h
-  have hval := congrArg Fin.val h
-  norm_num [finZero, finOne] at hval
-
 theorem finDiscreteDyadicNet_pair_card_gt_one {n : ℕ} [Fact (2 ≤ n)] (j : ℕ) :
     1 < Fintype.card
       (FiniteNet.ProjectionPair
@@ -186,7 +239,7 @@ theorem finDiscreteDyadicNet_coverCount_le (n : ℕ) (j : ℕ) :
 finite discrete spaces. -/
 def finDiscreteDyadicNetSequence (n : ℕ) [Fact (2 ≤ n)] :
     FiniteSubGaussianProcess.FiniteDyadicNetSequence
-      (finDiscreteZeroProcess n) (fun _j : ℕ => Fin n) where
+      (finDiscreteRademacherProcess n) (fun _j : ℕ => Fin n) where
   N := finDiscreteDyadicNet n
   coverCount := finDiscreteDyadicCoverCount n
   radiusScale := 1
@@ -199,31 +252,43 @@ def finDiscreteDyadicNetSequence (n : ℕ) [Fact (2 ≤ n)] :
   pair_card_gt_one := finDiscreteDyadicNet_pair_card_gt_one
   coverCount_le := finDiscreteDyadicNet_coverCount_le n
 
-/-- Supremum of a constant zero finite family. -/
-private lemma finiteSup_zero {α : Type*} [Fintype α] [Nonempty α] :
-    finiteSup (fun _ : α => (0 : ℝ)) = 0 := by
-  unfold finiteSup
-  simp
-
-private theorem finDiscreteZero_coarse {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
-    finiteExpectation (finDiscreteZeroProcess n).weight
+private theorem finDiscreteRademacher_coarse {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
+    finiteExpectation (finDiscreteRademacherProcess n).weight
       (fun ω => finiteSup
         (fun u : FiniteNet.ProjectedIndex (finDiscreteDyadicNet n m) =>
-          (finDiscreteZeroProcess n).X ω
+          (finDiscreteRademacherProcess n).X ω
             ((finDiscreteDyadicNet n 0).projection
               (FiniteNet.ProjectedIndex.source (finDiscreteDyadicNet n m) u)))) ≤
-      (0 : ℝ) := by
-  simp [finDiscreteZeroProcess, finDiscreteZeroValue, finiteExpectation,
-    finiteSup_zero]
+      (1 : ℝ) := by
+  calc
+    finiteExpectation (finDiscreteRademacherProcess n).weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex (finDiscreteDyadicNet n m) =>
+          (finDiscreteRademacherProcess n).X ω
+            ((finDiscreteDyadicNet n 0).projection
+              (FiniteNet.ProjectedIndex.source (finDiscreteDyadicNet n m) u))))
+        ≤ finiteExpectation (finDiscreteRademacherProcess n).weight
+            (fun _ω : Bool => (1 : ℝ)) := by
+          refine finiteExpectation_mono (finDiscreteRademacherProcess n).weight_nonneg ?_
+          intro ω
+          unfold finiteSup
+          exact Finset.sup'_le Finset.univ_nonempty _ fun u _hu =>
+            finDiscreteRademacherValue_le_one ω
+              ((finDiscreteDyadicNet n 0).projection
+                (FiniteNet.ProjectedIndex.source (finDiscreteDyadicNet n m) u))
+    _ = (1 : ℝ) := by
+          exact finiteExpectation_const_of_sum_one
+            (finDiscreteRademacherProcess n).weight 1
+            (finDiscreteRademacherProcess n).weight_sum_one
 
-/-- Projected finite-net Dudley bound for the zero process on `Fin n`, routed
-through the generic dyadic-net sequence API. -/
-theorem finDiscreteZero_projected_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
-    finiteExpectation (finDiscreteZeroProcess n).weight
+/-- Projected finite-net Dudley bound for the embedded Rademacher process on
+`Fin n`, routed through the generic dyadic-net sequence API. -/
+theorem finDiscreteRademacher_projected_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
+    finiteExpectation (finDiscreteRademacherProcess n).weight
         (fun ω => finiteSup
           (fun u : FiniteNet.ProjectedIndex (finDiscreteDyadicNet n m) =>
-            (finDiscreteZeroProcess n).X ω ((finDiscreteDyadicNet n m).center u.1))) ≤
-      2 * Real.sqrt (2 * (finDiscreteZeroProcess n).varianceProxy) *
+            (finDiscreteRademacherProcess n).X ω ((finDiscreteDyadicNet n m).center u.1))) ≤
+      1 + 2 * Real.sqrt (2 * (finDiscreteRademacherProcess n).varianceProxy) *
         FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
           (FiniteSubGaussianProcess.finitePrefixSupEnvelope
             (fun j : ℕ =>
@@ -231,29 +296,53 @@ theorem finDiscreteZero_projected_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m :
   have hbase :=
     FiniteSubGaussianProcess.FiniteDyadicNetSequence.projectedNet_dudley_bound
       (S := finDiscreteDyadicNetSequence n)
-      (m := m) (coarseBudget := (0 : ℝ))
-      (by norm_num [finDiscreteZeroProcess])
-      (finDiscreteZero_coarse m)
-  simpa [finDiscreteZeroProcess] using hbase
+      (m := m) (coarseBudget := (1 : ℝ))
+      (by norm_num [finDiscreteRademacherProcess])
+      (finDiscreteRademacher_coarse m)
+  simpa [finDiscreteRademacherProcess] using hbase
 
-/-- Supremum functional for the zero process on `Fin n`. -/
-def finDiscreteZeroSup (_n : ℕ) (_ω : PUnit) : ℝ :=
-  0
+/-- Supremum functional for the embedded Rademacher process on `Fin n`. -/
+def finDiscreteRademacherSup {n : ℕ} [Fact (2 ≤ n)] (ω : Bool) : ℝ :=
+  finiteSup (fun t : Fin n => (finDiscreteRademacherProcess n).X ω t)
 
-theorem finDiscreteZeroSup_le_projectedSup {n : ℕ} [Fact (2 ≤ n)] (m : ℕ)
-    (ω : PUnit) :
-    finDiscreteZeroSup n ω ≤
+theorem finDiscreteRademacherSup_true {n : ℕ} [Fact (2 ≤ n)] :
+    finDiscreteRademacherSup (n := n) true = 1 := by
+  unfold finDiscreteRademacherSup finiteSup
+  apply le_antisymm
+  · exact Finset.sup'_le Finset.univ_nonempty _ (by
+      intro t _ht
+      by_cases h : t = finOne
+      · simp [finDiscreteRademacherProcess, finDiscreteRademacherValue, h, signOfBool]
+      · simp [finDiscreteRademacherProcess, finDiscreteRademacherValue, h])
+  · have hle :=
+      Finset.le_sup'
+        (fun t : Fin n => (finDiscreteRademacherProcess n).X true t)
+        (Finset.mem_univ (finOne : Fin n))
+    simpa [finDiscreteRademacherProcess, finDiscreteRademacherValue, signOfBool] using hle
+
+theorem finDiscreteRademacherSup_le_projectedSup {n : ℕ} [Fact (2 ≤ n)] (m : ℕ)
+    (ω : Bool) :
+    finDiscreteRademacherSup (n := n) ω ≤
       finiteSup
         (fun u : FiniteNet.ProjectedIndex (finDiscreteDyadicNet n m) =>
-          (finDiscreteZeroProcess n).X ω ((finDiscreteDyadicNet n m).center u.1)) := by
-  simp [finDiscreteZeroSup, finDiscreteZeroProcess, finDiscreteZeroValue,
-    finiteSup_zero]
+          (finDiscreteRademacherProcess n).X ω ((finDiscreteDyadicNet n m).center u.1)) := by
+  unfold finDiscreteRademacherSup finiteSup
+  apply Finset.sup'_le
+  intro t _ht
+  let u : FiniteNet.ProjectedIndex (finDiscreteDyadicNet n m) := ⟨t, ⟨t, rfl⟩⟩
+  have hle :=
+    Finset.le_sup'
+      (fun u : FiniteNet.ProjectedIndex (finDiscreteDyadicNet n m) =>
+        (finDiscreteRademacherProcess n).X ω ((finDiscreteDyadicNet n m).center u.1))
+      (Finset.mem_univ u)
+  simpa [u, finDiscreteDyadicNet] using hle
 
-/-- Supplied-supremum Dudley bound for the zero process on `Fin n`, routed
-through the generic dyadic-net sequence API. -/
-theorem finDiscreteZeroSup_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
-    finiteExpectation (finDiscreteZeroProcess n).weight (finDiscreteZeroSup n) ≤
-      2 * Real.sqrt (2 * (finDiscreteZeroProcess n).varianceProxy) *
+/-- Supplied-supremum Dudley bound for the embedded Rademacher process on
+`Fin n`, routed through the generic dyadic-net sequence API. -/
+theorem finDiscreteRademacherSup_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
+    finiteExpectation (finDiscreteRademacherProcess n).weight
+        (finDiscreteRademacherSup (n := n)) ≤
+      1 + 2 * Real.sqrt (2 * (finDiscreteRademacherProcess n).varianceProxy) *
         FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) m
           (FiniteSubGaussianProcess.finitePrefixSupEnvelope
             (fun j : ℕ =>
@@ -261,16 +350,15 @@ theorem finDiscreteZeroSup_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : ℕ) :
   have hbase :=
     FiniteSubGaussianProcess.FiniteDyadicNetSequence.supFunctional_dudley_bound
       (S := finDiscreteDyadicNetSequence n)
-      (m := m) (coarseBudget := (0 : ℝ))
-      (supFunctional := finDiscreteZeroSup n)
+      (m := m) (coarseBudget := (1 : ℝ))
+      (supFunctional := finDiscreteRademacherSup (n := n))
       (terminalError := (0 : ℝ))
-      (by norm_num [finDiscreteZeroProcess])
+      (by norm_num [finDiscreteRademacherProcess])
       (by
         intro ω
-        simpa [finDiscreteDyadicNetSequence] using
-          finDiscreteZeroSup_le_projectedSup (n := n) m ω)
-      (finDiscreteZero_coarse m)
-  simpa [finDiscreteZeroProcess, finDiscreteZeroSup] using hbase
+        simpa using finDiscreteRademacherSup_le_projectedSup (n := n) m ω)
+      (finDiscreteRademacher_coarse m)
+  simpa [finDiscreteRademacherProcess] using hbase
 
 end
 

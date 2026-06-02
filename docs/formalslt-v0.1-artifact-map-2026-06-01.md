@@ -175,7 +175,8 @@ What it does not prove:
 The v0.1 note should mention, but not headline, these already checked families:
 
 - The reusable dyadic-net API has concrete instances over the unit interval,
-  the two-point discrete metric, and the finite discrete family `Fin n`.
+  the two-point discrete metric, and the finite discrete family `Fin n` with an
+  embedded Rademacher process.
 - Rademacher symmetrization and finite-class high-probability bounds.
 - VC sample-complexity wrappers.
 - PAC-Bayes finite bounded-loss and finite-grid peeling wrappers.

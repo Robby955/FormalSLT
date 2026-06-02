@@ -11,7 +11,8 @@ checkers pass, the theorem map and proof-frontier manifest are in sync, and the
 v0.1 quickstart checker imports the bundled confidence-sequence API, the
 unit-interval Dudley bridge, and the reusable dyadic-net sequence API.
 The reusable dyadic-net surface now includes both the two-point discrete
-instance and the general finite discrete `Fin n` family.
+instance and the general finite discrete `Fin n` family with a nonzero embedded
+Rademacher process.
 
 This is not a public release decision. No push, pull request, merge, post, or
 external comment has been made.
@@ -102,19 +103,24 @@ Dudley theorem.
 Main local declarations:
 
 - `finDiscreteDyadicNetSequence`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:187`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:240`)
 - `finDiscreteDyadicCoverCount`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:103`)
-- `finDiscreteZero_projected_dudley_m_bound`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:221`)
-- `finDiscreteZeroSup_dudley_m_bound`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:254`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:171`)
+- `finDiscreteRademacher_projected_dudley_m_bound`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`)
+- `finDiscreteRademacherSup_true`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:308`)
+- `finDiscreteRademacherSup_dudley_m_bound`
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:342`)
 
 Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated for
-`Fin n` with the discrete metric under `[Fact (2 ≤ n)]`. The example uses the
-full finite set as every net and exposes the nonconstant cover-count envelope
-`n * n`. This checks the generic wrapper's finite-family ergonomics; it is not
-a stronger Dudley theorem than the unit-interval bridge.
+`Fin n` with the discrete metric under `[Fact (2 ≤ n)]`. The example embeds a
+one-coordinate Rademacher process at a distinguished point of `Fin n`, uses the
+full finite set as every net, and exposes the nonconstant cover-count envelope
+`n * n`. The theorem `finDiscreteRademacherSup_true` records that the supplied
+supremum equals `1` on the positive Rademacher outcome. This checks the generic
+wrapper's finite-family ergonomics and its supplied-supremum route; it is not a
+stronger Dudley theorem than the unit-interval bridge.
 
 ## TheoremPath Stage A Alignment
 
@@ -229,7 +235,8 @@ summary can safely say:
 - FormalSLT contains a second concrete finite dyadic-net sequence instance over
   a two-point metric space, showing that the dyadic-net wrapper is reusable.
 - FormalSLT contains a general finite discrete dyadic-net sequence instance over
-  `Fin n`, checking the same wrapper with explicit nonconstant cover counts.
+  `Fin n`, checking the same wrapper with a nonzero embedded Rademacher process
+  and explicit nonconstant cover counts.
 - TheoremPath Stage A can display a dyadic Hoeffding review-count calculation
   and cite the bundled FormalSLT theorem as the Lean-backed endpoint.
 

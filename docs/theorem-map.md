@@ -231,17 +231,20 @@ declarations; modules are relative to `FormalSLT`.
 | `finDiscreteDist_nonneg` | `Covering.FiniteDiscreteDudley` | The finite discrete metric is nonnegative |
 | `finDiscreteDist_symm` | `Covering.FiniteDiscreteDudley` | The finite discrete metric is symmetric |
 | `finDiscreteDist_triangle` | `Covering.FiniteDiscreteDudley` | The finite discrete metric satisfies the triangle inequality |
-| `finDiscreteZero_mgf_bound` | `Covering.FiniteDiscreteDudley` | Zero-process increments satisfy the sub-Gaussian MGF bound |
-| `finDiscreteZeroProcess` | `Covering.FiniteDiscreteDudley` | The zero process packaged as a finite sub-Gaussian process over `Fin n` |
+| `finDiscreteRademacherValue` | `Covering.FiniteDiscreteDudley` | One-coordinate Rademacher process embedded in the finite discrete family |
+| `finDiscrete_rademacher_mgf_bound` | `Covering.FiniteDiscreteDudley` | Embedded Rademacher process increments satisfy the sub-Gaussian MGF bound |
+| `finDiscreteRademacherProcess` | `Covering.FiniteDiscreteDudley` | The embedded Rademacher process packaged as a finite sub-Gaussian process over `Fin n` |
 | `finDiscreteDyadicNet` | `Covering.FiniteDiscreteDudley` | Full finite net on `Fin n` at every dyadic scale |
 | `finDiscreteDyadicCoverCount` | `Covering.FiniteDiscreteDudley` | Explicit adjacent-scale cover-count envelope `n * n` |
 | `finDiscreteDyadicNet_dist` | `Covering.FiniteDiscreteDudley` | Finite discrete nets use the process metric |
 | `finDiscreteDyadicNet_coveringNumber` | `Covering.FiniteDiscreteDudley` | The full finite discrete net has covering number `n` |
 | `finDiscreteDyadicNet_coverCount_le` | `Covering.FiniteDiscreteDudley` | Adjacent finite-discrete covering-number products are bounded by the `n * n` envelope |
 | `finDiscreteDyadicNetSequence` | `Covering.FiniteDiscreteDudley` | General `FiniteDyadicNetSequence` instance for `Fin n` with `[Fact (2 ≤ n)]` |
-| `finDiscreteZero_projected_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Arbitrary finite-horizon projected Dudley bound for the zero process routed through the generic dyadic-net API |
-| `finDiscreteZeroSup_le_projectedSup` | `Covering.FiniteDiscreteDudley` | Terminal projected-net adapter for the finite-discrete supplied supremum |
-| `finDiscreteZeroSup_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Supplied-supremum finite Dudley bound for the zero process routed through the generic dyadic-net API |
+| `finDiscreteRademacher_projected_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Arbitrary finite-horizon projected Dudley bound for the embedded Rademacher process routed through the generic dyadic-net API |
+| `finDiscreteRademacherSup` | `Covering.FiniteDiscreteDudley` | Supremum functional for the embedded Rademacher process over `Fin n` |
+| `finDiscreteRademacherSup_true` | `Covering.FiniteDiscreteDudley` | The supplied supremum is nontrivial: it equals `1` on the positive Rademacher outcome |
+| `finDiscreteRademacherSup_le_projectedSup` | `Covering.FiniteDiscreteDudley` | Terminal projected-net adapter for the finite-discrete supplied supremum |
+| `finDiscreteRademacherSup_dudley_m_bound` | `Covering.FiniteDiscreteDudley` | Supplied-supremum finite Dudley bound for the embedded Rademacher process routed through the generic dyadic-net API |
 
 ## Unit-interval Dudley example
 

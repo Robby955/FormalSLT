@@ -92,7 +92,7 @@ with explicit hypotheses and constants. The current public spine includes:
 | Total-bounded Dudley bridge | `Covering.TotalBoundedDudley` | totally bounded metric spaces yield dyadic finite-net schedules, projected finite-net wrappers, truncated interval-integral entropy comparisons, and supplied-supremum / finite-skeleton / pathwise-modulus / epsilonized boundary adapters | Verified bridge |
 | Unit-interval Dudley example | `Covering.UnitIntervalDudley` | `[0,1]` as a non-finite index space with rounded dyadic meshes, projection-pair entropy, and a supplied-supremum projected-mesh Dudley bound for `X(b,t)=sign(b)*t` | Verified example |
 | Two-point dyadic-net example | `Covering.TwoPointDudley` | second concrete `FiniteDyadicNetSequence` instance, showing the reusable dyadic-net wrapper is not tied to `[0,1]` | Verified example |
-| Finite discrete dyadic-net family | `Covering.FiniteDiscreteDudley` | general `FiniteDyadicNetSequence` instance for `Fin n` with the discrete metric and explicit `n * n` cover-count envelope | Verified API example |
+| Finite discrete dyadic-net family | `Covering.FiniteDiscreteDudley` | general `FiniteDyadicNetSequence` instance for `Fin n` with the discrete metric, an embedded Rademacher process, and explicit `n * n` cover-count envelope | Verified API example |
 | Algorithmic stability | `AlgorithmicStability`, `Stability.BousquetElisseeff` | bounded-differences constants, finite and product-measure expected-gap wrappers with bound `β`, bounded-loss measurability adapters, and bounded-loss Azuma-constant concentration wrappers | Verified finite scaffold |
 | PAC-Bayes finite confidence layer | `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` | finite KL/DV change-of-measure, bounded-loss Catoni-style bound, closed PAC-Bayes good-event payoff, fixed-budget McAllester corollary, and finite-grid McAllester peeling wrapper | Verified finite layer |
 
@@ -210,7 +210,7 @@ The expected result is:
 - `examples/CheckTwoPointDudley.lean` prints standard Lean/Mathlib axioms
   for the second dyadic-net example;
 - `examples/CheckFiniteDiscreteDudley.lean` prints standard Lean/Mathlib
-  axioms for the finite discrete dyadic-net family;
+  axioms for the finite discrete embedded Rademacher dyadic-net family;
 - the `rg` commands find no executable `sorry`, no executable `admit`, and no
   custom axioms/constants in `FormalSLT` or `examples`;
 - the proof-frontier manifest is in sync with the theorem map and source counts;

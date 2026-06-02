@@ -29,8 +29,9 @@ reusability checks:
    nets;
 3. a second dyadic-net instance over a two-point metric space, showing that the
    generic wrapper is not tied to `[0,1]`;
-4. a finite discrete `Fin n` dyadic-net family, showing the same wrapper with
-   explicit nonconstant cover-count bookkeeping.
+4. a finite discrete `Fin n` dyadic-net family with an embedded Rademacher
+   process, showing the same wrapper with explicit nonconstant cover-count
+   bookkeeping and nontrivial supplied-supremum routing.
 
 This page explains what is checked, what remains outside scope, and how to
 verify the claims locally.
@@ -240,7 +241,7 @@ a theorem constructing arbitrary measurable suprema for all non-finite classes.
   by `examples/CheckV01Usability.lean`.
 - The two-point dyadic-net example is covered by
   `examples/CheckTwoPointDudley.lean`.
-- The finite discrete `Fin n` dyadic-net family is covered by
+- The finite discrete `Fin n` embedded Rademacher dyadic-net family is covered by
   `examples/CheckFiniteDiscreteDudley.lean`.
 - The printed axiom profile for the headline declarations stays inside:
 
@@ -306,9 +307,9 @@ Two next steps would make the checked surface easier to use:
 
 1. Use the `FiniteClassConfidenceSequence` bundle in downstream formal
    statements instead of restating the long theorem signature.
-2. Replace the finite-discrete zero-process example with a nonzero finite
-   process, so the finite-family API check also exercises a nontrivial
-   supremum.
+2. Strengthen the finite-discrete embedded Rademacher example with an evaluated
+   finite-horizon scalar corollary, analogous to the unit-interval display
+   corollaries.
 3. Abstract the rounded dyadic-net Dudley wrapper so the unit-interval proof is
    one instance of a reusable finite-horizon theorem.
 
