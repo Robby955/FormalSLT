@@ -54,7 +54,7 @@ This repository proves two product-measure bounded-differences tails in
    Here no conditioning is needed: each `X_i` lies directly in a width-`(b_i-a_i)`
    interval, so the sharp proxy is available immediately.
 
-2. `mcdiarmid_of_hasBoundedDifferences_sharp` - the general iid product-measure
+2. `mcdiarmid_of_hasBoundedDifferences_sharp` - the homogeneous product-measure
    bounded-differences theorem:
 
        P( f(S) - E[f(S)] >= t )  <=  exp( -2 t^2 / sum_k c_k^2 ).
@@ -71,7 +71,7 @@ This repository proves two product-measure bounded-differences tails in
    bounded-differences widths apply.
 
 4. `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` - the two-sided
-   textbook iid product-measure form:
+   textbook homogeneous product-measure form:
 
        P( |f(S) - E[f(S)]| >= t )  <=  2 * exp( -2 t^2 / sum_k c_k^2 ).
 

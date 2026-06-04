@@ -22,21 +22,24 @@ are API checks: they show that the finite-net wrapper is reusable outside the
 unit-interval file.
 
 The concentration layer now carries the sharp McDiarmid bounded-differences
-inequality over an iid product measure. For a function whose value changes by at
-most `c k` when coordinate `k` is altered, the library proves the
+inequality over a homogeneous product measure. For a function whose value
+changes by at most `c k` when coordinate `k` is altered, the library proves the
 one-sided tail `exp(-2ε²/∑ₖcₖ²)` (`mcdiarmid_of_hasBoundedDifferences_sharp`),
 its lower-tail form (`mcdiarmid_of_hasBoundedDifferences_sharp_lower`), and the
 two-sided bound `2·exp(-2ε²/∑ₖcₖ²)`
 (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`). The sharp `2B²` exponent
-is propagated into the high-probability Rademacher and VC sample-complexity
-generalization wrappers, replacing the looser Azuma `8B²` constant on that path.
-The bound is stated for the iid homogeneous product measure, the same law in
-each coordinate, not for arbitrary non-iid product spaces.
+is propagated into the high-probability Rademacher, finite-class, VC, and
+algorithmic-stability wrappers listed below, replacing the looser Azuma `8B²`
+constant on those paths. The localized-Rademacher wrapper still uses the older
+Azuma constant. The bounded-differences theorem is stated for the same product
+law in each coordinate, not for arbitrary non-iid product spaces.
 
 The PAC-Bayes layer now includes a finite Bernstein margin-proxy shell. It
 adds a supplied per-hypothesis variance proxy, a normalized Bernstein
 prior-moment certificate, fixed-`λ` finite bad-event bounds, and a
-posterior-dependent square-root-plus-linear wrapper.
+posterior-dependent square-root-plus-linear wrapper. This is a supplied-proxy
+finite shell: it is not yet a concrete classifier-margin extractor, an
+all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
 
 **60 `FormalSLT/` Lean files. 85 checked Lean files under `FormalSLT/` and
 `examples/`. 33,397 lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
@@ -55,8 +58,8 @@ The printed axiom profile for the v0.1 headline surface stays inside:
 | Packaged finite dyadic Dudley API | `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` | `examples/CheckV01Usability.lean` |
 | Two-point dyadic Dudley instance | `twoPointDudleyInstance` | `examples/CheckTwoPointDudley.lean` |
 | `Fin n` discrete dyadic Dudley instance | `finDiscreteDudleyInstance` | `examples/CheckFiniteDiscreteDudley.lean` |
-| Two-sided sharp McDiarmid over an iid product measure | `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `FormalSLT/Test/SharpMcDiarmidTest.lean` |
-| PAC-Bayes Bernstein margin-proxy shell | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `examples/CheckPACBayesBernstein.lean` |
+| Two-sided sharp McDiarmid over a homogeneous product measure | `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `FormalSLT/Test/SharpMcDiarmidTest.lean` |
+| PAC-Bayes Bernstein supplied margin-proxy shell | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `examples/CheckPACBayesBernstein.lean` |
 
 The confidence-sequence chain makes the finite-class and countable-time union
 bound explicit. The Dudley chain connects finite sub-Gaussian chaining to a
@@ -134,8 +137,8 @@ library contains checked finite routes for:
 - high-probability Rademacher and VC sample-complexity bounds carrying the
   sharp McDiarmid `2B²` exponent;
 - the sharp bounded-differences/McDiarmid concentration module
-  (`Concentration.SharpMcDiarmid`): one-sided, lower-tail, and two-sided iid
-  product-measure tails, plus the additive independent special case;
+  (`Concentration.SharpMcDiarmid`): one-sided, lower-tail, and two-sided
+  homogeneous product-measure tails, plus the additive independent special case;
 - finite contraction and linear-predictor Rademacher bounds;
 - finite Bennett/Bernstein and localized-Rademacher scaffolding;
 - conditional sub-Gamma MGF extraction for bounded, conditionally centered
@@ -173,13 +176,13 @@ Short version:
   independent case (`mcdiarmid_additive_independent`), for Doob martingale
   increments with conditional sub-Gaussian MGF control
   (`sharp_mcdiarmid_of_doob_increments`), and for a general bounded-differences
-  function over an iid product measure, one-sided
+  function over a homogeneous product measure, one-sided
   (`mcdiarmid_of_hasBoundedDifferences_sharp`) and two-sided
   (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`). The high-probability
   Rademacher and VC sample-complexity wrappers now use this sharp `2B²`
   exponent; the localized-Rademacher wrapper still uses the older Azuma `8B²`
-  constant. The bounded-differences theorem is stated for the iid homogeneous
-  product measure, not for arbitrary non-iid product spaces.
+  constant. The bounded-differences theorem is stated for the same product law
+  in each coordinate, not for arbitrary non-iid product spaces.
 - The chaining layer proves finite entropy-budget infrastructure and an initial
   total-bounded finite-net extraction bridge, not the continuous Dudley
   integral.
@@ -365,8 +368,8 @@ The expected result is:
   continuous-posterior extensions
 - [x] Sharp McDiarmid constant for the additive independent case and for Doob
   martingale increments with conditional sub-Gaussian MGF control
-- [x] Sharp McDiarmid for a general bounded-differences function over an iid
-  product measure: one-sided, lower-tail, and two-sided
+- [x] Sharp McDiarmid for a general bounded-differences function over a
+  homogeneous product measure: one-sided, lower-tail, and two-sided
   (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`), with the sharp `2B²`
   exponent propagated into the high-probability Rademacher and VC wrappers
 - [ ] Sharp McDiarmid over arbitrary non-iid product spaces (different law per

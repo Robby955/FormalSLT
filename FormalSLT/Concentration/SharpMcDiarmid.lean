@@ -40,7 +40,8 @@ What this file adds:
 * `mcdiarmid_of_hasBoundedDifferences_sharp_lower` - the matching lower-tail
   theorem, obtained by applying the upper-tail theorem to `-f`.
 * `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` - the two-sided textbook
-  bounded-differences theorem for `|f - E[f]|` over an iid product measure.
+  bounded-differences theorem for `|f - E[f]|` over a homogeneous product
+  measure.
 * `sharp_mcdiarmid_of_doob_increments` - an abstract reduction recording that
   *given* Doob increments that are conditionally sub-Gaussian with the sharp
   proxy `(c_i / 2)^2`, the sharp tail bound follows from the same engine. It
@@ -104,8 +105,8 @@ theorem sharp_mcdiarmid_of_doob_increments
 /-- **Sharp McDiarmid bounded-differences inequality over a product measure.**
 
 If `f : (Fin n → Z) → ℝ` changes by at most `c k` when coordinate `k` is
-altered, with nonnegative widths `c k`, then its upper tail under the iid product
-measure satisfies the sharp McDiarmid bound
+altered, with nonnegative widths `c k`, then its upper tail under the
+homogeneous product measure satisfies the sharp McDiarmid bound
 
   `μⁿ {S | E[f] + ε ≤ f S} ≤ exp (-2 * ε^2 / ∑ k, c k ^ 2)`.
 
@@ -159,8 +160,8 @@ theorem mcdiarmid_of_hasBoundedDifferences_sharp_lower
 
 /-- Two-sided sharp McDiarmid bounded-differences inequality.
 
-For an arbitrary function on an iid product space whose coordinate sensitivity
-is bounded by `c k`, the centered absolute deviation has the textbook
+For an arbitrary function on a homogeneous product space whose coordinate
+sensitivity is bounded by `c k`, the centered absolute deviation has the textbook
 Boucheron-Lugosi-Massart/McDiarmid tail
 
 `P(|f(S) - E[f]| >= ε) <= 2 * exp(-2 * ε^2 / sum_k c_k^2)`.

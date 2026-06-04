@@ -116,7 +116,7 @@ declarations; modules are relative to `FormalSLT`.
 | `genGap_tail_bound_sharp_explicit` | `Azuma.GenGapTail` | `P(genGap - E[genGap] >= ε) <= exp(-ε² n / (2B²))` |
 | `mcdiarmid_of_hasBoundedDifferences_sharp` | `Concentration.SharpMcDiarmid` | Public wrapper for the sharp product bounded-differences tail |
 | `mcdiarmid_of_hasBoundedDifferences_sharp_lower` | `Concentration.SharpMcDiarmid` | Lower-tail wrapper obtained from the upper tail applied to `-f` |
-| `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `Concentration.SharpMcDiarmid` | Two-sided iid product bounded-differences tail `P(|f - E[f]| >= ε) <= 2 exp(-2ε² / sum_k c_k²)` |
+| `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `Concentration.SharpMcDiarmid` | Two-sided homogeneous product bounded-differences tail `P(|f - E[f]| >= ε) <= 2 exp(-2ε² / sum_k c_k²)` |
 | `massart_finite_class` | `Rademacher.Massart` | `Rad(H,S) <= B * sqrt(2 * log card(H) / n)` |
 | `genGap_highProb_rademacher` | `Rademacher.HighProbability` | `P(genGap >= 2 * E[Rad] + ε) <= exp(-ε² n / (2B²))` |
 | `genGap_highProb_finiteClass` | `Rademacher.FiniteClassHighProb` | Massart plus sharp high-probability Rademacher |
@@ -460,7 +460,7 @@ declarations; modules are relative to `FormalSLT`.
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |
 | `finitePACBayesBernstein_fixedLambda_badEventMass_le_delta` | `PACBayesBernstein` | Finite fixed-`lambda` PAC-Bayes Bernstein bad-event bound |
 | `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
-| `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite Bernstein margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
+| `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite supplied margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
 
 ## Conditional sub-Gamma extractor
 

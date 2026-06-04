@@ -68,8 +68,8 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 25,
-    "library_and_example_lean_lines": 33397,
-    "library_lean_lines": 31503,
+    "library_and_example_lean_lines": 33398,
+    "library_lean_lines": 31504,
     "library_modules": 60,
     "theorem_map_entries": 412
   },
@@ -2549,7 +2549,7 @@
           "kind": "theorem",
           "module": "PACBayesBernstein",
           "name": "finitePACBayesBernsteinMargin_badEventMass_le_delta",
-          "summary": "Finite Bernstein margin-proxy wrapper with sqrt(2 * V\u03c1 * C\u03c1) + scale * C\u03c1 penalty form"
+          "summary": "Finite supplied margin-proxy wrapper with sqrt(2 * V\u03c1 * C\u03c1) + scale * C\u03c1 penalty form"
         }
       ],
       "name": "Stability and PAC-Bayes foundations"

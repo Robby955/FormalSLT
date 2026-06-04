@@ -133,7 +133,7 @@
   <text x="775" y="838" class="tiny">Continuous Dudley is a separate theorem target.</text>
 
   <rect x="38" y="738" width="675" height="150" class="panel"/>
-  <text x="70" y="768" class="section">Sharp McDiarmid bounded-differences (iid product measure)</text>
+  <text x="70" y="768" class="section">Sharp McDiarmid bounded-differences (homogeneous product measure)</text>
 
   <rect x="58" y="788" width="200" height="64" class="node-green"/>
   <text x="158" y="812" text-anchor="middle" class="label">One-sided sharp tail</text>
