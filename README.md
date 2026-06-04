@@ -21,7 +21,7 @@ two-point metric space and for finite discrete spaces `Fin n`. Those examples
 are API checks: they show that the finite-net wrapper is reusable outside the
 unit-interval file.
 
-**56 `FormalSLT/` Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**57 `FormalSLT/` Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
 The printed axiom profile for the v0.1 headline surface stays inside:
 `[propext, Classical.choice, Quot.sound]`.
@@ -142,8 +142,10 @@ Short version:
 
 - The main Rademacher and VC results are finite-class and finite-sample
   theorems.
-- High-probability Rademacher bounds use the Azuma `8B²` exponent; the sharper
-  McDiarmid constant is not yet implemented.
+- High-probability Rademacher bounds use the Azuma `8B²` exponent. The sharp
+  McDiarmid constant `exp(-2t²/∑cᵢ²)` is proved for the additive independent
+  case (`mcdiarmid_additive_independent`) and for Doob martingale increments with
+  conditional sub-Gaussian MGF control (`sharp_mcdiarmid_of_doob_increments`).
 - The chaining layer proves finite entropy-budget infrastructure and an initial
   total-bounded finite-net extraction bridge, not the continuous Dudley
   integral.
@@ -322,7 +324,9 @@ The expected result is:
 - [x] Bounded-loss high-probability stability wrappers for finite measurable
   hypothesis interfaces
 - [ ] PAC-Bayes all-real-`λ` or continuous-posterior extensions
-- [ ] Sharp McDiarmid/product-kernel decomposition
+- [x] Sharp McDiarmid constant for the additive independent case and for Doob
+  martingale increments with conditional sub-Gaussian MGF control
+- [ ] Sharp McDiarmid for general non-additive bounded-difference functions
 - [ ] Continuous Dudley-style entropy integral
 
 ## Dependencies
@@ -356,6 +360,13 @@ If you use FormalSLT in academic work, please cite:
   note   = {Lean 4 formalization of finite-sample SLT bounds.}
 }
 ```
+
+## AI-assisted formalization
+
+Parts of this library were formalized with AI assistance. Every theorem is
+checked by the Lean kernel and passes the axiom audit shown above, so no proof
+is accepted on trust. The mathematical statements, scope, and public claims are
+the author's responsibility.
 
 ## License
 
