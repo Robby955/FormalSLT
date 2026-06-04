@@ -32,7 +32,7 @@
 
   <text x="550" y="40" text-anchor="middle" class="title">FormalSLT theorem chain</text>
   <text x="550" y="62" text-anchor="middle" class="subtitle">
-    45 Lean modules · zero sorry · zero admit · axioms: propext, Classical.choice, Quot.sound
+    57 Lean modules · zero sorry · zero admit · axioms: propext, Classical.choice, Quot.sound
   </text>
 
   <rect x="38" y="92" width="675" height="630" class="panel"/>
@@ -56,8 +56,8 @@
   <path d="M201 210 C201 232, 256 246, 258 270" class="arrow-blue"/>
 
   <rect x="86" y="340" width="230" height="58" class="node"/>
-  <text x="201" y="365" text-anchor="middle" class="label">Azuma tail</text>
-  <text x="201" y="382" text-anchor="middle" class="small">exp(-ε²n / 8B²)</text>
+  <text x="201" y="365" text-anchor="middle" class="label">Sharp McDiarmid genGap tail</text>
+  <text x="201" y="382" text-anchor="middle" class="small">exp(-ε²n / 2B²)</text>
 
   <rect x="430" y="340" width="230" height="58" class="node"/>
   <text x="545" y="365" text-anchor="middle" class="label">Massart finite-class</text>
@@ -130,4 +130,26 @@
   <rect x="775" y="802" width="258" height="1" fill="#dbe3ef"/>
   <text x="775" y="822" class="tiny">Finite chaining is a finite entropy-budget layer.</text>
   <text x="775" y="838" class="tiny">Continuous Dudley is a separate theorem target.</text>
+
+  <rect x="38" y="738" width="675" height="150" class="panel"/>
+  <text x="70" y="768" class="section">Sharp McDiarmid bounded-differences (iid product measure)</text>
+
+  <rect x="58" y="788" width="200" height="64" class="node-green"/>
+  <text x="158" y="812" text-anchor="middle" class="label">One-sided sharp tail</text>
+  <text x="158" y="830" text-anchor="middle" class="small">exp(-2ε² / Σ cₖ²)</text>
+  <text x="158" y="845" text-anchor="middle" class="tiny">bounded differences, product μ</text>
+
+  <rect x="278" y="788" width="200" height="64" class="node-green"/>
+  <text x="378" y="812" text-anchor="middle" class="label">Lower-tail wrapper</text>
+  <text x="378" y="830" text-anchor="middle" class="small">apply to -f, same widths</text>
+  <text x="378" y="845" text-anchor="middle" class="tiny">exp(-2ε² / Σ cₖ²)</text>
+
+  <rect x="498" y="788" width="196" height="64" class="node-green"/>
+  <text x="596" y="812" text-anchor="middle" class="label">Two-sided wrapper</text>
+  <text x="596" y="830" text-anchor="middle" class="small">2 · exp(-2ε² / Σ cₖ²)</text>
+  <text x="596" y="845" text-anchor="middle" class="tiny">union of upper and lower</text>
+
+  <path d="M258 820 C268 820, 270 820, 278 820" class="arrow-green"/>
+  <path d="M478 820 C488 820, 490 820, 498 820" class="arrow-green"/>
+  <path d="M158 788 C150 600, 150 470, 195 398" class="arrow-soft"/>
 </svg>
