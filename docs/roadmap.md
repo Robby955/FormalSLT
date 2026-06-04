@@ -160,6 +160,9 @@
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product
     bounded-differences tail `exp(-2ε² / ∑k c_k²)`.
+  - `Concentration.mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` packages
+    the matching two-sided iid product form
+    `P(|f - E[f]| >= ε) <= 2 exp(-2ε² / ∑k c_k²)`.
   - `ExposureMartingale.genGap_tail_bound_sharp_explicit` specializes it to the
     generalization gap, replacing `exp(-ε²n/(8B²))` by
     `exp(-ε²n/(2B²))` at the genGap-tail layer.

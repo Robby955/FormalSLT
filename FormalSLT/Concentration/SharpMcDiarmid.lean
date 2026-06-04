@@ -37,6 +37,10 @@ What this file adds:
   exposure-martingale theorem above does *not* give this constant.
 * `mcdiarmid_of_hasBoundedDifferences_sharp` - the general product-measure
   bounded-differences theorem with the sharp McDiarmid constant.
+* `mcdiarmid_of_hasBoundedDifferences_sharp_lower` - the matching lower-tail
+  theorem, obtained by applying the upper-tail theorem to `-f`.
+* `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` - the two-sided textbook
+  bounded-differences theorem for `|f - E[f]|` over an iid product measure.
 * `sharp_mcdiarmid_of_doob_increments` - an abstract reduction recording that
   *given* Doob increments that are conditionally sub-Gaussian with the sharp
   proxy `(c_i / 2)^2`, the sharp tail bound follows from the same engine. It
@@ -121,6 +125,106 @@ theorem mcdiarmid_of_hasBoundedDifferences_sharp
       ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) :=
   FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_sharp
     hbdd hf hfi hc hε
+
+/-- Lower-tail form of the sharp product-measure bounded-differences theorem.
+
+This is the upper-tail theorem applied to `-f`; the bounded-differences widths
+are unchanged by negation. -/
+theorem mcdiarmid_of_hasBoundedDifferences_sharp_lower
+    {n : ℕ} {Z : Type*} [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
+    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : FormalSLT.Azuma.BoundedDifferences.HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hc : ∀ k, 0 ≤ c k)
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | f S + ε ≤ ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ))}
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) := by
+  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  have hupper := mcdiarmid_of_hasBoundedDifferences_sharp
+    (μ := μ) (f := fun S : Fin n → Z => -f S) (c := c)
+    hbdd.neg hf.neg hfi.neg hc hε
+  change μn.real {S | ∫ s, -f s ∂μn + ε ≤ -f S}
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) at hupper
+  have hset :
+      {S : Fin n → Z | ∫ s, -f s ∂μn + ε ≤ -f S}
+        = {S | f S + ε ≤ ∫ s, f s ∂μn} := by
+    ext S
+    simp only [Set.mem_setOf_eq, integral_neg]
+    constructor <;> intro h <;> linarith
+  rw [hset] at hupper
+  exact hupper
+
+/-- Two-sided sharp McDiarmid bounded-differences inequality.
+
+For an arbitrary function on an iid product space whose coordinate sensitivity
+is bounded by `c k`, the centered absolute deviation has the textbook
+Boucheron-Lugosi-Massart/McDiarmid tail
+
+`P(|f(S) - E[f]| >= ε) <= 2 * exp(-2 * ε^2 / sum_k c_k^2)`.
+
+The proof combines the sharp upper-tail wrapper with the lower-tail wrapper
+above and applies the finite union bound for the two events. -/
+theorem mcdiarmid_twoSided_of_hasBoundedDifferences_sharp
+    {n : ℕ} {Z : Type*} [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
+    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : FormalSLT.Azuma.BoundedDifferences.HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hc : ∀ k, 0 ≤ c k)
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | ε ≤ |f S - ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ))|}
+      ≤ 2 * Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) := by
+  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  set I : ℝ := ∫ s, f s ∂μn with hI
+  set upper : Set (Fin n → Z) := {S | I + ε ≤ f S} with hupper_set
+  set lower : Set (Fin n → Z) := {S | f S + ε ≤ I} with hlower_set
+  set target : Set (Fin n → Z) := {S | ε ≤ |f S - I|} with htarget_set
+  have hupper_tail : μn.real upper
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) := by
+    have h := mcdiarmid_of_hasBoundedDifferences_sharp
+      (μ := μ) (f := f) (c := c) hbdd hf hfi hc hε
+    change μn.real upper ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2)
+    change μn.real {S | I + ε ≤ f S}
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) at h
+    simpa [upper] using h
+  have hlower_tail : μn.real lower
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) := by
+    have h := mcdiarmid_of_hasBoundedDifferences_sharp_lower
+      (μ := μ) (f := f) (c := c) hbdd hf hfi hc hε
+    change μn.real lower ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2)
+    change μn.real {S | f S + ε ≤ I}
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) at h
+    simpa [lower] using h
+  have hsubset : target ⊆ upper ∪ lower := by
+    intro S hS
+    simp only [target, upper, lower, Set.mem_setOf_eq, Set.mem_union] at hS ⊢
+    by_cases hnonneg : 0 ≤ f S - I
+    · have habs : |f S - I| = f S - I := abs_of_nonneg hnonneg
+      rw [habs] at hS
+      left
+      linarith
+    · have hnonpos : f S - I ≤ 0 := le_of_not_ge hnonneg
+      have habs : |f S - I| = -(f S - I) := abs_of_nonpos hnonpos
+      rw [habs] at hS
+      right
+      linarith
+  have htarget_le_union : μn.real target ≤ μn.real (upper ∪ lower) :=
+    measureReal_mono hsubset
+  have hunion_le : μn.real (upper ∪ lower) ≤ μn.real upper + μn.real lower :=
+    measureReal_union_le upper lower
+  calc
+    μn.real target ≤ μn.real (upper ∪ lower) := htarget_le_union
+    _ ≤ μn.real upper + μn.real lower := hunion_le
+    _ ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2)
+          + Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) :=
+        add_le_add hupper_tail hlower_tail
+    _ = 2 * Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) := by
+        ring
 
 /-- **McDiarmid bounded-differences inequality, additive independent case.**
 

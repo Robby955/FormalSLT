@@ -62,7 +62,22 @@ This repository proves two product-measure bounded-differences tails in
    It is a public wrapper around
    `ExposureMartingale.hasBoundedDifferences_tail_sharp`.
 
-3. `sharp_mcdiarmid_of_doob_increments` - an abstract reduction: *given* Doob
+3. `mcdiarmid_of_hasBoundedDifferences_sharp_lower` - the matching lower-tail
+   wrapper:
+
+       P( E[f(S)] - f(S) >= t )  <=  exp( -2 t^2 / sum_k c_k^2 ).
+
+   This is proved by applying the upper-tail theorem to `-f`; the same
+   bounded-differences widths apply.
+
+4. `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` - the two-sided
+   textbook iid product-measure form:
+
+       P( |f(S) - E[f(S)]| >= t )  <=  2 * exp( -2 t^2 / sum_k c_k^2 ).
+
+   It combines the upper and lower tails with the two-event union bound.
+
+5. `sharp_mcdiarmid_of_doob_increments` - an abstract reduction: *given* Doob
    increments that are conditionally sub-Gaussian with the sharp proxy
    `(c_i/2)^2`, the sharp tail bound follows from the conditional Azuma-Hoeffding
    engine. It isolates the exponent bookkeeping from the exposure-martingale
@@ -72,7 +87,8 @@ These declarations are axiom-clean (`[propext, Classical.choice, Quot.sound]`).
 The two standard additive instances are checked in
 `FormalSLT/Test/SharpMcDiarmidTest.lean`:
 `c_i = 1` (unit-range, `exp(-2 t^2 / n)`) and `c_i = 1/n` (sample-mean scaling,
-`exp(-2 n t^2)`).
+`exp(-2 n t^2)`). The same checker file also checks the general one-sided,
+lower-tail, and two-sided product-measure declarations.
 
 ## Checked proof sketch (general sharp case)
 
@@ -114,6 +130,8 @@ theorems through mathlib's martingale concentration API:
 - `ExposureMartingale.hasBoundedDifferences_tail_sharp`
 - `ExposureMartingale.genGap_tail_bound_sharp`
 - `ExposureMartingale.genGap_tail_bound_sharp_explicit`
+- `Concentration.mcdiarmid_of_hasBoundedDifferences_sharp_lower`
+- `Concentration.mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`
 
 For `c_k = 2B/n`, the explicit generalization-gap exponent is
 `exp(-n * ε^2 / (2 * B^2))`, replacing the older Azuma exponent
