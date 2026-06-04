@@ -44,8 +44,6 @@ or dependent data without additional assumptions.
 The high-probability Rademacher bounds use
 `P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (2 * B²))`.
 
-The sharper McDiarmid route would improve the exponent constant. The current
-Azuma route is valid, with the constant shown above.
 The sharp genGap-tail layer is now checked separately as
 `ExposureMartingale.genGap_tail_bound_sharp_explicit`, with exponent
 `exp(-ε² * n / (2 * B²))`. The Rademacher, VC, and stability wrappers now cite
@@ -128,7 +126,6 @@ finite ambient index type. It verifies finite-net machinery on `[0,1]`, but it
 does not remove the remaining measurable-supremum and separability obligations
 for arbitrary non-finite classes.
 
-### Sharp McDiarmid constant
 ### Downstream sharp-tail propagation
 
 The product-measure sharp McDiarmid theorem is checked, and the main

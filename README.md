@@ -42,7 +42,11 @@ finite shell: it is not yet a concrete classifier-margin extractor, an
 all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
 
 **60 `FormalSLT/` Lean files. 85 checked Lean files under `FormalSLT/` and
-`examples/`. 33,397 lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+`examples/`. 33,427 lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+
+Counts are generated with `find FormalSLT -name '*.lean'`, `find FormalSLT
+examples -name '*.lean'`, and `find FormalSLT examples -name '*.lean' -print0 |
+xargs -0 wc -l`.
 
 The printed axiom profile for the v0.1 headline surface stays inside:
 `[propext, Classical.choice, Quot.sound]`.
@@ -79,6 +83,7 @@ lake env lean examples/CheckUniformConvergence.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteDiscreteDudley.lean
+lake env lean examples/CheckPACBayesBernstein.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 ```
 

@@ -7,6 +7,8 @@ import FormalSLT.ERM
 /-!
 # VC-dimension sample complexity via Rademacher complexity
 
+## Scope
+
 Composes the Sauer-Shelah polynomial bound with the effective-class Massart
 bound to obtain the classic VC-dimension Rademacher complexity bound:
 
@@ -29,6 +31,19 @@ and derives the high-probability VC sample-complexity theorem:
 
 4. **High-probability Rademacher** (`genGap_highProb_rademacher`):
    `P(genGap ≥ 2·E[Rad] + ε) ≤ exp(-ε²n/(2B²))`
+
+## Assumptions
+
+The main public theorems assume a finite hypothesis type, a finite-sample
+effective-class growth bound, bounded losses with envelope `B`, measurable
+losses, and an iid product sample law.
+
+## Current boundaries
+
+The VC route is a finite-sample high-probability wrapper. It uses the checked
+sharp genGap tail where the concentration exponent appears, but it does not
+state an arbitrary non-iid product-space theorem or a localized-Rademacher
+sample-complexity theorem.
 
 No `sorry`, no `admit`, no custom `axiom`.
 -/
@@ -213,7 +228,8 @@ and an iid sample `S ~ μⁿ`:
     P(genGap(S) ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(2B²))
 
 This is the classic VC sample-complexity theorem expressed through the
-Rademacher complexity route: Sauer-Shelah → Massart → Rademacher → sharp McDiarmid.
+Rademacher complexity route: Sauer-Shelah → Massart → Rademacher high-probability
+bound with the sharp genGap tail.
 
 The one-sided genGap is `sup_h (risk(h) - empiricalRisk(h))`, so this
 bounds the worst-case overfitting of any hypothesis in the class. -/

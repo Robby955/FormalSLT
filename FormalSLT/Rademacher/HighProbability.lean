@@ -24,18 +24,18 @@ to obtain:
     P(genGap S ≥ 2 · E_S[empiricalRademacherComplexity] + ε)
       ≤ exp(-ε² n / (2 B²))
 
-## Interpretation
+## Scope
 
-This is the **first public-threshold theorem** of FormalSLT. It says:
-with probability at least `1 - exp(-ε² n / (2 B²))` over an iid sample
-`S ~ μⁿ`, the generalization gap satisfies
+This public-threshold theorem says that, with probability at least
+`1 - exp(-ε² n / (2 B²))` over an iid sample `S ~ μⁿ`, the generalization gap
+satisfies
 
     genGap(S) < 2 · E_S[R̂ad_n(ℓ, S)] + ε
 
 where `R̂ad_n(ℓ, S)` is the empirical Rademacher complexity of the loss
 class on the sample, and the expectation is over the sample.
 
-## Scope and boundaries
+## Assumptions
 
 - **One-sided** bound on genGap = sup_h (risk(h) − R̂_S(h)).
 - **Sharp McDiarmid constant**, inherited from the exposure-martingale
@@ -43,6 +43,9 @@ class on the sample, and the expectation is over the sample.
 - **Finite hypothesis class** `ι` with `[Fintype ι] [Nonempty ι]`.
 - **Bounded loss** `|ℓ_i(z)| ≤ B` for all `i`, `z`.
 - **iid sample** `S ~ μⁿ`.
+
+## Current boundaries
+
 - The **deterministic** bound `E_S[empiricalRademacherComplexity]`
   appears in the event, not the **random** `empiricalRademacherComplexity ℓ S`.
   A future PR can state the random-variable form using a second

@@ -11,15 +11,21 @@ import Mathlib.Analysis.SpecialFunctions.Sqrt
 /-!
 # Finite PAC-Bayes Bernstein layer
 
-This module adds a finite PAC-Bayes Bernstein confidence layer.
+## Scope
 
-The theorem surface is intentionally abstract. It assumes a supplied
-per-hypothesis variance proxy and a normalized Bernstein prior-moment
-certificate. This is the right finite-class shell for later concrete margin
-loss instantiations: the margin-variance extractor is an input here, not a
-claim about a particular classifier margin loss.
+This module adds a finite PAC-Bayes Bernstein confidence layer with an abstract
+variance proxy.
 
-Main declarations:
+## Assumptions
+
+* a finite hypothesis class with a full-support prior;
+* a supplied per-hypothesis variance proxy;
+* a normalized Bernstein prior-moment certificate.
+
+The margin-variance extractor is an input here, not a claim about a particular
+classifier margin loss.
+
+## Main declarations
 
 * `posteriorMarginVarianceProxy` — posterior average of a supplied variance
   proxy.
@@ -32,9 +38,13 @@ Main declarations:
 * `finitePACBayesBernsteinMargin_badEventMass_le_delta` — posterior-dependent
   margin-style wrapper under explicit complexity and penalty certificates.
 
+## Current boundaries
+
 This file does not optimize over all real `lambda`. Posterior-dependent
 optimization should be supplied by a finite grid/peeling certificate, matching
-the existing McAllester finite-grid pattern in `PACBayesBoundedLoss`.
+the existing McAllester finite-grid pattern in `PACBayesBoundedLoss`. The file
+also does not include a concrete classifier-margin variance extractor or a
+continuous hypothesis-space theorem.
 -/
 
 namespace FormalSLT.PACBayesBernstein
