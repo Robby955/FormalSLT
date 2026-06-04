@@ -91,20 +91,26 @@ grid layer.
 
 ## Medium-term
 
-### 4. Sharp McDiarmid constant
+### 4. Downstream sharp McDiarmid propagation
 
-**Target.** Improve the high-probability exponent from the current Azuma
-constant `8B²` to the sharp McDiarmid constant.
+**Target.** Rewire the downstream Rademacher, VC, and stability wrappers from
+the older Azuma-constant tail to the checked sharp McDiarmid tail.
 
-The current proof uses bounded increments in an exposure martingale. The
-sharper route needs a product-kernel conditional expectation decomposition
-that exposes the range of each coordinate replacement more directly.
+The kernel-level sharp bounded-differences theorem is now available in
+`FormalSLT/Azuma/GenGapTail.lean`:
+
+- `ExposureMartingale.hasBoundedDifferences_tail_sharp`
+- `ExposureMartingale.genGap_tail_bound_sharp_explicit`
+
+What remains is theorem plumbing: carrying the sharper genGap tail through the
+existing symmetrization, finite-class, VC, and stability wrappers without
+changing their hypotheses.
 
 **Dependencies.**
 
-- product-measure conditional-expectation kernel;
-- coordinate-wise replacement kernel;
-- range-based Hoeffding lemma for martingale increments.
+- update high-probability Rademacher wrappers;
+- update finite VC sample-complexity wrappers;
+- update algorithmic-stability wrappers that still cite the Azuma theorem.
 
 ### 5. Continuous Dudley-style entropy integral
 

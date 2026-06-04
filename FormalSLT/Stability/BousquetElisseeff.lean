@@ -24,9 +24,9 @@ This module composes the existing FormalSLT building blocks
    under the i.i.d. product measure with **constant** bounded-differences
    width `c`. The constant is the **Azuma** one
    (`exp(-ε²/(2nc²))`, i.e. factor-of-4 looser than the sharp McDiarmid
-   `exp(-2ε²/(nc²))`). The factor-of-4 gap is the documented gap in
-   `FormalSLT/Azuma/ExposureIncrementCondMGF.lean`; closing it requires a
-   missing `condExpKernel`-of-product-measure Mathlib lemma.
+   `exp(-2ε²/(nc²))`). The sharp product-measure theorem is now checked in
+   `FormalSLT/Azuma/GenGapTail.lean`; this stability file still uses the older
+   Azuma theorem.
 
 2. `bousquet_elisseeff_centered_tail` — combines the bounded-differences
    property of the generalization-gap functional
@@ -63,12 +63,10 @@ This module composes the existing FormalSLT building blocks
 
 ## Scope and boundaries
 
-* The McDiarmid statement is the **Azuma-constant** version. Closing the
-  factor-of-4 gap requires a Mathlib lemma identifying `condExpKernel` of
-  a product measure with the corresponding product kernel; see
-  `FormalSLT/Azuma/ExposureIncrementCondMGF.lean` for context. Once that
-  upstream `condExpKernel`-of-product lemma is available, the constant can
-  be swapped for the sharp McDiarmid one.
+* The McDiarmid statement in this file is the **Azuma-constant** version. The
+  sharp product-measure bounded-differences theorem is checked separately in
+  `FormalSLT/Azuma/GenGapTail.lean`; these stability wrappers have not yet been
+  rewired to consume it.
 
 * `bousquet_elisseeff_azuma_expectedGap_variant` takes `E[gap] ≤ β`
   (the iid expectation bound, Bousquet-Elisseeff Theorem 9) as an explicit
@@ -108,10 +106,9 @@ Source: McDiarmid (1989), "On the method of bounded differences." -/
 
     μⁿ { S : Fin n → Z | ∫ f dμⁿ + ε ≤ f S }  ≤  exp(-ε² / (2 n c²)).
 
-This is the **Azuma-constant** version of McDiarmid; the sharp McDiarmid
-constant `2 ε² / (n c²)` (a factor-of-4 tighter exponent) requires a
-missing `condExpKernel`-of-product-measure Mathlib lemma. See
-`FormalSLT/Azuma/ExposureIncrementCondMGF.lean` for the documented gap.
+This is the **Azuma-constant** version of McDiarmid. The sharp product-measure
+bounded-differences theorem is available in `FormalSLT/Azuma/GenGapTail.lean`;
+this stability wrapper has not yet been rewired to use it.
 
 Source: McDiarmid (1989), Theorem 3.1 (statement; proof here uses the
 Azuma route). -/

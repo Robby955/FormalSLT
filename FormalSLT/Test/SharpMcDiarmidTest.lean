@@ -31,6 +31,9 @@ variable {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω}
 #check FormalSLT.Azuma.ExposureMartingale.abs_partialIntegral_step_sub_step_le_of_agree_prefix
 #check FormalSLT.Azuma.ExposureMartingale.exposureIncrement_condRange_width
 #check FormalSLT.Azuma.ExposureMartingale.exposureIncrement_hasCondSubgaussianMGF_sharp
+#check FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_sharp
+#check FormalSLT.Azuma.ExposureMartingale.genGap_tail_bound_sharp_explicit
+#check FormalSLT.Concentration.mcdiarmid_of_hasBoundedDifferences_sharp
 
 /-- **Test 1 - unit-range bounded summands (`c_i = 1`).**
 The centered sum of independent `[0,1]`-valued variables obeys

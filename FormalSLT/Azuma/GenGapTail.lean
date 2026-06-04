@@ -13,19 +13,19 @@ import Mathlib.Probability.Process.Adapted
 
 Stage B2c-4 of `docs/plans/mcdiarmid-rademacher-plan.md`.
 
-Feeds `exposureIncrement_hasCondSubgaussianMGF` into mathlib's
+Feeds the exposure-increment conditional MGF theorems into mathlib's
 Azuma-Hoeffding theorem `measure_sum_ge_le_of_hasCondSubgaussianMGF`,
 through the ℕ-indexed filtration `coordinateFiltrationNat` and the
-exposure-martingale telescoping identity, to obtain a one-sided
-tail bound for any function `f : (Fin n → Z) → ℝ` satisfying
+exposure-martingale telescoping identity, to obtain one-sided
+tail bounds for any function `f : (Fin n → Z) → ℝ` satisfying
 `HasBoundedDifferences f c`. Specialises to the generalisation gap.
 
-## Constant: Azuma, not McDiarmid
+## Two constants: Azuma and sharp McDiarmid
 
-The constant is the **Azuma** one carried through from
-`exposureIncrement_hasCondSubgaussianMGF`. The exposure-increment
-sub-Gaussian parameter is `‖c k‖₊²`, and after summing over `k : Fin n`
-mathlib's Azuma yields
+The historical theorem `hasBoundedDifferences_tail_azuma` uses the symmetric
+increment parameter from `exposureIncrement_hasCondSubgaussianMGF`. The
+exposure-increment sub-Gaussian parameter is `‖c k‖₊²`, and after summing over
+`k : Fin n` mathlib's Azuma yields
 
     μⁿ {S | ∫ f dμⁿ + t ≤ f S}  ≤  exp (- t² / (2 * ∑ k, ‖c k‖₊²))
 
@@ -34,13 +34,14 @@ For the generalisation gap with `c k = 2B/n` (constant) the sum is
 
     μⁿ {S | E[genGap] + t ≤ genGap S}  ≤  exp (- n · t² / (8 · B²)).
 
-This is named with the Azuma constant in view (`genGap_tail_bound_azuma`,
-`hasBoundedDifferences_tail_azuma`), rather than under the sharp McDiarmid name.
-The factor-of-4 gap to the sharp McDiarmid bound `exp(-2 n t² / (4 B²)) = exp(-n t² / (2 B²))`
-is documented in `ExposureIncrementCondMGF`, and stems from the missing
-mathlib lemma identifying `condExpKernel` of a product measure with a
-product kernel. A future PR can land that lemma and tighten this bound
-without changing the rest of the stack.
+The sharp theorem `hasBoundedDifferences_tail_sharp` uses the range-width
+parameter from `exposureIncrement_hasCondSubgaussianMGF_sharp`. The
+per-increment proxy is `(‖c k‖₊ / 2)²`, so the same martingale engine yields
+
+    μⁿ {S | ∫ f dμⁿ + t ≤ f S}  ≤  exp (-2 * t² / ∑ k, (c k)²)
+
+when the supplied widths are nonnegative. For the generalisation gap with
+`c k = 2B/n`, this is `exp(-n * t² / (2 * B²))`.
 
 ## ℕ-filtration / `Fin (n+1)`-filtration shift
 
@@ -123,6 +124,27 @@ lemma shiftedSubGaussianParam_succ_of_ge (c : Fin n → ℝ) {k : ℕ} (hk : n �
   have : ¬ k < n := not_lt.mpr hk
   simp [shiftedSubGaussianParam, this]
 
+/-- Sharp ℕ-indexed sub-Gaussian parameters: `cY 0 = 0`,
+`cY (k + 1) = (‖c ⟨k, h⟩‖₊ / 2)²` for `k < n`, else `0`. -/
+def shiftedSharpSubGaussianParam (c : Fin n → ℝ) : ℕ → ℝ≥0
+  | 0 => 0
+  | (k + 1) => if h : k < n then (‖c ⟨k, h⟩‖₊ / 2 : ℝ≥0) ^ 2 else 0
+
+@[simp] lemma shiftedSharpSubGaussianParam_zero (c : Fin n → ℝ) :
+    shiftedSharpSubGaussianParam c 0 = 0 := rfl
+
+lemma shiftedSharpSubGaussianParam_succ_of_lt (c : Fin n → ℝ) {k : ℕ}
+    (hk : k < n) :
+    shiftedSharpSubGaussianParam c (k + 1) =
+      (‖c ⟨k, hk⟩‖₊ / 2 : ℝ≥0) ^ 2 := by
+  simp [shiftedSharpSubGaussianParam, hk]
+
+lemma shiftedSharpSubGaussianParam_succ_of_ge (c : Fin n → ℝ) {k : ℕ}
+    (hk : n ≤ k) :
+    shiftedSharpSubGaussianParam c (k + 1) = 0 := by
+  have : ¬ k < n := not_lt.mpr hk
+  simp [shiftedSharpSubGaussianParam, this]
+
 /-! ### Sum identities -/
 
 /-- The sum of the ℕ-indexed `shiftedSubGaussianParam` over `range (n+1)`
@@ -135,6 +157,16 @@ lemma sum_shiftedSubGaussianParam (c : Fin n → ℝ) :
   rw [← Fin.sum_univ_eq_sum_range (fun k => shiftedSubGaussianParam c (k + 1))]
   refine Finset.sum_congr rfl (fun k _ => ?_)
   exact shiftedSubGaussianParam_succ_of_lt c k.isLt
+
+/-- The sum of the sharp ℕ-indexed parameters over `range (n+1)`
+collapses to the `Fin n`-indexed sum of `(‖c k‖₊ / 2)²`. -/
+lemma sum_shiftedSharpSubGaussianParam (c : Fin n → ℝ) :
+    ∑ k ∈ Finset.range (n + 1), shiftedSharpSubGaussianParam c k
+      = ∑ k : Fin n, (‖c k‖₊ / 2 : ℝ≥0) ^ 2 := by
+  rw [Finset.sum_range_succ', shiftedSharpSubGaussianParam_zero, add_zero]
+  rw [← Fin.sum_univ_eq_sum_range (fun k => shiftedSharpSubGaussianParam c (k + 1))]
+  refine Finset.sum_congr rfl (fun k _ => ?_)
+  exact shiftedSharpSubGaussianParam_succ_of_lt c k.isLt
 
 /-- Pointwise: ∑ shiftedExposureIncrement = ∑_{k : Fin n} Δ_k. -/
 lemma sum_shiftedExposureIncrement_eq
@@ -273,6 +305,40 @@ lemma shiftedExposureIncrement_hasCondSubgaussianMGF
   -- the space equality and HEq proof-irrelevance subgoals automatically.
   convert h using 2
 
+/-- Sharp version of `shiftedExposureIncrement_hasCondSubgaussianMGF`, using
+the per-coordinate proxy `(‖c k‖₊ / 2)²`. -/
+lemma shiftedExposureIncrement_hasCondSubgaussianMGF_sharp
+    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hc : ∀ k, 0 ≤ c k)
+    {i : ℕ} (hi : i < n) :
+    HasCondSubgaussianMGF
+      ((coordinateFiltrationNat n Z) i)
+      ((coordinateFiltrationNat n Z).le i)
+      (shiftedExposureIncrement μ f (i + 1))
+      (shiftedSharpSubGaussianParam c (i + 1))
+      (Measure.pi (fun _ : Fin n => μ)) := by
+  have hile : i ≤ n := hi.le
+  have hfilt : (coordinateFiltrationNat n Z) i =
+      coordinateSubAlgebra n Z ⟨i, Nat.lt_succ_of_le hile⟩ :=
+    coordinateFiltrationNat_eq_of_le hile
+  have hY : shiftedExposureIncrement μ f (i + 1) =
+      exposureIncrement μ f ⟨i, hi⟩ := by
+    funext S; exact shiftedExposureIncrement_succ_of_lt μ f hi S
+  have hcY : shiftedSharpSubGaussianParam c (i + 1) =
+      (‖c ⟨i, hi⟩‖₊ / 2 : ℝ≥0) ^ 2 :=
+    shiftedSharpSubGaussianParam_succ_of_lt c hi
+  have hcast : (⟨i, hi⟩ : Fin n).castSucc =
+      ⟨i, Nat.lt_succ_of_le hile⟩ := rfl
+  rw [hY, hcY]
+  have h := exposureIncrement_hasCondSubgaussianMGF_sharp
+    (μ := μ) hbdd hf hfi ⟨i, hi⟩ (hc ⟨i, hi⟩)
+  rw [hcast] at h
+  convert h using 2
+
 /-! ### Main theorem: Azuma-style tail for `HasBoundedDifferences` -/
 
 /-- One-sided Azuma-style tail bound for any function with bounded
@@ -337,6 +403,77 @@ theorem hasBoundedDifferences_tail_azuma
   rw [Measure.real, MeasureTheory.measure_congr h_set_eq,
       ← Measure.real, h_sum_cY] at h_azuma
   exact h_azuma
+
+/-! ### Sharp McDiarmid tail for `HasBoundedDifferences` -/
+
+/-- One-sided sharp McDiarmid tail bound for any function with bounded
+differences on a product probability measure.
+
+This is the bounded-differences theorem with the McDiarmid constant:
+the kth exposure increment is conditionally sub-Gaussian with proxy
+`(‖c k‖₊ / 2)²`, and summing those proxies gives the exponent
+`-2 * ε² / ∑ k, (c k)²` when the supplied widths are nonnegative. -/
+theorem hasBoundedDifferences_tail_sharp
+    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hc : ∀ k, 0 ≤ c k)
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) + ε ≤ f S}
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) := by
+  haveI : IsProbabilityMeasure (Measure.pi (fun _ : Fin n => μ)) := inferInstance
+  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with μn_def
+  set ℱ := coordinateFiltrationNat n Z
+  set Y := shiftedExposureIncrement μ f
+  set cY := shiftedSharpSubGaussianParam c
+  have h_adapted : StronglyAdapted ℱ Y :=
+    shiftedExposureIncrement_stronglyAdapted (μ := μ) (f := f)
+  have h0 : HasSubgaussianMGF (Y 0) (cY 0) μn := by
+    dsimp [Y, cY, shiftedExposureIncrement, shiftedSharpSubGaussianParam]
+    exact HasSubgaussianMGF.zero
+  have h_subG : ∀ i, i < (n + 1) - 1 →
+      HasCondSubgaussianMGF (ℱ i) (ℱ.le i) (Y (i + 1)) (cY (i + 1)) μn := by
+    intro i hi
+    have hi' : i < n := by simpa using hi
+    exact shiftedExposureIncrement_hasCondSubgaussianMGF_sharp
+      (μ := μ) hbdd hf hfi hc hi'
+  have h_engine :
+      μn.real {ω | ε ≤ ∑ i ∈ Finset.range (n + 1), Y i ω}
+        ≤ Real.exp (-ε ^ 2 / (2 * ∑ i ∈ Finset.range (n + 1), cY i)) :=
+    measure_sum_ge_le_of_hasCondSubgaussianMGF
+      h_adapted h0 (n + 1) h_subG hε
+  have h_sum_cY : ∑ i ∈ Finset.range (n + 1), cY i
+      = ∑ k : Fin n, (‖c k‖₊ / 2 : ℝ≥0) ^ 2 :=
+    sum_shiftedSharpSubGaussianParam c
+  have h_telescope : (fun S => ∑ k ∈ Finset.range (n + 1), Y k S)
+      =ᵐ[μn] fun S => f S - ∫ s, f s ∂μn :=
+    sum_shiftedExposureIncrement_eq_ae hf hfi
+  have h_set_eq : {ω | ε ≤ ∑ i ∈ Finset.range (n + 1), Y i ω}
+      =ᵐ[μn] {S | ∫ s, f s ∂μn + ε ≤ f S} := by
+    filter_upwards [h_telescope] with S hS
+    refine propext ⟨fun h => ?_, fun h => ?_⟩
+    · change ∫ s, f s ∂μn + ε ≤ f S
+      change ε ≤ ∑ k ∈ Finset.range (n + 1), Y k S at h
+      rw [hS] at h; linarith
+    · change ε ≤ ∑ k ∈ Finset.range (n + 1), Y k S
+      change ∫ s, f s ∂μn + ε ≤ f S at h
+      rw [hS]; linarith
+  rw [Measure.real, MeasureTheory.measure_congr h_set_eq,
+      ← Measure.real, h_sum_cY] at h_engine
+  refine h_engine.trans (le_of_eq ?_)
+  congr 1
+  have hcoe : ∀ k : Fin n, ((‖c k‖₊ : ℝ≥0) : ℝ) = c k := fun k => by
+    rw [coe_nnnorm, Real.norm_eq_abs, abs_of_nonneg (hc k)]
+  have hsum_cast : ((∑ k : Fin n, (‖c k‖₊ / 2 : ℝ≥0) ^ 2 : ℝ≥0) : ℝ)
+      = (∑ k : Fin n, (c k) ^ 2) / 4 := by
+    push_cast [hcoe]
+    rw [Finset.sum_div]
+    exact Finset.sum_congr rfl fun k _ => by ring
+  rw [hsum_cast]
+  ring
 
 /-! ### Specialisation: Azuma tail for the generalisation gap -/
 
@@ -418,6 +555,68 @@ theorem genGap_tail_bound_azuma_explicit {ι : Type*} [Fintype ι] [Nonempty ι]
     field_simp
     ring
   rw [hexp_eq] at hbase
+  exact hbase
+
+/-! ### Specialisation: sharp McDiarmid tail for the generalisation gap -/
+
+/-- Sharp McDiarmid one-sided tail bound for the generalisation gap on the iid
+product measure. This specialises `hasBoundedDifferences_tail_sharp` to
+`genGap μ ℓ` via `genGap_hasBoundedDifferences`, with bounded-difference width
+`c k = 2 * B / n`. -/
+theorem genGap_tail_bound_sharp {ι : Type*} [Fintype ι] [Nonempty ι]
+    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 ≤ B)
+    (hℓ_meas : ∀ i, Measurable (ℓ i))
+    (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    {n : ℕ} (hn : 0 < n)
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | ∫ s, genGap μ ℓ s ∂(Measure.pi (fun _ : Fin n => μ)) + ε
+              ≤ genGap μ ℓ S}
+      ≤ Real.exp (-2 * ε ^ 2 /
+          (∑ _k : Fin n, (2 * B / n : ℝ) ^ 2)) := by
+  have hbdd : HasBoundedDifferences (fun S : Fin n → Z => genGap μ ℓ S)
+      (fun _ : Fin n => 2 * B / n) :=
+    genGap_hasBoundedDifferences μ ℓ hB hℓ_bdd hn
+  have hf : StronglyMeasurable (fun S : Fin n → Z => genGap μ ℓ S) :=
+    (measurable_genGap μ hℓ_meas).stronglyMeasurable
+  have hfi : Integrable (fun S : Fin n → Z => genGap μ ℓ S)
+      (Measure.pi (fun _ : Fin n => μ)) := by
+    have h := integrable_genGap μ hB hℓ_meas hℓ_bdd hn
+    simpa [piMeasure] using h
+  have hn_real : (0 : ℝ) ≤ (n : ℝ) := by exact_mod_cast Nat.zero_le n
+  have hc : ∀ _k : Fin n, 0 ≤ (2 * B / n : ℝ) := fun _ =>
+    div_nonneg (by linarith) hn_real
+  exact hasBoundedDifferences_tail_sharp hbdd hf hfi hc hε
+
+/-- Explicit sharp McDiarmid genGap tail bound. With `c_k = 2 * B / n`,
+the squared-width sum is `4 * B² / n`, so the exponent simplifies to
+`-n * ε² / (2 * B²)`. -/
+theorem genGap_tail_bound_sharp_explicit {ι : Type*} [Fintype ι] [Nonempty ι]
+    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 < B)
+    (hℓ_meas : ∀ i, Measurable (ℓ i))
+    (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    {n : ℕ} (hn : 0 < n)
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | ∫ s, genGap μ ℓ s ∂(Measure.pi (fun _ : Fin n => μ)) + ε
+              ≤ genGap μ ℓ S}
+      ≤ Real.exp (- ε ^ 2 * n / (2 * B ^ 2)) := by
+  have hbase := genGap_tail_bound_sharp (μ := μ)
+    hB.le hℓ_meas hℓ_bdd hn hε
+  have hn_real : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  have hn_ne : (n : ℝ) ≠ 0 := ne_of_gt hn_real
+  have hB_ne : B ≠ 0 := ne_of_gt hB
+  have hsum : (∑ _k : Fin n, (2 * B / n : ℝ) ^ 2) = 4 * B ^ 2 / n := by
+    rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+    field_simp
+    ring
+  have hexp_eq : -2 * ε ^ 2 / (4 * B ^ 2 / n)
+      = - ε ^ 2 * n / (2 * B ^ 2) := by
+    field_simp
+    ring
+  rw [hsum, hexp_eq] at hbase
   exact hbase
 
 end FormalSLT.Azuma.ExposureMartingale

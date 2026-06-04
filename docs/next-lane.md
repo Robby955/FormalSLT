@@ -274,9 +274,9 @@ The lane should land in this order, one PR per step:
 
 - The lane should not claim a full empirical-process theorem for arbitrary
   classes of functions until Step C6 is also closed.
-- The lane should not claim the sharp McDiarmid constant; that is a
-  separate, parallel lane (`Azuma.ExposureIncrementCondMGF` documents the
-  blocking Mathlib gap).
+- The lane should not claim that downstream Rademacher or VC wrappers have
+  inherited the sharp McDiarmid constant until those wrappers are explicitly
+  rewired to `Azuma.GenGapTail`.
 - The lane should not promise a generic-chaining (`γ_2`-style) statement;
   Talagrand-style admissible-sequence bounds are explicitly longer-term.
 

@@ -39,13 +39,18 @@ distributed.
 The current bounds do not cover time series, online learning, active learning,
 or dependent data without additional assumptions.
 
-### Azuma constant
+### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
 `P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (8 * B²))`.
 
 The sharper McDiarmid route would improve the exponent constant. The current
 Azuma route is valid, with the constant shown above.
+The sharp genGap-tail layer is now checked separately as
+`ExposureMartingale.genGap_tail_bound_sharp_explicit`, with exponent
+`exp(-ε² * n / (2 * B²))`. The Rademacher, VC, and stability wrappers still
+cite the older Azuma theorem until each wrapper is deliberately rewired to the
+sharp tail.
 
 ### Effective-class growth assumptions
 
@@ -124,11 +129,11 @@ does not remove the remaining measurable-supremum and separability obligations
 for arbitrary non-finite classes.
 
 ### Sharp McDiarmid constant
+### Downstream sharp-tail propagation
 
-The current concentration layer goes through exposure martingales and Azuma.
-The sharper product-kernel proof needs a conditional-expectation kernel or
-product-measure decomposition strong enough to express the coordinate-wise
-replacement argument.
+The product-measure sharp McDiarmid theorem is checked. The current non-claim is
+that every downstream high-probability theorem has inherited that constant.
+Some public wrappers still expose the older Azuma constant by design.
 
 ### Neural-network generalization
 

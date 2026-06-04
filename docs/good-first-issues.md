@@ -60,7 +60,7 @@ Suggested labels for a public repository:
 These are important but too broad for a first PR:
 
 - continuous Dudley over arbitrary classes;
-- sharp McDiarmid/product-kernel decomposition;
+- downstream sharp-tail propagation into Rademacher, VC, and stability wrappers;
 - continuous-posterior PAC-Bayes;
 - large namespace refactors;
 - changing theorem statements without reviewing downstream uses.

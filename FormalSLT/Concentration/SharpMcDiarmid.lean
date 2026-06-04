@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import Mathlib.Probability.Moments.SubGaussian
+import FormalSLT.Azuma.GenGapTail
 
 /-!
 # Sharp bounded-differences (McDiarmid) inequality
@@ -15,16 +16,16 @@ sub-Gaussian variance proxy: the sharp proxy is `(c_i / 2)^2` (range `c_i`),
 whereas the Azuma proxy is `c_i^2` (a symmetric bound `|Δ_i| ≤ c_i`, range
 `2 c_i`).
 
-Relationship to the existing development. `FormalSLT/Azuma/` already proves the
-general bounded-differences inequality over a product measure
-(`FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_azuma`),
-sorry-free, but at the *Azuma* constant: its exposure-martingale increments are
-fed into mathlib's conditional Azuma-Hoeffding engine
-`ProbabilityTheory.measure_sum_ge_le_of_hasCondSubgaussianMGF` with the symmetric
-proxy `‖c_k‖₊^2`. Sharpening that general result to the constant `2` needs a
-per-fiber *conditional range-width* bound (an asymmetric interval of width `c_k`,
-not the symmetric `2 c_k`); that obligation is open and documented in
-`docs/SharpMcDiarmid.md`.
+Relationship to the existing development. `FormalSLT/Azuma/` proves both the
+Azuma-constant bounded-differences inequality
+(`FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_azuma`) and the
+sharp McDiarmid-constant version
+(`FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_sharp`). The
+sharp route feeds the exposure-martingale increments into mathlib's conditional
+Azuma-Hoeffding engine
+`ProbabilityTheory.measure_sum_ge_le_of_hasCondSubgaussianMGF` with the
+per-increment proxy `(‖c_k‖₊ / 2)^2`, obtained from the conditional range-width
+kernel theorem in `FormalSLT.Azuma.ExposureMartingale`.
 
 What this file adds:
 
@@ -34,6 +35,8 @@ What this file adds:
   is needed), so the sharp proxy `((b_i - a_i)/2)^2` is available from mathlib's
   `hasSubgaussianMGF_of_mem_Icc`, and the bound is sharp. The general
   exposure-martingale theorem above does *not* give this constant.
+* `mcdiarmid_of_hasBoundedDifferences_sharp` - the general product-measure
+  bounded-differences theorem with the sharp McDiarmid constant.
 * `sharp_mcdiarmid_of_doob_increments` - an abstract reduction recording that
   *given* Doob increments that are conditionally sub-Gaussian with the sharp
   proxy `(c_i / 2)^2`, the sharp tail bound follows from the same engine. It
@@ -94,6 +97,31 @@ theorem sharp_mcdiarmid_of_doob_increments
   rw [hsum]
   ring
 
+/-- **Sharp McDiarmid bounded-differences inequality over a product measure.**
+
+If `f : (Fin n → Z) → ℝ` changes by at most `c k` when coordinate `k` is
+altered, with nonnegative widths `c k`, then its upper tail under the iid product
+measure satisfies the sharp McDiarmid bound
+
+  `μⁿ {S | E[f] + ε ≤ f S} ≤ exp (-2 * ε^2 / ∑ k, c k ^ 2)`.
+
+The proof is routed through the exposure martingale and the checked conditional
+range-width theorem for its increments. -/
+theorem mcdiarmid_of_hasBoundedDifferences_sharp
+    {n : ℕ} {Z : Type*} [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
+    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : FormalSLT.Azuma.BoundedDifferences.HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hc : ∀ k, 0 ≤ c k)
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) + ε ≤ f S}
+      ≤ Real.exp (-2 * ε ^ 2 / ∑ k : Fin n, (c k) ^ 2) :=
+  FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_sharp
+    hbdd hf hfi hc hε
+
 /-- **McDiarmid bounded-differences inequality, additive independent case.**
 
 For an *additive* statistic `∑ i ∈ s, X i` of independent random variables with
@@ -105,10 +133,9 @@ exactly `b i - a i`, and the centered statistic obeys the sharp tail bound
 
 This is the special case exercised by the standard test instances (`c_i = 1`,
 `c_i = 1/n`). The genuinely non-additive bounded-differences case (arbitrary `f`
-over a product measure) is proved at the Azuma constant by
-`FormalSLT.Azuma.ExposureMartingale.hasBoundedDifferences_tail_azuma`; sharpening
-*that* to the constant `2` is the open obligation documented in
-`docs/SharpMcDiarmid.md`. -/
+over a product measure) is proved by
+`mcdiarmid_of_hasBoundedDifferences_sharp`, using the exposure-martingale
+kernel route. -/
 theorem mcdiarmid_additive_independent
     [IsProbabilityMeasure μ] {ι : Type*} {X : ι → Ω → ℝ} {a b : ι → ℝ}
     (hmeas : ∀ i, Measurable (X i)) (hindep : iIndepFun X μ)

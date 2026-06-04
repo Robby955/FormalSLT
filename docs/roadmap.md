@@ -209,16 +209,14 @@ and TheoremPath page, see
 
 ### Near-term
 
-- [ ] **Sharp McDiarmid constant**
-  - Improve 8B² → 2B² in the exponent
-  - Current proofs bound the sub-Gaussian parameter by ‖c_k‖₊², giving
-    exp(-ε²/(2·∑c_k²)). The sharp bound uses the range 2c_k with classical
-    Hoeffding, giving exp(-2ε²/(∑(2c_k)²)) = exp(-ε²/(2·∑c_k²)), same
-    numerics but obtained via a different decomposition.
-  - Actual gap: our proof uses |Δ_k| ≤ c_k as sub-Gaussian with param c_k²,
-    while the sharp route needs conditional Hoeffding on [a_k, b_k] with
-    b_k - a_k ≤ 2c_k. This requires `MeasureTheory.condExpKernel` (product-
-    measure disintegration) which Mathlib does not yet export in usable form.
+- [x] **Sharp McDiarmid constant**
+  - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product
+    bounded-differences tail `exp(-2ε² / ∑k c_k²)`.
+  - `ExposureMartingale.genGap_tail_bound_sharp_explicit` specializes it to the
+    generalization gap, replacing `exp(-ε²n/(8B²))` by
+    `exp(-ε²n/(2B²))` at the genGap-tail layer.
+  - Remaining work is downstream propagation: update the Rademacher, VC, and
+    stability wrappers that still intentionally cite the older Azuma theorem.
 
 - [x] **Algorithmic stability: expected bound**
   - Measure-theoretic iid `E[R(A(S)) − R̂(A(S),S)] ≤ β` via product-measure
