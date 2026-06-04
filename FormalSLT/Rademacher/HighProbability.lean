@@ -15,19 +15,19 @@ Combines:
   (A) the expected Rademacher symmetrization theorem:
       `E[genGap] ≤ 2 · E[empiricalRademacherComplexity]`
       (`expected_genGap_le_two_expected_empiricalRademacherComplexity`)
-  (B) the Azuma-style one-sided tail from Stage B:
-      `P(genGap ≥ E[genGap] + ε) ≤ exp(-ε² n / (8 B²))`
-      (`genGap_tail_bound_azuma_explicit`)
+  (B) the sharp McDiarmid one-sided tail from Stage B:
+      `P(genGap ≥ E[genGap] + ε) ≤ exp(-ε² n / (2 B²))`
+      (`genGap_tail_bound_sharp_explicit`)
 
 to obtain:
 
     P(genGap S ≥ 2 · E_S[empiricalRademacherComplexity] + ε)
-      ≤ exp(-ε² n / (8 B²))
+      ≤ exp(-ε² n / (2 B²))
 
 ## Interpretation
 
-This is the public-threshold theorem for the finite Rademacher spine. It says:
-with probability at least `1 - exp(-ε² n / (8 B²))` over an iid sample
+This is the **first public-threshold theorem** of FormalSLT. It says:
+with probability at least `1 - exp(-ε² n / (2 B²))` over an iid sample
 `S ~ μⁿ`, the generalization gap satisfies
 
     genGap(S) < 2 · E_S[R̂ad_n(ℓ, S)] + ε
@@ -38,8 +38,8 @@ class on the sample, and the expectation is over the sample.
 ## Scope and boundaries
 
 - **One-sided** bound on genGap = sup_h (risk(h) − R̂_S(h)).
-- **Azuma constant** (factor-of-4 gap to sharp McDiarmid), documented
-  explicitly.
+- **Sharp McDiarmid constant**, inherited from the exposure-martingale
+  genGap tail theorem.
 - **Finite hypothesis class** `ι` with `[Fintype ι] [Nonempty ι]`.
 - **Bounded loss** `|ℓ_i(z)| ≤ B` for all `i`, `z`.
 - **iid sample** `S ~ μⁿ`.
@@ -58,7 +58,7 @@ open FormalSLT.GhostSample
 open FormalSLT.Rademacher.FiniteSample
   (empiricalRademacherComplexity)
 open FormalSLT.Azuma.ExposureMartingale
-  (genGap_tail_bound_azuma_explicit)
+  (genGap_tail_bound_sharp_explicit)
 open FormalSLT.Rademacher.Symmetrization
   (expected_genGap_le_two_expected_empiricalRademacherComplexity)
 
@@ -76,11 +76,11 @@ variable {μ : Measure Z}
 For a finite hypothesis class `ι` with uniformly `B`-bounded loss and
 an iid sample `S ~ μⁿ`:
 
-    P(genGap(S) ≥ 2 · E_S[R̂ad_n(ℓ, S)] + ε) ≤ exp(-ε² n / (8 B²))
+    P(genGap(S) ≥ 2 · E_S[R̂ad_n(ℓ, S)] + ε) ≤ exp(-ε² n / (2 B²))
 
 Proof sketch:
 1. `E[genGap] ≤ 2 · E[R̂ad]` (Rademacher symmetrization, Stage A).
-2. `P(genGap ≥ E[genGap] + ε) ≤ exp(-ε² n / (8 B²))` (Azuma tail, Stage B).
+2. `P(genGap ≥ E[genGap] + ε) ≤ exp(-ε² n / (2 B²))` (sharp McDiarmid tail, Stage B).
 3. Since `E[genGap] ≤ 2 · E[R̂ad]`, the event
    `{S | 2 · E[R̂ad] + ε ≤ genGap S}` is contained in
    `{S | E[genGap] + ε ≤ genGap S}`, so the tail probability
@@ -99,12 +99,12 @@ theorem genGap_highProb_rademacher {ι : Type*} [Fintype ι] [Nonempty ι]
     (piMeasure μ n).real
         {S | 2 * ∫ S', empiricalRademacherComplexity ℓ S' ∂(piMeasure μ n)
               + ε ≤ genGap μ ℓ S}
-      ≤ Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
-  -- The Azuma tail bound gives:
-  -- P(genGap S ≥ E[genGap] + ε) ≤ exp(-ε²n/(8B²))
-  have h_azuma := genGap_tail_bound_azuma_explicit (μ := μ) hB hℓ_meas hℓ_bdd hn hε
-  -- Unfold piMeasure in the Azuma bound to match our goal.
-  simp only [piMeasure] at h_azuma ⊢
+      ≤ Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
+  -- The sharp McDiarmid tail bound gives:
+  -- P(genGap S ≥ E[genGap] + ε) ≤ exp(-ε²n/(2B²))
+  have h_tail := genGap_tail_bound_sharp_explicit (μ := μ) hB hℓ_meas hℓ_bdd hn hε
+  -- Unfold piMeasure in the tail bound to match our goal.
+  simp only [piMeasure] at h_tail ⊢
   -- The Rademacher symmetrization theorem gives:
   -- E[genGap] ≤ 2 · E[empiricalRademacherComplexity]
   have h_symm := expected_genGap_le_two_expected_empiricalRademacherComplexity
@@ -126,6 +126,6 @@ theorem genGap_highProb_rademacher {ι : Type*} [Fintype ι] [Nonempty ι]
       ≤ μn.real {S : Fin n → Z | E_genGap + ε ≤ genGap μ ℓ S} :=
     measureReal_mono h_subset
   -- Chain: P(genGap ≥ 2·E[Rad] + ε) ≤ P(genGap ≥ E[genGap] + ε) ≤ exp(...)
-  linarith [h_mono, h_azuma]
+  linarith [h_mono, h_tail]
 
 end FormalSLT.Rademacher.HighProbability

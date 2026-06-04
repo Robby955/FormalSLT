@@ -22,28 +22,27 @@ hypothesis on any test point by at most `β`.
 
 ## What is proved (all closed, no sorry)
 
-* `UniformStability A ℓ β` — the stability predicate.
-* `trainingLoss_hasBoundedDifferences` — stability + bounded loss
+* `UniformStability A ℓ β`: the stability predicate.
+* `trainingLoss_hasBoundedDifferences`: stability + bounded loss
   imply bounded differences with constant `β + 2B/n` for the training
-  loss. Composes with `hasBoundedDifferences_tail_azuma` for
-  concentration of training loss.
-* `stability_genGap_hasBoundedDifferences` — the generalization gap
+  loss. This can be fed to bounded-differences concentration tails.
+* `stability_genGap_hasBoundedDifferences`: the generalization gap
   `R(A(S)) - trainingLoss(A,S)` has bounded differences with constant
-  `2β + 2B/n`. Feeds into Azuma for high-probability bounds.
-* `expectedFiniteStabilityGap_le_uniformStability_of_coordinateSwap` —
+  `2β + 2B/n`. It feeds into the sharp McDiarmid stability wrappers.
+* `expectedFiniteStabilityGap_le_uniformStability_of_coordinateSwap` :
   finite expected-gap adapter: under finite sample weights and a
   finite coordinate-swap identity, uniform stability gives expected gap `≤ β`.
-* `expectedFiniteStabilityGap_le_uniformStability_finiteProduct` —
+* `expectedFiniteStabilityGap_le_uniformStability_finiteProduct` :
   finite iid product-weight specialization: the coordinate-swap identity is
   proved by an explicit finite reindexing argument.
-* `abs_expectedFiniteGeneralizationGap_le_uniformStability_finiteProduct` —
+* `abs_expectedFiniteGeneralizationGap_le_uniformStability_finiteProduct` :
   finite iid two-sided expected generalization-gap bound:
   `|E_S[R(A(S)) - Rhat_S(A(S))]| ≤ β`.
-* `abs_expectedStabilityGap_le_uniformStability_piMeasure` —
+* `abs_expectedStabilityGap_le_uniformStability_piMeasure` :
   measure-theoretic iid two-sided expected generalization-gap bound over
   `Measure.pi`, with explicit integrability assumptions on the selected
   losses induced by the algorithm.
-* `abs_expectedStabilityGap_le_uniformStability_piMeasure_of_boundedLoss` —
+* `abs_expectedStabilityGap_le_uniformStability_piMeasure_of_boundedLoss` :
   finite-class bounded-loss adapter that discharges those integrability
   assumptions from measurability of `A` and the per-hypothesis losses.
 -/

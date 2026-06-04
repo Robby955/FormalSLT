@@ -6,7 +6,7 @@ import FormalSLT.ERM
 
 Combines the Rademacher/Massart two-sided uniform deviation bound:
 
-    P(uniformDeviation S ≥ 2B√(2log|H|/n) + ε) ≤ 2·exp(-ε²n/(8B²))
+    P(uniformDeviation S ≥ 2B√(2log|H|/n) + ε) ≤ 2·exp(-ε²n/(2B²))
 
 with the deterministic ERM excess-risk inequality:
 
@@ -14,9 +14,9 @@ with the deterministic ERM excess-risk inequality:
 
 to obtain a high-probability ERM generalization bound:
 
-    P(risk(ERM(S)) - risk(i*) ≥ 4B√(2log|H|/n) + 2ε) ≤ 2·exp(-ε²n/(8B²))
+    P(risk(ERM(S)) - risk(i*) ≥ 4B√(2log|H|/n) + 2ε) ≤ 2·exp(-ε²n/(2B²))
 
-Equivalently, with probability at least `1 - 2·exp(-ε²n/(8B²))`:
+Equivalently, with probability at least `1 - 2·exp(-ε²n/(2B²))`:
 
     risk(ERM(S)) < risk(i*) + 4B√(2log|H|/n) + 2ε
 
@@ -49,7 +49,7 @@ For a finite hypothesis class `ι` with `|ι| > 1`, uniformly `B`-bounded
 measurable loss, an iid sample `S ~ μⁿ`, and any exact empirical-risk
 minimizer `hhat(S)`:
 
-    P(risk(i*) + 4B√(2log|H|/n) + 2ε ≤ risk(hhat(S))) ≤ 2·exp(-ε²n/(8B²))
+    P(risk(i*) + 4B√(2log|H|/n) + 2ε ≤ risk(hhat(S))) ≤ 2·exp(-ε²n/(2B²))
 
 where `i*` is any fixed comparator (not necessarily optimal).
 
@@ -73,7 +73,7 @@ theorem rademacher_erm_comparator_tail {ι : Type*} [Fintype ι] [Nonempty ι]
               + 4 * B * Real.sqrt (2 * Real.log (Fintype.card ι : ℝ) / (n : ℝ))
               + 2 * ε
             ≤ risk μ ℓ (hhat S)}
-      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   set t := 2 * B * Real.sqrt (2 * Real.log (Fintype.card ι : ℝ) / (n : ℝ)) + ε
   -- Subset inclusion: ERM bad event ⊆ uniform deviation bad event.
   have h_subset :
@@ -100,7 +100,7 @@ theorem rademacher_erm_comparator_tail {ι : Type*} [Fintype ι] [Nonempty ι]
         ≤ risk μ ℓ (hhat S)}
       ≤ μn.real {S | t ≤ uniformDeviation μ ℓ S} :=
         measureReal_mono h_subset (measure_ne_top μn _)
-    _ ≤ 2 * Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := h_ud
+    _ ≤ 2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := h_ud
 
 /-- **Rademacher-route ERM excess-risk tail bound (oracle form).**
 
@@ -108,7 +108,7 @@ Specializes the comparator-form bound to the population-risk minimizer
 `i_star` (via the hypothesis `hOracle : ∀ i, risk i_star ≤ risk i`), making
 the conclusion a genuine excess-risk statement:
 
-    P(risk(hhat(S)) - risk(i*) ≥ 4B√(2log|H|/n) + 2ε) ≤ 2·exp(-ε²n/(8B²))
+    P(risk(hhat(S)) - risk(i*) ≥ 4B√(2log|H|/n) + 2ε) ≤ 2·exp(-ε²n/(2B²))
 
 This is the main ERM learning guarantee for finite hypothesis classes
 via the Rademacher/Massart route. -/
@@ -128,7 +128,7 @@ theorem rademacher_erm_excessRisk_tail {ι : Type*} [Fintype ι] [Nonempty ι]
         {S | 4 * B * Real.sqrt (2 * Real.log (Fintype.card ι : ℝ) / (n : ℝ))
               + 2 * ε
             ≤ risk μ ℓ (hhat S) - risk μ ℓ i_star}
-      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   -- The oracle hypothesis witnesses that risk(hhat S) - risk(i*) ≥ 0.
   have _hExcessNonneg : ∀ S : Fin n → Z,
       0 ≤ risk μ ℓ (hhat S) - risk μ ℓ i_star := by

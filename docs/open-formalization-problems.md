@@ -46,8 +46,7 @@ adapter under a finite coordinate-swap identity, the finite iid product-weight
 specialization, a measure-theoretic iid product-measure lift under explicit
 integrability assumptions, bounded-loss adapters that discharge those
 integrability assumptions for finite measurable hypothesis interfaces, and
-bounded-loss wrappers for the Azuma-constant high-probability stability
-surface.
+bounded-loss wrappers for the sharp high-probability stability surface.
 
 **Dependencies for the next refinements.**
 
@@ -93,8 +92,8 @@ grid layer.
 
 ### 4. Downstream sharp McDiarmid propagation
 
-**Target.** Rewire the downstream Rademacher, VC, and stability wrappers from
-the older Azuma-constant tail to the checked sharp McDiarmid tail.
+**Target.** Continue extending downstream wrappers that can consume the checked
+sharp McDiarmid tail.
 
 The kernel-level sharp bounded-differences theorem is now available in
 `FormalSLT/Azuma/GenGapTail.lean`:

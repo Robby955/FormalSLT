@@ -42,15 +42,15 @@ or dependent data without additional assumptions.
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
-`P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (8 * B²))`.
+`P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (2 * B²))`.
 
 The sharper McDiarmid route would improve the exponent constant. The current
 Azuma route is valid, with the constant shown above.
 The sharp genGap-tail layer is now checked separately as
 `ExposureMartingale.genGap_tail_bound_sharp_explicit`, with exponent
-`exp(-ε² * n / (2 * B²))`. The Rademacher, VC, and stability wrappers still
-cite the older Azuma theorem until each wrapper is deliberately rewired to the
-sharp tail.
+`exp(-ε² * n / (2 * B²))`. The Rademacher, VC, and stability wrappers now cite
+the sharp tail where their high-probability statements expose the concentration
+exponent.
 
 ### Effective-class growth assumptions
 
@@ -131,9 +131,10 @@ for arbitrary non-finite classes.
 ### Sharp McDiarmid constant
 ### Downstream sharp-tail propagation
 
-The product-measure sharp McDiarmid theorem is checked. The current non-claim is
-that every downstream high-probability theorem has inherited that constant.
-Some public wrappers still expose the older Azuma constant by design.
+The product-measure sharp McDiarmid theorem is checked, and the main
+Rademacher, VC, and stability high-probability wrappers now consume the sharp
+tail. The current non-claim is that every possible concentration theorem in
+the repository has been audited for sharp constants.
 
 ### Neural-network generalization
 
@@ -167,8 +168,8 @@ loss. It now includes a measure-theoretic iid product-measure expected-gap
 wrapper over `Measure.pi`, with explicit integrability assumptions for the
 selected losses induced by the algorithm, plus bounded-loss adapters that
 discharge those assumptions for finite measurable hypothesis interfaces. The
-bounded-loss adapters also compose into the Azuma-constant high-probability
-stability theorem and its `β = c0 / n` corollary.
+bounded-loss adapters also compose into the sharp high-probability stability
+theorem and its `β = c0 / n` corollary.
 
 ### Continuous Dudley integral
 

@@ -1,4 +1,4 @@
-# Next lane — continuous / total-bounded Dudley bridge
+# Next lane: continuous / total-bounded Dudley bridge
 
 Status on `release-candidate` after `v0.1.0-rc1`: the finite Dudley
 entropy-budget chain, total-bounded finite-net bridge, truncated
@@ -6,8 +6,8 @@ interval-integral comparison, and supplied-supremum boundary adapter are
 closed.
 The PAC-Bayes finite confidence layer (Catoni-style, fixed-budget McAllester,
 finite-grid peeling, posterior-dependent grid wrapper) is closed. The
-Bousquet-Elisseeff Azuma-constant high-probability stability bound is closed
-with bounded-loss adapters. With the finite spine stable, the next lane is the
+Bousquet-Elisseeff sharp high-probability stability bound is closed with
+bounded-loss adapters. With the finite spine stable, the next lane is the
 continuous/total-bounded extension of the Dudley layer.
 
 This document tracks the lane plan and the bridge steps already started. The
@@ -46,7 +46,7 @@ the covering number at scale `ε`, and the integral is the Riemann/Lebesgue
 entropy integral.
 
 For this lane we are not yet aiming at the full continuous Dudley integral;
-the concrete target is a **total-bounded dyadic Dudley wrapper** that
+the first concrete target is a **total-bounded dyadic Dudley wrapper** that
 replaces `[Fintype T]` and explicit per-scale finite nets with an existence
 hypothesis "for every `j ≤ m`, there is a `2^{-j}·D`-net of size at most
 `Nj`". This isolates the topological lift from the analytic step of passing
@@ -58,44 +58,44 @@ These already exist in [FormalSLT/Covering/FiniteSubGaussianChaining.lean](../Fo
 and are the intended dependency boundary of the new layer:
 
 - `finite_dudley_entropy_sum_coveringNumbers_geometric_integral_budget`
-  — finite dyadic entropy-integral budget for finite covering numbers with a
+ : finite dyadic entropy-integral budget for finite covering numbers with a
   user-supplied envelope.
 - `finite_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope`
-  — same with a prefix-sup envelope built from finite cover counts.
+ : same with a prefix-sup envelope built from finite cover counts.
 - `finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope`
-  — projected finite-net-image wrapper that does not assume `[Fintype T]`.
+ : projected finite-net-image wrapper that does not assume `[Fintype T]`.
 - `finiteDyadicEntropyAtRadiusUpperSum`
-  — finite dyadic entropy-at-radius upper sum sampled at lower annulus
+ : finite dyadic entropy-at-radius upper sum sampled at lower annulus
   endpoints.
 - `finiteDyadicEntropyIntegralBudget_le_entropyAtRadiusUpperSum`
-  — finite comparison from the dyadic prefix-envelope budget to that upper
+ : finite comparison from the dyadic prefix-envelope budget to that upper
   sum.
 - `finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_integral_comparison`
-  — projected finite-net-image wrapper with a supplied entropy-at-radius
+ : projected finite-net-image wrapper with a supplied entropy-at-radius
   upper-sum/integral budget.
 - `shiftedDyadicIntervalIntegralSum_eq_truncatedIntervalIntegral`
-  — the finite shifted-annulus interval integrals collapse to one truncated
+ : the finite shifted-annulus interval integrals collapse to one truncated
   interval integral.
 - `finiteDyadicEntropyAtRadiusUpperSum_le_two_mul_truncatedIntervalIntegral`
-  — the entropy-at-radius upper sum is dominated by that truncated interval
+ : the entropy-at-radius upper sum is dominated by that truncated interval
   integral under antitonicity and interval-integrability assumptions.
 - `finite_supFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison`
-  — boundary-layer finite Dudley wrapper for a supplied supremum functional
+ : boundary-layer finite Dudley wrapper for a supplied supremum functional
   plus terminal approximation error.
 - `finite_dudley_entropy_sum_coveringNumbers_geometric_uniform_entropy`
-  — dyadic sum collapses to `2 * radiusScale` budget under a uniform per-scale
+ : dyadic sum collapses to `2 * radiusScale` budget under a uniform per-scale
   entropy cap.
 - `finite_dudley_entropy_sum_coveringNumbers_geometric_annulus_budget`
-  — dyadic annulus-width Riemann-style upper sum.
-- `finiteDyadicEntropyIntegralBudget` — the dyadic upper-sum
+ : dyadic annulus-width Riemann-style upper sum.
+- `finiteDyadicEntropyIntegralBudget`: the dyadic upper-sum
   functional that the continuous integral will eventually dominate.
-- `finitePrefixSupEnvelope` — monotone prefix-sup helper.
+- `finitePrefixSupEnvelope`: monotone prefix-sup helper.
 
 Everything below is **new** and built on top of these.
 
-## Initial bridge now available
+## First bridge now available
 
-The initial bridge lives in
+The first bridge lives in
 [FormalSLT/Covering/TotalBoundedDudley.lean](../FormalSLT/Covering/TotalBoundedDudley.lean):
 
 - `finiteMetricCoverOfTotallyBoundedUniv` extracts finite metric covers from
@@ -136,20 +136,20 @@ does not prove the continuous Dudley entropy integral.
 
 The lift can use, from current Mathlib:
 
-- `Mathlib.Topology.MetricSpace.Basic` — `PseudoMetricSpace` and friends.
-- `Mathlib.Topology.UniformSpace.Cauchy.TotallyBounded` —
+- `Mathlib.Topology.MetricSpace.Basic`: `PseudoMetricSpace` and friends.
+- `Mathlib.Topology.UniformSpace.Cauchy.TotallyBounded` :
   `TotallyBounded` predicate on subsets of a uniform space; the metric
   specialization gives "for every `ε > 0` there is a finite `ε`-net".
-- `Mathlib.MeasureTheory.Covering.Vitali` and friends — covering-number
+- `Mathlib.MeasureTheory.Covering.Vitali` and friends: covering-number
   apparatus; we will mostly only need a bare definition of `coveringNumber`
   rather than Vitali itself.
 - `Mathlib.MeasureTheory.Integral.IntervalIntegral` and
-  `Mathlib.MeasureTheory.Integral.Lebesgue` — for the Lebesgue/Riemann
+  `Mathlib.MeasureTheory.Integral.Lebesgue`: for the Lebesgue/Riemann
   approximation step from dyadic sums to a `∫_0^D` integral.
-- `Mathlib.Topology.MetricSpace.Bounded` — `Metric.diam` for the diameter
+- `Mathlib.Topology.MetricSpace.Bounded`: `Metric.diam` for the diameter
   hypothesis on `T`.
 - `Mathlib.Topology.MetricSpace.Polish` /
-  `MeasureTheory.Measure.IsSeparable` — only if a measurable-supremum
+  `MeasureTheory.Measure.IsSeparable`: only if a measurable-supremum
   layer is added; the first-pass target should keep `T` as a generic set
   with a sub-Gaussian process whose supremum is treated through monotone
   finite approximations rather than measurable suprema.
@@ -216,41 +216,41 @@ This is the "true" continuous Dudley statement. It should be reached
 
 The lane should land in this order, one PR per step:
 
-0. **Step C0 — total-bounded finite-net extraction.** Closed as an initial
+0. **Step C0: total-bounded finite-net extraction.** Closed as the first
    bridge layer: total boundedness gives bundled finite nets at positive
    radii, plus a dyadic schedule compatible with the finite chaining radius
    hypothesis.
 
-0.5. **Step C0.5 — finite-terminal dyadic wrapper.** Closed as an initial
+0.5. **Step C0.5: finite-terminal dyadic wrapper.** Closed as the first
    composition theorem: the total-bounded dyadic schedule feeds the existing
    finite Dudley entropy-budget theorem, with an identity terminal net on a
    finite index type.
 
-0.75. **Step C0.75 — projected-sup dyadic wrapper.** Closed as an initial
+0.75. **Step C0.75: projected-sup dyadic wrapper.** Closed as the first
    non-identity-terminal theorem: the total-bounded dyadic schedule feeds a
    projected finite Dudley entropy-budget theorem and bounds the terminal
    projected supremum.
 
-1. **Step C1 — abstract `SubGaussianProcess` structure.** Generalize
+1. **Step C1: abstract `SubGaussianProcess` structure.** Generalize
    `FiniteSubGaussianProcess` so that `T` is allowed to be any type with
    a pseudo-metric. Keep the finite-`Ω` weight machinery and re-derive
    `expectedSup`, `varianceProxy`, etc., on the new structure. Existing
    `finite_*` theorems get the new structure as their input.
 
-2. **Step C2 — extracted-net-from-totally-bounded API.** A small
+2. **Step C2: extracted-net-from-totally-bounded API.** A small
    constructor `coveringFiniteNet : TotallyBounded ⇒ ε > 0 ⇒ FiniteNet T A`
    that selects a finite ε-net and witnesses the nearest-projection map.
    This isolates the topological extraction from the dyadic chaining
    argument. The existing finite chaining theorems take `FiniteNet` inputs,
    so this constructor is the bridge.
 
-3. **Step C3 — finite-index boundary lift for projected nets.** The identity
+3. **Step C3: finite-index boundary lift for projected nets.** The identity
    terminal boundary is now relaxed for finite-index projected suprema. Next,
    state the projected supremum directly over the finite terminal net's center
    type, rather than over `[Fintype T]`, and translate finite-net cover counts
    through the total-bounded hypothesis.
 
-4. **Step C4 — Riemann-step bridge.** Closed through the truncated
+4. **Step C4: Riemann-step bridge.** Closed through the truncated
    interval-integral comparison: the finite dyadic upper sum is controlled by
    twice a single truncated interval integral under antitonicity and
    interval-integrability assumptions. The supplied-supremum boundary adapter
@@ -258,13 +258,13 @@ The lane should land in this order, one PR per step:
    analytic step toward continuous integral language, but it does **not** prove
    separability or measurable arbitrary suprema.
 
-5. **Step C5 — continuous Dudley wrapper.** Next, compose the closed
+5. **Step C5: continuous Dudley wrapper.** Next, compose the closed
    total-bounded boundary wrapper with a continuous entropy integral statement
    under explicit measurability/separability or supplied-supremum assumptions.
    This is the public continuous Dudley target and should remain separate from
    the finite boundary adapter already proved.
 
-6. **Step C6 — measurable-supremum layer (optional, separate lane).**
+6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral
    over a probability space requires a measurable-supremum theory (Talagrand
    suprema, separable processes, etc.). This is intentionally **out of
@@ -295,7 +295,7 @@ merge to `release-candidate` when:
 
 ## Branch protection (pre-public-launch)
 
-Before flipping the release repo to public, the maintainer should
+Before making the release repo public, the maintainer should
 configure GitHub branch protection on `release-candidate`:
 
 - **Settings → Branches → Add rule** for branch name pattern

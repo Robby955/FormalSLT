@@ -119,9 +119,8 @@ For `c_k = 2B/n`, the explicit generalization-gap exponent is
 `exp(-n * ε^2 / (2 * B^2))`, replacing the older Azuma exponent
 `exp(-n * ε^2 / (8 * B^2))` at this layer.
 
-Downstream Rademacher, VC, and stability wrappers may still cite the older
-Azuma-constant theorem until each wrapper is deliberately rewired to the sharp
-tail.
+Downstream Rademacher, VC, and stability wrappers now route through the sharp
+tail where their theorem statements expose the concentration exponent.
 
 ## Bibliography
 
