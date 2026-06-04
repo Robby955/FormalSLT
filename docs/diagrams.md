@@ -117,6 +117,99 @@ flowchart LR
     classDef checked fill:#f0fdf4,stroke:#16a34a,color:#14532d;
     class unit,tb index;
     class half,quarter,process,mgf,inc,projected,supplied checked;
+## Conditional concentration toolkit
+
+The concentration layer now has both the conditional sub-gamma MGF extractor
+(`Concentration.SubGamma.*`) and the sharp bounded-differences route through
+the exposure martingale.
+
+```mermaid
+flowchart TD
+    bounded["Bounded increment<br/>|X| ≤ b a.s."]
+    center["Conditional centering<br/>μ[X | m] = 0"]
+    var["Conditional second moment<br/>μ[X² | m] ≤ σ²"]
+    bennett["Bennett-Taylor pointwise inequality<br/>exp(λx) ≤ 1 + λx + λ²x²/(2(1−bλ/3))"]
+    toolkit["Conditional-expectation toolkit<br/>Jensen, Markov, product, variance-from-square"]
+    extractor["<b>Conditional sub-gamma MGF extractor</b><br/>μ[exp(λX) | m] ≤ exp(σ²λ²/(2(1−bλ/3))) on b·λ &lt; 3"]
+    sharp["Sharp McDiarmid genGap tail<br/><b>exp(-eps^2 n / 2B^2)</b>"]
+
+    bounded --> extractor
+    center --> extractor
+    var --> extractor
+    bennett --> extractor
+    toolkit --> extractor
+    bounded --> sharp
+    center --> sharp
+    toolkit --> sharp
+
+    classDef verified fill:#f5f3ff,stroke:#7c3aed,color:#3b0764;
+    classDef future fill:#f8fafc,stroke:#94a3b8,color:#475569,stroke-dasharray: 5 4;
+    class bennett,toolkit,extractor,sharp verified;
+```
+
+## Total-bounded Dudley boundary adapters
+
+The finite Dudley entropy-budget layer now feeds a chain of total-bounded
+boundary adapters (`Covering.TotalBoundedDudley`). Each step discharges more of
+the continuous-boundary hypotheses from finite, checkable data; the continuous
+Dudley entropy integral remains the open endpoint.
+
+```mermaid
+flowchart TD
+    budgets["Finite Dudley entropy budgets<br/>dyadic radius schedule"]
+    netsched["Total-bounded dyadic finite-net schedules<br/>projected-sup / projected finite-net wrappers"]
+    interval["Truncated interval-integral entropy comparison"]
+    supplied["Supplied-supremum boundary adapter<br/>explicit terminal approximation error"]
+    skeleton["Finite-skeleton / dense-net boundary adapter<br/>separability + terminal projection errors"]
+    epsilonized["Epsilonized finite-choice boundary adapter<br/>every ε > 0 dischargeable"]
+    eliminate["ε-elimination under uniform global finite budget"]
+    separable["Separable-terminal Dudley boundary adapter"]
+    pathwise["Pathwise terminal-modulus constructor<br/>+ finite-cover/pathwise-modulus bridge"]
+    future["Next: continuous Dudley entropy-integral theorem<br/>(open)"]
+
+    budgets --> netsched --> interval
+    interval --> supplied --> epsilonized
+    interval --> skeleton --> epsilonized
+    epsilonized --> eliminate --> separable
+    skeleton --> separable
+    pathwise --> separable
+    separable -.-> future
+
+    classDef verified fill:#f0fdf4,stroke:#16a34a,color:#14532d;
+    classDef future fill:#f8fafc,stroke:#94a3b8,color:#475569,stroke-dasharray: 5 4;
+    class budgets,netsched,interval,supplied,skeleton,epsilonized,eliminate,separable,pathwise verified;
+    class future future;
+```
+
+## PAC-Bayes finite confidence layer
+
+The PAC-Bayes lane runs from the KL/Donsker-Varadhan change of measure through
+a finite Catoni-style bound to a finite-grid McAllester peeling wrapper for
+posterior-dependent penalties. The Bernstein lane adds a finite margin-proxy
+wrapper with a supplied per-hypothesis variance proxy and a normalized
+prior-moment certificate.
+
+```mermaid
+flowchart TD
+    kl["KL / Donsker-Varadhan<br/>finite change of measure"]
+    mgf["Finite iid product MGF bridge"]
+    catoni["Bounded-loss MGF + Markov<br/>finite Catoni-style bound"]
+    payoff["Closed high-confidence good-event payoff"]
+    fixed["Fixed-budget McAllester square-root corollary"]
+    peeling["<b>Finite-grid McAllester peeling</b><br/>posterior-dependent penalty"]
+    optimized["Optimized finite-grid wrapper"]
+    bernstein["Finite Bernstein margin-proxy shell<br/>supplied variance proxy"]
+    future["Next: all-real-λ / continuous-posterior extensions<br/>(open)"]
+
+    kl --> mgf --> catoni --> payoff --> fixed --> peeling --> optimized
+    kl --> bernstein
+    bernstein -.-> future
+    optimized -.-> future
+
+    classDef verified fill:#f0fdf4,stroke:#16a34a,color:#14532d;
+    classDef future fill:#f8fafc,stroke:#94a3b8,color:#475569,stroke-dasharray: 5 4;
+    class kl,mgf,catoni,payoff,fixed,peeling,optimized,bernstein verified;
+    class future future;
 ```
 
 ## Where each definition first appears

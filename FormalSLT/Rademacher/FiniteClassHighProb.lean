@@ -8,15 +8,15 @@ Combines:
 - **Massart's lemma** (deterministic):
     `empiricalRademacherComplexity ℓ z ≤ B · √(2 · log|H| / n)`
 - **High-probability Rademacher** (probabilistic):
-    `P(genGap S ≥ 2 · E[R̂ad] + ε) ≤ exp(-ε²n/(8B²))`
+    `P(genGap S ≥ 2 · E[R̂ad] + ε) ≤ exp(-ε²n/(2B²))`
 
 to obtain the explicit textbook-style bound:
 
-    P(genGap S ≥ 2B · √(2 · log|H| / n) + ε) ≤ exp(-ε²n/(8B²))
+    P(genGap S ≥ 2B · √(2 · log|H| / n) + ε) ≤ exp(-ε²n/(2B²))
 
 ## Interpretation
 
-With probability at least `1 - exp(-ε²n/(8B²))` over an iid sample `S ~ μⁿ`,
+With probability at least `1 - exp(-ε²n/(2B²))` over an iid sample `S ~ μⁿ`,
 the generalization gap of any hypothesis in a finite class of size `|H|` with
 `B`-bounded loss satisfies:
 
@@ -83,9 +83,9 @@ lemma expected_rademacher_le_massart {ι : Type*} [Fintype ι] [Nonempty ι]
 For a finite hypothesis class `ι` with `|ι| > 1`, uniformly `B`-bounded loss,
 and an iid sample `S ~ μⁿ`:
 
-    P(genGap(S) ≥ 2B · √(2 · log|H| / n) + ε) ≤ exp(-ε²n/(8B²))
+    P(genGap(S) ≥ 2B · √(2 · log|H| / n) + ε) ≤ exp(-ε²n/(2B²))
 
-Equivalently: with probability at least `1 - exp(-ε²n/(8B²))`,
+Equivalently: with probability at least `1 - exp(-ε²n/(2B²))`,
     genGap(S) < 2B · √(2 · log|H| / n) + ε.
 
 This is obtained by plugging Massart's deterministic Rademacher bound
@@ -101,9 +101,9 @@ theorem genGap_highProb_finiteClass {ι : Type*} [Fintype ι] [Nonempty ι]
     (piMeasure μ n).real
         {S | 2 * B * Real.sqrt (2 * Real.log (Fintype.card ι : ℝ) / (n : ℝ))
               + ε ≤ genGap μ ℓ S}
-      ≤ Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   -- The high-prob Rademacher theorem gives:
-  -- P(genGap ≥ 2·E[R̂ad] + ε) ≤ exp(-ε²n/(8B²))
+  -- P(genGap ≥ 2·E[R̂ad] + ε) ≤ exp(-ε²n/(2B²))
   have h_highProb := genGap_highProb_rademacher (μ := μ) (n := n) hB hℓ_meas hℓ_bdd hn hε
   -- Massart gives: E[R̂ad] ≤ B·√(2·log|H|/n)
   have h_massart : ∫ S', empiricalRademacherComplexity ℓ S' ∂(piMeasure μ n)
@@ -124,6 +124,6 @@ theorem genGap_highProb_finiteClass {ι : Type*} [Fintype ι] [Nonempty ι]
           simp only [Set.mem_setOf_eq] at hS ⊢
           linarith [h_massart]
         · exact measure_ne_top μn _
-    _ ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := h_highProb
+    _ ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := h_highProb
 
 end FormalSLT.Rademacher.FiniteClassHighProb

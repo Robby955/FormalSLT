@@ -188,8 +188,9 @@ kernel over the prefix σ-algebra have `k`th exposure increments whose
 difference is bounded by the coordinate sensitivity `c k`. This is the
 kernel-level width-`c_k` statement needed before applying a sharp conditional
 Hoeffding lemma; it is stronger than the existing symmetric bound
-`|Δ_k| ≤ c k`, but does not yet package the result as
-`HasCondSubgaussianMGF` with proxy `(c k / 2)^2`. -/
+`|Δ_k| ≤ c k`. The downstream theorem
+`exposureIncrement_hasCondSubgaussianMGF_sharp` packages this width statement as
+`HasCondSubgaussianMGF` with proxy `(‖c k‖₊ / 2)^2`. -/
 theorem exposureIncrement_condRange_width
     [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
@@ -246,9 +247,8 @@ sub-Gaussian moment-generating function with parameter `‖c k‖₊²`,
 with respect to the prefix-only σ-algebra
 `coordinateSubAlgebra n Z k.castSucc` and the product measure `μⁿ`.
 
-This is the **Azuma**, not McDiarmid, constant; see the module
-docstring for the precise gap and the missing kernel-decomposition
-lemma that blocks the sharper bound.
+This is the **Azuma**, not McDiarmid, constant. The sharp theorem below uses the
+conditional range-width bridge instead of this symmetric interval bound.
 
 Proof sketch.
 * `abs_exposureIncrement_le_ae` gives `|Δ_k| ≤ c k` a.e. `μⁿ`,

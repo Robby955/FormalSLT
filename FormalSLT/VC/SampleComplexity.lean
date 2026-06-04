@@ -7,6 +7,8 @@ import FormalSLT.ERM
 /-!
 # VC-dimension sample complexity via Rademacher complexity
 
+## Scope
+
 Composes the Sauer-Shelah polynomial bound with the effective-class Massart
 bound to obtain the classic VC-dimension Rademacher complexity bound:
 
@@ -14,7 +16,7 @@ bound to obtain the classic VC-dimension Rademacher complexity bound:
 
 and derives the high-probability VC sample-complexity theorem:
 
-    P(genGap ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(8B²))
+    P(genGap ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(2B²))
 
 ## Chain of composition
 
@@ -28,7 +30,20 @@ and derives the high-probability VC sample-complexity theorem:
    `log(effectiveClass.card) ≤ log((en/d)^d) = d · log(en/d)`
 
 4. **High-probability Rademacher** (`genGap_highProb_rademacher`):
-   `P(genGap ≥ 2·E[Rad] + ε) ≤ exp(-ε²n/(8B²))`
+   `P(genGap ≥ 2·E[Rad] + ε) ≤ exp(-ε²n/(2B²))`
+
+## Assumptions
+
+The main public theorems assume a finite hypothesis type, a finite-sample
+effective-class growth bound, bounded losses with envelope `B`, measurable
+losses, and an iid product sample law.
+
+## Current boundaries
+
+The VC route is a finite-sample high-probability wrapper. It uses the checked
+sharp genGap tail where the concentration exponent appears, but it does not
+state an arbitrary non-iid product-space theorem or a localized-Rademacher
+sample-complexity theorem.
 
 No `sorry`, no `admit`, no custom `axiom`.
 -/
@@ -210,10 +225,11 @@ For a hypothesis class with uniformly bounded effective class cardinality
 (as guaranteed by VC dimension ≤ d via Sauer-Shelah), with `B`-bounded loss
 and an iid sample `S ~ μⁿ`:
 
-    P(genGap(S) ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(8B²))
+    P(genGap(S) ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(2B²))
 
 This is the classic VC sample-complexity theorem expressed through the
-Rademacher complexity route: Sauer-Shelah → Massart → Rademacher → Azuma.
+Rademacher complexity route: Sauer-Shelah → Massart → Rademacher high-probability
+bound with the sharp genGap tail.
 
 The one-sided genGap is `sup_h (risk(h) - empiricalRisk(h))`, so this
 bounds the worst-case overfitting of any hypothesis in the class. -/
@@ -230,7 +246,7 @@ theorem genGap_highProb_vcClass
     (piMeasure μ n).real
         {S | 2 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
               + ε ≤ genGap μ ℓ S}
-      ≤ Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   -- Step 1: High-prob Rademacher gives P(genGap ≥ 2·E[Rad] + ε) ≤ exp(...).
   have h_highProb := genGap_highProb_rademacher (μ := μ) (n := n) hB hℓ_meas hℓ_bdd hn hε
   -- Step 2: E[Rad] ≤ B·√(2d·log(en/d)/n) by the VC bound.
@@ -252,14 +268,14 @@ theorem genGap_highProb_vcClass
           simp only [Set.mem_setOf_eq] at hS ⊢
           linarith [h_vc]
         · exact measure_ne_top μn _
-    _ ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := h_highProb
+    _ ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := h_highProb
 
 /-- **Two-sided VC uniform deviation bound.**
 
 For a hypothesis class with VC dimension ≤ d (effective class card bounded by
 the growth function for all samples), with `B`-bounded loss and iid sample:
 
-    P(sup_h |risk(h) - emp(h)| ≥ 2B·√(2d·log(en/d)/n) + ε) ≤ 2·exp(-ε²n/(8B²))
+    P(sup_h |risk(h) - emp(h)| ≥ 2B·√(2d·log(en/d)/n) + ε) ≤ 2·exp(-ε²n/(2B²))
 
 Follows from `genGap_highProb_vcClass` applied to both ℓ and -ℓ with a
 union bound. -/
@@ -279,7 +295,7 @@ theorem uniformDeviation_highProb_vcClass
     (piMeasure μ n).real
         {S | 2 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
               + ε ≤ uniformDeviation μ ℓ S}
-      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   set threshold := 2 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (↑n : ℝ)) + ε
   -- Subset inclusion: uniformDeviation ≥ t → genGap(ℓ) ≥ t ∨ genGap(-ℓ) ≥ t.
   have h_subset : {S : Fin n → Z | threshold ≤ uniformDeviation μ ℓ S}
@@ -288,16 +304,16 @@ theorem uniformDeviation_highProb_vcClass
     uniformDeviation_subset_genGap_union
   simp only [piMeasure] at h_subset ⊢
   set μn := Measure.pi (fun _ : Fin n => μ)
-  -- Upper tail: P(genGap(ℓ) ≥ threshold) ≤ exp(-ε²n/(8B²)).
+  -- Upper tail: P(genGap(ℓ) ≥ threshold) ≤ exp(-ε²n/(2B²)).
   have h_upper : μn.real {S | threshold ≤ genGap μ ℓ S}
-      ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by
     have := genGap_highProb_vcClass (μ := μ) (n := n) hB hℓ_meas hℓ_bdd hn hd hdn
       hGrowth_uniform hε
     simp only [piMeasure] at this
     exact this
-  -- Lower tail: P(genGap(-ℓ) ≥ threshold) ≤ exp(-ε²n/(8B²)).
+  -- Lower tail: P(genGap(-ℓ) ≥ threshold) ≤ exp(-ε²n/(2B²)).
   have h_lower : μn.real {S | threshold ≤ genGap μ (fun i z => -ℓ i z) S}
-      ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by
     have := genGap_highProb_vcClass (μ := μ) (n := n) hB
       (fun i => (hℓ_meas i).neg)
       (fun i z => by simp only [abs_neg]; exact hℓ_bdd i z)
@@ -312,17 +328,17 @@ theorem uniformDeviation_highProb_vcClass
     _ ≤ μn.real {S | threshold ≤ genGap μ ℓ S}
         + μn.real {S | threshold ≤ genGap μ (fun i z => -ℓ i z) S} :=
         measureReal_union_le _ _
-    _ ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2))
-        + Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) :=
+    _ ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2))
+        + Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) :=
         add_le_add h_upper h_lower
-    _ = 2 * Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by ring
+    _ = 2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by ring
 
 /-- **VC-ERM excess-risk tail bound.**
 
 For a hypothesis class with VC dimension ≤ d, uniformly `B`-bounded loss,
 an iid sample `S ~ μⁿ`, and any exact empirical-risk minimizer `hhat(S)`:
 
-    P(risk(hhat(S)) - risk(i*) ≥ 4B·√(2d·log(en/d)/n) + 2ε) ≤ 2·exp(-ε²n/(8B²))
+    P(risk(hhat(S)) - risk(i*) ≥ 4B·√(2d·log(en/d)/n) + 2ε) ≤ 2·exp(-ε²n/(2B²))
 
 This is the standard PAC-learning guarantee for finite VC-dimension classes:
 ERM achieves excess risk O(√(d·log(n/d)/n)) with high probability.
@@ -352,7 +368,7 @@ theorem vc_erm_excessRisk_tail
               + 4 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
               + 2 * ε
             ≤ risk μ ℓ (hhat S)}
-      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   set t := 2 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (↑n : ℝ)) + ε
   -- Subset inclusion: ERM bad event ⊆ uniform deviation bad event.
   have h_subset :
@@ -378,30 +394,30 @@ theorem vc_erm_excessRisk_tail
         + 2 * ε ≤ risk μ ℓ (hhat S)}
       ≤ μn.real {S | t ≤ uniformDeviation μ ℓ S} :=
         measureReal_mono h_subset (measure_ne_top μn _)
-    _ ≤ 2 * Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := h_ud
+    _ ≤ 2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := h_ud
 
 /-- **VC-ERM closed-form sample complexity.**
 
 For a hypothesis class with VC dimension ≤ d, uniformly `B`-bounded loss,
-an iid sample `S ~ μⁿ`, and any exact ERM `h_hat(S)`, if the sample size satisfies
+an iid sample `S ~ μⁿ`, and any exact ERM `ĥ(S)`, if the sample size satisfies
 
-    n · ε² ≥ 128 · B² · (d · log(en/d) + log(2/δ))
+    n · ε² ≥ 72 · B² · (d · log(en/d) + log(2/δ))
 
 then with probability at least 1 − δ over S, the ERM has excess risk ≤ ε:
 
-    P(risk(h_hat(S)) − risk(i★) ≥ ε) ≤ δ
+    P(risk(ĥ(S)) − risk(i★) ≥ ε) ≤ δ
 
 This is the classical PAC sample-complexity statement for finite VC classes,
-expressed with the explicit constant **C = 128 B²**.
+expressed with the explicit constant **C = 72 B²**.
 
-**Proof sketch.** Apply `vc_erm_excessRisk_tail` with tail parameter `ε' := ε/4`,
-yielding the bound on the event {excess ≥ 4B·√(2d·log(en/d)/n) + ε/2}. The
+**Proof sketch.** Apply `vc_erm_excessRisk_tail` with tail parameter `ε' := ε/6`,
+yielding the bound on the event {excess ≥ 4B·√(2d·log(en/d)/n) + ε/3}. The
 hypothesis splits into two halves (each ≤ n·ε² since the discarded summand is
 nonnegative):
 
-* `128 B² · d · log(en/d) ≤ n ε²`: ensures `4B·√(2d·log(en/d)/n) ≤ ε/2`, so
+* `72 B² · d · log(en/d) ≤ n ε²`: ensures `4B·√(2d·log(en/d)/n) ≤ 2ε/3`, so
   the deterministic VC piece is absorbed.
-* `128 B² · log(2/δ) ≤ n ε²`: ensures `2 · exp(-(ε/4)² n / (8B²)) ≤ δ`,
+* `72 B² · log(2/δ) ≤ n ε²`: ensures `2 · exp(-(ε/6)² n / (2B²)) ≤ δ`,
   i.e. the concentration tail is at most δ.
 
 Combining via subset monotonicity gives the closed-form statement. -/
@@ -421,7 +437,7 @@ theorem vc_erm_sample_complexity
     (hERM : ∀ S : Fin n → Z, IsERM (empiricalRisk S ℓ) (hhat S))
     (i_star : ι)
     {ε δ : ℝ} (hε : 0 < ε) (hδ : 0 < δ) (hδ1 : δ ≤ 1)
-    (hn : 128 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d) + Real.log (2 / δ))
+    (hn : 72 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d) + Real.log (2 / δ))
         ≤ ↑n * ε ^ 2) :
     (piMeasure μ n).real
         {S | risk μ ℓ i_star + ε ≤ risk μ ℓ (hhat S)}
@@ -430,7 +446,7 @@ theorem vc_erm_sample_complexity
   have hnR : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn_pos
   have hdR : (0 : ℝ) < (d : ℝ) := Nat.cast_pos.mpr hd
   have h_en_pos : (0 : ℝ) < Real.exp 1 * ↑n := mul_pos (Real.exp_pos 1) hnR
-  have h128B2_nn : (0 : ℝ) ≤ 128 * B ^ 2 := by positivity
+  have h72B2_nn : (0 : ℝ) ≤ 72 * B ^ 2 := by positivity
   -- log(en/d) ≥ 0 because Real.log (Real.exp 1) = 1 and d ≤ n.
   have h_log_nn : 0 ≤ Real.log (Real.exp 1 * ↑n / ↑d) := by
     have h_split : Real.log (Real.exp 1 * ↑n / ↑d)
@@ -449,57 +465,57 @@ theorem vc_erm_sample_complexity
   have h_VC_term_nn : 0 ≤ (d : ℝ) * Real.log (Real.exp 1 * ↑n / ↑d) :=
     mul_nonneg (Nat.cast_nonneg d) h_log_nn
   -- Distribute hn over the sum, then split into two halves.
-  have h_dist : 128 * B ^ 2 *
+  have h_dist : 72 * B ^ 2 *
         (↑d * Real.log (Real.exp 1 * ↑n / ↑d) + Real.log (2 / δ))
-      = 128 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d))
-        + 128 * B ^ 2 * Real.log (2 / δ) := by ring
+      = 72 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d))
+        + 72 * B ^ 2 * Real.log (2 / δ) := by ring
   have hn_split := hn
   rw [h_dist] at hn_split
-  have h_tail_term_nn : 0 ≤ 128 * B ^ 2 * Real.log (2 / δ) :=
-    mul_nonneg h128B2_nn h_log_2δ_nn
-  have h_VC_full_nn : 0 ≤ 128 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d)) :=
-    mul_nonneg h128B2_nn h_VC_term_nn
+  have h_tail_term_nn : 0 ≤ 72 * B ^ 2 * Real.log (2 / δ) :=
+    mul_nonneg h72B2_nn h_log_2δ_nn
+  have h_VC_full_nn : 0 ≤ 72 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d)) :=
+    mul_nonneg h72B2_nn h_VC_term_nn
   have hn_VC :
-      128 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d)) ≤ ↑n * ε ^ 2 := by
+      72 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d)) ≤ ↑n * ε ^ 2 := by
     linarith
-  have hn_tail : 128 * B ^ 2 * Real.log (2 / δ) ≤ ↑n * ε ^ 2 := by
+  have hn_tail : 72 * B ^ 2 * Real.log (2 / δ) ≤ ↑n * ε ^ 2 := by
     linarith
-  -- Apply the existing tail bound with ε' := ε/4.
-  have hε4 : (0 : ℝ) ≤ ε / 4 := by linarith
+  -- Apply the sharp tail bound with ε' := ε/6.
+  have hε6 : (0 : ℝ) ≤ ε / 6 := by linarith
   have h_tail := vc_erm_excessRisk_tail (μ := μ) hB hℓ_meas hℓ_bdd
-    hn_pos hd hdn hGrowth_uniform hGrowth_neg hhat hERM i_star (ε := ε / 4) hε4
-  -- Step 1: 4B · √(2d·log(en/d)/n) ≤ ε/2 (from hn_VC).
+    hn_pos hd hdn hGrowth_uniform hGrowth_neg hhat hERM i_star (ε := ε / 6) hε6
+  -- Step 1: 4B · √(2d·log(en/d)/n) ≤ 2ε/3 (from hn_VC).
   have h_VC_bound :
       4 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
-        ≤ ε / 2 := by
-    have hε2_nn : (0 : ℝ) ≤ ε / 2 := by linarith
+        ≤ 2 * ε / 3 := by
+    have h23ε_nn : (0 : ℝ) ≤ 2 * ε / 3 := by linarith
     have h4B_nn : (0 : ℝ) ≤ 4 * B := by linarith
-    -- Rewrite 4B·√x as √((4B)² · x) and ε/2 as √((ε/2)²); then sqrt is monotone.
+    -- Rewrite 4B·√x as √((4B)² · x) and 2ε/3 as √((2ε/3)²); then sqrt is monotone.
     have h_LHS_eq :
         4 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
           = Real.sqrt
               ((4 * B) ^ 2 * (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))) := by
       rw [Real.sqrt_mul (by positivity), Real.sqrt_sq h4B_nn]
-    rw [h_LHS_eq, show (ε / 2 : ℝ) = Real.sqrt ((ε / 2) ^ 2) from
-      (Real.sqrt_sq hε2_nn).symm]
+    rw [h_LHS_eq, show (2 * ε / 3 : ℝ) = Real.sqrt ((2 * ε / 3) ^ 2) from
+      (Real.sqrt_sq h23ε_nn).symm]
     apply Real.sqrt_le_sqrt
-    -- Reduce to: 32 · B² · (d · log) / n ≤ (ε/2)² = ε²/4, i.e. 128 B² d log ≤ n ε².
+    -- Reduce to: 32 · B² · (d · log) / n ≤ (2ε/3)², i.e. 72 B² d log ≤ n ε².
     have h_alg :
         (4 * B) ^ 2 * (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
           = 32 * B ^ 2 * (↑d * Real.log (Real.exp 1 * ↑n / ↑d)) / (n : ℝ) := by ring
     rw [h_alg, div_le_iff₀ hnR]
     nlinarith [hn_VC]
-  -- Step 2: 2 · exp(-(ε/4)² · n / (8 B²)) ≤ δ (from hn_tail).
-  have h_exp_bound : 2 * Real.exp (-(ε / 4) ^ 2 * ↑n / (8 * B ^ 2)) ≤ δ := by
+  -- Step 2: 2 · exp(-(ε/6)² · n / (2 B²)) ≤ δ (from hn_tail).
+  have h_exp_bound : 2 * Real.exp (-(ε / 6) ^ 2 * ↑n / (2 * B ^ 2)) ≤ δ := by
     have hδ2_pos : (0 : ℝ) < δ / 2 := by linarith
-    have h8B2_pos : (0 : ℝ) < 8 * B ^ 2 := by positivity
+    have h2B2_pos : (0 : ℝ) < 2 * B ^ 2 := by positivity
     have h_log_eq : Real.log (δ / 2) = -Real.log (2 / δ) := by
       rw [Real.log_div hδ.ne' (by norm_num : (2 : ℝ) ≠ 0),
           Real.log_div (by norm_num : (2 : ℝ) ≠ 0) hδ.ne']; ring
-    have h_inner : -(ε / 4) ^ 2 * ↑n / (8 * B ^ 2) ≤ Real.log (δ / 2) := by
-      rw [h_log_eq, div_le_iff₀ h8B2_pos]
+    have h_inner : -(ε / 6) ^ 2 * ↑n / (2 * B ^ 2) ≤ Real.log (δ / 2) := by
+      rw [h_log_eq, div_le_iff₀ h2B2_pos]
       nlinarith [hn_tail]
-    have h_exp_le : Real.exp (-(ε / 4) ^ 2 * ↑n / (8 * B ^ 2)) ≤ δ / 2 := by
+    have h_exp_le : Real.exp (-(ε / 6) ^ 2 * ↑n / (2 * B ^ 2)) ≤ δ / 2 := by
       have h_step := Real.exp_le_exp.mpr h_inner
       rwa [Real.exp_log hδ2_pos] at h_step
     linarith
@@ -508,7 +524,7 @@ theorem vc_erm_sample_complexity
       {S : Fin n → Z | risk μ ℓ i_star + ε ≤ risk μ ℓ (hhat S)}
         ⊆ {S | risk μ ℓ i_star
               + 4 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
-              + 2 * (ε / 4) ≤ risk μ ℓ (hhat S)} := by
+              + 2 * (ε / 6) ≤ risk μ ℓ (hhat S)} := by
     intro S hS
     simp only [Set.mem_setOf_eq] at hS ⊢
     linarith
@@ -517,9 +533,9 @@ theorem vc_erm_sample_complexity
   calc μn.real {S | risk μ ℓ i_star + ε ≤ risk μ ℓ (hhat S)}
       ≤ μn.real {S | risk μ ℓ i_star
             + 4 * B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
-            + 2 * (ε / 4) ≤ risk μ ℓ (hhat S)} :=
+            + 2 * (ε / 6) ≤ risk μ ℓ (hhat S)} :=
         measureReal_mono h_subset (measure_ne_top μn _)
-    _ ≤ 2 * Real.exp (-(ε / 4) ^ 2 * ↑n / (8 * B ^ 2)) := h_tail
+    _ ≤ 2 * Real.exp (-(ε / 6) ^ 2 * ↑n / (2 * B ^ 2)) := h_tail
     _ ≤ δ := h_exp_bound
 
 end FormalSLT.VC.SampleComplexity

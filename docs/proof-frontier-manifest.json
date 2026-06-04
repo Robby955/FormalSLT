@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 24,
-    "library_and_example_lean_lines": 32469,
-    "library_lean_lines": 30601,
-    "library_modules": 58,
-    "theorem_map_entries": 402
+    "example_lean_files": 25,
+    "library_and_example_lean_lines": 33427,
+    "library_lean_lines": 31533,
+    "library_modules": 60,
+    "theorem_map_entries": 412
   },
   "theorem_families": [
     {
@@ -633,6 +633,30 @@
         },
         {
           "kind": "theorem",
+          "module": "Azuma.GenGapTail",
+          "name": "hasBoundedDifferences_tail_sharp",
+          "summary": "P(f - E[f] >= \u03b5) <= exp(-2\u03b5\u00b2 / sum_k c_k\u00b2)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Azuma.GenGapTail",
+          "name": "genGap_tail_bound_sharp_explicit",
+          "summary": "P(genGap - E[genGap] >= \u03b5) <= exp(-\u03b5\u00b2 n / (2B\u00b2))"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SharpMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp",
+          "summary": "Public wrapper for the sharp product bounded-differences tail"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.SharpMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_lower",
+          "summary": "Lower-tail wrapper obtained from the upper tail applied to -f"
+        },
+        {
+          "kind": "theorem",
           "module": "Rademacher.Massart",
           "name": "massart_finite_class",
           "summary": "Rad(H,S) <= B * sqrt(2 * log card(H) / n)"
@@ -641,19 +665,19 @@
           "kind": "theorem",
           "module": "Rademacher.HighProbability",
           "name": "genGap_highProb_rademacher",
-          "summary": "P(genGap >= 2 * E[Rad] + \u03b5) <= exp(-\u03b5\u00b2 n / (8B\u00b2))"
+          "summary": "P(genGap >= 2 * E[Rad] + \u03b5) <= exp(-\u03b5\u00b2 n / (2B\u00b2))"
         },
         {
           "kind": "theorem",
           "module": "Rademacher.FiniteClassHighProb",
           "name": "genGap_highProb_finiteClass",
-          "summary": "Massart plus high-probability Rademacher"
+          "summary": "Massart plus sharp high-probability Rademacher"
         },
         {
           "kind": "theorem",
           "module": "Rademacher.UniformDeviation",
           "name": "uniformDeviation_highProb_finiteClass",
-          "summary": "Two-sided finite-class uniform deviation"
+          "summary": "Two-sided finite-class uniform deviation with sharp one-sided tails"
         },
         {
           "kind": "theorem",
@@ -677,25 +701,25 @@
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "genGap_highProb_vcClass",
-          "summary": "VC-style one-sided genGap tail"
+          "summary": "VC-style one-sided genGap tail with sharp exponent"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "uniformDeviation_highProb_vcClass",
-          "summary": "VC-style two-sided uniform deviation"
+          "summary": "VC-style two-sided uniform deviation with sharp one-sided tails"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "vc_erm_excessRisk_tail",
-          "summary": "VC-style ERM excess-risk tail"
+          "summary": "VC-style ERM excess-risk tail with sharp concentration term"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "vc_erm_sample_complexity",
-          "summary": "Closed-form VC ERM sample-complexity theorem with explicit 128 * B^2 constant"
+          "summary": "Closed-form VC ERM sample-complexity theorem with explicit 72 * B^2 constant"
         },
         {
           "kind": "theorem",
@@ -1967,25 +1991,25 @@
           "kind": "theorem",
           "module": "Stability.BousquetElisseeff",
           "name": "mcdiarmid_inequality_iid_const_width",
-          "summary": "Iid bounded-differences upper tail with the Azuma constant"
+          "summary": "Iid bounded-differences upper tail with the sharp McDiarmid constant"
         },
         {
           "kind": "theorem",
           "module": "Stability.BousquetElisseeff",
-          "name": "bousquet_elisseeff_azuma_expectedGap_variant",
+          "name": "bousquet_elisseeff_expectedGap_variant",
           "summary": "Stability high-probability bound with explicit expected-gap and measurability hypotheses"
         },
         {
           "kind": "theorem",
           "module": "Stability.BousquetElisseeff",
-          "name": "bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss",
-          "summary": "Bounded-loss finite-class wrapper for the Azuma-constant stability high-probability theorem"
+          "name": "bousquet_elisseeff_expectedGap_variant_of_boundedLoss",
+          "summary": "Bounded-loss finite-class wrapper for the sharp stability high-probability theorem"
         },
         {
           "kind": "theorem",
           "module": "Stability.BousquetElisseeff",
           "name": "bousquet_elisseeff_uniform_stability_corollary",
-          "summary": "\u03b2 = c0 / n stability corollary for the Azuma-constant variant"
+          "summary": "\u03b2 = c0 / n stability corollary for the sharp variant"
         },
         {
           "kind": "theorem",
@@ -2490,6 +2514,42 @@
           "module": "PACBayesBoundedLoss",
           "name": "pac_bayes_generalization",
           "summary": "Closed PAC-Bayes good-event theorem: with product-sample mass at least 1 - delta, every posterior satisfies the Catoni-form risk bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
+          "name": "posteriorMarginVarianceProxy",
+          "summary": "Posterior average of a supplied per-hypothesis margin-variance proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
+          "name": "priorBernsteinExpMoment",
+          "summary": "Normalized Bernstein prior exponential moment with variance and scale terms"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
+          "name": "posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le",
+          "summary": "Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
+          "name": "finitePACBayesBernstein_fixedLambda_badEventMass_le_delta",
+          "summary": "Finite fixed-lambda PAC-Bayes Bernstein bad-event bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
+          "name": "finitePACBayesBernsteinPenalty_badEventMass_le_delta",
+          "summary": "Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
+          "name": "finitePACBayesBernsteinMargin_badEventMass_le_delta",
+          "summary": "Finite supplied margin-proxy wrapper with sqrt(2 * V\u03c1 * C\u03c1) + scale * C\u03c1 penalty form"
         }
       ],
       "name": "Stability and PAC-Bayes foundations"

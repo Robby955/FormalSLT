@@ -25,6 +25,8 @@ Contents (all closed; no `sorry`, no `admit`, no custom `axiom`):
   width `c` and `c i ≤ c' i` pointwise, then `f` has bounded
   differences with width `c'`. Useful when the McDiarmid consumer
   prefers a uniform width `max c i`.
+* `HasBoundedDifferences.neg`: negating a statistic preserves the same
+  bounded-differences widths.
 * `HasBoundedDifferences.const_width`: specialization to a constant
   width `c : ℝ` — i.e. all coordinates have the same Lipschitz
   constant.
@@ -86,6 +88,12 @@ coordinate, the bounded-differences property carries over. -/
 lemma mono (h : HasBoundedDifferences f c) (hcc' : ∀ k, c k ≤ c' k) :
     HasBoundedDifferences f c' :=
   fun S k z' => (h S k z').trans (hcc' k)
+
+/-- Negating the statistic preserves the same coordinate sensitivity. -/
+lemma neg (h : HasBoundedDifferences f c) :
+    HasBoundedDifferences (fun S => -f S) c := by
+  intro S k z'
+  simpa only [Pi.neg_apply, neg_sub_neg] using h.symm S k z'
 
 /-- A constant-width version: if `f` has bounded differences with
 per-coordinate widths `c` and every `c k ≤ C`, then `f` has bounded

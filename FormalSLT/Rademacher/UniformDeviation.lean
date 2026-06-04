@@ -6,7 +6,7 @@ import FormalSLT.Risk
 
 Proves the two-sided high-probability uniform convergence bound:
 
-  P(uniformDeviation μ ℓ S ≥ 2B·√(2·log|H|/n) + ε) ≤ 2·exp(-ε²n/(8B²))
+  P(uniformDeviation μ ℓ S ≥ 2B·√(2·log|H|/n) + ε) ≤ 2·exp(-ε²n/(2B²))
 
 The proof combines:
 1. `genGap_highProb_finiteClass` for the upper side (risk - emp)
@@ -91,7 +91,7 @@ lemma uniformDeviation_subset_genGap_union {ι : Type*} [Fintype ι] [Nonempty �
 For a finite hypothesis class `ι` with `|ι| > 1`, uniformly `B`-bounded loss,
 and an iid sample `S ~ μⁿ`:
 
-    P(uniformDeviation S ≥ 2B · √(2 · log|H| / n) + ε) ≤ 2 · exp(-ε²n/(8B²))
+    P(uniformDeviation S ≥ 2B · √(2 · log|H| / n) + ε) ≤ 2 · exp(-ε²n/(2B²))
 
 This follows from the one-sided `genGap_highProb_finiteClass` applied to both
 `ℓ` (upper tail: risk - emp) and `-ℓ` (lower tail: emp - risk), combined
@@ -107,7 +107,7 @@ theorem uniformDeviation_highProb_finiteClass {ι : Type*} [Fintype ι] [Nonempt
     (piMeasure μ n).real
         {S | 2 * B * Real.sqrt (2 * Real.log (Fintype.card ι : ℝ) / (n : ℝ))
               + ε ≤ uniformDeviation μ ℓ S}
-      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ 2 * Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   set threshold := 2 * B * Real.sqrt (2 * Real.log (Fintype.card ι : ℝ) / (n : ℝ)) + ε
   -- Subset inclusion: uniformDeviation ≥ t → genGap(ℓ) ≥ t ∨ genGap(-ℓ) ≥ t.
   have h_subset : {S : Fin n → Z | threshold ≤ uniformDeviation μ ℓ S}
@@ -117,15 +117,15 @@ theorem uniformDeviation_highProb_finiteClass {ι : Type*} [Fintype ι] [Nonempt
   -- Unfold piMeasure and set μn.
   simp only [piMeasure] at h_subset ⊢
   set μn := Measure.pi (fun _ : Fin n => μ)
-  -- Upper tail: P(genGap(ℓ) ≥ threshold) ≤ exp(-ε²n/(8B²)).
+  -- Upper tail: P(genGap(ℓ) ≥ threshold) ≤ exp(-ε²n/(2B²)).
   have h_upper : μn.real {S | threshold ≤ genGap μ ℓ S}
-      ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by
     have := genGap_highProb_finiteClass (μ := μ) (n := n) hB hℓ_meas hℓ_bdd hn hCard hε
     simp only [piMeasure] at this
     exact this
-  -- Lower tail: P(genGap(-ℓ) ≥ threshold) ≤ exp(-ε²n/(8B²)).
+  -- Lower tail: P(genGap(-ℓ) ≥ threshold) ≤ exp(-ε²n/(2B²)).
   have h_lower : μn.real {S | threshold ≤ genGap μ (fun i z => -ℓ i z) S}
-      ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by
+      ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by
     have := genGap_highProb_finiteClass (μ := μ) (n := n) hB
       (fun i => (hℓ_meas i).neg)
       (fun i z => by simp only [abs_neg]; exact hℓ_bdd i z)
@@ -140,9 +140,9 @@ theorem uniformDeviation_highProb_finiteClass {ι : Type*} [Fintype ι] [Nonempt
     _ ≤ μn.real {S | threshold ≤ genGap μ ℓ S}
         + μn.real {S | threshold ≤ genGap μ (fun i z => -ℓ i z) S} :=
         measureReal_union_le _ _
-    _ ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2))
-        + Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) :=
+    _ ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2))
+        + Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) :=
         add_le_add h_upper h_lower
-    _ = 2 * Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by ring
+    _ = 2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by ring
 
 end FormalSLT.Rademacher.UniformDeviation

@@ -39,13 +39,16 @@ distributed.
 The current bounds do not cover time series, online learning, active learning,
 or dependent data without additional assumptions.
 
-### Azuma constant
+### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
-`P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (8 * B²))`.
+`P(genGap ≥ threshold + ε) ≤ exp(-ε² * n / (2 * B²))`.
 
-The sharper McDiarmid route would improve the exponent constant. The current
-Azuma route is valid, with the constant shown above.
+The sharp genGap-tail layer is now checked separately as
+`ExposureMartingale.genGap_tail_bound_sharp_explicit`, with exponent
+`exp(-ε² * n / (2 * B²))`. The Rademacher, VC, and stability wrappers now cite
+the sharp tail where their high-probability statements expose the concentration
+exponent.
 
 ### Effective-class growth assumptions
 
@@ -123,12 +126,12 @@ finite ambient index type. It verifies finite-net machinery on `[0,1]`, but it
 does not remove the remaining measurable-supremum and separability obligations
 for arbitrary non-finite classes.
 
-### Sharp McDiarmid constant
+### Downstream sharp-tail propagation
 
-The current concentration layer goes through exposure martingales and Azuma.
-The sharper product-kernel proof needs a conditional-expectation kernel or
-product-measure decomposition strong enough to express the coordinate-wise
-replacement argument.
+The product-measure sharp McDiarmid theorem is checked, and the main
+Rademacher, VC, and stability high-probability wrappers now consume the sharp
+tail. The current non-claim is that every possible concentration theorem in
+the repository has been audited for sharp constants.
 
 ### Neural-network generalization
 
@@ -149,8 +152,12 @@ allocates confidence mass across finitely many complexity buckets and supports
 posterior-dependent penalties certified by that finite grid. The closed
 `pac_bayes_generalization` theorem complements the Catoni bad event against
 total iid product mass to state the finite high-confidence good event directly.
-Exact all-real `λ`, infinite-hypothesis, and continuous-posterior PAC-Bayes
-theorems are not yet implemented.
+`PACBayesBernstein` adds a finite Bernstein margin-proxy shell: the variance
+proxy is supplied per hypothesis, and the theorem consumes a normalized
+Bernstein prior-moment certificate. It does not yet derive that variance proxy
+from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
+Bernstein optimization, infinite-hypothesis, and continuous-posterior
+PAC-Bayes theorems are not yet implemented.
 
 ### Algorithmic stability expected bound
 
@@ -162,8 +169,8 @@ loss. It now includes a measure-theoretic iid product-measure expected-gap
 wrapper over `Measure.pi`, with explicit integrability assumptions for the
 selected losses induced by the algorithm, plus bounded-loss adapters that
 discharge those assumptions for finite measurable hypothesis interfaces. The
-bounded-loss adapters also compose into the Azuma-constant high-probability
-stability theorem and its `β = c0 / n` corollary.
+bounded-loss adapters also compose into the sharp high-probability stability
+theorem and its `β = c0 / n` corollary.
 
 ### Continuous Dudley integral
 

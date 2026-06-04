@@ -21,7 +21,32 @@ two-point metric space and for finite discrete spaces `Fin n`. Those examples
 are API checks: they show that the finite-net wrapper is reusable outside the
 unit-interval file.
 
-**57 `FormalSLT/` Lean modules. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+The concentration layer now carries the sharp McDiarmid bounded-differences
+inequality over a homogeneous product measure. For a function whose value
+changes by at most `c k` when coordinate `k` is altered, the library proves the
+one-sided tail `exp(-2ε²/∑ₖcₖ²)` (`mcdiarmid_of_hasBoundedDifferences_sharp`),
+its lower-tail form (`mcdiarmid_of_hasBoundedDifferences_sharp_lower`), and the
+two-sided bound `2·exp(-2ε²/∑ₖcₖ²)`
+(`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`). The sharp `2B²` exponent
+is propagated into the high-probability Rademacher, finite-class, VC, and
+algorithmic-stability wrappers listed below, replacing the looser Azuma `8B²`
+constant on those paths. The localized-Rademacher wrapper still uses the older
+Azuma constant. The bounded-differences theorem is stated for the same product
+law in each coordinate, not for arbitrary non-iid product spaces.
+
+The PAC-Bayes layer now includes a finite Bernstein margin-proxy shell. It
+adds a supplied per-hypothesis variance proxy, a normalized Bernstein
+prior-moment certificate, fixed-`λ` finite bad-event bounds, and a
+posterior-dependent square-root-plus-linear wrapper. This is a supplied-proxy
+finite shell: it is not yet a concrete classifier-margin extractor, an
+all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
+
+**60 `FormalSLT/` Lean files. 85 checked Lean files under `FormalSLT/` and
+`examples/`. 33,427 lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+
+Counts are generated with `find FormalSLT -name '*.lean'`, `find FormalSLT
+examples -name '*.lean'`, and `find FormalSLT examples -name '*.lean' -print0 |
+xargs -0 wc -l`.
 
 The printed axiom profile for the v0.1 headline surface stays inside:
 `[propext, Classical.choice, Quot.sound]`.
@@ -37,6 +62,8 @@ The printed axiom profile for the v0.1 headline surface stays inside:
 | Packaged finite dyadic Dudley API | `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` | `examples/CheckV01Usability.lean` |
 | Two-point dyadic Dudley instance | `twoPointDudleyInstance` | `examples/CheckTwoPointDudley.lean` |
 | `Fin n` discrete dyadic Dudley instance | `finDiscreteDudleyInstance` | `examples/CheckFiniteDiscreteDudley.lean` |
+| Two-sided sharp McDiarmid over a homogeneous product measure | `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `FormalSLT/Test/SharpMcDiarmidTest.lean` |
+| PAC-Bayes Bernstein supplied margin-proxy shell | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `examples/CheckPACBayesBernstein.lean` |
 
 The confidence-sequence chain makes the finite-class and countable-time union
 bound explicit. The Dudley chain connects finite sub-Gaussian chaining to a
@@ -56,6 +83,7 @@ lake env lean examples/CheckUniformConvergence.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteDiscreteDudley.lean
+lake env lean examples/CheckPACBayesBernstein.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 ```
 
@@ -111,7 +139,11 @@ library contains checked finite routes for:
 
 - finite-class ERM, Rademacher symmetrization, Massart, Sauer-Shelah, and
   VC-style sample-complexity wrappers;
-- high-probability Rademacher bounds with the Azuma `8B²` exponent;
+- high-probability Rademacher and VC sample-complexity bounds carrying the
+  sharp McDiarmid `2B²` exponent;
+- the sharp bounded-differences/McDiarmid concentration module
+  (`Concentration.SharpMcDiarmid`): one-sided, lower-tail, and two-sided
+  homogeneous product-measure tails, plus the additive independent special case;
 - finite contraction and linear-predictor Rademacher bounds;
 - finite Bennett/Bernstein and localized-Rademacher scaffolding;
 - conditional sub-Gamma MGF extraction for bounded, conditionally centered
@@ -120,7 +152,9 @@ library contains checked finite routes for:
   entropy-budget wrappers;
 - finite algorithmic stability expected-gap and high-probability wrappers;
 - finite PAC-Bayes KL/DV/MGF, bounded-loss confidence bounds, and finite-grid
-  peeling wrappers.
+  peeling wrappers;
+- finite PAC-Bayes Bernstein margin-proxy bounds with a supplied
+  per-hypothesis variance proxy.
 
 ## Scope and assumptions
 
@@ -132,7 +166,8 @@ The main generalization theorems are intentionally finite and explicit.
 | Samples | Finite iid samples through product measures |
 | Losses/processes | Scalar real-valued, with boundedness or finite sub-Gaussian MGF assumptions |
 | Conditional MGF layer | Bounded, conditionally centered real increments with an explicit conditional second-moment proxy |
-| Constants | High-probability Rademacher bounds use the Azuma `8B²` exponent |
+| Constants | High-probability Rademacher and VC sample-complexity bounds use the sharp McDiarmid `2B²` exponent; the localized-Rademacher wrapper still cites the Azuma `8B²` constant |
+| PAC-Bayes Bernstein layer | Finite posterior/prior setting with supplied variance proxy and normalized prior-moment certificate |
 | Chaining | Finite nets/images, finite support/outcome spaces, finite entropy sums; the unit-interval example instantiates the bridge on a non-finite metric index space with explicit finite meshes |
 | Public axiom target | `[propext, Classical.choice, Quot.sound]` only |
 
@@ -142,19 +177,27 @@ Short version:
 
 - The main Rademacher and VC results are finite-class and finite-sample
   theorems.
-- High-probability Rademacher bounds use the Azuma `8B²` exponent. The sharp
-  McDiarmid constant `exp(-2t²/∑cᵢ²)` is proved for the additive independent
-  case (`mcdiarmid_additive_independent`) and for Doob martingale increments with
-  conditional sub-Gaussian MGF control (`sharp_mcdiarmid_of_doob_increments`).
+- The sharp McDiarmid constant `exp(-2t²/∑cᵢ²)` is proved for the additive
+  independent case (`mcdiarmid_additive_independent`), for Doob martingale
+  increments with conditional sub-Gaussian MGF control
+  (`sharp_mcdiarmid_of_doob_increments`), and for a general bounded-differences
+  function over a homogeneous product measure, one-sided
+  (`mcdiarmid_of_hasBoundedDifferences_sharp`) and two-sided
+  (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`). The high-probability
+  Rademacher and VC sample-complexity wrappers now use this sharp `2B²`
+  exponent; the localized-Rademacher wrapper still uses the older Azuma `8B²`
+  constant. The bounded-differences theorem is stated for the same product law
+  in each coordinate, not for arbitrary non-iid product spaces.
 - The chaining layer proves finite entropy-budget infrastructure and an initial
   total-bounded finite-net extraction bridge, not the continuous Dudley
   integral.
 - PAC-Bayes includes a finite `[0,1]` bounded-loss Catoni-style confidence
   bound, a closed high-confidence good-event theorem, a fixed-budget
-  McAllester-style square-root corollary, and a
-  finite-grid peeling wrapper for posterior-dependent penalties. Exact
-  all-real-`λ`, infinite-hypothesis, and continuous-posterior variants are not
-  yet implemented.
+  McAllester-style square-root corollary, a finite-grid peeling wrapper for
+  posterior-dependent penalties, and a finite Bernstein margin-proxy shell with
+  a supplied per-hypothesis variance proxy. Exact all-real-`λ`, concrete
+  classifier-margin extractors, infinite-hypothesis, and continuous-posterior
+  variants are not yet implemented.
 - Algorithmic stability includes finite iid and measure-theoretic iid
   expected-gap wrappers, plus bounded-loss high-probability wrappers for
   finite measurable hypothesis interfaces.
@@ -197,6 +240,7 @@ lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 lake env lean examples/CheckTwoPointDudley.lean
 lake env lean examples/CheckFiniteDiscreteDudley.lean
+lake env lean examples/CheckPACBayesBernstein.lean
 python3 scripts/generate_proof_frontier_manifest.py --check
 python3 scripts/check_doc_anchors.py \
   docs/formalslt-v0.1-technical-note.md \
@@ -255,7 +299,7 @@ The expected result is:
 | Azuma infrastructure | `Azuma.ExposureMartingale`, `Azuma.BoundedDifferences`, `Azuma.BoundedDiffMartingale`, `Azuma.BoundedDiffsAzumaInput`, `Azuma.BoundedIncrementBound`, `Azuma.HasBoundedDifferences`, `Azuma.ExposureIncrementHoeffding`, `Azuma.ExposureIncrementCondMGF`, `Azuma.GenGapTail` |
 | VC route | `VC.Dimension`, `VC.PACBridge`, `VC.SauerShelah`, `VC.Rademacher`, `VC.SampleComplexity`, `VC.BinaryVCBridge` |
 | Covering and chaining | `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley`, `Covering.UnitIntervalDudley`, `Covering.TwoPointDudley`, `Covering.FiniteDiscreteDudley` |
-| Stability and PAC-Bayes foundations | `AlgorithmicStability`, `Stability.BousquetElisseeff`, `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss` |
+| Stability and PAC-Bayes foundations | `AlgorithmicStability`, `Stability.BousquetElisseeff`, `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss`, `PACBayesBernstein` |
 
 ## Roadmap
 
@@ -286,6 +330,8 @@ The expected result is:
 - [x] PAC-Bayes closed high-confidence generalization payoff theorem
 - [x] PAC-Bayes fixed-budget McAllester-style square-root corollary
 - [x] PAC-Bayes finite-grid McAllester peeling and optimized finite-grid wrapper
+- [x] PAC-Bayes finite Bernstein margin-proxy wrapper with supplied variance
+  proxy and normalized prior-moment certificate
 - [x] Finite Dudley discrete entropy-bound refinements: annulus, integral-budget,
   and prefix-envelope wrappers
 - [x] Total-bounded finite-net extraction bridge for the continuous Dudley lane
@@ -323,10 +369,16 @@ The expected result is:
   expected-gap theorem
 - [x] Bounded-loss high-probability stability wrappers for finite measurable
   hypothesis interfaces
-- [ ] PAC-Bayes all-real-`λ` or continuous-posterior extensions
+- [ ] PAC-Bayes concrete margin-loss Bernstein extractor, all-real-`λ`, or
+  continuous-posterior extensions
 - [x] Sharp McDiarmid constant for the additive independent case and for Doob
   martingale increments with conditional sub-Gaussian MGF control
-- [ ] Sharp McDiarmid for general non-additive bounded-difference functions
+- [x] Sharp McDiarmid for a general bounded-differences function over a
+  homogeneous product measure: one-sided, lower-tail, and two-sided
+  (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`), with the sharp `2B²`
+  exponent propagated into the high-probability Rademacher and VC wrappers
+- [ ] Sharp McDiarmid over arbitrary non-iid product spaces (different law per
+  coordinate)
 - [ ] Continuous Dudley-style entropy integral
 
 ## Dependencies
@@ -360,13 +412,6 @@ If you use FormalSLT in academic work, please cite:
   note   = {Lean 4 formalization of finite-sample SLT bounds.}
 }
 ```
-
-## AI-assisted formalization
-
-Parts of this library were formalized with AI assistance. Every theorem is
-checked by the Lean kernel and passes the axiom audit shown above, so no proof
-is accepted on trust. The mathematical statements, scope, and public claims are
-the author's responsibility.
 
 ## License
 
