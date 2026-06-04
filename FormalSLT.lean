@@ -19,6 +19,7 @@ import FormalSLT.Concentration.SubGamma.CondJensen
 import FormalSLT.Concentration.SubGamma.CondMarkov
 import FormalSLT.Concentration.SubGamma.CondVarianceFromSquare
 import FormalSLT.Concentration.SubGamma.Extractor
+import FormalSLT.Concentration.SharpMcDiarmid
 
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization

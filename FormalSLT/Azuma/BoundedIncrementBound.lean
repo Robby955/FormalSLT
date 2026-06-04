@@ -15,15 +15,15 @@ Azuma-Hoeffding consumer expected by mathlib's
 
 ## Contents (all closed; no `sorry`, no `admit`, no custom `axiom`)
 
-* `exposureMartingale_eq_partialIntegral_ae` — bridge identity:
+* `exposureMartingale_eq_partialIntegral_ae` bridge identity:
   `M_k =ᵐ partialIntegral μ k f`. Direct corollary of
   `partialIntegral_eq_condExp_ae`.
-* `exposureIncrement_eq_partialIntegral_diff_ae` — increment
+* `exposureIncrement_eq_partialIntegral_diff_ae` increment
   representation: `D_k =ᵐ partialIntegral_{k.succ} - partialIntegral_{k.castSucc}`.
-* `splice_succ_eq_update_castSucc` — pointwise structural identity:
+* `splice_succ_eq_update_castSucc` pointwise structural identity:
   `splice k.succ S T = Function.update (splice k.castSucc S T) k (S k)`.
   The single-coordinate "reveal" step.
-* `abs_partialIntegral_step_le` — the bounded-increment range bound:
+* `abs_partialIntegral_step_le` the bounded-increment range bound:
   for `f : (Fin n → Z) → ℝ` with `HasBoundedDifferences f c`,
   `|partialIntegral μ k.succ f S - partialIntegral μ k.castSucc f S| ≤ c k`
   pointwise. The analytic input that the conditional Hoeffding lemma
@@ -41,8 +41,8 @@ Azuma-Hoeffding consumer expected by mathlib's
 * Filtration index adapter `Fin (n+1) → ℕ` so mathlib's
   `Filtration ℕ`-indexed Azuma-Hoeffding can apply.
 * McDiarmid concentration / `genGap` specialization (Stage B3).
-* High-probability Rademacher generalization bound (Stage C, the initial
-  public theorem in this lane).
+* High-probability Rademacher generalization bound (Stage C, the first
+  public flagship).
 
 ## Constraints respected
 
@@ -147,6 +147,32 @@ private lemma abs_integrand_diff_le
   rw [splice_succ_eq_update_castSucc]
   rw [abs_sub_comm]
   exact hbdd (splice k.castSucc S T) k (S k)
+
+/-- If two prefixes agree before coordinate `k`, then the two `k.succ`
+spliced integrands differ by at most the bounded-differences width `c k`.
+
+This is the pointwise integrand-level form of the range-width argument
+needed for the sharp McDiarmid constant: after conditioning on the prefix
+before `k`, changing the free coordinate `k` can move the integrand by at
+most `c k`. -/
+private lemma abs_integrand_succ_sub_succ_le_of_agree_prefix
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : HasBoundedDifferences f c)
+    (S S' : Fin n → Z) (k : Fin n) (T : Fin n → Z)
+    (hprefix : ∀ i : Fin n, (i : ℕ) < (k : ℕ) → S i = S' i) :
+    |f (splice k.succ S T) - f (splice k.succ S' T)| ≤ c k := by
+  refine FormalSLT.Azuma.BoundedDifferences.HasBoundedDifferences.sub_le_of_agree_off
+    hbdd ?_
+  intro i hi_ne
+  unfold splice
+  by_cases hi_succ : (i : ℕ) < (k.succ : ℕ)
+  · have hi_lt_k : (i : ℕ) < (k : ℕ) := by
+      rw [Fin.val_succ] at hi_succ
+      have hne_val : (i : ℕ) ≠ (k : ℕ) := fun h => hi_ne (Fin.ext h)
+      omega
+    rw [if_pos hi_succ, if_pos hi_succ]
+    exact hprefix i hi_lt_k
+  · rw [if_neg hi_succ, if_neg hi_succ]
 
 /-! Measurability helper for the integrand at fixed `S`.
 
@@ -295,5 +321,125 @@ theorem abs_partialIntegral_step_le
     -- Goal: |0| ≤ c k.
     rw [abs_zero]
     exact hck
+
+/-! ### Pointwise range-width form for the explicit increments
+
+The previous theorem gives a symmetric absolute bound
+`|P_{k+1}(S) - P_k(S)| ≤ c k`. For the sharp McDiarmid constant, the
+needed geometry is stronger: once the prefix before `k` is fixed, the
+explicit increment `P_{k+1} - P_k` has range width at most `c k` as the
+`k`th coordinate varies. The following two lemmas isolate that pointwise
+partial-integral statement before any conditional-kernel lift. -/
+
+/-- If two samples agree on the prefix before `k`, then their `k.succ`
+partial integrals differ by at most the coordinate width `c k`. -/
+theorem abs_partialIntegral_succ_sub_succ_le_of_agree_prefix
+    [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (k : Fin n) (hck : 0 ≤ c k) (S S' : Fin n → Z)
+    (hprefix : ∀ i : Fin n, (i : ℕ) < (k : ℕ) → S i = S' i) :
+    |partialIntegral μ k.succ f S - partialIntegral μ k.succ f S'| ≤ c k := by
+  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  by_cases hint :
+      Integrable (fun T => f (splice k.succ S T)) μn
+  · have hint' : Integrable (fun T => f (splice k.succ S' T)) μn := by
+      have h_meas : StronglyMeasurable (fun T => f (splice k.succ S' T)) :=
+        stronglyMeasurable_splice_partial k.succ hf S'
+      have hint_norm : Integrable (fun T => ‖f (splice k.succ S T)‖) μn :=
+        hint.norm
+      have hint_g : Integrable (fun T => ‖f (splice k.succ S T)‖ + c k) μn :=
+        hint_norm.add (integrable_const (c k))
+      refine hint_g.mono' h_meas.aestronglyMeasurable ?_
+      refine Filter.Eventually.of_forall (fun T => ?_)
+      have h_diff :
+          |f (splice k.succ S' T) - f (splice k.succ S T)| ≤ c k := by
+        rw [abs_sub_comm]
+        exact abs_integrand_succ_sub_succ_le_of_agree_prefix hbdd S S' k T hprefix
+      have h_tri : |f (splice k.succ S' T)|
+          ≤ |f (splice k.succ S' T) - f (splice k.succ S T)|
+            + |f (splice k.succ S T)| := by
+        have h_id : f (splice k.succ S' T) - f (splice k.succ S T)
+            + f (splice k.succ S T) = f (splice k.succ S' T) := by ring
+        calc |f (splice k.succ S' T)|
+            = |(f (splice k.succ S' T) - f (splice k.succ S T))
+                + f (splice k.succ S T)| := by rw [h_id]
+          _ ≤ |f (splice k.succ S' T) - f (splice k.succ S T)|
+                + |f (splice k.succ S T)| := abs_add_le _ _
+      show ‖f (splice k.succ S' T)‖ ≤ ‖f (splice k.succ S T)‖ + c k
+      rw [Real.norm_eq_abs, Real.norm_eq_abs]
+      linarith
+    unfold partialIntegral
+    rw [show
+        ∫ T, f (splice k.succ S T) ∂μn
+          - ∫ T, f (splice k.succ S' T) ∂μn
+        = ∫ T, (f (splice k.succ S T) - f (splice k.succ S' T)) ∂μn from
+      (integral_sub hint hint').symm]
+    refine (abs_integral_le_integral_abs).trans ?_
+    have h_pointwise : ∀ T,
+        |f (splice k.succ S T) - f (splice k.succ S' T)| ≤ c k :=
+      fun T => abs_integrand_succ_sub_succ_le_of_agree_prefix hbdd S S' k T hprefix
+    have h_const : ∫ _T : Fin n → Z, c k ∂μn = c k := by
+      rw [integral_const]
+      simp
+    rw [← h_const]
+    refine integral_mono_ae ?_ (integrable_const (c k)) ?_
+    · exact (hint.sub hint').abs
+    · exact Filter.Eventually.of_forall h_pointwise
+  · have hint'_neg : ¬ Integrable (fun T => f (splice k.succ S' T)) μn := by
+      intro hint'
+      apply hint
+      have h_meas : StronglyMeasurable (fun T => f (splice k.succ S T)) :=
+        stronglyMeasurable_splice_partial k.succ hf S
+      have hint_norm : Integrable (fun T => ‖f (splice k.succ S' T)‖) μn :=
+        hint'.norm
+      have hint_g : Integrable (fun T => ‖f (splice k.succ S' T)‖ + c k) μn :=
+        hint_norm.add (integrable_const (c k))
+      refine hint_g.mono' h_meas.aestronglyMeasurable ?_
+      refine Filter.Eventually.of_forall (fun T => ?_)
+      have h_diff :
+          |f (splice k.succ S T) - f (splice k.succ S' T)| ≤ c k :=
+        abs_integrand_succ_sub_succ_le_of_agree_prefix hbdd S S' k T hprefix
+      have h_tri : |f (splice k.succ S T)|
+          ≤ |f (splice k.succ S T) - f (splice k.succ S' T)|
+            + |f (splice k.succ S' T)| := by
+        have h_id : f (splice k.succ S T) - f (splice k.succ S' T)
+            + f (splice k.succ S' T) = f (splice k.succ S T) := by ring
+        calc |f (splice k.succ S T)|
+            = |(f (splice k.succ S T) - f (splice k.succ S' T))
+                + f (splice k.succ S' T)| := by rw [h_id]
+          _ ≤ |f (splice k.succ S T) - f (splice k.succ S' T)|
+                + |f (splice k.succ S' T)| := abs_add_le _ _
+      show ‖f (splice k.succ S T)‖ ≤ ‖f (splice k.succ S' T)‖ + c k
+      rw [Real.norm_eq_abs, Real.norm_eq_abs]
+      linarith
+    unfold partialIntegral
+    rw [integral_undef hint, integral_undef hint'_neg, sub_zero]
+    rw [abs_zero]
+    exact hck
+
+/-- Pointwise range-width form for the explicit partial-integral
+increment `P_{k+1} - P_k`: fixing the prefix before `k`, the increment's
+range as the `k`th coordinate varies has width at most `c k`. -/
+theorem abs_partialIntegral_step_sub_step_le_of_agree_prefix
+    [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
+    (hbdd : HasBoundedDifferences f c)
+    (hf : StronglyMeasurable f)
+    (k : Fin n) (hck : 0 ≤ c k) (S S' : Fin n → Z)
+    (hprefix : ∀ i : Fin n, (i : ℕ) < (k : ℕ) → S i = S' i) :
+    |(partialIntegral μ k.succ f S - partialIntegral μ k.castSucc f S)
+        - (partialIntegral μ k.succ f S' - partialIntegral μ k.castSucc f S')|
+      ≤ c k := by
+  have h_cast :
+      partialIntegral μ k.castSucc f S = partialIntegral μ k.castSucc f S' :=
+    partialIntegral_eq_of_agree_prefix (μ := μ) k.castSucc f S S' hprefix
+  have h_succ :=
+    abs_partialIntegral_succ_sub_succ_le_of_agree_prefix (μ := μ)
+      hbdd hf k hck S S' hprefix
+  convert h_succ using 1
+  rw [h_cast]
+  ring_nf
 
 end FormalSLT.Azuma.ExposureMartingale
