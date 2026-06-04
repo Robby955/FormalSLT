@@ -226,6 +226,23 @@
   - Remaining PAC-Bayes extensions: exact all-real-`λ` optimization,
     continuous posteriors, and infinite hypothesis classes.
 
+- [x] **PAC-Bayes finite Bernstein margin-proxy shell**
+  - ~~Step 1: add a posterior average of a supplied per-hypothesis variance
+    proxy.~~ ✓ (`PACBayesBernstein.posteriorMarginVarianceProxy`)
+  - ~~Step 2: define the normalized Bernstein prior exponential moment with
+    variance and scale terms.~~ ✓ (`PACBayesBernstein.priorBernsteinExpMoment`)
+  - ~~Step 3: prove the deterministic fixed-sample PAC-Bayes Bernstein
+    adapter from a prior-moment certificate.~~ ✓
+    (`PACBayesBernstein.posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le`)
+  - ~~Step 4: prove finite Markov bad-event bounds for fixed `lambda` and for
+    posterior-dependent margin-style penalties under explicit complexity and
+    penalty certificates.~~ ✓
+    (`PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta`)
+  - Remaining PAC-Bayes Bernstein extensions: concrete classifier-margin
+    variance extractors, finite-grid `lambda` optimization, exact all-real
+    `lambda` optimization, continuous posteriors, and infinite hypothesis
+    classes.
+
 ### Long-term
 
 - [ ] **Full Dudley entropy integral**

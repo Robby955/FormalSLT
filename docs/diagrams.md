@@ -185,7 +185,9 @@ flowchart TD
 
 The PAC-Bayes lane runs from the KL/Donsker-Varadhan change of measure through
 a finite Catoni-style bound to a finite-grid McAllester peeling wrapper for
-posterior-dependent penalties.
+posterior-dependent penalties. The Bernstein lane adds a finite margin-proxy
+wrapper with a supplied per-hypothesis variance proxy and a normalized
+prior-moment certificate.
 
 ```mermaid
 flowchart TD
@@ -196,14 +198,17 @@ flowchart TD
     fixed["Fixed-budget McAllester square-root corollary"]
     peeling["<b>Finite-grid McAllester peeling</b><br/>posterior-dependent penalty"]
     optimized["Optimized finite-grid wrapper"]
+    bernstein["Finite Bernstein margin-proxy shell<br/>supplied variance proxy"]
     future["Next: all-real-λ / continuous-posterior extensions<br/>(open)"]
 
     kl --> mgf --> catoni --> payoff --> fixed --> peeling --> optimized
+    kl --> bernstein
+    bernstein -.-> future
     optimized -.-> future
 
     classDef verified fill:#f0fdf4,stroke:#16a34a,color:#14532d;
     classDef future fill:#f8fafc,stroke:#94a3b8,color:#475569,stroke-dasharray: 5 4;
-    class kl,mgf,catoni,payoff,fixed,peeling,optimized verified;
+    class kl,mgf,catoni,payoff,fixed,peeling,optimized,bernstein verified;
     class future future;
 ```
 

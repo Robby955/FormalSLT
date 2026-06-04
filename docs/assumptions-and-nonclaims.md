@@ -155,8 +155,12 @@ allocates confidence mass across finitely many complexity buckets and supports
 posterior-dependent penalties certified by that finite grid. The closed
 `pac_bayes_generalization` theorem complements the Catoni bad event against
 total iid product mass to state the finite high-confidence good event directly.
-Exact all-real `λ`, infinite-hypothesis, and continuous-posterior PAC-Bayes
-theorems are not yet implemented.
+`PACBayesBernstein` adds a finite Bernstein margin-proxy shell: the variance
+proxy is supplied per hypothesis, and the theorem consumes a normalized
+Bernstein prior-moment certificate. It does not yet derive that variance proxy
+from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
+Bernstein optimization, infinite-hypothesis, and continuous-posterior
+PAC-Bayes theorems are not yet implemented.
 
 ### Algorithmic stability expected bound
 

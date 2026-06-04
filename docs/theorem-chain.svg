@@ -32,7 +32,7 @@
 
   <text x="550" y="40" text-anchor="middle" class="title">FormalSLT theorem chain</text>
   <text x="550" y="62" text-anchor="middle" class="subtitle">
-    57 Lean modules · zero sorry · zero admit · axioms: propext, Classical.choice, Quot.sound
+    60 FormalSLT Lean files · 85 checked Lean files · zero sorry · zero admit · axioms: propext, Classical.choice, Quot.sound
   </text>
 
   <rect x="38" y="92" width="675" height="630" class="panel"/>
@@ -117,8 +117,8 @@
   <text x="904" y="664" text-anchor="middle" class="small">dyadic finite entropy wrappers</text>
 
   <rect x="785" y="716" width="237" height="60" class="node-green"/>
-  <text x="904" y="741" text-anchor="middle" class="label">PAC-Bayes finite Catoni</text>
-  <text x="904" y="758" text-anchor="middle" class="small">bounded-loss confidence bound</text>
+  <text x="904" y="741" text-anchor="middle" class="label">PAC-Bayes finite confidence</text>
+  <text x="904" y="758" text-anchor="middle" class="small">Catoni, McAllester, Bernstein</text>
 
   <path d="M660 181 C700 181, 742 181, 785 181" class="arrow-green"/>
   <path d="M660 181 C708 205, 742 246, 785 270" class="arrow-green"/>
@@ -126,6 +126,7 @@
   <path d="M904 400 C904 412, 904 421, 904 434" class="arrow-green"/>
   <path d="M904 494 C904 506, 904 515, 904 528" class="arrow-green"/>
   <path d="M904 588 C904 600, 904 609, 904 622" class="arrow-green"/>
+  <path d="M904 682 C904 694, 904 703, 904 716" class="arrow-green"/>
 
   <rect x="775" y="802" width="258" height="1" fill="#dbe3ef"/>
   <text x="775" y="822" class="tiny">Finite chaining is a finite entropy-budget layer.</text>
@@ -152,4 +153,5 @@
   <path d="M258 820 C268 820, 270 820, 278 820" class="arrow-green"/>
   <path d="M478 820 C488 820, 490 820, 498 820" class="arrow-green"/>
   <path d="M158 788 C150 600, 150 470, 195 398" class="arrow-soft"/>
+  <text x="58" y="874" class="tiny">PAC-Bayes now includes a finite Bernstein margin-proxy shell with supplied variance proxy.</text>
 </svg>

@@ -1,0 +1,26 @@
+import FormalSLT.PACBayesBernstein
+
+/-!
+# PAC-Bayes Bernstein audit
+
+Checks the finite PAC-Bayes Bernstein shell with a supplied variance proxy:
+posterior variance averaging, normalized prior moment, deterministic
+fixed-sample adapter, fixed-`lambda` bad-event theorem, and the
+posterior-dependent margin-style wrapper.
+-/
+
+#check FormalSLT.PACBayesBernstein.posteriorMarginVarianceProxy
+
+#check FormalSLT.PACBayesBernstein.priorBernsteinExpMoment
+
+#check FormalSLT.PACBayesBernstein.posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le
+#print axioms FormalSLT.PACBayesBernstein.posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le
+
+#check FormalSLT.PACBayesBernstein.finitePACBayesBernstein_fixedLambda_badEventMass_le_delta
+#print axioms FormalSLT.PACBayesBernstein.finitePACBayesBernstein_fixedLambda_badEventMass_le_delta
+
+#check FormalSLT.PACBayesBernstein.finitePACBayesBernsteinPenalty_badEventMass_le_delta
+#print axioms FormalSLT.PACBayesBernstein.finitePACBayesBernsteinPenalty_badEventMass_le_delta
+
+#check FormalSLT.PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta
+#print axioms FormalSLT.PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta

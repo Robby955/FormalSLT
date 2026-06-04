@@ -455,6 +455,12 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteMcAllesterGridPeeling_badEventMass_le_delta` | `PACBayesBoundedLoss` | Finite-grid McAllester peeling bound with allocated confidence mass |
 | `finiteMcAllesterGridOptimized_badEventMass_le_delta` | `PACBayesBoundedLoss` | Posterior-dependent finite-grid McAllester wrapper under an explicit bucket certificate |
 | `pac_bayes_generalization` | `PACBayesBoundedLoss` | Closed PAC-Bayes good-event theorem: with product-sample mass at least `1 - delta`, every posterior satisfies the Catoni-form risk bound |
+| `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
+| `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
+| `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |
+| `finitePACBayesBernstein_fixedLambda_badEventMass_le_delta` | `PACBayesBernstein` | Finite fixed-`lambda` PAC-Bayes Bernstein bad-event bound |
+| `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
+| `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite Bernstein margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
 
 ## Conditional sub-Gamma extractor
 
