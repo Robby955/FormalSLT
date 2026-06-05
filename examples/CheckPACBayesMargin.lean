@@ -63,4 +63,12 @@ def toyScore : ToyHyp → ToyPoint → ℝ
 #print axioms FormalSLT.PACBayesMargin.expectedPriorBernsteinExpMoment_classifierMargin_iid_le_one
 #print axioms FormalSLT.PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta
 
+#check (FormalSLT.PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_sum_delta
+  (n := 2) (Z := ToyPoint) (ι := ToyHyp) (γ := Fin 2))
+#print axioms FormalSLT.PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_sum_delta
+
+#check (FormalSLT.PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_delta
+  (n := 2) (Z := ToyPoint) (ι := ToyHyp) (γ := Fin 2))
+#print axioms FormalSLT.PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_delta
+
 end FormalSLT.PACBayesMargin.Check

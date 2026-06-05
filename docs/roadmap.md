@@ -244,13 +244,16 @@
   - ~~Step 5: specialize the finite Bernstein shell to concrete thresholded
     classifier-margin losses and the risk-as-variance proxy.~~ ✓
     (`PACBayesMargin.finitePACBayesClassifierMarginBernstein_badEventMass_le_delta`)
-  - ~~Step 6: derive the normalized Bernstein prior-moment certificate from iid
-    finite classifier-margin losses and package the fixed-`lambda` iid
-    bad-event theorem.~~ ✓
-    (`PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta`)
-  - Remaining PAC-Bayes Bernstein extensions: finite-grid `lambda`
-    optimization, exact all-real `lambda` optimization, continuous posteriors,
-    and infinite hypothesis classes.
+	  - ~~Step 6: derive the normalized Bernstein prior-moment certificate from iid
+	    finite classifier-margin losses and package the fixed-`lambda` iid
+	    bad-event theorem.~~ ✓
+	    (`PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta`)
+	  - ~~Step 7: add finite-grid `lambda` optimization wrappers for Bernstein
+	    posterior-dependent penalties.~~ ✓
+	    (`PACBayesBernstein.finitePACBayesBernsteinGridOptimized_badEventMass_le_delta`,
+	    `PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_delta`)
+	  - Remaining PAC-Bayes Bernstein extensions: exact all-real `lambda`
+	    optimization, continuous posteriors, and infinite hypothesis classes.
 
 ### Long-term
 

@@ -31,6 +31,9 @@ and the Bennett/sub-Gamma MGF layer.
 * `finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta` — the
   end-to-end finite iid PAC-Bayes Bernstein theorem for classifier-margin
   losses and a fixed admissible `lambda`.
+* `finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_delta` —
+  the finite-grid version, with a caller-supplied grid certificate over
+  admissible Bernstein parameters.
 -/
 
 namespace FormalSLT.PACBayesMargin
@@ -530,6 +533,109 @@ theorem finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta
         (classifierMarginEmpiricalRiskFn threshold score label)
         (classifierMarginSampleVarianceProxy (n := n) p threshold score label)
         complexityOf hcomplexity hpenalty hExpected)
+
+/--
+Finite-grid iid PAC-Bayes Bernstein theorem for classifier-margin losses.
+
+Each grid index supplies an admissible Bernstein parameter and confidence
+allocation. A caller supplies the finite grid certificate assigning each
+posterior to a bucket whose fixed-parameter Bernstein penalty is no larger than
+`posteriorPenalty`.
+-/
+theorem finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_sum_delta
+    {n : ℕ} [Fintype Z] [Fintype ι] [Nonempty ι] [Fintype γ]
+    (hn : 0 < n)
+    (p : Z → ℝ) (hp : IsPMF p)
+    {π : ι → ℝ} (hπ : IsFullSupportPMF π)
+    (lambdaOf confidenceOf : γ → ℝ)
+    (hlambda : ∀ g : γ, 0 < lambdaOf g)
+    (hlambda_bound : ∀ g : γ, lambdaOf g * (n : ℝ)⁻¹ < 3)
+    (hconfidenceOf : ∀ g : γ, 0 < confidenceOf g)
+    (threshold : ℝ) (score : ι → Z → ℝ) (label : Z → Bool)
+    (posteriorPenalty : (ι → ℝ) → ℝ)
+    (hgridCovers :
+      ∀ ρ : ι → ℝ, IsPMF ρ →
+        ∃ g : γ,
+          (klDiv ρ π + Real.log (1 / confidenceOf g)) / lambdaOf g +
+              lambdaOf g *
+                  posteriorClassifierMarginSampleVarianceProxy
+                    (n := n) ρ p threshold score label /
+                (2 * (1 - (3 * (n : ℝ))⁻¹ * lambdaOf g))
+            ≤ posteriorPenalty ρ) :
+    (∑ S ∈
+        finitePACBayesClassifierMarginBernsteinBadSamples
+          (n := n) threshold score label p posteriorPenalty,
+        finiteProductSampleWeight p S) ≤
+      ∑ g : γ, confidenceOf g := by
+  classical
+  have hscale : ∀ g : γ, (3 * (n : ℝ))⁻¹ * lambdaOf g < 1 := by
+    intro g
+    have hn_pos : 0 < (n : ℝ) := by exact_mod_cast hn
+    have hlt : lambdaOf g < 3 * (n : ℝ) := by
+      rw [← div_lt_iff₀ hn_pos]
+      simpa [div_eq_mul_inv] using hlambda_bound g
+    rw [inv_mul_lt_iff₀ (by positivity : 0 < 3 * (n : ℝ))]
+    nlinarith
+  have hExpected :
+      ∀ g : γ,
+        expectedPriorBernsteinExpMoment
+          (finiteProductSampleWeight (n := n) p) π (lambdaOf g)
+          ((3 * (n : ℝ))⁻¹)
+          (classifierMarginPopulationRisk p threshold score label)
+          (classifierMarginEmpiricalRiskFn threshold score label)
+          (classifierMarginSampleVarianceProxy (n := n) p threshold score label) ≤ 1 := by
+    intro g
+    exact
+      expectedPriorBernsteinExpMoment_classifierMargin_iid_le_one
+        (n := n) hn p hp hπ.toIsPMF (lambdaOf g) (hlambda g).le
+        (hlambda_bound g) threshold score label
+  simpa [finitePACBayesClassifierMarginBernsteinBadSamples,
+    posteriorClassifierMarginSampleVarianceProxy]
+    using
+      (finitePACBayesBernsteinGridOptimized_badEventMass_le_sum_delta
+        (Ω := Fin n → Z) (ι := ι) (γ := γ)
+        (ν := finiteProductSampleWeight (n := n) p)
+        (hν := finiteProductSampleWeight_isPMF (n := n) hp)
+        (π := π) hπ lambdaOf (fun _g : γ => (3 * (n : ℝ))⁻¹) confidenceOf
+        posteriorPenalty hlambda hscale hconfidenceOf
+        (classifierMarginPopulationRisk p threshold score label)
+        (classifierMarginEmpiricalRiskFn threshold score label)
+        (classifierMarginSampleVarianceProxy (n := n) p threshold score label)
+        hgridCovers hExpected)
+
+/--
+Finite-grid iid PAC-Bayes Bernstein theorem for classifier-margin losses with
+an explicit total confidence budget.
+-/
+theorem finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_delta
+    {n : ℕ} [Fintype Z] [Fintype ι] [Nonempty ι] [Fintype γ]
+    (hn : 0 < n)
+    (p : Z → ℝ) (hp : IsPMF p)
+    {π : ι → ℝ} (hπ : IsFullSupportPMF π)
+    (lambdaOf confidenceOf : γ → ℝ)
+    (hlambda : ∀ g : γ, 0 < lambdaOf g)
+    (hlambda_bound : ∀ g : γ, lambdaOf g * (n : ℝ)⁻¹ < 3)
+    (hconfidenceOf : ∀ g : γ, 0 < confidenceOf g)
+    (threshold : ℝ) (score : ι → Z → ℝ) (label : Z → Bool)
+    (posteriorPenalty : (ι → ℝ) → ℝ)
+    (hgridCovers :
+      ∀ ρ : ι → ℝ, IsPMF ρ →
+        ∃ g : γ,
+          (klDiv ρ π + Real.log (1 / confidenceOf g)) / lambdaOf g +
+              lambdaOf g *
+                  posteriorClassifierMarginSampleVarianceProxy
+                    (n := n) ρ p threshold score label /
+                (2 * (1 - (3 * (n : ℝ))⁻¹ * lambdaOf g))
+            ≤ posteriorPenalty ρ)
+    {delta : ℝ} (hgridConfidence : (∑ g : γ, confidenceOf g) ≤ delta) :
+    (∑ S ∈
+        finitePACBayesClassifierMarginBernsteinBadSamples
+          (n := n) threshold score label p posteriorPenalty,
+        finiteProductSampleWeight p S) ≤ delta :=
+  (finitePACBayesClassifierMarginBernstein_iid_gridOptimized_badEventMass_le_sum_delta
+    (n := n) (Z := Z) (ι := ι) (γ := γ)
+    hn p hp hπ lambdaOf confidenceOf hlambda hlambda_bound hconfidenceOf
+    threshold score label posteriorPenalty hgridCovers).trans hgridConfidence
 
 end
 
