@@ -130,6 +130,26 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
   FormalSLT is scoped as a finite-class theorem spine and is complementary to
   existing empirical-process and Rademacher-generalization formalizations.
+- **For current library state (modules, lines, open PRs, roadmap):** see
+  [STATUS.md](./STATUS.md).
+
+## Adjacent repositories
+
+| Repository | What it covers |
+|---|---|
+| [Robby955/formal-martingales](https://github.com/Robby955/formal-martingales) | Lean 4 library for martingale inequalities, anytime-valid inference, and concentration (Ville's inequality, sub-Gaussian / sub-Exp MGF scaffolding). Adjacent to FormalSLT's PAC-Bayes work. Apache 2.0. |
+
+## Key terms
+
+Brief definitions for readers from outside statistical learning theory:
+
+- **PAC-Bayes** (Probably Approximately Correct Bayes): a framework for bounding the risk of a randomized classifier (a posterior over hypotheses) in terms of a KL divergence to a prior. The bounds hold with high probability over the training sample.
+- **Rademacher complexity**: a measure of how well a hypothesis class can fit random ±1 labels on a training set. Larger complexity → harder to generalize.
+- **McDiarmid's inequality**: a concentration result. If changing one coordinate of a random input shifts a function's output by at most `c`, then the function concentrates around its mean with tail probability `exp(-2ε²/∑cᵢ²)`. FormalSLT proves the sharp constant (the `2` in the exponent).
+- **VC dimension**: the size of the largest finite set that a hypothesis class can "shatter" (correctly label in all 2^n ways). Controls sample complexity for binary classifiers.
+- **sub-Gaussian / sub-Exponential**: distributions whose tails decay at least as fast as a Gaussian or Exponential. FormalSLT's chaining layer uses MGF (moment-generating function) bounds to handle such distributions.
+- **Dudley chaining**: a technique for bounding the supremum of a stochastic process by summing covering-number integrals at successive scales. FormalSLT instantiates this for a non-finite metric space using explicit finite dyadic nets.
+- **Algorithmic stability**: a property of a learning algorithm that says similar training sets produce similar outputs. Bounded stability implies generalization.
 
 ## Library Map
 
