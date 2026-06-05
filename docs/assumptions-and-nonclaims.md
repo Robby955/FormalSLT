@@ -1,6 +1,7 @@
-# Scope and Assumptions
+# Assumptions and Current Boundaries
 
-This page records the assumptions behind the current theorem spine.
+This page records the assumptions behind the current theorem spine and the
+current boundaries for public summaries.
 
 ## Scope
 
@@ -75,38 +76,10 @@ generic VC bridge is not yet part of the library.
 - finite multiscale chains;
 - finite entropy sums and entropy-budget wrappers.
 
-It is finite infrastructure for Dudley-style arguments. It is not the
-continuous Dudley entropy integral.
+It is a foundation for Dudley-style arguments. It is not the continuous
+Dudley entropy integral.
 
-### Unit-interval Dudley example
-
-`Covering.UnitIntervalDudley` instantiates the total-bounded finite-net bridge
-on the non-finite metric index space `[0,1]`. It constructs explicit half and
-quarter meshes, packages the Rademacher process
-`X(b,t) = signOfBool b * t`, and routes a nonzero supplied supremum through a
-projected finite-net Dudley bound with a concrete `sqrt (log 15)` entropy
-envelope.
-
-This example still uses the supplied-supremum interface. It does not construct
-arbitrary measurable suprema, prove a general separability theorem, or state
-the full continuous Dudley entropy integral.
-
-### Conditional sub-Gamma extraction
-
-`Concentration.SubGamma.Extractor` proves a conditional MGF bound for a
-single bounded real increment. The headline theorem
-`condSubGammaMGF_of_bounded_centered_condVariance` assumes:
-
-- an a.s. bound `|X| ≤ b`;
-- conditional centering `μ[X | m] = 0`;
-- a conditional second-moment proxy `μ[X² | m] ≤ σ²`;
-- the parameter regime `0 ≤ λ` and `b * λ < 3`.
-
-The theorem converts those assumptions into a conditional sub-Gamma MGF bound.
-It does not by itself construct a filtration, prove independence, or state a
-full sequential concentration inequality.
-
-## Open Work
+## Current Boundaries
 
 ### VC-to-PAC equivalence
 
@@ -120,11 +93,6 @@ The main Rademacher and VC statements are finite-index theorems. Moving to
 general infinite classes requires covering-number APIs, measurable suprema,
 separability assumptions, and approximation arguments that are outside the
 current theorem spine.
-
-The unit-interval Dudley example is the current concrete bridge beyond a
-finite ambient index type. It verifies finite-net machinery on `[0,1]`, but it
-does not remove the remaining measurable-supremum and separability obligations
-for arbitrary non-finite classes.
 
 ### Downstream sharp-tail propagation
 
@@ -154,10 +122,13 @@ posterior-dependent penalties certified by that finite grid. The closed
 total iid product mass to state the finite high-confidence good event directly.
 `PACBayesBernstein` adds a finite Bernstein margin-proxy shell: the variance
 proxy is supplied per hypothesis, and the theorem consumes a normalized
-Bernstein prior-moment certificate. It does not yet derive that variance proxy
-from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
-Bernstein optimization, infinite-hypothesis, and continuous-posterior
-PAC-Bayes theorems are not yet implemented.
+Bernstein prior-moment certificate. `PACBayesMargin` specializes that shell to
+thresholded classifier-margin losses, proves the iid finite classifier-margin
+MGF budget, derives the normalized Bernstein prior-moment certificate, and
+packages the fixed-`lambda` iid bad-event theorem with the sample-size-scaled
+variance proxy. Exact all-real `λ`, finite-grid Bernstein optimization,
+infinite-hypothesis, and continuous-posterior PAC-Bayes theorems remain future
+work.
 
 ### Algorithmic stability expected bound
 

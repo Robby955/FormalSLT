@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 25,
-    "library_and_example_lean_lines": 33427,
-    "library_lean_lines": 31533,
-    "library_modules": 60,
-    "theorem_map_entries": 412
+    "example_lean_files": 26,
+    "library_and_example_lean_lines": 34072,
+    "library_lean_lines": 32217,
+    "library_modules": 61,
+    "theorem_map_entries": 426
   },
   "theorem_families": [
     {
@@ -2440,6 +2440,12 @@
         {
           "kind": "theorem",
           "module": "PACBayesFiniteProductMGF",
+          "name": "finiteProduct_mgf_empiricalRiskDeviation_le_exp_of_single",
+          "summary": "Single-coordinate exponential budget lifts to an explicit finite product MGF budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesFiniteProductMGF",
           "name": "finitePriorAveraged_mgf_empiricalRiskDeviation_le",
           "summary": "Prior-averaged finite iid empirical-risk-deviation MGF bound"
         },
@@ -2530,6 +2536,12 @@
         {
           "kind": "theorem",
           "module": "PACBayesBernstein",
+          "name": "expectedPriorBernsteinExpMoment_le_one_of_mgf_bound",
+          "summary": "Expected normalized prior moment is at most one when each hypothesis has the corresponding Bernstein MGF budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesBernstein",
           "name": "posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le",
           "summary": "Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate"
         },
@@ -2550,6 +2562,78 @@
           "module": "PACBayesBernstein",
           "name": "finitePACBayesBernsteinMargin_badEventMass_le_delta",
           "summary": "Finite supplied margin-proxy wrapper with sqrt(2 * V\u03c1 * C\u03c1) + scale * C\u03c1 penalty form"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "classifierMarginLoss",
+          "summary": "Thresholded finite classifier-margin loss in {0,1}"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "classifierMarginPopulationRisk",
+          "summary": "Concrete population risk for thresholded classifier-margin loss"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "classifierMarginEmpiricalRisk",
+          "summary": "Concrete empirical risk for thresholded classifier-margin loss"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "classifierMarginVarianceProxy",
+          "summary": "Concrete risk-as-variance proxy for indicator classifier-margin loss"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "classifierMarginSampleVarianceProxy",
+          "summary": "Sample-size-scaled variance proxy for iid classifier-margin empirical-risk deviations"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "classifierMarginVariance_le_risk",
+          "summary": "Indicator margin-loss centered second moment is bounded by its risk proxy"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "oneCoordinate_classifierMarginLoss_mgf_subgamma",
+          "summary": "One-coordinate finite Bennett/sub-Gamma MGF bound for thresholded classifier-margin loss"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "finiteProduct_classifierMarginLoss_mgf_subgamma",
+          "summary": "Iid product MGF bound for classifier-margin empirical-risk deviations"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "expectedPriorBernsteinExpMoment_classifierMargin_iid_le_one",
+          "summary": "Iid classifier-margin losses discharge the normalized Bernstein prior-moment certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "finiteProductSampleWeight_isPMF",
+          "summary": "Iid finite product sample weights form a PMF when the base mass is a PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "finitePACBayesClassifierMarginBernstein_badEventMass_le_delta",
+          "summary": "PAC-Bayes Bernstein bad-event theorem specialized to finite classifier-margin losses under the supplied prior-moment certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayesMargin",
+          "name": "finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta",
+          "summary": "End-to-end fixed-lambda iid PAC-Bayes Bernstein bad-event theorem for finite classifier-margin losses"
         }
       ],
       "name": "Stability and PAC-Bayes foundations"

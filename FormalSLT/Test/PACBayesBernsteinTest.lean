@@ -19,6 +19,7 @@ namespace FormalSLT.PACBayesBernstein.Test
 #check FormalSLT.PACBayesBernstein.posteriorMarginVarianceProxy
 #check FormalSLT.PACBayesBernstein.priorBernsteinExpMoment
 #check FormalSLT.PACBayesBernstein.expectedPriorBernsteinExpMoment
+#check FormalSLT.PACBayesBernstein.expectedPriorBernsteinExpMoment_le_one_of_mgf_bound
 #check FormalSLT.PACBayesBernstein.priorBernsteinExpMomentTailMass
 #check FormalSLT.PACBayesBernstein.priorBernsteinExpMoment_nonneg
 #check FormalSLT.PACBayesBernstein.priorBernsteinExpMoment_tailMass_le_expected_div
@@ -29,5 +30,7 @@ namespace FormalSLT.PACBayesBernstein.Test
 #check FormalSLT.PACBayesBernstein.finitePACBayesBernsteinPenaltyBadSamples
 #check FormalSLT.PACBayesBernstein.finitePACBayesBernsteinPenalty_badEventMass_le_delta
 #check FormalSLT.PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta
+
+#print axioms FormalSLT.PACBayesBernstein.expectedPriorBernsteinExpMoment_le_one_of_mgf_bound
 
 end FormalSLT.PACBayesBernstein.Test

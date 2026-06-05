@@ -442,6 +442,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteEmpiricalRisk` | `PACBayesFiniteProductMGF` | Finite empirical risk for a real-valued loss |
 | `finiteProduct_mgf_empiricalRiskDeviation_eq_pow` | `PACBayesFiniteProductMGF` | Exact iid product factorization of `E exp(lam * (R_i - Rhat_i))` |
 | `finiteProduct_mgf_empiricalRiskDeviation_le_of_single` | `PACBayesFiniteProductMGF` | Single-coordinate MGF budget lifts to the finite sample-average MGF |
+| `finiteProduct_mgf_empiricalRiskDeviation_le_exp_of_single` | `PACBayesFiniteProductMGF` | Single-coordinate exponential budget lifts to an explicit finite product MGF budget |
 | `finitePriorAveraged_mgf_empiricalRiskDeviation_le` | `PACBayesFiniteProductMGF` | Prior-averaged finite iid empirical-risk-deviation MGF bound |
 | `oneCoordinate_boundedLoss_mgf` | `PACBayesBoundedLoss` | `[0,1]` bounded-loss one-coordinate MGF instantiation |
 | `sampleAverage_boundedLoss_mgf` | `PACBayesBoundedLoss` | Finite sample-average bounded-loss MGF bound |
@@ -457,10 +458,23 @@ declarations; modules are relative to `FormalSLT`.
 | `pac_bayes_generalization` | `PACBayesBoundedLoss` | Closed PAC-Bayes good-event theorem: with product-sample mass at least `1 - delta`, every posterior satisfies the Catoni-form risk bound |
 | `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
 | `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
+| `expectedPriorBernsteinExpMoment_le_one_of_mgf_bound` | `PACBayesBernstein` | Expected normalized prior moment is at most one when each hypothesis has the corresponding Bernstein MGF budget |
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |
 | `finitePACBayesBernstein_fixedLambda_badEventMass_le_delta` | `PACBayesBernstein` | Finite fixed-`lambda` PAC-Bayes Bernstein bad-event bound |
 | `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
 | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite supplied margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
+| `classifierMarginLoss` | `PACBayesMargin` | Thresholded finite classifier-margin loss in `{0,1}` |
+| `classifierMarginPopulationRisk` | `PACBayesMargin` | Concrete population risk for thresholded classifier-margin loss |
+| `classifierMarginEmpiricalRisk` | `PACBayesMargin` | Concrete empirical risk for thresholded classifier-margin loss |
+| `classifierMarginVarianceProxy` | `PACBayesMargin` | Concrete risk-as-variance proxy for indicator classifier-margin loss |
+| `classifierMarginSampleVarianceProxy` | `PACBayesMargin` | Sample-size-scaled variance proxy for iid classifier-margin empirical-risk deviations |
+| `classifierMarginVariance_le_risk` | `PACBayesMargin` | Indicator margin-loss centered second moment is bounded by its risk proxy |
+| `oneCoordinate_classifierMarginLoss_mgf_subgamma` | `PACBayesMargin` | One-coordinate finite Bennett/sub-Gamma MGF bound for thresholded classifier-margin loss |
+| `finiteProduct_classifierMarginLoss_mgf_subgamma` | `PACBayesMargin` | Iid product MGF bound for classifier-margin empirical-risk deviations |
+| `expectedPriorBernsteinExpMoment_classifierMargin_iid_le_one` | `PACBayesMargin` | Iid classifier-margin losses discharge the normalized Bernstein prior-moment certificate |
+| `finiteProductSampleWeight_isPMF` | `PACBayesMargin` | Iid finite product sample weights form a PMF when the base mass is a PMF |
+| `finitePACBayesClassifierMarginBernstein_badEventMass_le_delta` | `PACBayesMargin` | PAC-Bayes Bernstein bad-event theorem specialized to finite classifier-margin losses under the supplied prior-moment certificate |
+| `finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta` | `PACBayesMargin` | End-to-end fixed-`lambda` iid PAC-Bayes Bernstein bad-event theorem for finite classifier-margin losses |
 
 ## Conditional sub-Gamma extractor
 

@@ -94,6 +94,114 @@ def expectedPriorBernsteinExpMoment [Fintype Ω] [Fintype ι]
   ∑ ω, ν ω *
     priorBernsteinExpMoment π lambda scale riskFn empiricalRiskFn varianceProxy ω
 
+/--
+Expected normalized PAC-Bayes Bernstein prior moment from per-hypothesis MGF
+budgets.
+
+This is the algebraic bridge used before plugging in a concrete iid
+concentration lemma: each hypothesis supplies the Bernstein exponential budget,
+then the prior-weighted normalized moment has expectation at most one.
+-/
+theorem expectedPriorBernsteinExpMoment_le_one_of_mgf_bound
+    [Fintype Ω] [Fintype ι]
+    {π : ι → ℝ} (hπ : IsPMF π)
+    (ν : Ω → ℝ) (lambda scale : ℝ)
+    (riskFn : ι → ℝ) (empiricalRiskFn : Ω → ι → ℝ)
+    (varianceProxy : ι → ℝ)
+    (hmgf :
+      ∀ i : ι,
+        (∑ ω : Ω, ν ω *
+          Real.exp (lambda * (riskFn i - empiricalRiskFn ω i))) ≤
+        Real.exp
+          (lambda ^ 2 * varianceProxy i /
+            (2 * (1 - scale * lambda)))) :
+    expectedPriorBernsteinExpMoment ν π lambda scale riskFn empiricalRiskFn
+      varianceProxy ≤ 1 := by
+  classical
+  let budget : ι → ℝ :=
+    fun i =>
+      lambda ^ 2 * varianceProxy i /
+        (2 * (1 - scale * lambda))
+  have hexp_split : ∀ a b : ℝ, Real.exp (a - b) = Real.exp a * Real.exp (-b) := by
+    intro a b
+    rw [← Real.exp_add]
+    ring_nf
+  have hswap :
+      expectedPriorBernsteinExpMoment ν π lambda scale riskFn empiricalRiskFn
+          varianceProxy =
+        ∑ i : ι,
+          π i * Real.exp (-(budget i)) *
+            (∑ ω : Ω, ν ω *
+              Real.exp (lambda * (riskFn i - empiricalRiskFn ω i))) := by
+    unfold expectedPriorBernsteinExpMoment priorBernsteinExpMoment
+    calc
+      (∑ ω : Ω,
+          ν ω *
+            ∑ i : ι,
+              π i *
+                Real.exp
+                  (lambda * (riskFn i - empiricalRiskFn ω i) -
+                    lambda ^ 2 * varianceProxy i /
+                      (2 * (1 - scale * lambda))))
+          =
+        ∑ ω : Ω, ∑ i : ι,
+          ν ω *
+            (π i *
+              Real.exp
+                (lambda * (riskFn i - empiricalRiskFn ω i) -
+                  budget i)) := by
+            apply Finset.sum_congr rfl
+            intro ω _hω
+            rw [Finset.mul_sum]
+      _ =
+        ∑ i : ι, ∑ ω : Ω,
+          ν ω *
+            (π i *
+              Real.exp
+                (lambda * (riskFn i - empiricalRiskFn ω i) -
+                  budget i)) := by
+            rw [Finset.sum_comm]
+      _ =
+        ∑ i : ι,
+          π i * Real.exp (-(budget i)) *
+            (∑ ω : Ω, ν ω *
+              Real.exp (lambda * (riskFn i - empiricalRiskFn ω i))) := by
+            apply Finset.sum_congr rfl
+            intro i _hi
+            rw [Finset.mul_sum]
+            apply Finset.sum_congr rfl
+            intro ω _hω
+            rw [hexp_split]
+            ring
+  rw [hswap]
+  calc
+    (∑ i : ι,
+        π i * Real.exp (-(budget i)) *
+          (∑ ω : Ω, ν ω *
+            Real.exp (lambda * (riskFn i - empiricalRiskFn ω i))))
+        ≤
+      ∑ i : ι,
+        π i * Real.exp (-(budget i)) *
+          Real.exp (budget i) := by
+        apply Finset.sum_le_sum
+        intro i _hi
+        exact mul_le_mul_of_nonneg_left
+          (hmgf i)
+          (mul_nonneg (hπ.nonneg i) (le_of_lt (Real.exp_pos _)))
+    _ = ∑ i : ι, π i := by
+        apply Finset.sum_congr rfl
+        intro i _hi
+        calc
+          π i * Real.exp (-(budget i)) * Real.exp (budget i)
+              = π i * (Real.exp (-(budget i)) * Real.exp (budget i)) := by ring
+          _ = π i * 1 := by
+              congr 1
+              rw [← Real.exp_add]
+              ring_nf
+              simp
+          _ = π i := by ring
+    _ = 1 := hπ.sum_one
+
 /-- Finite sample mass of outcomes whose Bernstein prior moment exceeds a threshold. -/
 def priorBernsteinExpMomentTailMass [Fintype Ω] [Fintype ι]
     (ν : Ω → ℝ) (π : ι → ℝ)

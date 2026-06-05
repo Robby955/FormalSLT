@@ -231,6 +231,9 @@
     proxy.~~ ✓ (`PACBayesBernstein.posteriorMarginVarianceProxy`)
   - ~~Step 2: define the normalized Bernstein prior exponential moment with
     variance and scale terms.~~ ✓ (`PACBayesBernstein.priorBernsteinExpMoment`)
+  - ~~Step 2.5: lift per-hypothesis Bernstein MGF budgets to the expected
+    normalized prior moment.~~ ✓
+    (`PACBayesBernstein.expectedPriorBernsteinExpMoment_le_one_of_mgf_bound`)
   - ~~Step 3: prove the deterministic fixed-sample PAC-Bayes Bernstein
     adapter from a prior-moment certificate.~~ ✓
     (`PACBayesBernstein.posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le`)
@@ -238,10 +241,16 @@
     posterior-dependent margin-style penalties under explicit complexity and
     penalty certificates.~~ ✓
     (`PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta`)
-  - Remaining PAC-Bayes Bernstein extensions: concrete classifier-margin
-    variance extractors, finite-grid `lambda` optimization, exact all-real
-    `lambda` optimization, continuous posteriors, and infinite hypothesis
-    classes.
+  - ~~Step 5: specialize the finite Bernstein shell to concrete thresholded
+    classifier-margin losses and the risk-as-variance proxy.~~ ✓
+    (`PACBayesMargin.finitePACBayesClassifierMarginBernstein_badEventMass_le_delta`)
+  - ~~Step 6: derive the normalized Bernstein prior-moment certificate from iid
+    finite classifier-margin losses and package the fixed-`lambda` iid
+    bad-event theorem.~~ ✓
+    (`PACBayesMargin.finitePACBayesClassifierMarginBernstein_iid_badEventMass_le_delta`)
+  - Remaining PAC-Bayes Bernstein extensions: finite-grid `lambda`
+    optimization, exact all-real `lambda` optimization, continuous posteriors,
+    and infinite hypothesis classes.
 
 ### Long-term
 

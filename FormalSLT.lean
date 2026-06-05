@@ -67,3 +67,4 @@ import FormalSLT.PACBayesFiniteProductMGF
 import FormalSLT.PACBayesBoundedLoss
 import FormalSLT.PACBayesMcAllester
 import FormalSLT.PACBayesBernstein
+import FormalSLT.PACBayesMargin

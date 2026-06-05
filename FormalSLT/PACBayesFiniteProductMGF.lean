@@ -164,6 +164,43 @@ theorem finiteProduct_mgf_empiricalRiskDeviation_le_of_single
   exact h_pow.trans_eq h_exp_pow
 
 /--
+Finite product MGF bound from an arbitrary one-coordinate exponential budget.
+
+This is the same product-factorization step as
+`finiteProduct_mgf_empiricalRiskDeviation_le_of_single`, but keeps the
+one-coordinate budget explicit. It is useful for Bernstein/sub-Gamma bounds,
+whose denominator depends on the one-coordinate scale.
+-/
+theorem finiteProduct_mgf_empiricalRiskDeviation_le_exp_of_single
+    {n : ℕ} [Fintype Z] (hn : 0 < n)
+    (p : Z → ℝ) (hp : IsPMF p)
+    (ℓ : ι → Z → ℝ) (i : ι) (lam singleBudget : ℝ)
+    (hsingle :
+      oneCoordinateDeviationMGF (n := n) p ℓ i lam ≤
+        Real.exp singleBudget) :
+    (∑ S : Fin n → Z,
+        finiteProductSampleWeight p S *
+          Real.exp (lam * (finitePopulationRisk p ℓ i - finiteEmpiricalRisk ℓ i S))) ≤
+      Real.exp ((n : ℝ) * singleBudget) := by
+  classical
+  have h_eq :=
+    finiteProduct_mgf_empiricalRiskDeviation_eq_pow
+      (ι := ι) (Z := Z) hn p ℓ i lam
+  rw [h_eq]
+  have hsingle_nonneg : 0 ≤ oneCoordinateDeviationMGF (n := n) p ℓ i lam := by
+    unfold oneCoordinateDeviationMGF
+    exact Finset.sum_nonneg
+      (fun z _hz => mul_nonneg (hp.nonneg z) (le_of_lt (Real.exp_pos _)))
+  have h_pow :
+      (oneCoordinateDeviationMGF (n := n) p ℓ i lam) ^ n ≤
+        (Real.exp singleBudget) ^ n :=
+    pow_le_pow_left₀ hsingle_nonneg hsingle n
+  have h_exp_pow :
+      (Real.exp singleBudget) ^ n = Real.exp ((n : ℝ) * singleBudget) := by
+    rw [← Real.exp_nat_mul]
+  exact h_pow.trans_eq h_exp_pow
+
+/--
 Prior-averaged finite product MGF bound.
 
 This is the PAC-Bayes-facing form: averaging the exponential deviation over a
