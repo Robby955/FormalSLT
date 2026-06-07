@@ -62,6 +62,7 @@ import FormalSLT.Covering.FiniteDiscreteDudley
 
 import FormalSLT.AlgorithmicStability
 import FormalSLT.Stability.BousquetElisseeff
+import FormalSLT.Stability.RKHSRegularisedERM
 import FormalSLT.PACBayesKL
 import FormalSLT.PACBayesFiniteProductMGF
 import FormalSLT.PACBayesBoundedLoss
