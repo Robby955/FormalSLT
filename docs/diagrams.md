@@ -1,8 +1,18 @@
 # Theorem-Dependency Diagrams
 
-Visual companion to [`theorem-map.md`](./theorem-map.md). The README uses the
-checked-in SVG asset; this page keeps Mermaid versions for readers who want to
-scan the proof graph directly on GitHub.
+Visual companion to [`theorem-map.md`](./theorem-map.md).
+
+## Visual index
+
+| Diagram | File | What it shows |
+|---|---|---|
+| Architecture flowchart | [`architecture-flowchart.svg`](./architecture-flowchart.svg) | Proof-dependency graph across core, concentration, symmetrization, capacity, and PAC-Bayes layers; headline theorems highlighted. |
+| Theorem chain (compact) | [`theorem-chain.svg`](./theorem-chain.svg) | Earlier compact version: finite Rademacher and VC spine plus verified extensions. |
+| Sample vs tightness | [`sample-vs-tightness.svg`](./sample-vs-tightness.svg) | Log-scale tail-bound plot: sharp McDiarmid versus Azuma-loose constant across n in 30, 100, 300. |
+| Scope frontier | [`frontier-diagram.svg`](./frontier-diagram.svg) | Two-column view of in-scope (verified) and out-of-scope (open) work. |
+
+The Mermaid versions below are kept for readers who want to scan the proof
+graph directly on GitHub.
 
 ## Core finite-class spine
 

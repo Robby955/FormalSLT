@@ -10,6 +10,10 @@
 
 Every public theorem is checked with no `sorry`, no `admit`, no custom axiom; the full dependency chain closes against only the standard mathlib axioms `[propext, Classical.choice, Quot.sound]`.
 
+![FormalSLT architecture flowchart](./docs/architecture-flowchart.svg)
+
+The architecture diagram shows the verified proof-dependency graph: core ERM definitions feed the concentration backbone and the symmetrization layer; the concentration backbone supplies sharp McDiarmid via Mathlib's conditional sub-Gaussian engine; symmetrization plus capacity feed the VC route; Donsker-Varadhan plus the iid product MGF bridge feed the PAC-Bayes track. Dark boxes are headline theorems whose axiom transcript appears below.
+
 ## What is the contribution
 
 The distinctive, verified result is the **tight change-of-measure PAC-Bayes track**:
@@ -19,6 +23,19 @@ The distinctive, verified result is the **tight change-of-measure PAC-Bayes trac
 - `PACBayesBoundedLoss.finiteCatoni_badEventMass_le_delta` — Catoni posterior-risk bound.
 
 Prior art for context (so the claim is precise): among Lean SLT libraries we surveyed, [lean-rademacher](https://github.com/auto-res/lean-rademacher) and [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory) have no PAC-Bayes; the one with any PAC-Bayes ([formal-learning-theory-kernel](https://github.com/Zetetic-Dhruv/formal-learning-theory-kernel)) has only the loose union-bound form and explicitly defers the tight change-of-measure version (`PACBayes.lean`: "TODO: Prove the tight version via change of measure (Catoni 2007)"). FormalSLT supplies that tight version, inside an end-to-end SLT development.
+
+## Comparison with adjacent formalizations
+
+| Property | FormalSLT | lean-rademacher (Sonoda et al., 2025) | Karayel-Tan AFP (2023) | mathlib4 (upstream) |
+|---|---|---|---|---|
+| Proof assistant | Lean 4 + Mathlib4 | Lean 4 + Mathlib4 | Isabelle / HOL | Lean 4 |
+| Sharp McDiarmid (constant 2) | yes, upper + lower + two-sided | yes, one-sided + negated form | yes, McDiarmid 1989 Lemma 1.2 form | no theorem named McDiarmid; sharp Hoeffding building blocks present |
+| Sharp McDiarmid proof route | exposure martingale into Mathlib `measure_sum_ge_le_of_hasCondSubgaussianMGF` | direct Hoeffding-lemma argument, Hoeffding rebuilt in-tree | direct Hoeffding-lemma route (AFP `Hoeffdings_lemma_bochner` imports) | sub-Gaussian MGF API only (`Probability.Moments.SubGaussian`, R. Degenne 2025) |
+| Tight PAC-Bayes (change of measure) | yes: Donsker-Varadhan, Catoni, McAllester grid peeling on bounded loss | no PAC-Bayes layer | no PAC-Bayes layer | no PAC-Bayes layer |
+| Generalization spine | finite-class ERM through VC and PAC-Bayes confidence bounds | Rademacher-complexity uniform deviation pipeline | concentration toolkit, no learning spine | probability primitives only |
+| Public axioms | `[propext, Classical.choice, Quot.sound]` with axiom transcript published | source-level scan: no `sorry` / `admit` / custom axiom across 11 `FoML/*.lean` files | standard Isabelle / HOL kernel | standard Lean / Mathlib axioms |
+
+The single most defensible claim that anchors this table: **FormalSLT routes the exposure martingale through Mathlib's conditional sub-Gaussian engine, and pairs the resulting sharp McDiarmid bound with a tight change-of-measure PAC-Bayes track inside one axiom-clean library**. lean-rademacher proves the same bound by a direct Hoeffding-lemma argument and has no PAC-Bayes; Karayel-Tan is Isabelle and has no learning-theory spine. Full prior-art notes are in [`docs/related-work.md`](./docs/related-work.md); the table source is [`docs/comparison-table.md`](./docs/comparison-table.md).
 
 ## What's inside
 
@@ -46,6 +63,12 @@ A sharp (constant-2) McDiarmid bounded-differences inequality is included as a v
 | `Azuma.ExposureMartingale.genGap_tail_bound_sharp` | the sharp inequality applied to the SLT generalization gap |
 
 The sharp constant is earned via the exposure-martingale increment's conditional fiber range (proxy `(c_k/2)²`, vs the Azuma `c_k²` route, which co-exists in the same files). **McDiarmid is classical and already formalized elsewhere in Lean and Isabelle — this is a verified re-formalization, not a first; see [Scope and boundaries](#scope-and-honest-boundaries).**
+
+The 4x exponent gap between the sharp bound `exp(-2 ε² / Σ c²)` and the Azuma-loose `exp(-ε² / (2 Σ c²))` form is plotted across representative `n` and `c_i` values below:
+
+![Sharp vs Azuma-loose tail bounds](./docs/sample-vs-tightness.svg)
+
+The math is classical (Boucheron-Lugosi-Massart, Theorem 6.2); the FormalSLT contribution is the mechanized Lean 4 / Mathlib proof and its wiring into `genGap`.
 
 ### 3. The finite Dudley chaining layer (`Covering.*`)
 
@@ -89,6 +112,15 @@ lake build FormalSLT    # builds the whole library (2951 jobs)
 
 `propext`, `Classical.choice`, and `Quot.sound` are the three axioms underlying ordinary classical mathematics in mathlib; there is no project-specific axiom and no `sorry`.
 
+## Scope frontier
+
+The two-column frontier diagram lays out what FormalSLT covers and what remains open:
+
+![FormalSLT scope frontier](./docs/frontier-diagram.svg)
+
+For the full scope statement and assumptions, see
+[`docs/assumptions-and-nonclaims.md`](./docs/assumptions-and-nonclaims.md).
+
 ## Scope and honest boundaries
 
 The contribution is the **verified formalization and integration**, not new mathematics.
@@ -99,6 +131,17 @@ The contribution is the **verified formalization and integration**, not new math
 - **`StandardBorelSpace Z` is required** (from mathlib's `condExpKernel`); covers ℝ, Bool, and all Polish spaces.
 - **Homogeneous iid product** for the general theorem; independent-non-identical coordinates are a separate sibling.
 - **Finite/discrete-first throughout** — finite hypothesis classes, finite grids, discrete Dudley. No continuous Dudley integral, no continuous-posterior PAC-Bayes (those are in-progress work, not in this library).
+
+## Documentation index
+
+- [`docs/comparison-table.md`](./docs/comparison-table.md): full peer-library comparison with sources.
+- [`docs/architecture-flowchart.svg`](./docs/architecture-flowchart.svg): proof-dependency architecture (shown above).
+- [`docs/sample-vs-tightness.svg`](./docs/sample-vs-tightness.svg): sharp vs Azuma-loose tail-bound plot.
+- [`docs/frontier-diagram.svg`](./docs/frontier-diagram.svg): in-scope and out-of-scope at a glance.
+- [`docs/diagrams.md`](./docs/diagrams.md): Mermaid theorem-dependency diagrams (indexed view).
+- [`docs/theorem-map.md`](./docs/theorem-map.md): exact theorem names and statements.
+- [`docs/related-work.md`](./docs/related-work.md): adjacent Lean / Isabelle projects.
+- [`docs/assumptions-and-nonclaims.md`](./docs/assumptions-and-nonclaims.md): scope and assumptions in detail.
 
 ## How to cite
 

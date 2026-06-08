@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" role="img" aria-labelledby="title desc">
+  <title id="title">FormalSLT scope frontier</title>
+  <desc id="desc">Two-column diagram showing what FormalSLT covers (verified) versus what it does not cover (open targets).</desc>
+  <defs>
+    <style>
+      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+      .bg { fill: #ffffff; }
+      .title-text { fill: #0f172a; font-size: 22px; font-weight: 700; }
+      .subtitle { fill: #475569; font-size: 12px; }
+      .in-col { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.4; rx: 12; }
+      .out-col { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.4; rx: 12; stroke-dasharray: 6 5; }
+      .col-title-in { fill: #14532d; font-size: 16px; font-weight: 700; }
+      .col-title-out { fill: #475569; font-size: 16px; font-weight: 700; }
+      .item-in { fill: #ecfdf5; stroke: #16a34a; stroke-width: 1.2; rx: 6; }
+      .item-out { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.2; rx: 6; stroke-dasharray: 4 4; }
+      .item-label { fill: #0f172a; font-size: 12.5px; font-weight: 600; }
+      .item-sub { fill: #475569; font-size: 10.5px; }
+      .check { fill: #16a34a; font-size: 14px; font-weight: 700; }
+      .pending { fill: #94a3b8; font-size: 14px; font-weight: 700; }
+      .footer { fill: #475569; font-size: 11px; }
+    </style>
+  </defs>
+
+  <rect width="1100" height="700" class="bg"/>
+
+  <text x="550" y="36" text-anchor="middle" class="title-text">FormalSLT scope frontier</text>
+  <text x="550" y="58" text-anchor="middle" class="subtitle">Verified Lean 4 theorems versus open targets, as of the public release</text>
+
+  <rect x="40" y="80" width="510" height="560" class="in-col"/>
+  <text x="60" y="110" class="col-title-in">In scope (verified, axiom-clean)</text>
+
+  <rect x="60" y="130" width="470" height="56" class="item-in"/>
+  <text x="80" y="151" class="item-label"><tspan class="check">v</tspan>  Finite-class ERM + symmetrization</text>
+  <text x="80" y="170" class="item-sub">E[genGap] &lt;= 2 E[Rad]; Massart B sqrt(2 log card(H) / n)</text>
+
+  <rect x="60" y="196" width="470" height="56" class="item-in"/>
+  <text x="80" y="217" class="item-label"><tspan class="check">v</tspan>  Sharp McDiarmid via conditional sub-Gaussian engine</text>
+  <text x="80" y="236" class="item-sub">2 exp(-2 eps^2 / sum c_k^2), upper, lower, two-sided; homogeneous iid product</text>
+
+  <rect x="60" y="262" width="470" height="56" class="item-in"/>
+  <text x="80" y="283" class="item-label"><tspan class="check">v</tspan>  VC + Sauer-Shelah binary route</text>
+  <text x="80" y="302" class="item-sub">(e n / d)^d growth; binary VC bridge; closed sample-complexity theorem</text>
+
+  <rect x="60" y="328" width="470" height="56" class="item-in"/>
+  <text x="80" y="349" class="item-label"><tspan class="check">v</tspan>  Tight PAC-Bayes change of measure</text>
+  <text x="80" y="368" class="item-sub">Donsker-Varadhan, Catoni bound, McAllester grid peeling on bounded loss</text>
+
+  <rect x="60" y="394" width="470" height="56" class="item-in"/>
+  <text x="80" y="415" class="item-label"><tspan class="check">v</tspan>  Finite contraction + linear predictors</text>
+  <text x="80" y="434" class="item-sub">Rad(phi o F) &lt;= L Rad(F); Rad &lt;= R/n sqrt(sum ||x_i||^2)</text>
+
+  <rect x="60" y="460" width="470" height="56" class="item-in"/>
+  <text x="80" y="481" class="item-label"><tspan class="check">v</tspan>  Finite Dudley + total-bounded boundary adapters</text>
+  <text x="80" y="500" class="item-sub">Finite chains, dyadic schedules, separable-terminal Dudley boundary</text>
+
+  <rect x="60" y="526" width="470" height="56" class="item-in"/>
+  <text x="80" y="547" class="item-label"><tspan class="check">v</tspan>  Algorithmic stability + Bousquet-Elisseeff</text>
+  <text x="80" y="566" class="item-sub">Bounded-differences scaffold, measure-theoretic iid product, Azuma-constant high prob</text>
+
+  <rect x="60" y="592" width="470" height="40" class="item-in"/>
+  <text x="80" y="617" class="item-label"><tspan class="check">v</tspan>  Localized Bernstein finite scaffold (variance localization)</text>
+
+  <rect x="550" y="80" width="510" height="560" class="out-col"/>
+  <text x="570" y="110" class="col-title-out">Out of scope (open targets)</text>
+
+  <rect x="570" y="130" width="470" height="56" class="item-out"/>
+  <text x="590" y="151" class="item-label"><tspan class="pending">o</tspan>  Continuous Dudley entropy integral</text>
+  <text x="590" y="170" class="item-sub">Library proves discrete chaining and boundary adapters; measure-theoretic integral remains</text>
+
+  <rect x="570" y="196" width="470" height="56" class="item-out"/>
+  <text x="590" y="217" class="item-label"><tspan class="pending">o</tspan>  Continuous-posterior PAC-Bayes (all-real-lambda)</text>
+  <text x="590" y="236" class="item-sub">Finite-grid peeling proved; uncountable-family change of measure is future work</text>
+
+  <rect x="570" y="262" width="470" height="56" class="item-out"/>
+  <text x="590" y="283" class="item-label"><tspan class="pending">o</tspan>  Anytime-valid sequential PAC-Bayes</text>
+  <text x="590" y="302" class="item-sub">Sub-gamma confidence sequences are out of the static finite-sample track</text>
+
+  <rect x="570" y="328" width="470" height="56" class="item-out"/>
+  <text x="590" y="349" class="item-label"><tspan class="pending">o</tspan>  Mathlib MGF unification</text>
+  <text x="590" y="368" class="item-sub">Sub-Gaussian and Bernstein MGF currently sit in separate FormalSLT modules</text>
+
+  <rect x="570" y="394" width="470" height="56" class="item-out"/>
+  <text x="590" y="415" class="item-label"><tspan class="pending">o</tspan>  General VC bridge for real-valued loss classes</text>
+  <text x="590" y="434" class="item-sub">Binary trace is proved; arbitrary real-valued VC requires effective-class extension</text>
+
+  <rect x="570" y="460" width="470" height="56" class="item-out"/>
+  <text x="590" y="481" class="item-label"><tspan class="pending">o</tspan>  Heterogeneous-product sharp McDiarmid</text>
+  <text x="590" y="500" class="item-sub">General theorem is over homogeneous iid product; per-coordinate distinct laws is a target</text>
+
+  <rect x="570" y="526" width="470" height="56" class="item-out"/>
+  <text x="590" y="547" class="item-label"><tspan class="pending">o</tspan>  Neural-network parameter-space generalization</text>
+  <text x="590" y="566" class="item-sub">Requires norm-controlled function classes, compression, or margin; not in the current spine</text>
+
+  <rect x="570" y="592" width="470" height="40" class="item-out"/>
+  <text x="590" y="617" class="item-label"><tspan class="pending">o</tspan>  VC-to-PAC full equivalence (lower bounds)</text>
+
+  <text x="40" y="668" class="footer">Verification standard: all in-scope items have at least one named axiom-clean Lean theorem with `#print axioms` checked.</text>
+  <text x="40" y="686" class="footer">Out-of-scope items are signposted in the README and in docs/assumptions-and-nonclaims.md; not vapor work.</text>
+</svg>
