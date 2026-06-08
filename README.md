@@ -9,6 +9,8 @@
 **A machine-checked statistical learning theory library in Lean 4 / mathlib: one axiom-clean spine from empirical risk minimization through VC, Rademacher, and a tight change-of-measure PAC-Bayes layer. Among the Lean SLT libraries we surveyed, FormalSLT is the only one with a tight (change-of-measure) PAC-Bayes track — a machine-checked Donsker–Varadhan variational inequality wired into McAllester grid-peeling and Catoni posterior-risk bounds.**
 
 Every public theorem is checked with no `sorry`, no `admit`, no custom axiom; the full dependency chain closes against only the standard mathlib axioms `[propext, Classical.choice, Quot.sound]`.
+**As of 2026-06-08: 60 modules, 31,533 lines of Lean. Zero `sorry`, zero `admit`, zero custom axioms. Axiom-clean against `{propext, Classical.choice, Quot.sound}`.**
+
 
 ![FormalSLT architecture flowchart](./docs/architecture-flowchart.svg)
 
