@@ -20,9 +20,9 @@ The architecture diagram shows the verified proof-dependency graph: core ERM def
 
 The distinctive, verified result is the **tight change-of-measure PAC-Bayes track**:
 
-- `PACBayesKL.donsker_varadhan` — the Donsker–Varadhan variational inequality (real proof, not a stub).
-- `PACBayesMcAllester.pacbayes_changeOfMeasure` and `PACBayesBoundedLoss.finiteMcAllesterGridPeeling_badEventMass_le_delta` — McAllester-style bounds with grid λ-peeling.
-- `PACBayesBoundedLoss.finiteCatoni_badEventMass_le_delta` — Catoni posterior-risk bound.
+- `PACBayesKL.donsker_varadhan`: the Donsker–Varadhan variational inequality (real proof, not a stub).
+- `PACBayesMcAllester.pacbayes_changeOfMeasure` and `PACBayesBoundedLoss.finiteMcAllesterGridPeeling_badEventMass_le_delta`: McAllester-style bounds with grid λ-peeling.
+- `PACBayesBoundedLoss.finiteCatoni_badEventMass_le_delta`: Catoni posterior-risk bound.
 
 Prior art for context (so the claim is precise): among Lean SLT libraries we surveyed, [lean-rademacher](https://github.com/auto-res/lean-rademacher) and [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory) have no PAC-Bayes; the one with any PAC-Bayes ([formal-learning-theory-kernel](https://github.com/Zetetic-Dhruv/formal-learning-theory-kernel)) has only the loose union-bound form and explicitly defers the tight change-of-measure version (`PACBayes.lean`: "TODO: Prove the tight version via change of measure (Catoni 2007)"). FormalSLT supplies that tight version, inside an end-to-end SLT development.
 
