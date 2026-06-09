@@ -72,6 +72,7 @@ find FormalSLT/ -name '*.lean' -exec cat {} + | wc -l
 find FormalSLT/ -name '*.lean' | wc -l
 ```
 
-For prose, prefer exact human-readable counts such as "19,339 Lean lines"
-after rerunning the command. During active proof bursts, either omit the count
-or refresh it immediately before tagging and submitting.
+For prose, prefer exact human-readable counts such as "31,533 Lean lines"
+across "60 modules" (as of 2026-06-09), after rerunning the command. During
+active proof bursts, either omit the count or refresh it immediately before
+tagging and submitting.

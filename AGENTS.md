@@ -62,8 +62,9 @@ appropriate example file and confirm the public axiom set remains:
 
 - Do not call the Dudley lane a full continuous Dudley theorem until a theorem
   with the required topological and measurability assumptions actually exists.
-- Use human-readable line counts in prose, for example `19,339 Lean lines`,
-  after rerunning the count command. Refresh the number before a release tag.
+- Use human-readable line counts in prose, for example `31,533 Lean lines`
+  across `60 modules` (as of 2026-06-09), after rerunning the count command.
+  Refresh the number before a release tag.
 - Keep workshop-paper claims, public-repo claims, and future-venue claims
   separate. They can share the same artifact, but they should not blur what is
   proved today with what is planned next.
