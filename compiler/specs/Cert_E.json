@@ -1,0 +1,10 @@
+{
+  "spec_id": "Cert_E",
+  "H": 16,
+  "n": 2000,
+  "B": "1",
+  "delta": "0.10",
+  "prior": {"kind": "uniform"},
+  "posterior": {"kind": "uniform"},
+  "KL": "0"
+}

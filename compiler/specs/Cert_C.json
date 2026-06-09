@@ -1,0 +1,10 @@
+{
+  "spec_id": "Cert_C",
+  "H": 128,
+  "n": 10000,
+  "B": "1",
+  "delta": "0.05",
+  "prior": {"kind": "uniform"},
+  "posterior": {"kind": "softmax"},
+  "KL": "4.5"
+}
