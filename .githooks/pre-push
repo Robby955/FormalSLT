@@ -112,14 +112,21 @@ ALLOW_RE=$(IFS='|'; echo "${ALLOW_RES[*]}")
 DENY_RE=$(IFS='|'; echo "${DENY_RES[*]}")
 
 # Collect the diff of added lines plus commit message bodies into one buffer.
-ADDED_LINES=$(git diff "origin/main..HEAD" 2>/dev/null | grep -E '^\+' | grep -vE '^\+\+\+' || true)
+# Exclude the hook's own dir: the hook and its README necessarily contain the
+# forbidden vendor strings / path examples (as patterns + docs), so scanning them
+# would block every push of the hook itself.
+ADDED_LINES=$(git diff "origin/main..HEAD" -- . ':(exclude).githooks/' 2>/dev/null | grep -E '^\+' | grep -vE '^\+\+\+' || true)
 COMMIT_BODIES=$(git log --pretty=%B "origin/main..HEAD" 2>/dev/null || true)
 COMBINED=$(printf '%s\n%s\n' "$ADDED_LINES" "$COMMIT_BODIES")
 
-# First, find deny hits. Use grep -P (PCRE) so the non-capturing groups
-# in the deny patterns work. Then filter out lines that ALSO match the
-# allowlist regex.
-HITS=$(printf '%s\n' "$COMBINED" | grep -nP "$DENY_RE" 2>/dev/null | grep -vP "$ALLOW_RE" 2>/dev/null || true)
+# Find deny hits, then drop lines that ALSO match the allowlist. The deny/allow
+# patterns use PCRE features (\b, non-capturing groups), so use perl — macOS BSD
+# grep has no -P and silently fails open (the previous `grep -P ... 2>/dev/null ||
+# true` never blocked on a Mac). Patterns are passed via env to avoid shell quoting
+# issues; an empty allowlist must NOT match-everything-and-drop-all.
+HITS=$(printf '%s\n' "$COMBINED" \
+  | DENY_RE="$DENY_RE" perl -ne 'print "$.:$_" if /$ENV{DENY_RE}/' \
+  | ALLOW_RE="$ALLOW_RE" perl -ne 'print unless length($ENV{ALLOW_RE}) && /$ENV{ALLOW_RE}/')
 
 if [ -n "$HITS" ]; then
   echo ""
