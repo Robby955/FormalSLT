@@ -63,6 +63,21 @@ Use a separate decision gate for future venues:
 - the target venue's formatting, anonymity, deadline, and artifact policy are
   verified from the official call.
 
+## Paper-section drafts
+
+Each major lane keeps a paper-section draft beside its design doc, so writing
+follows verification rather than racing it:
+
+- PAC-Bayes test-time meta-theorem: `docs/pac-bayes-test-time-paper-section.md`.
+- Continuous-posterior PAC-Bayes (Route B, v0.2 headline):
+  `docs/route-b-paper-section-draft-2026-06-10.md`, paired with the design
+  blueprint `docs/route-b-continuous-pac-bayes-blueprint-2026-06-10.md` and
+  the scope in `docs/v0.2-milestone.md`.
+
+A draft is publishable only when its `[PENDING]` rows are gone and its
+verification paragraph carries real build numbers. The "What Not To Claim"
+section of each draft is the honesty gate for the corresponding abstract.
+
 ## Count and claim policy
 
 Use the CI count method when reporting Lean size:

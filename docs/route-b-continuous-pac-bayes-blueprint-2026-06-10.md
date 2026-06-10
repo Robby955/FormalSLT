@@ -226,6 +226,14 @@ One step per PR, in order B1 → B2 → B3 → B4a → B4b (→ B5). Each PR:
 - regenerates the proof-frontier manifest and updates `docs/theorem-map.md`;
 - updates this blueprint if a signature had to move.
 
+## Paper section
+
+The workshop-paper framing for this lane lives in
+`docs/route-b-paper-section-draft-2026-06-10.md`: section draft, Lean-citation
+checklist, verification-paragraph template, honesty gate, and a paste-ready
+LaTeX block. Update it in lockstep — when a step below compiles, clear the
+matching `[PENDING]` row there.
+
 ## Boundaries (do not claim until proved)
 
 - B1-B3 give a continuous-*hypothesis-space* PAC-Bayes bound with a **finite

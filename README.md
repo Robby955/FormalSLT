@@ -116,6 +116,9 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
   [System architecture](./docs/architecture.md).
 - **For the next release definition:** see
   [v0.2 milestone](./docs/v0.2-milestone.md).
+- **For the continuous PAC-Bayes lane (design + paper draft):** see
+  [Route B blueprint](./docs/route-b-continuous-pac-bayes-blueprint-2026-06-10.md)
+  and [Route B paper-section draft](./docs/route-b-paper-section-draft-2026-06-10.md).
 - **For exact theorem names:** use [Theorem map](./docs/theorem-map.md).
 - **For the conditional sub-Gamma extractor:** see
   [Conditional Sub-Gamma Extractor](./docs/subgamma-extractor.md).
