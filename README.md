@@ -41,8 +41,8 @@ posterior-dependent square-root-plus-linear wrapper. This is a supplied-proxy
 finite shell: it is not yet a concrete classifier-margin extractor, an
 all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
 
-**60 `FormalSLT/` Lean files. 85 checked Lean files under `FormalSLT/` and
-`examples/`. 33,427 lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**88 `FormalSLT/` Lean files. 138 checked Lean files under `FormalSLT/` and
+`examples/`. 40,241 Lean lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
 
 Counts are generated with `find FormalSLT -name '*.lean'`, `find FormalSLT
 examples -name '*.lean'`, and `find FormalSLT examples -name '*.lean' -print0 |
