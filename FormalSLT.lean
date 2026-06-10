@@ -72,6 +72,11 @@ import FormalSLT.PACBayesBernstein
 import FormalSLT.PACBayes.McAllesterBound
 import FormalSLT.PACBayes.McAllesterBoundGeneral
 import FormalSLT.PACBayes.Compiler
+import FormalSLT.PACBayes.Generated.Cert_A
+import FormalSLT.PACBayes.Generated.Cert_B
+import FormalSLT.PACBayes.Generated.Cert_C
+import FormalSLT.PACBayes.Generated.Cert_D
+import FormalSLT.PACBayes.Generated.Cert_E
 
 import FormalSLT.OnlineToPAC.RegretConversion
 import FormalSLT.OnlineToPAC.CesaBianchi
