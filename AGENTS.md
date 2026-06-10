@@ -3,6 +3,23 @@
 FormalSLT is a Lean 4 formalization repo. Work in small, reviewable branches
 and keep public claims tied to checked theorem statements.
 
+## Remote / sandboxed environment requirements
+
+Building this repo requires network access to the Lean infrastructure hosts,
+not just `github.com`. If the execution environment uses a network allowlist
+(for example Claude Code on the web), it must permit:
+
+- `release.lean-lang.org` (elan toolchain manifest);
+- `reservoir.lean-lang.org` (Mathlib olean cache for `lake exe cache get`);
+- `release-assets.githubusercontent.com` (GitHub release asset redirects).
+
+Without these, `lake exe cache get` fails with `403 host_not_allowed` and no
+Lean verification is possible in that session. Mathlib *source* can still be
+fetched from `github.com` for API inspection, and the Python tooling under
+`compiler/` runs without Lean. Design-only work done under this restriction
+must be clearly marked unverified (see
+`docs/route-b-continuous-pac-bayes-blueprint-2026-06-10.md` for an example).
+
 ## First commands in a fresh checkout or worktree
 
 Always fetch the Mathlib cache before any baseline build:
