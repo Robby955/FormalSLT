@@ -407,28 +407,38 @@ def load_spec(path: Path) -> NormalizedSpec:
 def run_lake_build(module: str, timeout: int = 900) -> tuple[bool, str]:
     env = os.environ.copy()
     env["PATH"] = f"{Path.home() / '.elan' / 'bin'}:{env.get('PATH', '')}"
-    proc = subprocess.run(
-        ["lake", "build", module],
-        cwd=REPO_ROOT,
-        env=env,
-        text=True,
-        capture_output=True,
-        timeout=timeout,
-    )
+    try:
+        proc = subprocess.run(
+            ["lake", "build", module],
+            cwd=REPO_ROOT,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired:
+        return False, f"lake build {module} timed out after {timeout}s"
+    except FileNotFoundError:
+        return False, "lake executable not found (is elan installed?)"
     return proc.returncode == 0, proc.stdout + proc.stderr
 
 
 def run_axiom_check(check_path: Path, timeout: int = 300) -> tuple[bool, str]:
     env = os.environ.copy()
     env["PATH"] = f"{Path.home() / '.elan' / 'bin'}:{env.get('PATH', '')}"
-    proc = subprocess.run(
-        ["lake", "env", "lean", str(check_path)],
-        cwd=REPO_ROOT,
-        env=env,
-        text=True,
-        capture_output=True,
-        timeout=timeout,
-    )
+    try:
+        proc = subprocess.run(
+            ["lake", "env", "lean", str(check_path)],
+            cwd=REPO_ROOT,
+            env=env,
+            text=True,
+            capture_output=True,
+            timeout=timeout,
+        )
+    except subprocess.TimeoutExpired:
+        return False, f"axiom check on {check_path.name} timed out after {timeout}s"
+    except FileNotFoundError:
+        return False, "lake executable not found (is elan installed?)"
     out = proc.stdout + proc.stderr
     return proc.returncode == 0 and axiom_output_clean(out), out
 

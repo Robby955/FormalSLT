@@ -48,7 +48,22 @@ def run_command(args: list[str], *, timeout: int = 900) -> tuple[bool, str, floa
 
 
 def run_spec(spec_path: Path) -> SweepRow:
-    spec = load_spec(spec_path)
+    try:
+        spec = load_spec(spec_path)
+    except Exception as exc:
+        print(f"[sweep] failed to load spec {spec_path.name}: {exc}")
+        return SweepRow(
+            spec_id=spec_path.stem,
+            H=0,
+            n=0,
+            B="",
+            delta="",
+            KL="",
+            computed_bound="",
+            lake_build_ok=0,
+            axiom_clean=0,
+            wallclock_seconds="0.000",
+        )
     compile_ok, compile_out, _compile_seconds = run_command(
         [sys.executable, str(COMPILER), "--spec", str(spec_path)],
         timeout=300,
