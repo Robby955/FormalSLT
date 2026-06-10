@@ -46,6 +46,7 @@ import FormalSLT.Azuma.HasBoundedDifferences
 import FormalSLT.Azuma.ExposureIncrementHoeffding
 import FormalSLT.Azuma.ExposureIncrementCondMGF
 import FormalSLT.Azuma.GenGapTail
+import FormalSLT.Azuma.SharpMcDiarmid
 
 import FormalSLT.VC.Dimension
 import FormalSLT.VC.PACBridge
