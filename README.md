@@ -112,6 +112,10 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
 - **For ML readers:** start with [How to read the proofs](./docs/how-to-read-the-proofs.md),
   then [Intuition](./docs/intuition.md).
 - **For proof structure:** see [Diagrams](./docs/diagrams.md).
+- **For how the subsystems fit together:** see
+  [System architecture](./docs/architecture.md).
+- **For the next release definition:** see
+  [v0.2 milestone](./docs/v0.2-milestone.md).
 - **For exact theorem names:** use [Theorem map](./docs/theorem-map.md).
 - **For the conditional sub-Gamma extractor:** see
   [Conditional Sub-Gamma Extractor](./docs/subgamma-extractor.md).
