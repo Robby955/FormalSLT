@@ -12,6 +12,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Python tooling tests (compiler mirrors, generated-cert sync)
+        run: |
+          python3 -m pip install --quiet pytest
+          python3 -m pytest compiler/ -q
+
+      - name: Check doc anchors
+        run: |
+          python3 scripts/check_doc_anchors.py \
+            docs/formalslt-v0.1-technical-note.md \
+            docs/formalslt-v0.1-artifact-map-2026-06-01.md \
+            docs/formalslt-v0.1-release-review-2026-06-01.md \
+            docs/theorempath-formalslt-v0.1-page-draft.mdx
+
       - name: Install elan
         run: |
           curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
