@@ -1,0 +1,27 @@
+import FormalSLT.TestTimeMeta.MainTheorem
+
+/-!
+# Axiom audit for the PAC-Bayes test-time meta-theorem
+-/
+
+open FormalSLT.TestTimeMeta
+
+#print axioms testTimeNamedAssumptions_valid
+#print axioms mcAllesterCompilerContribution_from_unitIntervalCompiler
+#print axioms onlineToPACContribution_from_regretConversion
+#print axioms onlineToPACContribution_from_iidRegretConversion
+#print axioms bernsteinContribution_from_continuousCertificate
+#print axioms bernsteinContribution_from_sphericalGaussianCertificate
+#print axioms anytimeVilleContribution_from_subGammaExtractor
+#print axioms pacBayesTestTimeMeta_theorem
+
+#check @testTimeNamedAssumptions_valid
+#check @mcAllesterCompilerContribution_from_unitIntervalCompiler
+#check @onlineToPACContribution_from_regretConversion
+#check @onlineToPACContribution_from_iidRegretConversion
+#check @bernsteinContribution_from_continuousCertificate
+#check @bernsteinContribution_from_sphericalGaussianCertificate
+#check @anytimeVilleContribution_from_subGammaExtractor
+#check @pacBayesTestTimeMeta_theorem
+
+example : True := trivial
