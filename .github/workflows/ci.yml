@@ -33,6 +33,9 @@ jobs:
       - name: Check proof frontier manifest
         run: python3 scripts/generate_proof_frontier_manifest.py --check
 
+      - name: Check badge counts
+        run: python3 scripts/generate_badge_counts.py --check
+
       - name: Verify no sorry
         run: |
           # Match 'sorry' as a standalone tactic (not in comments or strings)
