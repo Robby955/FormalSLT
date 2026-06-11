@@ -1,0 +1,16 @@
+import FormalSLT.Covering.DudleyEntropyIntegral
+
+#check FormalSLT.Covering.DudleyEntropyIntegral.dyadic_sum_le_entropy_integral
+#print axioms FormalSLT.Covering.DudleyEntropyIntegral.dyadic_sum_le_entropy_integral
+
+#check FormalSLT.Covering.DudleyEntropyIntegral.coveringNumber_entropy_integrable_of_antitone
+#print axioms FormalSLT.Covering.DudleyEntropyIntegral.coveringNumber_entropy_integrable_of_antitone
+
+#check FormalSLT.Covering.DudleyEntropyIntegral.dudley_entropy_integral_of_antitone_coveringNumber
+#print axioms FormalSLT.Covering.DudleyEntropyIntegral.dudley_entropy_integral_of_antitone_coveringNumber
+
+#check FormalSLT.Covering.DudleyEntropyIntegral.dudley_entropy_integral
+#print axioms FormalSLT.Covering.DudleyEntropyIntegral.dudley_entropy_integral
+
+#check FormalSLT.Covering.DudleyEntropyIntegral.twoPointRademacher_centered_dudley_entropy_integral
+#print axioms FormalSLT.Covering.DudleyEntropyIntegral.twoPointRademacher_centered_dudley_entropy_integral

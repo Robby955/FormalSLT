@@ -21,6 +21,7 @@ class.
 | q086 | `FormalSLT.Covering.DudleyChainingSum` | `dudley_chaining_sum` | centered finite-net chaining sum |
 | q087 | `FormalSLT.Covering.DudleySumToIntegral` | `dudley_entropy_integral_of_antitone_coveringNumber` | dyadic entropy sum bounded by a truncated entropy integral |
 | example | `FormalSLT.Covering.TwoPointDudleyIntegral` | `twoPointRademacher_centered_dudley_entropy_integral` | concrete rooted two-point instantiation of the q087 theorem |
+| endpoint | `FormalSLT.Covering.DudleyEntropyIntegral` | re-exported q087 and two-point endpoint declarations | canonical import surface for the finite G3 endpoint |
 
 The old q087 theorem name `dudley_entropy_integral` remains available as a
 compatibility wrapper. New callers can use
@@ -111,8 +112,10 @@ levels and therefore is not rooted at level `0`.
 Run the focused checks with:
 
 ```bash
+~/.elan/bin/lake build FormalSLT.Covering.DudleyEntropyIntegral
 ~/.elan/bin/lake build FormalSLT.Covering.DudleySumToIntegral
 ~/.elan/bin/lake build FormalSLT.Covering.TwoPointDudleyIntegral
+~/.elan/bin/lake env lean examples/CheckDudleyEntropyIntegral.lean
 ~/.elan/bin/lake env lean examples/CheckDudleySumToIntegral.lean
 ~/.elan/bin/lake env lean examples/CheckTwoPointDudleyIntegral.lean
 ```
