@@ -1,0 +1,10 @@
+import FormalSLT.Probability.SubGaussianFiniteMax
+
+#check FormalSLT.Probability.SubGaussianFiniteMax.exp_finiteExpectation_le_of_jensen
+#print axioms FormalSLT.Probability.SubGaussianFiniteMax.exp_finiteExpectation_le_of_jensen
+
+#check FormalSLT.Probability.SubGaussianFiniteMax.subgaussian_finite_max
+#print axioms FormalSLT.Probability.SubGaussianFiniteMax.subgaussian_finite_max
+
+#check FormalSLT.Probability.SubGaussianFiniteMax.subgaussian_finite_max_abs
+#print axioms FormalSLT.Probability.SubGaussianFiniteMax.subgaussian_finite_max_abs

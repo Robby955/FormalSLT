@@ -56,6 +56,7 @@ import FormalSLT.VC.BinaryVCBridge
 import FormalSLT.Covering.Rademacher
 import FormalSLT.Covering.DudleyChaining
 import FormalSLT.Covering.FiniteSubGaussianChaining
+import FormalSLT.Probability.SubGaussianFiniteMax
 import FormalSLT.Covering.TotalBoundedDudley
 import FormalSLT.Covering.UnitIntervalDudley
 import FormalSLT.Covering.TwoPointDudley
