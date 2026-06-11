@@ -1,0 +1,10 @@
+import FormalSLT.Covering.DudleyChainingSum
+
+#check FormalSLT.Covering.DudleyChainingSum.dudley_chaining_telescope
+#print axioms FormalSLT.Covering.DudleyChainingSum.dudley_chaining_telescope
+
+#check FormalSLT.Covering.DudleyChainingSum.dudley_level_increment_max_bound
+#print axioms FormalSLT.Covering.DudleyChainingSum.dudley_level_increment_max_bound
+
+#check FormalSLT.Covering.DudleyChainingSum.dudley_chaining_sum
+#print axioms FormalSLT.Covering.DudleyChainingSum.dudley_chaining_sum
