@@ -517,15 +517,7 @@ If you use FormalSLT in academic work, please cite:
 }
 ```
 
-## About
 
-FormalSLT is authored by **Rob Sneiderman**
-([Robby955](https://github.com/Robby955) on GitHub,
-[robbysneiderman.com](https://robbysneiderman.com)). The library underwrites
-the public TheoremPath learning surfaces and is the verification spine for
-related research on finite-sample concentration, PAC-Bayes, and statistical
-learning theory. The author is an applied/mathematical statistician with an
-accepted ICML 2026 workshop poster and upstream contributions to mathlib4.
 
 For audit commands that regenerate the badge counts above, see the
 [audit commands](#audit-commands) section.
