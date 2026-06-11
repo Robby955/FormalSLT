@@ -1,0 +1,20 @@
+import FormalSLT.Covering.TwoPointDudleyIntegral
+
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointRootNet
+#print axioms FormalSLT.Covering.TwoPointDudleyIntegral.twoPointRootNet
+
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointTerminalNet
+#print axioms FormalSLT.Covering.TwoPointDudleyIntegral.twoPointTerminalNet
+
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointRootedNet
+#print axioms FormalSLT.Covering.TwoPointDudleyIntegral.twoPointRootedNet
+
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointIntegralCoverProfile
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointIntegralCoverProfile_antitone
+#print axioms FormalSLT.Covering.TwoPointDudleyIntegral.twoPointIntegralCoverProfile_antitone
+
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointIntegralCoverProfile_pos
+#print axioms FormalSLT.Covering.TwoPointDudleyIntegral.twoPointIntegralCoverProfile_pos
+
+#check FormalSLT.Covering.TwoPointDudleyIntegral.twoPointRademacher_centered_dudley_entropy_integral
+#print axioms FormalSLT.Covering.TwoPointDudleyIntegral.twoPointRademacher_centered_dudley_entropy_integral
