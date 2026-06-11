@@ -1,0 +1,10 @@
+import FormalSLT.Covering.DudleySumToIntegral
+
+#check FormalSLT.Covering.DudleySumToIntegral.dyadic_sum_le_entropy_integral
+#print axioms FormalSLT.Covering.DudleySumToIntegral.dyadic_sum_le_entropy_integral
+
+#check FormalSLT.Covering.DudleySumToIntegral.coveringNumber_entropy_integrable
+#print axioms FormalSLT.Covering.DudleySumToIntegral.coveringNumber_entropy_integrable
+
+#check FormalSLT.Covering.DudleySumToIntegral.dudley_entropy_integral
+#print axioms FormalSLT.Covering.DudleySumToIntegral.dudley_entropy_integral
