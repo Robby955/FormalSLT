@@ -6,5 +6,11 @@ import FormalSLT.Covering.DudleySumToIntegral
 #check FormalSLT.Covering.DudleySumToIntegral.coveringNumber_entropy_integrable
 #print axioms FormalSLT.Covering.DudleySumToIntegral.coveringNumber_entropy_integrable
 
+#check FormalSLT.Covering.DudleySumToIntegral.coveringNumber_entropy_integrable_of_antitone
+#print axioms FormalSLT.Covering.DudleySumToIntegral.coveringNumber_entropy_integrable_of_antitone
+
+#check FormalSLT.Covering.DudleySumToIntegral.dudley_entropy_integral_of_antitone_coveringNumber
+#print axioms FormalSLT.Covering.DudleySumToIntegral.dudley_entropy_integral_of_antitone_coveringNumber
+
 #check FormalSLT.Covering.DudleySumToIntegral.dudley_entropy_integral
 #print axioms FormalSLT.Covering.DudleySumToIntegral.dudley_entropy_integral

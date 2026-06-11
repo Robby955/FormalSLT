@@ -41,9 +41,22 @@ theorem coveringNumber_entropy_antitone
   exact Real.log_le_log hpos hle
 
 /--
-Interval integrability of the finite covering-number entropy profile. The
-caller records finite boundedness on the interval; mathlib's monotone
-integrability theorem supplies the integrability proof from antitonicity.
+Interval integrability of the finite covering-number entropy profile from
+antitonicity and positivity.
+-/
+theorem coveringNumber_entropy_integrable_of_antitone
+    (coveringNumberAtRadius : ℝ → ℕ) (a b : ℝ)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε) :
+    IntervalIntegrable
+      (fun ε : ℝ => Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ)))
+      MeasureTheory.volume a b := by
+  exact (coveringNumber_entropy_antitone
+    coveringNumberAtRadius hcover_antitone hcover_pos).intervalIntegrable
+
+/--
+Interval-integrability compatibility wrapper for callers that still carry a
+finite boundedness receipt on the interval.
 -/
 theorem coveringNumber_entropy_integrable
     (coveringNumberAtRadius : ℝ → ℕ) (a b : ℝ)
@@ -54,8 +67,8 @@ theorem coveringNumber_entropy_integrable
     IntervalIntegrable
       (fun ε : ℝ => Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ)))
       MeasureTheory.volume a b := by
-  exact (coveringNumber_entropy_antitone
-    coveringNumberAtRadius hcover_antitone hcover_pos).intervalIntegrable
+  exact coveringNumber_entropy_integrable_of_antitone
+    coveringNumberAtRadius a b hcover_antitone hcover_pos
 
 /--
 Dyadic upper-sum comparison for an abstract antitone entropy profile. The
@@ -89,7 +102,7 @@ The covering profile is supplied as a positive antitone Nat-valued function
 finite-net product `(N_j * N_{j+1})` with that profile at the lower endpoint of
 the dyadic annulus.
 -/
-theorem dudley_entropy_integral
+theorem dudley_entropy_integral_of_antitone_coveringNumber
     [Fintype Ω] [Fintype T] [Nonempty T]
     (P : FiniteSubGaussianProcess Ω T)
     {A : ℕ → Type*} [∀ j : ℕ, Fintype (A j)]
@@ -107,11 +120,6 @@ theorem dudley_entropy_integral
     (hradius_geometric : ∀ j ∈ Finset.range m,
       (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
     (hcover_antitone : Antitone coveringNumberAtRadius)
-    (hcover_bound : ∀ j ∈ Finset.range m, ∃ M : ℕ,
-      ∀ ε ∈ Set.uIcc
-          (radiusScale / (2 : ℝ) ^ (j + 2))
-          (radiusScale / (2 : ℝ) ^ (j + 1)),
-        coveringNumberAtRadius ε ≤ M)
     (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
     (hcover_product : ∀ j ∈ Finset.range m,
       (N j).coveringNumber * (N (j + 1)).coveringNumber ≤
@@ -139,11 +147,11 @@ theorem dudley_entropy_integral
         (radiusScale / (2 : ℝ) ^ (j + 1)) := by
     intro j hj
     simpa [entropyAtRadius] using
-      coveringNumber_entropy_integrable
+      coveringNumber_entropy_integrable_of_antitone
         coveringNumberAtRadius
         (radiusScale / (2 : ℝ) ^ (j + 2))
         (radiusScale / (2 : ℝ) ^ (j + 1))
-        hcover_antitone (hcover_bound j hj) hcover_pos
+        hcover_antitone hcover_pos
   have hupper :
       FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
           radiusScale m entropyAtRadius ≤
@@ -261,6 +269,56 @@ theorem dudley_entropy_integral
             Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
         simp [entropyAtRadius]
         ring
+
+/--
+Centered finite Dudley entropy-integral compatibility wrapper for callers that
+still provide an interval boundedness receipt for the covering profile.
+-/
+theorem dudley_entropy_integral
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    {A : ℕ → Type*} [∀ j : ℕ, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (t₀ : T) (radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hroot : ∀ t : T, (N 0).projection t = t₀)
+    (hlast : ∀ t : T, (N m).projection t = t)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (_hcover_bound : ∀ j ∈ Finset.range m, ∃ M : ℕ,
+      ∀ ε ∈ Set.uIcc
+          (radiusScale / (2 : ℝ) ^ (j + 2))
+          (radiusScale / (2 : ℝ) ^ (j + 1)),
+        coveringNumberAtRadius ε ≤ M)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_product : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hcenter : ∀ j ∈ Finset.range m,
+      ∀ pair : FiniteNet.ProjectionPair (N j) (N (j + 1)),
+        finiteExpectation P.weight
+          (fun ω => P.X ω ((N (j + 1)).center pair.1.2) -
+            P.X ω ((N j).center pair.1.1)) = 0) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup (fun t : T => P.X ω t - P.X ω t₀)) ≤
+      4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  exact
+    dudley_entropy_integral_of_antitone_coveringNumber
+      (P := P) (N := N) (m := m) (t₀ := t₀)
+      (radiusScale := radiusScale)
+      (coveringNumberAtRadius := coveringNumberAtRadius)
+      hdist hsymm htri hroot hlast hvariance hradiusScale_nonneg
+      hradius_pos hradius_geometric hcover_antitone hcover_pos
+      hcover_product hcenter
 
 end
 
