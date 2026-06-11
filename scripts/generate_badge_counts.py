@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Generate shields.io endpoint badges from the on-disk Lean surface.
+"""Generate shields.io badge data from the on-disk Lean surface.
 
 For each metric (theorems, modules, lines) this writes a small JSON blob to
 ``docs/badges/<metric>.json`` that the shields.io endpoint badge consumes.
-The README references those raw GitHub URLs, so the badge values stay in
-lockstep with the source files instead of drifting in hand-written prose.
+The README uses static shields.io badge URLs so pull-request previews do not
+depend on files that have not landed on ``main`` yet. This script checks those
+README badge values against the generated counts.
 
 Run modes:
 
@@ -21,11 +22,24 @@ import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BADGE_DIR = REPO_ROOT / "docs" / "badges"
+README = REPO_ROOT / "README.md"
 
 THEOREM_RE = re.compile(r"^\s*(?:noncomputable\s+)?(?:theorem|lemma)\s+[A-Za-z_]")
+README_BADGE_PATTERNS = {
+    "theorems": re.compile(
+        r"https://img\.shields\.io/badge/theorems%2Flemmas-[^-)\]]+-brightgreen\.svg"
+    ),
+    "modules": re.compile(
+        r"https://img\.shields\.io/badge/FormalSLT%20modules-[^-)\]]+-blue\.svg"
+    ),
+    "lines": re.compile(
+        r"https://img\.shields\.io/badge/Lean%20lines-[^-)\]]+-brightgreen\.svg"
+    ),
+}
 
 
 def iter_lean_files(*roots: Path):
@@ -64,6 +78,13 @@ def badge_payload(label: str, value: int) -> dict:
     }
 
 
+def static_badge_url(label: str, value: int, color: str = "brightgreen") -> str:
+    return (
+        "https://img.shields.io/badge/"
+        f"{quote(label, safe='')}-{quote(f'{value:,}', safe='')}-{color}.svg"
+    )
+
+
 def write_or_check(path: Path, payload: dict, check: bool) -> bool:
     text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
     if check:
@@ -83,6 +104,40 @@ def write_or_check(path: Path, payload: dict, check: bool) -> bool:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
     return True
+
+
+def write_or_check_readme_badges(targets: dict[str, str], check: bool) -> bool:
+    if not README.exists():
+        print("[badge-counts] missing: README.md", file=sys.stderr)
+        return False
+
+    text = README.read_text(encoding="utf-8")
+    updated = text
+    ok = True
+
+    for name, expected in targets.items():
+        pattern = README_BADGE_PATTERNS[name]
+        match = pattern.search(updated)
+        if not match:
+            print(f"[badge-counts] missing README badge: {name}", file=sys.stderr)
+            ok = False
+            continue
+        if match.group(0) == expected:
+            continue
+        if check:
+            print(
+                f"[badge-counts] README badge drift: {name}\n"
+                f"  expected: {expected}\n"
+                f"  actual:   {match.group(0)}",
+                file=sys.stderr,
+            )
+            ok = False
+        else:
+            updated = pattern.sub(expected, updated, count=1)
+
+    if not check and updated != text:
+        README.write_text(updated, encoding="utf-8")
+    return ok
 
 
 def main() -> int:
@@ -108,11 +163,18 @@ def main() -> int:
         (BADGE_DIR / "modules.json", badge_payload("Lean modules", modules)),
         (BADGE_DIR / "lines.json", badge_payload("Lean lines", total_lines)),
     ]
+    readme_badges = {
+        "theorems": static_badge_url("theorems/lemmas", theorems),
+        "modules": static_badge_url("FormalSLT modules", modules, "blue"),
+        "lines": static_badge_url("Lean lines", total_lines),
+    }
 
     ok = True
     for path, payload in targets:
         if not write_or_check(path, payload, args.check):
             ok = False
+    if not write_or_check_readme_badges(readme_badges, args.check):
+        ok = False
 
     if args.check and not ok:
         print(
