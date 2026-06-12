@@ -1,5 +1,6 @@
 import FormalSLT.Concentration.SharpMcDiarmid
 import FormalSLT.Azuma.GenGapTail
+import FormalSLT.Azuma.SharpMcDiarmid
 
 /-!
 Axiom audit for the sharp (constant-2) McDiarmid bounded-differences theorems
@@ -12,3 +13,8 @@ no `admit`, and no project-specific axiom.
 #print axioms FormalSLT.Concentration.mcdiarmid_of_hasBoundedDifferences_sharp_lower
 #print axioms FormalSLT.Concentration.mcdiarmid_twoSided_of_hasBoundedDifferences_sharp
 #print axioms FormalSLT.Azuma.ExposureMartingale.genGap_tail_bound_sharp
+
+open FormalSLT.Azuma.ExposureMartingale
+
+#print axioms sharp_mcdiarmid_increment_subGaussian_mgf
+#print axioms sharp_mcdiarmid_inequality_iid_const_width

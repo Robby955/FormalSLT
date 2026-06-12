@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import FormalSLT.AlgorithmicStability
+import FormalSLT.Azuma.SharpMcDiarmid
 import FormalSLT.Concentration.SharpMcDiarmid
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
@@ -122,6 +123,25 @@ theorem mcdiarmid_inequality_iid_const_width
     rw [h_sum_real]
   rw [hexp_eq] at hSharp
   exact hSharp
+
+/-- Addendum: the same constant-width iid concentration theorem routed through
+the q049 `FormalSLT.Azuma.SharpMcDiarmid` API.
+
+This keeps the Bousquet-Elisseeff module's existing McDiarmid wrapper in place
+and records the sharp exposure-martingale route side-by-side. -/
+theorem sharp_mcdiarmid_inequality_iid_const_width_addendum
+    {n : ℕ} [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
+    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {f : (Fin n → Z) → ℝ} {c : ℝ} (hc : 0 ≤ c)
+    (hbdd : HasBoundedDifferences f (fun _ : Fin n => c))
+    (hf : StronglyMeasurable f)
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    {ε : ℝ} (hε : 0 ≤ ε) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) + ε ≤ f S}
+      ≤ Real.exp (-2 * ε ^ 2 / ((n : ℝ) * c ^ 2)) :=
+  FormalSLT.Azuma.ExposureMartingale.sharp_mcdiarmid_inequality_iid_const_width
+    (μ := μ) hc hbdd hf hfi hε
 
 /-! ### Step 2: Bousquet-Elisseeff centered concentration -/
 
