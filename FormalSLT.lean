@@ -66,6 +66,7 @@ import FormalSLT.Covering.TotalBoundedDudley
 import FormalSLT.Covering.UnitIntervalDudley
 import FormalSLT.Covering.TwoPointDudley
 import FormalSLT.Covering.TwoPointDudleyIntegral
+import FormalSLT.Covering.DudleyToRademacher
 import FormalSLT.Covering.ContinuousDudley
 import FormalSLT.Covering.FiniteDiscreteDudley
 import FormalSLT.Covering.TwoPointDudley
