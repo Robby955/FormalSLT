@@ -306,10 +306,12 @@ theorem dudley_rademacher_complexity_bound
           (fun σ => (canonicalRademacherProcess ℓ z).X σ ((N (j + 1)).center pair.1.2) -
             (canonicalRademacherProcess ℓ z).X σ ((N j).center pair.1.1)) = 0) :
     empiricalRademacherComplexity ℓ z ≤
-      4 * Real.sqrt (2 * (canonicalRademacherProcess ℓ z).varianceProxy) *
+      4 * Real.sqrt (2 / (n : ℝ)) *
         (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
           Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
-  rw [empiricalRademacherComplexity_eq_centered ℓ z t₀ hbase]
+  rw [empiricalRademacherComplexity_eq_centered ℓ z t₀ hbase,
+      show (2 : ℝ) / (n : ℝ) = 2 * (canonicalRademacherProcess ℓ z).varianceProxy by
+        rw [canonicalRademacherProcess_varianceProxy, div_eq_mul_inv]]
   exact dudley_entropy_integral_of_antitone_coveringNumber
     (P := canonicalRademacherProcess ℓ z) (N := N) (m := m) (t₀ := t₀)
     (radiusScale := radiusScale)
