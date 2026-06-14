@@ -21,6 +21,7 @@ import FormalSLT.Concentration.SubGamma.CondMarkov
 import FormalSLT.Concentration.SubGamma.CondVarianceFromSquare
 import FormalSLT.Concentration.SubGamma.Extractor
 import FormalSLT.Concentration.SharpMcDiarmid
+import FormalSLT.AnytimeValid.VilleMaximalIneq
 import FormalSLT.AnytimeValid.SubGaussianCS
 
 import FormalSLT.Rademacher.FiniteSample

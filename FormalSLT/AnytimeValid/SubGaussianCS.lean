@@ -7,6 +7,7 @@ import Mathlib.Probability.Martingale.OptionalStopping
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 import FormalSLT.Concentration.SubGamma.Extractor
+import FormalSLT.AnytimeValid.VilleMaximalIneq
 
 /-!
 # Anytime-valid sub-Gamma confidence sequences
@@ -37,12 +38,11 @@ Ville layer and mathlib API status:
 * The reusable wrapper this development wants is the supermartingale Ville form:
   if `M` is a nonnegative supermartingale, then for `a > 0`,
   `a * μ {omega | a <= max_{k <= n} M_k omega} <= ENNReal.ofReal (∫ omega, M 0 omega ∂μ)`.
-  That statement follows from the optional-stopping proof behind
-  `MeasureTheory.maximal_ineq`, but it is not exposed as a named theorem in the
-  current mathlib API. This module therefore makes the finite-horizon Ville
-  payoff an explicit hypothesis in `ville_inequality_subGamma_running_mean`.
-  The API unfold needed for extraction is the finite maximum used by
-  `MeasureTheory.maximal_ineq`.
+  Mathlib does not expose this as a named theorem, so it is proved in-tree as
+  `FormalSLT.AnytimeValid.ville_maximal_ineq` (file `VilleMaximalIneq.lean`), via the
+  optional-stopping route behind `MeasureTheory.maximal_ineq` applied to `-M`. Its
+  sub-Gamma specialization `ville_subGamma_maximal_bound` discharges the Ville payoff
+  that `ville_inequality_subGamma_running_mean` previously carried as a hypothesis.
 * Candidate mathlib PR statement:
   `MeasureTheory.Supermartingale.ville_ineq`, a finite-horizon maximal
   inequality for nonnegative real-valued supermartingales:
@@ -145,34 +145,93 @@ theorem nonneg_supermartingale_of_condSubGamma
   exact (Real.exp_pos _).le
 
 /--
-Finite-horizon Ville payoff for the running mean, stated as the algebraic
-bridge from an exponential-supermartingale boundary to the sub-Gamma running
-mean boundary.
+Ville's inequality for the sub-Gamma exponential process: the finite-horizon running maximum of
+`M = subGammaExponentialProcess` reaches `exp (lam * n * t)` with probability at most
+`exp (-lam * n * t)`.
 
-The hypothesis `h_ville_from_maximal_ineq` is the finite-horizon Ville bound
-obtained from the nonnegative-supermartingale maximal inequality. In current
-mathlib this is extracted from `MeasureTheory.maximal_ineq` plus the optional
-stopping proof, rather than by applying a named supermartingale Ville theorem.
+This is the bound that `ville_inequality_subGamma_running_mean` previously carried as the
+hypothesis `h_ville_from_maximal_ineq`. It is now derived from the in-tree supermartingale Ville
+maximal inequality `ville_maximal_ineq`: the process is nonnegative (it is `Real.exp`), so the
+maximal inequality gives `exp (lam n t) * μ.real {…} ≤ ∫ M 0`; here `M 0 ≡ 1` and `μ` is a
+probability measure, so `∫ M 0 = 1`; dividing by `exp (lam n t) > 0` yields `exp (-lam n t)`.
+-/
+theorem ville_subGamma_maximal_bound
+    {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ} {X : ℕ → Ω → ℝ} {sigma2 b lam : ℝ}
+    (hsup : Supermartingale (subGammaExponentialProcess X sigma2 b lam) ℱ μ)
+    (n : ℕ) (t : ℝ) :
+    μ.real {ω | Real.exp (lam * (n : ℝ) * t)
+        ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω}
+      ≤ Real.exp (-lam * (n : ℝ) * t) := by
+  have hnonneg : 0 ≤ subGammaExponentialProcess X sigma2 b lam := fun _ _ => (Real.exp_pos _).le
+  have ha : (0 : ℝ) < Real.exp (lam * (n : ℝ) * t) := Real.exp_pos _
+  have hA0 : Real.exp (lam * (n : ℝ) * t) ≠ 0 := ne_of_gt ha
+  have hmax := ville_maximal_ineq (a := Real.exp (lam * (n : ℝ) * t)) hsup hnonneg n
+  have hM0 : ∫ ω, subGammaExponentialProcess X sigma2 b lam 0 ω ∂μ = 1 := by
+    have hbody :
+        (fun ω => subGammaExponentialProcess X sigma2 b lam 0 ω) =ᵐ[μ] fun _ => (1 : ℝ) :=
+      Filter.Eventually.of_forall fun ω => by simp [subGammaExponentialProcess, runningSum]
+    rw [integral_congr_ae hbody]
+    simp [integral_const]
+  rw [hM0] at hmax
+  rw [show Real.exp (-lam * (n : ℝ) * t) = (Real.exp (lam * (n : ℝ) * t))⁻¹ by
+        rw [← Real.exp_neg]; congr 1; ring]
+  simp only [finiteRunningMax]
+  set A := Real.exp (lam * (n : ℝ) * t)
+  have key : ∀ q : ℝ, A * q ≤ 1 → q ≤ A⁻¹ := fun q hq => by
+    calc q = A⁻¹ * (A * q) := by rw [← mul_assoc, inv_mul_cancel₀ hA0, one_mul]
+      _ ≤ A⁻¹ * 1 := mul_le_mul_of_nonneg_left hq (inv_pos.mpr ha).le
+      _ = A⁻¹ := mul_one _
+  exact key _ hmax
+
+/--
+Finite-horizon Ville bound for the running mean: if the sub-Gamma exponential process is a
+supermartingale (and `μ` is a probability measure), the centered running-mean confidence
+boundary has mass at most `exp (-lam * n * t)`. The Ville payoff is supplied by
+`ville_subGamma_maximal_bound` — it is no longer carried as a hypothesis.
 -/
 theorem ville_inequality_subGamma_running_mean
-    {Ω : Type*} [MeasurableSpace Ω]
-    {μ : Measure Ω} [IsFiniteMeasure μ]
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
     {X : ℕ → Ω → ℝ} {sigma2 b lam t : ℝ} {n : ℕ}
+    (hsup : Supermartingale (subGammaExponentialProcess X sigma2 b lam) ℱ μ)
     (h_exponential_boundary :
       {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
         ⊆
-      {ω |
-        Real.exp (lam * (n : ℝ) * t)
-          ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω})
-    (h_ville_from_maximal_ineq :
-      μ.real
-        {ω |
-          Real.exp (lam * (n : ℝ) * t)
-            ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω}
-        ≤ Real.exp (-lam * (n : ℝ) * t)) :
+      {ω | Real.exp (lam * (n : ℝ) * t)
+          ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω}) :
     μ.real {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
       ≤ Real.exp (-lam * (n : ℝ) * t) :=
-  (measureReal_mono h_exponential_boundary).trans h_ville_from_maximal_ineq
+  (measureReal_mono h_exponential_boundary).trans (ville_subGamma_maximal_bound hsup n t)
+
+/--
+End-to-end form with no carried Ville hypothesis: from adaptedness, integrability, and the
+one-step conditional sub-Gamma bound `E[M_{k+1} | F_k] ≤ M_k`, the centered running-mean
+confidence boundary has sub-Gamma tail mass at most `exp (-lam * n * t)`. Composes
+`nonneg_supermartingale_of_condSubGamma` (which builds the supermartingale from the conditional
+MGF step) with `ville_inequality_subGamma_running_mean`.
+-/
+theorem ville_inequality_subGamma_running_mean_of_condSubGamma
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {sigma2 b lam t : ℝ} {n : ℕ}
+    (h_adapted : StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam))
+    (h_integrable : ∀ k, Integrable (subGammaExponentialProcess X sigma2 b lam k) μ)
+    (h_condSubGamma_step : ∀ k,
+      μ[subGammaExponentialProcess X sigma2 b lam (k + 1) | ℱ k]
+        ≤ᵐ[μ] subGammaExponentialProcess X sigma2 b lam k)
+    (h_exponential_boundary :
+      {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+        ⊆
+      {ω | Real.exp (lam * (n : ℝ) * t)
+          ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω}) :
+    μ.real {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+      ≤ Real.exp (-lam * (n : ℝ) * t) :=
+  ville_inequality_subGamma_running_mean
+    (nonneg_supermartingale_of_condSubGamma h_adapted h_integrable h_condSubGamma_step).1
+    h_exponential_boundary
 
 /--
 Anytime-valid confidence-sequence wrapper for the sub-Gamma interval.
