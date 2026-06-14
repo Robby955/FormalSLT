@@ -1,0 +1,12 @@
+category,files,theorems,lemmas,total_decls,loc,sorry_free,notes,Sonoda et al. 2025,Zhang-Lee-Liu 2026,Karayel-Tan 2023
+Concentration,20,48,50,98,4747,yes,"Azuma, McDiarmid, sub-Gamma, Bennett",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Rademacher,15,155,38,193,9817,yes,"Symmetrization, contraction, high-prob bounds, ERM generalization",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+VC Theory,8,14,13,27,1383,yes,"Sauer-Shelah, VC dimension, sample complexity (binary + real-valued)",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Covering / Dudley,14,236,33,269,11797,yes,"Covering numbers, Dudley chaining, entropy integral",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+PAC-Bayes,17,121,1,122,6061,yes,"McAllester, Seeger, Bernstein, KL, Gaussian certificates, compiler",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Stability,4,50,16,66,2790,yes,"Bousquet-Elisseeff uniform stability, RKHS regularised ERM",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Anytime-Valid,2,6,0,6,372,yes,"Ville maximal inequality, sub-Gamma confidence sequences",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Online-to-PAC,3,4,0,4,266,yes,Cesa-Bianchi-Conconi-Gentile regret conversion,TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Probability Foundations,7,15,19,34,1654,yes,"IID concentration, union bound, sub-Gaussian max, MGF infrastructure",TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+Flagship Meta,4,35,0,35,1103,yes,Test-time meta composition; online population decomposition,TODO/UNVERIFIED,TODO/UNVERIFIED,TODO/UNVERIFIED
+TOTAL,94,684,170,854,39990,yes,,—,—,—
