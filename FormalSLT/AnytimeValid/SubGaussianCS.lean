@@ -392,6 +392,33 @@ theorem ville_inequality_subGamma_running_mean_of_condSubGamma_pos
     (subGamma_runningMean_boundary_subset hlam)
 
 /--
+End-to-end anytime-valid sub-Gamma confidence-sequence tail bound with NO carried stochastic
+hypotheses. From the conditional sub-Gamma increment model on `X` (bounded `|X_k| ≤ b`,
+conditionally centered `μ[X_k | F_k] = 0`, conditional second moment `μ[X_k² | F_k] ≤ σ²`) and a
+positive tilt `lam`, the centered running-mean confidence boundary has sub-Gamma tail mass at most
+`exp (-lam · n · t)`. Both previously-carried hypotheses are discharged internally:
+`subGamma_runningMean_boundary_subset` supplies the deterministic boundary inclusion, and
+`condSubGamma_supermartingale_step` supplies the one-step supermartingale bound from the model.
+-/
+theorem ville_inequality_subGamma_running_mean_of_increment_model
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {sigma2 b lam t : ℝ} {n : ℕ}
+    (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam : 0 < lam) (hblam : b * lam < 3)
+    (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
+    (h_adapted : StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam))
+    (h_integrable : ∀ k, Integrable (subGammaExponentialProcess X sigma2 b lam k) μ)
+    (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
+    (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
+    (hvar : ∀ k, μ[fun ω => (X k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => sigma2) :
+    μ.real {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+      ≤ Real.exp (-lam * (n : ℝ) * t) :=
+  ville_inequality_subGamma_running_mean_of_condSubGamma_pos hlam h_adapted h_integrable
+    (condSubGamma_supermartingale_step hb hσ hlam.le hblam hX_meas hX_int h_adapted
+      hbound hcenter hvar)
+
+/--
 Anytime-valid confidence-sequence wrapper for the sub-Gamma interval.
 
 The theorem packages the final finite-union layer: if the first failure event
