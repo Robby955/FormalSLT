@@ -71,8 +71,6 @@ import FormalSLT.Covering.DudleyToRademacher
 import FormalSLT.Covering.ContinuousDudley
 import FormalSLT.Covering.ContinuousDudleyCovering
 import FormalSLT.Covering.FiniteDiscreteDudley
-import FormalSLT.Covering.TwoPointDudley
-import FormalSLT.Covering.UnitIntervalDudley
 
 import FormalSLT.AlgorithmicStability
 import FormalSLT.Stability.BousquetElisseeff
