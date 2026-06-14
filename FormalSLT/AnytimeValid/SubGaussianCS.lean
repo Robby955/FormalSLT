@@ -185,6 +185,46 @@ theorem ville_subGamma_maximal_bound
   exact key _ hmax
 
 /--
+The running-mean boundary-crossing event is contained in the exponential-process running-max
+boundary event, for any positive tilt `lam`. This is the deterministic content that
+`ville_inequality_subGamma_running_mean` previously carried as the hypothesis
+`h_exponential_boundary`: it is now derived from the definitions of `runningMean`,
+`subGammaExponentialProcess`, and `finiteRunningMax`.
+
+At `n = 0` both sides reduce to `1`. For `n ≥ 1`, multiplying the boundary inequality
+`t ≤ S_n / n - cgf / lam` by `lam * n > 0` gives `lam * n * t ≤ lam * S_n - n * cgf`, and the
+running max dominates the time-`n` exponential term.
+-/
+theorem subGamma_runningMean_boundary_subset
+    {Ω : Type*} {X : ℕ → Ω → ℝ} {sigma2 b lam t : ℝ} {n : ℕ}
+    (hlam : 0 < lam) :
+    {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+      ⊆
+    {ω | Real.exp (lam * (n : ℝ) * t)
+        ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω} := by
+  intro ω hω
+  simp only [Set.mem_setOf_eq, runningMean] at hω
+  simp only [Set.mem_setOf_eq]
+  have hle :
+      subGammaExponentialProcess X sigma2 b lam n ω
+        ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω :=
+    Finset.le_sup' (fun k => subGammaExponentialProcess X sigma2 b lam k ω)
+      (Finset.self_mem_range_succ n)
+  refine le_trans ?_ hle
+  simp only [subGammaExponentialProcess, Real.exp_le_exp]
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · subst hn
+    simp [runningSum]
+  · have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+    have hlam0 : lam ≠ 0 := hlam.ne'
+    have hnn : (0 : ℝ) ≤ lam * (n : ℝ) := by positivity
+    calc lam * (n : ℝ) * t
+        ≤ lam * (n : ℝ) * (runningSum X n ω / (n : ℝ) - subGammaCgf sigma2 b lam / lam) :=
+          mul_le_mul_of_nonneg_left hω hnn
+      _ = lam * runningSum X n ω - (n : ℝ) * subGammaCgf sigma2 b lam := by
+          field_simp
+
+/--
 Finite-horizon Ville bound for the running mean: if the sub-Gamma exponential process is a
 supermartingale (and `μ` is a probability measure), the centered running-mean confidence
 boundary has mass at most `exp (-lam * n * t)`. The Ville payoff is supplied by
@@ -232,6 +272,31 @@ theorem ville_inequality_subGamma_running_mean_of_condSubGamma
   ville_inequality_subGamma_running_mean
     (nonneg_supermartingale_of_condSubGamma h_adapted h_integrable h_condSubGamma_step).1
     h_exponential_boundary
+
+/--
+End-to-end form with the deterministic boundary hypothesis discharged: for a positive tilt
+`lam`, from adaptedness, integrability, and the one-step conditional sub-Gamma bound, the
+centered running-mean confidence boundary has sub-Gamma tail mass at most `exp (-lam * n * t)`.
+The `h_exponential_boundary` set-inclusion is now supplied by
+`subGamma_runningMean_boundary_subset`, so the only remaining stochastic input is the
+supermartingale step `h_condSubGamma_step`.
+-/
+theorem ville_inequality_subGamma_running_mean_of_condSubGamma_pos
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {sigma2 b lam t : ℝ} {n : ℕ}
+    (hlam : 0 < lam)
+    (h_adapted : StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam))
+    (h_integrable : ∀ k, Integrable (subGammaExponentialProcess X sigma2 b lam k) μ)
+    (h_condSubGamma_step : ∀ k,
+      μ[subGammaExponentialProcess X sigma2 b lam (k + 1) | ℱ k]
+        ≤ᵐ[μ] subGammaExponentialProcess X sigma2 b lam k) :
+    μ.real {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+      ≤ Real.exp (-lam * (n : ℝ) * t) :=
+  ville_inequality_subGamma_running_mean
+    (nonneg_supermartingale_of_condSubGamma h_adapted h_integrable h_condSubGamma_step).1
+    (subGamma_runningMean_boundary_subset hlam)
 
 /--
 Anytime-valid confidence-sequence wrapper for the sub-Gamma interval.
