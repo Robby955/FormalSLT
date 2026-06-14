@@ -62,8 +62,8 @@ posterior-dependent square-root-plus-linear wrapper. This is a supplied-proxy
 finite shell: it is not yet a concrete classifier-margin extractor, an
 all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
 
-**93 `FormalSLT/` Lean files. 148 checked Lean files under `FormalSLT/` and
-`examples/`. 41,350 Lean lines. Zero `sorry`. Zero `admit`. Zero custom axioms.**
+**Zero `sorry`. Zero `admit`. Zero custom axioms.** Live module, theorem, and
+line counts are in the badges at the top of this file.
 
 Counts are generated with `find FormalSLT -name '*.lean'`, `find FormalSLT
 examples -name '*.lean'`, and `find FormalSLT examples -name '*.lean' -print0 |
@@ -85,12 +85,12 @@ Each surface has one machine-checked endpoint and a checker file you can run wit
   endpoint `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`, checker `examples/CheckUnitIntervalDudley.lean`
 - **Packaged finite dyadic Dudley API**
   endpoint `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound`, checker `examples/CheckV01Usability.lean`
-- **Two-point dyadic Dudley instance**
-  endpoint `twoPointDudleyInstance`, checker `examples/CheckTwoPointDudley.lean`
-- **`Fin n` discrete dyadic Dudley instance**
-  endpoint `finDiscreteDudleyInstance`, checker `examples/CheckFiniteDiscreteDudley.lean`
+- **Two-point dyadic Dudley bound**
+  endpoint `twoPointRademacherSup_dudley_m_bound`, checker `examples/CheckTwoPointDudley.lean`
+- **`Fin n` discrete dyadic Dudley bound**
+  endpoint `finDiscreteRademacherSup_dudley_m_bound`, checker `examples/CheckFiniteDiscreteDudley.lean`
 - **Two-sided sharp McDiarmid over a homogeneous product measure**
-  endpoint `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`, checker `FormalSLT/Test/SharpMcDiarmidTest.lean`
+  endpoint `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`, checker `examples/CheckSharpMcDiarmid.lean`
 - **PAC-Bayes Bernstein supplied margin-proxy shell**
   endpoint `finitePACBayesBernsteinMargin_badEventMass_le_delta`, checker `examples/CheckPACBayesBernstein.lean`
 - **Finite Dudley entropy-integral endpoint**
