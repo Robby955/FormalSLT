@@ -5,7 +5,7 @@ import FormalSLT.PACBayes.GaussianKL
 import FormalSLT.OnlineToPAC.CesaBianchi
 import FormalSLT.OnlineToPAC.IIDConcentration
 import FormalSLT.PACBayes.BernsteinBound
-import FormalSLT.Concentration.SubGamma.Extractor
+import FormalSLT.AnytimeValid.SubGaussianCS
 
 /-!
 # Composition lemmas for the PAC-Bayes test-time meta-theorem
@@ -23,7 +23,7 @@ namespace FormalSLT.TestTimeMeta
 open FormalSLT.PACBayes
 open FormalSLT.PACBayesKL
 open FormalSLT.OnlineToPAC
-open FormalSLT.Concentration.SubGamma
+open FormalSLT.AnytimeValid
 open MeasureTheory ProbabilityTheory
 
 noncomputable section
@@ -148,27 +148,36 @@ theorem bernsteinContribution_from_sphericalGaussianCertificate
   exact bernsteinPACBayes_continuousPriorPosterior_certificate
     spec control hsamePrior hsamePosterior hvariance hkl hklBound hpenalty
 
-/-- q084 contribution wrapper for the conditional sub-gamma extractor. -/
+/-- q084 canonical anytime Ville tail contribution for a fixed horizon and boundary. -/
+def anytimeVilleTailContribution (lam : ℝ) (n : ℕ) (t : ℝ) : ℝ :=
+  Real.exp (-lam * (n : ℝ) * t)
+
+/--
+q084 contribution wrapper for the conditional sub-gamma extractor route.
+
+The extractor layer supplies the one-step sub-gamma supermartingale obligation;
+the anytime slot stores the Ville tail mass bound produced from that process.
+-/
 theorem anytimeVilleContribution_from_subGammaExtractor
-    {Ω : Type*} [m₀ : MeasurableSpace Ω]
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
     {μ : Measure Ω} [IsProbabilityMeasure μ]
-    {m : MeasurableSpace Ω}
-    {X : Ω → ℝ}
-    {b σ2 contribution : ℝ}
-    (hb_pos : 0 < b)
-    (hσ_nonneg : 0 ≤ σ2)
-    (hX_meas : Measurable[m₀] X)
-    (hX_int : Integrable X μ)
-    (hbound : ∀ᵐ ω ∂μ, |X ω| ≤ b)
-    (hcenter : μ[X | m] =ᵐ[μ] 0)
-    (hvar : μ[fun ω => X ω ^ 2 | m] ≤ᵐ[μ] fun _ => σ2)
-    (hcontribution : 0 ≤ contribution) :
-    0 ≤ contribution := by
-  have _ :=
-    condSubGammaMGF_of_bounded_centered_condVariance
-      (m₀ := m₀) (μ := μ) (m := m) (X := X) (b := b) (σ2 := σ2)
-      hb_pos hσ_nonneg hX_meas hX_int hbound hcenter hvar
-  exact hcontribution
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {sigma2 b lam t : ℝ} {n : ℕ}
+    (h_adapted : StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam))
+    (h_integrable : ∀ k, Integrable (subGammaExponentialProcess X sigma2 b lam k) μ)
+    (h_condSubGamma_step : ∀ k,
+      μ[subGammaExponentialProcess X sigma2 b lam (k + 1) | ℱ k]
+        ≤ᵐ[μ] subGammaExponentialProcess X sigma2 b lam k)
+    (h_exponential_boundary :
+      {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+        ⊆
+      {ω | Real.exp (lam * (n : ℝ) * t)
+          ≤ finiteRunningMax (subGammaExponentialProcess X sigma2 b lam) n ω}) :
+    μ.real {ω | t ≤ runningMean X n ω - subGammaCgf sigma2 b lam / lam}
+      ≤ anytimeVilleTailContribution lam n t := by
+  simpa [anytimeVilleTailContribution] using
+    ville_inequality_subGamma_running_mean_of_condSubGamma
+      h_adapted h_integrable h_condSubGamma_step h_exponential_boundary
 
 end
 

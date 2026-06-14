@@ -14,9 +14,11 @@ theorems:
   contribution;
 * q062 finite-dimensional Gaussian KL plus the q060 Bernstein path gives the
   Bernstein/Gaussian PAC-Bayes contribution.
+* q084 anytime Ville route gives the fixed-horizon sub-Gamma tail
+  contribution.
 
-The anytime and prefix-kernel slots are still explicit because their flagship
-component routes remain separate from this bridge.  The final flagship scalar
+The prefix-kernel slot is still explicit because its flagship component route
+remains separate from this bridge.  The final flagship scalar
 assembly is not a one-line external certificate: q066 derives it from a risk
 decomposition and per-component inequalities.
 -/
@@ -158,14 +160,15 @@ def flagshipDerivedContributionsOfComponents
     (onlineRegretRate : ℝ)
     (gaussianBernsteinSpec :
       ContinuousPriorPosteriorSpec (GaussianParameterSpace d))
-    (anytimeContribution prefixKernelContribution : ℝ)
+    (anytimeLam anytimeBoundary : ℝ)
+    (anytimeHorizon : ℕ)
+    (prefixKernelContribution : ℝ)
     (hmcAllester :
       0 ≤ flagshipMcAllesterContribution mcAllesterSpec)
     (honline :
       0 ≤ flagshipOnlineIidContribution onlineInput onlineRegretRate)
     (hgaussianBernstein :
       0 ≤ flagshipGaussianBernsteinContribution gaussianBernsteinSpec)
-    (hanytime : 0 ≤ anytimeContribution)
     (hprefix : 0 ≤ prefixKernelContribution) :
     FlagshipDerivedContributions where
   mcAllesterGeneralWidthContribution :=
@@ -174,12 +177,15 @@ def flagshipDerivedContributionsOfComponents
     flagshipOnlineIidContribution onlineInput onlineRegretRate
   bernsteinOrGaussianContribution :=
     flagshipGaussianBernsteinContribution gaussianBernsteinSpec
-  anytimeVilleContribution := anytimeContribution
+  anytimeVilleContribution :=
+    anytimeVilleTailContribution anytimeLam anytimeHorizon anytimeBoundary
   prefixKernelContribution := prefixKernelContribution
   mcAllesterGeneralWidthContributionNonnegative := hmcAllester
   onlineIidContributionNonnegative := honline
   bernsteinOrGaussianContributionNonnegative := hgaussianBernstein
-  anytimeVilleContributionNonnegative := hanytime
+  anytimeVilleContributionNonnegative := by
+    dsimp [anytimeVilleTailContribution]
+    exact (Real.exp_pos _).le
   prefixKernelContributionNonnegative := hprefix
 
 /-- Field audit theorem for the component-derived q063 contribution bundle. -/
@@ -190,27 +196,29 @@ theorem flagshipDerivedContributions_from_components
     (onlineRegretRate : ℝ)
     (gaussianBernsteinSpec :
       ContinuousPriorPosteriorSpec (GaussianParameterSpace d))
-    (anytimeContribution prefixKernelContribution : ℝ)
+    (anytimeLam anytimeBoundary : ℝ)
+    (anytimeHorizon : ℕ)
+    (prefixKernelContribution : ℝ)
     (hmcAllester :
       0 ≤ flagshipMcAllesterContribution mcAllesterSpec)
     (honline :
       0 ≤ flagshipOnlineIidContribution onlineInput onlineRegretRate)
     (hgaussianBernstein :
       0 ≤ flagshipGaussianBernsteinContribution gaussianBernsteinSpec)
-    (hanytime : 0 ≤ anytimeContribution)
     (hprefix : 0 ≤ prefixKernelContribution) :
     let derived :=
       flagshipDerivedContributionsOfComponents
         mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-        anytimeContribution prefixKernelContribution
-        hmcAllester honline hgaussianBernstein hanytime hprefix
+        anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+        hmcAllester honline hgaussianBernstein hprefix
     derived.mcAllesterGeneralWidthContribution =
         flagshipMcAllesterContribution mcAllesterSpec ∧
       derived.onlineIidContribution =
         flagshipOnlineIidContribution onlineInput onlineRegretRate ∧
       derived.bernsteinOrGaussianContribution =
         flagshipGaussianBernsteinContribution gaussianBernsteinSpec ∧
-      derived.anytimeVilleContribution = anytimeContribution ∧
+      derived.anytimeVilleContribution =
+        anytimeVilleTailContribution anytimeLam anytimeHorizon anytimeBoundary ∧
       derived.prefixKernelContribution = prefixKernelContribution := by
   simp [flagshipDerivedContributionsOfComponents]
 
@@ -275,37 +283,38 @@ def flagshipCertificateOfComponents
     (onlineRegretRate : ℝ)
     (gaussianBernsteinSpec :
       ContinuousPriorPosteriorSpec (GaussianParameterSpace d))
-    (anytimeContribution prefixKernelContribution : ℝ)
+    (anytimeLam anytimeBoundary : ℝ)
+    (anytimeHorizon : ℕ)
+    (prefixKernelContribution : ℝ)
     (hmcAllester :
       0 ≤ flagshipMcAllesterContribution mcAllesterSpec)
     (honline :
       0 ≤ flagshipOnlineIidContribution onlineInput onlineRegretRate)
     (hgaussianBernstein :
       0 ≤ flagshipGaussianBernsteinContribution gaussianBernsteinSpec)
-    (hanytime : 0 ≤ anytimeContribution)
     (hprefix : 0 ≤ prefixKernelContribution)
     (mcAllesterGap onlineGap gaussianBernsteinGap anytimeGap prefixGap : ℝ)
     (scalarBounds :
       FlagshipScalarComponentBounds user
         (flagshipDerivedContributionsOfComponents
           mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-          anytimeContribution prefixKernelContribution
-          hmcAllester honline hgaussianBernstein hanytime hprefix)
+          anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+          hmcAllester honline hgaussianBernstein hprefix)
         mcAllesterGap onlineGap gaussianBernsteinGap anytimeGap prefixGap) :
     FlagshipCertificate where
   user := user
   derived :=
     flagshipDerivedContributionsOfComponents
       mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-      anytimeContribution prefixKernelContribution
-      hmcAllester honline hgaussianBernstein hanytime hprefix
+      anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+      hmcAllester honline hgaussianBernstein hprefix
   assembledBound :=
     flagshipScalarAssembly_from_componentInequalities
       user
       (flagshipDerivedContributionsOfComponents
         mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-        anytimeContribution prefixKernelContribution
-        hmcAllester honline hgaussianBernstein hanytime hprefix)
+        anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+        hmcAllester honline hgaussianBernstein hprefix)
       scalarBounds
 
 /--
@@ -320,35 +329,36 @@ theorem flagshipCertificate_from_components
     (onlineRegretRate : ℝ)
     (gaussianBernsteinSpec :
       ContinuousPriorPosteriorSpec (GaussianParameterSpace d))
-    (anytimeContribution prefixKernelContribution : ℝ)
+    (anytimeLam anytimeBoundary : ℝ)
+    (anytimeHorizon : ℕ)
+    (prefixKernelContribution : ℝ)
     (hmcAllester :
       0 ≤ flagshipMcAllesterContribution mcAllesterSpec)
     (honline :
       0 ≤ flagshipOnlineIidContribution onlineInput onlineRegretRate)
     (hgaussianBernstein :
       0 ≤ flagshipGaussianBernsteinContribution gaussianBernsteinSpec)
-    (hanytime : 0 ≤ anytimeContribution)
     (hprefix : 0 ≤ prefixKernelContribution)
     (mcAllesterGap onlineGap gaussianBernsteinGap anytimeGap prefixGap : ℝ)
     (scalarBounds :
       FlagshipScalarComponentBounds user
         (flagshipDerivedContributionsOfComponents
           mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-          anytimeContribution prefixKernelContribution
-          hmcAllester honline hgaussianBernstein hanytime hprefix)
+          anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+          hmcAllester honline hgaussianBernstein hprefix)
         mcAllesterGap onlineGap gaussianBernsteinGap anytimeGap prefixGap) :
     flagshipConclusion
       (flagshipCertificateOfComponents
         user mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-        anytimeContribution prefixKernelContribution
-        hmcAllester honline hgaussianBernstein hanytime hprefix
+        anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+        hmcAllester honline hgaussianBernstein hprefix
         mcAllesterGap onlineGap gaussianBernsteinGap anytimeGap prefixGap
         scalarBounds) := by
   exact pacBayesTestTimeFlagship_theorem
     (flagshipCertificateOfComponents
       user mcAllesterSpec onlineInput onlineRegretRate gaussianBernsteinSpec
-      anytimeContribution prefixKernelContribution
-      hmcAllester honline hgaussianBernstein hanytime hprefix
+      anytimeLam anytimeBoundary anytimeHorizon prefixKernelContribution
+      hmcAllester honline hgaussianBernstein hprefix
       mcAllesterGap onlineGap gaussianBernsteinGap anytimeGap prefixGap
       scalarBounds)
 
@@ -534,18 +544,25 @@ theorem mcAllesterContributionNonnegative :
       simpa [BoundedRegressionStub.spec] using
         BoundedRegressionStub.loss_mem_unitInterval i z)
 
+def anytimeLam : ℝ := 0
+
+def anytimeBoundary : ℝ := 0
+
+def anytimeHorizon : ℕ := 1
+
 def derived : FlagshipDerivedContributions :=
   flagshipDerivedContributionsOfComponents
     BoundedRegressionStub.spec
     onlineInput
     onlineRegretRate
     gaussianSpec
-    0
+    anytimeLam
+    anytimeBoundary
+    anytimeHorizon
     0
     mcAllesterContributionNonnegative
     onlineContributionNonnegative
     gaussianBernsteinContributionNonnegative
-    (by norm_num)
     (by norm_num)
 
 def empiricalRisk : ℝ := (3 : ℝ) / 25
@@ -557,7 +574,7 @@ def componentBoundSide : ℝ :=
     lossWidth * flagshipMcAllesterContribution BoundedRegressionStub.spec +
     flagshipOnlineIidContribution onlineInput onlineRegretRate +
     flagshipGaussianBernsteinContribution gaussianSpec +
-    0 +
+    anytimeVilleTailContribution anytimeLam anytimeHorizon anytimeBoundary +
     0
 
 def user : FlagshipUserSupplied where
@@ -577,6 +594,10 @@ def user : FlagshipUserSupplied where
     have hmc := mcAllesterContributionNonnegative
     have honline := onlineContributionNonnegative
     have hgaussian := gaussianBernsteinContributionNonnegative
+    have hanytime :
+        0 ≤ anytimeVilleTailContribution anytimeLam anytimeHorizon anytimeBoundary := by
+      dsimp [anytimeVilleTailContribution]
+      exact (Real.exp_pos _).le
     norm_num [empiricalRisk, lossWidth]
     nlinarith
 
@@ -605,12 +626,13 @@ def certificate : FlagshipCertificate :=
     onlineInput
     onlineRegretRate
     gaussianSpec
-    0
+    anytimeLam
+    anytimeBoundary
+    anytimeHorizon
     0
     mcAllesterContributionNonnegative
     onlineContributionNonnegative
     gaussianBernsteinContributionNonnegative
-    (by norm_num)
     (by norm_num)
     (user.lossWidth * derived.mcAllesterGeneralWidthContribution)
     derived.onlineIidContribution
@@ -631,12 +653,13 @@ theorem flagshipComponentWorkedExample_certificate :
     onlineInput
     onlineRegretRate
     gaussianSpec
-    0
+    anytimeLam
+    anytimeBoundary
+    anytimeHorizon
     0
     mcAllesterContributionNonnegative
     onlineContributionNonnegative
     gaussianBernsteinContributionNonnegative
-    (by norm_num)
     (by norm_num)
     (user.lossWidth * derived.mcAllesterGeneralWidthContribution)
     derived.onlineIidContribution
