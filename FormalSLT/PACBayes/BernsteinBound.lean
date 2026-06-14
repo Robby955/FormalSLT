@@ -1,3 +1,4 @@
+import FormalSLT.PACBayesBernstein
 import FormalSLT.PACBayes.BernsteinAnalytic
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.GaussianKL
@@ -26,6 +27,8 @@ Variational Approximations of Gibbs Posteriors".
 namespace FormalSLT.PACBayes
 
 open MeasureTheory
+open FormalSLT.PACBayesKL
+open FormalSLT.PACBayesBernstein
 
 /-- Bernstein PAC-Bayes penalty data supplied by a continuous certificate. -/
 def bernsteinPACBayesPenalty
@@ -60,6 +63,65 @@ theorem bernsteinPACBayes_continuousPriorPosterior_certificate
   have _ : control.kl + spec.confidencePenalty ≤ spec.complexityBound := by
     linarith
   exact hpenalty
+
+/--
+Finite fixed-sample PAC-Bayes Bernstein posterior-risk bound.
+
+This is the finite hypothesis-class analogue of the Bernstein flagship slot:
+the posterior risk bound is derived from the finite PAC-Bayes Bernstein
+change-of-measure adapter, rather than supplied as a premise.
+-/
+theorem finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le
+    {Ω ι : Type*} [Fintype ι] [Nonempty ι]
+    {ρ π : ι → ℝ} (hρ : IsPMF ρ) (hπ : IsFullSupportPMF π)
+    {lambda scale alpha : ℝ}
+    (hlambda : 0 < lambda) (hscale : scale * lambda < 1)
+    (riskFn : ι → ℝ) (empiricalRiskFn : Ω → ι → ℝ)
+    (varianceProxy : ι → ℝ) (ω : Ω)
+    (hconf :
+      priorBernsteinExpMoment π lambda scale riskFn empiricalRiskFn varianceProxy ω
+        ≤ Real.exp alpha) :
+    posteriorRisk ρ riskFn ≤
+      posteriorEmpiricalRisk ρ (empiricalRiskFn ω) +
+        (klDiv ρ π + alpha) / lambda +
+        lambda * posteriorMarginVarianceProxy ρ varianceProxy /
+          (2 * (1 - scale * lambda)) := by
+  have hgap :=
+    posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le
+      hρ hπ hlambda hscale riskFn empiricalRiskFn varianceProxy ω hconf
+  unfold posteriorGeneralizationGap at hgap
+  linarith
+
+/--
+Delta-shaped finite PAC-Bayes Bernstein posterior-risk bound.
+
+The good-sample certificate is the same `1 / delta` prior-moment bound used by
+`finitePACBayesBernstein_fixedLambda_badEventMass_le_delta`; this theorem gives
+the corresponding posterior-risk inequality on such a sample.
+-/
+theorem finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le_inv_delta
+    {Ω ι : Type*} [Fintype ι] [Nonempty ι]
+    {ρ π : ι → ℝ} (hρ : IsPMF ρ) (hπ : IsFullSupportPMF π)
+    {lambda scale delta : ℝ}
+    (hlambda : 0 < lambda) (hscale : scale * lambda < 1)
+    (hdelta : 0 < delta)
+    (riskFn : ι → ℝ) (empiricalRiskFn : Ω → ι → ℝ)
+    (varianceProxy : ι → ℝ) (ω : Ω)
+    (hconf :
+      priorBernsteinExpMoment π lambda scale riskFn empiricalRiskFn varianceProxy ω
+        ≤ 1 / delta) :
+    posteriorRisk ρ riskFn ≤
+      posteriorEmpiricalRisk ρ (empiricalRiskFn ω) +
+        (klDiv ρ π + Real.log (1 / delta)) / lambda +
+        lambda * posteriorMarginVarianceProxy ρ varianceProxy /
+          (2 * (1 - scale * lambda)) := by
+  have hconf_exp :
+      priorBernsteinExpMoment π lambda scale riskFn empiricalRiskFn varianceProxy ω
+        ≤ Real.exp (Real.log (1 / delta)) := by
+    rw [Real.exp_log (div_pos zero_lt_one hdelta)]
+    exact hconf
+  exact finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le
+    hρ hπ hlambda hscale riskFn empiricalRiskFn varianceProxy ω hconf_exp
 
 /--
 Analytic q060 Bernstein PAC-Bayes composition.

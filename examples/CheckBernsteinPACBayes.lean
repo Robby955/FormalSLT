@@ -1,7 +1,7 @@
 import FormalSLT.PACBayes.BernsteinBound
 
 /-!
-# Axiom audit for continuous Bernstein PAC-Bayes certificates
+# Axiom audit for Bernstein PAC-Bayes certificates
 -/
 
 open FormalSLT.PACBayes
@@ -9,9 +9,13 @@ open FormalSLT.PACBayes
 #print axioms vitaleContinuousKL_certificate
 #print axioms continuousPriorPosterior_certificate_of_kl
 #print axioms bernsteinPACBayes_continuousPriorPosterior_certificate
+#print axioms finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le
+#print axioms finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le_inv_delta
 
 #check @vitaleContinuousKL_certificate
 #check @continuousPriorPosterior_certificate_of_kl
 #check @bernsteinPACBayes_continuousPriorPosterior_certificate
+#check @finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le
+#check @finiteBernsteinPACBayesPosteriorRisk_bound_of_priorBernsteinExpMoment_le_inv_delta
 
 example : True := trivial

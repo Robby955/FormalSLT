@@ -1,0 +1,20 @@
+import FormalSLT.TestTimeMeta.McAllesterPopulationDecomposition
+
+/-!
+# Axiom audit for the non-vacuous McAllester population decomposition
+-/
+
+#check FormalSLT.TestTimeMeta.mcAllesterGeneralWidth_badEventMass_from_compile
+#print axioms FormalSLT.TestTimeMeta.mcAllesterGeneralWidth_badEventMass_from_compile
+
+#check FormalSLT.TestTimeMeta.mcAllesterPointwiseRiskBound_of_not_mem_compiledBad
+#print axioms FormalSLT.TestTimeMeta.mcAllesterPointwiseRiskBound_of_not_mem_compiledBad
+
+#check FormalSLT.TestTimeMeta.McAllesterDecompWorkedExample.pointwiseRiskBound
+#print axioms FormalSLT.TestTimeMeta.McAllesterDecompWorkedExample.pointwiseRiskBound
+
+#check FormalSLT.TestTimeMeta.McAllesterDecompWorkedExample.scalarBounds
+#print axioms FormalSLT.TestTimeMeta.McAllesterDecompWorkedExample.scalarBounds
+
+#check FormalSLT.TestTimeMeta.McAllesterDecompWorkedExample.flagship_population_le_bound
+#print axioms FormalSLT.TestTimeMeta.McAllesterDecompWorkedExample.flagship_population_le_bound

@@ -1,0 +1,20 @@
+import FormalSLT.TestTimeMeta.BernsteinPopulationDecomposition
+
+/-!
+# Axiom audit for the non-vacuous Bernstein population decomposition
+-/
+
+#check FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.posteriorRisk_le_empirical_add_bernsteinGap
+#print axioms FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.posteriorRisk_le_empirical_add_bernsteinGap
+
+#check FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.scalarBounds
+#print axioms FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.scalarBounds
+
+#check FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.flagship_population_le_bound
+#print axioms FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.flagship_population_le_bound
+
+#check FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.certificate
+#print axioms FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.certificate
+
+#check FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.flagship_conclusion
+#print axioms FormalSLT.TestTimeMeta.BernsteinDecompWorkedExample.flagship_conclusion

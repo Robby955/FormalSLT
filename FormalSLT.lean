@@ -108,3 +108,5 @@ import FormalSLT.TestTimeMeta.MainTheorem
 import FormalSLT.TestTimeMeta.Flagship
 import FormalSLT.TestTimeMeta.FlagshipComposition
 import FormalSLT.TestTimeMeta.OnlinePopulationDecomposition
+import FormalSLT.TestTimeMeta.McAllesterPopulationDecomposition
+import FormalSLT.TestTimeMeta.BernsteinPopulationDecomposition
