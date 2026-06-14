@@ -1,29 +1,41 @@
 import FormalSLT.Covering.DudleySumToIntegral
+import FormalSLT.Covering.ContinuousDudleyCovering
 import FormalSLT.Rademacher.Massart
 
 /-!
 # Finite Dudley entropy integral to empirical Rademacher complexity
 
-This module bridges the finite Dudley entropy-integral lane to the empirical
+This module bridges the Dudley entropy-integral lane to the empirical
 Rademacher complexity. It packages the canonical sign-vector Rademacher process
 as a `FiniteSubGaussianProcess` over the discrete sign-vector space
 `Fin n → Bool`, identifies its centered weighted-supremum expectation with the
 empirical Rademacher complexity, and forwards the supplied net/covering data to
-the finite Dudley entropy integral
-`dudley_entropy_integral_of_antitone_coveringNumber`.
+the Dudley entropy integral on both endpoints:
+* the finite endpoint
+  `dudley_entropy_integral_of_antitone_coveringNumber`
+  (`dudley_rademacher_complexity_bound`), and
+* the continuous endpoint
+  `ContinuousDudleyCovering.continuous_dudley_entropy_integral_of_coveringNumber`
+  (`continuous_dudley_rademacher_complexity_bound`).
 
 The sub-Gaussian increment bound is discharged from the discrete sign-vector
 factorization (`Massart.cosh_le_exp_sq_half`), not assumed. The process metric
 is the empirical L2 distance over the sample, and the variance proxy is `1/n`,
 so the increment MGF matches the structure field exactly.
 
-## Open residual
+## Continuous endpoint
 
-This is the finite case. The continuous-instantiation gap remains open: the
-continuous Dudley integral's free `entropyAtRadius` profile is here supplied as
-the finite antitone covering-number profile through the caller's hypotheses, and
-the continuous metric-entropy instantiation from covering numbers is a separate
-unit. This module composes existing finite bricks; it adds no continuous theory.
+`continuous_dudley_rademacher_complexity_bound` instantiates the continuous
+Dudley entropy integral on the canonical Rademacher process. The index class
+`ι` carries a pseudometric certified to be the empirical L2 distance
+(`hmetric`, exposed in closed form by `canonicalRademacherProcess_dist`), the
+variance-proxy rewrite `1/n` turns the `4 · √(2 · varianceProxy)` constant into
+`4 · √(2/n)`, and the integral runs from `0` to `radiusScale/2` over the genuine
+metric-entropy integrand `√(log N(F, ε))`. The separability/terminal boundary
+certificate and the dyadic cover-count domination are the same caller interface
+the continuous theorem consumes (realizable from finite-cover/pathwise-modulus
+data via the `TotalBoundedDudley` boundary-choice adapters); they are not the
+conclusion, which is the proven chaining inequality.
 -/
 
 namespace FormalSLT.Covering.DudleyToRademacher
@@ -37,7 +49,9 @@ open FormalSLT.Rademacher.Massart
 
 noncomputable section
 
-variable {n : ℕ} {ι Z : Type*} [Fintype ι] [Nonempty ι]
+universe u
+
+variable {n : ℕ} {ι : Type u} {Z : Type*} [Fintype ι] [Nonempty ι]
 
 /-- The centered increment of the canonical sign-vector empirical mean. For a
 sample `z` and loss `ℓ`, the difference of two coordinates `s, t` is the
@@ -228,6 +242,16 @@ omit [Fintype ι] [Nonempty ι] in
     (z : Fin n → Z) :
     (canonicalRademacherProcess ℓ z).varianceProxy = (n : ℝ)⁻¹ := rfl
 
+omit [Fintype ι] [Nonempty ι] in
+/-- The canonical Rademacher process metric is the empirical L2 distance on the
+sample: `√((1/n) ∑_k (ℓ t (z k) - ℓ s (z k))²)`. This exposes the (private)
+process metric in closed form so the continuous-instantiation bridge can state
+the index-metric compatibility certificate without referencing `empiricalDist`. -/
+@[simp] theorem canonicalRademacherProcess_dist (ℓ : ι → Z → ℝ) (z : Fin n → Z)
+    (s t : ι) :
+    (canonicalRademacherProcess ℓ z).dist s t
+      = Real.sqrt ((∑ k : Fin n, (ℓ t (z k) - ℓ s (z k)) ^ 2) / (n : ℝ)) := rfl
+
 /-- The empirical Rademacher complexity equals the weighted expectation of the
 finite supremum of the canonical process coordinates. Pure definitional
 unfolding of `empiricalRademacherComplexity`, `finiteExpectation`, and
@@ -270,9 +294,9 @@ sub-Gaussian increment control is discharged from the discrete sign-vector
 factorization (it is not assumed); the metric/symmetry/triangle and net data are
 supplied through the same interface that the finite Dudley spine consumes.
 
-This is the finite case. The continuous-instantiation gap (instantiating the
-continuous Dudley integral's free entropy profile from covering numbers) remains
-a separate open unit. -/
+This is the finite endpoint. The continuous-instantiation endpoint
+(instantiating the continuous Dudley integral's entropy profile from covering
+numbers) is `continuous_dudley_rademacher_complexity_bound` below. -/
 theorem dudley_rademacher_complexity_bound
     (ℓ : ι → Z → ℝ) (z : Fin n → Z)
     {A : ℕ → Type*} [∀ j : ℕ, Fintype (A j)]
@@ -320,6 +344,100 @@ theorem dudley_rademacher_complexity_bound
     hradius_pos hradius_geometric hcover_antitone hcover_pos
     hcover_product hcenter
 
+/-- **Continuous Dudley entropy integral to empirical Rademacher complexity.**
+
+This closes the continuous-instantiation gap left open by
+`dudley_rademacher_complexity_bound`. The index class `ι` carries a pseudometric
+that the caller certifies to be the empirical L2 distance on the sample
+(`hmetric`, discharging the continuous theorem's `hdistP`). Under total
+boundedness of `ι`, an antitone positive covering-number profile dominating the
+dyadic chaining cover counts, and the separability/terminal boundary certificate
+`hchoose'` for the Rademacher process, the empirical Rademacher complexity is
+bounded by the continuous Dudley entropy integral
+`∫₀^{radiusScale/2} √(log N(F, ε)) dε`, with the `C/√n` constant
+`4 · √(2/n)` produced by rewriting the process variance proxy `1/n`.
+
+Unlike the finite endpoint, the integral runs from `0` (not from a positive
+terminal floor), and the entropy profile is the genuine metric-entropy integrand
+`√(log N(F, ε))` for the covering-number profile `N(F, ε) = coveringNumberAtRadius ε`.
+
+The analytic content of the bound is the continuous Dudley entropy integral
+`ContinuousDudleyCovering.continuous_dudley_entropy_integral_of_coveringNumber`;
+this theorem is the instantiation on `canonicalRademacherProcess ℓ z` together
+with the `varianceProxy = 1/n` rewrite that turns `4 · √(2 · varianceProxy)`
+into `4 · √(2/n)`. -/
+theorem continuous_dudley_rademacher_complexity_bound
+    [PseudoMetricSpace ι]
+    (ℓ : ι → Z → ℝ) (z : Fin n → Z)
+    (coarseBudget radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hT : TotallyBounded (Set.univ : Set ι))
+    (hradiusScale : 0 < radiusScale)
+    (hmetric : (canonicalRademacherProcess ℓ z).dist = fun s t => dist s t)
+    (hvariance : 0 < (canonicalRademacherProcess ℓ z).varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      FormalSLT.Covering.TotalBoundedDudley.dyadicChainingCoverCount
+          (T := ι) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hchoose' : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+      ∃ (K : Type u), ∃ (_instK : Fintype K), ∃ (_nonemptyK : Nonempty K),
+      ∃ (embed : K → ι), ∃ (separabilityError : ℝ), ∃ (terminalError : ℝ),
+        separabilityError + terminalError ≤ eta ∧
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := ι) hT hradiusScale j).net
+            (FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := ι) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable
+            (fun ε : ℝ =>
+              Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ)))
+            MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ σ : Fin n → Bool,
+          finiteSup (fun i : ι => (canonicalRademacherProcess ℓ z).X σ i) ≤
+            finiteSup (fun k : K => (canonicalRademacherProcess ℓ z).X σ (embed k))
+              + separabilityError) ∧
+        (∀ σ : Fin n → Bool, ∀ k : K,
+          (canonicalRademacherProcess ℓ z).X σ (embed k) ≤
+            (canonicalRademacherProcess ℓ z).X σ
+              ((FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := ι) hT hradiusScale m).net.projection (embed k)) +
+              terminalError) ∧
+        (finiteExpectation (canonicalRademacherProcess ℓ z).weight
+          (fun σ => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := ι) hT hradiusScale m).net =>
+              (canonicalRademacherProcess ℓ z).X σ
+                ((FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := ι) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (FormalSLT.Covering.TotalBoundedDudley.dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := ι) hT hradiusScale m).net u)))) ≤
+          coarseBudget)) :
+    empiricalRademacherComplexity ℓ z ≤
+      coarseBudget + 4 * Real.sqrt (2 / (n : ℝ)) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2),
+          Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  rw [empiricalRademacherComplexity_eq_finiteExpectation_finiteSup ℓ z,
+      show (2 : ℝ) / (n : ℝ)
+          = 2 * (canonicalRademacherProcess ℓ z).varianceProxy by
+        rw [canonicalRademacherProcess_varianceProxy, div_eq_mul_inv]]
+  exact FormalSLT.Covering.ContinuousDudleyCovering.continuous_dudley_entropy_integral_of_coveringNumber
+    (P := canonicalRademacherProcess ℓ z) (hT := hT)
+    (coarseBudget := coarseBudget) (radiusScale := radiusScale)
+    (coveringNumberAtRadius := coveringNumberAtRadius)
+    (supFunctional := fun σ =>
+      finiteSup (fun i : ι => (canonicalRademacherProcess ℓ z).X σ i))
+    hradiusScale hmetric hvariance hcover_antitone hcover_pos
+    hcover_dominates hchoose'
+
 /-- Instantiation of the bridge on the two-point hypothesis class `Bool`. -/
 example {Z : Type*} (ℓ : Bool → Z → ℝ) {n : ℕ} (z : Fin n → Z)
     {A : ℕ → Type*} [∀ j : ℕ, Fintype (A j)]
@@ -332,6 +450,10 @@ end
 
 #check @dudley_rademacher_complexity_bound
 
+#check @continuous_dudley_rademacher_complexity_bound
+
 #print axioms dudley_rademacher_complexity_bound
+
+#print axioms continuous_dudley_rademacher_complexity_bound
 
 end FormalSLT.Covering.DudleyToRademacher
