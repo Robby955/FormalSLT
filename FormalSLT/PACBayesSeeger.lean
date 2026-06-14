@@ -1697,6 +1697,216 @@ theorem pacbayes_seeger_klForm_of_bernoulliPriorMoment_and_binaryKLJensen
         hprior.toIsPMF n riskFn empiricalRiskFn hpointwise)
       hbinaryKLJensen
 
+/-! ### Pinsker for Bernoulli KL
+
+The lower bound `2 (p - q)^2 ≤ binKL p q` for `p ∈ [0,1]`, `q ∈ (0,1)`.  We use the
+log-difference rewriting `binKLPinskerG q p` of `binKL p q`, subtract the quadratic to
+form `binKLPinskerF q p`, and show this auxiliary function is nonnegative.  Its
+derivative `binKLPinskerD q p` vanishes at `p = q` and is monotone in `p` on `(0,1)`
+because its own derivative `1/p + 1/(1-p) - 4 = (1 - 2p)^2 / (p (1-p)) ≥ 0`.  Hence
+`binKLPinskerF` decreases up to `q` and increases after `q`, with minimum value `0` at
+`p = q`.  Continuity of the log-difference form on all of `ℝ` carries the bound to the
+closed endpoints `p = 0` and `p = 1`. -/
+
+/-- Log-difference form of `binKL · q`, defined by the same formula at every real `p`. -/
+private noncomputable def binKLPinskerG (q p : ℝ) : ℝ :=
+  p * Real.log p - p * Real.log q + ((1 - p) * Real.log (1 - p) - (1 - p) * Real.log (1 - q))
+
+/-- The auxiliary gap `binKL p q - 2 (p - q)^2`, in log-difference form. -/
+private noncomputable def binKLPinskerF (q p : ℝ) : ℝ := binKLPinskerG q p - 2 * (p - q) ^ 2
+
+/-- The derivative of `binKLPinskerF q` on `(0,1)`. -/
+private noncomputable def binKLPinskerD (q p : ℝ) : ℝ :=
+  Real.log p - Real.log (1 - p) - Real.log q + Real.log (1 - q) - 4 * (p - q)
+
+private theorem binKLPinskerG_eq_binKL (q p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    (hq0 : 0 < q) (hq1 : q < 1) : binKLPinskerG q p = binKL p q := by
+  unfold binKLPinskerG binKL
+  have hqne : q ≠ 0 := ne_of_gt hq0
+  have h1qne : (1 - q) ≠ 0 := by linarith
+  rcases eq_or_lt_of_le hp0 with hp0' | hp0'
+  · rw [← hp0']; simp
+  · rcases eq_or_lt_of_le hp1 with hp1' | hp1'
+    · rw [hp1']; simp
+    · rw [Real.log_div (ne_of_gt hp0') (ne_of_gt hq0),
+          Real.log_div (by linarith) (by linarith)]
+      ring
+
+private theorem binKLPinsker_continuous_G (q : ℝ) : Continuous (binKLPinskerG q) := by
+  unfold binKLPinskerG
+  apply Continuous.add
+  apply Continuous.sub
+  · exact Real.continuous_mul_log
+  · exact continuous_id.mul continuous_const
+  apply Continuous.sub
+  · exact (continuous_const.sub continuous_id).mul_log
+  · exact (continuous_const.sub continuous_id).mul continuous_const
+
+private theorem binKLPinsker_continuous_F (q : ℝ) : Continuous (binKLPinskerF q) := by
+  unfold binKLPinskerF
+  exact (binKLPinsker_continuous_G q).sub
+    (continuous_const.mul ((continuous_id.sub continuous_const).pow 2))
+
+private theorem binKLPinsker_hasDerivAt_G (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
+    HasDerivAt (binKLPinskerG q)
+      (Real.log p - Real.log (1 - p) - Real.log q + Real.log (1 - q)) p := by
+  have hpne : p ≠ 0 := ne_of_gt hp0
+  have h1mne : (1 - p) ≠ 0 := by linarith
+  have d1 : HasDerivAt (fun x : ℝ => x * Real.log x) (Real.log p + 1) p :=
+    Real.hasDerivAt_mul_log hpne
+  have d2 : HasDerivAt (fun x : ℝ => x * Real.log q) (Real.log q) p := by
+    simpa using (hasDerivAt_id p).mul_const (Real.log q)
+  have du : HasDerivAt (fun x : ℝ => (1 : ℝ) - x) (-1) p := by
+    simpa using (hasDerivAt_id p).const_sub 1
+  have d3 : HasDerivAt (fun x : ℝ => (1 - x) * Real.log (1 - x))
+      (-(Real.log (1 - p) + 1)) p := by
+    have := (Real.hasDerivAt_mul_log h1mne).comp p du
+    simpa using this
+  have d4 : HasDerivAt (fun x : ℝ => (1 - x) * Real.log (1 - q))
+      (-(Real.log (1 - q))) p := by
+    have := du.mul_const (Real.log (1 - q))
+    simpa using this
+  have := ((d1.sub d2).add (d3.sub d4))
+  unfold binKLPinskerG
+  convert this using 1
+  ring
+
+private theorem binKLPinsker_hasDerivAt_F (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
+    HasDerivAt (binKLPinskerF q) (binKLPinskerD q p) p := by
+  have hg := binKLPinsker_hasDerivAt_G q p hp0 hp1
+  have hsq : HasDerivAt (fun x : ℝ => 2 * (x - q) ^ 2) (4 * (p - q)) p := by
+    have h : HasDerivAt (fun x : ℝ => (x - q) ^ 2) (2 * (p - q) ^ 1 * 1) p := by
+      have := (hasDerivAt_id p).sub_const q
+      simpa using (this.pow 2)
+    have := h.const_mul (2 : ℝ)
+    convert this using 1
+    ring
+  have hd := hg.sub hsq
+  have heq : binKLPinskerD q p =
+      (Real.log p - Real.log (1 - p) - Real.log q + Real.log (1 - q)) - 4 * (p - q) := by
+    unfold binKLPinskerD; ring
+  rw [heq]
+  simpa only [binKLPinskerF] using hd
+
+private theorem binKLPinsker_hasDerivAt_D (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
+    HasDerivAt (binKLPinskerD q) (p⁻¹ + (1 - p)⁻¹ - 4) p := by
+  have hpne : p ≠ 0 := ne_of_gt hp0
+  have h1mne : (1 - p) ≠ 0 := by linarith
+  have d1 : HasDerivAt (fun x : ℝ => Real.log x) p⁻¹ p := Real.hasDerivAt_log hpne
+  have du : HasDerivAt (fun x : ℝ => (1 : ℝ) - x) (-1) p := by
+    simpa using (hasDerivAt_id p).const_sub 1
+  have d2 : HasDerivAt (fun x : ℝ => Real.log (1 - x)) (-(1 - p)⁻¹) p := by
+    have := (Real.hasDerivAt_log h1mne).comp p du
+    simpa [div_eq_mul_inv] using this
+  have d3 : HasDerivAt (fun _ : ℝ => Real.log q) (0 : ℝ) p := hasDerivAt_const p _
+  have d4 : HasDerivAt (fun _ : ℝ => Real.log (1 - q)) (0 : ℝ) p := hasDerivAt_const p _
+  have d5 : HasDerivAt (fun x : ℝ => 4 * (x - q)) (4 : ℝ) p := by
+    have := ((hasDerivAt_id p).sub_const q).const_mul (4 : ℝ)
+    simpa using this
+  have := (((d1.sub d2).sub d3).add d4).sub d5
+  unfold binKLPinskerD
+  convert this using 1
+  ring
+
+private theorem binKLPinsker_derivD_nonneg (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
+    0 ≤ p⁻¹ + (1 - p)⁻¹ - 4 := by
+  have h1mp : (0 : ℝ) < 1 - p := by linarith
+  have hprod : 0 < p * (1 - p) := mul_pos hp0 h1mp
+  have key : p⁻¹ + (1 - p)⁻¹ - 4 = (1 - 2 * p) ^ 2 / (p * (1 - p)) := by
+    field_simp; ring
+  rw [key]; positivity
+
+private theorem binKLPinskerD_self (q : ℝ) : binKLPinskerD q q = 0 := by
+  unfold binKLPinskerD; ring
+
+private theorem binKLPinskerF_self (q : ℝ) : binKLPinskerF q q = 0 := by
+  unfold binKLPinskerF binKLPinskerG; ring
+
+private theorem binKLPinsker_continuousOn_D (q : ℝ) :
+    ContinuousOn (binKLPinskerD q) (Set.Ioo 0 1) := by
+  intro p hp
+  exact (binKLPinsker_hasDerivAt_D q p hp.1 hp.2).continuousAt.continuousWithinAt
+
+private theorem binKLPinsker_differentiableOn_D (q : ℝ) :
+    DifferentiableOn ℝ (binKLPinskerD q) (Set.Ioo 0 1) := by
+  intro p hp
+  exact (binKLPinsker_hasDerivAt_D q p hp.1 hp.2).differentiableAt.differentiableWithinAt
+
+private theorem binKLPinsker_monotoneOn_D (q : ℝ) :
+    MonotoneOn (binKLPinskerD q) (Set.Ioo 0 1) := by
+  apply monotoneOn_of_deriv_nonneg (convex_Ioo 0 1) (binKLPinsker_continuousOn_D q)
+  · rw [interior_Ioo]; exact binKLPinsker_differentiableOn_D q
+  · intro p hp
+    rw [interior_Ioo] at hp
+    rw [(binKLPinsker_hasDerivAt_D q p hp.1 hp.2).deriv]
+    exact binKLPinsker_derivD_nonneg p hp.1 hp.2
+
+private theorem binKLPinskerD_nonneg_of_ge (q : ℝ) (hq0 : 0 < q) (hq1 : q < 1)
+    (p : ℝ) (hp : p ∈ Set.Ioo (0 : ℝ) 1) (hqp : q ≤ p) : 0 ≤ binKLPinskerD q p := by
+  have := binKLPinsker_monotoneOn_D q ⟨hq0, hq1⟩ hp hqp
+  rwa [binKLPinskerD_self q] at this
+
+private theorem binKLPinskerD_nonpos_of_le (q : ℝ) (hq0 : 0 < q) (hq1 : q < 1)
+    (p : ℝ) (hp : p ∈ Set.Ioo (0 : ℝ) 1) (hpq : p ≤ q) : binKLPinskerD q p ≤ 0 := by
+  have := binKLPinsker_monotoneOn_D q hp ⟨hq0, hq1⟩ hpq
+  rwa [binKLPinskerD_self q] at this
+
+private theorem binKLPinskerF_nonneg (q : ℝ) (hq0 : 0 < q) (hq1 : q < 1)
+    (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) : 0 ≤ binKLPinskerF q p := by
+  have hcont : ContinuousOn (binKLPinskerF q) (Set.Icc 0 1) :=
+    (binKLPinsker_continuous_F q).continuousOn
+  rcases le_total q p with hqp | hpq
+  · have hsub : Set.Icc q p ⊆ Set.Icc 0 1 := by
+      intro x hx; exact ⟨le_of_lt (lt_of_lt_of_le hq0 hx.1), le_trans hx.2 hp1⟩
+    have hint : Set.Ioo q p ⊆ Set.Ioo 0 1 := by
+      intro x hx; exact ⟨lt_of_lt_of_le hq0 (le_of_lt hx.1), lt_of_lt_of_le hx.2 hp1⟩
+    have hmono : MonotoneOn (binKLPinskerF q) (Set.Icc q p) := by
+      apply monotoneOn_of_deriv_nonneg (convex_Icc q p) (hcont.mono hsub)
+      · rw [interior_Icc]
+        intro x hx
+        have hxioo : x ∈ Set.Ioo (0 : ℝ) 1 := hint hx
+        exact (binKLPinsker_hasDerivAt_F q x hxioo.1
+          hxioo.2).differentiableAt.differentiableWithinAt
+      · intro x hx
+        rw [interior_Icc] at hx
+        have hxioo : x ∈ Set.Ioo (0 : ℝ) 1 := hint hx
+        rw [(binKLPinsker_hasDerivAt_F q x hxioo.1 hxioo.2).deriv]
+        exact binKLPinskerD_nonneg_of_ge q hq0 hq1 x hxioo (le_of_lt hx.1)
+    have := hmono (Set.left_mem_Icc.mpr hqp) (Set.right_mem_Icc.mpr hqp) hqp
+    rwa [binKLPinskerF_self q] at this
+  · have hsub : Set.Icc p q ⊆ Set.Icc 0 1 := by
+      intro x hx; exact ⟨le_trans hp0 hx.1, le_of_lt (lt_of_le_of_lt hx.2 hq1)⟩
+    have hint : Set.Ioo p q ⊆ Set.Ioo 0 1 := by
+      intro x hx; exact ⟨lt_of_le_of_lt hp0 hx.1, lt_of_lt_of_le hx.2 (le_of_lt hq1)⟩
+    have hanti : AntitoneOn (binKLPinskerF q) (Set.Icc p q) := by
+      apply antitoneOn_of_deriv_nonpos (convex_Icc p q) (hcont.mono hsub)
+      · rw [interior_Icc]
+        intro x hx
+        have hxioo : x ∈ Set.Ioo (0 : ℝ) 1 := hint hx
+        exact (binKLPinsker_hasDerivAt_F q x hxioo.1
+          hxioo.2).differentiableAt.differentiableWithinAt
+      · intro x hx
+        rw [interior_Icc] at hx
+        have hxioo : x ∈ Set.Ioo (0 : ℝ) 1 := hint hx
+        rw [(binKLPinsker_hasDerivAt_F q x hxioo.1 hxioo.2).deriv]
+        exact binKLPinskerD_nonpos_of_le q hq0 hq1 x hxioo (le_of_lt hx.2)
+    have := hanti (Set.left_mem_Icc.mpr hpq) (Set.right_mem_Icc.mpr hpq) hpq
+    rwa [binKLPinskerF_self q] at this
+
+/--
+Pinsker's inequality for the Bernoulli relative entropy: for `p ∈ [0,1]` and
+`q ∈ (0,1)`, the binary KL divergence dominates `2 (p - q)^2`.  Proved by the
+tangent-line/second-derivative argument on `Real.log`, with the open-interval bound
+carried to the endpoints by continuity of the log-difference form.
+-/
+theorem binKL_pinsker (p q : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (hq0 : 0 < q) (hq1 : q < 1) :
+    2 * (p - q) ^ 2 ≤ binKL p q := by
+  have h := binKLPinskerF_nonneg q hq0 hq1 p hp0 hp1
+  rw [show binKLPinskerF q p
+        = binKLPinskerG q p - 2 * (p - q) ^ 2 from rfl,
+      binKLPinskerG_eq_binKL q p hp0 hp1 hq0 hq1] at h
+  linarith
+
 /--
 Pinsker converts the KL-form certificate into the usual square-root-style
 posterior gap, provided the Bernoulli Pinsker inequality is supplied for the
@@ -1713,6 +1923,28 @@ theorem pacbayes_seeger_klForm_implies_mcallester_sqrt_of_pinsker
     have htwo : 0 < (2 : ℝ) := by norm_num
     nlinarith
   exact Real.le_sqrt_of_sq_le hsq
+
+/--
+Unconditional square-root-style posterior gap: once the Bernoulli population risk
+lies in `(0,1)` and the empirical risk in `[0,1]`, the KL-form bound
+`binKL empiricalRisk populationRisk ≤ complexity` yields the McAllester square-root
+gap.  The Pinsker hypothesis of
+`pacbayes_seeger_klForm_implies_mcallester_sqrt_of_pinsker` is discharged here by
+`binKL_pinsker`.
+-/
+theorem pacbayes_seeger_klForm_implies_mcallester_sqrt
+    {empiricalRisk populationRisk complexity : ℝ}
+    (hemp0 : 0 ≤ empiricalRisk) (hemp1 : empiricalRisk ≤ 1)
+    (hpop0 : 0 < populationRisk) (hpop1 : populationRisk < 1)
+    (hkl : binKL empiricalRisk populationRisk ≤ complexity) :
+    populationRisk - empiricalRisk ≤ Real.sqrt (complexity / 2) := by
+  have hpinsker :
+      2 * (populationRisk - empiricalRisk) ^ 2 ≤ binKL empiricalRisk populationRisk := by
+    have h := binKL_pinsker empiricalRisk populationRisk hemp0 hemp1 hpop0 hpop1
+    have hsqeq : (empiricalRisk - populationRisk) ^ 2 = (populationRisk - empiricalRisk) ^ 2 := by
+      ring
+    rwa [hsqeq] at h
+  exact pacbayes_seeger_klForm_implies_mcallester_sqrt_of_pinsker hpinsker hkl
 
 end
 
