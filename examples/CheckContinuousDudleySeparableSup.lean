@@ -1,0 +1,38 @@
+import FormalSLT.Covering.ContinuousDudley
+
+/-!
+# Separable-space measurable supremum checker
+
+This checker records the dense-set-free wrapper around the existing countable
+dense-subset supremum measurability bridge.
+-/
+
+#check FormalSLT.Covering.ContinuousDudley.sup_measurable_of_separableSpace
+#print axioms FormalSLT.Covering.ContinuousDudley.sup_measurable_of_separableSpace
+
+#check FormalSLT.Covering.ContinuousDudley.exists_denseSeq_dist_lt
+#print axioms FormalSLT.Covering.ContinuousDudley.exists_denseSeq_dist_lt
+
+#check FormalSLT.Covering.ContinuousDudley.iSup_denseSeq_eq_iSup
+#print axioms FormalSLT.Covering.ContinuousDudley.iSup_denseSeq_eq_iSup
+
+#check FormalSLT.Covering.ContinuousDudley.bddAbove_range_denseSeq
+#print axioms FormalSLT.Covering.ContinuousDudley.bddAbove_range_denseSeq
+
+#check FormalSLT.Covering.ContinuousDudley.sup_measurable_denseSeq
+#print axioms FormalSLT.Covering.ContinuousDudley.sup_measurable_denseSeq
+
+#check FormalSLT.Covering.ContinuousDudley.denseSeq_sup_eq_full_sup
+#print axioms FormalSLT.Covering.ContinuousDudley.denseSeq_sup_eq_full_sup
+
+#check FormalSLT.Covering.ContinuousDudley.exists_iSup_le_add_of_bddAbove
+#print axioms FormalSLT.Covering.ContinuousDudley.exists_iSup_le_add_of_bddAbove
+
+#check FormalSLT.Covering.ContinuousDudley.exists_iSup_witness_function
+#print axioms FormalSLT.Covering.ContinuousDudley.exists_iSup_witness_function
+
+#check FormalSLT.Covering.ContinuousDudley.separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli
+#print axioms FormalSLT.Covering.ContinuousDudley.separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli
+
+#check FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_pathwiseModuli
+#print axioms FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_pathwiseModuli
