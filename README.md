@@ -76,17 +76,27 @@ The printed axiom profile for the v0.1 headline surface stays inside:
 
 ## Checked Surfaces
 
-| Surface | Main checked endpoint | Checker |
-|---|---|---|
-| Finite-class Hoeffding confidence sequence | `FiniteClassConfidenceSequence.failure_probability_le` | `examples/CheckUniformConvergence.lean` |
-| Unit-interval finite-net Dudley bridge | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `examples/CheckUnitIntervalDudley.lean` |
-| Packaged finite dyadic Dudley API | `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` | `examples/CheckV01Usability.lean` |
-| Two-point dyadic Dudley instance | `twoPointDudleyInstance` | `examples/CheckTwoPointDudley.lean` |
-| `Fin n` discrete dyadic Dudley instance | `finDiscreteDudleyInstance` | `examples/CheckFiniteDiscreteDudley.lean` |
-| Two-sided sharp McDiarmid over a homogeneous product measure | `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `FormalSLT/Test/SharpMcDiarmidTest.lean` |
-| PAC-Bayes Bernstein supplied margin-proxy shell | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `examples/CheckPACBayesBernstein.lean` |
-| Finite Dudley entropy-integral endpoint | `dudley_entropy_integral_of_antitone_coveringNumber` | `examples/CheckDudleyEntropyIntegral.lean` |
-| Two-point Rademacher entropy-integral instantiation | `twoPointRademacher_centered_dudley_entropy_integral` | `examples/CheckTwoPointDudleyIntegral.lean` |
+Each surface has one machine-checked endpoint and a checker file you can run with
+`lake env lean <checker>`:
+
+- **Finite-class Hoeffding confidence sequence**
+  endpoint `FiniteClassConfidenceSequence.failure_probability_le`, checker `examples/CheckUniformConvergence.lean`
+- **Unit-interval finite-net Dudley bridge**
+  endpoint `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`, checker `examples/CheckUnitIntervalDudley.lean`
+- **Packaged finite dyadic Dudley API**
+  endpoint `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound`, checker `examples/CheckV01Usability.lean`
+- **Two-point dyadic Dudley instance**
+  endpoint `twoPointDudleyInstance`, checker `examples/CheckTwoPointDudley.lean`
+- **`Fin n` discrete dyadic Dudley instance**
+  endpoint `finDiscreteDudleyInstance`, checker `examples/CheckFiniteDiscreteDudley.lean`
+- **Two-sided sharp McDiarmid over a homogeneous product measure**
+  endpoint `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`, checker `FormalSLT/Test/SharpMcDiarmidTest.lean`
+- **PAC-Bayes Bernstein supplied margin-proxy shell**
+  endpoint `finitePACBayesBernsteinMargin_badEventMass_le_delta`, checker `examples/CheckPACBayesBernstein.lean`
+- **Finite Dudley entropy-integral endpoint**
+  endpoint `dudley_entropy_integral_of_antitone_coveringNumber`, checker `examples/CheckDudleyEntropyIntegral.lean`
+- **Two-point Rademacher entropy-integral instantiation**
+  endpoint `twoPointRademacher_centered_dudley_entropy_integral`, checker `examples/CheckTwoPointDudleyIntegral.lean`
 
 The confidence-sequence chain makes the finite-class and countable-time union
 bound explicit. The Dudley chain proves the finite maximal inequality, the
@@ -257,16 +267,14 @@ library contains checked finite routes for:
 
 The main generalization theorems are intentionally finite and explicit.
 
-| Scope item | Current state |
-|---|---|
-| Hypothesis classes | Finite index types unless a theorem states a separate finite net/family |
-| Samples | Finite iid samples through product measures |
-| Losses/processes | Scalar real-valued, with boundedness or finite sub-Gaussian MGF assumptions |
-| Conditional MGF layer | Bounded, conditionally centered real increments with an explicit conditional second-moment proxy |
-| Constants | High-probability Rademacher and VC sample-complexity bounds use the sharp McDiarmid `2B²` exponent; the localized-Rademacher wrapper still cites the Azuma `8B²` constant |
-| PAC-Bayes Bernstein layer | Finite posterior/prior setting with supplied variance proxy and normalized prior-moment certificate |
-| Chaining | Finite nets/images, finite support/outcome spaces, finite entropy sums; the unit-interval example instantiates the bridge on a non-finite metric index space with explicit finite meshes |
-| Public axiom target | `[propext, Classical.choice, Quot.sound]` only |
+- **Hypothesis classes:** finite index types unless a theorem states a separate finite net/family
+- **Samples:** finite iid samples through product measures
+- **Losses/processes:** scalar real-valued, with boundedness or finite sub-Gaussian MGF assumptions
+- **Conditional MGF layer:** bounded, conditionally centered real increments with an explicit conditional second-moment proxy
+- **Constants:** high-probability Rademacher and VC sample-complexity bounds use the sharp McDiarmid `2B²` exponent; the localized-Rademacher wrapper still cites the Azuma `8B²` constant
+- **PAC-Bayes Bernstein layer:** finite posterior/prior setting with supplied variance proxy and normalized prior-moment certificate
+- **Chaining:** finite nets/images, finite support/outcome spaces, finite entropy sums; the unit-interval example instantiates the bridge on a non-finite metric index space with explicit finite meshes
+- **Public axiom target:** `[propext, Classical.choice, Quot.sound]` only
 
 ## Open work
 
@@ -393,17 +401,15 @@ The expected result is:
 
 ## Module map
 
-| Layer | Modules |
-|---|---|
-| Core definitions | `Risk`, `ERM`, `UniformConvergence`, `GhostSample` |
-| Probability utilities | `Probability.Concentration`, `Probability.FiniteUnionBound`, `Probability.FiniteExpectation` |
-| Conditional sub-Gamma infrastructure | `Concentration.SubGamma.BennettBound`, `Concentration.SubGamma.BoundedExpIntegrable`, `Concentration.SubGamma.CondExpProduct`, `Concentration.SubGamma.CondJensen`, `Concentration.SubGamma.CondMarkov`, `Concentration.SubGamma.CondVarianceFromSquare`, `Concentration.SubGamma.Extractor` |
-| Rademacher route | `Rademacher.FiniteSample`, `Rademacher.FiniteSampleSymmetrization`, `Rademacher.ProbabilityBridge`, `Rademacher.Decoupling`, `Rademacher.Symmetrization`, `Rademacher.Massart`, `Rademacher.HighProbability`, `Rademacher.FiniteClassHighProb`, `Rademacher.UniformDeviation`, `Rademacher.ERMGeneralization`, `Rademacher.Contraction`, `Rademacher.LinearPredictor`, `Rademacher.Localized` |
-| Azuma infrastructure | `Azuma.ExposureMartingale`, `Azuma.BoundedDifferences`, `Azuma.BoundedDiffMartingale`, `Azuma.BoundedDiffsAzumaInput`, `Azuma.BoundedIncrementBound`, `Azuma.HasBoundedDifferences`, `Azuma.ExposureIncrementHoeffding`, `Azuma.ExposureIncrementCondMGF`, `Azuma.GenGapTail` |
-| VC route | `VC.Dimension`, `VC.PACBridge`, `VC.SauerShelah`, `VC.Rademacher`, `VC.SampleComplexity`, `VC.BinaryVCBridge` |
-| Covering and chaining | `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley`, `Covering.UnitIntervalDudley`, `Covering.TwoPointDudley`, `Covering.FiniteDiscreteDudley`, `Covering.DudleyChainingSum`, `Covering.DudleySumToIntegral`, `Covering.DudleyEntropyIntegral`, `Covering.TwoPointDudleyIntegral` |
-| Sub-Gaussian finite maximal inequalities | `Probability.SubGaussianFiniteMax` |
-| Stability and PAC-Bayes foundations | `AlgorithmicStability`, `Stability.BousquetElisseeff`, `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss`, `PACBayesBernstein` |
+- **Core definitions:** `Risk`, `ERM`, `UniformConvergence`, `GhostSample`
+- **Probability utilities:** `Probability.Concentration`, `Probability.FiniteUnionBound`, `Probability.FiniteExpectation`
+- **Conditional sub-Gamma infrastructure:** `Concentration.SubGamma.BennettBound`, `Concentration.SubGamma.BoundedExpIntegrable`, `Concentration.SubGamma.CondExpProduct`, `Concentration.SubGamma.CondJensen`, `Concentration.SubGamma.CondMarkov`, `Concentration.SubGamma.CondVarianceFromSquare`, `Concentration.SubGamma.Extractor`
+- **Rademacher route:** `Rademacher.FiniteSample`, `Rademacher.FiniteSampleSymmetrization`, `Rademacher.ProbabilityBridge`, `Rademacher.Decoupling`, `Rademacher.Symmetrization`, `Rademacher.Massart`, `Rademacher.HighProbability`, `Rademacher.FiniteClassHighProb`, `Rademacher.UniformDeviation`, `Rademacher.ERMGeneralization`, `Rademacher.Contraction`, `Rademacher.LinearPredictor`, `Rademacher.Localized`
+- **Azuma infrastructure:** `Azuma.ExposureMartingale`, `Azuma.BoundedDifferences`, `Azuma.BoundedDiffMartingale`, `Azuma.BoundedDiffsAzumaInput`, `Azuma.BoundedIncrementBound`, `Azuma.HasBoundedDifferences`, `Azuma.ExposureIncrementHoeffding`, `Azuma.ExposureIncrementCondMGF`, `Azuma.GenGapTail`
+- **VC route:** `VC.Dimension`, `VC.PACBridge`, `VC.SauerShelah`, `VC.Rademacher`, `VC.SampleComplexity`, `VC.BinaryVCBridge`
+- **Covering and chaining:** `Covering.Rademacher`, `Covering.DudleyChaining`, `Covering.FiniteSubGaussianChaining`, `Covering.TotalBoundedDudley`, `Covering.UnitIntervalDudley`, `Covering.TwoPointDudley`, `Covering.FiniteDiscreteDudley`, `Covering.DudleyChainingSum`, `Covering.DudleySumToIntegral`, `Covering.DudleyEntropyIntegral`, `Covering.TwoPointDudleyIntegral`
+- **Sub-Gaussian finite maximal inequalities:** `Probability.SubGaussianFiniteMax`
+- **Stability and PAC-Bayes foundations:** `AlgorithmicStability`, `Stability.BousquetElisseeff`, `PACBayesKL`, `PACBayesMcAllester`, `PACBayesFiniteProductMGF`, `PACBayesBoundedLoss`, `PACBayesBernstein`
 
 ## Roadmap
 
