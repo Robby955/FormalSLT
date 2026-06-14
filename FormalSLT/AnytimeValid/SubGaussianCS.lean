@@ -7,6 +7,7 @@ import Mathlib.Probability.Martingale.OptionalStopping
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Tactic
 import FormalSLT.Concentration.SubGamma.Extractor
+import FormalSLT.Concentration.SubGamma.CondExpProduct
 import FormalSLT.AnytimeValid.VilleMaximalIneq
 
 /-!
@@ -143,6 +144,98 @@ theorem nonneg_supermartingale_of_condSubGamma
   refine ⟨supermartingale_nat h_adapted h_integrable h_condSubGamma_step, ?_⟩
   intro n ω
   exact (Real.exp_pos _).le
+
+/--
+The one-step conditional sub-Gamma supermartingale bound, derived from the per-increment
+model rather than carried as a hypothesis.
+
+From the conditional sub-Gamma increment model on `X` (bounded `|X_k| ≤ b`, conditionally
+centered `μ[X_k | F_k] = 0`, conditional second moment `μ[X_k² | F_k] ≤ σ²`), the fixed-`lambda`
+exponential process satisfies `E[M_{n+1} | F_n] ≤ M_n`. This is exactly the
+`h_condSubGamma_step` obligation taken by `nonneg_supermartingale_of_condSubGamma`.
+
+The proof factors `M_{n+1} = (M_n · exp(-cgf)) · exp(lambda · X_n)`, pulls the predictable
+prefactor `Z = M_n · exp(-cgf)` out of the conditional expectation
+(`FormalSLT.Concentration.SubGamma.condExp_mul_bounded_left`), and bounds the residual MGF
+`E[exp(lambda · X_n) | F_n] ≤ exp(cgf)` via
+`FormalSLT.Concentration.SubGamma.condSubGammaMGF_of_bounded_centered_condVariance`.
+Since `Z ≥ 0` and `exp(-cgf) · exp(cgf) = 1`, the product collapses back to `M_n`.
+-/
+theorem condSubGamma_supermartingale_step
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {sigma2 b lam : ℝ}
+    (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam : 0 ≤ lam) (hblam : b * lam < 3)
+    (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
+    (h_adapted : StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam))
+    (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
+    (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
+    (hvar : ∀ k, μ[fun ω => (X k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => sigma2) :
+    ∀ n,
+      μ[subGammaExponentialProcess X sigma2 b lam (n + 1) | ℱ n]
+        ≤ᵐ[μ] subGammaExponentialProcess X sigma2 b lam n := by
+  intro n
+  set cgf : ℝ := subGammaCgf sigma2 b lam with hcgf_def
+  -- Predictable prefactor `Z = M_n · exp(-cgf)` and residual `Y = exp(lambda · X_n)`.
+  set Z : Ω → ℝ := fun ω => subGammaExponentialProcess X sigma2 b lam n ω * Real.exp (-cgf)
+    with hZ_def
+  set Y : Ω → ℝ := fun ω => Real.exp (lam * X n ω) with hY_def
+  -- Step 1: pointwise factorization `M_{n+1} = Z · Y`.
+  have hfact : subGammaExponentialProcess X sigma2 b lam (n + 1) = fun ω => Z ω * Y ω := by
+    funext ω
+    simp only [subGammaExponentialProcess, runningSum, Finset.sum_range_succ, hZ_def, hY_def]
+    rw [← Real.exp_add, ← Real.exp_add]
+    congr 1
+    push_cast
+    ring
+  -- Step 3: `Z` is `F_n`-strongly-measurable (predictable prefactor of `M_n`).
+  have hZ_meas : StronglyMeasurable[ℱ n] Z := (h_adapted n).mul_const _
+  -- Step 4: `Z` is a.s. bounded. On `S_n ≤ n·b` we have `M_n ≤ exp(lam·n·b − n·cgf)`.
+  set C : ℝ := Real.exp (lam * (n : ℝ) * b - (n : ℝ) * cgf) * Real.exp (-cgf) with hC_def
+  have hZ_bdd : ∀ᵐ ω ∂μ, |Z ω| ≤ C := by
+    filter_upwards [ae_all_iff.2 hbound] with ω hω
+    have hsum_le : runningSum X n ω ≤ (n : ℝ) * b := by
+      have hle : ∀ i ∈ Finset.range n, X i ω ≤ b := fun i _ => (abs_le.mp (hω i)).2
+      calc runningSum X n ω = Finset.sum (Finset.range n) (fun i => X i ω) := rfl
+        _ ≤ Finset.sum (Finset.range n) (fun _ => b) := Finset.sum_le_sum hle
+        _ = (n : ℝ) * b := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    have hMn_le : subGammaExponentialProcess X sigma2 b lam n ω
+        ≤ Real.exp (lam * (n : ℝ) * b - (n : ℝ) * cgf) := by
+      rw [subGammaExponentialProcess, ← hcgf_def]
+      apply Real.exp_le_exp.2
+      have : lam * runningSum X n ω ≤ lam * ((n : ℝ) * b) :=
+        mul_le_mul_of_nonneg_left hsum_le hlam
+      nlinarith
+    have hZnonneg : 0 ≤ Z ω :=
+      mul_nonneg (Real.exp_pos _).le (Real.exp_pos _).le
+    rw [abs_of_nonneg hZnonneg, hZ_def, hC_def]
+    exact mul_le_mul_of_nonneg_right hMn_le (Real.exp_pos _).le
+  -- Step 5: `Y = exp(lambda · X_n)` is integrable.
+  have hY_int : Integrable Y μ :=
+    FormalSLT.Concentration.SubGamma.integrable_exp_mul_of_bounded (hX_meas n) (hbound n)
+  -- Step 6: pull the predictable prefactor out of the conditional expectation.
+  have hpull :
+      μ[fun ω => Z ω * Y ω | ℱ n] =ᵐ[μ] fun ω => Z ω * (μ[Y | ℱ n]) ω :=
+    FormalSLT.Concentration.SubGamma.condExp_mul_bounded_left (ℱ.le n) hZ_meas hZ_bdd hY_int
+  -- Step 7: residual conditional MGF bound `E[exp(lambda · X_n) | F_n] ≤ exp(cgf)`.
+  have hmgf : μ[Y | ℱ n] ≤ᵐ[μ] fun _ => Real.exp cgf := by
+    have h :=
+      FormalSLT.Concentration.SubGamma.condSubGammaMGF_of_bounded_centered_condVariance
+        hb hσ (hX_meas n) (hX_int n) (hbound n) (hcenter n) (hvar n) lam hlam hblam
+    -- The extractor RHS constant is definitionally `Real.exp cgf`.
+    simpa [hY_def, hcgf_def, subGammaCgf] using h
+  -- Step 8: combine a.e. `E[M_{n+1}|F_n] = Z · E[Y|F_n] ≤ Z · exp(cgf) = M_n`.
+  rw [hfact]
+  filter_upwards [hpull, hmgf] with ω hpull' hmgf'
+  rw [hpull']
+  have hZnonneg : 0 ≤ Z ω :=
+    mul_nonneg (Real.exp_pos _).le (Real.exp_pos _).le
+  calc Z ω * (μ[Y | ℱ n]) ω
+      ≤ Z ω * Real.exp cgf := mul_le_mul_of_nonneg_left hmgf' hZnonneg
+    _ = subGammaExponentialProcess X sigma2 b lam n ω := by
+        rw [hZ_def]
+        rw [mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]
 
 /--
 Ville's inequality for the sub-Gamma exponential process: the finite-horizon running maximum of
