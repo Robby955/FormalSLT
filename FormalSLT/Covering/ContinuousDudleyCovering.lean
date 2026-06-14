@@ -247,6 +247,148 @@ theorem continuous_dudley_entropy_integral_of_coveringNumber
       hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg hint0 hchoose
   simpa [hentropy_def] using hmain
 
+/-- **Continuous Dudley covering-number bound for the full supremum.**
+
+Specialization of
+`ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_pathwiseModuli`
+to the covering-number entropy profile
+`ε ↦ √(log (coveringNumberAtRadius ε))`.
+
+The left side is the full pointwise conditional supremum over the index type:
+`ω ↦ ⨆ t, P.X ω t`. The caller supplies bounded sample paths and, for every
+positive boundary budget, finite-scale pathwise modulus and coarse-budget data.
+This theorem discharges the covering-number entropy profile obligations from
+`hcover_antitone`, `hcover_pos`, and `hcover_dominates`. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ, ∃ witnessError : ℝ, ∃ skeletonRadius : ℝ,
+      ∃ skeletonError : ℝ, ∃ terminalError : ℝ,
+        0 < witnessError ∧
+        0 < skeletonRadius ∧
+        witnessError + skeletonError + terminalError ≤ eta ∧
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ skeletonRadius →
+            P.X ω s ≤ P.X ω t + skeletonError) ∧
+        (∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ dyadicChainingNetRadius radiusScale m →
+            P.X ω s ≤ P.X ω t + terminalError) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget)) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2),
+          Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  set entropyAtRadius : ℝ → ℝ :=
+    fun ε => Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ)) with hentropy_def
+  have hentropy_antitone : Antitone entropyAtRadius :=
+    coveringNumber_entropy_antitone coveringNumberAtRadius hcover_antitone hcover_pos
+  have hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε := by
+    intro ε
+    exact Real.sqrt_nonneg _
+  have hint0 :
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume 0 (radiusScale / 2) :=
+    coveringNumber_entropy_integrable_of_antitone
+      coveringNumberAtRadius 0 (radiusScale / 2) hcover_antitone hcover_pos
+  have henvelope := coveringNumber_entropy_dominates_dyadicCoverEnvelope
+    (T := T) hT hradiusScale coveringNumberAtRadius
+    hcover_antitone hcover_dominates
+  have hchoose' : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ, ∃ witnessError : ℝ, ∃ skeletonRadius : ℝ,
+      ∃ skeletonError : ℝ, ∃ terminalError : ℝ,
+        0 < witnessError ∧
+        0 < skeletonRadius ∧
+        witnessError + skeletonError + terminalError ≤ eta ∧
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ skeletonRadius →
+            P.X ω s ≤ P.X ω t + skeletonError) ∧
+        (∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ dyadicChainingNetRadius radiusScale m →
+            P.X ω s ≤ P.X ω t + terminalError) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget) := by
+    intro eta heta
+    rcases hchoose eta heta with
+      ⟨m, witnessError, skeletonRadius, skeletonError, terminalError,
+        hwitnessError, hskeletonRadius, herror, hcard, hskeletonModulus,
+        hterminalModulus, hcoarse⟩
+    refine ⟨m, witnessError, skeletonRadius, skeletonError, terminalError,
+      hwitnessError, hskeletonRadius, herror, hcard, ?_, ?_,
+      hskeletonModulus, hterminalModulus, hcoarse⟩
+    · intro j hj
+      have := henvelope m j hj
+      simpa [hentropy_def] using this
+    · intro j _hj
+      simpa [hentropy_def] using
+        (coveringNumber_entropy_integrable_of_antitone
+          coveringNumberAtRadius
+          (radiusScale / (2 : ℝ) ^ (j + 2))
+          (radiusScale / (2 : ℝ) ^ (j + 1))
+          hcover_antitone hcover_pos)
+  have hmain :=
+    FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_pathwiseModuli
+      (P := P) (hT := hT)
+      (coarseBudget := coarseBudget) (radiusScale := radiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg
+      hint0 hbdd hchoose'
+  simpa [hentropy_def] using hmain
+
 end
 
 end FormalSLT.Covering.ContinuousDudleyCovering

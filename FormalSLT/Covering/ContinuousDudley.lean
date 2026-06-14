@@ -3,6 +3,7 @@ import Mathlib.MeasureTheory.Integral.DominatedConvergence
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 import Mathlib.Topology.Order.IsLUB
 import Mathlib.Analysis.SpecificLimits.Basic
+import Mathlib.Topology.Bases
 
 /-!
 # Brick 3: the continuous Dudley entropy integral as a measure-theoretic limit
@@ -130,6 +131,239 @@ theorem sup_measurable_countable_dense
     exact (hDdense.ciSup' (hcont a)).symm
   rw [hrw]
   exact Measurable.iSup fun d => hmeas (d : T)
+
+/-- **Measurable supremum over a separable index space.**
+
+This is the dense-set-free wrapper around
+`sup_measurable_countable_dense`: a separable topological index space supplies
+a countable dense subset, so a sample-continuous process with measurable
+evaluations has a measurable pointwise supremum. This discharges one explicit
+dense-skeleton hypothesis on the path toward the infinite-index Dudley bridge;
+the sample-path continuity hypothesis remains the load-bearing separability
+input. -/
+theorem sup_measurable_of_separableSpace
+    {α : Type*} [MeasurableSpace α]
+    [PseudoMetricSpace T] [TopologicalSpace.SeparableSpace T]
+    (g : T → α → ℝ)
+    (hmeas : ∀ t : T, Measurable (g t))
+    (hcont : ∀ a : α, Continuous fun t : T => g t a) :
+    Measurable fun a : α => ⨆ t : T, g t a := by
+  classical
+  obtain ⟨D, hDcount, hDdense⟩ := TopologicalSpace.exists_countable_dense T
+  exact sup_measurable_countable_dense (g := g) D hDcount hDdense hmeas hcont
+
+/-- **Distance-faithful dense-sequence approximation.**
+
+For a nonempty separable pseudometric index space, Mathlib's dense sequence has
+a point inside every positive-radius ball around every target. This is the
+metric atom needed to turn the separability bridge into an explicit
+`ℕ`-indexed skeleton in later infinite-index Dudley steps. -/
+theorem exists_denseSeq_dist_lt
+    [PseudoMetricSpace T] [TopologicalSpace.SeparableSpace T] [Nonempty T]
+    (t : T) {ε : ℝ} (hε : 0 < ε) :
+    ∃ n : ℕ, dist (TopologicalSpace.denseSeq T n) t < ε := by
+  classical
+  have hdense : DenseRange (TopologicalSpace.denseSeq T) :=
+    TopologicalSpace.denseRange_denseSeq T
+  obtain ⟨n, hn⟩ := hdense.exists_mem_open
+    (s := Metric.ball t ε) Metric.isOpen_ball ⟨t, by simpa using hε⟩
+  exact ⟨n, by simpa [Metric.mem_ball] using hn⟩
+
+/-- **Dense-sequence supremum reduction.**
+
+For a continuous real-valued functional on a nonempty separable pseudometric
+space, taking the supremum over Mathlib's dense sequence gives the same value as
+taking the supremum over the full index type. This is the `ℕ`-indexed
+specialization of the dense-subset reduction used by
+`sup_measurable_countable_dense`. -/
+theorem iSup_denseSeq_eq_iSup
+    [PseudoMetricSpace T] [TopologicalSpace.SeparableSpace T] [Nonempty T]
+    (f : T → ℝ) (hf : Continuous f) :
+    (⨆ n : ℕ, f (TopologicalSpace.denseSeq T n)) = ⨆ t : T, f t := by
+  have hdense : Dense (Set.range (TopologicalSpace.denseSeq T)) :=
+    TopologicalSpace.denseRange_denseSeq T
+  calc
+    (⨆ n : ℕ, f (TopologicalSpace.denseSeq T n))
+        = ⨆ s : Set.range (TopologicalSpace.denseSeq T), f (s : T) := by
+          exact (iSup_range' f (TopologicalSpace.denseSeq T)).symm
+    _ = ⨆ t : T, f t := hdense.ciSup' hf
+
+/-- **Boundedness transfers to the dense-sequence skeleton.**
+
+If a real-valued functional is bounded above on the full index space, then its
+restriction to Mathlib's dense sequence is also bounded above. This is the
+bounded-range side condition needed by later conditional-supremum arguments on
+the countable skeleton. -/
+theorem bddAbove_range_denseSeq
+    [PseudoMetricSpace T] [TopologicalSpace.SeparableSpace T] [Nonempty T]
+    (f : T → ℝ)
+    (hbdd : BddAbove (Set.range f)) :
+    BddAbove (Set.range fun n : ℕ => f (TopologicalSpace.denseSeq T n)) := by
+  rcases hbdd with ⟨C, hC⟩
+  refine ⟨C, ?_⟩
+  rintro _ ⟨n, rfl⟩
+  exact hC ⟨TopologicalSpace.denseSeq T n, rfl⟩
+
+/-- **Measurable supremum over the canonical dense sequence.**
+
+For a process with measurable evaluations, the supremum over Mathlib's
+`ℕ`-indexed dense sequence is measurable. No path-continuity assumption is
+needed for this countable supremum statement. -/
+theorem sup_measurable_denseSeq
+    {α : Type*} [MeasurableSpace α]
+    [PseudoMetricSpace T] [TopologicalSpace.SeparableSpace T] [Nonempty T]
+    (g : T → α → ℝ)
+    (hmeas : ∀ t : T, Measurable (g t)) :
+    Measurable fun a : α => ⨆ n : ℕ, g (TopologicalSpace.denseSeq T n) a := by
+  exact Measurable.iSup fun n => hmeas (TopologicalSpace.denseSeq T n)
+
+/-- **Canonical dense-sequence supremum equals the full supremum pointwise.**
+
+For a sample-continuous process on a nonempty separable pseudometric index
+space, the countable dense-sequence supremum agrees pointwise with the full
+supremum over the index type. This is the process-level form of
+`iSup_denseSeq_eq_iSup`. -/
+theorem denseSeq_sup_eq_full_sup
+    {α : Type*} [MeasurableSpace α]
+    [PseudoMetricSpace T] [TopologicalSpace.SeparableSpace T] [Nonempty T]
+    (g : T → α → ℝ)
+    (hcont : ∀ a : α, Continuous fun t : T => g t a) :
+    (fun a : α => ⨆ n : ℕ, g (TopologicalSpace.denseSeq T n) a)
+      = fun a : α => ⨆ t : T, g t a := by
+  funext a
+  exact iSup_denseSeq_eq_iSup (T := T) (f := fun t : T => g t a) (hcont a)
+
+/-- **Approximate maximizer for a bounded real supremum.**
+
+If a real-valued functional is bounded above on a nonempty index type, then
+every positive error admits a point whose value is within that error of the
+conditional supremum. -/
+theorem exists_iSup_le_add_of_bddAbove
+    [Nonempty T] (f : T → ℝ) (hbdd : BddAbove (Set.range f))
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ t : T, (⨆ t : T, f t) ≤ f t + ε := by
+  have hlt : (⨆ t : T, f t) - ε < (⨆ t : T, f t) := sub_lt_self _ hε
+  rcases (lt_ciSup_iff (f := f) hbdd).mp hlt with ⟨t, ht⟩
+  exact ⟨t, by linarith⟩
+
+/-- **Outcome-indexed approximate maximizers for bounded sample paths.**
+
+For a finite outcome space, bounded-above sample paths admit a single witness
+function choosing an approximate maximizer for each outcome. -/
+theorem exists_iSup_witness_function
+    {Ω : Type*} [Fintype Ω] [Nonempty T]
+    (Y : Ω → T → ℝ)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (Y ω)))
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ witness : Ω → T,
+      ∀ ω : Ω, (⨆ t : T, Y ω t) ≤ Y ω (witness ω) + ε := by
+  classical
+  choose witness hw using
+    fun ω : Ω => exists_iSup_le_add_of_bddAbove (T := T) (f := Y ω) (hbdd ω) hε
+  exact ⟨witness, hw⟩
+
+/-- **Boundary certificate for the full pointwise supremum.**
+
+This constructs the `SeparableTerminalSupremumBoundaryChoice` certificate for
+the actual full supremum functional `ω ↦ ⨆ t, P.X ω t`. Total boundedness
+supplies the finite skeleton at `skeletonRadius`; bounded sample paths supply
+approximate maximizers for the full supremum; the two pathwise modulus
+hypotheses move from ambient points to the finite skeleton and from the
+skeleton to the terminal dyadic projection. Entropy side conditions and the
+coarse projected budget are still explicit because they are separate analytic
+inputs. -/
+theorem separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (witnessError skeletonRadius skeletonError terminalError : ℝ)
+    (hwitnessError : 0 < witnessError)
+    (hskeletonRadius : 0 < skeletonRadius)
+    (herror : witnessError + skeletonError + terminalError ≤ eta)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hcard : ∀ j ∈ Finset.range m,
+      1 < Fintype.card (FiniteNet.ProjectionPair
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale j).net
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale (j + 1)).net))
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hskeletonModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ skeletonRadius →
+        P.X ω s ≤ P.X ω t + skeletonError)
+    (hterminalModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget m) :
+    SeparableTerminalSupremumBoundaryChoice
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+  classical
+  let B := finiteNetOfTotallyBoundedUniv (T := T) hT skeletonRadius hskeletonRadius
+  let K := B.A
+  letI : Fintype K := B.instFintype
+  letI : Nonempty K := B.instNonempty
+  let embed : K → T := B.net.center
+  let nearest : T → K := B.net.project
+  have hcover : ∀ t : T, dist t (embed (nearest t)) ≤ skeletonRadius := by
+    intro t
+    simpa [B, embed, nearest, FiniteNet.projection] using
+      finiteNetOfTotallyBoundedUniv_covers (T := T) hT hskeletonRadius t
+  obtain ⟨witness, hwitness⟩ :=
+    exists_iSup_witness_function (T := T) (Y := P.X) hbdd hwitnessError
+  have hskeletonApprox :
+      ∀ ω : Ω, ∀ t : T,
+        P.X ω t ≤ P.X ω (embed (nearest t)) + skeletonError :=
+    skeletonApprox_of_finiteCover_pathwiseModulus
+      (P := P) embed nearest skeletonRadius skeletonError hcover hskeletonModulus
+  have hseparable :
+      ∀ ω : Ω,
+        (⨆ t : T, P.X ω t) ≤
+          finiteSup (fun k : K => P.X ω (embed k)) +
+            (witnessError + skeletonError) :=
+    supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx
+      (embed := embed) (nearest := nearest) (Y := P.X)
+      (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+      (witness := witness) (witnessError := witnessError)
+      (skeletonError := skeletonError) hwitness hskeletonApprox
+  have herror' : (witnessError + skeletonError) + terminalError ≤ eta := by
+    linarith
+  exact separableTerminalSupremumBoundaryChoice_of_pathwiseTerminalModulus
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+    (entropyAtRadius := entropyAtRadius)
+    (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+    (eta := eta) (m := m) (embed := embed)
+    (separabilityError := witnessError + skeletonError)
+    (terminalError := terminalError) herror' hcard hentropyAtRadius
+    hintervalIntegrable hseparable hterminalModulus hcoarse
 
 /-! ## The dyadic refinement limit of the verified discrete bricks -/
 
@@ -326,6 +560,98 @@ theorem continuous_dudley_entropy_integral
   have hsqrt_nonneg : 0 ≤ 4 * Real.sqrt (2 * P.varianceProxy) := by positivity
   have hmul := mul_le_mul_of_nonneg_left hdom hsqrt_nonneg
   linarith [hmul]
+
+/-- **Continuous Dudley bound for the full infinite-index supremum.**
+
+This is the full-supremum corollary over an arbitrary nonempty totally bounded
+pseudometric index type. The left side is the genuine pointwise conditional
+supremum `ω ↦ ⨆ t, P.X ω t`; the finite boundary certificate is built inside
+the proof from bounded sample paths, total-bounded finite skeletons, and the
+pathwise modulus data supplied for each positive boundary budget. -/
+theorem continuous_dudley_entropy_integral_iSup_of_pathwiseModuli
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε)
+    (hint0 : IntervalIntegrable entropyAtRadius volume 0 (radiusScale / 2))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ, ∃ witnessError : ℝ, ∃ skeletonRadius : ℝ,
+      ∃ skeletonError : ℝ, ∃ terminalError : ℝ,
+        0 < witnessError ∧
+        0 < skeletonRadius ∧
+        witnessError + skeletonError + terminalError ≤ eta ∧
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ skeletonRadius →
+            P.X ω s ≤ P.X ω t + skeletonError) ∧
+        (∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ dyadicChainingNetRadius radiusScale m →
+            P.X ω s ≤ P.X ω t + terminalError) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget)) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε) := by
+  have hboundary : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := fun _ => coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+    intro eta heta
+    rcases hchoose eta heta with
+      ⟨m, witnessError, skeletonRadius, skeletonError, terminalError,
+        hwitnessError, hskeletonRadius, herror, hcard, hentropyAtRadius,
+        hintervalIntegrable, hskeletonModulus, hterminalModulus, hcoarse⟩
+    refine ⟨m, ?_⟩
+    exact separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli
+      (P := P) (hT := hT) (coarseBudget := fun _ => coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (eta := eta) (m := m)
+      (witnessError := witnessError) (skeletonRadius := skeletonRadius)
+      (skeletonError := skeletonError) (terminalError := terminalError)
+      hwitnessError hskeletonRadius herror hbdd hcard hentropyAtRadius
+      hintervalIntegrable hskeletonModulus hterminalModulus (by simpa using hcoarse)
+  exact continuous_dudley_entropy_integral
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+    (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+    hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg hint0
+    hboundary
 
 end
 
