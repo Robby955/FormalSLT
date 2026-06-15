@@ -92,10 +92,16 @@ fi
 # silently dropping a target from the audit).
 MISSING=0
 for t in "${THEOREMS[@]}"; do
-  if ! printf '%s\n' "$RAW" | grep -qF "'$t' depends on axioms"; then
-    echo "ERROR: no axiom report for $t (renamed or removed?)" >&2
-    MISSING=1
+  # An axiom-free theorem prints "does not depend on any axioms" (no "depends on
+  # axioms" substring) — that is the cleanest case, so accept both phrasings.
+  if printf '%s\n' "$RAW" | grep -qF "'$t' depends on axioms"; then
+    continue
   fi
+  if printf '%s\n' "$RAW" | grep -qF "'$t' does not depend on any axioms"; then
+    continue
+  fi
+  echo "ERROR: no axiom report for $t (renamed or removed?)" >&2
+  MISSING=1
 done
 [ "$MISSING" -eq 0 ] || exit 1
 
