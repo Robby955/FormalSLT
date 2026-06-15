@@ -1,0 +1,14 @@
+import FormalSLT.TestTimeMeta.BernsteinPopulationDecompositionReal
+
+/-!
+# Axiom audit for the real-variance Bernstein population decomposition
+-/
+
+#check FormalSLT.TestTimeMeta.BernsteinRealDecompWorkedExample.bernsteinVarianceProxy_eq_centeredSecondMoment
+#print axioms FormalSLT.TestTimeMeta.BernsteinRealDecompWorkedExample.bernsteinVarianceProxy_eq_centeredSecondMoment
+
+#check FormalSLT.TestTimeMeta.BernsteinRealDecompWorkedExample.confidence_gate_of_realVarianceProxy
+#print axioms FormalSLT.TestTimeMeta.BernsteinRealDecompWorkedExample.confidence_gate_of_realVarianceProxy
+
+#check FormalSLT.TestTimeMeta.BernsteinRealDecompWorkedExample.flagship_population_le_bound_real
+#print axioms FormalSLT.TestTimeMeta.BernsteinRealDecompWorkedExample.flagship_population_le_bound_real
