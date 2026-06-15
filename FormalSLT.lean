@@ -101,6 +101,7 @@ import FormalSLT.PACBayes.VitaleAnalytic
 import FormalSLT.PACBayes.BernsteinAnalytic
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
+import FormalSLT.PACBayes.McAllesterCompilerHighProbability
 
 import FormalSLT.TestTimeMeta.Assumptions
 import FormalSLT.TestTimeMeta.CompositionLemmas
