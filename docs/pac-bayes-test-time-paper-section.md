@@ -1,7 +1,7 @@
 # PAC-Bayes Test-Time Meta-Theorem Paper Section
 
 This is a paste-ready theorem section for a paper or reviewer packet. It is
-written to track the current q061/q059/q062/q084 -> q063/q064/q066 Lean
+written to track the current q092/q093/q094 Lean
 surface without adding priority claims or hiding certificate-supplied parts.
 
 ## Section Draft
@@ -37,9 +37,10 @@ flagshipBound C =
 The public Lean theorem is:
 
 ```lean
-FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem :
-  ∀ (certificate : FormalSLT.TestTimeMeta.FlagshipCertificate),
-    FormalSLT.TestTimeMeta.flagshipConclusion certificate
+FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel :
+  ... →
+    FormalSLT.TestTimeMeta.flagshipConclusion
+      (FormalSLT.TestTimeMeta.flagshipFourComponent_certificate_from_incrementModel ...)
 ```
 
 Equivalently, after unfolding `flagshipConclusion`, Lean proves
@@ -50,43 +51,43 @@ certificate.user.populationRisk ≤
     certificate.user certificate.derived
 ```
 
-for every `FlagshipCertificate`.
+for the certificate constructed by
+`flagshipFourComponent_certificate_from_incrementModel`.
 
 ### Paper Theorem
 
 **Theorem (verified finite-sample PAC-Bayes test-time certificate).** Consider
-the finite-sample test-time setting represented by a Lean certificate
-`C : FormalSLT.TestTimeMeta.FlagshipCertificate`. Let `n` be the certified
-sample size, `delta` the certified confidence parameter, `b` the certified loss
-width, and `Rhat` and `R` the certified empirical and population risks. Let
-`M`, `O`, `G`, `V`, and `P` be the certified nonnegative contributions from the
-general-width PAC-Bayes compiler, the iid online-to-PAC conversion, the
-Gaussian/Bernstein PAC-Bayes route, the anytime Ville route, and the prefix
-kernel route. Then Lean proves
+the q092 worked finite-sample test-time setting together with an increment model
+for the anytime/Ville slot. Let `n` be the certified sample size, `delta` the
+certified confidence parameter, `b` the certified loss width, and `Rhat` and
+`R` the certified empirical and population risks. Let `M`, `O`, `G`, `V`, and
+`P` be the certified nonnegative contributions from the general-width
+PAC-Bayes compiler, the iid online-to-PAC conversion, the Gaussian/Bernstein
+PAC-Bayes route, the anytime Ville route, and the prefix-kernel route. Then
+Lean proves
 
 ```text
 R ≤ Rhat + b * M + O + G + V + P.
 ```
 
 The proof is the theorem
-`FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem`. The q064/q066 bridge
-`FormalSLT.TestTimeMeta.flagshipCertificate_from_components` constructs the
-same q063 certificate shape from component-derived contributions and
-component-level scalar gap inequalities. It no longer takes a single opaque
-final scalar assembly proof; q066 derives the final comparison from
-`FormalSLT.TestTimeMeta.FlagshipScalarComponentBounds`.
+`FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel`.
+It builds a `FlagshipCertificate` with
+`FormalSLT.TestTimeMeta.flagshipFourComponent_certificate_from_incrementModel`.
+The q063 certificate adapter remains available, but it is not the public
+citation target for this four-component result.
 
 ### Component Routes
 
-The q064/q066 composition bridge exposes three theorem-derived contribution
-routes plus the scalar assembly route:
+The q094 assembly exposes four theorem-derived contribution routes plus the
+scalar assembly route:
 
 | Contribution slot | Lean route | What is checked |
 | --- | --- | --- |
 | `M` | `flagshipMcAllesterContribution_from_compileGeneralWidth` | q061 derives the general-width McAllester contribution from the finite PAC-Bayes compiler. |
 | `O` | `flagshipOnlineIidContribution_from_iidRegretConversion` | q059 converts an iid regret/deviation certificate into the online-to-PAC contribution outside the iid bad event. |
 | `G` | `flagshipGaussianBernsteinContribution_from_sphericalGaussian` | q062 supplies the finite-dimensional spherical Gaussian KL expression and q060 supplies the Bernstein/Vitale path. |
-| `V` | q084 conditional sub-Gamma extractor surface | q064 keeps the final anytime contribution explicit; q084 checks the conditional MGF extractor used by that route. |
+| `V` | `anytimeVilleContribution_from_incrementModel` | q093 controls the fixed-horizon Ville contribution from bounded centered increments with conditional variance control. |
 | `P` | prefix-kernel contribution slot | The prefix-kernel contribution remains named in the certificate instead of being folded into an anonymous residual term. |
 | Assembly | `flagshipScalarAssembly_from_componentInequalities` | q066 derives the final `flagshipBound` comparison from five component gap inequalities packaged in `FlagshipScalarComponentBounds`. |
 
@@ -94,18 +95,14 @@ The main proof route is:
 
 ```text
 q061 + q059 + q062/q060 + q084
-  -> q057 named-assumption meta-theorem
-  -> q063 reviewer-facing FlagshipCertificate API
-  -> q064 component-to-certificate bridge
-  -> q066 scalar assembly from component inequalities
+  -> q092 three-slot assembly + q093 anytime/Ville slot
+  -> q094 four-component certificate
+  -> q063/q057 certificate adapters
 ```
 
-The q063 theorem rewrites the paper-facing `flagshipBound` into q057's
-`testTimeMetaBound` and then invokes
-`FormalSLT.TestTimeMeta.pacBayesTestTimeMeta_theorem`. The q064/q066 bridge
-derives the named contribution bundle, derives the scalar comparison through
-`flagshipScalarAssembly_from_componentInequalities`, and invokes the q063
-theorem on the constructed certificate.
+The q094 theorem derives the named contribution bundle, derives the scalar
+comparison through `flagshipScalarAssembly_from_componentInequalities`, and
+invokes the q063 adapter on the constructed certificate.
 
 ## Lean Citations
 
@@ -113,8 +110,10 @@ Use these names in the paper, supplementary material, or reviewer response.
 
 | Claim in prose | Lean declaration |
 | --- | --- |
-| Public flagship certificate theorem | `FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem` |
-| q057 named-assumption theorem | `FormalSLT.TestTimeMeta.pacBayesTestTimeMeta_theorem` |
+| Public four-component theorem | `FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel` |
+| Four-component certificate constructor | `FormalSLT.TestTimeMeta.flagshipFourComponent_certificate_from_incrementModel` |
+| q063 certificate adapter | `FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem` |
+| q057 named-assumption adapter | `FormalSLT.TestTimeMeta.pacBayesTestTimeMeta_theorem` |
 | q064 component certificate bridge | `FormalSLT.TestTimeMeta.flagshipCertificate_from_components` |
 | q064 derived contribution bundle | `FormalSLT.TestTimeMeta.flagshipDerivedContributions_from_components` |
 | q066 scalar component bounds | `FormalSLT.TestTimeMeta.FlagshipScalarComponentBounds` |
@@ -222,9 +221,9 @@ Do not state a general continuous-prior KL theorem. The q062 Gaussian backend
 proves finite-dimensional diagonal and spherical Gaussian parameter formulas,
 not arbitrary Radon-Nikodym KL for all continuous measures.
 
-Do not state that q084 is a complete sequential concentration theorem. It
-checks a conditional sub-Gamma MGF extractor for a bounded centered increment;
-the final anytime contribution remains explicit in q064.
+Do not state that q084 is a complete sequential concentration theorem. q093
+checks the fixed-horizon increment-model anytime/Ville contribution used by
+q094; it is not a full sequential learning theory result.
 
 Do not make a priority claim. The section should cite exact Lean declarations
 and state the verified scope.
@@ -233,14 +232,13 @@ and state the verified scope.
 
 ```tex
 \paragraph{Verified PAC-Bayes test-time certificate.}
-We state the final test-time result through a Lean certificate object. A
-certificate separates user-supplied quantities, including sample size,
-confidence parameter, loss width, empirical risk, and population risk, from
-five nonnegative theorem contributions: the general-width PAC-Bayes compiler
-term, the iid online-to-PAC term, the Gaussian/Bernstein PAC-Bayes term, the
-anytime Ville term, and the prefix-kernel term. In Lean this is the theorem
-\texttt{FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship\_theorem}:
-for every \texttt{FlagshipCertificate} \(C\),
+We state the final test-time result through a Lean certificate object. The
+public theorem
+\texttt{FormalSLT.TestTimeMeta.flagshipFourComponent\_conclusion\_from\_incrementModel}
+constructs a certificate from four checked slots: the general-width PAC-Bayes
+compiler term, the iid online-to-PAC term, the Gaussian/Bernstein PAC-Bayes
+term, and the increment-model anytime Ville term. For the constructed
+certificate \(C\), Lean proves
 \[
   R(C) \leq
   \widehat R(C)
@@ -250,15 +248,11 @@ for every \texttt{FlagshipCertificate} \(C\),
   + V(C)
   + P(C).
 \]
-The component bridge
-\texttt{FormalSLT.TestTimeMeta.flagshipCertificate\_from\_components}
-constructs this certificate from checked component routes: q061's
-general-width McAllester compiler, q059's iid online-to-PAC conversion,
-q062's finite-dimensional Gaussian KL backend together with q060's
-Bernstein/Vitale route, and q084's conditional sub-Gamma extractor surface.
-The scalar assembly is derived from explicit component gap inequalities via
-\texttt{FormalSLT.TestTimeMeta.flagshipScalarAssembly\_from\_componentInequalities};
-the remaining application-specific obligation is the gap decomposition, not a
-single opaque final bound. The audited public theorem surface depends only on
+The q094 proof combines q092's three-slot assembly with q093's fixed-horizon
+Ville contribution, derives the scalar assembly from explicit component gap
+inequalities via
+\texttt{FormalSLT.TestTimeMeta.flagshipScalarAssembly\_from\_componentInequalities},
+and routes the constructed certificate through the q063/q057 adapters. The
+audited public theorem surface depends only on
 \texttt{[propext, Classical.choice, Quot.sound]}.
 ```

@@ -1,12 +1,13 @@
 import FormalSLT.TestTimeMeta.CompositionLemmas
 
 /-!
-# PAC-Bayes test-time meta-theorem
+# PAC-Bayes test-time framework adapter
 
-This module states the q057 framework theorem. It composes the named
+This module states the q057 named-assumption adapter. It keeps the scalar
 contributions from the McAllester compiler, online-to-PAC conversion,
 continuous-prior Bernstein certificate, anytime-valid Ville step, and prefix
-conditional-kernel route into one closed-form bound.
+conditional-kernel route in one closed-form bound, but the public flagship
+theorem is supplied by the four-component assembly.
 
 The theorem is intentionally explicit about narrowed inputs inherited from the
 building blocks: q053 is unit-interval-normalized before q057 applies the loss
@@ -19,16 +20,16 @@ contribution.
 
 namespace FormalSLT.TestTimeMeta
 
-/-- PAC-Bayes test-time meta-theorem with all narrowed assumptions named. -/
+/-- Framework adapter with all narrowed assumptions named. -/
 theorem pacBayesTestTimeMeta_theorem
     (assumptions : TestTimeMetaAssumptions)
     (hmcAllesterScaled :
       0 ≤ assumptions.lossWidth.lossWidth *
         assumptions.mcAllester.unitIntervalCompilerContribution)
-    (hassembled :
+    (hbound :
       assumptions.populationRisk ≤ testTimeMetaBound assumptions) :
     testTimeMetaConclusion assumptions := by
   have _ := hmcAllesterScaled
-  exact hassembled
+  simpa [testTimeMetaConclusion] using hbound
 
 end FormalSLT.TestTimeMeta

@@ -1,7 +1,7 @@
-import FormalSLT.TestTimeMeta.MainTheorem
+import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
 
 /-!
-# Axiom audit for the PAC-Bayes test-time meta-theorem
+# Axiom audit for the PAC-Bayes test-time framework adapters
 -/
 
 open FormalSLT.TestTimeMeta
@@ -13,7 +13,7 @@ open FormalSLT.TestTimeMeta
 #print axioms bernsteinContribution_from_continuousCertificate
 #print axioms bernsteinContribution_from_sphericalGaussianCertificate
 #print axioms anytimeVilleContribution_from_subGammaExtractor
-#print axioms pacBayesTestTimeMeta_theorem
+#print axioms flagshipFourComponent_conclusion_from_incrementModel
 
 #check @testTimeNamedAssumptions_valid
 #check @mcAllesterCompilerContribution_from_unitIntervalCompiler
@@ -22,6 +22,6 @@ open FormalSLT.TestTimeMeta
 #check @bernsteinContribution_from_continuousCertificate
 #check @bernsteinContribution_from_sphericalGaussianCertificate
 #check @anytimeVilleContribution_from_subGammaExtractor
-#check @pacBayesTestTimeMeta_theorem
+#check @flagshipFourComponent_conclusion_from_incrementModel
 
 example : True := trivial

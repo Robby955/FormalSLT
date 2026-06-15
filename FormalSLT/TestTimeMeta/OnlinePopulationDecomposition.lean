@@ -8,9 +8,9 @@ import FormalSLT.TestTimeMeta.FlagshipComposition
 /-!
 # Non-vacuous online/IID discharge of the flagship population-risk decomposition
 
-`FlagshipComposition`'s worked example sets `populationRisk := componentBoundSide`, so its
-`populationDecomposition` field holds by construction (`x ≤ x`, closed by `rfl`). This module
-discharges that field NON-vacuously for an online/IID component: the population risk is an
+An earlier synthetic component example set `populationRisk` equal to the assembled
+right-hand side, so its `populationDecomposition` field held by construction.
+This module discharges that field NON-vacuously for an online/IID component: the population risk is an
 independently defined integral average over a genuine probability measure, and the decomposition
 is derived from the q059 iid regret conversion
 (`onlineToPACContribution_from_iidRegretConversion`, backed by the sharp-McDiarmid theorem),

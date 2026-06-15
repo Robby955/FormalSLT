@@ -8,11 +8,12 @@ import FormalSLT.TestTimeMeta.FlagshipComposition
 /-!
 # Non-vacuous Bernstein discharge of the flagship population-risk decomposition
 
-`FlagshipComposition`'s worked example sets `populationRisk := componentBoundSide`, so its
-`populationDecomposition` field holds by construction (`x ≤ x`, closed by `rfl`).  Its Bernstein
-route (`flagshipGaussianBernsteinContribution_from_sphericalGaussian`) still threads the PAC-Bayes
-risk gate `populationRisk ≤ empiricalRisk + penalty` as an explicit premise, with the worked
-`gaussianSpec` setting `populationRisk = 0`, so that slot stays vacuous.
+An earlier synthetic component example set `populationRisk` equal to the assembled
+right-hand side, so its `populationDecomposition` field held by construction.
+Its Bernstein route (`flagshipGaussianBernsteinContribution_from_sphericalGaussian`)
+still threaded the PAC-Bayes risk gate `populationRisk ≤ empiricalRisk + penalty`
+as an explicit premise, with the worked `gaussianSpec` setting `populationRisk = 0`,
+so that slot stayed vacuous.
 
 This module discharges the Bernstein flagship slot NON-vacuously, mirroring
 `OnlinePopulationDecomposition` for the online/IID slot.  The penalty stored in the flagship
@@ -200,7 +201,7 @@ def user : FlagshipUserSupplied where
 
 /-- The five-gap decomposition with only the Bernstein gap nonzero.  The `populationDecomposition`
 field is the genuine posterior identity, and `gaussianBernsteinGap_le` is exactly the derived
-finite Bernstein theorem — so the Bernstein penalty is load-bearing. -/
+finite Bernstein theorem, so the Bernstein penalty is load-bearing. -/
 theorem scalarBounds :
     FlagshipScalarComponentBounds user derived
       0 0 gaussianBernsteinGap 0 0 := by

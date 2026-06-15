@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Axiom gate for the flagship public API.
+# Axiom gate for the flagship public theorem.
 #
 # Why this exists: the "Verify no custom axioms" grep step only catches literal
 # `axiom` declarations. It does NOT catch axioms pulled in transitively by
@@ -19,12 +19,10 @@ LAKE="${LAKE:-$HOME/.elan/bin/lake}"
 
 # Flagship public theorems to audit (fully qualified).
 THEOREMS=(
-  "FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem"
-  "FormalSLT.TestTimeMeta.pacBayesTestTimeMeta_theorem"
-  "FormalSLT.TestTimeMeta.flagshipDerivedContributions_from_components"
-  "FormalSLT.TestTimeMeta.flagshipScalarAssembly_from_componentInequalities"
-  "FormalSLT.TestTimeMeta.flagshipCertificate_from_components"
-  "FormalSLT.TestTimeMeta.FlagshipWorkedExample.boundSideMilli_eq"
+  "FormalSLT.TestTimeMeta.flagshipFourComponent_four_slots_positive"
+  "FormalSLT.TestTimeMeta.flagshipFourComponent_scalarBounds_from_incrementModel"
+  "FormalSLT.TestTimeMeta.flagshipFourComponent_population_le_bound_from_incrementModel"
+  "FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel"
 )
 
 # Axioms permitted in a clean proof.
@@ -35,9 +33,7 @@ trap 'rm -rf "$WORK"' EXIT
 CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
-  echo "import FormalSLT.TestTimeMeta.Flagship"
-  echo "import FormalSLT.TestTimeMeta.FlagshipComposition"
-  echo "import FormalSLT.TestTimeMeta.MainTheorem"
+  echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -45,15 +41,13 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 echo "== building flagship modules =="
 "$LAKE" build \
-  FormalSLT.TestTimeMeta.Flagship \
-  FormalSLT.TestTimeMeta.FlagshipComposition \
-  FormalSLT.TestTimeMeta.MainTheorem >/dev/null
+  FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"
 echo "$RAW"
 
-# `#print axioms` wraps long axiom lists over several lines, so flatten first.
+# `#print axioms` wraps long axiom lists over several lines, so flatten them.
 # Then strip the allowed axiom names and the structural words. Any remaining
 # capitalized/qualified identifier is a forbidden axiom.
 FLAT="$(printf '%s\n' "$RAW" | tr '\n' ' ')"
@@ -93,7 +87,7 @@ fi
 MISSING=0
 for t in "${THEOREMS[@]}"; do
   # An axiom-free theorem prints "does not depend on any axioms" (no "depends on
-  # axioms" substring) — that is the cleanest case, so accept both phrasings.
+  # axioms" substring), which is the cleanest case, so accept both phrasings.
   if printf '%s\n' "$RAW" | grep -qF "'$t' depends on axioms"; then
     continue
   fi
