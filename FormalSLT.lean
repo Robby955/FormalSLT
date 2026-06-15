@@ -114,5 +114,5 @@ import FormalSLT.TestTimeMeta.BernsteinPopulationDecomposition
 import FormalSLT.TestTimeMeta.FlagshipSimultaneousAssembly
 import FormalSLT.TestTimeMeta.BernsteinPopulationDecompositionReal
 import FormalSLT.TestTimeMeta.AnytimeVillePopulationDecomposition
-import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
 import FormalSLT.TestTimeMeta.FlagshipAnytimeValid
+import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
