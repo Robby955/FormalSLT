@@ -1,11 +1,11 @@
 import FormalSLT.TestTimeMeta.FlagshipComposition
+import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
 
 /-!
 # Axiom audit for component-to-flagship composition
 -/
 
 open FormalSLT.TestTimeMeta
-open FormalSLT.TestTimeMeta.FlagshipComponentWorkedExample
 
 #print axioms flagshipMcAllesterContribution_from_compileGeneralWidth
 #print axioms flagshipOnlineIidContribution_from_iidRegretConversion
@@ -13,8 +13,8 @@ open FormalSLT.TestTimeMeta.FlagshipComponentWorkedExample
 #print axioms flagshipDerivedContributions_from_components
 #print axioms flagshipScalarAssembly_from_componentInequalities
 #print axioms flagshipCertificate_from_components
-#print axioms flagshipComponentWorkedExample_scalarAssembly
-#print axioms flagshipComponentWorkedExample_certificate
+#print axioms flagshipFourComponent_population_le_bound_from_incrementModel
+#print axioms flagshipFourComponent_conclusion_from_incrementModel
 
 #check @flagshipMcAllesterContribution
 #check @flagshipOnlineIidContribution
@@ -26,6 +26,5 @@ open FormalSLT.TestTimeMeta.FlagshipComponentWorkedExample
 #check @flagshipDerivedContributions_from_components
 #check @flagshipScalarAssembly_from_componentInequalities
 #check @flagshipCertificate_from_components
-
-example : flagshipComponentWorkedExampleConclusion :=
-  flagshipComponentWorkedExample_certificate
+#check @flagshipFourComponent_population_le_bound_from_incrementModel
+#check @flagshipFourComponent_conclusion_from_incrementModel

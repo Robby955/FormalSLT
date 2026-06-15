@@ -1,6 +1,6 @@
 # PAC-Bayes Test-Time Flagship Theorem
 
-This packet is the reviewer-facing map for the integrated q062/q063/q064/q066 stack.
+This packet is the reviewer-facing map for the integrated q092/q093/q094 stack.
 It is meant to let a paper reader find the public theorem without reading every
 helper module.
 
@@ -9,19 +9,21 @@ helper module.
 The theorem to cite is:
 
 ```lean
-FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem :
-  ∀ (certificate : FormalSLT.TestTimeMeta.FlagshipCertificate),
-    FormalSLT.TestTimeMeta.flagshipConclusion certificate
+FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel :
+  ... →
+    FormalSLT.TestTimeMeta.flagshipConclusion
+      (FormalSLT.TestTimeMeta.flagshipFourComponent_certificate_from_incrementModel ...)
 ```
 
-This statement was copied from:
+Inspect the full statement with:
 
 ```bash
-~/.elan/bin/lake env lean /tmp/q065_extract.lean
+~/.elan/bin/lake env lean examples/CheckFlagshipFourComponentAssembly.lean
 ```
 
-The public certificate type is `FormalSLT.TestTimeMeta.FlagshipCertificate`. It
-contains:
+The public theorem constructs a `FormalSLT.TestTimeMeta.FlagshipCertificate`
+from the q092 three-slot assembly and the q093 increment-model anytime/Ville
+slot. The certificate contains:
 
 - `user : FlagshipUserSupplied`
 - `derived : FlagshipDerivedContributions`
@@ -34,9 +36,9 @@ certificate.user.populationRisk ≤
   flagshipBound certificate.user certificate.derived
 ```
 
-The proof of `pacBayesTestTimeFlagship_theorem` routes through
-`FormalSLT.TestTimeMeta.pacBayesTestTimeMeta_theorem`; q063 is an API cleanup,
-not a replacement proof.
+The proof assembles the four scalar slots, constructs the certificate with
+`flagshipFourComponent_certificate_from_incrementModel`, and then routes that
+certificate through the generic q063/q057 adapters.
 
 ## Dependency Diagram
 
@@ -47,32 +49,42 @@ flowchart LR
   q062["q062 finite-dimensional Gaussian KL backend\nFormalSLT.PACBayes.GaussianKL"]
   q084["q084 conditional sub-Gamma extractor\nFormalSLT.Concentration.SubGamma.Extractor"]
   q060["q060 analytic Bernstein/Vitale bridge\nFormalSLT.PACBayes.BernsteinBound"]
-  q057["q057 named-assumption meta-theorem\nFormalSLT.TestTimeMeta.MainTheorem"]
-  q063["q063 reviewer-facing flagship API\nFormalSLT.TestTimeMeta.Flagship"]
+  q057["q057 named-assumption adapter\nFormalSLT.TestTimeMeta.MainTheorem"]
+  q063["q063 certificate adapter\nFormalSLT.TestTimeMeta.Flagship"]
   q064["q064/q066 component and scalar composition bridge\nFormalSLT.TestTimeMeta.FlagshipComposition"]
+  q092["q092 three-slot simultaneous assembly\nFormalSLT.TestTimeMeta.FlagshipSimultaneousAssembly"]
+  q093["q093 anytime/Ville slot\nFormalSLT.TestTimeMeta.AnytimeVillePopulationDecomposition"]
+  q094["q094 public four-component theorem\nFormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"]
 
   q061 --> q057
   q059 --> q057
   q062 --> q060
   q060 --> q057
   q084 --> q057
-  q057 --> q063
   q061 --> q064
   q059 --> q064
   q062 --> q064
   q084 --> q064
-  q064 --> q063
+  q057 --> q063
+  q064 --> q092
+  q084 --> q093
+  q092 --> q094
+  q093 --> q094
+  q063 --> q094
 ```
 
 Current integration branch status:
 
-- q061, q059, q062, q084, q057, and q063 are present.
+- q061, q059, q062, q084, q057, and q063 are present as component and adapter routes.
 - q060 analytic Bernstein/Vitale support is present.
 - q064 component-to-flagship composition is present. The source q064 commit was
   `8b6fd34`; this packet branch replays it as `8c76b62`.
 - q066 scalar assembly is present: `flagshipCertificate_from_components` now
   consumes component gap inequalities through `FlagshipScalarComponentBounds`
   rather than a single `hassembled` proof.
+- q092 assembles the McAllester, online/IID, and Bernstein slots.
+- q093 discharges the increment-model anytime/Ville slot.
+- q094 is the public four-component theorem.
 
 ## Sharp-vs-Azuma Boundary
 
@@ -118,9 +130,10 @@ the verdict source.
 | IID online-to-PAC deviation | `iidDeviationBadEventMass_le_exp_of_sharpMcDiarmid`, `cesaBianchi_iid` | Proved in Lean from q049 sharp additive McDiarmid plus finite online-to-PAC algebra. |
 | Finite-dimensional Gaussian KL backend | `sphericalGaussianKL_eq_closedForm`, `diagonalGaussianKL_eq_sum_closedForm` | Proved in Lean for the finite-dimensional Gaussian parameter surface and closed-form KL expression. |
 | Conditional sub-Gamma extractor | `condSubGammaMGF_of_bounded_centered_condVariance` | Proved in Lean for bounded centered variables with conditional variance control. |
-| Named meta-theorem | `pacBayesTestTimeMeta_theorem` | Proved in Lean as the q057 named-assumption framework theorem. |
-| Reviewer-facing flagship theorem | `pacBayesTestTimeFlagship_theorem` | Proved in Lean by converting the q063 certificate object to the q057 theorem. |
+| Named adapter | `pacBayesTestTimeMeta_theorem` | Proved in Lean as the q057 named-assumption framework adapter. |
+| Certificate adapter | `pacBayesTestTimeFlagship_theorem` | Proved in Lean by converting a certificate object to the q057 adapter. |
 | Component-to-flagship bridge | `flagshipCertificate_from_components` | Proved in Lean by deriving the q063 contribution bundle from q061/q059/q062/q060 component surfaces, deriving the scalar assembly from component gap inequalities, and then invoking the q063 theorem. |
+| Public four-component theorem | `flagshipFourComponent_conclusion_from_incrementModel` | Proved in Lean by combining the q092 three-slot assembly with the q093 increment-model anytime/Ville slot and then invoking the certificate adapter. |
 
 ## What Is Still Certificate-Supplied
 
@@ -128,7 +141,7 @@ the verdict source.
 | --- | --- | --- |
 | Problem-specific scalar gap decomposition | `FlagshipScalarComponentBounds` | q066 derives the final `flagshipBound` comparison from component gap inequalities. A concrete application still supplies the problem-specific decomposition of population risk into the named gaps. |
 | Component contribution magnitudes | `FlagshipDerivedContributions` | q064 derives the McAllester, iid online-to-PAC, and Gaussian/Bernstein slots from q061/q059/q062/q060 routes. |
-| Anytime Ville contribution | `anytimeVilleContribution` | q084 supplies the conditional sub-Gamma extractor. This q064 bridge keeps the final anytime contribution value explicit. |
+| Anytime Ville contribution | `anytimeVilleContribution` | q093 discharges the fixed-horizon Ville contribution from the increment-model assumptions used by q094. |
 | Prefix-kernel contribution | `prefixKernelContribution` | The q057/q063/q064 surface keeps the prefix-kernel contribution named instead of silently absorbing it. |
 | Problem-specific algorithmic regret certificate | Input to q059/q064 online contribution | The framework proves conversion from a regret certificate; a concrete online learner still supplies its regret proof/certificate. |
 | Continuous-prior PAC-Bayes penalty gate | q056/q060/q062 bridge assumptions | The Gaussian KL backend is finite-dimensional and closed-form. It is not a general Radon-Nikodym KL theorem for arbitrary continuous priors. |
@@ -235,19 +248,27 @@ The focused public audits are:
 ~/.elan/bin/lake env lean examples/CheckOnlineToPACIID.lean
 ~/.elan/bin/lake env lean examples/CheckSubGammaExtractor.lean
 ~/.elan/bin/lake env lean examples/CheckFlagshipComposition.lean
+~/.elan/bin/lake env lean examples/CheckFlagshipFourComponentAssembly.lean
 ```
 
-For q063, `examples/CheckFlagship.lean` reports:
+For q094, `examples/CheckFlagshipFourComponentAssembly.lean` reports:
 
 ```text
-'FormalSLT.TestTimeMeta.flagshipBound_eq_testTimeMetaBound' depends on axioms: [propext, Classical.choice, Quot.sound]
-'FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem' depends on axioms: [propext, Classical.choice, Quot.sound]
-'FormalSLT.TestTimeMeta.FlagshipWorkedExample.flagshipWorkedExample_certificate' depends on axioms: [propext,
+'FormalSLT.TestTimeMeta.flagshipFourComponent_four_slots_positive' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.TestTimeMeta.flagshipFourComponent_scalarBounds_from_incrementModel' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.TestTimeMeta.flagshipFourComponent_population_le_bound_from_incrementModel' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel' depends on axioms: [propext,
  Classical.choice,
  Quot.sound]
 ```
 
-For q064, `examples/CheckFlagshipComposition.lean` reports:
+`examples/CheckFlagshipComposition.lean` still audits the component bridge:
 
 ```text
 'FormalSLT.TestTimeMeta.flagshipMcAllesterContribution_from_compileGeneralWidth' depends on axioms: [propext,
@@ -266,31 +287,21 @@ For q064, `examples/CheckFlagshipComposition.lean` reports:
  Classical.choice,
  Quot.sound]
 'FormalSLT.TestTimeMeta.flagshipCertificate_from_components' depends on axioms: [propext, Classical.choice, Quot.sound]
-'FormalSLT.TestTimeMeta.FlagshipComponentWorkedExample.flagshipComponentWorkedExample_scalarAssembly' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
-'FormalSLT.TestTimeMeta.FlagshipComponentWorkedExample.flagshipComponentWorkedExample_certificate' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
 ```
 
 ## Paste-Ready Paper Paragraph
 
-We formalize a finite-sample PAC-Bayes test-time meta-theorem in Lean 4. The
-public theorem `FormalSLT.TestTimeMeta.pacBayesTestTimeFlagship_theorem` states
-that a single `FlagshipCertificate` implies the population-risk bound
-`flagshipConclusion certificate`. The certificate separates user-supplied
-quantities, such as sample size, confidence, loss width, and empirical risk,
-from derived contributions supplied by checked component theorems: the q061
+We formalize a finite-sample PAC-Bayes test-time theorem in Lean 4. The public
+theorem `FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel`
+constructs a `FlagshipCertificate` from four checked slots and proves
+`flagshipConclusion` for that certificate. The four slots are the q061
 general-width McAllester compiler, the q059 iid online-to-PAC conversion from
 the sharp McDiarmid path, the q062 finite-dimensional Gaussian KL backend with
-q060 Bernstein/Vitale support, and the q084 conditional sub-Gamma extractor.
-The q064/q066 composition bridge derives the named contribution bundle from
-those component surfaces and constructs a q063 certificate after deriving the
-scalar flagship bound from component gap inequalities. The theorem is
-axiom-clean against `[propext, Classical.choice, Quot.sound]` and routes
-through the named-assumption q057 meta-theorem, giving a reviewer-facing
-statement without hiding the remaining certificate-supplied parts.
+q060 Bernstein/Vitale support, and the q093 increment-model anytime/Ville
+component. The q094 theorem combines the q092 three-slot assembly with q093,
+derives the scalar flagship bound from component gap inequalities, and routes
+the resulting certificate through the q063/q057 adapters. The theorem is
+axiom-clean against `[propext, Classical.choice, Quot.sound]`.
 
 For a longer paper-section draft with theorem wording, proof-route prose, Lean
 declaration citations, and nonclaim boundaries, see

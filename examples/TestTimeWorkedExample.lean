@@ -1,14 +1,14 @@
-import FormalSLT.TestTimeMeta.MainTheorem
+import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
 import FormalSLT.PACBayes.GaussianKL
 
 /-!
 # Test-time worked example
 
-This file is a reproducible empirical certificate for a synthetic test-time
+This file is a reproducible empirical check for a synthetic test-time
 training scenario with 1000 rounds, a finite hypothesis class of size 100, a
 bounded loss, and a Gaussian-posterior KL check derived from the
 finite-dimensional Gaussian measure backend. It is not a replacement for the
-meta-theorem.
+public four-component flagship theorem.
 -/
 
 namespace FormalSLT.Examples.TestTimeWorkedExample
@@ -115,12 +115,11 @@ noncomputable def assumptions : TestTimeMetaAssumptions where
   empiricalRiskNonnegative := by norm_num
   populationRiskNonnegative := by norm_num
 
-/-- The synthetic TTT scenario instantiates the q057 meta-theorem. -/
+/-- The synthetic TTT scenario satisfies the named-assumption conclusion. -/
 theorem testTimeWorkedExample_meta_theorem_certificate :
     testTimeMetaConclusion assumptions := by
-  refine pacBayesTestTimeMeta_theorem assumptions ?_ ?_
-  · norm_num [assumptions]
-  · norm_num [assumptions, testTimeMetaConclusion, testTimeMetaBound]
+  exact testTimeNamedAssumptions_valid assumptions
+    (by norm_num [assumptions, testTimeMetaConclusion, testTimeMetaBound])
 
 #eval hypothesisCount
 #eval rounds
@@ -128,7 +127,7 @@ theorem testTimeWorkedExample_meta_theorem_certificate :
 #eval metaBoundMilli
 
 #check @FormalSLT.PACBayes.sphericalGaussianKL_eq_closedForm
-#check @FormalSLT.TestTimeMeta.pacBayesTestTimeMeta_theorem
+#check @FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel
 
 end
 

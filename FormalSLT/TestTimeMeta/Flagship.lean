@@ -14,9 +14,9 @@ explicit; this file separates:
   q056/q060/q062 Bernstein/Gaussian posterior route, q084 anytime Ville step,
   and the prefix-kernel contribution.
 
-The theorem `pacBayesTestTimeFlagship_theorem` is the single statement meant to
-be cited from paper prose.  It routes through
-`pacBayesTestTimeMeta_theorem`; no lower-level theorem is hidden or replaced.
+The generic certificate adapter `pacBayesTestTimeFlagship_theorem` routes a
+checked assembled bound through the q057 framework adapter. The public top
+result for flagship citations is the four-component assembly theorem.
 
 The q062 Gaussian-measure/KL backend can fill the
 `bernsteinOrGaussianContribution` slot when it lands.  Until that backend is
@@ -133,11 +133,11 @@ theorem flagshipBound_eq_testTimeMetaBound
   rfl
 
 /--
-Paper-ready PAC-Bayes test-time flagship theorem.
+Generic PAC-Bayes test-time flagship certificate adapter.
 
-This is the reviewer-facing q063 statement: one certificate object, one bound.
-The proof calls q057's `pacBayesTestTimeMeta_theorem`, so the public API is
-smaller while the proof route remains the checked framework theorem.
+This is a reusable certificate object API: one certificate object, one bound.
+The public top theorem is the four-component assembly, which supplies the
+non-vacuous assembled bound before calling this adapter.
 -/
 theorem pacBayesTestTimeFlagship_theorem
     (certificate : FlagshipCertificate) :
@@ -163,99 +163,6 @@ theorem pacBayesTestTimeFlagship_theorem
   unfold flagshipConclusion
   rw [flagshipBound_eq_testTimeMetaBound]
   exact hmeta
-
-namespace FlagshipWorkedExample
-
-/-- Canonical q063 synthetic TTT sample size. -/
-def sampleSize : Nat := 1000
-
-/-- Canonical q063 confidence, represented as a percentage for display. -/
-def confidencePercent : Nat := 95
-
-def empiricalRiskMilli : Nat := 120
-
-def mcAllesterContributionMilli : Nat := 60
-
-def onlineIidContributionMilli : Nat := 40
-
-def bernsteinOrGaussianContributionMilli : Nat := 45
-
-def anytimeVilleContributionMilli : Nat := 30
-
-def prefixKernelContributionMilli : Nat := 0
-
-def populationRiskMilli : Nat := 295
-
-def boundSideMilli : Nat :=
-  empiricalRiskMilli +
-    mcAllesterContributionMilli +
-    onlineIidContributionMilli +
-    bernsteinOrGaussianContributionMilli +
-    anytimeVilleContributionMilli +
-    prefixKernelContributionMilli
-
-/-- Numerical closed-form side of the canonical worked example. -/
-theorem boundSideMilli_eq : boundSideMilli = 295 := by
-  norm_num [boundSideMilli, empiricalRiskMilli, mcAllesterContributionMilli,
-    onlineIidContributionMilli, bernsteinOrGaussianContributionMilli,
-    anytimeVilleContributionMilli, prefixKernelContributionMilli]
-
-def user : FlagshipUserSupplied where
-  sampleSize := sampleSize
-  targetConfidence := (confidencePercent : ℝ) / 100
-  delta := (1 : ℝ) / 20
-  lossWidth := 1
-  empiricalRisk := (empiricalRiskMilli : ℝ) / 1000
-  populationRisk := (populationRiskMilli : ℝ) / 1000
-  positiveSampleSize := by norm_num [sampleSize]
-  deltaPositive := by norm_num
-  confidenceNonnegative := by norm_num [confidencePercent]
-  lossWidthNonnegative := by norm_num
-  empiricalRiskNonnegative := by norm_num [empiricalRiskMilli]
-  populationRiskNonnegative := by norm_num [populationRiskMilli]
-
-def derived : FlagshipDerivedContributions where
-  mcAllesterGeneralWidthContribution :=
-    (mcAllesterContributionMilli : ℝ) / 1000
-  onlineIidContribution :=
-    (onlineIidContributionMilli : ℝ) / 1000
-  bernsteinOrGaussianContribution :=
-    (bernsteinOrGaussianContributionMilli : ℝ) / 1000
-  anytimeVilleContribution :=
-    (anytimeVilleContributionMilli : ℝ) / 1000
-  prefixKernelContribution :=
-    (prefixKernelContributionMilli : ℝ) / 1000
-  mcAllesterGeneralWidthContributionNonnegative := by
-    norm_num [mcAllesterContributionMilli]
-  onlineIidContributionNonnegative := by
-    norm_num [onlineIidContributionMilli]
-  bernsteinOrGaussianContributionNonnegative := by
-    norm_num [bernsteinOrGaussianContributionMilli]
-  anytimeVilleContributionNonnegative := by
-    norm_num [anytimeVilleContributionMilli]
-  prefixKernelContributionNonnegative := by
-    norm_num [prefixKernelContributionMilli]
-
-/-- Canonical q063 worked-example certificate. -/
-def certificate : FlagshipCertificate where
-  user := user
-  derived := derived
-  assembledBound := by
-    norm_num [user, derived, flagshipBound, empiricalRiskMilli,
-      populationRiskMilli, mcAllesterContributionMilli, onlineIidContributionMilli,
-      bernsteinOrGaussianContributionMilli, anytimeVilleContributionMilli,
-      prefixKernelContributionMilli]
-
-/-- Canonical worked-example conclusion. -/
-def flagshipWorkedExampleConclusion : Prop :=
-  flagshipConclusion certificate
-
-/-- The canonical worked example instantiates the q063 flagship theorem. -/
-theorem flagshipWorkedExample_certificate :
-    flagshipWorkedExampleConclusion := by
-  exact pacBayesTestTimeFlagship_theorem certificate
-
-end FlagshipWorkedExample
 
 end
 
