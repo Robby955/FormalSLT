@@ -196,7 +196,9 @@ def boundSideMilli : Nat :=
 
 /-- Numerical closed-form side of the canonical worked example. -/
 theorem boundSideMilli_eq : boundSideMilli = 295 := by
-  native_decide
+  norm_num [boundSideMilli, empiricalRiskMilli, mcAllesterContributionMilli,
+    onlineIidContributionMilli, bernsteinOrGaussianContributionMilli,
+    anytimeVilleContributionMilli, prefixKernelContributionMilli]
 
 def user : FlagshipUserSupplied where
   sampleSize := sampleSize

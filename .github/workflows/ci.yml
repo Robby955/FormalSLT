@@ -63,6 +63,13 @@ jobs:
             exit 1
           fi
 
+      # The grep above only catches literal `axiom` declarations. This step
+      # prints the axioms of the flagship public theorems and fails on any
+      # axiom outside {propext, Classical.choice, Quot.sound}, which catches
+      # kernel-trusting tactics (e.g. native_decide leaking Lean.ofReduceBool).
+      - name: Verify flagship axiom cleanliness
+        run: bash scripts/check_axioms.sh
+
       - name: Verify no custom constants
         run: |
           if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean; then

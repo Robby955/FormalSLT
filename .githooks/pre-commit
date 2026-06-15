@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Warn-only pre-commit hook for prose hygiene.
+#
+# Activated by `git config core.hooksPath .githooks`. This hook NEVER blocks a
+# commit; it only prints warnings so the author can decide. It scans staged
+# markdown, TeX, and Lean docstring/comment lines for two things:
+#   1. banned filler words that should not appear in committed or public files;
+#   2. tool-vendor mentions (Claude / Anthropic and related) that must stay out
+#      of committed or external-facing files.
+#
+# Lean code identifiers are not flagged: for .lean files only comment lines
+# (-- ...) and docstring/block-comment lines (/- ... -/, /-- ... -/) are
+# scanned, so a variable or theorem name is never a false hit.
+
+# Collect staged files (added/copied/modified). NUL-delimited and read with a
+# while-loop so this works on the macOS system bash 3.2 (no `mapfile`).
+
+# Banned filler (word-boundary, case-insensitive). "robust" is filler only as a
+# bare adjective; we flag it and let the author judge.
+FILLER='delve|leverage|comprehensive|robust|navigate|ecosystem|crucial|seamless'
+
+# Tool-vendor mentions to keep out of committed/external files.
+VENDOR='claude|anthropic'
+
+warned=0
+
+scan_file() {
+  local f="$1"
+  [ -f "$f" ] || return 0
+  case "$f" in
+    *.md|*.markdown|*.tex)
+      lines="$(grep -nEi "\b($FILLER)\b" -- "$f" || true)"
+      vlines="$(grep -nEi "($VENDOR)" -- "$f" || true)"
+      ;;
+    *.lean)
+      # Only comment / docstring lines for Lean.
+      lines="$(grep -nE '^\s*(--|/-|/--|\*|.*-- )' -- "$f" \
+        | grep -Ei "\b($FILLER)\b" || true)"
+      vlines="$(grep -nE '^\s*(--|/-|/--|\*|.*-- )' -- "$f" \
+        | grep -Ei "($VENDOR)" || true)"
+      ;;
+    *)
+      return 0
+      ;;
+  esac
+
+  if [ -n "$lines" ]; then
+    echo "warning: banned filler in $f"
+    printf '%s\n' "$lines" | sed 's/^/    /'
+    warned=1
+  fi
+  if [ -n "$vlines" ]; then
+    echo "warning: tool-vendor mention in $f"
+    printf '%s\n' "$vlines" | sed 's/^/    /'
+    warned=1
+  fi
+}
+
+while IFS= read -r -d '' f; do
+  scan_file "$f"
+done < <(git diff --cached --name-only --diff-filter=ACM -z)
+
+if [ "$warned" -eq 1 ]; then
+  echo ""
+  echo "pre-commit: warnings only, commit NOT blocked."
+  echo "  Fix the lines above or commit anyway."
+fi
+
+exit 0
