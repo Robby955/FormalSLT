@@ -1,0 +1,23 @@
+import FormalSLT.Covering.ContinuousDudley
+
+#check @FormalSLT.Covering.ContinuousDudley.tendsto_dyadicChainingNetRadius_atTop
+
+#check @FormalSLT.Covering.ContinuousDudley.exists_dyadicChainingNetRadius_le
+
+#check @FormalSLT.Covering.ContinuousDudley.bddAbove_range_of_totallyBounded_uniformModulus
+
+#check @FormalSLT.Covering.ContinuousDudley.dyadicChainingScaleSelector_of_eventually_obligations
+
+#check @FormalSLT.Covering.ContinuousDudley.separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus
+
+#check @FormalSLT.Covering.ContinuousDudley.separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus_eventually
+
+#check @FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually
+
+#print axioms FormalSLT.Covering.ContinuousDudley.separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus
+
+#print axioms FormalSLT.Covering.ContinuousDudley.bddAbove_range_of_totallyBounded_uniformModulus
+
+#print axioms FormalSLT.Covering.ContinuousDudley.separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus_eventually
+
+#print axioms FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually
