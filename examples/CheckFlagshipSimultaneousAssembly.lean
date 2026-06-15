@@ -1,0 +1,11 @@
+import FormalSLT.TestTimeMeta.FlagshipSimultaneousAssembly
+
+open FormalSLT.TestTimeMeta
+
+#check flagshipSimultaneous_scalarBounds
+#check flagshipSimultaneous_population_le_bound
+#check flagshipSimultaneous_conclusion
+
+#print axioms flagshipSimultaneous_scalarBounds
+#print axioms flagshipSimultaneous_population_le_bound
+#print axioms flagshipSimultaneous_conclusion

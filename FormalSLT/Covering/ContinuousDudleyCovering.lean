@@ -389,6 +389,396 @@ theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber
       hint0 hbdd hchoose'
   simpa [hentropy_def] using hmain
 
+/-- Covering-number full-supremum Dudley bound from uniform path modulus data
+and eventual finite card/coarse obligations.
+
+This is the covering-number specialization of
+`ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually`.
+The caller supplies bounded sample paths, a one-sided uniform modulus, and the
+eventual finite-scale obligations that are not determined by the entropy
+profile: projection-pair cardinalities and the coarse budget. The proof fills in
+the concrete profile obligations for
+`ε ↦ √(log (coveringNumberAtRadius ε))`: prefix-envelope domination follows
+from `hcover_dominates`, and annulus integrability follows from the antitone
+positive covering-number profile. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_eventually
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hobligations : ∀ᶠ m : ℕ in Filter.atTop,
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget)) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2),
+          Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  set entropyAtRadius : ℝ → ℝ :=
+    fun ε => Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ)) with hentropy_def
+  have hentropy_antitone : Antitone entropyAtRadius :=
+    coveringNumber_entropy_antitone coveringNumberAtRadius hcover_antitone hcover_pos
+  have hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε := by
+    intro ε
+    exact Real.sqrt_nonneg _
+  have hint0 :
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume 0 (radiusScale / 2) :=
+    coveringNumber_entropy_integrable_of_antitone
+      coveringNumberAtRadius 0 (radiusScale / 2) hcover_antitone hcover_pos
+  have henvelope := coveringNumber_entropy_dominates_dyadicCoverEnvelope
+    (T := T) hT hradiusScale coveringNumberAtRadius
+    hcover_antitone hcover_dominates
+  have hobligations' : ∀ᶠ m : ℕ in Filter.atTop,
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget) := by
+    refine hobligations.mono ?_
+    intro m hm
+    rcases hm with ⟨hcard, hcoarse⟩
+    refine ⟨hcard, ?_, ?_, hcoarse⟩
+    · intro j hj
+      have := henvelope m j hj
+      simpa [hentropy_def] using this
+    · intro j _hj
+      simpa [hentropy_def] using
+        (coveringNumber_entropy_integrable_of_antitone
+          coveringNumberAtRadius
+          (radiusScale / (2 : ℝ) ^ (j + 2))
+          (radiusScale / (2 : ℝ) ^ (j + 1))
+          hcover_antitone hcover_pos)
+  have hmain :=
+    FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually
+      (P := P) (hT := hT)
+      (coarseBudget := coarseBudget) (radiusScale := radiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg
+      hint0 hbdd hmodulus hobligations'
+  simpa [hentropy_def] using hmain
+
+/-- Singleton-safe covering-number full-supremum Dudley bound from uniform path
+modulus data and eventual coarse-budget obligations.
+
+This version removes the projection-pair cardinality obligation from the
+continuous covering layer. The covering-number profile still supplies the
+entropy envelope and annulus integrability obligations, and the caller supplies
+the eventual coarse budget. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_eventually_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hobligations : ∀ᶠ m : ℕ in Filter.atTop,
+        finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2),
+          Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  set entropyAtRadius : ℝ → ℝ :=
+    fun ε => Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ)) with hentropy_def
+  have hentropy_antitone : Antitone entropyAtRadius :=
+    coveringNumber_entropy_antitone coveringNumberAtRadius hcover_antitone hcover_pos
+  have hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε := by
+    intro ε
+    exact Real.sqrt_nonneg _
+  have hint0 :
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume 0 (radiusScale / 2) :=
+    coveringNumber_entropy_integrable_of_antitone
+      coveringNumberAtRadius 0 (radiusScale / 2) hcover_antitone hcover_pos
+  have henvelope := coveringNumber_entropy_dominates_dyadicCoverEnvelope
+    (T := T) hT hradiusScale coveringNumberAtRadius
+    hcover_antitone hcover_dominates
+  have hobligations' : ∀ᶠ m : ℕ in Filter.atTop,
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget) := by
+    refine hobligations.mono ?_
+    intro m hcoarse
+    refine ⟨?_, ?_, hcoarse⟩
+    · intro j hj
+      have := henvelope m j hj
+      simpa [hentropy_def] using this
+    · intro j _hj
+      simpa [hentropy_def] using
+        (coveringNumber_entropy_integrable_of_antitone
+          coveringNumberAtRadius
+          (radiusScale / (2 : ℝ) ^ (j + 2))
+          (radiusScale / (2 : ℝ) ^ (j + 1))
+          hcover_antitone hcover_pos)
+  have hmain :=
+    FormalSLT.Covering.ContinuousDudley.continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually_nonempty
+      (P := P) (hT := hT)
+      (coarseBudget := coarseBudget) (radiusScale := radiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg
+      hint0 hbdd hmodulus hobligations'
+  simpa [hentropy_def] using hmain
+
+/-- Covering-number full-supremum Dudley bound with the dyadic finite-scale
+obligations built from the total-bounded net construction.
+
+The coarse term is the expected finite supremum over the level-0 projected image.
+The projection-pair cardinality condition is discharged from a top-scale
+separation witness `radiusScale / 4 < dist x y`; this hypothesis is necessary
+for the current finite max layer, since a collapsed index type has singleton
+projection-pair families. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hseparated : ∃ x y : T, radiusScale / 4 < dist x y)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      dyadicChainingCoarseBudget (T := T) P hT hradiusScale +
+        4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (0 : ℝ)..(radiusScale / 2),
+            Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  have hobligations :=
+    dyadicChaining_eventual_card_coarse_obligations
+      (T := T) P hT hradiusScale hseparated
+  exact continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_eventually
+    (P := P) (hT := hT)
+    (coarseBudget := dyadicChainingCoarseBudget (T := T) P hT hradiusScale)
+    (radiusScale := radiusScale)
+    (coveringNumberAtRadius := coveringNumberAtRadius)
+    hradiusScale hdistP hvariance hcover_antitone hcover_pos
+    hcover_dominates hbdd hmodulus hobligations
+
+/-- Singleton-safe covering-number full-supremum Dudley bound with concrete
+dyadic coarse-budget obligations from the total-bounded net construction.
+
+Unlike `continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete`,
+this theorem does not require a separated pair at scale `radiusScale / 4`;
+the singleton-safe finite chaining layer removes that cardinality side
+condition. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      dyadicChainingCoarseBudget (T := T) P hT hradiusScale +
+        4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (0 : ℝ)..(radiusScale / 2),
+            Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  have hobligations :=
+    dyadicChaining_eventual_coarse_obligations
+      (T := T) P hT hradiusScale
+  exact continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_eventually_nonempty
+    (P := P) (hT := hT)
+    (coarseBudget := dyadicChainingCoarseBudget (T := T) P hT hradiusScale)
+    (radiusScale := radiusScale)
+    (coveringNumberAtRadius := coveringNumberAtRadius)
+    hradiusScale hdistP hvariance hcover_antitone hcover_pos
+    hcover_dominates hbdd hmodulus hobligations
+
+/-- Covering-number full-supremum Dudley bound with bounded sample paths derived
+from total boundedness and the uniform one-sided modulus.
+
+This is the concrete wrapper around the singleton-safe finite chaining layer. It
+removes the external bounded-sample-path hypothesis and the top-scale separated
+pair hypothesis: boundedness follows from total boundedness plus `hmodulus`, and
+the no-card endpoint supplies the concrete dyadic coarse budget. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete_bdd
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      dyadicChainingCoarseBudget (T := T) P hT hradiusScale +
+        4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (0 : ℝ)..(radiusScale / 2),
+            Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  exact continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete_nonempty
+    (P := P) (hT := hT)
+    (radiusScale := radiusScale)
+    (coveringNumberAtRadius := coveringNumberAtRadius)
+    hradiusScale hdistP hvariance hcover_antitone hcover_pos
+    hcover_dominates
+    (FormalSLT.Covering.ContinuousDudley.bddAbove_range_of_totallyBounded_uniformModulus
+      (P := P) (hT := hT) (hmodulus := hmodulus))
+    hmodulus
+
+/-- Singleton-safe concrete covering-number bound with bounded sample paths
+derived from total boundedness and the uniform one-sided modulus.
+
+This is the fully concrete no-card wrapper: it removes both the external
+bounded-path hypothesis and the top-scale separated-pair hypothesis. -/
+theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete_bdd_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (radiusScale : ℝ)
+    (coveringNumberAtRadius : ℝ → ℕ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcover_antitone : Antitone coveringNumberAtRadius)
+    (hcover_pos : ∀ ε : ℝ, 0 < coveringNumberAtRadius ε)
+    (hcover_dominates : ∀ j : ℕ,
+      dyadicChainingCoverCount (T := T) hT hradiusScale j ≤
+        coveringNumberAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      dyadicChainingCoarseBudget (T := T) P hT hradiusScale +
+        4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (0 : ℝ)..(radiusScale / 2),
+            Real.sqrt (Real.log (coveringNumberAtRadius ε : ℝ))) := by
+  exact continuous_dudley_entropy_integral_iSup_of_coveringNumber_uniformModulus_concrete_nonempty
+    (P := P) (hT := hT)
+    (radiusScale := radiusScale)
+    (coveringNumberAtRadius := coveringNumberAtRadius)
+    hradiusScale hdistP hvariance hcover_antitone hcover_pos
+    hcover_dominates
+    (FormalSLT.Covering.ContinuousDudley.bddAbove_range_of_totallyBounded_uniformModulus
+      (P := P) (hT := hT) (hmodulus := hmodulus))
+    hmodulus
+
 end
 
 end FormalSLT.Covering.ContinuousDudleyCovering

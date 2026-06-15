@@ -44,28 +44,35 @@ jobs:
       - name: Verify no sorry
         run: |
           # Match 'sorry' as a standalone tactic (not in comments or strings)
-          if grep -rnE --include="*.lean" '^[[:space:]]*sorry([[:space:]]|$)' FormalSLT/ FormalSLT.lean; then
+          if grep -rnE --include="*.lean" '^[[:space:]]*sorry([[:space:]]|$)' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: sorry found in source files"
             exit 1
           fi
 
       - name: Verify no admit
         run: |
-          if grep -rnE --include="*.lean" '^[[:space:]]*admit([[:space:]]|$)' FormalSLT/ FormalSLT.lean; then
+          if grep -rnE --include="*.lean" '^[[:space:]]*admit([[:space:]]|$)' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: admit found in source files"
             exit 1
           fi
 
       - name: Verify no custom axioms
         run: |
-          if grep -rnE --include="*.lean" '^[[:space:]]*axiom[[:space:]]+' FormalSLT/ FormalSLT.lean; then
+          if grep -rnE --include="*.lean" '^[[:space:]]*axiom[[:space:]]+' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: custom axiom found in source files"
             exit 1
           fi
 
+      # The grep above only catches literal `axiom` declarations. This step
+      # prints the axioms of the flagship public theorems and fails on any
+      # axiom outside {propext, Classical.choice, Quot.sound}, which catches
+      # kernel-trusting tactics (e.g. native_decide leaking Lean.ofReduceBool).
+      - name: Verify flagship axiom cleanliness
+        run: bash scripts/check_axioms.sh
+
       - name: Verify no custom constants
         run: |
-          if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean; then
+          if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: custom constant found in source files"
             exit 1
           fi
