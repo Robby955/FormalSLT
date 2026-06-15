@@ -22,10 +22,12 @@ namespace FormalSLT.PACBayes.VCHybrid
 open FormalSLT.PACBayesKL
 open FormalSLT.PACBayesBernstein
 open FormalSLT.Probability.FiniteUnionBound
+open FormalSLT.Rademacher.FiniteSample (empiricalRademacherComplexity)
+open FormalSLT.VC.Rademacher (effectiveClass)
 
 noncomputable section
 
-variable {Ω ι : Type*}
+variable {Ω ι Z : Type*}
 
 local instance (p : Prop) : Decidable p := Classical.propDecidable p
 
@@ -38,6 +40,40 @@ theorem vcCapacityTerm_nonneg {B : ℝ} {n d : ℕ} (hB : 0 ≤ B) :
     0 ≤ vcCapacityTerm B n d := by
   unfold vcCapacityTerm
   positivity
+
+/--
+Derive the VC-good input used by the hybrid theorem from the actual
+Sauer-Shelah/Rademacher sample-complexity spine.
+
+The assumption `hRadGood` is the usual reduction from posterior empirical risk
+to an empirical anchor plus twice the empirical Rademacher complexity. This
+theorem then supplies the VC capacity term by invoking
+`FormalSLT.VC.SampleComplexity.vcRademacher_pointwise`.
+-/
+theorem vcGood_from_pointwiseRademacher
+    [Fintype ι] [Nonempty ι]
+    {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 < B)
+    (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    {n d : ℕ} (sample : Ω → Fin n → Z)
+    (hn : 0 < n) (hd : 0 < d) (hdn : d ≤ n)
+    (hGrowth : ∀ ω', (effectiveClass ℓ (sample ω')).card ≤
+      ∑ k ∈ Finset.range (d + 1), n.choose k)
+    {vcBad : Finset Ω}
+    {empiricalAnchor posteriorEmpirical : Ω → ℝ}
+    (hRadGood : ∀ ω', ω' ∉ vcBad →
+      posteriorEmpirical ω' ≤ empiricalAnchor ω' +
+        2 * empiricalRademacherComplexity ℓ (sample ω')) :
+    ∀ ω', ω' ∉ vcBad →
+      posteriorEmpirical ω' ≤ empiricalAnchor ω' + vcCapacityTerm B n d := by
+  intro ω hω
+  have hvc := FormalSLT.VC.SampleComplexity.vcRademacher_pointwise
+    (ℓ := ℓ) hB hℓ_bdd (sample ω) hn hd hdn (hGrowth ω)
+  have hcap :
+      2 * empiricalRademacherComplexity ℓ (sample ω) ≤ vcCapacityTerm B n d := by
+    have hmul := mul_le_mul_of_nonneg_left hvc (by norm_num : (0 : ℝ) ≤ 2)
+    simpa [vcCapacityTerm, mul_assoc, mul_left_comm, mul_comm] using hmul
+  have hbase := hRadGood ω hω
+  linarith
 
 private lemma finiteEventMass_univ_eq_sum [Fintype Ω] [DecidableEq Ω]
     (ν : Ω → ℝ) (event : Finset Ω) :
@@ -191,6 +227,44 @@ theorem vcPacBayesBernsteinPosteriorRisk_bound
     linarith
   have hvc := hVCGood ω hω_not_vc
   linarith
+
+/--
+Pointwise hybrid posterior-risk bound with both spines wired in.
+
+Compared with `vcPacBayesBernsteinPosteriorRisk_bound`, this theorem derives
+the VC-good hypothesis from the checked pointwise VC-Rademacher theorem. The
+PAC-Bayes part is still obtained from membership in the finite Bernstein bad
+event, so both routes are load-bearing in the proof.
+-/
+theorem vcPacBayesBernsteinPosteriorRisk_bound_from_vcRademacher
+    [Fintype Ω] [DecidableEq Ω] [Fintype ι] [Nonempty ι]
+    {ρ π : ι → ℝ} (hρ : IsPMF ρ)
+    (vcBad : Finset Ω)
+    {lambda scale delta B : ℝ} {n d : ℕ}
+    {ℓ : ι → Z → ℝ} (sample : Ω → Fin n → Z)
+    (hB : 0 < B) (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    (hn : 0 < n) (hd : 0 < d) (hdn : d ≤ n)
+    (hGrowth : ∀ ω', (effectiveClass ℓ (sample ω')).card ≤
+      ∑ k ∈ Finset.range (d + 1), n.choose k)
+    (empiricalAnchor : Ω → ℝ)
+    (riskFn : ι → ℝ) (empiricalRiskFn : Ω → ι → ℝ)
+    (varianceProxy : ι → ℝ) (ω : Ω)
+    (hRadGood : ∀ ω', ω' ∉ vcBad →
+      posteriorEmpiricalRisk ρ (empiricalRiskFn ω') ≤ empiricalAnchor ω' +
+        2 * empiricalRademacherComplexity ℓ (sample ω'))
+    (hω :
+      ω ∉ vcPacBayesHybridBadSamples vcBad π lambda scale delta
+        riskFn empiricalRiskFn varianceProxy) :
+    posteriorRisk ρ riskFn ≤
+      empiricalAnchor ω +
+        vcCapacityTerm B n d +
+        (klDiv ρ π + Real.log (1 / delta)) / lambda +
+        lambda * posteriorMarginVarianceProxy ρ varianceProxy /
+          (2 * (1 - scale * lambda)) := by
+  exact vcPacBayesBernsteinPosteriorRisk_bound
+    (ρ := ρ) (π := π) hρ vcBad empiricalAnchor riskFn empiricalRiskFn varianceProxy ω
+    (vcGood_from_pointwiseRademacher hB hℓ_bdd sample hn hd hdn hGrowth hRadGood)
+    hω
 
 end
 
