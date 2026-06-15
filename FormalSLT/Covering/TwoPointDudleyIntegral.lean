@@ -7,7 +7,7 @@ import FormalSLT.Covering.TwoPointDudley
 This module instantiates the finite q087 entropy-integral theorem on the
 two-point Rademacher process. The level-0 net is rooted at `false`, the
 terminal net is the identity two-point net, and the covering profile is a
-constant finite envelope for the single adjacent net pair.
+fixed finite envelope for the single adjacent net pair.
 
 The statement remains finite-scale. It does not assert a continuous Dudley
 theorem, measurable supremum theorem, or total-bounded limit passage.
