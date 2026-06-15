@@ -327,6 +327,283 @@ def dyadicChainingCoverCount
   (dyadicChainingFiniteNetOfTotallyBoundedUniv
     (T := T) hT hradiusScale (j + 1)).net.coveringNumber
 
+/-- The concrete coarse budget used by the continuous covering-number corollary:
+the expected finite supremum over the image of the coarsest dyadic net. -/
+def dyadicChainingCoarseBudget
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale) : ℝ :=
+  finiteExpectation P.weight
+    (fun ω => finiteSup
+      (fun u : FiniteNet.ProjectedIndex
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale 0).net =>
+        P.X ω
+          ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale 0).net.center u.1)))
+
+/-- The terminal-scale coarse supremum is bounded by the level-0 projected
+coarse supremum. -/
+theorem dyadicChainingCoarseProjectedSup_le_levelZero
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    (m : ℕ) (ω : Ω) :
+    finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale m).net =>
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net.projection
+              (FiniteNet.ProjectedIndex.source
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net u))) ≤
+      finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net =>
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net.center u.1)) := by
+  classical
+  let N₀ :=
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale 0).net
+  let Nₘ :=
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale m).net
+  unfold finiteSup
+  apply Finset.sup'_le
+  intro u _hu
+  let v : FiniteNet.ProjectedIndex N₀ :=
+    ⟨N₀.project (FiniteNet.ProjectedIndex.source Nₘ u),
+      ⟨FiniteNet.ProjectedIndex.source Nₘ u, rfl⟩⟩
+  have hv :
+      P.X ω (N₀.center v.1) ≤
+        (Finset.univ : Finset (FiniteNet.ProjectedIndex N₀)).sup'
+          Finset.univ_nonempty
+          (fun u : FiniteNet.ProjectedIndex N₀ => P.X ω (N₀.center u.1)) := by
+    exact Finset.le_sup'
+      (fun u : FiniteNet.ProjectedIndex N₀ => P.X ω (N₀.center u.1))
+      (Finset.mem_univ v)
+  simpa [N₀, Nₘ, v, FiniteNet.projection] using hv
+
+/-- The concrete level-0 coarse budget dominates every terminal-scale coarse
+projection budget in the dyadic total-bounded construction. -/
+theorem dyadicChainingCoarseBudget_bound
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    (m : ℕ) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      dyadicChainingCoarseBudget (T := T) P hT hradiusScale := by
+  simpa [dyadicChainingCoarseBudget] using
+    finiteExpectation_mono P.weight_nonneg
+      (fun ω =>
+        dyadicChainingCoarseProjectedSup_le_levelZero
+          (T := T) P hT hradiusScale m ω)
+
+/-- Twice the next dyadic radius is bounded by a quarter of the top scale. -/
+theorem two_mul_dyadicChainingNetRadius_succ_le_quarter
+    {radiusScale : ℝ} (hradiusScale : 0 ≤ radiusScale) (j : ℕ) :
+    2 * dyadicChainingNetRadius radiusScale (j + 1) ≤ radiusScale / 4 := by
+  unfold dyadicChainingNetRadius
+  have hpow_ge : (4 : ℝ) ≤ (2 : ℝ) ^ (j + 2) := by
+    have hpow : (2 : ℝ) ^ 2 ≤ (2 : ℝ) ^ (j + 2) :=
+      pow_le_pow_right₀ (by norm_num) (Nat.le_add_left 2 j)
+    norm_num at hpow
+    exact hpow
+  have hden_pos : 0 < (2 : ℝ) ^ (j + 2) := pow_pos (by norm_num) _
+  have hdiv :
+      radiusScale / (2 : ℝ) ^ (j + 2) ≤ radiusScale / 4 :=
+    div_le_div_of_nonneg_left hradiusScale (by norm_num) hpow_ge
+  have hpow_succ :
+      (2 : ℝ) ^ (j + 1 + 2) = (2 : ℝ) ^ (j + 2) * 2 := by
+    have hnat : j + 1 + 2 = j + 2 + 1 := by omega
+    rw [hnat, pow_succ]
+  calc
+    2 * (radiusScale / (2 : ℝ) ^ (j + 1 + 2))
+        = radiusScale / (2 : ℝ) ^ (j + 2) := by
+          rw [hpow_succ]
+          field_simp [hden_pos.ne']
+    _ ≤ radiusScale / 4 := hdiv
+
+/-- Dichotomy for the top-scale separation hypothesis.
+
+Either there is a pair separated by more than `radiusScale / 4`, which is the
+nondegenerate branch used to produce nontrivial dyadic projection-pair
+families, or every pair has distance at most `radiusScale / 4`, which is the
+small-diameter branch needed for the later fallback theorem. -/
+theorem radiusScale_quarter_separated_or_smallDiameter
+    [PseudoMetricSpace T] (radiusScale : ℝ) :
+    (∃ x y : T, radiusScale / 4 < dist x y) ∨
+      (∀ x y : T, dist x y ≤ radiusScale / 4) := by
+  classical
+  by_cases hsep : ∃ x y : T, radiusScale / 4 < dist x y
+  · exact Or.inl hsep
+  · refine Or.inr ?_
+    intro x y
+    exact le_of_not_gt (fun hxy => hsep ⟨x, y, hxy⟩)
+
+/-- Two points separated beyond twice the next dyadic radius give two realized
+projection pairs at scale `j`. -/
+theorem dyadicChainingProjectionPair_card_gt_one_of_dist_gt_two_next_radius
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    (x y : T) (j : ℕ)
+    (hxy : 2 * dyadicChainingNetRadius radiusScale (j + 1) < dist x y) :
+    1 < Fintype.card (FiniteNet.ProjectionPair
+      (dyadicChainingFiniteNetOfTotallyBoundedUniv
+        (T := T) hT hradiusScale j).net
+      (dyadicChainingFiniteNetOfTotallyBoundedUniv
+        (T := T) hT hradiusScale (j + 1)).net) := by
+  classical
+  let N₀ :=
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  let N₁ :=
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale (j + 1)).net
+  refine Fintype.one_lt_card_iff.mpr
+    ⟨FiniteNet.projectionPairOf N₀ N₁ x,
+      FiniteNet.projectionPairOf N₀ N₁ y, ?_⟩
+  intro hpair
+  have hproj : N₁.project x = N₁.project y := by
+    exact congrArg (fun p : FiniteNet.ProjectionPair N₀ N₁ => p.1.2) hpair
+  have hcenter : N₁.projection x = N₁.projection y := by
+    simp [FiniteNet.projection, hproj]
+  have hx : dist x (N₁.projection x) ≤ N₁.radius := by
+    simpa [N₁] using N₁.projection_dist_le x
+  have hy : dist y (N₁.projection y) ≤ N₁.radius := by
+    simpa [N₁] using N₁.projection_dist_le y
+  have hxy_le : dist x y ≤ N₁.radius + N₁.radius := by
+    calc
+      dist x y ≤ dist x (N₁.projection x) + dist (N₁.projection x) y :=
+        dist_triangle x (N₁.projection x) y
+      _ = dist x (N₁.projection x) + dist (N₁.projection y) y := by
+        rw [hcenter]
+      _ = dist x (N₁.projection x) + dist y (N₁.projection y) := by
+        rw [dist_comm (N₁.projection y) y]
+      _ ≤ N₁.radius + N₁.radius := add_le_add hx hy
+  have hrad :
+      N₁.radius = dyadicChainingNetRadius radiusScale (j + 1) := by
+    simp [N₁]
+  have hxy_le' : dist x y ≤ 2 * dyadicChainingNetRadius radiusScale (j + 1) := by
+    rw [hrad] at hxy_le
+    linarith
+  exact not_lt_of_ge hxy_le' hxy
+
+/-- A top-scale separated pair gives nontrivial realized projection-pair families
+at every dyadic scale. -/
+theorem dyadicChainingProjectionPair_card_gt_one_of_radiusScale_quarter_lt_dist
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    {x y : T} (hxy : radiusScale / 4 < dist x y) :
+    ∀ j : ℕ,
+      1 < Fintype.card (FiniteNet.ProjectionPair
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale j).net
+        (dyadicChainingFiniteNetOfTotallyBoundedUniv
+          (T := T) hT hradiusScale (j + 1)).net) := by
+  intro j
+  have htwo :
+      2 * dyadicChainingNetRadius radiusScale (j + 1) < dist x y :=
+    lt_of_le_of_lt
+      (two_mul_dyadicChainingNetRadius_succ_le_quarter
+        (radiusScale := radiusScale) hradiusScale.le j)
+      hxy
+  exact dyadicChainingProjectionPair_card_gt_one_of_dist_gt_two_next_radius
+    (T := T) hT hradiusScale x y j htwo
+
+/-- The concrete eventual finite-scale obligations for the dyadic
+total-bounded construction.
+
+The cardinality side is built from a separated pair at the top scale. The coarse
+side is bounded by the level-0 projected finite supremum budget. -/
+theorem dyadicChaining_eventual_card_coarse_obligations
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale)
+    (hseparated : ∃ x y : T, radiusScale / 4 < dist x y) :
+    ∀ᶠ m : ℕ in Filter.atTop,
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          dyadicChainingCoarseBudget (T := T) P hT hradiusScale) := by
+  rcases hseparated with ⟨x, y, hxy⟩
+  have hcard_all :
+      ∀ j : ℕ,
+        1 < Fintype.card (FiniteNet.ProjectionPair
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale j).net
+          (dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale (j + 1)).net) :=
+    dyadicChainingProjectionPair_card_gt_one_of_radiusScale_quarter_lt_dist
+      (T := T) hT hradiusScale hxy
+  exact Filter.Eventually.of_forall
+    (fun m =>
+      ⟨(fun j _hj => hcard_all j),
+        dyadicChainingCoarseBudget_bound (T := T) P hT hradiusScale m⟩)
+
+/-- The concrete eventual coarse-budget obligation for the dyadic total-bounded
+construction, without any nontrivial projection-pair cardinality requirement. -/
+theorem dyadicChaining_eventual_coarse_obligations
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale) :
+    ∀ᶠ m : ℕ in Filter.atTop,
+        finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          dyadicChainingCoarseBudget (T := T) P hT hradiusScale := by
+  exact Filter.Eventually.of_forall
+    (fun m => dyadicChainingCoarseBudget_bound (T := T) P hT hradiusScale m)
+
 /-- Total-bounded dyadic finite-net schedule packaged as a reusable
 `FiniteDyadicNetSequence`.
 
@@ -515,6 +792,88 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbe
   · intro j hj
     dsimp [N]
     exact hcard j hj
+  · intro j _hj
+    rfl
+  · simpa [N] using hcoarse
+
+/-- Finite projected-net total-bounded dyadic Dudley wrapper that also covers
+singleton adjacent projection-pair families.
+
+This removes the finite-scale cardinality side condition from the projected
+finite-net layer. The supremum is still over the finite image of the terminal
+dyadic net projection, not over all of `T`; continuous separability and
+measurable-supremum arguments enter only in later boundary layers. -/
+theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net.center u.1))) ≤
+      coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget radiusScale m
+          (FiniteSubGaussianProcess.finitePrefixSupEnvelope
+            (fun j => Real.sqrt (Real.log
+              (dyadicChainingCoverCount
+                (T := T) hT hradiusScale j : ℝ)))) := by
+  classical
+  let A : ℕ → Type u := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).A
+  letI : ∀ j, Fintype (A j) := by
+    intro j
+    dsimp [A]
+    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).instFintype
+  let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  refine FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope_nonempty
+    (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale)
+    (coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j)
+    ?hdist ?hsymm ?htri hvariance hradiusScale.le ?hradius_pos
+    ?hradius_geometric ?hcoverCount ?hcoarse
+  · intro j
+    dsimp [N]
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  · intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  · intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
   · intro j _hj
     rfl
   · simpa [N] using hcoarse
@@ -834,6 +1193,272 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_trunc
     simpa using hentropyAtRadius j hj
   · simpa [N] using hcoarse
 
+/-- Projected total-bounded dyadic Dudley wrapper compared against a supplied
+finite entropy-at-radius budget, including singleton adjacent projection-pair
+families. -/
+theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_integral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ) (integralBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hupperSum :
+      FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
+        radiusScale m entropyAtRadius ≤ integralBudget)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net.center u.1))) ≤
+      coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) * integralBudget := by
+  classical
+  let A : ℕ → Type u := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).A
+  letI : ∀ j, Fintype (A j) := by
+    intro j
+    dsimp [A]
+    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).instFintype
+  let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  refine FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_integral_comparison_nonempty
+    (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale)
+    (coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j)
+    (entropyAtRadius := entropyAtRadius) (integralBudget := integralBudget)
+    ?hdist ?hsymm ?htri hvariance hradiusScale.le ?hradius_pos
+    ?hradius_geometric ?hcoverCount ?hentropyAtRadius hupperSum ?hcoarse
+  · intro j
+    dsimp [N]
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  · intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  · intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    rfl
+  · intro j hj
+    simpa using hentropyAtRadius j hj
+  · simpa [N] using hcoarse
+
+/-- Projected total-bounded dyadic Dudley wrapper with shifted-annulus integral
+budget, including singleton adjacent projection-pair families. -/
+theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_intervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ) (integralBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hintegralBudget :
+      (∑ j ∈ Finset.range m,
+        ∫ ε in (radiusScale / (2 : ℝ) ^ (j + 2))..
+          (radiusScale / (2 : ℝ) ^ (j + 1)),
+          entropyAtRadius ε) ≤ integralBudget)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net.center u.1))) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) * integralBudget := by
+  classical
+  let A : ℕ → Type u := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).A
+  letI : ∀ j, Fintype (A j) := by
+    intro j
+    dsimp [A]
+    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).instFintype
+  let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  refine FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_intervalIntegral_comparison_nonempty
+    (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale)
+    (coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j)
+    (entropyAtRadius := entropyAtRadius) (integralBudget := integralBudget)
+    ?hdist ?hsymm ?htri hvariance hradiusScale.le ?hradius_pos
+    ?hradius_geometric ?hcoverCount ?hentropyAtRadius
+    hentropy_antitone hintervalIntegrable hintegralBudget ?hcoarse
+  · intro j
+    dsimp [N]
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  · intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  · intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    rfl
+  · intro j hj
+    simpa using hentropyAtRadius j hj
+  · simpa [N] using hcoarse
+
+/-- Projected total-bounded dyadic Dudley wrapper with a single truncated
+interval integral, including singleton adjacent projection-pair families. -/
+theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net.center u.1))) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) := by
+  classical
+  let A : ℕ → Type u := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).A
+  letI : ∀ j, Fintype (A j) := by
+    intro j
+    dsimp [A]
+    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).instFintype
+  let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  refine FiniteSubGaussianProcess.finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+    (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale)
+    (coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j)
+    (entropyAtRadius := entropyAtRadius)
+    ?hdist ?hsymm ?htri hvariance hradiusScale.le ?hradius_pos
+    ?hradius_geometric ?hcoverCount ?hentropyAtRadius
+    hentropy_antitone hintervalIntegrable ?hcoarse
+  · intro j
+    dsimp [N]
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  · intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  · intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    rfl
+  · intro j hj
+    simpa using hentropyAtRadius j hj
+  · simpa [N] using hcoarse
+
 /-- Boundary-layer total-bounded Dudley wrapper for a supplied supremum
 functional.
 
@@ -1074,6 +1699,205 @@ theorem finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncat
     simpa [N] using hterminalApprox ω k
   · simpa [N] using hcoarse
 
+/-- Boundary-layer total-bounded Dudley wrapper for a supplied supremum
+functional, including singleton adjacent projection-pair families. -/
+theorem finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ) (terminalError : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hterminal :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net.center u.1)) +
+            terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) + terminalError := by
+  classical
+  let A : ℕ → Type u := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).A
+  letI : ∀ j, Fintype (A j) := by
+    intro j
+    dsimp [A]
+    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).instFintype
+  let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  refine FiniteSubGaussianProcess.finite_supFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+    (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale)
+    (coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j)
+    (entropyAtRadius := entropyAtRadius) (supFunctional := supFunctional)
+    (terminalError := terminalError)
+    ?hdist ?hsymm ?htri hvariance hradiusScale.le ?hradius_pos
+    ?hradius_geometric ?hcoverCount ?hentropyAtRadius
+    hentropy_antitone hintervalIntegrable ?hterminal ?hcoarse
+  · intro j
+    dsimp [N]
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  · intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  · intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    rfl
+  · intro j hj
+    simpa using hentropyAtRadius j hj
+  · intro ω
+    simpa [N] using hterminal ω
+  · simpa [N] using hcoarse
+
+/-- Boundary-layer total-bounded Dudley wrapper with an explicit finite
+separability skeleton, including singleton adjacent projection-pair families. -/
+theorem finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    {K : Type u} [Fintype K] [Nonempty K]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (embed : K → T) (supFunctional : Ω → ℝ)
+    (separabilityError terminalError : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hseparable :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup (fun k : K => P.X ω (embed k)) + separabilityError)
+    (hterminalApprox :
+      ∀ ω : Ω, ∀ k : K,
+        P.X ω (embed k) ≤
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale m).net.projection (embed k)) +
+            terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) + (separabilityError + terminalError) := by
+  classical
+  let A : ℕ → Type u := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).A
+  letI : ∀ j, Fintype (A j) := by
+    intro j
+    dsimp [A]
+    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).instFintype
+  let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
+    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net
+  refine FiniteSubGaussianProcess.finite_separableSupFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+    (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale)
+    (coverCount := fun j => dyadicChainingCoverCount (T := T) hT hradiusScale j)
+    (entropyAtRadius := entropyAtRadius) (embed := embed)
+    (supFunctional := supFunctional)
+    (separabilityError := separabilityError) (terminalError := terminalError)
+    ?hdist ?hsymm ?htri hvariance hradiusScale.le ?hradius_pos
+    ?hradius_geometric ?hcoverCount ?hentropyAtRadius
+    hentropy_antitone hintervalIntegrable ?hseparable ?hterminalApprox ?hcoarse
+  · intro j
+    dsimp [N]
+    rw [dyadicChainingFiniteNetOfTotallyBoundedUniv_dist, hdistP]
+  · intro s t
+    rw [hdistP]
+    exact dist_comm s t
+  · intro x y z
+    rw [hdistP]
+    exact dist_triangle x y z
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_pos
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    dsimp [N]
+    exact dyadicChainingFiniteNetOfTotallyBoundedUniv_pair_radius_le
+      (T := T) hT hradiusScale j
+  · intro j _hj
+    rfl
+  · intro j hj
+    simpa using hentropyAtRadius j hj
+  · intro ω
+    simpa using hseparable ω
+  · intro ω k
+    simpa [N] using hterminalApprox ω k
+  · simpa [N] using hcoarse
+
 /-- Total-bounded Dudley boundary wrapper with usable finite-skeleton and
 pathwise-modulus hypotheses.
 
@@ -1163,6 +1987,80 @@ theorem finite_witnessedSup_modulus_dudley_totalBounded_dyadic_entropy_truncated
       (dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
         (T := T) hT hradiusScale m (embed k))
 
+/-- Singleton-safe version of
+`finite_witnessedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison`.
+
+The finite chaining bound is routed through covering numbers, so the boundary
+step no longer asks for nontrivial adjacent projection-pair cardinalities. -/
+theorem finite_witnessedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    {K : Type u} [Fintype K] [Nonempty K]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (embed : K → T) (nearest : T → K) (witness : Ω → T)
+    (supFunctional : Ω → ℝ)
+    (witnessError skeletonError terminalError : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hwitness :
+      ∀ ω : Ω,
+        supFunctional ω ≤ P.X ω (witness ω) + witnessError)
+    (hskeletonApprox :
+      ∀ ω : Ω, ∀ t : T,
+        P.X ω t ≤ P.X ω (embed (nearest t)) + skeletonError)
+    (hpathwiseModulus :
+      ∀ ω : Ω, ∀ s t : T,
+        dist s t ≤ dyadicChainingNetRadius radiusScale m →
+          P.X ω s ≤ P.X ω t + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) + ((witnessError + skeletonError) + terminalError) := by
+  refine finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    (P := P) (hT := hT) (m := m) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+    (embed := embed) (supFunctional := supFunctional)
+    (separabilityError := witnessError + skeletonError)
+    (terminalError := terminalError) hradiusScale hdistP hvariance
+    hentropyAtRadius hentropy_antitone hintervalIntegrable ?hseparable
+    ?hterminalApprox hcoarse
+  · exact supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx
+      embed nearest (P.X) supFunctional witness witnessError skeletonError
+      hwitness hskeletonApprox
+  · intro ω k
+    exact hpathwiseModulus ω (embed k)
+      ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+        (T := T) hT hradiusScale m).net.projection (embed k))
+      (dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
+        (T := T) hT hradiusScale m (embed k))
+
 /-- A finite skeleton and terminal-scale certificate for an epsilonized
 total-bounded Dudley boundary step.
 
@@ -1198,6 +2096,54 @@ def EpsilonizedSupremumBoundaryChoice
           (T := T) hT hradiusScale j).net
         (dyadicChainingFiniteNetOfTotallyBoundedUniv
           (T := T) hT hradiusScale (j + 1)).net)) ∧
+    (∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ ω : Ω,
+      supFunctional ω ≤ P.X ω (witness ω) + witnessError) ∧
+    (∀ ω : Ω, ∀ t : T,
+      P.X ω t ≤ P.X ω (embed (nearest t)) + skeletonError) ∧
+    (∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError) ∧
+    (finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale m).net =>
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net.projection
+              (FiniteNet.ProjectedIndex.source
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget m)
+
+/-- Singleton-safe finite skeleton and terminal-scale certificate for an
+epsilonized total-bounded Dudley boundary step.
+
+This is the no-cardinality variant of `EpsilonizedSupremumBoundaryChoice`; the
+finite chaining layer below uses covering numbers and nonempty finite families. -/
+def EpsilonizedSupremumBoundaryChoiceNonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (eta : ℝ) (m : ℕ) : Prop :=
+  ∃ (K : Type u), ∃ (_instK : Fintype K), ∃ (_nonemptyK : Nonempty K),
+  ∃ (embed : K → T), ∃ (nearest : T → K), ∃ (witness : Ω → T),
+  ∃ (witnessError : ℝ), ∃ (skeletonError : ℝ), ∃ (terminalError : ℝ),
+    witnessError + skeletonError + terminalError ≤ eta ∧
     (∀ j ∈ Finset.range m,
       FiniteSubGaussianProcess.finitePrefixSupEnvelope
           (fun j => Real.sqrt (Real.log
@@ -1300,6 +2246,66 @@ theorem finite_epsilonizedSup_modulus_dudley_totalBounded_dyadic_entropy_truncat
     simpa [add_assoc] using herror
   exact hbase.trans (add_le_add_right herrors _)
 
+/-- Singleton-safe epsilonized total-bounded Dudley boundary adapter. -/
+theorem finite_epsilonizedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        EpsilonizedSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        finiteExpectation P.weight supFunctional ≤
+          coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+            (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+              entropyAtRadius ε) + eta := by
+  intro eta heta
+  rcases hchoose eta heta with ⟨m, hchoice⟩
+  rcases hchoice with
+    ⟨K, instK, nonemptyK, embed, nearest, witness,
+      witnessError, skeletonError, terminalError, herror,
+      hentropyAtRadius, hintervalIntegrable, hwitness, hskeletonApprox,
+      hpathwiseModulus, hcoarse⟩
+  letI : Fintype K := instK
+  letI : Nonempty K := nonemptyK
+  refine ⟨m, ?_⟩
+  have hbase :
+      finiteExpectation P.weight supFunctional ≤
+        coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + ((witnessError + skeletonError) + terminalError) := by
+    exact
+      finite_witnessedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+        (P := P) (hT := hT) (m := m) (coarseBudget := coarseBudget m)
+        (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+        (embed := embed) (nearest := nearest) (witness := witness)
+        (supFunctional := supFunctional)
+        (witnessError := witnessError) (skeletonError := skeletonError)
+        (terminalError := terminalError)
+        (hradiusScale := hradiusScale) (hdistP := hdistP)
+        (hvariance := hvariance)
+        (hentropyAtRadius := hentropyAtRadius)
+        (hentropy_antitone := hentropy_antitone)
+        (hintervalIntegrable := hintervalIntegrable)
+        (hwitness := hwitness) (hskeletonApprox := hskeletonApprox)
+        (hpathwiseModulus := hpathwiseModulus) (hcoarse := hcoarse)
+  have herrors : ((witnessError + skeletonError) + terminalError) ≤ eta := by
+    simpa [add_assoc] using herror
+  exact hbase.trans (add_le_add_right herrors _)
+
 /-- A finite-cover skeleton gives the skeleton approximation required by the
 epsilonized boundary certificate when sample paths have a one-sided modulus at
 the cover radius.
@@ -1357,6 +2363,54 @@ def FiniteCoverSupremumBoundaryChoice
           (T := T) hT hradiusScale j).net
         (dyadicChainingFiniteNetOfTotallyBoundedUniv
           (T := T) hT hradiusScale (j + 1)).net)) ∧
+    (∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ t : T, dist t (embed (nearest t)) ≤ skeletonRadius) ∧
+    (∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ skeletonRadius →
+        P.X ω s ≤ P.X ω t + skeletonError) ∧
+    (∀ ω : Ω,
+      supFunctional ω ≤ P.X ω (witness ω) + witnessError) ∧
+    (∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError) ∧
+    (finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale m).net =>
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net.projection
+              (FiniteNet.ProjectedIndex.source
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net u)))) ≤
+              coarseBudget m)
+
+/-- Singleton-safe finite-cover/pathwise-modulus certificate for the
+epsilonized total-bounded Dudley boundary step. -/
+def FiniteCoverSupremumBoundaryChoiceNonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (eta : ℝ) (m : ℕ) : Prop :=
+  ∃ (K : Type u), ∃ (_instK : Fintype K), ∃ (_nonemptyK : Nonempty K),
+  ∃ (embed : K → T), ∃ (nearest : T → K), ∃ (witness : Ω → T),
+  ∃ (witnessError : ℝ), ∃ (skeletonRadius : ℝ),
+  ∃ (skeletonError : ℝ), ∃ (terminalError : ℝ),
+    witnessError + skeletonError + terminalError ≤ eta ∧
     (∀ j ∈ Finset.range m,
       FiniteSubGaussianProcess.finitePrefixSupEnvelope
           (fun j => Real.sqrt (Real.log
@@ -1477,6 +2531,86 @@ theorem finite_epsilonizedSup_dudley_totalBounded_of_finiteCoverSupremumBoundary
   rcases hchoose eta heta with ⟨m, hfiniteCover⟩
   exact ⟨m,
     epsilonizedSupremumBoundaryChoice_of_finiteCoverSupremumBoundaryChoice
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hfiniteCover⟩
+
+/-- Singleton-safe finite-cover bridge into the epsilonized boundary
+certificate. -/
+theorem epsilonizedSupremumBoundaryChoiceNonempty_of_finiteCoverSupremumBoundaryChoiceNonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (hchoice :
+      FiniteCoverSupremumBoundaryChoiceNonempty
+        (P := P) (hT := hT) (coarseBudget := coarseBudget)
+        (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+        (entropyAtRadius := entropyAtRadius)
+        (supFunctional := supFunctional) eta m) :
+    EpsilonizedSupremumBoundaryChoiceNonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) eta m := by
+  rcases hchoice with
+    ⟨K, instK, nonemptyK, embed, nearest, witness,
+      witnessError, skeletonRadius, skeletonError, terminalError,
+      herror, hentropyAtRadius, hintervalIntegrable, hcover,
+      hskeletonModulus, hwitness, hterminalModulus, hcoarse⟩
+  letI : Fintype K := instK
+  letI : Nonempty K := nonemptyK
+  refine ⟨K, instK, nonemptyK, embed, nearest, witness,
+    witnessError, skeletonError, terminalError, herror,
+    hentropyAtRadius, hintervalIntegrable, hwitness, ?_, hterminalModulus,
+    hcoarse⟩
+  exact skeletonApprox_of_finiteCover_pathwiseModulus
+    (P := P) embed nearest skeletonRadius skeletonError hcover
+    hskeletonModulus
+
+/-- Singleton-safe epsilonized total-bounded Dudley bound from
+finite-cover/pathwise-modulus certificates. -/
+theorem finite_epsilonizedSup_dudley_totalBounded_of_finiteCoverSupremumBoundaryChoice_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        FiniteCoverSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        finiteExpectation P.weight supFunctional ≤
+          coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+            (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+              entropyAtRadius ε) + eta := by
+  refine
+    finite_epsilonizedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hradiusScale hdistP hvariance
+      hentropy_antitone ?_
+  intro eta heta
+  rcases hchoose eta heta with ⟨m, hfiniteCover⟩
+  exact ⟨m,
+    epsilonizedSupremumBoundaryChoiceNonempty_of_finiteCoverSupremumBoundaryChoiceNonempty
       (P := P) (hT := hT) (coarseBudget := coarseBudget)
       (radiusScale := radiusScale) (hradiusScale := hradiusScale)
       (entropyAtRadius := entropyAtRadius)
@@ -1604,6 +2738,94 @@ theorem finite_epsilonizedSup_dudley_totalBounded_globalBudget_of_finiteCoverSup
     epsilonizedSupremumBoundaryChoice_of_finiteCoverSupremumBoundaryChoice
       (P := P) (hT := hT) (coarseBudget := coarseBudget)
       (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+              (entropyAtRadius := entropyAtRadius)
+              (supFunctional := supFunctional) hfiniteCover⟩
+
+/-- Singleton-safe global-budget form of the epsilonized total-bounded Dudley
+boundary adapter. -/
+theorem finite_epsilonizedSup_modulus_dudley_totalBounded_globalBudget_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (globalBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        EpsilonizedSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m)
+    (hbudget : ∀ m : ℕ,
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) ≤
+      globalBudget) :
+    finiteExpectation P.weight supFunctional ≤ globalBudget := by
+  refine le_of_forall_pos_le_add ?_
+  intro eta heta
+  rcases
+    finite_epsilonizedSup_modulus_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hradiusScale hdistP hvariance
+      hentropy_antitone hchoose eta heta with
+    ⟨m, hfinite⟩
+  have hbudget_eta :
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + eta ≤
+        globalBudget + eta := by
+    simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right (hbudget m) eta
+  exact hfinite.trans hbudget_eta
+
+/-- Singleton-safe global-budget finite-cover form of the total-bounded Dudley
+boundary adapter. -/
+theorem finite_epsilonizedSup_dudley_totalBounded_globalBudget_of_finiteCoverSupremumBoundaryChoice_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (globalBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        FiniteCoverSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m)
+    (hbudget : ∀ m : ℕ,
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) ≤
+      globalBudget) :
+    finiteExpectation P.weight supFunctional ≤ globalBudget := by
+  refine
+    finite_epsilonizedSup_modulus_dudley_totalBounded_globalBudget_nonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) (globalBudget := globalBudget)
+      hradiusScale hdistP hvariance hentropy_antitone ?_ hbudget
+  intro eta heta
+  rcases hchoose eta heta with ⟨m, hfiniteCover⟩
+  exact ⟨m,
+    epsilonizedSupremumBoundaryChoiceNonempty_of_finiteCoverSupremumBoundaryChoiceNonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
       (entropyAtRadius := entropyAtRadius)
       (supFunctional := supFunctional) hfiniteCover⟩
 
@@ -1641,6 +2863,52 @@ def SeparableTerminalSupremumBoundaryChoice
           (T := T) hT hradiusScale j).net
         (dyadicChainingFiniteNetOfTotallyBoundedUniv
           (T := T) hT hradiusScale (j + 1)).net)) ∧
+    (∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+    (∀ ω : Ω,
+      supFunctional ω ≤
+        finiteSup (fun k : K => P.X ω (embed k)) + separabilityError) ∧
+    (∀ ω : Ω, ∀ k : K,
+      P.X ω (embed k) ≤
+        P.X ω
+          ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+            (T := T) hT hradiusScale m).net.projection (embed k)) +
+          terminalError) ∧
+    (finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun u : FiniteNet.ProjectedIndex
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale m).net =>
+          P.X ω
+            ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale 0).net.projection
+              (FiniteNet.ProjectedIndex.source
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net u)))) ≤
+              coarseBudget m)
+
+/-- Singleton-safe separability/terminal-projection certificate for the
+epsilonized total-bounded Dudley boundary step. -/
+def SeparableTerminalSupremumBoundaryChoiceNonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (eta : ℝ) (m : ℕ) : Prop :=
+  ∃ (K : Type u), ∃ (_instK : Fintype K), ∃ (_nonemptyK : Nonempty K),
+  ∃ (embed : K → T), ∃ (separabilityError : ℝ), ∃ (terminalError : ℝ),
+    separabilityError + terminalError ≤ eta ∧
     (∀ j ∈ Finset.range m,
       FiniteSubGaussianProcess.finitePrefixSupEnvelope
           (fun j => Real.sqrt (Real.log
@@ -1773,6 +3041,64 @@ theorem separableTerminalSupremumBoundaryChoice_of_pathwiseTerminalModulus
     (terminalError := terminalError) (hradiusScale := hradiusScale)
     (m := m) (embed := embed) hterminalModulus
 
+/-- Singleton-safe constructor for separability/terminal-projection Dudley
+boundary certificates from pathwise terminal modulus. -/
+theorem separableTerminalSupremumBoundaryChoiceNonempty_of_pathwiseTerminalModulus
+    {Ω : Type*} [Fintype Ω]
+    {K : Type u} [Fintype K] [Nonempty K]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (embed : K → T)
+    (separabilityError terminalError : ℝ)
+    (herror : separabilityError + terminalError ≤ eta)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hseparable :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup (fun k : K => P.X ω (embed k)) + separabilityError)
+    (hterminalModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget m) :
+    SeparableTerminalSupremumBoundaryChoiceNonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) eta m := by
+  refine ⟨K, inferInstance, inferInstance, embed, separabilityError,
+    terminalError, herror, hentropyAtRadius, hintervalIntegrable,
+    hseparable, ?_, hcoarse⟩
+  exact terminalApprox_of_pathwiseTerminalModulus
+    (P := P) (hT := hT) (radiusScale := radiusScale)
+    (terminalError := terminalError) (hradiusScale := hradiusScale)
+    (m := m) (embed := embed) hterminalModulus
+
 /-- A finite-cover/pathwise-modulus certificate also gives the cleaner
 separability/terminal-projection certificate.
 
@@ -1822,6 +3148,58 @@ theorem separableTerminalSupremumBoundaryChoice_of_finiteCoverSupremumBoundaryCh
       hskeletonModulus
   refine ⟨K, instK, nonemptyK, embed, witnessError + skeletonError,
     terminalError, ?_, hcard, hentropyAtRadius, hintervalIntegrable, ?_,
+    ?_, hcoarse⟩
+  · simpa [add_assoc] using herror
+  · exact supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx
+      (embed := embed) (nearest := nearest) (Y := P.X)
+      (supFunctional := supFunctional) (witness := witness)
+      (witnessError := witnessError) (skeletonError := skeletonError)
+      hwitness hskeletonApprox
+  · intro ω k
+    exact hterminalModulus ω (embed k)
+      ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+        (T := T) hT hradiusScale m).net.projection (embed k))
+      (dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
+        (T := T) hT hradiusScale m (embed k))
+
+/-- Singleton-safe finite-cover bridge to the separability/terminal-projection
+certificate. -/
+theorem separableTerminalSupremumBoundaryChoiceNonempty_of_finiteCoverSupremumBoundaryChoiceNonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (hchoice :
+      FiniteCoverSupremumBoundaryChoiceNonempty
+        (P := P) (hT := hT) (coarseBudget := coarseBudget)
+        (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+        (entropyAtRadius := entropyAtRadius)
+        (supFunctional := supFunctional) eta m) :
+    SeparableTerminalSupremumBoundaryChoiceNonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) eta m := by
+  rcases hchoice with
+    ⟨K, instK, nonemptyK, embed, nearest, witness,
+      witnessError, skeletonRadius, skeletonError, terminalError,
+      herror, hentropyAtRadius, hintervalIntegrable, hcover,
+      hskeletonModulus, hwitness, hterminalModulus, hcoarse⟩
+  letI : Fintype K := instK
+  letI : Nonempty K := nonemptyK
+  have hskeletonApprox :
+      ∀ ω : Ω, ∀ t : T,
+        P.X ω t ≤ P.X ω (embed (nearest t)) + skeletonError :=
+    skeletonApprox_of_finiteCover_pathwiseModulus
+      (P := P) embed nearest skeletonRadius skeletonError hcover
+      hskeletonModulus
+  refine ⟨K, instK, nonemptyK, embed, witnessError + skeletonError,
+    terminalError, ?_, hentropyAtRadius, hintervalIntegrable, ?_,
     ?_, hcoarse⟩
   · simpa [add_assoc] using herror
   · exact supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx
@@ -1913,6 +3291,74 @@ theorem finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entro
           entropyAtRadius ε))
   exact hbase.trans herror_budget
 
+/-- Singleton-safe epsilonized Dudley boundary bound from separability and
+terminal-projection certificates. -/
+theorem finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        finiteExpectation P.weight supFunctional ≤
+          coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+            (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+              entropyAtRadius ε) + eta := by
+  intro eta heta
+  rcases hchoose eta heta with ⟨m, hchoice⟩
+  rcases hchoice with
+    ⟨K, instK, nonemptyK, embed, separabilityError, terminalError,
+      herror, hentropyAtRadius, hintervalIntegrable, hseparable,
+      hterminalApprox, hcoarse⟩
+  letI : Fintype K := instK
+  letI : Nonempty K := nonemptyK
+  refine ⟨m, ?_⟩
+  have hbase :
+      finiteExpectation P.weight supFunctional ≤
+        coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + (separabilityError + terminalError) := by
+    exact
+      finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
+        (P := P) (hT := hT) (m := m) (coarseBudget := coarseBudget m)
+        (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+        (embed := embed) (supFunctional := supFunctional)
+        (separabilityError := separabilityError)
+        (terminalError := terminalError)
+        (hradiusScale := hradiusScale) (hdistP := hdistP)
+        (hvariance := hvariance)
+        (hentropyAtRadius := hentropyAtRadius)
+        (hentropy_antitone := hentropy_antitone)
+        (hintervalIntegrable := hintervalIntegrable)
+        (hseparable := hseparable) (hterminalApprox := hterminalApprox)
+        (hcoarse := hcoarse)
+  have herror_budget :
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + (separabilityError + terminalError) ≤
+        coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + eta := by
+    simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right herror
+      (coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε))
+  exact hbase.trans herror_budget
+
 /-- Global-budget form of the separability/terminal-projection Dudley boundary
 adapter.
 
@@ -1957,6 +3403,51 @@ theorem finite_separableTerminal_dudley_totalBounded_globalBudget
   intro eta heta
   rcases
     finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional) hradiusScale hdistP hvariance
+      hentropy_antitone hchoose eta heta with
+    ⟨m, hfinite⟩
+  have hbudget_eta :
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) + eta ≤
+        globalBudget + eta := by
+    simpa [add_comm, add_left_comm, add_assoc] using add_le_add_right (hbudget m) eta
+  exact hfinite.trans hbudget_eta
+
+/-- Singleton-safe global-budget form of the separability/terminal-projection
+Dudley boundary adapter. -/
+theorem finite_separableTerminal_dudley_totalBounded_globalBudget_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (globalBudget : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m)
+    (hbudget : ∀ m : ℕ,
+      coarseBudget m + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) ≤
+      globalBudget) :
+    finiteExpectation P.weight supFunctional ≤ globalBudget := by
+  refine le_of_forall_pos_le_add ?_
+  intro eta heta
+  rcases
+    finite_epsilonizedSup_separableTerminal_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison_nonempty
       (P := P) (hT := hT) (coarseBudget := coarseBudget)
       (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
       (supFunctional := supFunctional) hradiusScale hdistP hvariance

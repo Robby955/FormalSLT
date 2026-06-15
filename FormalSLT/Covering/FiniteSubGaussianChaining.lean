@@ -88,6 +88,14 @@ represented by this chosen net. -/
 def coveringNumber [Fintype A] (_N : FiniteNet T A) : ℕ :=
   Fintype.card A
 
+/-- A finite net over a nonempty ambient type has positive covering number. -/
+theorem coveringNumber_pos [Fintype A] [Nonempty T] (N : FiniteNet T A) :
+    0 < N.coveringNumber := by
+  classical
+  have hA : Nonempty A :=
+    ⟨N.project (Classical.choice (inferInstance : Nonempty T))⟩
+  simpa [coveringNumber] using Fintype.card_pos_iff.mpr hA
+
 /-- The finite set of net indices actually hit by the projection map. This is
 a finite replacement for taking a supremum over an ambient index type `T`.
 It is useful when `T` is not finite but a projected supremum only ranges over
@@ -865,6 +873,68 @@ theorem finite_expectedSup_le_of_subGaussian_mgf_sqrt
           dsimp [lam]
           simpa [L, mul_assoc, mul_left_comm, mul_comm] using hopt
 
+/-- Real-order closure for bounds with arbitrary positive slack. -/
+lemma real_le_of_forall_pos_le_add {x y : ℝ}
+    (h : ∀ eta : ℝ, 0 < eta → x ≤ y + eta) :
+    x ≤ y := by
+  by_contra hxy
+  have hyx : y < x := lt_of_not_ge hxy
+  have heta : 0 < (x - y) / 2 := by
+    linarith
+  have hxle := h ((x - y) / 2) heta
+  linarith
+
+/-- Optimized finite sub-Gaussian max bound, including singleton index families.
+
+The existing square-root optimizer needs `1 < Fintype.card T` so that
+`log |T| > 0`. This wrapper keeps that branch unchanged and adds the singleton
+case. When `|T| = 1`, the log-cardinality bound is available for every positive
+`λ`; sending `λ` to zero through arbitrary positive slack gives the zero
+entropy bound. This is the finite max brick needed before dyadic chaining can
+allow singleton projection-pair layers. -/
+theorem finite_expectedSup_le_of_subGaussian_mgf_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (p : Ω → ℝ) (hp : ∀ ω : Ω, 0 ≤ p ω) (hsum : ∑ ω : Ω, p ω = 1)
+    (Y : Ω → T → ℝ) (variance : ℝ)
+    (hvariance : 0 < variance)
+    (hcoord : ∀ t : T, ∀ lam : ℝ,
+      finiteExpectation p (fun ω => Real.exp (lam * Y ω t)) ≤
+        Real.exp (lam ^ 2 * variance / 2)) :
+    finiteExpectation p (fun ω => finiteSup (Y ω)) ≤
+      Real.sqrt (2 * variance * Real.log (Fintype.card T : ℝ)) := by
+  by_cases hcard : 1 < Fintype.card T
+  · exact finite_expectedSup_le_of_subGaussian_mgf_sqrt
+      p hp hsum Y variance hvariance hcoord hcard
+  · have hcard_eq : Fintype.card T = 1 := by
+      have hpos : 0 < Fintype.card T := Fintype.card_pos
+      omega
+    have hlog : Real.log (Fintype.card T : ℝ) = 0 := by
+      simp [hcard_eq]
+    have hsqrt :
+        Real.sqrt (2 * variance * Real.log (Fintype.card T : ℝ)) = 0 := by
+      simp [hlog]
+    rw [hsqrt]
+    refine real_le_of_forall_pos_le_add ?_
+    intro eta heta
+    let lam := eta / variance
+    have hlam : 0 < lam := div_pos heta hvariance
+    have hbound :
+        finiteExpectation p (fun ω => finiteSup (Y ω)) ≤
+          (Real.log (Fintype.card T : ℝ) + lam ^ 2 * variance / 2) / lam :=
+      finite_expectedSup_le_of_mgf_log p hp hsum Y lam
+        (lam ^ 2 * variance / 2) hlam (fun t => hcoord t lam)
+    have hbudget_eq :
+        (Real.log (Fintype.card T : ℝ) + lam ^ 2 * variance / 2) / lam =
+          lam * variance / 2 := by
+      rw [hlog]
+      field_simp [ne_of_gt hlam]
+      ring
+    have hbudget_le : lam * variance / 2 ≤ eta := by
+      dsimp [lam]
+      field_simp [ne_of_gt hvariance]
+      linarith
+    exact hbound.trans (by linarith)
+
 /-- Telescoping identity for a chain of projections. The projection sequence is
 indexed by natural-number levels; level `0` is the coarse approximation and
 level `m` is the terminal approximation. -/
@@ -1262,6 +1332,36 @@ theorem projection_increment_expectedSup_le_of_radius_sqrt
           dsimp [lam]
           simpa [L, q, mul_assoc, mul_left_comm, mul_comm] using hopt
 
+/-- Square-root projection-increment bound, including singleton index families.
+
+This is the projection-increment form of
+`finite_expectedSup_le_of_subGaussian_mgf_sqrt_nonempty`. It removes the
+`1 < card` side condition from the one-level bound; singleton projection
+families pay zero entropy. -/
+theorem projection_increment_expectedSup_le_of_radius_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (π : ℕ → T → T) (j : ℕ)
+    (r : ℝ)
+    (hvariance : 0 < P.varianceProxy)
+    (hr : ∀ t : T, P.dist (π j t) (π (j + 1) t) ≤ r)
+    (hr_pos : 0 < r) :
+    finiteExpectation P.weight
+      (fun ω => finiteSup (fun t => P.X ω (π (j + 1) t) - P.X ω (π j t))) ≤
+      Real.sqrt (2 * P.varianceProxy * r ^ 2 *
+        Real.log (Fintype.card T : ℝ)) := by
+  have hvariance_radius : 0 < P.varianceProxy * r ^ 2 := by
+    positivity
+  have hmain :=
+    finite_expectedSup_le_of_subGaussian_mgf_sqrt_nonempty
+      P.weight P.weight_nonneg P.weight_sum_one
+      (fun ω t => P.X ω (π (j + 1) t) - P.X ω (π j t))
+      (P.varianceProxy * r ^ 2) hvariance_radius
+      (fun t lam => by
+        simpa [mul_assoc, mul_left_comm, mul_comm] using
+          projection_increment_mgf_le_radius P π j r hr hr_pos.le t lam)
+  simpa [mul_assoc, mul_left_comm, mul_comm] using hmain
+
 /-- Log-cardinality finite-max bound for an arbitrary finite family of
 sub-Gaussian increments. The index family `I` is finite but otherwise
 abstract; this is still a finite-sample, finite-class statement, not a
@@ -1351,6 +1451,36 @@ theorem increment_family_expectedSup_le_of_radius_sqrt
           have hopt := sqrt_entropy_optimizer_identity hL hq
           dsimp [lam]
           simpa [L, q, mul_assoc, mul_left_comm, mul_comm] using hopt
+
+/-- Square-root finite-max bound for an arbitrary finite family of sub-Gaussian
+increments, including singleton families.
+
+This removes the `1 < card` side condition from
+`increment_family_expectedSup_le_of_radius_sqrt`; singleton increment families
+pay zero entropy through `finite_expectedSup_le_of_subGaussian_mgf_sqrt_nonempty`.
+-/
+theorem increment_family_expectedSup_le_of_radius_sqrt_nonempty
+    [Fintype Ω] {I : Type*} [Fintype I] [Nonempty I]
+    (P : FiniteSubGaussianProcess Ω T)
+    (left right : I → T)
+    (r : ℝ)
+    (hvariance : 0 < P.varianceProxy)
+    (hr : ∀ i : I, P.dist (left i) (right i) ≤ r)
+    (hr_pos : 0 < r) :
+    finiteExpectation P.weight
+      (fun ω => finiteSup (fun i : I => P.X ω (right i) - P.X ω (left i))) ≤
+      Real.sqrt (2 * P.varianceProxy * r ^ 2 * Real.log (Fintype.card I : ℝ)) := by
+  have hvariance_radius : 0 < P.varianceProxy * r ^ 2 := by
+    positivity
+  have hmain :=
+    finite_expectedSup_le_of_subGaussian_mgf_sqrt_nonempty
+      P.weight P.weight_nonneg P.weight_sum_one
+      (fun ω i => P.X ω (right i) - P.X ω (left i))
+      (P.varianceProxy * r ^ 2) hvariance_radius
+      (fun i lam => by
+        simpa [mul_assoc, mul_left_comm, mul_comm] using
+          increment_mgf_le_radius P (left i) (right i) r (hr i) hr_pos.le lam)
+  simpa [mul_assoc, mul_left_comm, mul_comm] using hmain
 
 /-- Finite chaining bound with radius/MGF-derived scale budgets. Each scale
 budget is justified by a radius bound and the finite entropy condition
@@ -1491,6 +1621,57 @@ theorem finite_chaining_expectation_bound_of_increment_families_sqrt
           increment_family_expectedSup_le_of_radius_sqrt P (left j) (right j)
             (radius j) hvariance (hradius j hj) (hradius_pos j hj) (hcard j hj)
 
+/-- Finite chaining with explicit finite increment families, including singleton
+increment families at any scale. Singleton families pay zero entropy. -/
+theorem finite_chaining_expectation_bound_of_increment_families_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (π : ℕ → T → T) (m : ℕ)
+    (hlast : ∀ t : T, π m t = t)
+    (hvariance : 0 < P.varianceProxy)
+    (I : ℕ → Type*) [∀ j, Fintype (I j)] [∀ j, Nonempty (I j)]
+    (left right : ∀ j : ℕ, I j → T)
+    (select : ∀ j : ℕ, T → I j)
+    (hleft : ∀ j ∈ Finset.range m, ∀ t : T, left j (select j t) = π j t)
+    (hright : ∀ j ∈ Finset.range m, ∀ t : T, right j (select j t) = π (j + 1) t)
+    (radius : ℕ → ℝ)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < radius j)
+    (hradius : ∀ j ∈ Finset.range m, ∀ i : I j,
+      P.dist (left j i) (right j i) ≤ radius j) :
+    finiteExpectation P.weight (fun ω => finiteSup (P.X ω)) ≤
+      finiteExpectation P.weight (fun ω => finiteSup (fun t => P.X ω (π 0 t))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+            Real.log (Fintype.card (I j) : ℝ)) := by
+  refine finite_chaining_expectation_bound P π m hlast
+    (fun j =>
+      Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+        Real.log (Fintype.card (I j) : ℝ))) ?_
+  intro j hj
+  have hpoint : ∀ ω : Ω,
+      finiteSup (fun t : T => P.X ω (π (j + 1) t) - P.X ω (π j t)) ≤
+        finiteSup (fun i : I j => P.X ω (right j i) - P.X ω (left j i)) := by
+    intro ω
+    unfold finiteSup
+    apply Finset.sup'_le
+    intro t _
+    have hsel := Finset.le_sup'
+      (s := (Finset.univ : Finset (I j)))
+      (fun i : I j => P.X ω (right j i) - P.X ω (left j i))
+      (Finset.mem_univ (select j t))
+    simpa [hleft j hj t, hright j hj t] using hsel
+  calc
+    finiteExpectation P.weight
+        (fun ω => finiteSup (fun t => P.X ω (π (j + 1) t) - P.X ω (π j t)))
+        ≤ finiteExpectation P.weight
+            (fun ω => finiteSup
+              (fun i : I j => P.X ω (right j i) - P.X ω (left j i))) :=
+          finiteExpectation_mono P.weight_nonneg hpoint
+    _ ≤ Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+          Real.log (Fintype.card (I j) : ℝ)) :=
+          increment_family_expectedSup_le_of_radius_sqrt_nonempty P (left j) (right j)
+            (radius j) hvariance (hradius j hj) (hradius_pos j hj)
+
 /-- Projected finite chaining over a finite parameter domain `U`, with an
 explicit finite increment family at each scale. The process is indexed by an
 ambient type `T`, which need not be finite. -/
@@ -1543,6 +1724,56 @@ theorem finite_projected_chaining_expectation_bound_of_increment_families_sqrt_o
           increment_family_expectedSup_le_of_radius_sqrt P (left j) (right j)
             (radius j) hvariance (hradius j hj) (hradius_pos j hj) (hcard j hj)
 
+/-- Projected finite chaining over a finite parameter domain, including
+singleton increment families at any scale. -/
+theorem finite_projected_chaining_expectation_bound_of_increment_families_sqrt_over_nonempty
+    [Fintype Ω] {U : Type*} [Fintype U] [Nonempty U]
+    (P : FiniteSubGaussianProcess Ω T)
+    (π : ℕ → U → T) (m : ℕ)
+    (hvariance : 0 < P.varianceProxy)
+    (I : ℕ → Type*) [∀ j, Fintype (I j)] [∀ j, Nonempty (I j)]
+    (left right : ∀ j : ℕ, I j → T)
+    (select : ∀ j : ℕ, U → I j)
+    (hleft : ∀ j ∈ Finset.range m, ∀ u : U, left j (select j u) = π j u)
+    (hright : ∀ j ∈ Finset.range m, ∀ u : U, right j (select j u) = π (j + 1) u)
+    (radius : ℕ → ℝ)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < radius j)
+    (hradius : ∀ j ∈ Finset.range m, ∀ i : I j,
+      P.dist (left j i) (right j i) ≤ radius j) :
+    finiteExpectation P.weight (fun ω => finiteSup (fun u => P.X ω (π m u))) ≤
+      finiteExpectation P.weight (fun ω => finiteSup (fun u => P.X ω (π 0 u))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+            Real.log (Fintype.card (I j) : ℝ)) := by
+  refine finite_projected_chaining_expectation_bound_over P π m
+    (fun j =>
+      Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+        Real.log (Fintype.card (I j) : ℝ))) ?_
+  intro j hj
+  have hpoint : ∀ ω : Ω,
+      finiteSup (fun u : U => P.X ω (π (j + 1) u) - P.X ω (π j u)) ≤
+        finiteSup (fun i : I j => P.X ω (right j i) - P.X ω (left j i)) := by
+    intro ω
+    unfold finiteSup
+    apply Finset.sup'_le
+    intro u _
+    have hsel := Finset.le_sup'
+      (s := (Finset.univ : Finset (I j)))
+      (fun i : I j => P.X ω (right j i) - P.X ω (left j i))
+      (Finset.mem_univ (select j u))
+    simpa [hleft j hj u, hright j hj u] using hsel
+  calc
+    finiteExpectation P.weight
+        (fun ω => finiteSup (fun u => P.X ω (π (j + 1) u) - P.X ω (π j u)))
+        ≤ finiteExpectation P.weight
+            (fun ω => finiteSup
+              (fun i : I j => P.X ω (right j i) - P.X ω (left j i))) :=
+          finiteExpectation_mono P.weight_nonneg hpoint
+    _ ≤ Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+          Real.log (Fintype.card (I j) : ℝ)) :=
+          increment_family_expectedSup_le_of_radius_sqrt_nonempty P (left j) (right j)
+            (radius j) hvariance (hradius j hj) (hradius_pos j hj)
+
 /-- Projected finite chaining with an explicit finite increment family at each
 scale. This version bounds the terminal projected supremum and therefore does
 not require the final projection to be the identity. -/
@@ -1594,6 +1825,56 @@ theorem finite_projected_chaining_expectation_bound_of_increment_families_sqrt
           Real.log (Fintype.card (I j) : ℝ)) :=
           increment_family_expectedSup_le_of_radius_sqrt P (left j) (right j)
             (radius j) hvariance (hradius j hj) (hradius_pos j hj) (hcard j hj)
+
+/-- Projected finite chaining with explicit increment families, including
+singleton increment families at any scale. -/
+theorem finite_projected_chaining_expectation_bound_of_increment_families_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (π : ℕ → T → T) (m : ℕ)
+    (hvariance : 0 < P.varianceProxy)
+    (I : ℕ → Type*) [∀ j, Fintype (I j)] [∀ j, Nonempty (I j)]
+    (left right : ∀ j : ℕ, I j → T)
+    (select : ∀ j : ℕ, T → I j)
+    (hleft : ∀ j ∈ Finset.range m, ∀ t : T, left j (select j t) = π j t)
+    (hright : ∀ j ∈ Finset.range m, ∀ t : T, right j (select j t) = π (j + 1) t)
+    (radius : ℕ → ℝ)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < radius j)
+    (hradius : ∀ j ∈ Finset.range m, ∀ i : I j,
+      P.dist (left j i) (right j i) ≤ radius j) :
+    finiteExpectation P.weight (fun ω => finiteSup (fun t => P.X ω (π m t))) ≤
+      finiteExpectation P.weight (fun ω => finiteSup (fun t => P.X ω (π 0 t))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+            Real.log (Fintype.card (I j) : ℝ)) := by
+  refine finite_projected_chaining_expectation_bound P π m
+    (fun j =>
+      Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+        Real.log (Fintype.card (I j) : ℝ))) ?_
+  intro j hj
+  have hpoint : ∀ ω : Ω,
+      finiteSup (fun t : T => P.X ω (π (j + 1) t) - P.X ω (π j t)) ≤
+        finiteSup (fun i : I j => P.X ω (right j i) - P.X ω (left j i)) := by
+    intro ω
+    unfold finiteSup
+    apply Finset.sup'_le
+    intro t _
+    have hsel := Finset.le_sup'
+      (s := (Finset.univ : Finset (I j)))
+      (fun i : I j => P.X ω (right j i) - P.X ω (left j i))
+      (Finset.mem_univ (select j t))
+    simpa [hleft j hj t, hright j hj t] using hsel
+  calc
+    finiteExpectation P.weight
+        (fun ω => finiteSup (fun t => P.X ω (π (j + 1) t) - P.X ω (π j t)))
+        ≤ finiteExpectation P.weight
+            (fun ω => finiteSup
+              (fun i : I j => P.X ω (right j i) - P.X ω (left j i))) :=
+          finiteExpectation_mono P.weight_nonneg hpoint
+    _ ≤ Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+          Real.log (Fintype.card (I j) : ℝ)) :=
+          increment_family_expectedSup_le_of_radius_sqrt_nonempty P (left j) (right j)
+            (radius j) hvariance (hradius j hj) (hradius_pos j hj)
 
 /-- One-step square-root entropy bound for increments between two finite-net
 projections, paying `log` of the realized projection-pair family. This is the
@@ -1658,6 +1939,72 @@ theorem net_increment_expectedSup_le_pair_sqrt
               pair
           simpa [left, right, hdist₀] using hpair
 
+/-- One-step square-root entropy bound for increments between two finite-net
+projections, including singleton projection-pair families.
+
+The old `net_increment_expectedSup_le_pair_sqrt` theorem required
+`1 < card ProjectionPair`. This variant uses the singleton-safe finite-max
+bound, so collapsed projected-pair layers pay zero entropy instead of forcing a
+separation witness. -/
+theorem net_increment_expectedSup_le_pair_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    {A B : Type*} [Fintype A] [Fintype B]
+    (P : FiniteSubGaussianProcess Ω T)
+    (N₀ : FiniteNet T A) (N₁ : FiniteNet T B)
+    (hdist₀ : N₀.dist = P.dist)
+    (hdist₁ : N₁.dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius_pos : 0 < N₀.radius + N₁.radius) :
+    finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun t => P.X ω (N₁.projection t) - P.X ω (N₀.projection t))) ≤
+      Real.sqrt (2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 *
+        Real.log (Fintype.card (FiniteNet.ProjectionPair N₀ N₁) : ℝ)) := by
+  let left : FiniteNet.ProjectionPair N₀ N₁ → T := fun pair => N₀.center pair.1.1
+  let right : FiniteNet.ProjectionPair N₀ N₁ → T := fun pair => N₁.center pair.1.2
+  have hpoint : ∀ ω : Ω,
+      finiteSup (fun t => P.X ω (N₁.projection t) - P.X ω (N₀.projection t)) ≤
+        finiteSup (fun pair : FiniteNet.ProjectionPair N₀ N₁ =>
+          P.X ω (right pair) - P.X ω (left pair)) := by
+    intro ω
+    unfold finiteSup
+    apply Finset.sup'_le
+    intro t _
+    have hsel := Finset.le_sup'
+      (s := (Finset.univ : Finset (FiniteNet.ProjectionPair N₀ N₁)))
+      (fun pair : FiniteNet.ProjectionPair N₀ N₁ =>
+        P.X ω (right pair) - P.X ω (left pair))
+      (Finset.mem_univ (FiniteNet.projectionPairOf N₀ N₁ t))
+    simpa [left, right, FiniteNet.projection, FiniteNet.projectionPairOf] using hsel
+  calc
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun t => P.X ω (N₁.projection t) - P.X ω (N₀.projection t)))
+        ≤ finiteExpectation P.weight
+            (fun ω => finiteSup (fun pair : FiniteNet.ProjectionPair N₀ N₁ =>
+              P.X ω (right pair) - P.X ω (left pair))) :=
+          finiteExpectation_mono P.weight_nonneg hpoint
+    _ ≤ Real.sqrt (2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 *
+          Real.log (Fintype.card (FiniteNet.ProjectionPair N₀ N₁) : ℝ)) := by
+          refine increment_family_expectedSup_le_of_radius_sqrt_nonempty P left right
+            (N₀.radius + N₁.radius) hvariance ?_ hradius_pos
+          intro pair
+          have hpair :=
+            FiniteNet.projectionPair_dist_le_radius_sum
+              N₀ N₁ (by rw [hdist₀, hdist₁])
+              (by
+                intro s t
+                rw [hdist₀]
+                exact hsymm s t)
+              (by
+                intro x y z
+                rw [hdist₀]
+                exact htri x y z)
+              pair
+          simpa [left, right, hdist₀] using hpair
+
 /-- One-step finite-net entropy bound using the product of the two finite
 covering numbers. This is a readable corollary of the sharper projection-pair
 bound. -/
@@ -1680,6 +2027,33 @@ theorem net_increment_expectedSup_le_coveringNumber_sqrt
         Real.log (N₀.coveringNumber * N₁.coveringNumber : ℝ)) := by
   refine (net_increment_expectedSup_le_pair_sqrt P N₀ N₁ hdist₀ hdist₁
     hsymm htri hvariance hradius_pos hcard).trans ?_
+  apply Real.sqrt_le_sqrt
+  have hcoef_nonneg : 0 ≤ 2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 := by
+    nlinarith [P.varianceProxy_nonneg, sq_nonneg (N₀.radius + N₁.radius)]
+  exact mul_le_mul_of_nonneg_left
+    (FiniteNet.projectionPair_log_card_le_log_coveringNumber_mul N₀ N₁)
+    hcoef_nonneg
+
+/-- One-step finite-net entropy bound using the product of the two finite
+covering numbers, including singleton projection-pair families. -/
+theorem net_increment_expectedSup_le_coveringNumber_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    {A B : Type*} [Fintype A] [Fintype B]
+    (P : FiniteSubGaussianProcess Ω T)
+    (N₀ : FiniteNet T A) (N₁ : FiniteNet T B)
+    (hdist₀ : N₀.dist = P.dist)
+    (hdist₁ : N₁.dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius_pos : 0 < N₀.radius + N₁.radius) :
+    finiteExpectation P.weight
+      (fun ω => finiteSup
+        (fun t => P.X ω (N₁.projection t) - P.X ω (N₀.projection t))) ≤
+      Real.sqrt (2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 *
+        Real.log (N₀.coveringNumber * N₁.coveringNumber : ℝ)) := by
+  refine (net_increment_expectedSup_le_pair_sqrt_nonempty P N₀ N₁ hdist₀ hdist₁
+    hsymm htri hvariance hradius_pos).trans ?_
   apply Real.sqrt_le_sqrt
   have hcoef_nonneg : 0 ≤ 2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 := by
     nlinarith [P.varianceProxy_nonneg, sq_nonneg (N₀.radius + N₁.radius)]
@@ -1747,6 +2121,62 @@ theorem finite_chaining_expectation_bound_of_net_sequence_pairs_sqrt
       P π m hlast hvariance I left right select hleft hright radius
       hradius_pos hradius hcard
 
+/-- Finite multiscale chaining for a sequence of finite nets, including
+singleton realized projection-pair families at any scale. -/
+theorem finite_chaining_expectation_bound_of_net_sequence_pairs_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hlast : ∀ t : T, (N m).projection t = t)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius) :
+    finiteExpectation P.weight (fun ω => finiteSup (P.X ω)) ≤
+      finiteExpectation P.weight
+        (fun ω => finiteSup (fun t => P.X ω ((N 0).projection t))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log (Fintype.card
+              (FiniteNet.ProjectionPair (N j) (N (j + 1))) : ℝ)) := by
+  let π : ℕ → T → T := fun j => (N j).projection
+  let I : ℕ → Type _ := fun j => FiniteNet.ProjectionPair (N j) (N (j + 1))
+  let left : ∀ j : ℕ, I j → T := fun j pair => (N j).center pair.1.1
+  let right : ∀ j : ℕ, I j → T := fun j pair => (N (j + 1)).center pair.1.2
+  let select : ∀ j : ℕ, T → I j := fun j t => FiniteNet.projectionPairOf (N j) (N (j + 1)) t
+  let radius : ℕ → ℝ := fun j => (N j).radius + (N (j + 1)).radius
+  have hleft : ∀ j ∈ Finset.range m, ∀ t : T, left j (select j t) = π j t := by
+    intro j _ t
+    simp [left, select, π, I, FiniteNet.projection, FiniteNet.projectionPairOf]
+  have hright : ∀ j ∈ Finset.range m, ∀ t : T, right j (select j t) = π (j + 1) t := by
+    intro j _ t
+    simp [right, select, π, I, FiniteNet.projection, FiniteNet.projectionPairOf]
+  have hradius : ∀ j ∈ Finset.range m, ∀ pair : I j,
+      P.dist (left j pair) (right j pair) ≤ radius j := by
+    intro j _ pair
+    have hpair :=
+      FiniteNet.projectionPair_dist_le_radius_sum
+        (N j) (N (j + 1))
+        (by rw [hdist (j + 1), hdist j])
+        (by
+          intro s t
+          rw [hdist j]
+          exact hsymm s t)
+        (by
+          intro x y z
+          rw [hdist j]
+          exact htri x y z)
+        pair
+    simpa [left, right, radius, hdist j] using hpair
+  simpa [π, I, left, right, select, radius] using
+    finite_chaining_expectation_bound_of_increment_families_sqrt_nonempty
+      P π m hlast hvariance I left right select hleft hright radius
+      hradius_pos hradius
+
 /-- Finite multiscale chaining for a sequence of finite nets, stated with the
 product of consecutive covering numbers at each scale. This follows from the
 projection-pair version plus the finite cardinality bound
@@ -1774,6 +2204,51 @@ theorem finite_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt
             Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
   refine (finite_chaining_expectation_bound_of_net_sequence_pairs_sqrt
     P A N m hdist hsymm htri hlast hvariance hradius_pos hcard).trans ?_
+  have hsum :
+      (∑ j ∈ Finset.range m,
+        Real.sqrt (2 * P.varianceProxy *
+          ((N j).radius + (N (j + 1)).radius) ^ 2 *
+          Real.log (Fintype.card
+            (FiniteNet.ProjectionPair (N j) (N (j + 1))) : ℝ))) ≤
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+    apply Finset.sum_le_sum
+    intro j hj
+    apply Real.sqrt_le_sqrt
+    have hcoef_nonneg :
+        0 ≤ 2 * P.varianceProxy * ((N j).radius + (N (j + 1)).radius) ^ 2 := by
+      nlinarith [P.varianceProxy_nonneg, sq_nonneg ((N j).radius + (N (j + 1)).radius)]
+    exact mul_le_mul_of_nonneg_left
+      (FiniteNet.projectionPair_log_card_le_log_coveringNumber_mul (N j) (N (j + 1)))
+      hcoef_nonneg
+  exact add_le_add_right hsum _
+
+/-- Finite multiscale chaining for a sequence of finite nets, stated with
+products of consecutive covering numbers and allowing singleton projection-pair
+families. -/
+theorem finite_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hlast : ∀ t : T, (N m).projection t = t)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius) :
+    finiteExpectation P.weight (fun ω => finiteSup (P.X ω)) ≤
+      finiteExpectation P.weight
+        (fun ω => finiteSup (fun t => P.X ω ((N 0).projection t))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+  refine (finite_chaining_expectation_bound_of_net_sequence_pairs_sqrt_nonempty
+    P A N m hdist hsymm htri hlast hvariance hradius_pos).trans ?_
   have hsum :
       (∑ j ∈ Finset.range m,
         Real.sqrt (2 * P.varianceProxy *
@@ -1883,6 +2358,90 @@ theorem finite_projected_chaining_expectation_bound_of_net_sequence_coveringNumb
       hcoef_nonneg
   exact add_le_add_right hsum _
 
+/-- Projected finite multiscale chaining with products of consecutive covering
+numbers, including singleton projection-pair families. -/
+theorem finite_projected_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt_nonempty
+    [Fintype Ω] [Fintype T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup (fun t => P.X ω ((N m).projection t))) ≤
+      finiteExpectation P.weight
+        (fun ω => finiteSup (fun t => P.X ω ((N 0).projection t))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+  let π : ℕ → T → T := fun j => (N j).projection
+  let I : ℕ → Type _ := fun j => FiniteNet.ProjectionPair (N j) (N (j + 1))
+  let left : ∀ j : ℕ, I j → T := fun j pair => (N j).center pair.1.1
+  let right : ∀ j : ℕ, I j → T := fun j pair => (N (j + 1)).center pair.1.2
+  let select : ∀ j : ℕ, T → I j := fun j t => FiniteNet.projectionPairOf (N j) (N (j + 1)) t
+  let radius : ℕ → ℝ := fun j => (N j).radius + (N (j + 1)).radius
+  have hleft : ∀ j ∈ Finset.range m, ∀ t : T, left j (select j t) = π j t := by
+    intro j _ t
+    simp [left, select, π, I, FiniteNet.projection, FiniteNet.projectionPairOf]
+  have hright : ∀ j ∈ Finset.range m, ∀ t : T, right j (select j t) = π (j + 1) t := by
+    intro j _ t
+    simp [right, select, π, I, FiniteNet.projection, FiniteNet.projectionPairOf]
+  have hradius : ∀ j ∈ Finset.range m, ∀ pair : I j,
+      P.dist (left j pair) (right j pair) ≤ radius j := by
+    intro j _ pair
+    have hpair :=
+      FiniteNet.projectionPair_dist_le_radius_sum
+        (N j) (N (j + 1))
+        (by rw [hdist (j + 1), hdist j])
+        (by
+          intro s t
+          rw [hdist j]
+          exact hsymm s t)
+        (by
+          intro x y z
+          rw [hdist j]
+          exact htri x y z)
+        pair
+    simpa [left, right, radius, hdist j] using hpair
+  have hpair_bound :
+      finiteExpectation P.weight
+          (fun ω => finiteSup (fun t => P.X ω ((N m).projection t))) ≤
+        finiteExpectation P.weight
+          (fun ω => finiteSup (fun t => P.X ω ((N 0).projection t))) +
+          ∑ j ∈ Finset.range m,
+            Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+              Real.log (Fintype.card (I j) : ℝ)) := by
+    simpa [π, I, left, right, select, radius] using
+      finite_projected_chaining_expectation_bound_of_increment_families_sqrt_nonempty
+        P π m hvariance I left right select hleft hright radius
+        hradius_pos hradius
+  refine hpair_bound.trans ?_
+  have hsum :
+      (∑ j ∈ Finset.range m,
+        Real.sqrt (2 * P.varianceProxy *
+          ((N j).radius + (N (j + 1)).radius) ^ 2 *
+          Real.log (Fintype.card
+            (FiniteNet.ProjectionPair (N j) (N (j + 1))) : ℝ))) ≤
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+    apply Finset.sum_le_sum
+    intro j hj
+    apply Real.sqrt_le_sqrt
+    have hcoef_nonneg :
+        0 ≤ 2 * P.varianceProxy * ((N j).radius + (N (j + 1)).radius) ^ 2 := by
+      nlinarith [P.varianceProxy_nonneg, sq_nonneg ((N j).radius + (N (j + 1)).radius)]
+    exact mul_le_mul_of_nonneg_left
+      (FiniteNet.projectionPair_log_card_le_log_coveringNumber_mul (N j) (N (j + 1)))
+      hcoef_nonneg
+  exact add_le_add_right hsum _
+
 /-- Projected finite multiscale chaining over the terminal finite-net image.
 The ambient process index type `T` is not assumed finite; the finite supremum
 ranges over the indices actually hit by the terminal net projection.
@@ -1959,6 +2518,107 @@ theorem finite_projectedNet_chaining_expectation_bound_of_net_sequence_coveringN
       finite_projected_chaining_expectation_bound_of_increment_families_sqrt_over
         P π m hvariance I left right select hleft hright radius
         hradius_pos hradius hcard
+  refine ?_
+  have hterminal :
+      (fun ω => finiteSup
+          (fun u : U => P.X ω ((N m).center u.1))) =
+        (fun ω => finiteSup (fun u : U => P.X ω (π m u))) := by
+    funext ω
+    exact congrArg (fun f : U → ℝ => finiteSup f) (by
+      funext u
+      simp [π, U, FiniteNet.ProjectedIndex.projection_source_eq_center])
+  rw [hterminal]
+  refine hpair_bound.trans ?_
+  have hsum :
+      (∑ j ∈ Finset.range m,
+        Real.sqrt (2 * P.varianceProxy *
+          ((N j).radius + (N (j + 1)).radius) ^ 2 *
+          Real.log (Fintype.card
+            (FiniteNet.ProjectionPair (N j) (N (j + 1))) : ℝ))) ≤
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+    apply Finset.sum_le_sum
+    intro j hj
+    apply Real.sqrt_le_sqrt
+    have hcoef_nonneg :
+        0 ≤ 2 * P.varianceProxy * ((N j).radius + (N (j + 1)).radius) ^ 2 := by
+      nlinarith [P.varianceProxy_nonneg, sq_nonneg ((N j).radius + (N (j + 1)).radius)]
+    exact mul_le_mul_of_nonneg_left
+      (FiniteNet.projectionPair_log_card_le_log_coveringNumber_mul (N j) (N (j + 1)))
+      hcoef_nonneg
+  exact add_le_add_right hsum _
+
+/-- Projected finite multiscale chaining over the terminal finite-net image,
+including singleton projection-pair families at any scale. -/
+theorem finite_projectedNet_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt_nonempty
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1))) ≤
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) +
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+  let U := FiniteNet.ProjectedIndex (N m)
+  let π : ℕ → U → T :=
+    fun j u => (N j).projection (FiniteNet.ProjectedIndex.source (N m) u)
+  let I : ℕ → Type _ := fun j => FiniteNet.ProjectionPair (N j) (N (j + 1))
+  let left : ∀ j : ℕ, I j → T := fun j pair => (N j).center pair.1.1
+  let right : ∀ j : ℕ, I j → T := fun j pair => (N (j + 1)).center pair.1.2
+  let select : ∀ j : ℕ, U → I j :=
+    fun j u => FiniteNet.projectionPairOf (N j) (N (j + 1))
+      (FiniteNet.ProjectedIndex.source (N m) u)
+  let radius : ℕ → ℝ := fun j => (N j).radius + (N (j + 1)).radius
+  have hleft : ∀ j ∈ Finset.range m, ∀ u : U, left j (select j u) = π j u := by
+    intro j _ u
+    simp [left, select, π, I, U, FiniteNet.projection, FiniteNet.projectionPairOf]
+  have hright : ∀ j ∈ Finset.range m, ∀ u : U, right j (select j u) = π (j + 1) u := by
+    intro j _ u
+    simp [right, select, π, I, U, FiniteNet.projection, FiniteNet.projectionPairOf]
+  have hradius : ∀ j ∈ Finset.range m, ∀ pair : I j,
+      P.dist (left j pair) (right j pair) ≤ radius j := by
+    intro j _ pair
+    have hpair :=
+      FiniteNet.projectionPair_dist_le_radius_sum
+        (N j) (N (j + 1))
+        (by rw [hdist (j + 1), hdist j])
+        (by
+          intro s t
+          rw [hdist j]
+          exact hsymm s t)
+        (by
+          intro x y z
+          rw [hdist j]
+          exact htri x y z)
+        pair
+    simpa [left, right, radius, hdist j] using hpair
+  have hpair_bound :
+      finiteExpectation P.weight
+          (fun ω => finiteSup (fun u : U => P.X ω (π m u))) ≤
+        finiteExpectation P.weight
+          (fun ω => finiteSup (fun u : U => P.X ω (π 0 u))) +
+          ∑ j ∈ Finset.range m,
+            Real.sqrt (2 * P.varianceProxy * radius j ^ 2 *
+              Real.log (Fintype.card (I j) : ℝ)) := by
+    simpa [π, I, left, right, select, radius] using
+      finite_projected_chaining_expectation_bound_of_increment_families_sqrt_over_nonempty
+        P π m hvariance I left right select hleft hright radius
+        hradius_pos hradius
   refine ?_
   have hterminal :
       (fun ω => finiteSup
@@ -3589,6 +4249,197 @@ theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integra
             finiteDyadicEntropyIntegralBudget radiusScale m entropyEnvelope := by
           exact add_le_add le_rfl hsum_integral
 
+/-- Projected finite-net Dudley-style covering-number bound with a dyadic
+entropy-integral budget, without a nontrivial projection-pair cardinality
+hypothesis.
+
+This variant uses the singleton-safe projected-net chaining bound. Collapsed
+projection-pair layers pay zero entropy in the finite chaining step, and
+positivity of the covering-number product follows from the nonempty ambient
+type and the finite-net projection maps. -/
+theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope_nonempty
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (coverCount : ℕ → ℕ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcoverCount : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1))) ≤
+      coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+        finiteDyadicEntropyIntegralBudget radiusScale m
+          (finitePrefixSupEnvelope
+            (fun j => Real.sqrt (Real.log (coverCount j : ℝ)))) := by
+  let entropyAtScale : ℕ → ℝ :=
+    fun j => Real.sqrt (Real.log (coverCount j : ℝ))
+  let entropyEnvelope : ℕ → ℝ := finitePrefixSupEnvelope entropyAtScale
+  have hchain :=
+    finite_projectedNet_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt_nonempty
+      P A N m hdist hsymm htri hvariance hradius_pos
+  have hsum_geometric :
+      (∑ j ∈ Finset.range m,
+        Real.sqrt (2 * P.varianceProxy *
+          ((N j).radius + (N (j + 1)).radius) ^ 2 *
+          Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ))) ≤
+        ∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy) *
+            (radiusScale / (2 : ℝ) ^ j) *
+            entropyAtScale j := by
+    apply Finset.sum_le_sum
+    intro j hj
+    have hradius_nonneg : 0 ≤ (N j).radius + (N (j + 1)).radius := by
+      nlinarith [(N j).radius_nonneg, (N (j + 1)).radius_nonneg]
+    have hproduct_pos_nat :
+        0 < (N j).coveringNumber * (N (j + 1)).coveringNumber :=
+      Nat.mul_pos (FiniteNet.coveringNumber_pos (N j))
+        (FiniteNet.coveringNumber_pos (N (j + 1)))
+    have hproduct_pos_real :
+        0 < ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ) := by
+      exact_mod_cast hproduct_pos_nat
+    have hproduct_le_cover_real :
+        ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ) ≤
+          (coverCount j : ℝ) := by
+      exact_mod_cast hcoverCount j hj
+    have hentropy :
+        Real.sqrt (Real.log
+            ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) ≤
+          entropyAtScale j := by
+      exact Real.sqrt_le_sqrt
+        (Real.log_le_log hproduct_pos_real hproduct_le_cover_real)
+    have hscale_nonneg :
+        0 ≤ Real.sqrt (2 * P.varianceProxy) * ((N j).radius + (N (j + 1)).radius) :=
+      mul_nonneg (Real.sqrt_nonneg _) hradius_nonneg
+    have hfirst :
+        Real.sqrt (2 * P.varianceProxy *
+            ((N j).radius + (N (j + 1)).radius) ^ 2 *
+            Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) =
+          Real.sqrt (2 * P.varianceProxy) *
+            ((N j).radius + (N (j + 1)).radius) *
+            Real.sqrt (Real.log
+              ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+      simpa [mul_assoc] using
+        sqrt_entropy_scale_eq P.varianceProxy
+          ((N j).radius + (N (j + 1)).radius)
+          (Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ))
+          P.varianceProxy_nonneg hradius_nonneg
+    have hentropy_step :
+        Real.sqrt (2 * P.varianceProxy) *
+            ((N j).radius + (N (j + 1)).radius) *
+            Real.sqrt (Real.log
+              ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) ≤
+          Real.sqrt (2 * P.varianceProxy) *
+            ((N j).radius + (N (j + 1)).radius) *
+            entropyAtScale j := by
+      exact mul_le_mul_of_nonneg_left hentropy hscale_nonneg
+    have hgeom_step :
+        Real.sqrt (2 * P.varianceProxy) *
+            ((N j).radius + (N (j + 1)).radius) *
+            entropyAtScale j ≤
+          Real.sqrt (2 * P.varianceProxy) *
+            (radiusScale / (2 : ℝ) ^ j) *
+            entropyAtScale j := by
+      exact mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_left (hradius_geometric j hj) (Real.sqrt_nonneg _))
+        (Real.sqrt_nonneg _)
+    calc
+      Real.sqrt (2 * P.varianceProxy *
+          ((N j).radius + (N (j + 1)).radius) ^ 2 *
+          Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ))
+          = Real.sqrt (2 * P.varianceProxy) *
+              ((N j).radius + (N (j + 1)).radius) *
+              Real.sqrt (Real.log
+                ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := hfirst
+      _ ≤ Real.sqrt (2 * P.varianceProxy) *
+              ((N j).radius + (N (j + 1)).radius) *
+              entropyAtScale j := hentropy_step
+      _ ≤ Real.sqrt (2 * P.varianceProxy) *
+              (radiusScale / (2 : ℝ) ^ j) *
+              entropyAtScale j := hgeom_step
+  have hsum_integral :
+      (∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy) *
+            (radiusScale / (2 : ℝ) ^ j) *
+            entropyAtScale j) ≤
+        2 * Real.sqrt (2 * P.varianceProxy) *
+          finiteDyadicEntropyIntegralBudget radiusScale m entropyEnvelope := by
+    calc
+      (∑ j ∈ Finset.range m,
+          Real.sqrt (2 * P.varianceProxy) *
+            (radiusScale / (2 : ℝ) ^ j) *
+            entropyAtScale j)
+          =
+        ∑ j ∈ Finset.range m,
+          2 * Real.sqrt (2 * P.varianceProxy) *
+            ((radiusScale / (2 : ℝ) ^ j -
+                radiusScale / (2 : ℝ) ^ (j + 1)) *
+              entropyAtScale j) := by
+          apply Finset.sum_congr rfl
+          intro j _hj
+          rw [dyadic_radius_eq_two_mul_annulus_width radiusScale j]
+          ring
+      _ ≤
+        ∑ j ∈ Finset.range m,
+          2 * Real.sqrt (2 * P.varianceProxy) *
+            ((radiusScale / (2 : ℝ) ^ j -
+                radiusScale / (2 : ℝ) ^ (j + 1)) *
+              entropyEnvelope j) := by
+          apply Finset.sum_le_sum
+          intro j _hj
+          exact mul_le_mul_of_nonneg_left
+            (mul_le_mul_of_nonneg_left
+              (le_finitePrefixSupEnvelope entropyAtScale j)
+              (dyadic_annulus_width_nonneg hradiusScale_nonneg j))
+            (mul_nonneg (by norm_num) (Real.sqrt_nonneg _))
+      _ =
+        2 * Real.sqrt (2 * P.varianceProxy) *
+          finiteDyadicEntropyIntegralBudget radiusScale m entropyEnvelope := by
+          rw [finiteDyadicEntropyIntegralBudget, Finset.mul_sum]
+  calc
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1)))
+        ≤ finiteExpectation P.weight
+            (fun ω => finiteSup
+              (fun u : FiniteNet.ProjectedIndex (N m) =>
+                P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) +
+          ∑ j ∈ Finset.range m,
+            Real.sqrt (2 * P.varianceProxy *
+              ((N j).radius + (N (j + 1)).radius) ^ 2 *
+              Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := hchain
+    _ ≤ coarseBudget +
+          ∑ j ∈ Finset.range m,
+            Real.sqrt (2 * P.varianceProxy *
+              ((N j).radius + (N (j + 1)).radius) ^ 2 *
+              Real.log ((N j).coveringNumber * (N (j + 1)).coveringNumber : ℝ)) := by
+          exact add_le_add hcoarse le_rfl
+    _ ≤ coarseBudget +
+          ∑ j ∈ Finset.range m,
+            Real.sqrt (2 * P.varianceProxy) *
+              (radiusScale / (2 : ℝ) ^ j) *
+              entropyAtScale j := by
+          exact add_le_add le_rfl hsum_geometric
+    _ ≤ coarseBudget +
+          2 * Real.sqrt (2 * P.varianceProxy) *
+            finiteDyadicEntropyIntegralBudget radiusScale m entropyEnvelope := by
+          exact add_le_add le_rfl hsum_integral
+
 /-- A reusable finite dyadic net sequence for projected finite-net Dudley
 bounds.
 
@@ -4003,6 +4854,187 @@ theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy
     (shiftedDyadicIntervalIntegralSum_eq_truncatedIntervalIntegral
       (m := m) (entropyAtRadius := entropyAtRadius) hintervalIntegrable)
 
+/-- Projected finite-net Dudley-style covering-number bound compared against a
+supplied finite entropy-at-radius budget, including singleton projection-pair
+families. -/
+theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_integral_comparison_nonempty
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (coverCount : ℕ → ℕ)
+    (entropyAtRadius : ℝ → ℝ) (integralBudget : ℝ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcoverCount : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log (coverCount j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hupperSum :
+      finiteDyadicEntropyAtRadiusUpperSum radiusScale m entropyAtRadius ≤ integralBudget)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1))) ≤
+      coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) * integralBudget := by
+  let entropyEnvelope : ℕ → ℝ :=
+    finitePrefixSupEnvelope (fun j => Real.sqrt (Real.log (coverCount j : ℝ)))
+  have hbase :=
+    finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_integral_budget_prefix_envelope_nonempty
+      (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (coverCount := coverCount) hdist hsymm htri
+      hvariance hradiusScale_nonneg hradius_pos hradius_geometric
+      hcoverCount hcoarse
+  have hbudget :
+      finiteDyadicEntropyIntegralBudget radiusScale m entropyEnvelope ≤ integralBudget := by
+    exact finiteDyadicEntropyIntegralBudget_le_of_entropyAtRadiusUpperSum_le
+      m entropyEnvelope entropyAtRadius integralBudget hradiusScale_nonneg
+      (by
+        intro j hj
+        simpa [entropyEnvelope] using hentropyAtRadius j hj)
+      hupperSum
+  have hcoeff_nonneg : 0 ≤ 2 * Real.sqrt (2 * P.varianceProxy) :=
+    mul_nonneg (by norm_num) (Real.sqrt_nonneg _)
+  exact hbase.trans
+    (add_le_add le_rfl (mul_le_mul_of_nonneg_left hbudget hcoeff_nonneg))
+
+/-- Projected finite-net Dudley-style covering-number bound with a shifted
+annulus integral budget, including singleton projection-pair families. -/
+theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_intervalIntegral_comparison_nonempty
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (coverCount : ℕ → ℕ)
+    (entropyAtRadius : ℝ → ℝ) (integralBudget : ℝ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcoverCount : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log (coverCount j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hintegralBudget :
+      (∑ j ∈ Finset.range m,
+        ∫ ε in (radiusScale / (2 : ℝ) ^ (j + 2))..
+          (radiusScale / (2 : ℝ) ^ (j + 1)),
+          entropyAtRadius ε) ≤ integralBudget)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1))) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) * integralBudget := by
+  have hupperSum :
+      finiteDyadicEntropyAtRadiusUpperSum radiusScale m entropyAtRadius ≤
+        2 * integralBudget := by
+    exact finiteDyadicEntropyAtRadiusUpperSum_le_two_mul_intervalIntegralBudget
+      (m := m) (entropyAtRadius := entropyAtRadius)
+      (integralBudget := integralBudget) hradiusScale_nonneg
+      hentropy_antitone hintervalIntegrable hintegralBudget
+  have hbase :=
+    finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_integral_comparison_nonempty
+      (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (coverCount := coverCount)
+      (entropyAtRadius := entropyAtRadius) (integralBudget := 2 * integralBudget)
+      hdist hsymm htri hvariance hradiusScale_nonneg hradius_pos
+      hradius_geometric hcoverCount hentropyAtRadius hupperSum hcoarse
+  calc
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1)))
+        ≤ coarseBudget + 2 * Real.sqrt (2 * P.varianceProxy) *
+            (2 * integralBudget) := hbase
+    _ = coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) * integralBudget := by
+          ring
+
+/-- Projected finite-net Dudley-style covering-number bound with a single
+truncated interval integral, including singleton projection-pair families. -/
+theorem finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (coverCount : ℕ → ℕ)
+    (entropyAtRadius : ℝ → ℝ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcoverCount : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log (coverCount j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1))) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) := by
+  refine
+    finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_intervalIntegral_comparison_nonempty
+      (P := P) (A := A) (N := N) (m := m) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (coverCount := coverCount)
+      (entropyAtRadius := entropyAtRadius)
+      (integralBudget :=
+        ∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε)
+      hdist hsymm htri hvariance hradiusScale_nonneg hradius_pos
+      hradius_geometric hcoverCount hentropyAtRadius hentropy_antitone
+      hintervalIntegrable ?_ hcoarse
+  exact le_of_eq
+    (shiftedDyadicIntervalIntegralSum_eq_truncatedIntervalIntegral
+      (m := m) (entropyAtRadius := entropyAtRadius) hintervalIntegrable)
+
 /-- Boundary adapter from projected finite-net Dudley to a supplied supremum
 functional.
 
@@ -4167,6 +5199,149 @@ theorem finite_separableSupFunctional_dudley_entropy_sum_coveringNumbers_geometr
       (terminalError := separabilityError + terminalError)
       hdist hsymm htri hvariance hradiusScale_nonneg hradius_pos
       hradius_geometric hcard hcoverCount hentropyAtRadius hentropy_antitone
+      hintervalIntegrable hterminal hcoarse
+
+/-- Boundary adapter from projected finite-net Dudley to a supplied supremum
+functional, including singleton projection-pair families. -/
+theorem finite_supFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+    [Fintype Ω] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (coverCount : ℕ → ℕ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ) (terminalError : ℝ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcoverCount : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log (coverCount j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hterminal :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup
+            (fun u : FiniteNet.ProjectedIndex (N m) =>
+              P.X ω ((N m).center u.1)) + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) + terminalError := by
+  let projectedSup : Ω → ℝ :=
+    fun ω => finiteSup
+      (fun u : FiniteNet.ProjectedIndex (N m) => P.X ω ((N m).center u.1))
+  have hadapter :
+      finiteExpectation P.weight supFunctional ≤
+        finiteExpectation P.weight projectedSup + terminalError :=
+    finiteExpectation_supFunctional_le_projected_add_terminalError
+      P.weight_nonneg P.weight_sum_one supFunctional projectedSup terminalError
+      hterminal
+  have hprojected :
+      finiteExpectation P.weight projectedSup ≤
+        coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+          (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+            entropyAtRadius ε) := by
+    exact
+      finite_projectedNet_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+        (P := P) (A := A) (N := N) (m := m)
+        (coarseBudget := coarseBudget) (radiusScale := radiusScale)
+        (coverCount := coverCount) (entropyAtRadius := entropyAtRadius)
+        hdist hsymm htri hvariance hradiusScale_nonneg hradius_pos
+        hradius_geometric hcoverCount hentropyAtRadius hentropy_antitone
+        hintervalIntegrable hcoarse
+  linarith
+
+/-- Boundary adapter from projected finite-net Dudley to a supplied supremum
+functional through a finite skeleton, including singleton projection-pair
+families. -/
+theorem finite_separableSupFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+    [Fintype Ω] [Nonempty T]
+    {K : Type*} [Fintype K] [Nonempty K]
+    (P : FiniteSubGaussianProcess Ω T)
+    (A : ℕ → Type*) [∀ j, Fintype (A j)]
+    (N : ∀ j : ℕ, FiniteNet T (A j))
+    (m : ℕ) (coarseBudget radiusScale : ℝ)
+    (coverCount : ℕ → ℕ)
+    (entropyAtRadius : ℝ → ℝ)
+    (embed : K → T) (supFunctional : Ω → ℝ)
+    (separabilityError terminalError : ℝ)
+    (hdist : ∀ j : ℕ, (N j).dist = P.dist)
+    (hsymm : ∀ s t : T, P.dist s t = P.dist t s)
+    (htri : ∀ x y z : T, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradiusScale_nonneg : 0 ≤ radiusScale)
+    (hradius_pos : ∀ j ∈ Finset.range m, 0 < (N j).radius + (N (j + 1)).radius)
+    (hradius_geometric : ∀ j ∈ Finset.range m,
+      (N j).radius + (N (j + 1)).radius ≤ radiusScale / (2 : ℝ) ^ j)
+    (hcoverCount : ∀ j ∈ Finset.range m,
+      (N j).coveringNumber * (N (j + 1)).coveringNumber ≤ coverCount j)
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log (coverCount j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hseparable :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup (fun k : K => P.X ω (embed k)) + separabilityError)
+    (hterminalApprox :
+      ∀ ω : Ω, ∀ k : K,
+        P.X ω (embed k) ≤
+          P.X ω ((N m).projection (embed k)) + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex (N m) =>
+            P.X ω ((N 0).projection (FiniteNet.ProjectedIndex.source (N m) u)))) ≤
+      coarseBudget) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2),
+          entropyAtRadius ε) + (separabilityError + terminalError) := by
+  have hterminal :
+      ∀ ω : Ω,
+        supFunctional ω ≤
+          finiteSup
+            (fun u : FiniteNet.ProjectedIndex (N m) =>
+              P.X ω ((N m).center u.1)) +
+            (separabilityError + terminalError) := by
+    intro ω
+    exact supFunctional_le_projectedSup_add_of_skeleton_terminal
+      (N m) embed (P.X ω) (supFunctional ω)
+      separabilityError terminalError (hseparable ω) (hterminalApprox ω)
+  exact
+    finite_supFunctional_dudley_entropy_sum_coveringNumbers_geometric_entropy_truncatedIntervalIntegral_comparison_nonempty
+      (P := P) (A := A) (N := N) (m := m)
+      (coarseBudget := coarseBudget) (radiusScale := radiusScale)
+      (coverCount := coverCount) (entropyAtRadius := entropyAtRadius)
+      (supFunctional := supFunctional)
+      (terminalError := separabilityError + terminalError)
+      hdist hsymm htri hvariance hradiusScale_nonneg hradius_pos
+      hradius_geometric hcoverCount hentropyAtRadius hentropy_antitone
       hintervalIntegrable hterminal hcoarse
 
 /-- One-step square-root entropy bound for increments between two finite-net

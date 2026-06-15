@@ -204,6 +204,48 @@ theorem bddAbove_range_denseSeq
   rintro _ ⟨n, rfl⟩
   exact hC ⟨TopologicalSpace.denseSeq T n, rfl⟩
 
+/-- **Bounded sample paths from total boundedness and a uniform one-sided modulus.**
+
+If every sample path has a uniform one-sided modulus, then total boundedness of
+the index space bounds every sample path above. Taking the modulus at error
+`1` gives a positive radius. A finite net at that radius supplies finitely many
+centers, and every value of the sample path is at most the value at its chosen
+center plus `1`. The finite supremum over the centers plus `1` is therefore a
+genuine upper bound for the whole range. -/
+theorem bddAbove_range_of_totallyBounded_uniformModulus
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε) :
+    ∀ ω : Ω, BddAbove (Set.range (P.X ω)) := by
+  classical
+  obtain ⟨δ, hδ, hmod⟩ := hmodulus 1 (by norm_num)
+  let B := finiteNetOfTotallyBoundedUniv (T := T) hT δ hδ
+  let K := B.A
+  letI : Fintype K := B.instFintype
+  letI : Nonempty K := B.instNonempty
+  intro ω
+  refine ⟨finiteSup (fun k : K => P.X ω (B.net.center k)) + 1, ?_⟩
+  rintro y ⟨t, rfl⟩
+  have hcover : dist t (B.net.projection t) ≤ δ := by
+    simpa [B] using finiteNetOfTotallyBoundedUniv_covers (T := T) hT hδ t
+  have hmod_step : P.X ω t ≤ P.X ω (B.net.projection t) + 1 :=
+    hmod ω t (B.net.projection t) hcover
+  have hsup :
+      P.X ω (B.net.projection t) ≤
+        finiteSup (fun k : K => P.X ω (B.net.center k)) := by
+    unfold finiteSup
+    change P.X ω (B.net.center (B.net.project t)) ≤
+      (Finset.univ : Finset K).sup' Finset.univ_nonempty
+        (fun k : K => P.X ω (B.net.center k))
+    exact Finset.le_sup' (fun k : K => P.X ω (B.net.center k))
+      (Finset.mem_univ (B.net.project t))
+  linarith
+
 /-- **Measurable supremum over the canonical dense sequence.**
 
 For a process with measurable evaluations, the supremum over Mathlib's
@@ -364,6 +406,567 @@ theorem separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli
     (separabilityError := witnessError + skeletonError)
     (terminalError := terminalError) herror' hcard hentropyAtRadius
     hintervalIntegrable hseparable hterminalModulus hcoarse
+
+/-- Singleton-safe boundary certificate for the full pointwise supremum.
+
+This is the no-cardinality variant of
+`separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli`; it keeps the
+finite skeleton nonempty but does not require nontrivial projection-pair
+cardinalities. -/
+theorem separableTerminalSupremumBoundaryChoiceNonempty_of_iSup_pathwiseModuli
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    {eta : ℝ} {m : ℕ}
+    (witnessError skeletonRadius skeletonError terminalError : ℝ)
+    (hwitnessError : 0 < witnessError)
+    (hskeletonRadius : 0 < skeletonRadius)
+    (herror : witnessError + skeletonError + terminalError ≤ eta)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hentropyAtRadius : ∀ j ∈ Finset.range m,
+      FiniteSubGaussianProcess.finitePrefixSupEnvelope
+          (fun j => Real.sqrt (Real.log
+            (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hintervalIntegrable : ∀ j ∈ Finset.range m,
+      IntervalIntegrable entropyAtRadius MeasureTheory.volume
+        (radiusScale / (2 : ℝ) ^ (j + 2))
+        (radiusScale / (2 : ℝ) ^ (j + 1)))
+    (hskeletonModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ skeletonRadius →
+        P.X ω s ≤ P.X ω t + skeletonError)
+    (hterminalModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + terminalError)
+    (hcoarse :
+      finiteExpectation P.weight
+        (fun ω => finiteSup
+          (fun u : FiniteNet.ProjectedIndex
+              (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale m).net =>
+            P.X ω
+              ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                (T := T) hT hradiusScale 0).net.projection
+                (FiniteNet.ProjectedIndex.source
+                  (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                    (T := T) hT hradiusScale m).net u)))) ≤
+      coarseBudget m) :
+    SeparableTerminalSupremumBoundaryChoiceNonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius)
+      (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+  classical
+  let B := finiteNetOfTotallyBoundedUniv (T := T) hT skeletonRadius hskeletonRadius
+  let K := B.A
+  letI : Fintype K := B.instFintype
+  letI : Nonempty K := B.instNonempty
+  let embed : K → T := B.net.center
+  let nearest : T → K := B.net.project
+  have hcover : ∀ t : T, dist t (embed (nearest t)) ≤ skeletonRadius := by
+    intro t
+    simpa [B, embed, nearest, FiniteNet.projection] using
+      finiteNetOfTotallyBoundedUniv_covers (T := T) hT hskeletonRadius t
+  obtain ⟨witness, hwitness⟩ :=
+    exists_iSup_witness_function (T := T) (Y := P.X) hbdd hwitnessError
+  have hskeletonApprox :
+      ∀ ω : Ω, ∀ t : T,
+        P.X ω t ≤ P.X ω (embed (nearest t)) + skeletonError :=
+    skeletonApprox_of_finiteCover_pathwiseModulus
+      (P := P) embed nearest skeletonRadius skeletonError hcover hskeletonModulus
+  have hseparable :
+      ∀ ω : Ω,
+        (⨆ t : T, P.X ω t) ≤
+          finiteSup (fun k : K => P.X ω (embed k)) +
+            (witnessError + skeletonError) :=
+    supFunctional_le_skeletonSup_add_of_witnessed_pointwise_approx
+      (embed := embed) (nearest := nearest) (Y := P.X)
+      (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+      (witness := witness) (witnessError := witnessError)
+      (skeletonError := skeletonError) hwitness hskeletonApprox
+  have herror' : (witnessError + skeletonError) + terminalError ≤ eta := by
+    linarith
+  exact separableTerminalSupremumBoundaryChoiceNonempty_of_pathwiseTerminalModulus
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+    (entropyAtRadius := entropyAtRadius)
+    (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+    (eta := eta) (m := m) (embed := embed)
+    (separabilityError := witnessError + skeletonError)
+    (terminalError := terminalError) herror' hentropyAtRadius
+    hintervalIntegrable hseparable hterminalModulus hcoarse
+
+/-- The terminal radii of the dyadic chaining net schedule tend to zero. -/
+theorem tendsto_dyadicChainingNetRadius_atTop (radiusScale : ℝ) :
+    Tendsto (fun m : ℕ => dyadicChainingNetRadius radiusScale m) atTop (𝓝 0) := by
+  unfold dyadicChainingNetRadius
+  have h12 : Tendsto (fun n : ℕ => ((1 : ℝ) / 2) ^ n) atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)
+  have hshift : Tendsto (fun m : ℕ => ((1 : ℝ) / 2) ^ (m + 2)) atTop (𝓝 0) :=
+    h12.comp (tendsto_add_atTop_nat 2)
+  have hmul :
+      Tendsto (fun m : ℕ => radiusScale * ((1 : ℝ) / 2) ^ (m + 2)) atTop
+        (𝓝 (radiusScale * 0)) := hshift.const_mul radiusScale
+  rw [mul_zero] at hmul
+  refine hmul.congr ?_
+  intro m
+  rw [div_pow, one_pow, mul_one_div]
+
+/-- Some dyadic terminal radius is smaller than any positive target scale. -/
+theorem exists_dyadicChainingNetRadius_le
+    (radiusScale : ℝ) {δ : ℝ} (hδ : 0 < δ) :
+    ∃ m : ℕ, dyadicChainingNetRadius radiusScale m ≤ δ := by
+  have hsmall_lt : ∀ᶠ m : ℕ in atTop,
+      dyadicChainingNetRadius radiusScale m < δ := by
+    exact (tendsto_dyadicChainingNetRadius_atTop radiusScale).eventually_lt_const hδ
+  have hsmall : ∀ᶠ m : ℕ in atTop,
+      dyadicChainingNetRadius radiusScale m ≤ δ :=
+    hsmall_lt.mono fun _ hm => le_of_lt hm
+  rcases Filter.eventually_atTop.mp hsmall with ⟨m, hm⟩
+  exact ⟨m, hm m le_rfl⟩
+
+/-- Select a dyadic boundary scale from eventual finite-scale obligations.
+
+The analytic content is the small-radius choice: since the dyadic terminal
+radii tend to zero, a sufficiently late scale fits any positive terminal
+modulus radius. Intersecting that eventual small-radius condition with eventual
+cardinality, entropy-envelope, interval-integrability, and coarse-budget
+obligations gives the `hscale` selector used by the full-supremum boundary
+constructor. -/
+theorem dyadicChainingScaleSelector_of_eventually_obligations
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (hobligations : ∀ᶠ m : ℕ in atTop,
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m)) :
+    ∀ δ : ℝ, 0 < δ →
+      ∃ m : ℕ,
+        dyadicChainingNetRadius radiusScale m ≤ δ ∧
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m) := by
+  intro δ hδ
+  have hsmall_lt : ∀ᶠ m : ℕ in atTop,
+      dyadicChainingNetRadius radiusScale m < δ := by
+    exact (tendsto_dyadicChainingNetRadius_atTop radiusScale).eventually_lt_const hδ
+  have hsmall : ∀ᶠ m : ℕ in atTop,
+      dyadicChainingNetRadius radiusScale m ≤ δ :=
+    hsmall_lt.mono fun _ hm => le_of_lt hm
+  have hboth := hsmall.and hobligations
+  rcases Filter.eventually_atTop.mp hboth with ⟨m, hm⟩
+  rcases hm m le_rfl with ⟨hscale, hcard, hentropyAtRadius,
+    hintervalIntegrable, hcoarse⟩
+  exact ⟨m, hscale, hcard, hentropyAtRadius, hintervalIntegrable, hcoarse⟩
+
+/-- Singleton-safe dyadic boundary scale selector from eventual finite-scale
+obligations. This keeps the analytic small-radius selection and drops only the
+nontrivial projection-pair cardinality obligation. -/
+theorem dyadicChainingScaleSelector_of_eventually_obligations_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (hobligations : ∀ᶠ m : ℕ in atTop,
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m)) :
+    ∀ δ : ℝ, 0 < δ →
+      ∃ m : ℕ,
+        dyadicChainingNetRadius radiusScale m ≤ δ ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m) := by
+  intro δ hδ
+  have hsmall_lt : ∀ᶠ m : ℕ in atTop,
+      dyadicChainingNetRadius radiusScale m < δ := by
+    exact (tendsto_dyadicChainingNetRadius_atTop radiusScale).eventually_lt_const hδ
+  have hsmall : ∀ᶠ m : ℕ in atTop,
+      dyadicChainingNetRadius radiusScale m ≤ δ :=
+    hsmall_lt.mono fun _ hm => le_of_lt hm
+  have hboth := hsmall.and hobligations
+  rcases Filter.eventually_atTop.mp hboth with ⟨m, hm⟩
+  rcases hm m le_rfl with ⟨hscale, hentropyAtRadius, hintervalIntegrable, hcoarse⟩
+  exact ⟨m, hscale, hentropyAtRadius, hintervalIntegrable, hcoarse⟩
+
+/-- **Boundary certificates for the full supremum from a uniform path modulus.**
+
+This packages the choice of witness error, skeleton scale, and terminal dyadic
+scale for the full conditional supremum `ω ↦ ⨆ t, P.X ω t`. Bounded sample paths
+give approximate maximizers for the supremum; the supplied one-sided uniform
+modulus gives the finite skeleton and terminal projection errors; `hscale`
+selects a dyadic terminal level whose radius fits the terminal modulus and
+supplies the finite entropy/coarse-budget data at that level. -/
+theorem separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hscale : ∀ δ : ℝ, 0 < δ →
+      ∃ m : ℕ,
+        dyadicChainingNetRadius radiusScale m ≤ δ ∧
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m)) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+  intro eta heta
+  have hthird : 0 < eta / (3 : ℝ) := by positivity
+  rcases hmodulus (eta / (3 : ℝ)) hthird with
+    ⟨skeletonRadius, hskeletonRadius, hskeletonModulus⟩
+  rcases hmodulus (eta / (3 : ℝ)) hthird with
+    ⟨terminalRadius, hterminalRadius, hterminalModulus₀⟩
+  rcases hscale terminalRadius hterminalRadius with
+    ⟨m, hterminalScale, hcard, hentropyAtRadius,
+      hintervalIntegrable, hcoarse⟩
+  have hterminalModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + eta / (3 : ℝ) := by
+    intro ω s t hdist
+    exact hterminalModulus₀ ω s t (hdist.trans hterminalScale)
+  have herror :
+      eta / (3 : ℝ) + eta / (3 : ℝ) + eta / (3 : ℝ) ≤ eta := by
+    linarith
+  refine ⟨m, ?_⟩
+  exact separableTerminalSupremumBoundaryChoice_of_iSup_pathwiseModuli
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+    (entropyAtRadius := entropyAtRadius)
+    (eta := eta) (m := m)
+    (witnessError := eta / (3 : ℝ))
+    (skeletonRadius := skeletonRadius)
+    (skeletonError := eta / (3 : ℝ))
+    (terminalError := eta / (3 : ℝ))
+    hthird hskeletonRadius herror hbdd hcard hentropyAtRadius
+    hintervalIntegrable hskeletonModulus hterminalModulus hcoarse
+
+/-- Singleton-safe boundary certificates for the full supremum from a uniform
+path modulus. This version has no nontrivial projection-pair cardinality
+obligation; the selected scale supplies only the terminal-radius, entropy,
+integrability, and coarse-budget data. -/
+theorem separableTerminalSupremumBoundaryChoiceNonempty_exists_of_iSup_uniformModulus
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hscale : ∀ δ : ℝ, 0 < δ →
+      ∃ m : ℕ,
+        dyadicChainingNetRadius radiusScale m ≤ δ ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m)) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+  intro eta heta
+  have hthird : 0 < eta / (3 : ℝ) := by positivity
+  rcases hmodulus (eta / (3 : ℝ)) hthird with
+    ⟨skeletonRadius, hskeletonRadius, hskeletonModulus⟩
+  rcases hmodulus (eta / (3 : ℝ)) hthird with
+    ⟨terminalRadius, hterminalRadius, hterminalModulus₀⟩
+  rcases hscale terminalRadius hterminalRadius with
+    ⟨m, hterminalScale, hentropyAtRadius, hintervalIntegrable, hcoarse⟩
+  have hterminalModulus : ∀ ω : Ω, ∀ s t : T,
+      dist s t ≤ dyadicChainingNetRadius radiusScale m →
+        P.X ω s ≤ P.X ω t + eta / (3 : ℝ) := by
+    intro ω s t hdist
+    exact hterminalModulus₀ ω s t (hdist.trans hterminalScale)
+  have herror :
+      eta / (3 : ℝ) + eta / (3 : ℝ) + eta / (3 : ℝ) ≤ eta := by
+    linarith
+  refine ⟨m, ?_⟩
+  exact separableTerminalSupremumBoundaryChoiceNonempty_of_iSup_pathwiseModuli
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+    (entropyAtRadius := entropyAtRadius)
+    (eta := eta) (m := m)
+    (witnessError := eta / (3 : ℝ))
+    (skeletonRadius := skeletonRadius)
+    (skeletonError := eta / (3 : ℝ))
+    (terminalError := eta / (3 : ℝ))
+    hthird hskeletonRadius herror hbdd hentropyAtRadius
+    hintervalIntegrable hskeletonModulus hterminalModulus hcoarse
+
+/-- Boundary certificates for the full supremum, with the dyadic scale selected
+from eventual finite-scale obligations.
+
+This discharges the `hscale` selector in
+`separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus`: the
+dyadic terminal radii tend to zero, so any positive terminal modulus radius can
+be met at a sufficiently late scale, and the eventual finite-scale obligations
+hold at the same selected scale. -/
+theorem separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus_eventually
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hobligations : ∀ᶠ m : ℕ in atTop,
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m)) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoice
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+  exact separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+    (entropyAtRadius := entropyAtRadius) hbdd hmodulus
+    (dyadicChainingScaleSelector_of_eventually_obligations
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius) hobligations)
+
+/-- Singleton-safe boundary certificates for the full supremum, with the dyadic
+scale selected from eventual entropy/integrability/coarse obligations. -/
+theorem separableTerminalSupremumBoundaryChoiceNonempty_exists_of_iSup_uniformModulus_eventually
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget : ℕ → ℝ) (radiusScale : ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (entropyAtRadius : ℝ → ℝ)
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hobligations : ∀ᶠ m : ℕ in atTop,
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget m)) :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t) eta m := by
+  exact separableTerminalSupremumBoundaryChoiceNonempty_exists_of_iSup_uniformModulus
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+    (entropyAtRadius := entropyAtRadius) hbdd hmodulus
+    (dyadicChainingScaleSelector_of_eventually_obligations_nonempty
+      (P := P) (hT := hT) (coarseBudget := coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius) hobligations)
 
 /-! ## The dyadic refinement limit of the verified discrete bricks -/
 
@@ -561,6 +1164,78 @@ theorem continuous_dudley_entropy_integral
   have hmul := mul_le_mul_of_nonneg_left hdom hsqrt_nonneg
   linarith [hmul]
 
+/-- Singleton-safe continuous Dudley entropy integral bound.
+
+This is the no-cardinality version of `continuous_dudley_entropy_integral`; the
+finite boundary certificates only require nonempty skeletons. -/
+theorem continuous_dudley_entropy_integral_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (supFunctional : Ω → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε)
+    (hint0 : IntervalIntegrable entropyAtRadius volume 0 (radiusScale / 2))
+    (hchoose : ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        SeparableTerminalSupremumBoundaryChoiceNonempty
+          (P := P) (hT := hT) (coarseBudget := fun _ => coarseBudget)
+          (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+          (entropyAtRadius := entropyAtRadius)
+          (supFunctional := supFunctional) eta m) :
+    finiteExpectation P.weight supFunctional ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε) := by
+  refine finite_separableTerminal_dudley_totalBounded_globalBudget_nonempty
+    (P := P) (hT := hT) (coarseBudget := fun _ => coarseBudget)
+    (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+    (supFunctional := supFunctional)
+    (globalBudget := coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+      (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε))
+    hradiusScale hdistP hvariance hentropy_antitone hchoose ?_
+  intro m
+  dsimp only
+  have hb_pos : (0 : ℝ) < radiusScale / 2 := half_pos hradiusScale
+  have ha_nonneg : (0 : ℝ) ≤ radiusScale / (2 : ℝ) ^ (m + 1) :=
+    (div_pos hradiusScale (pow_pos (by norm_num) _)).le
+  have ha_le : radiusScale / (2 : ℝ) ^ (m + 1) ≤ radiusScale / 2 := by
+    have h2 : (2 : ℝ) ≤ (2 : ℝ) ^ (m + 1) := by
+      have h := pow_le_pow_right₀ (a := (2 : ℝ)) (by norm_num) (Nat.le_add_left 1 m)
+      simpa using h
+    gcongr
+  have hsub1 :
+      Set.uIcc (0 : ℝ) (radiusScale / (2 : ℝ) ^ (m + 1))
+        ⊆ Set.uIcc (0 : ℝ) (radiusScale / 2) :=
+    Set.uIcc_subset_uIcc Set.left_mem_uIcc
+      (by rw [Set.uIcc_of_le hb_pos.le]; exact ⟨ha_nonneg, ha_le⟩)
+  have hsub2 :
+      Set.uIcc (radiusScale / (2 : ℝ) ^ (m + 1)) (radiusScale / 2)
+        ⊆ Set.uIcc (0 : ℝ) (radiusScale / 2) :=
+    Set.uIcc_subset_uIcc
+      (by rw [Set.uIcc_of_le hb_pos.le]; exact ⟨ha_nonneg, ha_le⟩)
+      Set.right_mem_uIcc
+  have hI1 : IntervalIntegrable entropyAtRadius volume 0 (radiusScale / (2 : ℝ) ^ (m + 1)) :=
+    hint0.mono_set hsub1
+  have hI2 :
+      IntervalIntegrable entropyAtRadius volume (radiusScale / (2 : ℝ) ^ (m + 1)) (radiusScale / 2) :=
+    hint0.mono_set hsub2
+  have hadd := intervalIntegral.integral_add_adjacent_intervals hI1 hI2
+  have hnn : 0 ≤ ∫ ε in (0 : ℝ)..(radiusScale / (2 : ℝ) ^ (m + 1)), entropyAtRadius ε :=
+    intervalIntegral.integral_nonneg ha_nonneg (fun u _ => hentropy_nonneg u)
+  have hdom :
+      (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2), entropyAtRadius ε)
+        ≤ ∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε := by
+    linarith [hadd, hnn]
+  have hsqrt_nonneg : 0 ≤ 4 * Real.sqrt (2 * P.varianceProxy) := by positivity
+  have hmul := mul_le_mul_of_nonneg_left hdom hsqrt_nonneg
+  linarith [hmul]
+
 /-- **Continuous Dudley bound for the full infinite-index supremum.**
 
 This is the full-supremum corollary over an arbitrary nonempty totally bounded
@@ -652,6 +1327,128 @@ theorem continuous_dudley_entropy_integral_iSup_of_pathwiseModuli
     (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
     hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg hint0
     hboundary
+
+/-- **Continuous Dudley bound for the full supremum from uniform modulus data.**
+
+This variant uses the dyadic scale selector
+`dyadicChainingScaleSelector_of_eventually_obligations` to build the
+separability/terminal boundary certificate. The caller supplies bounded sample
+paths, a one-sided uniform modulus for the process paths, and eventual
+finite-scale entropy/cardinality/coarse-budget obligations; the theorem selects
+a terminal dyadic level compatible with the terminal modulus radius. -/
+theorem continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε)
+    (hint0 : IntervalIntegrable entropyAtRadius volume 0 (radiusScale / 2))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hobligations : ∀ᶠ m : ℕ in atTop,
+        (∀ j ∈ Finset.range m,
+          1 < Fintype.card (FiniteNet.ProjectionPair
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale j).net
+            (dyadicChainingFiniteNetOfTotallyBoundedUniv
+              (T := T) hT hradiusScale (j + 1)).net)) ∧
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget)) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε) := by
+  exact continuous_dudley_entropy_integral
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+    (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+    hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg hint0
+    (separableTerminalSupremumBoundaryChoice_exists_of_iSup_uniformModulus_eventually
+      (P := P) (hT := hT) (coarseBudget := fun _ => coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius) hbdd hmodulus hobligations)
+
+/-- Singleton-safe continuous Dudley bound for the full supremum from uniform
+modulus data and eventual entropy/integrability/coarse obligations. -/
+theorem continuous_dudley_entropy_integral_iSup_of_uniformModulus_eventually_nonempty
+    {Ω : Type*} [Fintype Ω]
+    [PseudoMetricSpace T] [Nonempty T]
+    (P : FiniteSubGaussianProcess Ω T)
+    (hT : TotallyBounded (Set.univ : Set T))
+    (coarseBudget radiusScale : ℝ)
+    (entropyAtRadius : ℝ → ℝ)
+    (hradiusScale : 0 < radiusScale)
+    (hdistP : P.dist = fun s t => dist s t)
+    (hvariance : 0 < P.varianceProxy)
+    (hentropy_antitone : Antitone entropyAtRadius)
+    (hentropy_nonneg : ∀ ε : ℝ, 0 ≤ entropyAtRadius ε)
+    (hint0 : IntervalIntegrable entropyAtRadius volume 0 (radiusScale / 2))
+    (hbdd : ∀ ω : Ω, BddAbove (Set.range (P.X ω)))
+    (hmodulus : ∀ ε : ℝ, 0 < ε →
+      ∃ δ : ℝ, 0 < δ ∧
+        ∀ ω : Ω, ∀ s t : T,
+          dist s t ≤ δ → P.X ω s ≤ P.X ω t + ε)
+    (hobligations : ∀ᶠ m : ℕ in atTop,
+        (∀ j ∈ Finset.range m,
+          FiniteSubGaussianProcess.finitePrefixSupEnvelope
+              (fun j => Real.sqrt (Real.log
+                (dyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
+            entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable entropyAtRadius MeasureTheory.volume
+            (radiusScale / (2 : ℝ) ^ (j + 2))
+            (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
+        (finiteExpectation P.weight
+          (fun ω => finiteSup
+            (fun u : FiniteNet.ProjectedIndex
+                (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale m).net =>
+              P.X ω
+                ((dyadicChainingFiniteNetOfTotallyBoundedUniv
+                  (T := T) hT hradiusScale 0).net.projection
+                  (FiniteNet.ProjectedIndex.source
+                    (dyadicChainingFiniteNetOfTotallyBoundedUniv
+                      (T := T) hT hradiusScale m).net u)))) ≤
+          coarseBudget)) :
+    finiteExpectation P.weight (fun ω : Ω => ⨆ t : T, P.X ω t) ≤
+      coarseBudget + 4 * Real.sqrt (2 * P.varianceProxy) *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε) := by
+  exact continuous_dudley_entropy_integral_nonempty
+    (P := P) (hT := hT) (coarseBudget := coarseBudget)
+    (radiusScale := radiusScale) (entropyAtRadius := entropyAtRadius)
+    (supFunctional := fun ω : Ω => ⨆ t : T, P.X ω t)
+    hradiusScale hdistP hvariance hentropy_antitone hentropy_nonneg hint0
+    (separableTerminalSupremumBoundaryChoiceNonempty_exists_of_iSup_uniformModulus_eventually
+      (P := P) (hT := hT) (coarseBudget := fun _ => coarseBudget)
+      (radiusScale := radiusScale) (hradiusScale := hradiusScale)
+      (entropyAtRadius := entropyAtRadius) hbdd hmodulus hobligations)
 
 end
 
