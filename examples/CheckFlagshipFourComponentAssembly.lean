@@ -1,0 +1,17 @@
+import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
+
+/-!
+# Axiom audit for the four-component flagship assembly
+-/
+
+open FormalSLT.TestTimeMeta
+
+#print axioms flagshipFourComponent_four_slots_positive
+#print axioms flagshipFourComponent_scalarBounds_from_incrementModel
+#print axioms flagshipFourComponent_population_le_bound_from_incrementModel
+#print axioms flagshipFourComponent_conclusion_from_incrementModel
+
+#check @flagshipFourComponent_four_slots_positive
+#check @flagshipFourComponent_scalarBounds_from_incrementModel
+#check @flagshipFourComponent_population_le_bound_from_incrementModel
+#check @flagshipFourComponent_conclusion_from_incrementModel
