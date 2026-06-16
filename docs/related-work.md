@@ -42,5 +42,4 @@ comparison is by scope:
 - FormalSLT emphasizes a finite-class theorem spine, explicit
   assumptions, examples, theorem maps, and auditable finite-sample bounds.
 
-Public wording should avoid priority claims, broad novelty claims, or claims
-that the project solves localized Rademacher theory.
+
