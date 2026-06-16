@@ -23,6 +23,7 @@ THEOREMS=(
   "FormalSLT.TestTimeMeta.flagshipFourComponent_scalarBounds_from_incrementModel"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_population_le_bound_from_incrementModel"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel"
+  "FormalSLT.TestTimeMeta.flagshipAnytimeValid_conclusion_from_incrementModel"
 )
 
 # Axioms permitted in a clean proof.
@@ -34,6 +35,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
   echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
+  echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -41,7 +43,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 echo "== building flagship modules =="
 "$LAKE" build \
-  FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly >/dev/null
+  FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \
+  FormalSLT.TestTimeMeta.FlagshipAnytimeValid >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"
