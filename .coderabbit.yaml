@@ -1,0 +1,30 @@
+# CodeRabbit config — Robby955/FormalSLT. Focus on Lean 4 soundness, not style noise.
+language: en-US
+reviews:
+  profile: assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: true
+  path_filters:
+    - "!**/*.olean"
+    - "!.lake/**"
+  path_instructions:
+    - path: "**/*.lean"
+      instructions: >
+        Lean 4 + mathlib. Prioritize SOUNDNESS over style; be terse. Flag, in order:
+        (1) statement faithfulness — any theorem whose signature is weaker or more general
+        than its name/docstring implies: vacuous bounds, free or unused hypotheses that make
+        the conclusion trivial, an `x ≤ x` discharge, or a hypothesis assumed that should be
+        derived (a carried gap);
+        (2) any `sorry`/`admit`/`native_decide`/`Lean.ofReduceBool`, or reliance on axioms
+        beyond {propext, Classical.choice, Quot.sound};
+        (3) a definition that silently changes the certified quantity (e.g. folding an error
+        term into the field instead of the proof).
+        Do NOT nitpick formatting, naming, or import order — the build and lean_style_gate
+        cover those.
+chat:
+  auto_reply: true
