@@ -1,0 +1,14 @@
+# Governed public theorems whose SIGNATURES are sealed (Defense 2: statement anchor).
+# Fully-qualified, one per line. Run `scripts/seal_statements.py --seal` once to capture
+# the baseline snapshots, then `--check` in CI fails on any signature drift.
+# Add a theorem here the moment it becomes a paper-cited / public-headline claim.
+
+# --- flagship four-component + anytime-valid headline (the public claim) ---
+FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel
+FormalSLT.TestTimeMeta.flagshipFourComponent_population_le_bound_from_incrementModel
+FormalSLT.TestTimeMeta.flagshipFourComponent_scalarBounds_from_incrementModel
+FormalSLT.TestTimeMeta.flagshipFourComponent_four_slots_positive
+FormalSLT.TestTimeMeta.flagshipAnytimeValid_conclusion_from_incrementModel
+
+# --- T2 VC/PAC-Bayes hybrid (load-bearing VC spine) ---
+FormalSLT.PACBayes.VCHybrid.vcPacBayesBernsteinPosteriorRisk_bound_from_vcRademacher
