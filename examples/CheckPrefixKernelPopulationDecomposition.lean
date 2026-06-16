@@ -1,0 +1,11 @@
+import FormalSLT.TestTimeMeta.PrefixKernelPopulationDecomposition
+
+/-!
+# Axiom audit for the non-vacuous prefix-kernel population decomposition
+-/
+
+#check FormalSLT.TestTimeMeta.prefixKernelDeviationBadEventMass_le_exp_of_sharpMcDiarmid
+#print axioms FormalSLT.TestTimeMeta.prefixKernelDeviationBadEventMass_le_exp_of_sharpMcDiarmid
+
+#check FormalSLT.TestTimeMeta.PrefixKernelDecompWorkedExample.flagship_population_le_bound
+#print axioms FormalSLT.TestTimeMeta.PrefixKernelDecompWorkedExample.flagship_population_le_bound
