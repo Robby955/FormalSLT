@@ -3,7 +3,7 @@ Copyright (c) 2026 Robby Sneiderman. All rights reserved.
 Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
-import FormalSLT.TestTimeMeta.BernsteinPopulationDecomposition
+import FormalSLT.TestTimeMeta.BernsteinRealFlagshipBridge
 import FormalSLT.TestTimeMeta.McAllesterPopulationDecomposition
 import FormalSLT.TestTimeMeta.OnlinePopulationDecomposition
 
@@ -16,7 +16,7 @@ adds the three existing real component inequalities:
 
 * `mcAllesterPointwiseRiskBound_of_not_mem_compiledBad`;
 * `onlinePopulationDecomposition_of_iidRegretConversion`;
-* `BernsteinDecompWorkedExample.posteriorRisk_le_empirical_add_bernsteinGap`.
+* `bernsteinRealFlagship_posteriorRisk_le_empirical_add_bernsteinGap`.
 
 The anytime/Ville and prefix-kernel slots remain zero in this rung.
 -/
@@ -43,17 +43,17 @@ def onlineGap : ℝ :=
     OnlineDecompWorkedExample.input.deviationBound
 
 def gaussianBernsteinGap : ℝ :=
-  BernsteinDecompWorkedExample.gaussianBernsteinGap
+  BernsteinRealDecompWorkedExample.gaussianBernsteinGap
 
 def empiricalRisk : ℝ :=
   McAllesterDecompWorkedExample.user.empiricalRisk +
     OnlineDecompWorkedExample.user.empiricalRisk +
-    BernsteinDecompWorkedExample.user.empiricalRisk
+    BernsteinRealDecompWorkedExample.user.empiricalRisk
 
 def populationRisk : ℝ :=
   McAllesterDecompWorkedExample.user.populationRisk +
     OnlineDecompWorkedExample.user.populationRisk +
-    BernsteinDecompWorkedExample.user.populationRisk
+    BernsteinRealDecompWorkedExample.user.populationRisk
 
 theorem mcAllesterContribution_pos :
     0 < flagshipMcAllesterContribution McAllesterDecompWorkedExample.spec := by
@@ -69,40 +69,8 @@ theorem onlineContribution_pos :
   norm_num [OnlineDecompWorkedExample.input, OnlineDecompWorkedExample.regretRate]
 
 theorem bernsteinContribution_pos :
-    0 < BernsteinDecompWorkedExample.bernsteinGap := by
-  have hlog : 0 < Real.log (1 / BernsteinDecompWorkedExample.delta) := by
-    apply Real.log_pos
-    norm_num [BernsteinDecompWorkedExample.delta]
-  have hvar :
-      0 ≤ posteriorMarginVarianceProxy
-        BernsteinDecompWorkedExample.rho
-        BernsteinDecompWorkedExample.varianceProxy := by
-    unfold posteriorMarginVarianceProxy
-    rw [Fin.sum_univ_one]
-    norm_num [BernsteinDecompWorkedExample.rho, BernsteinDecompWorkedExample.varianceProxy]
-  have hden :
-      0 < 2 * (1 -
-        BernsteinDecompWorkedExample.scale * BernsteinDecompWorkedExample.lambda) := by
-    norm_num [BernsteinDecompWorkedExample.scale, BernsteinDecompWorkedExample.lambda]
-  have hfirst :
-      0 <
-        (0 + Real.log (1 / BernsteinDecompWorkedExample.delta)) /
-          BernsteinDecompWorkedExample.lambda := by
-    simpa using div_pos hlog BernsteinDecompWorkedExample.lambda_pos
-  have hsecond :
-      0 ≤
-        BernsteinDecompWorkedExample.lambda *
-            posteriorMarginVarianceProxy
-              BernsteinDecompWorkedExample.rho
-              BernsteinDecompWorkedExample.varianceProxy /
-          (2 * (1 -
-            BernsteinDecompWorkedExample.scale * BernsteinDecompWorkedExample.lambda)) := by
-    exact div_nonneg
-      (mul_nonneg (le_of_lt BernsteinDecompWorkedExample.lambda_pos) hvar)
-      (le_of_lt hden)
-  unfold BernsteinDecompWorkedExample.bernsteinGap
-  rw [BernsteinDecompWorkedExample.klDiv_rho_pri]
-  linarith
+    0 < BernsteinRealDecompWorkedExample.bernsteinGap :=
+  bernsteinRealFlagship_gap_pos.1
 
 theorem mcAllesterGap_pos : 0 < mcAllesterGap := by
   unfold mcAllesterGap mcAllesterGeneralPenalty
@@ -112,40 +80,43 @@ theorem onlineGap_pos : 0 < onlineGap := by
   simpa [onlineGap, flagshipOnlineIidContribution] using onlineContribution_pos
 
 theorem gaussianBernsteinGap_pos : 0 < gaussianBernsteinGap := by
-  unfold gaussianBernsteinGap BernsteinDecompWorkedExample.gaussianBernsteinGap
+  unfold gaussianBernsteinGap BernsteinRealDecompWorkedExample.gaussianBernsteinGap
   unfold FormalSLT.PACBayesKL.posteriorRisk
     FormalSLT.PACBayesKL.posteriorEmpiricalRisk
     FormalSLT.PACBayesKL.posteriorAverage
+    BernsteinRealDecompWorkedExample.riskFn
   rw [Fin.sum_univ_one, Fin.sum_univ_one]
+  rw [BernsteinRealDecompWorkedExample.finiteMean_loss_eq_half]
   norm_num [
-    BernsteinDecompWorkedExample.rho,
-    BernsteinDecompWorkedExample.riskFn,
-    BernsteinDecompWorkedExample.empiricalRiskFn,
-    BernsteinDecompWorkedExample.omega]
+    BernsteinRealDecompWorkedExample.rho,
+    BernsteinRealDecompWorkedExample.riskFn,
+    BernsteinRealDecompWorkedExample.empiricalRiskFn,
+    BernsteinRealDecompWorkedExample.lossObservable,
+    BernsteinRealDecompWorkedExample.omega]
 
 theorem empiricalRisk_nonnegative : 0 ≤ empiricalRisk := by
   unfold empiricalRisk
   linarith [
     McAllesterDecompWorkedExample.user.empiricalRiskNonnegative,
     OnlineDecompWorkedExample.user.empiricalRiskNonnegative,
-    BernsteinDecompWorkedExample.user.empiricalRiskNonnegative]
+    BernsteinRealDecompWorkedExample.user.empiricalRiskNonnegative]
 
 theorem populationRisk_nonnegative : 0 ≤ populationRisk := by
   unfold populationRisk
   linarith [
     McAllesterDecompWorkedExample.user.populationRiskNonnegative,
     OnlineDecompWorkedExample.user.populationRiskNonnegative,
-    BernsteinDecompWorkedExample.user.populationRiskNonnegative]
+    BernsteinRealDecompWorkedExample.user.populationRiskNonnegative]
 
 def user : FlagshipUserSupplied where
   sampleSize := 1
   targetConfidence := (19 : ℝ) / 20
-  delta := BernsteinDecompWorkedExample.delta
+  delta := BernsteinRealDecompWorkedExample.delta
   lossWidth := 1
   empiricalRisk := empiricalRisk
   populationRisk := populationRisk
   positiveSampleSize := by norm_num
-  deltaPositive := BernsteinDecompWorkedExample.delta_pos
+  deltaPositive := BernsteinRealDecompWorkedExample.delta_pos
   confidenceNonnegative := by norm_num
   lossWidthNonnegative := by norm_num
   empiricalRiskNonnegative := empiricalRisk_nonnegative
@@ -158,7 +129,7 @@ def derived : FlagshipDerivedContributions where
     flagshipOnlineIidContribution
       OnlineDecompWorkedExample.input
       OnlineDecompWorkedExample.regretRate
-  bernsteinOrGaussianContribution := BernsteinDecompWorkedExample.bernsteinGap
+  bernsteinOrGaussianContribution := BernsteinRealDecompWorkedExample.bernsteinGap
   anytimeVilleContribution := 0
   prefixKernelContribution := 0
   mcAllesterGeneralWidthContributionNonnegative := le_of_lt mcAllesterContribution_pos
@@ -177,7 +148,7 @@ theorem populationDecomposition_holds :
         0 := by
   have hmc := McAllesterDecompWorkedExample.populationDecomposition_holds
   have honline := OnlineDecompWorkedExample.populationDecomposition_holds
-  have hbernstein := BernsteinDecompWorkedExample.scalarBounds.populationDecomposition
+  have hbernstein := BernsteinRealDecompWorkedExample.scalarBounds.populationDecomposition
   have hmc' :
       McAllesterDecompWorkedExample.user.populationRisk ≤
         McAllesterDecompWorkedExample.user.empiricalRisk + mcAllesterGap := by
@@ -187,8 +158,8 @@ theorem populationDecomposition_holds :
         OnlineDecompWorkedExample.user.empiricalRisk + onlineGap := by
     simpa [OnlineDecompWorkedExample.user, onlineGap, add_assoc] using honline
   have hbernstein' :
-      BernsteinDecompWorkedExample.user.populationRisk ≤
-        BernsteinDecompWorkedExample.user.empiricalRisk + gaussianBernsteinGap := by
+      BernsteinRealDecompWorkedExample.user.populationRisk ≤
+        BernsteinRealDecompWorkedExample.user.empiricalRisk + gaussianBernsteinGap := by
     simpa [gaussianBernsteinGap, add_assoc] using hbernstein
   unfold user populationRisk empiricalRisk
   dsimp
@@ -225,9 +196,7 @@ theorem flagshipSimultaneous_scalarBounds :
   · unfold FlagshipSimultaneousAssembly.gaussianBernsteinGap
     unfold FlagshipSimultaneousAssembly.derived
     dsimp
-    unfold BernsteinDecompWorkedExample.gaussianBernsteinGap
-    have h := BernsteinDecompWorkedExample.posteriorRisk_le_empirical_add_bernsteinGap
-    linarith
+    exact bernsteinRealFlagship_gaussianGap_le_bernsteinGap
   · simp [FlagshipSimultaneousAssembly.derived]
   · simp [FlagshipSimultaneousAssembly.derived]
 

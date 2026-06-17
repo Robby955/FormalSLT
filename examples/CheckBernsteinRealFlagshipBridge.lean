@@ -1,0 +1,25 @@
+import FormalSLT.TestTimeMeta.BernsteinRealFlagshipBridge
+import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
+
+/-!
+# Axiom audit for the real-Bernstein flagship bridge
+-/
+
+open FormalSLT.TestTimeMeta
+open MeasureTheory ProbabilityTheory
+open FormalSLT.AnytimeValid
+
+#check bernsteinRealFlagship_posteriorRisk_le_empirical_add_bernsteinGap
+#print axioms bernsteinRealFlagship_posteriorRisk_le_empirical_add_bernsteinGap
+
+#check bernsteinRealFlagship_gaussianGap_le_bernsteinGap
+#print axioms bernsteinRealFlagship_gaussianGap_le_bernsteinGap
+
+#check bernsteinRealFlagship_gap_pos
+#print axioms bernsteinRealFlagship_gap_pos
+
+#check @flagshipFourComponent_population_le_bound_from_incrementModel
+#print axioms flagshipFourComponent_population_le_bound_from_incrementModel
+
+#check @flagshipFourComponent_conclusion_from_incrementModel
+#print axioms flagshipFourComponent_conclusion_from_incrementModel
