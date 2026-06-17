@@ -4,7 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import FormalSLT.TestTimeMeta.BernsteinPopulationDecomposition
-import FormalSLT.TestTimeMeta.McAllesterPopulationDecomposition
+import FormalSLT.TestTimeMeta.McAllesterRealPopulationDecomposition
 import FormalSLT.TestTimeMeta.OnlinePopulationDecomposition
 
 /-!
@@ -15,6 +15,7 @@ rather than assuming it as certificate data.  The simultaneous worked instance
 adds the three existing real component inequalities:
 
 * `mcAllesterPointwiseRiskBound_of_not_mem_compiledBad`;
+  replaced here by the high-probability two-sample real McAllester sidecar;
 * `onlinePopulationDecomposition_of_iidRegretConversion`;
 * `BernsteinDecompWorkedExample.posteriorRisk_le_empirical_add_bernsteinGap`.
 
@@ -33,10 +34,7 @@ noncomputable section
 namespace FlagshipSimultaneousAssembly
 
 def mcAllesterGap : ℝ :=
-  mcAllesterGeneralPenalty
-    McAllesterDecompWorkedExample.spec.sampleSize
-    McAllesterDecompWorkedExample.spec.complexityBound
-    McAllesterDecompWorkedExample.spec.lossBound
+  McAllesterRealDecompWorkedExample.mcAllesterGap
 
 def onlineGap : ℝ :=
   OnlineDecompWorkedExample.regretRate +
@@ -46,20 +44,20 @@ def gaussianBernsteinGap : ℝ :=
   BernsteinDecompWorkedExample.gaussianBernsteinGap
 
 def empiricalRisk : ℝ :=
-  McAllesterDecompWorkedExample.user.empiricalRisk +
+  McAllesterRealDecompWorkedExample.user.empiricalRisk +
     OnlineDecompWorkedExample.user.empiricalRisk +
     BernsteinDecompWorkedExample.user.empiricalRisk
 
 def populationRisk : ℝ :=
-  McAllesterDecompWorkedExample.user.populationRisk +
+  McAllesterRealDecompWorkedExample.user.populationRisk +
     OnlineDecompWorkedExample.user.populationRisk +
     BernsteinDecompWorkedExample.user.populationRisk
 
 theorem mcAllesterContribution_pos :
-    0 < flagshipMcAllesterContribution McAllesterDecompWorkedExample.spec := by
+    0 < flagshipMcAllesterContribution McAllesterRealDecompWorkedExample.spec := by
   unfold flagshipMcAllesterContribution mcAllesterPenalty
   apply Real.sqrt_pos.2
-  norm_num [McAllesterDecompWorkedExample.spec]
+  norm_num [McAllesterRealDecompWorkedExample.spec]
 
 theorem onlineContribution_pos :
     0 < flagshipOnlineIidContribution
@@ -105,8 +103,12 @@ theorem bernsteinContribution_pos :
   linarith
 
 theorem mcAllesterGap_pos : 0 < mcAllesterGap := by
-  unfold mcAllesterGap mcAllesterGeneralPenalty
-  simpa [McAllesterDecompWorkedExample.spec] using mcAllesterContribution_pos
+  unfold mcAllesterGap McAllesterRealDecompWorkedExample.mcAllesterGap
+    mcAllesterGeneralPenalty mcAllesterPenalty
+  apply mul_pos
+  · norm_num [McAllesterRealDecompWorkedExample.spec]
+  · apply Real.sqrt_pos.2
+    norm_num [McAllesterRealDecompWorkedExample.spec]
 
 theorem onlineGap_pos : 0 < onlineGap := by
   simpa [onlineGap, flagshipOnlineIidContribution] using onlineContribution_pos
@@ -126,34 +128,34 @@ theorem gaussianBernsteinGap_pos : 0 < gaussianBernsteinGap := by
 theorem empiricalRisk_nonnegative : 0 ≤ empiricalRisk := by
   unfold empiricalRisk
   linarith [
-    McAllesterDecompWorkedExample.user.empiricalRiskNonnegative,
+    McAllesterRealDecompWorkedExample.user.empiricalRiskNonnegative,
     OnlineDecompWorkedExample.user.empiricalRiskNonnegative,
     BernsteinDecompWorkedExample.user.empiricalRiskNonnegative]
 
 theorem populationRisk_nonnegative : 0 ≤ populationRisk := by
   unfold populationRisk
   linarith [
-    McAllesterDecompWorkedExample.user.populationRiskNonnegative,
+    McAllesterRealDecompWorkedExample.user.populationRiskNonnegative,
     OnlineDecompWorkedExample.user.populationRiskNonnegative,
     BernsteinDecompWorkedExample.user.populationRiskNonnegative]
 
 def user : FlagshipUserSupplied where
-  sampleSize := 1
-  targetConfidence := (19 : ℝ) / 20
+  sampleSize := McAllesterRealDecompWorkedExample.spec.sampleSize
+  targetConfidence := McAllesterRealDecompWorkedExample.user.targetConfidence
   delta := BernsteinDecompWorkedExample.delta
   lossWidth := 1
   empiricalRisk := empiricalRisk
   populationRisk := populationRisk
-  positiveSampleSize := by norm_num
+  positiveSampleSize := by norm_num [McAllesterRealDecompWorkedExample.spec]
   deltaPositive := BernsteinDecompWorkedExample.delta_pos
-  confidenceNonnegative := by norm_num
+  confidenceNonnegative := McAllesterRealDecompWorkedExample.user.confidenceNonnegative
   lossWidthNonnegative := by norm_num
   empiricalRiskNonnegative := empiricalRisk_nonnegative
   populationRiskNonnegative := populationRisk_nonnegative
 
 def derived : FlagshipDerivedContributions where
   mcAllesterGeneralWidthContribution :=
-    flagshipMcAllesterContribution McAllesterDecompWorkedExample.spec
+    flagshipMcAllesterContribution McAllesterRealDecompWorkedExample.spec
   onlineIidContribution :=
     flagshipOnlineIidContribution
       OnlineDecompWorkedExample.input
@@ -175,12 +177,12 @@ theorem populationDecomposition_holds :
         gaussianBernsteinGap +
         0 +
         0 := by
-  have hmc := McAllesterDecompWorkedExample.populationDecomposition_holds
+  have hmc := McAllesterRealDecompWorkedExample.populationDecomposition_holds
   have honline := OnlineDecompWorkedExample.populationDecomposition_holds
   have hbernstein := BernsteinDecompWorkedExample.scalarBounds.populationDecomposition
   have hmc' :
-      McAllesterDecompWorkedExample.user.populationRisk ≤
-        McAllesterDecompWorkedExample.user.empiricalRisk + mcAllesterGap := by
+      McAllesterRealDecompWorkedExample.user.populationRisk ≤
+        McAllesterRealDecompWorkedExample.user.empiricalRisk + mcAllesterGap := by
     simpa [mcAllesterGap, add_assoc] using hmc
   have honline' :
       OnlineDecompWorkedExample.user.populationRisk ≤
@@ -211,13 +213,8 @@ theorem flagshipSimultaneous_scalarBounds :
       0 := by
   refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
   · exact FlagshipSimultaneousAssembly.populationDecomposition_holds
-  · simp [
-      FlagshipSimultaneousAssembly.user,
-      FlagshipSimultaneousAssembly.derived,
-      FlagshipSimultaneousAssembly.mcAllesterGap,
-      flagshipMcAllesterContribution,
-      mcAllesterGeneralPenalty,
-      McAllesterDecompWorkedExample.spec]
+  · have hmc := mcAllesterReal_flagshipContribution.2.mcAllesterGap_le
+    exact hmc
   · simp [
       FlagshipSimultaneousAssembly.derived,
       FlagshipSimultaneousAssembly.onlineGap,

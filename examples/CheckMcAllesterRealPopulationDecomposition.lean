@@ -1,0 +1,10 @@
+import FormalSLT.TestTimeMeta.McAllesterRealPopulationDecomposition
+
+#check FormalSLT.TestTimeMeta.mcAllesterReal_goodEventMass_ge_one_sub_delta
+#print axioms FormalSLT.TestTimeMeta.mcAllesterReal_goodEventMass_ge_one_sub_delta
+
+#check FormalSLT.TestTimeMeta.mcAllesterReal_pointwiseRiskBound_of_mem_good
+#print axioms FormalSLT.TestTimeMeta.mcAllesterReal_pointwiseRiskBound_of_mem_good
+
+#check FormalSLT.TestTimeMeta.mcAllesterReal_flagshipContribution
+#print axioms FormalSLT.TestTimeMeta.mcAllesterReal_flagshipContribution
