@@ -70,6 +70,7 @@ import FormalSLT.Covering.TwoPointDudleyIntegral
 import FormalSLT.Covering.DudleyToRademacher
 import FormalSLT.Covering.ContinuousDudley
 import FormalSLT.Covering.ContinuousDudleyCovering
+import FormalSLT.Covering.MeasureDudley
 import FormalSLT.Covering.FiniteDiscreteDudley
 
 import FormalSLT.AlgorithmicStability
