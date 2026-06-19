@@ -10,5 +10,11 @@ FormalSLT.TestTimeMeta.flagshipFourComponent_scalarBounds_from_incrementModel
 FormalSLT.TestTimeMeta.flagshipFourComponent_four_slots_positive
 FormalSLT.TestTimeMeta.flagshipAnytimeValid_conclusion_from_incrementModel
 
+# --- flagship five-component headline (all five gaps non-vacuous in one certificate) ---
+FormalSLT.TestTimeMeta.flagshipFiveComponent_conclusion_from_incrementModel
+FormalSLT.TestTimeMeta.flagshipFiveComponent_population_le_bound_from_incrementModel
+FormalSLT.TestTimeMeta.flagshipFiveComponent_scalarBounds_from_incrementModel
+FormalSLT.TestTimeMeta.flagshipFiveComponent_five_slots_positive
+
 # --- T2 VC/PAC-Bayes hybrid (load-bearing VC spine) ---
 FormalSLT.PACBayes.VCHybrid.vcPacBayesBernsteinPosteriorRisk_bound_from_vcRademacher

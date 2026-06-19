@@ -104,6 +104,7 @@ import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
 import FormalSLT.PACBayes.McAllesterCompilerHighProbability
 import FormalSLT.PACBayes.VCHybrid
+import FormalSLT.PACBayes.ChangeOfMeasure
 
 import FormalSLT.TestTimeMeta.Assumptions
 import FormalSLT.TestTimeMeta.CompositionLemmas
@@ -118,3 +119,5 @@ import FormalSLT.TestTimeMeta.BernsteinPopulationDecompositionReal
 import FormalSLT.TestTimeMeta.AnytimeVillePopulationDecomposition
 import FormalSLT.TestTimeMeta.FlagshipAnytimeValid
 import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly
+import FormalSLT.TestTimeMeta.PrefixKernelPopulationDecomposition
+import FormalSLT.TestTimeMeta.FlagshipFiveComponentAssembly

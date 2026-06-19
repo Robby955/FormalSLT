@@ -67,10 +67,10 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 69,
-    "library_and_example_lean_lines": 50094,
-    "library_lean_lines": 46837,
-    "library_modules": 109,
+    "example_lean_files": 71,
+    "library_and_example_lean_lines": 50670,
+    "library_lean_lines": 47378,
+    "library_modules": 111,
     "theorem_map_entries": 412
   },
   "theorem_families": [
