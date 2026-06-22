@@ -16,9 +16,9 @@
 > boundaries for finite learning-theory proof routes. Hypotheses and constants
 > live in the type signatures, not buried in tactic blocks.
 
-A verifier-gated formalization route built on this library was accepted as a
-poster at the ICML 2026 AI for Math workshop (*From Agents to Axioms: Verifier-
-Gated Lean Formalization for Statistical Learning Theory*).
+A verifier-gated formalization route built on this library was accepted at the
+ICML 2026 AI for Math workshop (*From Agents to Axioms: Verifier-Gated Lean
+Formalization for Statistical Learning Theory*).
 
 Counts are surfaced by the badges above and checked against generated badge
 JSON by [`scripts/generate_badge_counts.py`](./scripts/generate_badge_counts.py)
