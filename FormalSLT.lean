@@ -101,6 +101,7 @@ import FormalSLT.PACBayes.GaussianKL
 import FormalSLT.PACBayes.StabilityBridge
 import FormalSLT.PACBayes.VitaleAnalytic
 import FormalSLT.PACBayes.BernsteinAnalytic
+import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
 import FormalSLT.PACBayes.McAllesterCompilerHighProbability

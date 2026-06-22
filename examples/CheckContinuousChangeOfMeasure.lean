@@ -1,0 +1,21 @@
+import FormalSLT.PACBayes.ContinuousChangeOfMeasure
+import FormalSLT.PACBayes.ContinuousPriorPosterior
+
+/-!
+# Continuous PAC-Bayes change-of-measure checks
+
+This file verifies the public theorem names and prints their axiom sets.
+-/
+
+#check FormalSLT.PACBayes.ContinuousChangeOfMeasure.continuous_donsker_varadhan
+#print axioms FormalSLT.PACBayes.ContinuousChangeOfMeasure.continuous_donsker_varadhan
+
+#check FormalSLT.PACBayes.ContinuousChangeOfMeasure.continuous_catoni_changeOfMeasure_bound
+#print axioms FormalSLT.PACBayes.ContinuousChangeOfMeasure.continuous_catoni_changeOfMeasure_bound
+
+#check FormalSLT.PACBayes.continuousPriorPosterior_certificate_derived
+#print axioms FormalSLT.PACBayes.continuousPriorPosterior_certificate_derived
+
+#check FormalSLT.PACBayes.ContinuousChangeOfMeasure.twoPoint_continuous_dv_nonvacuous
+#check FormalSLT.PACBayes.ContinuousChangeOfMeasure.twoPoint_gap_strictly_below_one
+#check FormalSLT.PACBayes.ContinuousChangeOfMeasure.twoPoint_continuous_certificate_nonvacuous
