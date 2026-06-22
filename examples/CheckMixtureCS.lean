@@ -4,8 +4,13 @@ open FormalSLT.AnytimeValid
 
 #check mixtureExponentialProcess
 #check condExp_mixture_swap
+#check ae_le_of_forall_subalgebra_setIntegral_le
+#check mixture_condExp_step_of_fixed_tilt_steps
 #check mixture_is_supermartingale
 #check atTop_time_uniform_confidence_sequence_subGamma_mixture
+#check uniformTiltPrior
+#check uniformTiltPrior_isProbabilityMeasure
+#check uniformTiltPrior_valid_tilt_support
 
 #print axioms condExp_mixture_swap
 #print axioms mixture_is_supermartingale
@@ -40,30 +45,12 @@ example
       ∀ n, Integrable
         (fun p : Ω × ℝ => subGammaExponentialProcess X sigma2 b p.2 n p.1)
         (μ.prod ρ))
-    (hCE_int_restrict :
+    (hM_int_step_restrict :
       ∀ n, ∀ {s : Set Ω}, MeasurableSet s → μ s < ⊤ →
         Integrable
-          (fun p : Ω × ℝ =>
-            (condExp (ℱ n) μ
-              (fun ω => subGammaExponentialProcess X sigma2 b p.2 (n + 1) ω)) p.1)
-          ((μ.restrict s).prod ρ))
-    (hCE_int_step :
-      ∀ n, Integrable
         (fun p : Ω × ℝ =>
-          (condExp (ℱ n) μ
-            (fun ω => subGammaExponentialProcess X sigma2 b p.2 (n + 1) ω)) p.1)
-        (μ.prod ρ))
-    (hCE_meas :
-      ∀ n, @AEStronglyMeasurable Ω ℝ _ (ℱ n) mΩ
-        (fun ω => ∫ lam,
-          (condExp (ℱ n) μ
-            (fun ω' => subGammaExponentialProcess X sigma2 b lam (n + 1) ω')) ω ∂ρ) μ)
-    (hstep_meas :
-      ∀ n, MeasurableSet
-        {p : Ω × ℝ |
-          (condExp (ℱ n) μ
-            (fun ω => subGammaExponentialProcess X sigma2 b p.2 (n + 1) ω)) p.1 ≤
-          subGammaExponentialProcess X sigma2 b p.2 n p.1})
+          subGammaExponentialProcess X sigma2 b p.2 n p.1)
+          ((μ.restrict s).prod ρ))
     (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
     (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
     (hvar : ∀ k, μ[fun ω => (X k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => sigma2) :
@@ -72,5 +59,5 @@ example
   exact atTop_time_uniform_confidence_sequence_subGamma_mixture
     (μ := μ) (ℱ := ℱ) (X := X) (sigma2 := sigma2) (b := b) (delta := delta)
     (ρ := ρ) hδ hb hσ hsupport hX_meas hX_int h_adapted_lam h_adapted_mix
-    h_integrable_mix hM_int hM_int_restrict hM_int_step hCE_int_restrict hCE_int_step
-    hCE_meas hstep_meas hbound hcenter hvar
+    h_integrable_mix hM_int hM_int_restrict hM_int_step hM_int_step_restrict
+    hbound hcenter hvar
