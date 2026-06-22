@@ -5,24 +5,16 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-25b7ac7-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-898-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-101-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-43%2C619-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C095-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-115-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-52%2C140-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
 > **Finite-sample statistical learning theory, checked in Lean 4.**
 > FormalSLT records explicit theorem statements, constants, and scope
-> boundaries for finite learning-theory proof routes. TheoremPath uses these
-> checked statements as source material for the web and iOS learning surfaces.
-
-The public surface is intentionally small:
-
-- `FormalSLT`: checked Lean theorem statements, constants, and scope fences.
-- `theorempath.com`: theorem pages, source links, and audit pages keyed by the
-  same theorem names.
-- `theorem-path-ios`: review paths and saved theorem cards keyed by the same
-  theorem IDs.
+> boundaries for finite learning-theory proof routes. Hypotheses and constants
+> live in the type signatures, not buried in tactic blocks.
 
 Counts are surfaced by the badges above and checked against generated badge
 JSON by [`scripts/generate_badge_counts.py`](./scripts/generate_badge_counts.py)
@@ -62,6 +54,24 @@ posterior-dependent square-root-plus-linear wrapper. This is a supplied-proxy
 finite shell: it is not yet a concrete classifier-margin extractor, an
 all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
 
+The library's top-level result is a non-vacuous five-component PAC-Bayes bound
+on test-time population risk (`pacBayesTestTimeFlagship_theorem`). The bound is
+empirical risk plus five named, separately-checked, nonnegative contributions: a
+general-width McAllester term, an online-to-iid term, a Bernstein/Gaussian-
+posterior term, an anytime Ville term, and a prefix-kernel term. The
+five-component assembly builds the certificate from a conditional sub-Gamma
+increment model (`flagshipFiveComponent_certificate_from_incrementModel`) and
+proves all five contributions strictly positive at the worked instance
+(`flagshipFiveComponent_five_slots_positive`), so the bound is not vacuous. Two
+pieces stand alone: a fixed-`λ` countable-time sub-Gamma confidence boundary
+built end-to-end from the increment model
+(`atTop_time_uniform_confidence_sequence_subGamma`), and a finite fixed-`λ`
+Catoni change-of-measure posterior-risk bound at a fixed sample
+(`catoni_changeOfMeasure_bound`). The certificate is finite-horizon: the
+anytime-valid mass is controlled up to a chosen horizon, and the standalone
+`atTop` boundary is a fixed-`λ` countable-time statement, not an optimized-`λ`
+mixture over all `λ` at once.
+
 **Zero `sorry`. Zero `admit`. Zero custom axioms.** Live module, theorem, and
 line counts are in the badges at the top of this file.
 
@@ -93,6 +103,12 @@ Each surface has one machine-checked endpoint and a checker file you can run wit
   endpoint `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`, checker `examples/CheckSharpMcDiarmid.lean`
 - **PAC-Bayes Bernstein supplied margin-proxy shell**
   endpoint `finitePACBayesBernsteinMargin_badEventMass_le_delta`, checker `examples/CheckPACBayesBernstein.lean`
+- **PAC-Bayes test-time meta-bound (five-component population-risk certificate)**
+  endpoint `flagshipFiveComponent_certificate_from_incrementModel` / `pacBayesTestTimeFlagship_theorem`, non-vacuity witness `flagshipFiveComponent_five_slots_positive`, checker `examples/CheckFlagshipFiveComponentAssembly.lean`
+- **Fixed-`λ` countable-time sub-Gamma confidence boundary**
+  endpoint `atTop_time_uniform_confidence_sequence_subGamma`, checker `examples/CheckAnytimeAtTopCS.lean`
+- **Finite fixed-`λ` Catoni change-of-measure posterior-risk bound**
+  endpoint `catoni_changeOfMeasure_bound`, checker `examples/CheckPACBayesChangeOfMeasure.lean`
 - **Finite Dudley entropy-integral endpoint**
   endpoint `dudley_entropy_integral_of_antitone_coveringNumber`, checker `examples/CheckDudleyEntropyIntegral.lean`
 - **Two-point Rademacher entropy-integral instantiation**
@@ -140,10 +156,6 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
   [FormalSLT v0.1 quickstart](./docs/formalslt-v0.1-quickstart.md).
 - **For the v0.1 technical note:** read
   [FormalSLT v0.1 technical note](./docs/formalslt-v0.1-technical-note.md).
-- **For TheoremPath packaging:** read
-  [TheoremPath FormalSLT v0.1 draft](./docs/theorempath-formalslt-v0.1-page-draft.mdx).
-- **For the live walkthrough:** see
-  [theorempath.com/theorems/formalslt-v0-1](https://theorempath.com/theorems/formalslt-v0-1).
 - **For ML readers:** start with [How to read the proofs](./docs/how-to-read-the-proofs.md),
   then [Intuition](./docs/intuition.md).
 - **For proof structure:** see [Diagrams](./docs/diagrams.md).
@@ -165,33 +177,6 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
   FormalSLT is scoped as a finite-class theorem spine and is complementary to
   existing empirical-process and Rademacher-generalization formalizations.
-
-## TheoremPath Surfaces
-
-FormalSLT is the checked source layer for TheoremPath learning surfaces. The
-connection is intentionally simple: theorem names and source links in this
-repository are reused by the site and app.
-
-### [theorempath.com](https://theorempath.com)
-
-The site renders FormalSLT theorem names with source links, prerequisite paths,
-and audit pages. Direct entry points include:
-
-- Lean source viewer at [theorempath.com/lean](https://theorempath.com/lean)
-- Checked theorem index at [theorempath.com/theorems](https://theorempath.com/theorems)
-- v0.1 walkthrough at [theorempath.com/theorems/formalslt-v0-1](https://theorempath.com/theorems/formalslt-v0-1)
-- Public audit page at [theorempath.com/audit](https://theorempath.com/audit)
-
-### [TheoremPath iOS](https://github.com/Robby955/theorem-path-ios)
-
-The Swift app uses the same theorem IDs for review paths and saved theorem
-cards. Build status and release notes live in the iOS repository.
-
-### Semantic Linker v0
-
-In development: a theorem-to-code view that places selected FormalSLT Lean
-statements next to executable ML code. It is not part of the current public
-FormalSLT proof surface.
 
 ## For researchers
 
@@ -219,24 +204,6 @@ singular learning theory (SLT), the finite theorem surface is reusable today:
 
 See [docs/related-work.md](./docs/related-work.md) for how FormalSLT sits next
 to mathlib4's empirical-process and Rademacher generalization files.
-
-## For students
-
-If you are entering SLT or empirical process theory, the recommended path is:
-
-1. Start at [theorempath.com](https://theorempath.com) and follow the
-   prerequisite chain to the topic you need. The site maps the informal
-   intuition.
-2. Click through to the linked Lean theorem. This repository holds the
-   checked statement and the proof.
-3. Read [How to read the proofs](./docs/how-to-read-the-proofs.md) and
-   [Intuition](./docs/intuition.md) for orientation on Lean syntax and the
-   PAC-Bayes / Rademacher building blocks.
-4. Use [theorempath.com/theorems/formalslt-v0-1](https://theorempath.com/theorems/formalslt-v0-1)
-   as the v0.1 walkthrough that ties the site and the library together.
-
-The native iOS companion is the same content with offline review cards and
-local mastery tracking.
 
 ## Library Map
 
