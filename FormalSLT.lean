@@ -21,9 +21,11 @@ import FormalSLT.Concentration.SubGamma.CondMarkov
 import FormalSLT.Concentration.SubGamma.CondVarianceFromSquare
 import FormalSLT.Concentration.SubGamma.Extractor
 import FormalSLT.Concentration.SharpMcDiarmid
+import FormalSLT.Concentration.HeterogeneousMcDiarmid
 import FormalSLT.AnytimeValid.VilleMaximalIneq
 import FormalSLT.AnytimeValid.SubGaussianCS
 import FormalSLT.AnytimeValid.AtTopCS
+import FormalSLT.AnytimeValid.MixtureCS
 
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization
@@ -101,6 +103,7 @@ import FormalSLT.PACBayes.GaussianKL
 import FormalSLT.PACBayes.StabilityBridge
 import FormalSLT.PACBayes.VitaleAnalytic
 import FormalSLT.PACBayes.BernsteinAnalytic
+import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
 import FormalSLT.PACBayes.McAllesterCompilerHighProbability

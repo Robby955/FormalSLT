@@ -131,33 +131,33 @@ coordinate filtration, by `MeasureTheory.martingale_condExp`. We do not
 re-prove the martingale property; we just instantiate it.
 
 Below, `μ : Measure Z` is a probability measure, and we work with its
-finite product `Measure.pi (fun _ : Fin n => μ)` on `Fin n → Z`. -/
+finite product `Measure.pi μ` on `Fin n → Z`. -/
 
-variable {μ : Measure Z}
+variable {μ : Fin n → Measure Z}
 
 /-- The Doob exposure martingale of `f` under `μⁿ`. -/
-noncomputable def exposureMartingale (μ : Measure Z) (f : (Fin n → Z) → ℝ) :
+noncomputable def exposureMartingale (μ : Fin n → Measure Z) (f : (Fin n → Z) → ℝ) :
     Fin (n + 1) → (Fin n → Z) → ℝ :=
-  fun k => (Measure.pi (fun _ : Fin n => μ))[f | coordinateSubAlgebra n Z k]
+  fun k => (Measure.pi μ)[f | coordinateSubAlgebra n Z k]
 
 /-- The exposure martingale is a martingale under the product measure,
 provided the product measure is finite (e.g. when `μ` is a probability
 measure on `Z`). -/
 theorem exposureMartingale_isMartingale
-    [IsFiniteMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsFiniteMeasure (Measure.pi μ)]
     (f : (Fin n → Z) → ℝ) :
     Martingale (exposureMartingale μ f) (coordinateFiltration n Z)
-      (Measure.pi (fun _ : Fin n => μ)) :=
+      (Measure.pi μ) :=
   martingale_condExp f (coordinateFiltration n Z) _
 
 /-- At `k = 0`, the exposure martingale is (a.e.) the constant function
 equal to `∫ f dμⁿ`. -/
 theorem exposureMartingale_zero_ae
-    [IsProbabilityMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsProbabilityMeasure (Measure.pi μ)]
     (f : (Fin n → Z) → ℝ) :
     exposureMartingale μ f 0
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)]
-        fun _ => ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) := by
+      =ᵐ[Measure.pi μ]
+        fun _ => ∫ s, f s ∂(Measure.pi μ) := by
   unfold exposureMartingale
   rw [coordinateSubAlgebra_zero]
   exact Filter.Eventually.of_forall (congr_fun (condExp_bot f))
@@ -166,11 +166,11 @@ theorem exposureMartingale_zero_ae
 This is the terminal identity needed for the telescoping decomposition
 `Mₙ - M₀ = f - E[f]` used in McDiarmid's proof. -/
 theorem exposureMartingale_last_ae
-    [IsFiniteMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsFiniteMeasure (Measure.pi μ)]
     {f : (Fin n → Z) → ℝ} (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ))) :
+    (hfi : Integrable f (Measure.pi μ)) :
     exposureMartingale μ f (Fin.last n)
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)] f := by
+      =ᵐ[Measure.pi μ] f := by
   unfold exposureMartingale
   rw [coordinateSubAlgebra_last]
   exact Filter.Eventually.of_forall

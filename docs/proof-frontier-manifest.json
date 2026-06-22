@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 71,
-    "library_and_example_lean_lines": 50670,
-    "library_lean_lines": 47378,
-    "library_modules": 111,
-    "theorem_map_entries": 412
+    "example_lean_files": 78,
+    "library_and_example_lean_lines": 53014,
+    "library_lean_lines": 49431,
+    "library_modules": 118,
+    "theorem_map_entries": 421
   },
   "theorem_families": [
     {
@@ -654,6 +654,24 @@
           "module": "Concentration.SharpMcDiarmid",
           "name": "mcdiarmid_of_hasBoundedDifferences_sharp_lower",
           "summary": "Lower-tail wrapper obtained from the upper tail applied to -f"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero",
+          "summary": "Heterogeneous-law product upper tail with the sharp McDiarmid exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero_lower",
+          "summary": "Heterogeneous-law product lower tail with the sharp McDiarmid exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_of_hetero",
+          "summary": "Homogeneous recovery from the heterogeneous product theorem by taking a constant law family"
         },
         {
           "kind": "theorem",
@@ -2397,6 +2415,24 @@
         },
         {
           "kind": "theorem",
+          "module": "PACBayes.ContinuousChangeOfMeasure",
+          "name": "continuous_donsker_varadhan",
+          "summary": "Measure-theoretic Donsker-Varadhan bound from Radon-Nikodym tilting"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousChangeOfMeasure",
+          "name": "continuous_catoni_changeOfMeasure_bound",
+          "summary": "Continuous fixed-lambda Catoni change-of-measure bound from a prior log-MGF certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousPriorPosterior",
+          "name": "continuousPriorPosterior_certificate_derived",
+          "summary": "Continuous prior/posterior certificate with the PAC gate derived by change of measure"
+        },
+        {
+          "kind": "theorem",
           "module": "PACBayesMcAllester",
           "name": "pacbayes_changeOfMeasure",
           "summary": "Rescaled finite Donsker-Varadhan change-of-measure inequality"
@@ -2600,6 +2636,29 @@
         }
       ],
       "name": "Conditional sub-Gamma extractor"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.MixtureCS",
+          "name": "condExp_mixture_swap",
+          "summary": "Conditional-expectation swap for the mixture exponential process"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.MixtureCS",
+          "name": "mixture_is_supermartingale",
+          "summary": "Mixture of sub-Gamma exponential processes is a nonnegative supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.MixtureCS",
+          "name": "atTop_time_uniform_confidence_sequence_subGamma_mixture",
+          "summary": "Time-uniform mixture confidence sequence from the sub-Gamma exponential supermartingale"
+        }
+      ],
+      "name": "Anytime-valid confidence sequences"
     }
   ],
   "toolchain": {

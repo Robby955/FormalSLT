@@ -93,7 +93,7 @@ noncomputable section
 namespace FormalSLT.Azuma.ExposureMartingale
 
 variable {n : ℕ} {Z : Type*} [MeasurableSpace Z]
-variable {μ : Measure Z}
+variable {μ : Fin n → Measure Z}
 
 private lemma q049_measurable_eval_coordinateSubAlgebra
     (k : Fin (n + 1)) (i : Fin n) (hi : (i : ℕ) < (k : ℕ)) :
@@ -143,12 +143,12 @@ This is the formally checked piece of the decomposition
 module docstring records the stronger `Measure.condKernel` equality that would
 be the clean mathlib4 PR. -/
 theorem condExpKernel_product_decomposition
-    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ] (k : Fin (n + 1)) :
-    ∀ᵐ S ∂((Measure.pi (fun _ : Fin n => μ)).trim (coordinateSubAlgebra_le_pi k)),
-      ∀ᵐ T ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+    [Nonempty Z] [StandardBorelSpace Z] [∀ i, IsProbabilityMeasure (μ i)] (k : Fin (n + 1)) :
+    ∀ᵐ S ∂((Measure.pi μ).trim (coordinateSubAlgebra_le_pi k)),
+      ∀ᵐ T ∂(condExpKernel (Measure.pi μ)
           (coordinateSubAlgebra n Z k) S),
         ∀ i : Fin n, (i : ℕ) < (k : ℕ) → T i = S i := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   have hm : coordinateSubAlgebra n Z k ≤ MeasurableSpace.pi :=
     coordinateSubAlgebra_le_pi k
   letI : MeasurableSpace ((Fin n → Z) × (Fin n → Z)) :=
@@ -178,17 +178,17 @@ prefix fiber, instead of the Azuma proxy `‖c k‖₊^2` obtained from the symm
 bound `|Delta_k| <= c k`. The proof route is the one described by
 Boucheron-Lugosi-Massart 2013 §6. -/
 theorem sharp_mcdiarmid_increment_subGaussian_mgf
-    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [StandardBorelSpace Z] [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     (k : Fin n) (hck : 0 ≤ c k) :
     HasCondSubgaussianMGF
       (m := coordinateSubAlgebra n Z k.castSucc)
       (coordinateSubAlgebra_le_pi k.castSucc)
       (exposureIncrement μ f k) ((‖c k‖₊ / 2 : ℝ≥0) ^ 2)
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      (Measure.pi μ) := by
   have _hkernel :=
     condExpKernel_product_decomposition (μ := μ) (k := k.castSucc)
   exact exposureIncrement_hasCondSubgaussianMGF_sharp
@@ -212,17 +212,17 @@ coordinate width `c / n`, the exponent rewrites to the usual sample-mean form
 `-2 * ε^2 * n / c^2`. -/
 theorem sharp_mcdiarmid_inequality_iid_const_width
     {n : ℕ} {Z : Type*} [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
-    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {ν : Measure Z} [IsProbabilityMeasure ν]
     {f : (Fin n → Z) → ℝ} {c : ℝ} (hc : 0 ≤ c)
     (hbdd : HasBoundedDifferences f (fun _ : Fin n => c))
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi (fun _ : Fin n => ν)))
     {ε : ℝ} (hε : 0 ≤ ε) :
-    (Measure.pi (fun _ : Fin n => μ)).real
-        {S | ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) + ε ≤ f S}
+    (Measure.pi (fun _ : Fin n => ν)).real
+        {S | ∫ s, f s ∂(Measure.pi (fun _ : Fin n => ν)) + ε ≤ f S}
       ≤ Real.exp (-2 * ε ^ 2 / ((n : ℝ) * c ^ 2)) := by
   have hSharp := hasBoundedDifferences_tail_sharp
-    (μ := μ) hbdd hf hfi (fun _ => hc) hε
+    (μ := fun _ : Fin n => ν) hbdd hf hfi (fun _ => hc) hε
   have h_sum_real :
       (∑ _k : Fin n, c ^ 2) = (n : ℝ) * c ^ 2 := by
     rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
@@ -234,4 +234,3 @@ theorem sharp_mcdiarmid_inequality_iid_const_width
   exact hSharp
 
 end FormalSLT.Azuma.ExposureMartingale
-

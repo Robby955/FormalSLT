@@ -117,6 +117,10 @@ declarations; modules are relative to `FormalSLT`.
 | `mcdiarmid_of_hasBoundedDifferences_sharp` | `Concentration.SharpMcDiarmid` | Public wrapper for the sharp product bounded-differences tail |
 | `mcdiarmid_of_hasBoundedDifferences_sharp_lower` | `Concentration.SharpMcDiarmid` | Lower-tail wrapper obtained from the upper tail applied to `-f` |
 | `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp` | `Concentration.SharpMcDiarmid` | Two-sided homogeneous product bounded-differences tail `P(\|f - E[f]\| >= ε) <= 2 exp(-2ε² / sum_k c_k²)` |
+| `mcdiarmid_of_hasBoundedDifferences_sharp_hetero` | `Concentration.HeterogeneousMcDiarmid` | Heterogeneous-law product upper tail with the sharp McDiarmid exponent |
+| `mcdiarmid_of_hasBoundedDifferences_sharp_hetero_lower` | `Concentration.HeterogeneousMcDiarmid` | Heterogeneous-law product lower tail with the sharp McDiarmid exponent |
+| `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp_hetero` | `Concentration.HeterogeneousMcDiarmid` | Two-sided heterogeneous-law product tail `P(\|f - E[f]\| >= ε) <= 2 exp(-2ε² / sum_k c_k²)` |
+| `mcdiarmid_of_hasBoundedDifferences_sharp_of_hetero` | `Concentration.HeterogeneousMcDiarmid` | Homogeneous recovery from the heterogeneous product theorem by taking a constant law family |
 | `massart_finite_class` | `Rademacher.Massart` | `Rad(H,S) <= B * sqrt(2 * log card(H) / n)` |
 | `genGap_highProb_rademacher` | `Rademacher.HighProbability` | `P(genGap >= 2 * E[Rad] + ε) <= exp(-ε² n / (2B²))` |
 | `genGap_highProb_finiteClass` | `Rademacher.FiniteClassHighProb` | Massart plus sharp high-probability Rademacher |
@@ -435,6 +439,9 @@ declarations; modules are relative to `FormalSLT`.
 | `localizedFastRateHighConfidence_bernstein_fixedPoint_boundedExcess` | `Rademacher.Localized` | Conservative finite fast-rate high-confidence wrapper pairing the bounded-excess bad-event mass with the Bernstein/fixed-point payoff |
 | `klDiv_nonneg` | `PACBayesKL` | Finite KL divergence is nonnegative under full support |
 | `donsker_varadhan` | `PACBayesKL` | `sum ρ_i f_i <= KL(ρ||π) + log(sum π_i exp(f_i))` |
+| `continuous_donsker_varadhan` | `PACBayes.ContinuousChangeOfMeasure` | Measure-theoretic Donsker-Varadhan bound from Radon-Nikodym tilting |
+| `continuous_catoni_changeOfMeasure_bound` | `PACBayes.ContinuousChangeOfMeasure` | Continuous fixed-`lambda` Catoni change-of-measure bound from a prior log-MGF certificate |
+| `continuousPriorPosterior_certificate_derived` | `PACBayes.ContinuousPriorPosterior` | Continuous prior/posterior certificate with the PAC gate derived by change of measure |
 | `pacbayes_changeOfMeasure` | `PACBayesMcAllester` | Rescaled finite Donsker-Varadhan change-of-measure inequality |
 | `pacbayes_mcallester_deterministic` | `PACBayesMcAllester` | Deterministic PAC-Bayes posterior bound from a prior log-MGF certificate |
 | `pacbayes_mcallester_subGaussian` | `PACBayesMcAllester` | Fixed-`λ` sub-Gaussian deterministic PAC-Bayes bound |
@@ -473,6 +480,14 @@ declarations; modules are relative to `FormalSLT`.
 | `cond_markov_of_nonneg` | `Concentration.SubGamma.CondMarkov` | Conditional Markov-style inequality for nonnegative real functions |
 | `condExp_sq_eq_condVar_of_centered` | `Concentration.SubGamma.CondVarianceFromSquare` | Under conditional centering, the conditional second moment is the conditional variance proxy |
 | `condSubGammaMGF_of_bounded_centered_condVariance` | `Concentration.SubGamma.Extractor` | Boundedness, conditional centering, and a conditional second-moment proxy imply a conditional sub-Gamma MGF bound |
+
+## Anytime-valid confidence sequences
+
+| Theorem | Module | Role |
+|---|---|---|
+| `condExp_mixture_swap` | `AnytimeValid.MixtureCS` | Conditional-expectation swap for the mixture exponential process |
+| `mixture_is_supermartingale` | `AnytimeValid.MixtureCS` | Mixture of sub-Gamma exponential processes is a nonnegative supermartingale |
+| `atTop_time_uniform_confidence_sequence_subGamma_mixture` | `AnytimeValid.MixtureCS` | Time-uniform mixture confidence sequence from the sub-Gamma exponential supermartingale |
 
 ## Partial dependency view for the original finite-class spine
 

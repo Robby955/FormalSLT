@@ -65,7 +65,7 @@ noncomputable section
 namespace FormalSLT.Azuma.ExposureMartingale
 
 variable {n : ℕ} {Z : Type*} [MeasurableSpace Z]
-variable {μ : Measure Z}
+variable {μ : Fin n → Measure Z}
 
 /-- Hoeffding's symmetric-interval parameter `(‖2c‖₊ / 2)² = ‖c‖₊²`. -/
 private lemma hoeffding_param_eq_sq {c : ℝ} :
@@ -155,12 +155,12 @@ private lemma measurableSet_pair_agree_prefix
   · simp [hi]
 
 private lemma condExpKernel_ae_agree_prefix
-    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ] (k : Fin (n + 1)) :
-    ∀ᵐ S ∂((Measure.pi (fun _ : Fin n => μ)).trim (coordinateSubAlgebra_le_pi k)),
-      ∀ᵐ T ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+    [Nonempty Z] [StandardBorelSpace Z] [∀ i, IsProbabilityMeasure (μ i)] (k : Fin (n + 1)) :
+    ∀ᵐ S ∂((Measure.pi μ).trim (coordinateSubAlgebra_le_pi k)),
+      ∀ᵐ T ∂(condExpKernel (Measure.pi μ)
           (coordinateSubAlgebra n Z k) S),
         ∀ i : Fin n, (i : ℕ) < (k : ℕ) → T i = S i := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   have hm : coordinateSubAlgebra n Z k ≤ MeasurableSpace.pi :=
     coordinateSubAlgebra_le_pi k
   letI : MeasurableSpace ((Fin n → Z) × (Fin n → Z)) :=
@@ -192,19 +192,19 @@ Hoeffding lemma; it is stronger than the existing symmetric bound
 `exposureIncrement_hasCondSubgaussianMGF_sharp` packages this width statement as
 `HasCondSubgaussianMGF` with proxy `(‖c k‖₊ / 2)^2`. -/
 theorem exposureIncrement_condRange_width
-    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [StandardBorelSpace Z] [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     (k : Fin n) (hck : 0 ≤ c k) :
-    ∀ᵐ S ∂((Measure.pi (fun _ : Fin n => μ)).trim (coordinateSubAlgebra_le_pi k.castSucc)),
-      ∀ᵐ T ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+    ∀ᵐ S ∂((Measure.pi μ).trim (coordinateSubAlgebra_le_pi k.castSucc)),
+      ∀ᵐ T ∂(condExpKernel (Measure.pi μ)
           (coordinateSubAlgebra n Z k.castSucc) S),
-        ∀ᵐ T' ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+        ∀ᵐ T' ∂(condExpKernel (Measure.pi μ)
             (coordinateSubAlgebra n Z k.castSucc) S),
           |exposureIncrement μ f k T - exposureIncrement μ f k T'| ≤ c k := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   have hm : coordinateSubAlgebra n Z k.castSucc ≤ MeasurableSpace.pi :=
     coordinateSubAlgebra_le_pi k.castSucc
   have hprefix :
@@ -266,17 +266,17 @@ Proof sketch.
 * `integrable_exp_mul_of_mem_Icc` plus `condExpKernel_comp_trim` gives
   the global integrability field of `Kernel.HasSubgaussianMGF`. -/
 theorem exposureIncrement_hasCondSubgaussianMGF
-    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [StandardBorelSpace Z] [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     (k : Fin n) (hck : 0 ≤ c k) :
     HasCondSubgaussianMGF
       (m := coordinateSubAlgebra n Z k.castSucc)
       (coordinateSubAlgebra_le_pi k.castSucc)
       (exposureIncrement μ f k) (‖c k‖₊ ^ 2)
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      (Measure.pi μ) := by
   -- Local hypothesis: prefix σ-algebra ≤ full σ-algebra (used several times).
   have hm :
       coordinateSubAlgebra n Z k.castSucc
@@ -290,51 +290,51 @@ theorem exposureIncrement_hasCondSubgaussianMGF
     · exact stronglyMeasurable_condExp.mono (coordinateSubAlgebra_le_pi _)
     · exact stronglyMeasurable_condExp.mono (coordinateSubAlgebra_le_pi _)
   have hΔi : Integrable (exposureIncrement μ f k)
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      (Measure.pi μ) := by
     show Integrable (fun S =>
       exposureMartingale μ f k.succ S - exposureMartingale μ f k.castSucc S) _
     exact integrable_condExp.sub integrable_condExp
   -- Step 1: a.e. interval bound on μⁿ.
-  have h_bnd : ∀ᵐ S ∂(Measure.pi (fun _ : Fin n => μ)),
+  have h_bnd : ∀ᵐ S ∂(Measure.pi μ),
       exposureIncrement μ f k S ∈ Set.Icc (-c k) (c k) := by
     have h := abs_exposureIncrement_le_ae (μ := μ) hbdd hf hfi k hck
     filter_upwards [h] with S hS
     exact ⟨neg_le_of_abs_le hS, le_of_abs_le hS⟩
   -- Step 2: per-fiber a.e. interval bound (lift to the kernel).
-  have h_bnd_fib : ∀ᵐ ω' ∂((Measure.pi (fun _ : Fin n => μ)).trim hm),
-      ∀ᵐ ω ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+  have h_bnd_fib : ∀ᵐ ω' ∂((Measure.pi μ).trim hm),
+      ∀ᵐ ω ∂(condExpKernel (Measure.pi μ)
               (coordinateSubAlgebra n Z k.castSucc) ω'),
         exposureIncrement μ f k ω ∈ Set.Icc (-c k) (c k) := by
-    have h_eq : Measure.pi (fun _ : Fin n => μ)
-        = condExpKernel (Measure.pi (fun _ : Fin n => μ))
+    have h_eq : Measure.pi μ
+        = condExpKernel (Measure.pi μ)
             (coordinateSubAlgebra n Z k.castSucc)
-          ∘ₘ (Measure.pi (fun _ : Fin n => μ)).trim hm :=
+          ∘ₘ (Measure.pi μ).trim hm :=
       (condExpKernel_comp_trim hm).symm
     have h := h_bnd
     rw [h_eq] at h
     exact Measure.ae_ae_of_ae_comp h
   -- Step 3: per-fiber integral = 0.
-  have h_zero : ∀ᵐ ω' ∂((Measure.pi (fun _ : Fin n => μ)).trim hm),
+  have h_zero : ∀ᵐ ω' ∂((Measure.pi μ).trim hm),
       ∫ ω, exposureIncrement μ f k ω
-        ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+        ∂(condExpKernel (Measure.pi μ)
             (coordinateSubAlgebra n Z k.castSucc) ω') = 0 := by
     -- μⁿ[Δ_k | m] =ᵐ[μⁿ] 0  (existing).
     have h0 := exposureIncrement_condExp_eq_zero_ae (μ := μ) f k
     -- Both sides are `m`-strongly-measurable, so the equality descends to
     -- `μⁿ.trim hm`.
     have h0' :
-        (Measure.pi (fun _ : Fin n => μ))[
+        (Measure.pi μ)[
             exposureIncrement μ f k | coordinateSubAlgebra n Z k.castSucc]
-          =ᵐ[(Measure.pi (fun _ : Fin n => μ)).trim hm] 0 := by
+          =ᵐ[(Measure.pi μ).trim hm] 0 := by
       exact StronglyMeasurable.ae_eq_trim_of_stronglyMeasurable hm
         stronglyMeasurable_condExp stronglyMeasurable_const h0
     -- Kernel-integral form of conditional expectation, μⁿ.trim hm-a.e.
     have h1 :
-        (Measure.pi (fun _ : Fin n => μ))[
+        (Measure.pi μ)[
             exposureIncrement μ f k | coordinateSubAlgebra n Z k.castSucc]
-          =ᵐ[(Measure.pi (fun _ : Fin n => μ)).trim hm]
+          =ᵐ[(Measure.pi μ).trim hm]
           fun ω' => ∫ ω, exposureIncrement μ f k ω
-            ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+            ∂(condExpKernel (Measure.pi μ)
                 (coordinateSubAlgebra n Z k.castSucc) ω') :=
       condExp_ae_eq_trim_integral_condExpKernel hm hΔi
     filter_upwards [h0', h1] with ω' h0_ω' h1_ω'
@@ -342,9 +342,9 @@ theorem exposureIncrement_hasCondSubgaussianMGF
     simpa using hcombine
   -- Step 4: assemble Kernel.HasSubgaussianMGF.
   show Kernel.HasSubgaussianMGF (exposureIncrement μ f k) (‖c k‖₊ ^ 2)
-    (condExpKernel (Measure.pi (fun _ : Fin n => μ))
+    (condExpKernel (Measure.pi μ)
       (coordinateSubAlgebra n Z k.castSucc))
-    ((Measure.pi (fun _ : Fin n => μ)).trim hm)
+    ((Measure.pi μ).trim hm)
   refine
     { integrable_exp_mul := ?_
       mgf_le := ?_ }
@@ -356,12 +356,12 @@ theorem exposureIncrement_hasCondSubgaussianMGF
     filter_upwards [h_bnd_fib, h_zero] with ω' h_bnd_ω' h_zero_ω' t
     -- The kernel value at ω' is a probability measure (Markov kernel).
     haveI : IsProbabilityMeasure
-        (condExpKernel (Measure.pi (fun _ : Fin n => μ))
+        (condExpKernel (Measure.pi μ)
           (coordinateSubAlgebra n Z k.castSucc) ω') := inferInstance
     -- Hoeffding's lemma fiberwise.
     have h_mgf :=
       hasSubgaussianMGF_of_mem_Icc_of_integral_eq_zero
-        (μ := condExpKernel (Measure.pi (fun _ : Fin n => μ))
+        (μ := condExpKernel (Measure.pi μ)
                 (coordinateSubAlgebra n Z k.castSucc) ω')
         hΔm.aemeasurable h_bnd_ω' h_zero_ω'
     have hbound := h_mgf.mgf_le t
@@ -371,7 +371,7 @@ theorem exposureIncrement_hasCondSubgaussianMGF
           = ((‖c k‖₊ : ℝ≥0) ^ 2 : ℝ) := by
       exact_mod_cast hoeffding_param_eq_sq (c := c k)
     calc mgf (exposureIncrement μ f k)
-            (condExpKernel (Measure.pi (fun _ : Fin n => μ))
+            (condExpKernel (Measure.pi μ)
               (coordinateSubAlgebra n Z k.castSucc) ω') t
         ≤ Real.exp (((‖c k - (-c k)‖₊ / 2 : ℝ≥0) ^ 2 : ℝ) * t ^ 2 / 2) := hbound
       _ = Real.exp (((‖c k‖₊ ^ 2 : ℝ≥0) : ℝ) * t ^ 2 / 2) := by
@@ -392,17 +392,17 @@ applies fiberwise with proxy `(‖c k‖₊ / 2)²`.
 This is the load-bearing per-increment result for the sharp McDiarmid
 constant; the summed tail theorem is a downstream assembly step. -/
 theorem exposureIncrement_hasCondSubgaussianMGF_sharp
-    [Nonempty Z] [StandardBorelSpace Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [StandardBorelSpace Z] [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     (k : Fin n) (hck : 0 ≤ c k) :
     HasCondSubgaussianMGF
       (m := coordinateSubAlgebra n Z k.castSucc)
       (coordinateSubAlgebra_le_pi k.castSucc)
       (exposureIncrement μ f k) ((‖c k‖₊ / 2 : ℝ≥0) ^ 2)
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      (Measure.pi μ) := by
   have hm :
       coordinateSubAlgebra n Z k.castSucc
         ≤ (MeasurableSpace.pi : MeasurableSpace (Fin n → Z)) :=
@@ -414,40 +414,40 @@ theorem exposureIncrement_hasCondSubgaussianMGF_sharp
     · exact stronglyMeasurable_condExp.mono (coordinateSubAlgebra_le_pi _)
     · exact stronglyMeasurable_condExp.mono (coordinateSubAlgebra_le_pi _)
   have hΔi : Integrable (exposureIncrement μ f k)
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      (Measure.pi μ) := by
     show Integrable (fun S =>
       exposureMartingale μ f k.succ S - exposureMartingale μ f k.castSucc S) _
     exact integrable_condExp.sub integrable_condExp
-  have h_bnd : ∀ᵐ S ∂(Measure.pi (fun _ : Fin n => μ)),
+  have h_bnd : ∀ᵐ S ∂(Measure.pi μ),
       exposureIncrement μ f k S ∈ Set.Icc (-c k) (c k) := by
     have h := abs_exposureIncrement_le_ae (μ := μ) hbdd hf hfi k hck
     filter_upwards [h] with S hS
     exact ⟨neg_le_of_abs_le hS, le_of_abs_le hS⟩
   have h_width :
-      ∀ᵐ S ∂((Measure.pi (fun _ : Fin n => μ)).trim hm),
-        ∀ᵐ T ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+      ∀ᵐ S ∂((Measure.pi μ).trim hm),
+        ∀ᵐ T ∂(condExpKernel (Measure.pi μ)
             (coordinateSubAlgebra n Z k.castSucc) S),
-          ∀ᵐ T' ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+          ∀ᵐ T' ∂(condExpKernel (Measure.pi μ)
               (coordinateSubAlgebra n Z k.castSucc) S),
             |exposureIncrement μ f k T - exposureIncrement μ f k T'| ≤ c k :=
     exposureIncrement_condRange_width (μ := μ) hbdd hf hfi k hck
-  have h_zero : ∀ᵐ ω' ∂((Measure.pi (fun _ : Fin n => μ)).trim hm),
+  have h_zero : ∀ᵐ ω' ∂((Measure.pi μ).trim hm),
       ∫ ω, exposureIncrement μ f k ω
-        ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+        ∂(condExpKernel (Measure.pi μ)
             (coordinateSubAlgebra n Z k.castSucc) ω') = 0 := by
     have h0 := exposureIncrement_condExp_eq_zero_ae (μ := μ) f k
     have h0' :
-        (Measure.pi (fun _ : Fin n => μ))[
+        (Measure.pi μ)[
             exposureIncrement μ f k | coordinateSubAlgebra n Z k.castSucc]
-          =ᵐ[(Measure.pi (fun _ : Fin n => μ)).trim hm] 0 := by
+          =ᵐ[(Measure.pi μ).trim hm] 0 := by
       exact StronglyMeasurable.ae_eq_trim_of_stronglyMeasurable hm
         stronglyMeasurable_condExp stronglyMeasurable_const h0
     have h1 :
-        (Measure.pi (fun _ : Fin n => μ))[
+        (Measure.pi μ)[
             exposureIncrement μ f k | coordinateSubAlgebra n Z k.castSucc]
-          =ᵐ[(Measure.pi (fun _ : Fin n => μ)).trim hm]
+          =ᵐ[(Measure.pi μ).trim hm]
           fun ω' => ∫ ω, exposureIncrement μ f k ω
-            ∂(condExpKernel (Measure.pi (fun _ : Fin n => μ))
+            ∂(condExpKernel (Measure.pi μ)
                 (coordinateSubAlgebra n Z k.castSucc) ω') :=
       condExp_ae_eq_trim_integral_condExpKernel hm hΔi
     filter_upwards [h0', h1] with ω' h0_ω' h1_ω'
@@ -455,9 +455,9 @@ theorem exposureIncrement_hasCondSubgaussianMGF_sharp
     simpa using hcombine
   show Kernel.HasSubgaussianMGF (exposureIncrement μ f k)
     ((‖c k‖₊ / 2 : ℝ≥0) ^ 2)
-    (condExpKernel (Measure.pi (fun _ : Fin n => μ))
+    (condExpKernel (Measure.pi μ)
       (coordinateSubAlgebra n Z k.castSucc))
-    ((Measure.pi (fun _ : Fin n => μ)).trim hm)
+    ((Measure.pi μ).trim hm)
   refine
     { integrable_exp_mul := ?_
       mgf_le := ?_ }
@@ -466,7 +466,7 @@ theorem exposureIncrement_hasCondSubgaussianMGF_sharp
     exact integrable_exp_mul_of_mem_Icc hΔm.aemeasurable h_bnd
   · filter_upwards [h_width, h_zero] with ω' h_width_ω' h_zero_ω' t
     let κω : Measure (Fin n → Z) :=
-      condExpKernel (Measure.pi (fun _ : Fin n => μ))
+      condExpKernel (Measure.pi μ)
         (coordinateSubAlgebra n Z k.castSucc) ω'
     haveI : IsProbabilityMeasure κω := by
       dsimp [κω]
