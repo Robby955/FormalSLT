@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 71,
-    "library_and_example_lean_lines": 50670,
-    "library_lean_lines": 47378,
-    "library_modules": 111,
-    "theorem_map_entries": 412
+    "example_lean_files": 76,
+    "library_and_example_lean_lines": 52354,
+    "library_lean_lines": 48868,
+    "library_modules": 116,
+    "theorem_map_entries": 415
   },
   "theorem_families": [
     {
@@ -654,6 +654,24 @@
           "module": "Concentration.SharpMcDiarmid",
           "name": "mcdiarmid_of_hasBoundedDifferences_sharp_lower",
           "summary": "Lower-tail wrapper obtained from the upper tail applied to -f"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero",
+          "summary": "Heterogeneous-law product upper tail with the sharp McDiarmid exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero_lower",
+          "summary": "Heterogeneous-law product lower tail with the sharp McDiarmid exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_of_hasBoundedDifferences_sharp_of_hetero",
+          "summary": "Homogeneous recovery from the heterogeneous product theorem by taking a constant law family"
         },
         {
           "kind": "theorem",

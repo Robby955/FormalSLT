@@ -51,7 +51,7 @@ noncomputable section
 namespace FormalSLT.Azuma.ExposureMartingale
 
 variable {n : ℕ} {Z : Type*} [MeasurableSpace Z]
-variable {μ : Measure Z}
+variable {μ : Fin n → Measure Z}
 
 /-! ### Step 1: Conditional mean-zero of the increment -/
 
@@ -66,13 +66,13 @@ property (mathlib's `Filtration.condExp_condExp`),
 since `F_{k.castSucc} ≤ F_{k.succ}` (`Fin.castSucc_lt_succ`).
 The difference is therefore zero a.e. -/
 theorem exposureIncrement_condExp_eq_zero_ae
-    [IsFiniteMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsFiniteMeasure (Measure.pi μ)]
     (f : (Fin n → Z) → ℝ) (k : Fin n) :
-    (Measure.pi (fun _ : Fin n => μ))[
+    (Measure.pi μ)[
       exposureIncrement μ f k
         | coordinateSubAlgebra n Z k.castSucc]
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)] 0 := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ)
+      =ᵐ[Measure.pi μ] 0 := by
+  set μn : Measure (Fin n → Z) := Measure.pi μ
   set ℱ := coordinateFiltration n Z
   have h_le : k.castSucc ≤ k.succ := Fin.castSucc_lt_succ.le
   -- Tower: μⁿ[μⁿ[f | ℱ k.succ] | ℱ k.castSucc] =ᵐ μⁿ[f | ℱ k.castSucc].
@@ -124,13 +124,13 @@ equals `partialIntegral_{k.succ} f - partialIntegral_{k.castSucc} f`
 a.e., and `abs_partialIntegral_step_le` gives the pointwise bound by
 `c k` for the partial-integral difference. -/
 theorem abs_exposureIncrement_le_ae
-    [Nonempty Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     (k : Fin n) (hck : 0 ≤ c k) :
-    ∀ᵐ S ∂(Measure.pi (fun _ : Fin n => μ)),
+    ∀ᵐ S ∂(Measure.pi μ),
       |exposureIncrement μ f k S| ≤ c k := by
   -- Rewrite Δ_k as partialIntegral diff (a.e.).
   have h_eq :=

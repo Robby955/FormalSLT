@@ -52,7 +52,7 @@ namespace FormalSLT.Azuma.ExposureMartingale
 
 open MeasureTheory Filter
 
-variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Measure Z}
+variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Fin n → Measure Z}
 
 /-! ### Exposure-martingale increments -/
 
@@ -60,7 +60,7 @@ variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Measure Z}
 martingale of `f`:
 `exposureIncrement μ f k S = M_{k+1} S - M_k S`. -/
 noncomputable def exposureIncrement
-    (μ : Measure Z) (f : (Fin n → Z) → ℝ) (k : Fin n) :
+    (μ : Fin n → Measure Z) (f : (Fin n → Z) → ℝ) (k : Fin n) :
     (Fin n → Z) → ℝ :=
   fun S =>
     exposureMartingale μ f k.succ S - exposureMartingale μ f k.castSucc S
@@ -85,12 +85,12 @@ lemma sum_exposureIncrement_eq
 (`sum_exposureIncrement_eq`) with the endpoint identities
 (`exposureMartingale_zero_ae`, `exposureMartingale_last_ae`). -/
 lemma sum_exposureIncrement_eq_ae
-    [IsProbabilityMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsProbabilityMeasure (Measure.pi μ)]
     {f : (Fin n → Z) → ℝ} (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ))) :
+    (hfi : Integrable f (Measure.pi μ)) :
     (fun S => ∑ k : Fin n, exposureIncrement μ f k S)
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)]
-        fun S => f S - ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) := by
+      =ᵐ[Measure.pi μ]
+        fun S => f S - ∫ s, f s ∂(Measure.pi μ) := by
   -- M_n S =ᵐ f S, M_0 S =ᵐ ∫ f. Combine with the pointwise identity.
   have h_last := exposureMartingale_last_ae (μ := μ) hf hfi
   have h_zero := exposureMartingale_zero_ae (μ := μ) f

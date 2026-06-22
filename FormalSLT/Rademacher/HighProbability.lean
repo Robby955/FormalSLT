@@ -105,7 +105,7 @@ theorem genGap_highProb_rademacher {ι : Type*} [Fintype ι] [Nonempty ι]
       ≤ Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   -- The sharp McDiarmid tail bound gives:
   -- P(genGap S ≥ E[genGap] + ε) ≤ exp(-ε²n/(2B²))
-  have h_tail := genGap_tail_bound_sharp_explicit (μ := μ) hB hℓ_meas hℓ_bdd hn hε
+  have h_tail := genGap_tail_bound_sharp_explicit (ν := μ) hB hℓ_meas hℓ_bdd hn hε
   -- Unfold piMeasure in the tail bound to match our goal.
   simp only [piMeasure] at h_tail ⊢
   -- The Rademacher symmetrization theorem gives:

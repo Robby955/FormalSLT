@@ -141,7 +141,7 @@ theorem sharp_mcdiarmid_inequality_iid_const_width_addendum
         {S | ∫ s, f s ∂(Measure.pi (fun _ : Fin n => μ)) + ε ≤ f S}
       ≤ Real.exp (-2 * ε ^ 2 / ((n : ℝ) * c ^ 2)) :=
   FormalSLT.Azuma.ExposureMartingale.sharp_mcdiarmid_inequality_iid_const_width
-    (μ := μ) hc hbdd hf hfi hε
+    (ν := μ) hc hbdd hf hfi hε
 
 /-! ### Step 2: Bousquet-Elisseeff centered concentration -/
 

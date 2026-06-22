@@ -54,7 +54,7 @@ namespace FormalSLT.Azuma.ExposureMartingale
 
 open MeasureTheory MeasurableSpace Filter
 
-variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Measure Z}
+variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Fin n → Measure Z}
 
 /-! ### Splice: combine prefix and tail coordinates
 
@@ -136,18 +136,18 @@ variable (μ) in
 /-- The prefix/tail integral candidate for the Doob exposure martingale. -/
 noncomputable def partialIntegral (k : Fin (n + 1)) (f : (Fin n → Z) → ℝ) :
     (Fin n → Z) → ℝ :=
-  fun S => ∫ T, f (splice k S T) ∂(Measure.pi (fun _ : Fin n => μ))
+  fun S => ∫ T, f (splice k S T) ∂(Measure.pi μ)
 
 /-- At `k = 0`, the prefix is empty, so the candidate equals the
 unconditional expectation of `f`. -/
 lemma partialIntegral_zero (f : (Fin n → Z) → ℝ) (S : Fin n → Z) :
-    partialIntegral μ 0 f S = ∫ T, f T ∂(Measure.pi (fun _ : Fin n => μ)) := by
+    partialIntegral μ 0 f S = ∫ T, f T ∂(Measure.pi μ) := by
   simp [partialIntegral]
 
 /-- At `k = Fin.last n`, the prefix is the full sample, so the
 candidate equals `f S` (under a probability measure). -/
 lemma partialIntegral_last
-    [IsProbabilityMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsProbabilityMeasure (Measure.pi μ)]
     (f : (Fin n → Z) → ℝ) (S : Fin n → Z) :
     partialIntegral μ (Fin.last n) f S = f S := by
   unfold partialIntegral
@@ -184,7 +184,7 @@ to factor `partialIntegral` through the prefix coordinates. -/
 /-- Strong measurability of `partialIntegral` w.r.t. the full product
 σ-algebra on `Fin n → Z`. -/
 lemma stronglyMeasurable_partialIntegral
-    [SFinite (Measure.pi (fun _ : Fin n => μ))]
+    [SFinite (Measure.pi μ)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f) :
     StronglyMeasurable (partialIntegral μ k f) := by
@@ -290,7 +290,7 @@ private lemma partialIntegral_eq_comp_prefixToFull
 `coordinateSubAlgebra n Z k`. The proof factors `partialIntegral`
 through the prefix-only round-trip `prefixToFull`. -/
 lemma stronglyMeasurable_coordinateSubAlgebra_partialIntegral
-    [SFinite (Measure.pi (fun _ : Fin n => μ))]
+    [SFinite (Measure.pi μ)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f) :
     StronglyMeasurable[coordinateSubAlgebra n Z k]
@@ -317,7 +317,7 @@ prefix/tail integral identification of the exposure martingale. -/
 
 section SpliceMeasurePreserving
 
-variable [IsProbabilityMeasure μ]
+variable [∀ i, IsProbabilityMeasure (μ i)]
 
 /-- The prefix/tail predicate viewed as a `DecidablePred`. -/
 private abbrev splicePred (k : Fin (n + 1)) : Fin n → Prop :=
@@ -362,36 +362,36 @@ private lemma measurePreserving_pairProj (k : Fin (n + 1)) :
           fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => ST.2 i.val) :
           ((i : {i : Fin n // (i : ℕ) < (k : ℕ)}) → Z) ×
             ((i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))}) → Z)))
-      ((Measure.pi (fun _ : Fin n => μ)).prod (Measure.pi (fun _ : Fin n => μ)))
-      ((Measure.pi (fun _ : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ)).prod
-        (Measure.pi (fun _ : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ))) := by
+      ((Measure.pi μ).prod (Measure.pi μ))
+      ((Measure.pi (fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ i.val)).prod
+        (Measure.pi (fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ i.val))) := by
   -- ψ : μⁿ ≃ᵐ μ^prefix × μ^tail is MP.
   have hψ :
       MeasurePreserving (spliceEquiv (Z := Z) k)
-        (Measure.pi (fun _ : Fin n => μ))
-        ((Measure.pi (fun _ : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ)).prod
-          (Measure.pi (fun _ : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ))) :=
-    measurePreserving_piEquivPiSubtypeProd (fun _ : Fin n => μ)
+        (Measure.pi μ)
+        ((Measure.pi (fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ i.val)).prod
+          (Measure.pi (fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ i.val))) :=
+    measurePreserving_piEquivPiSubtypeProd μ
       (splicePred (n := n) k)
   -- proj_p := Prod.fst ∘ ψ, MP from μⁿ to μ^prefix (uses prob measure on tail).
   have hψ_fst :
       MeasurePreserving
         (fun S : Fin n → Z => fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => S i.val)
-        (Measure.pi (fun _ : Fin n => μ))
-        (Measure.pi (fun _ : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ)) := by
+        (Measure.pi μ)
+        (Measure.pi (fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ i.val)) := by
     have h := (measurePreserving_fst
-      (μ := Measure.pi (fun _ : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ))
-      (ν := Measure.pi (fun _ : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ))).comp hψ
+      (μ := Measure.pi (fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ i.val))
+      (ν := Measure.pi (fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ i.val))).comp hψ
     exact h
   -- proj_q := Prod.snd ∘ ψ, MP from μⁿ to μ^tail.
   have hψ_snd :
       MeasurePreserving
         (fun T : Fin n → Z => fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => T i.val)
-        (Measure.pi (fun _ : Fin n => μ))
-        (Measure.pi (fun _ : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ)) := by
+        (Measure.pi μ)
+        (Measure.pi (fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ i.val)) := by
     have h := (measurePreserving_snd
-      (μ := Measure.pi (fun _ : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ))
-      (ν := Measure.pi (fun _ : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ))).comp hψ
+      (μ := Measure.pi (fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ i.val))
+      (ν := Measure.pi (fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ i.val))).comp hψ
     exact h
   -- Combined product map is MP.
   exact MeasurePreserving.prod hψ_fst hψ_snd
@@ -400,15 +400,15 @@ private lemma measurePreserving_pairProj (k : Fin (n + 1)) :
 `(S, T) ↦ splice k S T` is measure-preserving from `μⁿ × μⁿ` to `μⁿ`. -/
 lemma measurePreserving_splice (k : Fin (n + 1)) :
     MeasurePreserving (fun ST : (Fin n → Z) × (Fin n → Z) => splice k ST.1 ST.2)
-      ((Measure.pi (fun _ : Fin n => μ)).prod (Measure.pi (fun _ : Fin n => μ)))
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      ((Measure.pi μ).prod (Measure.pi μ))
+      (Measure.pi μ) := by
   -- ψ⁻¹ : μ^prefix × μ^tail → μⁿ is MP.
   have hψ_symm :
       MeasurePreserving (spliceEquiv (Z := Z) k).symm
-        ((Measure.pi (fun _ : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ)).prod
-          (Measure.pi (fun _ : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ)))
-        (Measure.pi (fun _ : Fin n => μ)) :=
-    (measurePreserving_piEquivPiSubtypeProd (fun _ : Fin n => μ)
+        ((Measure.pi (fun i : {i : Fin n // (i : ℕ) < (k : ℕ)} => μ i.val)).prod
+          (Measure.pi (fun i : {i : Fin n // ¬ ((i : ℕ) < (k : ℕ))} => μ i.val)))
+        (Measure.pi μ) :=
+    (measurePreserving_piEquivPiSubtypeProd μ
       (splicePred (n := n) k)).symm _
   -- Compose ψ⁻¹ with the pair-projection map; the composition is the splice.
   have h_fun :
@@ -494,13 +494,13 @@ private lemma mem_iff_of_agree_prefix
 /-- `partialIntegral μ k f` is integrable when `f` is. -/
 lemma integrable_partialIntegral
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
-    (hf : Integrable f (Measure.pi (fun _ : Fin n => μ))) :
-    Integrable (partialIntegral μ k f) (Measure.pi (fun _ : Fin n => μ)) := by
+    (hf : Integrable f (Measure.pi μ)) :
+    Integrable (partialIntegral μ k f) (Measure.pi μ) := by
   -- g (S, T) := f (splice k S T) is integrable on μⁿ × μⁿ by splice MP.
   have hg :
       Integrable (fun ST : (Fin n → Z) × (Fin n → Z) => f (splice k ST.1 ST.2))
-        ((Measure.pi (fun _ : Fin n => μ)).prod
-          (Measure.pi (fun _ : Fin n => μ))) :=
+        ((Measure.pi μ).prod
+          (Measure.pi μ)) :=
     (measurePreserving_splice (Z := Z) (μ := μ) k).integrable_comp_of_integrable hf
   -- partialIntegral = inner integral of g; use Integrable.integral_prod_left.
   exact hg.integral_prod_left
@@ -508,15 +508,15 @@ lemma integrable_partialIntegral
 /-- The set-integral identity: for any `ℱ_k`-measurable set `s`,
 the set-integral of `partialIntegral μ k f` equals that of `f`. -/
 lemma setIntegral_partialIntegral_eq
-    [IsProbabilityMeasure μ]
+    [∀ i, IsProbabilityMeasure (μ i)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     {s : Set (Fin n → Z)}
     (hs : MeasurableSet[coordinateSubAlgebra n Z k] s) :
-    ∫ x in s, partialIntegral μ k f x ∂(Measure.pi (fun _ : Fin n => μ))
-      = ∫ x in s, f x ∂(Measure.pi (fun _ : Fin n => μ)) := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+    ∫ x in s, partialIntegral μ k f x ∂(Measure.pi μ)
+      = ∫ x in s, f x ∂(Measure.pi μ) := by
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   have hs_pi : MeasurableSet s := coordinateSubAlgebra_le_pi k s hs
   have hMP := measurePreserving_splice (Z := Z) (μ := μ) k
   -- Joint integrability of (S, T) ↦ f(splice k S T) on μn × μn.
@@ -592,14 +592,14 @@ This is the conditional-expectation identification: it says that
 `M_k S = E[f | first k coords](S)` admits the explicit prefix/tail
 integral representation `partialIntegral μ k f S = ∫ T, f(splice k S T) ∂μⁿ`. -/
 theorem partialIntegral_eq_condExp_ae
-    [IsProbabilityMeasure μ]
+    [∀ i, IsProbabilityMeasure (μ i)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ))) :
+    (hfi : Integrable f (Measure.pi μ)) :
     partialIntegral μ k f
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)]
-        (Measure.pi (fun _ : Fin n => μ))[f | coordinateSubAlgebra n Z k] := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+      =ᵐ[Measure.pi μ]
+        (Measure.pi μ)[f | coordinateSubAlgebra n Z k] := by
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   have hm : coordinateSubAlgebra n Z k ≤
       (inferInstance : MeasurableSpace (Fin n → Z)) :=
     coordinateSubAlgebra_le_pi k

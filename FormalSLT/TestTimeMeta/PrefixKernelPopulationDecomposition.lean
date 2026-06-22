@@ -75,7 +75,7 @@ theorem prefixKernelDeviationBadEventMass_le_exp_of_sharpMcDiarmid
     (Measure.pi (fun _ : Fin n => μ)).real (prefixKernelDeviationBadEvent μ f ε)
       ≤ Real.exp (-2 * ε ^ 2 / ((n : ℝ) * c ^ 2)) := by
   have hTail :=
-    sharp_mcdiarmid_inequality_iid_const_width (μ := μ) (f := fun S => -f S) (c := c)
+    sharp_mcdiarmid_inequality_iid_const_width (ν := μ) (f := fun S => -f S) (c := c)
       hc hbdd.neg hf.neg hfi.neg hε
   have hset :
       {S | (∫ s, (-f s) ∂(Measure.pi (fun _ : Fin n => μ))) + ε ≤ -f S}

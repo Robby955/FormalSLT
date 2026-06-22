@@ -58,7 +58,7 @@ namespace FormalSLT.Azuma.ExposureMartingale
 open MeasureTheory Filter
 open FormalSLT.Azuma.BoundedDifferences (HasBoundedDifferences)
 
-variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Measure Z}
+variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Fin n → Measure Z}
 
 /-! ### Step 1: Exposure martingale equals the partial integral, a.e. -/
 
@@ -67,12 +67,12 @@ everywhere. Direct corollary of `partialIntegral_eq_condExp_ae`
 (sub-PR 2c-2) combined with the definition of the exposure martingale
 as `μⁿ[f | coordinateSubAlgebra n Z k]`. -/
 theorem exposureMartingale_eq_partialIntegral_ae
-    [Nonempty Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [∀ i, IsProbabilityMeasure (μ i)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ))) :
+    (hfi : Integrable f (Measure.pi μ)) :
     exposureMartingale μ f k
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)] partialIntegral μ k f :=
+      =ᵐ[Measure.pi μ] partialIntegral μ k f :=
   (partialIntegral_eq_condExp_ae k hf hfi).symm
 
 /-! ### Step 2: Increment representation -/
@@ -80,12 +80,12 @@ theorem exposureMartingale_eq_partialIntegral_ae
 /-- The exposure-martingale increment expressed as the difference of two
 partial integrals at consecutive prefix lengths. -/
 theorem exposureIncrement_eq_partialIntegral_diff_ae
-    [Nonempty Z] [IsProbabilityMeasure μ]
+    [Nonempty Z] [∀ i, IsProbabilityMeasure (μ i)]
     (k : Fin n) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ))) :
+    (hfi : Integrable f (Measure.pi μ)) :
     exposureIncrement μ f k
-      =ᵐ[Measure.pi (fun _ : Fin n => μ)]
+      =ᵐ[Measure.pi μ]
         fun S => partialIntegral μ k.succ f S - partialIntegral μ k.castSucc f S := by
   have h_succ := exposureMartingale_eq_partialIntegral_ae k.succ hf hfi
   have h_castSucc := exposureMartingale_eq_partialIntegral_ae k.castSucc hf hfi
@@ -199,16 +199,16 @@ update at index `k`. The bounded-difference hypothesis bounds the gap
 in absolute value, so integrability of one form follows from
 integrability of the other. -/
 private lemma integrable_splice_succ_of_castSucc
-    [IsFiniteMeasure (Measure.pi (fun _ : Fin n => μ))]
+    [IsFiniteMeasure (Measure.pi μ)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f) (k : Fin n) (S : Fin n → Z)
     (hint_cast : Integrable (fun T => f (splice k.castSucc S T))
-      (Measure.pi (fun _ : Fin n => μ))) :
+      (Measure.pi μ)) :
     Integrable (fun T => f (splice k.succ S T))
-      (Measure.pi (fun _ : Fin n => μ)) := by
+      (Measure.pi μ) := by
   -- ‖f(splice k.succ S T)‖ ≤ ‖f(splice k.castSucc S T)‖ + c k by triangle inequality.
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ)
+  set μn : Measure (Fin n → Z) := Measure.pi μ
   have h_meas : StronglyMeasurable (fun T => f (splice k.succ S T)) :=
     stronglyMeasurable_splice_partial k.succ hf S
   -- Build the dominating function g(T) = ‖f(splice k.castSucc S T)‖ + c k.
@@ -249,14 +249,14 @@ fallback case; under bounded differences with non-negative widths
 (the only case used in McDiarmid) it is automatic. -/
 set_option linter.unusedVariables false in
 theorem abs_partialIntegral_step_le
-    [IsProbabilityMeasure μ]
+    [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
-    (hfi : Integrable f (Measure.pi (fun _ : Fin n => μ)))
+    (hfi : Integrable f (Measure.pi μ))
     (k : Fin n) (hck : 0 ≤ c k) (S : Fin n → Z) :
     |partialIntegral μ k.succ f S - partialIntegral μ k.castSucc f S| ≤ c k := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   -- Integrability of the inner integrand at `S` is the issue.
   by_cases hint_cast :
       Integrable (fun T => f (splice k.castSucc S T)) μn
@@ -334,14 +334,14 @@ partial-integral statement before any conditional-kernel lift. -/
 /-- If two samples agree on the prefix before `k`, then their `k.succ`
 partial integrals differ by at most the coordinate width `c k`. -/
 theorem abs_partialIntegral_succ_sub_succ_le_of_agree_prefix
-    [IsProbabilityMeasure μ]
+    [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
     (k : Fin n) (hck : 0 ≤ c k) (S S' : Fin n → Z)
     (hprefix : ∀ i : Fin n, (i : ℕ) < (k : ℕ) → S i = S' i) :
     |partialIntegral μ k.succ f S - partialIntegral μ k.succ f S'| ≤ c k := by
-  set μn : Measure (Fin n → Z) := Measure.pi (fun _ : Fin n => μ) with hμn
+  set μn : Measure (Fin n → Z) := Measure.pi μ with hμn
   by_cases hint :
       Integrable (fun T => f (splice k.succ S T)) μn
   · have hint' : Integrable (fun T => f (splice k.succ S' T)) μn := by
@@ -423,7 +423,7 @@ theorem abs_partialIntegral_succ_sub_succ_le_of_agree_prefix
 increment `P_{k+1} - P_k`: fixing the prefix before `k`, the increment's
 range as the `k`th coordinate varies has width at most `c k`. -/
 theorem abs_partialIntegral_step_sub_step_le_of_agree_prefix
-    [IsProbabilityMeasure μ]
+    [∀ i, IsProbabilityMeasure (μ i)]
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
     (hf : StronglyMeasurable f)
