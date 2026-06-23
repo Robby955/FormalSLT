@@ -5,6 +5,7 @@
 import FormalSLT.Risk
 import FormalSLT.ERM
 import FormalSLT.UniformConvergence
+import FormalSLT.GlivenkoCantelli
 import FormalSLT.GhostSample
 
 import FormalSLT.Probability.Concentration
