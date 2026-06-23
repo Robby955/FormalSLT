@@ -8,7 +8,10 @@ Checks the variance-adaptive anytime-valid surface:
 * a conditional Bernstein MGF with a random predictable variance proxy;
 * a fixed-lambda time-uniform confidence sequence;
 * a uniform-prior mixture headline with no free product-measurability hypotheses;
-* a rational non-vacuity witness.
+* a rational arithmetic check of the closed-form boundary helper.
+
+The genuine nonzero (`±1` Rademacher increment) non-vacuity witness for the
+uniform-prior headline is in `CheckEmpiricalBernsteinNonVacuityWitness.lean`.
 -/
 
 open MeasureTheory ProbabilityTheory

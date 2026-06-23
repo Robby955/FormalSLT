@@ -88,11 +88,14 @@ theorem measurable_empiricalBernsteinExponentialProcess_prod {Ω : Type*} [Measu
       | intro i _; exact (hX_meas i).comp measurable_snd
       | intro i _; exact (hV_meas i).comp measurable_snd)
 
-/-- Each fixed-tilt empirical-Bernstein process is adapted once `X` and `V` are adapted. -/
+/-- Each fixed-tilt empirical-Bernstein process is adapted once the increment process is
+predictable-increment adapted (`X_k` is `ℱ (k+1)`-measurable) and the variance proxy `V` is
+`ℱ`-adapted (predictable). The running sum `S_n` is `ℱ n`-measurable because it only involves
+`X_0, …, X_{n-1}` and `i < n ⟹ i + 1 ≤ n`. -/
 theorem stronglyAdapted_empiricalBernsteinExponentialProcess_of_adapted
     {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
     {X V : ℕ → Ω → ℝ} (b lam : ℝ)
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V) :
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V) :
     StronglyAdapted ℱ (empiricalBernsteinExponentialProcess X V b lam) := by
   intro n
   have hsumX : StronglyMeasurable[ℱ n] (fun ω => runningSum X n ω) := by
@@ -103,7 +106,7 @@ theorem stronglyAdapted_empiricalBernsteinExponentialProcess_of_adapted
     apply Finset.stronglyMeasurable_sum
     intro i hi
     rw [Finset.mem_range] at hi
-    exact (hX_adapted i).mono (ℱ.mono (le_of_lt hi))
+    exact (hX_adapted i).mono (ℱ.mono (Nat.succ_le_of_lt hi))
   have hsumV : StronglyMeasurable[ℱ n] (fun ω => runningVarianceProxy V n ω) := by
     have hrw : (fun ω => runningVarianceProxy V n ω) = ∑ i ∈ Finset.range n, V i := by
       funext ω
@@ -305,7 +308,7 @@ theorem empiricalBernstein_exponential_supermartingale
     (hb : 0 < b) (hlam : 0 ≤ lam) (hblam : b * lam < 3)
     (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
     (hV_meas : ∀ k, Measurable (V k))
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
     (hV_nonneg : ∀ k, 0 ≤ V k)
     (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
     (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
@@ -416,7 +419,15 @@ theorem empiricalBernsteinUpperFailure_subset_exponential_crossing
   rw [← Real.exp_log hdelta_inv_pos]
   exact Real.exp_le_exp.2 hlog_le
 
-/-- Fixed-lambda anytime-valid empirical-Bernstein confidence sequence. -/
+/-- Fixed-lambda anytime-valid empirical-Bernstein confidence sequence.
+
+The increment model is a genuine martingale-difference sequence: each increment `X_k` is revealed
+at time `k + 1` (`IncrementAdapted ℱ X`, i.e. `X_k` is `ℱ (k+1)`-strongly-measurable) and is
+conditionally centered with respect to the **past** `μ[X_k | F_k] = 0`. The `+1` shift is essential
+for non-vacuity: pairing the *present*-conditioning `StronglyAdapted ℱ X` with `μ[X_k | F_k] = 0`
+would force `X_k =ᵐ 0` (by `condExp_of_stronglyMeasurable`), admitting only the zero process. The
+variance proxy `V` stays `StronglyAdapted ℱ V`: it is the predictable proxy that must be
+`ℱ k`-measurable. -/
 theorem empiricalBernstein_time_uniform_confidence_sequence
     {Ω : Type*} {mΩ : MeasurableSpace Ω}
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -426,7 +437,7 @@ theorem empiricalBernstein_time_uniform_confidence_sequence
     (hb : 0 < b) (hlam : 0 < lam) (hblam : b * lam < 3)
     (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
     (hV_meas : ∀ k, Measurable (V k))
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
     (hV_nonneg : ∀ k, 0 ≤ V k)
     (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
     (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
@@ -569,7 +580,7 @@ theorem integrable_empiricalBernsteinExponentialProcess_omegaProd_uniformPrior
 theorem stronglyMeasurable_filtration_prod_empiricalBernstein
     {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
     {X V : ℕ → Ω → ℝ} (b : ℝ) (n : ℕ)
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V) :
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V) :
     StronglyMeasurable[(ℱ n).prod (inferInstance : MeasurableSpace ℝ)]
       (Function.uncurry (fun ω lam => empiricalBernsteinExponentialProcess X V b lam n ω)) := by
   rw [stronglyMeasurable_iff_measurable]
@@ -582,7 +593,7 @@ theorem stronglyMeasurable_filtration_prod_empiricalBernstein
     rw [Finset.mem_range] at hi
     have hXi : Measurable[ℱ n] (X i) := by
       rw [← stronglyMeasurable_iff_measurable]
-      exact (hX_adapted i).mono (ℱ.mono (le_of_lt hi))
+      exact (hX_adapted i).mono (ℱ.mono (Nat.succ_le_of_lt hi))
     exact hXi.comp measurable_fst
   have hVmeas : ∀ i ∈ Finset.range n,
       Measurable[(ℱ n).prod (inferInstance : MeasurableSpace ℝ)]
@@ -612,7 +623,7 @@ theorem stronglyMeasurable_filtration_prod_empiricalBernstein
 theorem stronglyAdapted_empiricalBernsteinMixtureProcess_of_adapted
     {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
     {X V : ℕ → Ω → ℝ} (b : ℝ) (ρ : Measure ℝ) [SFinite ρ]
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V) :
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V) :
     StronglyAdapted ℱ (empiricalBernsteinMixtureProcess X V b ρ) := by
   intro n
   have hjoint :=
@@ -714,7 +725,7 @@ theorem empiricalBernstein_mixture_is_supermartingale
     (hsupport : ∀ᵐ lam ∂ρ, lam ∈ Set.Ioo 0 (3 / b))
     (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
     (hV_meas : ∀ k, Measurable (V k))
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
     (hV_nonneg : ∀ k, 0 ≤ V k)
     (h_adapted_mix : StronglyAdapted ℱ (empiricalBernsteinMixtureProcess X V b ρ))
     (h_integrable_mix : ∀ n, Integrable (empiricalBernsteinMixtureProcess X V b ρ n) μ)
@@ -774,6 +785,17 @@ theorem empiricalBernstein_mixture_is_supermartingale
 /--
 Uniform-prior empirical-Bernstein mixture CS with product measurability and
 integrability discharged from the bounded, nonnegative predictable-proxy model.
+
+The increment model on `X` is a genuine martingale-difference sequence: each increment `X_k` is
+revealed at time `k + 1` (`IncrementAdapted ℱ X`, i.e. `X_k` is `ℱ (k+1)`-strongly-measurable),
+is bounded `|X_k| ≤ b`, is conditionally centered with respect to the **past** `μ[X_k | F_k] = 0`,
+and has conditional second moment bounded by the predictable proxy `μ[X_k² | F_k] ≤ V_k`. The `+1`
+increment shift is essential for non-vacuity: pairing the *present*-conditioning
+`StronglyAdapted ℱ X` with `μ[X_k | F_k] = 0` would force `X_k =ᵐ 0` (by
+`condExp_of_stronglyMeasurable`), admitting only the zero process. With the shift the centering is
+genuine and the running sum `S_n` is still `ℱ n`-measurable (it uses only `X_0, …, X_{n-1}`). The
+variance proxy `V` stays `StronglyAdapted ℱ V`: it is the predictable proxy taken with respect to
+the past and is correctly `ℱ k`-measurable.
 -/
 theorem empiricalBernstein_confidence_sequence_uniformPrior
     {Ω : Type*} {mΩ : MeasurableSpace Ω}
@@ -784,7 +806,7 @@ theorem empiricalBernstein_confidence_sequence_uniformPrior
     (hb : 0 < b) (hlam0 : 0 < lam0) (h01 : lam0 < lam1) (hlam1 : lam1 < 3 / b)
     (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
     (hV_meas : ∀ k, Measurable (V k))
-    (hX_adapted : StronglyAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
+    (hX_adapted : IncrementAdapted ℱ X) (hV_adapted : StronglyAdapted ℱ V)
     (hV_nonneg : ∀ k, 0 ≤ V k)
     (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
     (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
