@@ -492,12 +492,19 @@ declarations; modules are relative to `FormalSLT`.
 | `stitched_atTop_crossing_bound` | `AnytimeValid.OptimizedLambdaCS` | Ville crossing bound for the stitched sub-Gamma boundary |
 | `optimized_lambda_confidence_sequence_subGamma` | `AnytimeValid.OptimizedLambdaCS` | Optimized-`λ` sub-Gamma confidence sequence with the stitched boundary |
 | `subGammaLogLogWidth_loglog_rate` | `AnytimeValid.OptimizedLambdaCS` | Stitched boundary half-width grows at the iterated-logarithm rate |
+| `subGammaLogLogWidth_eq_boundary_optTilt` | `AnytimeValid.OptimizedLambdaCS` | The closed-form log-log width equals the sub-Gamma boundary at the per-time optimal tilt |
+| `optimized_lambda_two_sided_confidence_sequence` | `AnytimeValid.OptimizedLambdaCS` | Two-sided optimized-`λ` iterated-log confidence sequence via the deterministic stitching bridge and the `X`/`-X` transfer |
+| `optimized_lambda_two_sided_closed_form_pointwise` | `AnytimeValid.OptimizedLambdaCS` | Closed-form pointwise interval-width form of the two-sided optimized-`λ` confidence sequence |
+| `fixedGrid_logLog_bridge_forces_exact_boundary` | `AnytimeValid.OptimizedLambdaCS` | Obstruction: a fixed finite-grid all-time closed-form bridge forces the grid to attain the exact per-time optimal boundary |
 | `eProcess_typeI_control` | `AnytimeValid.EProcess` | Safe-testing Type-I control: an e-process rejection event has mass at most the level `α` over the Ville maximal inequality |
 | `eProcess_product_of_supermartingale` | `AnytimeValid.EProcess` | Product of nonnegative supermartingale factors with unit start is an e-process |
 | `eProcess_optionalContinuation` | `AnytimeValid.EProcess` | Optional continuation: the stopped value of an e-process keeps integral at most one |
 | `bettingWealth_supermartingale` | `AnytimeValid.BettingCS` | Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale |
 | `betting_time_uniform_confidence_sequence` | `AnytimeValid.BettingCS` | Countable-time Ville confidence sequence for the betting wealth e-process |
 | `betting_confidence_sequence_of_condMean` | `AnytimeValid.BettingCS` | End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null |
+| `pacBayesPriorMixture_supermartingale` | `PACBayes.TimeUniformPACBayes` | Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale |
+| `timeUniformPACBayes_crossing_bound` | `PACBayes.TimeUniformPACBayes` | Ville crossing bound for the prior-mixture process over all times |
+| `timeUniformPACBayes_bound` | `PACBayes.TimeUniformPACBayes` | Process-level time-uniform PAC-Bayes bound: with probability at least `1 - δ`, the posterior running mean of the abstract martingale-difference process stays under the `cgf`/KL/`log(1/δ)` boundary for every `n ≥ 1` |
 
 ## Named tail-probability corollaries
 
