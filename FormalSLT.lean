@@ -26,6 +26,7 @@ import FormalSLT.AnytimeValid.VilleMaximalIneq
 import FormalSLT.AnytimeValid.SubGaussianCS
 import FormalSLT.AnytimeValid.AtTopCS
 import FormalSLT.AnytimeValid.MixtureCS
+import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization
