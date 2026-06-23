@@ -172,6 +172,86 @@ theorem witnessOptimizedLambdaCS :
       rw [hsq, condExp_zero]
       exact Filter.Eventually.of_forall (by intro ω; norm_num)
 
+/-- The discharged increment-model obligations for the Rademacher witness, reused by both the
+one-sided and the two-sided endpoints: bound, conditional centering, conditional second moment. -/
+theorem witness_hbound : ∀ k, ∀ᵐ ω ∂μBool, |XBool k ω| ≤ (1 : ℝ) := by
+  intro k
+  refine Filter.Eventually.of_forall ?_
+  intro ω
+  simp only [XBool]
+  by_cases hk : k = 0
+  · subst hk; cases ω <;> norm_num
+  · simp only [if_neg hk]; norm_num
+
+theorem witness_hcenter : ∀ k, μBool[XBool k | filtBool k] =ᵐ[μBool] 0 := by
+  intro k
+  by_cases hk : k = 0
+  · subst hk
+    have hℱ0 : filtBool 0 = ⊥ := by simp [filtBool]
+    rw [hℱ0, condExp_bot]
+    have hint : ∫ x, XBool 0 x ∂μBool = 0 := by
+      haveI : IsFiniteMeasure ((1 / 2 : ℝ≥0∞) • Measure.dirac (true : Bool)) :=
+        Measure.smul_finite _ (by norm_num)
+      haveI : IsFiniteMeasure ((1 / 2 : ℝ≥0∞) • Measure.dirac (false : Bool)) :=
+        Measure.smul_finite _ (by norm_num)
+      rw [μBool, integral_add_measure (Integrable.of_finite) (Integrable.of_finite),
+        integral_smul_measure, integral_smul_measure, integral_dirac, integral_dirac]
+      simp only [XBool, smul_eq_mul]
+      norm_num
+    rw [hint]; rfl
+  · have hXk : XBool k = 0 := by funext ω; simp only [XBool, if_neg hk]; rfl
+    rw [hXk, condExp_zero]
+
+theorem witness_hvar :
+    ∀ k, μBool[fun ω => (XBool k ω) ^ 2 | filtBool k] ≤ᵐ[μBool] fun _ => (1 : ℝ) := by
+  intro k
+  by_cases hk : k = 0
+  · subst hk
+    have hsq : (fun ω => (XBool 0 ω) ^ 2) = (fun _ : Bool => (1 : ℝ)) := by
+      funext ω; simp only [XBool]; cases ω <;> norm_num
+    rw [hsq, condExp_const (filtBool.le 0)]
+  · have hXk : XBool k = 0 := by funext ω; simp only [XBool, if_neg hk]; rfl
+    have hsq : (fun ω => (XBool k ω) ^ 2) = (0 : Bool → ℝ) := by funext ω; rw [hXk]; simp
+    rw [hsq, condExp_zero]
+    exact Filter.Eventually.of_forall (by intro ω; norm_num)
+
+theorem witness_hadapted : IncrementAdapted filtBool XBool := by
+  intro k
+  have : filtBool (k + 1) = ⊤ := by simp [filtBool]
+  rw [show (StronglyMeasurable[filtBool (k + 1)] (XBool k)) =
+      (StronglyMeasurable[⊤] (XBool k)) from by rw [this]]
+  exact (measurable_from_top).stronglyMeasurable
+
+/--
+**Witnessed two-sided optimized-`lambda` coverage bound.** Instantiation of
+`optimized_lambda_two_sided_confidence_sequence` on the genuine Rademacher `±1` increment with
+the two-element tilt grid `{1/2, 1}`: the centered running mean crosses the optimized (best-of-grid)
+stitched boundary on *either* side only on an event of mass at most `1/2`. This is the genuine
+two-sided interval-width non-vacuity witness — the failure event involves `|runningMean|`, and the
+process is the nonzero `±1` Rademacher increment (`IncrementAdapted`), not a zero process. -/
+theorem witnessOptimizedLambdaTwoSidedCS :
+    (μBool).real {ω | ∃ n : ℕ, 0 < n ∧
+        (∃ lam ∈ LamGrid, subGammaCgf 1 1 lam / lam
+            + Real.log ((LamGrid.card : ℝ) / ((1 / 2) / 2)) / ((n : ℝ) * lam)
+              ≤ |runningMean XBool n ω|)} ≤ (1 / 2 : ℝ) := by
+  refine optimized_lambda_two_sided_confidence_sequence
+    (μ := μBool) (ℱ := filtBool) (X := XBool)
+    (sigma2 := 1) (b := 1) (delta := 1 / 2) (Lam := LamGrid)
+    (by norm_num) (by norm_num) (by norm_num) LamGrid_nonempty ?_ ?_ ?_
+    witness_hadapted ?_ ?_ witness_hbound witness_hcenter witness_hvar
+  · -- hLam_mem
+    intro lam hlam; have := LamGrid_mem lam hlam; simpa using this
+  · -- hX_meas
+    intro k; exact measurable_from_top
+  · -- hX_int
+    intro k; exact Integrable.of_finite
+  · -- h_integrable
+    intro lam _ n; exact proc_integrable 1 1 lam n
+  · -- h_integrable_neg
+    intro lam _ n
+    haveI : IsFiniteMeasure μBool := inferInstance
+    exact Integrable.of_finite
+
 /-- The iterated-log width is strictly positive and finite at the concrete numeric
 parameters `sigma2 = 1`, `b = 1`, `n = 16` (`16 > e^e`), `delta = 1/2`. This is the
 genuine numeric rate witness, not a `#check`. -/
@@ -187,10 +267,15 @@ theorem witnessLogLogWidth_closed_form :
   subGammaLogLogWidth_loglog_rate.2
 
 #print axioms witnessOptimizedLambdaCS
+#print axioms witnessOptimizedLambdaTwoSidedCS
 #print axioms witnessLogLogWidth_pos
 #print axioms subGamma_stitched_boundary_supermartingale
 #print axioms optimized_lambda_confidence_sequence_subGamma
 #print axioms subGammaLogLogWidth_loglog_rate
+#print axioms subGammaLogLogWidth_le_boundary
+#print axioms subGammaLogLogWidth_eq_boundary_optTilt
+#print axioms optimized_lambda_two_sided_confidence_sequence
+#print axioms optimized_lambda_two_sided_closed_form_pointwise
 
 end FormalSLT.AnytimeValid.OptimizedLambdaWitness
 
