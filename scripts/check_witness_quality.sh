@@ -63,9 +63,11 @@ classify_witness() {
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
 #   maurer_pacbayes_kl_bound
 #   eProcess_typeI_control / eProcess_product_of_supermartingale / eProcess_optionalContinuation
+#   optimized_lambda_confidence_sequence_subGamma / subGammaLogLogWidth_loglog_rate
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
+  "examples/CheckOptimizedLambdaCS.lean"
   "examples/AdversarialWitnessFlagshipFourComponent.lean"
   "examples/RefuteFlagshipFiveWitness.lean"
   "examples/CheckFlagshipAnytimeValidWitness.lean"
