@@ -489,6 +489,30 @@ declarations; modules are relative to `FormalSLT`.
 | `mixture_is_supermartingale` | `AnytimeValid.MixtureCS` | Mixture of sub-Gamma exponential processes is a nonnegative supermartingale |
 | `atTop_time_uniform_confidence_sequence_subGamma_mixture` | `AnytimeValid.MixtureCS` | Time-uniform mixture confidence sequence from the sub-Gamma exponential supermartingale |
 
+## Named tail-probability corollaries
+
+| Theorem | Module | Role |
+|---|---|---|
+| `chernoff_tail` | `Concentration.NamedTails` | Generic two-sided sub-Gaussian tail `P(abs X ≥ t) ≤ 2 exp(-t²/(2c))` from an MGF bound |
+| `subGaussianMGF_tail_twoSided` | `Concentration.NamedTails` | Centered two-sided sub-Gaussian tail `P(abs (X - E X) ≥ t) ≤ 2 exp(-t²/(2c))` |
+| `hoeffding_mean_tail_twoSided` | `Concentration.NamedTails` | Two-sided Hoeffding tail for the sample mean `P(abs (X̄ - E X̄) ≥ t) ≤ 2 exp(-2 n t²/(b-a)²)` |
+| `bernstein_tail` | `Concentration.NamedTails` | Two-sided Bernstein tail `P(abs X ≥ ε) ≤ 2 exp(-ε²/(2(v + bε/3)))` for a finite distribution |
+| `bennett_tail` | `Concentration.NamedTails` | Two-sided Bennett / sub-Gamma tail at a chosen `λ` for a finite distribution |
+
+## Distribution bridges and sample statistics
+
+| Theorem | Module | Role |
+|---|---|---|
+| `bernoulliPMF` | `Statistics.Bernoulli` | Bernoulli(p) probability mass function on `Bool` |
+| `bernoulliMean_eq` | `Statistics.Bernoulli` | Bernoulli mean equals `p` |
+| `bernoulliVariance_eq` | `Statistics.Bernoulli` | Bernoulli variance equals `p(1 - p)` |
+| `bernoulli_bernstein_tail` | `Statistics.Bernoulli` | Two-sided Bernstein tail specialized to Bernoulli(p) |
+| `sampleMean` | `Statistics.SampleStatistics` | Sample mean `(1/n) ∑ x i` of a finite sample |
+| `sampleVariance` | `Statistics.SampleStatistics` | Population-form sample variance `(1/n) ∑ (x i - x̄)²` |
+| `sampleVariance_nonneg` | `Statistics.SampleStatistics` | Sample variance is nonnegative |
+| `sampleVariance_eq_secondMoment_sub_meanSq` | `Statistics.SampleStatistics` | Variance decomposition `Var = E[X²] - x̄²` |
+| `sampleMean_hoeffding_tail` | `Statistics.SampleStatistics` | Two-sided Hoeffding tail for the named sample mean |
+
 ## Partial dependency view for the original finite-class spine
 
 ```mermaid

@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 78,
-    "library_and_example_lean_lines": 53014,
-    "library_lean_lines": 49431,
-    "library_modules": 118,
-    "theorem_map_entries": 421
+    "example_lean_files": 97,
+    "library_and_example_lean_lines": 58671,
+    "library_lean_lines": 51967,
+    "library_modules": 124,
+    "theorem_map_entries": 435
   },
   "theorem_families": [
     {
@@ -2659,6 +2659,100 @@
         }
       ],
       "name": "Anytime-valid confidence sequences"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Concentration.NamedTails",
+          "name": "chernoff_tail",
+          "summary": "Generic two-sided sub-Gaussian tail P(abs X \u2265 t) \u2264 2 exp(-t\u00b2/(2c)) from an MGF bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.NamedTails",
+          "name": "subGaussianMGF_tail_twoSided",
+          "summary": "Centered two-sided sub-Gaussian tail P(abs (X - E X) \u2265 t) \u2264 2 exp(-t\u00b2/(2c))"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.NamedTails",
+          "name": "hoeffding_mean_tail_twoSided",
+          "summary": "Two-sided Hoeffding tail for the sample mean P(abs (X\u0304 - E X\u0304) \u2265 t) \u2264 2 exp(-2 n t\u00b2/(b-a)\u00b2)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.NamedTails",
+          "name": "bernstein_tail",
+          "summary": "Two-sided Bernstein tail P(abs X \u2265 \u03b5) \u2264 2 exp(-\u03b5\u00b2/(2(v + b\u03b5/3))) for a finite distribution"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.NamedTails",
+          "name": "bennett_tail",
+          "summary": "Two-sided Bennett / sub-Gamma tail at a chosen \u03bb for a finite distribution"
+        }
+      ],
+      "name": "Named tail-probability corollaries"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Statistics.Bernoulli",
+          "name": "bernoulliPMF",
+          "summary": "Bernoulli(p) probability mass function on Bool"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.Bernoulli",
+          "name": "bernoulliMean_eq",
+          "summary": "Bernoulli mean equals p"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.Bernoulli",
+          "name": "bernoulliVariance_eq",
+          "summary": "Bernoulli variance equals p(1 - p)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.Bernoulli",
+          "name": "bernoulli_bernstein_tail",
+          "summary": "Two-sided Bernstein tail specialized to Bernoulli(p)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.SampleStatistics",
+          "name": "sampleMean",
+          "summary": "Sample mean (1/n) \u2211 x i of a finite sample"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.SampleStatistics",
+          "name": "sampleVariance",
+          "summary": "Population-form sample variance (1/n) \u2211 (x i - x\u0304)\u00b2"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.SampleStatistics",
+          "name": "sampleVariance_nonneg",
+          "summary": "Sample variance is nonnegative"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.SampleStatistics",
+          "name": "sampleVariance_eq_secondMoment_sub_meanSq",
+          "summary": "Variance decomposition Var = E[X\u00b2] - x\u0304\u00b2"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.SampleStatistics",
+          "name": "sampleMean_hoeffding_tail",
+          "summary": "Two-sided Hoeffding tail for the named sample mean"
+        }
+      ],
+      "name": "Distribution bridges and sample statistics"
     }
   ],
   "toolchain": {
