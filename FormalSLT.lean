@@ -118,6 +118,7 @@ import FormalSLT.PACBayes.McAllesterCompilerHighProbability
 import FormalSLT.PACBayes.VCHybrid
 import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
+import FormalSLT.PACBayes.TimeUniformPACBayes
 
 import FormalSLT.TestTimeMeta.Assumptions
 import FormalSLT.TestTimeMeta.CompositionLemmas

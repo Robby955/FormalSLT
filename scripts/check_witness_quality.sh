@@ -65,6 +65,7 @@ classify_witness() {
 #   eProcess_typeI_control / eProcess_product_of_supermartingale / eProcess_optionalContinuation
 #   optimized_lambda_confidence_sequence_subGamma / subGammaLogLogWidth_loglog_rate
 #   betting_confidence_sequence_of_condMean (concrete Rademacher witness, bet 1/4)
+#   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -81,6 +82,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckMaurerKLNonVacuityWitness.lean"
   "examples/CheckEProcess.lean"
   "examples/CheckBettingCSNonVacuityWitness.lean"
+  "examples/CheckTimeUniformPACBayes.lean"
 )
 
 fail=0
