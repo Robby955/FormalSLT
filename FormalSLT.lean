@@ -30,6 +30,7 @@ import FormalSLT.AnytimeValid.MixtureCS
 import FormalSLT.AnytimeValid.OptimizedLambdaCS
 import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 import FormalSLT.AnytimeValid.EProcess
+import FormalSLT.AnytimeValid.BettingCS
 
 import FormalSLT.Statistics.Bernoulli
 import FormalSLT.Statistics.SampleStatistics
