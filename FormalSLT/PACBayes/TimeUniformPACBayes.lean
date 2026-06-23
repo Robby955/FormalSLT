@@ -7,17 +7,30 @@ import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.AnytimeValid.MixtureCS
 
 /-!
-# Time-uniform PAC-Bayes confidence sequence
+# Time-uniform PAC-Bayes confidence sequence (process level)
 
-This module formalizes a finite fixed-tilt time-uniform PAC-Bayes bound.  The
-construction is the Chugg-Wang-Ramdas lane-level synthesis: mix the per-hypothesis
-exponential supermartingales against the prior, apply Ville over all times, then
-run the finite Donsker-Varadhan change-of-measure step at the realized time and
-posterior.
+This module formalizes a finite fixed-tilt time-uniform bound at the level of an
+abstract martingale-difference process.  Each hypothesis `i` carries an adapted,
+conditionally centered, conditionally sub-Gamma increment process `X i`; nothing
+here fixes `X` to a loss or a sample.  The construction is the Chugg-Wang-Ramdas
+mechanism: mix the per-hypothesis exponential supermartingales against the prior
+into a single nonnegative supermartingale, apply Ville over all times, then run
+the finite Donsker-Varadhan change-of-measure step at the realized time and
+posterior.  The headline `timeUniformPACBayes_bound` controls, with probability
+at least `1 - δ` simultaneously for every `n ≥ 1`, the posterior running mean of
+`X` against a `cgf`/KL/`log(1/δ)` boundary.
+
+This is therefore a process-level Ville-supermartingale confidence sequence, not
+a proven generalization bound.  The PAC-Bayes reading — taking each `X i` to be a
+per-sample population-minus-empirical risk gap so the running mean is the
+generalization gap — is the intended interpretation, and follows once a concrete
+loss and sampling model are wired in (the hypotheses then become the standard
+boundedness/centering/variance conditions on the loss).  That wiring is not done
+here; the statements below are about the abstract process.
 
 The theorem names avoid priority or "first" wording.  The disambiguation is
-source-level: the result is a PAC-Bayes bound that is time-uniform in `n`, not a
-fixed-sample PAC-Bayes theorem with a union-bound wrapper.
+source-level: the bound is time-uniform in `n`, not a fixed-sample bound with a
+union-bound wrapper.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -59,8 +72,10 @@ theorem supermartingale_finset_sum_index {α : Type*}
 /--
 Prior mixture of per-hypothesis fixed-tilt exponential processes.
 
-For each hypothesis `i`, `X i` is the martingale-difference gap process whose
-running mean is the population-minus-empirical risk gap at time `n`.
+For each hypothesis `i`, `X i` is an abstract adapted martingale-difference
+process; its running mean at time `n` is what the bound controls.  Under the
+intended PAC-Bayes reading `X i` is the per-sample risk gap, but that
+interpretation is not assumed by anything here.
 -/
 def pacBayesPriorMixtureProcess
     (prior : ι → ℝ) (X : ι → ℕ → Ω → ℝ) (sigma2 b lam : ℝ)
