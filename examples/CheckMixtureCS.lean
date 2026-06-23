@@ -75,39 +75,13 @@ example
     h_integrable_mix hM_int hM_int_restrict hM_int_step hM_int_step_restrict
     hbound hcenter hvar
 
-/--
-Non-vacuity witness for the discharged headline `mixture_confidence_sequence_uniformPrior`. The
-guarantee holds for a genuine, fully-satisfiable model: the zero increment process on the one-point
-space with the full filtration and rational parameters `δ = 1/2, b = 1, σ² = 1, [lam0,lam1] =
-[1/2, 1]`. All increment-model hypotheses are simultaneously satisfiable, so the conclusion is a real
-confidence-sequence guarantee, not vacuously true from contradictory premises.
--/
-example :
-    (Measure.dirac (Unit.unit)).real
-      {ω | ∃ n : ℕ, 0 < n ∧
-        (1 / (1 / 2 : ℝ)) ≤
-          mixtureExponentialProcess (fun _ _ => (0 : ℝ)) 1 1
-            (uniformTiltPrior (1 / 2) 1) n ω}
-        ≤ (1 / 2 : ℝ) := by
-  let mU : MeasurableSpace Unit := inferInstance
-  let ℱ : Filtration ℕ mU := ⊤
-  refine mixture_confidence_sequence_uniformPrior
-    (μ := Measure.dirac Unit.unit)
-    (ℱ := ℱ) (X := fun _ _ => (0 : ℝ)) (sigma2 := 1) (b := 1)
-    (delta := 1 / 2) (lam0 := 1 / 2) (lam1 := 1)
-    (by norm_num) (by norm_num) (by norm_num)
-    (by norm_num) (by norm_num) (by norm_num)
-    (fun _ => measurable_const) (fun _ => integrable_const 0)
-    (fun _ => stronglyMeasurable_const)
-    (fun _ => Filter.Eventually.of_forall (by norm_num))
-    (fun k => ?_) (fun k => ?_)
-  · have hce : ((Measure.dirac Unit.unit)[(fun _ : Unit => (0 : ℝ)) | (ℱ : Filtration ℕ mU) k])
-        = 0 := condExp_zero
-    rw [hce]
-  · have hz : (fun ω : Unit => ((fun _ _ => (0 : ℝ)) k ω) ^ 2) = (fun _ => (0 : ℝ)) := by
-      funext ω; simp
-    rw [hz]
-    have hce : ((Measure.dirac Unit.unit)[(fun _ : Unit => (0 : ℝ)) | (ℱ : Filtration ℕ mU) k])
-        = 0 := condExp_zero
-    rw [hce]
-    exact Filter.Eventually.of_forall (by norm_num)
+-- The genuine non-vacuity witness for `mixture_confidence_sequence_uniformPrior` lives in
+-- `examples/CheckAnytimeValidNonVacuityWitness.lean`: a nonzero `±1` Rademacher increment under the
+-- corrected predictable-increment model (`IncrementAdapted ℱ X`, `X k` is `ℱ (k+1)`-measurable and
+-- conditionally centered with respect to the past). It yields a real bound `μ.real {…} ≤ 1/2`.
+--
+-- The earlier witness here used the zero process. That was the *only* process admissible under the
+-- former `StronglyAdapted ℱ X` hypothesis, since present-conditioning plus `μ[X k | ℱ k] = 0` forces
+-- `X k =ᵐ 0` by `condExp_of_stronglyMeasurable`. The headline now requires `IncrementAdapted`, under
+-- which a genuine nonzero increment is admissible.
+#check @IncrementAdapted

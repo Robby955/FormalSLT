@@ -506,11 +506,30 @@ theorem integrable_subGammaExponentialProcess_omegaProd_uniformPrior
     exact subGammaExponentialProcess_le_of_bound X sigma2 b p.2 lam1 n p.1
       hb hσ hlam0' hlam1' hblam' hpX
 
-/-- Each fixed-tilt exponential process is adapted to `ℱ` once the increment process is. -/
+/--
+**Predictable-increment (martingale-difference) adaptedness.**
+
+The increment `X_k` is revealed at time `k + 1`, i.e. each `X_k` is `ℱ (k+1)`-strongly-measurable.
+This is the correct admissibility for a martingale-difference sequence whose centering and
+conditional variance are taken with respect to the past `ℱ k`: it lets `X_k` be a genuine
+nonconstant increment while keeping `μ[X k | ℱ k] = 0` non-vacuous.
+
+Conditioning the *present* (`StronglyAdapted ℱ X`, i.e. each `X_k` is `ℱ k`-measurable) together
+with `μ[X k | ℱ k] = 0` would force `X_k =ᵐ 0` by `condExp_of_stronglyMeasurable`, leaving only the
+zero process admissible. The `+1` shift is what avoids that collapse. The running sum `S_n`
+remains `ℱ n`-measurable because it only involves `X_0, …, X_{n-1}`, each `ℱ n`-measurable since
+`i < n ⟹ i + 1 ≤ n`. -/
+def IncrementAdapted {Ω : Type*} {mΩ : MeasurableSpace Ω} (ℱ : Filtration ℕ mΩ)
+    (X : ℕ → Ω → ℝ) : Prop :=
+  ∀ k, StronglyMeasurable[ℱ (k + 1)] (X k)
+
+/-- Each fixed-tilt exponential process is `ℱ`-adapted once the increment process is
+predictable-increment adapted (`X_k` is `ℱ (k+1)`-measurable). The running sum `S_n` is
+`ℱ n`-measurable because it only involves `X_0, …, X_{n-1}` and `i < n ⟹ i + 1 ≤ n`. -/
 theorem stronglyAdapted_subGammaExponentialProcess_of_adapted
     {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
     {X : ℕ → Ω → ℝ} (sigma2 b lam : ℝ)
-    (hX_adapted : StronglyAdapted ℱ X) :
+    (hX_adapted : IncrementAdapted ℱ X) :
     StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam) := by
   intro n
   have hsum : StronglyMeasurable[ℱ n] (fun ω => runningSum X n ω) := by
@@ -520,7 +539,7 @@ theorem stronglyAdapted_subGammaExponentialProcess_of_adapted
     apply Finset.stronglyMeasurable_sum
     intro i hi
     rw [Finset.mem_range] at hi
-    exact (hX_adapted i).mono (ℱ.mono (le_of_lt hi))
+    exact (hX_adapted i).mono (ℱ.mono (Nat.succ_le_of_lt hi))
   have hbody : StronglyMeasurable[ℱ n]
       (fun ω => lam * runningSum X n ω - (n : ℝ) * subGammaCgf sigma2 b lam) :=
     (hsum.const_mul lam).sub stronglyMeasurable_const
@@ -531,7 +550,7 @@ adaptedness of the increment process. This is the input to the integral-over-til
 theorem stronglyMeasurable_filtration_prod_subGamma
     {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
     {X : ℕ → Ω → ℝ} (sigma2 b : ℝ) (n : ℕ)
-    (hX_adapted : StronglyAdapted ℱ X) :
+    (hX_adapted : IncrementAdapted ℱ X) :
     StronglyMeasurable[(ℱ n).prod (inferInstance : MeasurableSpace ℝ)]
       (Function.uncurry (fun ω lam => subGammaExponentialProcess X sigma2 b lam n ω)) := by
   rw [stronglyMeasurable_iff_measurable]
@@ -543,7 +562,7 @@ theorem stronglyMeasurable_filtration_prod_subGamma
     rw [Finset.mem_range] at hi
     have hXi : Measurable[ℱ n] (X i) := by
       rw [← stronglyMeasurable_iff_measurable]
-      exact (hX_adapted i).mono (ℱ.mono (le_of_lt hi))
+      exact (hX_adapted i).mono (ℱ.mono (Nat.succ_le_of_lt hi))
     exact hXi.comp measurable_fst
   apply Measurable.exp
   apply Measurable.sub
@@ -565,7 +584,7 @@ to `ℱ` whenever the increment process is. -/
 theorem stronglyAdapted_mixtureExponentialProcess_of_adapted
     {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
     {X : ℕ → Ω → ℝ} (sigma2 b : ℝ) (ρ : Measure ℝ) [SFinite ρ]
-    (hX_adapted : StronglyAdapted ℱ X) :
+    (hX_adapted : IncrementAdapted ℱ X) :
     StronglyAdapted ℱ (mixtureExponentialProcess X sigma2 b ρ) := by
   intro n
   have hjoint := stronglyMeasurable_filtration_prod_subGamma (ℱ := ℱ) sigma2 b n hX_adapted
@@ -576,12 +595,20 @@ theorem stronglyAdapted_mixtureExponentialProcess_of_adapted
 
 /--
 The mixture confidence sequence for the continuous uniform tilt prior, with **no free
-measurability or integrability hypotheses**. From the conditional sub-Gamma increment model on `X`
-(adapted, bounded `|X_k| ≤ b`, conditionally centered `μ[X_k | F_k] = 0`, conditional second moment
-`μ[X_k² | F_k] ≤ σ²`) and an admissible compact tilt interval `[lam0, lam1] ⊆ (0, 3/b)`, the
-prior-mixture exponential process is an anytime-valid confidence sequence:
+measurability or integrability hypotheses**. The increment model on `X` is a genuine
+martingale-difference sequence: each increment `X_k` is revealed at time `k + 1`
+(`IncrementAdapted ℱ X`, i.e. `X_k` is `ℱ (k+1)`-strongly-measurable), is bounded `|X_k| ≤ b`,
+is conditionally centered with respect to the **past** `μ[X_k | F_k] = 0`, and has conditional
+second moment `μ[X_k² | F_k] ≤ σ²`. With an admissible compact tilt interval
+`[lam0, lam1] ⊆ (0, 3/b)`, the prior-mixture exponential process is an anytime-valid confidence
+sequence:
 
 `μ.real {ω | ∃ n > 0, 1/δ ≤ ∫ lam, M_λ(n, ω) ∂Unif[lam0,lam1]} ≤ δ`.
+
+The `+1` increment shift is essential for non-vacuity: pairing the *present*-conditioning
+`StronglyAdapted ℱ X` with `μ[X_k | F_k] = 0` would force `X_k =ᵐ 0` (by
+`condExp_of_stronglyMeasurable`), admitting only the zero process. With the shift the centering is
+genuine and the running sum `S_n` is still `ℱ n`-measurable (it uses only `X_0, …, X_{n-1}`).
 
 Every measurability / integrability obligation of
 `atTop_time_uniform_confidence_sequence_subGamma_mixture` is discharged internally for the concrete
@@ -598,7 +625,7 @@ theorem mixture_confidence_sequence_uniformPrior
     (hb : 0 < b) (hσ : 0 ≤ sigma2)
     (hlam0 : 0 < lam0) (h01 : lam0 < lam1) (hlam1 : lam1 < 3 / b)
     (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
-    (hX_adapted : StronglyAdapted ℱ X)
+    (hX_adapted : IncrementAdapted ℱ X)
     (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
     (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
     (hvar : ∀ k, μ[fun ω => (X k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => sigma2) :
