@@ -451,39 +451,59 @@ theorem integral_witnessSup_uniformBool :
   rw [integral_uniformBool]
   simp [witnessSup]
 
-/-- **Non-vacuity instance.**
+/-- **Non-vacuity instance with a STRICT coarse budget (entropy term load-bearing).**
 
 The terminal continuous Dudley integral bound holds for the genuine non-Dirac
 probability measure `uniformBool` with the witness supremum functional, a real
 positive variance proxy, and the constant entropy profile `ε ↦ 1` (nonnegative,
-interval-integrable). The chaining budget is discharged honestly: with
-`coarseBudget` set to the actual mean `½`, the nonnegative `√(2)`-scaled
-truncated Dudley term plus any positive slack already covers it.
+interval-integrable). Here `coarseBudget = ¼` is set STRICTLY BELOW the mean
+`∫ witnessSup = ½`, so the coarse budget alone CANNOT cover the integral: the
+`4·√(2·varianceProxy)·∫ entropyAtRadius` term must carry the remaining `¼`. This
+is the honest demonstration that the entropy term bites, in contrast to the
+budget-equals-mean choice where it is pure absorbed slack.
 
-Because the mean `½` differs from both pointwise values of `witnessSup`, this is
-not the finite single-point case in disguise. -/
+Concretely the chaining budget at scale `m = 1` reads
+`½ ≤ ¼ + 4·√2·(∫_{¼}^{½} 1) + eta = ¼ + 4·√2·¼ + eta = ¼ + √2 + eta`,
+which holds since `√2 > ¼`; and the global conclusion is
+`½ ≤ ¼ + 4·√2·(∫_0^{½} 1) = ¼ + 4·√2·½ = ¼ + 2·√2`.
+
+Because the mean `½` differs from both pointwise values of `witnessSup` AND from
+the coarse budget `¼`, the entropy term is genuinely needed: this is neither the
+finite single-point case nor the slack-absorbed budget. -/
 theorem continuous_dudley_entropy_integral_of_measure_nonvacuous :
     (∫ ω, witnessSup ω ∂uniformBool) ≤
-      (2⁻¹ : ℝ) + 4 * Real.sqrt (2 * (1 : ℝ)) *
+      (4⁻¹ : ℝ) + 4 * Real.sqrt (2 * (1 : ℝ)) *
         (∫ _ε in (0 : ℝ)..((1 : ℝ) / 2), (1 : ℝ)) := by
   have hbudget :
       MeasureChainingBudget uniformBool witnessSup
-        (2⁻¹ : ℝ) 1 1 (fun _ => 1) := by
+        (4⁻¹ : ℝ) 1 1 (fun _ => 1) := by
     intro eta heta
-    refine ⟨0, ?_⟩
-    -- mean = ½ = coarseBudget; the scaled truncated term is ≥ 0, slack > 0
+    refine ⟨1, ?_⟩
+    -- mean = ½ STRICTLY ABOVE coarseBudget = ¼; the truncated Dudley term must cover ¼
     rw [integral_witnessSup_uniformBool]
-    have hsqrt_nonneg : (0 : ℝ) ≤ 4 * Real.sqrt (2 * (1 : ℝ)) := by positivity
-    have ha_nonneg : (0 : ℝ) ≤ (1 : ℝ) / (2 : ℝ) ^ (0 + 1) := by norm_num
-    have hint_nonneg :
-        (0 : ℝ) ≤ ∫ _ε in ((1 : ℝ) / (2 : ℝ) ^ (0 + 1))..((1 : ℝ) / 2),
-          (1 : ℝ) := by
-      apply intervalIntegral.integral_nonneg _ (fun _ _ => by norm_num)
+    -- at m = 1 the truncated integral ∫_{1/4}^{1/2} 1 = 1/4, scaled by 4·√2 = √2 > 1/4
+    have htrunc : (∫ _ε in ((1 : ℝ) / (2 : ℝ) ^ (1 + 1))..((1 : ℝ) / 2), (1 : ℝ))
+        = (1 : ℝ) / 4 := by
+      rw [intervalIntegral.integral_const, smul_eq_mul]
       norm_num
-    nlinarith [mul_nonneg hsqrt_nonneg hint_nonneg]
+    rw [htrunc]
+    have hsqrt2 : Real.sqrt (2 * (1 : ℝ)) = Real.sqrt 2 := by norm_num
+    rw [hsqrt2]
+    have hsqrt_ge : (1 : ℝ) ≤ Real.sqrt 2 := by
+      rw [show (1 : ℝ) = Real.sqrt 1 by rw [Real.sqrt_one]]
+      exact Real.sqrt_le_sqrt (by norm_num)
+    -- ¼ + 4·√2·¼ + eta = ¼ + √2 + eta ≥ ½, since √2 ≥ 1 > ¼ and eta > 0
+    nlinarith [hsqrt_ge, heta.le]
   exact continuous_dudley_entropy_integral_of_measure uniformBool witnessSup
-    (2⁻¹ : ℝ) 1 1 (fun _ => 1) (by norm_num) (by norm_num)
+    (4⁻¹ : ℝ) 1 1 (fun _ => 1) (by norm_num) (by norm_num)
     (fun _ => by norm_num) (intervalIntegrable_const) hbudget
+
+/-- The coarse budget `¼` is STRICTLY below the integral `½`: the entropy term is
+load-bearing, not absorbed slack. (Contrast the budget-equals-mean choice, where
+the `4·√(2σ²)·entropy` term could be dropped and the bound would still hold.) -/
+theorem nonvacuous_coarseBudget_lt_integral :
+    (4⁻¹ : ℝ) < (∫ ω, witnessSup ω ∂uniformBool) := by
+  rw [integral_witnessSup_uniformBool]; norm_num
 
 end
 

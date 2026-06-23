@@ -258,7 +258,17 @@ The left side is the full pointwise conditional supremum over the index type:
 `ω ↦ ⨆ t, P.X ω t`. The caller supplies bounded sample paths and, for every
 positive boundary budget, finite-scale pathwise modulus and coarse-budget data.
 This theorem discharges the covering-number entropy profile obligations from
-`hcover_antitone`, `hcover_pos`, and `hcover_dominates`. -/
+`hcover_antitone`, `hcover_pos`, and `hcover_dominates`.
+
+SCOPE: sound and non-vacuous for FINITE or bounded-cover-count index classes.
+It is NOT an infinite totally-bounded Dudley bound: for an infinite totally
+bounded `T` (the canonical unit-interval setting), an `ε`-cover needs `~1/ε`
+points, so the cover counts grow without bound and the joint hypotheses
+`hcover_antitone` + `hcover_dominates` (an antitone profile dominating the
+dyadic cover envelope at every scale) cannot be satisfied — the theorem is
+vacuously inapplicable to that regime. For the infinite unit-interval continuous
+bound, route through the finite projected-net layer in
+`Covering.UnitIntervalDudley`, not this `iSup` theorem. -/
 theorem continuous_dudley_entropy_integral_iSup_of_coveringNumber
     {Ω : Type*} [Fintype Ω]
     [PseudoMetricSpace T] [Nonempty T]

@@ -421,10 +421,18 @@ theorem ville_inequality_subGamma_running_mean_of_increment_model
 /--
 Anytime-valid confidence-sequence wrapper for the sub-Gamma interval.
 
-The theorem packages the final finite-union layer: if the first failure event
-is contained in the union of one-sided upper and lower failure events, and each
-one-sided event has mass at most `delta / 2`, then the interval sequence has
-failure mass at most `delta`.
+SCOPE: this is the final finite-union (subadditivity) step ONLY, not an
+end-to-end derivation of an anytime-valid sub-Gamma confidence sequence. The two
+one-sided failure sets `upperFailure` / `lowerFailure` are FREE hypotheses: their
+mass bounds `≤ delta / 2` are assumed, never wired to the exponential process.
+The load-bearing one-sided Ville coverage is therefore the hypothesis here, not a
+conclusion. Given a containment of the first-failure event in their union and the
+two one-sided mass bounds, the interval sequence has failure mass at most `delta`.
+
+For the genuine end-to-end results (where the one-sided coverage is DERIVED from
+the conditional sub-Gamma increment model), use
+`ville_inequality_subGamma_running_mean_of_increment_model` (this file) and the
+witnessed headline `MixtureCS.mixture_confidence_sequence_uniformPrior`.
 -/
 theorem anytime_valid_confidence_sequence_subGamma
     {Ω : Type*} [MeasurableSpace Ω]
