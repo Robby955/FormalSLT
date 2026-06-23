@@ -32,3 +32,4 @@ paper/*.fdb_latexmk
 paper/*.synctex.gz
 paper/*.pdf
 paper/missfont.log
+.gstack/

@@ -126,6 +126,92 @@ theorem rademacher_witness_sound :
       ≤ 2 * Real.exp (-(1 ^ 2) / (2 * (1 + 1 * 1 / 3))) :=
   rademacher_tail
 
+/-! ## Informative witness: a tails instance with bound `< 1`
+
+The Rademacher witness above fires at the maximal threshold `ε = b`, where the
+right-hand bound is `≈ 1.374 > 1` and so certifies firing and non-emptiness but
+not informativeness. This second witness exercises the analytic content: a
+three-atom observable `X ∈ {4, 0, -4}` with a small deviation mass, at threshold
+`ε = 3 < b = 4`, where the Bernstein bound evaluates to `2·exp(-9/10) ≈ 0.813 < 1`
+— an informative tail bound on a genuinely non-empty deviation event. -/
+
+/-- Three-atom support. -/
+abbrev T := Fin 3
+
+/-- Mass: `1/32` on each extreme atom, `30/32` on the centre. -/
+def pInf : T → ℝ := fun z => if z = 1 then 30 / 32 else 1 / 32
+
+/-- Observable: `X 0 = 4`, `X 1 = 0`, `X 2 = -4`. Bounded by `b = 4`. -/
+def XInf : T → ℝ := fun z => if z = 0 then 4 else if z = 2 then -4 else 0
+
+/-- Pointwise evaluation of the mass on each atom. -/
+theorem pInf_vals : pInf 0 = 1 / 32 ∧ pInf 1 = 30 / 32 ∧ pInf 2 = 1 / 32 := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [pInf]
+/-- Pointwise evaluation of the observable on each atom. -/
+theorem XInf_vals : XInf 0 = 4 ∧ XInf 1 = 0 ∧ XInf 2 = -4 := by
+  refine ⟨?_, ?_, ?_⟩ <;> simp [XInf]
+
+theorem pInf_nonneg : ∀ z, 0 ≤ pInf z := by
+  intro z; fin_cases z <;> norm_num [pInf]
+theorem pInf_sum : ∑ z, pInf z = 1 := by
+  rw [Fin.sum_univ_three, pInf_vals.1, pInf_vals.2.1, pInf_vals.2.2]; norm_num
+theorem XInf_centered : ∑ z, pInf z * XInf z = 0 := by
+  rw [Fin.sum_univ_three, pInf_vals.1, pInf_vals.2.1, pInf_vals.2.2,
+      XInf_vals.1, XInf_vals.2.1, XInf_vals.2.2]; norm_num
+theorem XInf_bound : ∀ z, |XInf z| ≤ 4 := by
+  intro z
+  fin_cases z
+  · rw [show (⟨0, by norm_num⟩ : T) = 0 from rfl, XInf_vals.1]; norm_num
+  · rw [show (⟨1, by norm_num⟩ : T) = 1 from rfl, XInf_vals.2.1]; norm_num
+  · rw [show (⟨2, by norm_num⟩ : T) = 2 from rfl, XInf_vals.2.2]; norm_num
+/-- Variance proxy `v = 1`: `∑ p z · X z² = 2·(1/32)·16 = 1`. -/
+theorem XInf_var : ∑ z, pInf z * XInf z ^ 2 ≤ 1 := by
+  rw [Fin.sum_univ_three, pInf_vals.1, pInf_vals.2.1, pInf_vals.2.2,
+      XInf_vals.1, XInf_vals.2.1, XInf_vals.2.2]; norm_num
+
+/-- **The informative witness.** The two-sided Bernstein corollary at `b = 4`,
+`v = 1`, `ε = 3`, with bound `2·exp(-3²/(2(1 + 4·3/3)))`. Every hypothesis is
+discharged on explicit data. -/
+theorem informative_tail :
+    ∑ z ∈ Finset.univ.filter (fun z => (3 : ℝ) ≤ |XInf z|), pInf z
+      ≤ 2 * Real.exp (-(3 ^ 2) / (2 * (1 + 4 * 3 / 3))) :=
+  bernstein_tail pInf XInf (b := 4) (v := 1) (eps := 3)
+    (by norm_num) (by norm_num) (by norm_num)
+    pInf_nonneg pInf_sum XInf_centered XInf_bound XInf_var
+
+/-- **Non-vacuity.** The deviation event `{3 ≤ |X|}` is the two extreme atoms,
+mass exactly `1/16 > 0`, so the bound constrains a genuinely non-empty event. -/
+theorem informative_mass_pos :
+    ∑ z ∈ Finset.univ.filter (fun z => (3 : ℝ) ≤ |XInf z|), pInf z = 1 / 16 := by
+  have hfilter :
+      (Finset.univ.filter (fun z => (3 : ℝ) ≤ |XInf z|)) = {0, 2} := by
+    ext z; fin_cases z <;> simp [XInf] <;> norm_num
+  rw [hfilter, Finset.sum_pair (by decide), pInf_vals.1, pInf_vals.2.2]; norm_num
+
+/-- **Informativeness.** The right-hand bound is `< 1` (`≈ 0.813`), so unlike the
+maximal-threshold Rademacher witness this instance is a genuinely informative tail
+bound, not merely a firing one. Proved via `exp` monotonicity and `exp(-0.9) < 1/2`
+from `exp(0.9) > 2` (since `exp(0.6931...) = 2` and `0.9 > log 2`). -/
+theorem informative_bound_lt_one :
+    2 * Real.exp (-(3 ^ 2) / (2 * (1 + 4 * 3 / 3))) < 1 := by
+  have hsimp : -(3 ^ 2 : ℝ) / (2 * (1 + 4 * 3 / 3)) = -(9 / 10) := by norm_num
+  rw [hsimp]
+  have hlog2 : Real.log 2 < 9 / 10 := by
+    have := Real.log_two_lt_d9
+    linarith
+  have hexp : Real.exp (-(9 / 10)) < 1 / 2 := by
+    rw [show -(9 / 10 : ℝ) = -(9 / 10) from rfl]
+    have h : Real.exp (-(9 / 10)) = (Real.exp (9 / 10))⁻¹ := by
+      rw [Real.exp_neg]
+    rw [h]
+    have hgt : (2 : ℝ) < Real.exp (9 / 10) := by
+      have : Real.exp (Real.log 2) < Real.exp (9 / 10) :=
+        Real.exp_lt_exp.mpr hlog2
+      rwa [Real.exp_log (by norm_num)] at this
+    rw [inv_lt_iff_one_lt_mul₀ (by positivity)] at *
+    · nlinarith [hgt]
+  linarith [hexp]
+
 end
 
 end FormalSLT.CheckNamedTails
@@ -136,4 +222,7 @@ namespace FormalSLT.CheckNamedTails
 #print axioms rademacher_mass_eq_one
 #print axioms rademacher_bound_gt_one
 #print axioms rademacher_witness_sound
+#print axioms informative_tail
+#print axioms informative_mass_pos
+#print axioms informative_bound_lt_one
 end FormalSLT.CheckNamedTails
