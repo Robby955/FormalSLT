@@ -60,6 +60,7 @@ classify_witness() {
 #   finitePACBayesBernsteinMargin_badEventMass_le_delta
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
+#   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -71,6 +72,7 @@ HEADLINE_WITNESSES=(
   "examples/AdversarialWitnessBernstein.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
+  "examples/CheckNamedTails.lean"
 )
 
 fail=0
