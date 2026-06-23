@@ -665,6 +665,41 @@ theorem subGammaLogLogWidth_eq_boundary_optTilt
       - (sq + b * g / (3 * (n : ℝ))) = 0 := by rw [hkey, hE0]; simp
   linarith
 
+/--
+Any fixed-grid deterministic bridge at one time can only prove the closed-form
+log-log width by putting an exact optimizer in the grid. Since
+`subGammaLogLogWidth_le_boundary` says the closed-form width is a lower bound for
+every admissible tilt boundary, a grid tilt whose boundary is at most the
+closed-form width must attain equality.
+
+This is the formal obstruction behind the old fixed finite-grid `hbridge` carry:
+an all-time closed-form bridge would need the fixed grid to hit exact per-time
+optimizers, while `optTilt` varies with `n`.
+-/
+theorem fixedGrid_logLog_bridge_forces_exact_boundary
+    {sigma2 b delta : ℝ} {Lam : Finset ℝ} {n : ℕ}
+    (hσ : 0 < sigma2) (hb : 0 < b) (hn : 0 < n)
+    (hg : 0 ≤ logLogBudget n delta)
+    (hLam_mem : ∀ lam ∈ Lam, lam ∈ Set.Ioo 0 (3 / b))
+    (hbridge : ∃ lam ∈ Lam,
+      subGammaBoundary sigma2 b (logLogBudget n delta) n lam
+        ≤ subGammaLogLogWidth sigma2 b n delta) :
+    ∃ lam ∈ Lam,
+      subGammaBoundary sigma2 b (logLogBudget n delta) n lam
+        = subGammaLogLogWidth sigma2 b n delta := by
+  rcases hbridge with ⟨lam, hlam_mem, hle⟩
+  have hlam_interval := hLam_mem lam hlam_mem
+  have hlam_pos : 0 < lam := hlam_interval.1
+  have hlam_adm : b * lam < 3 := by
+    have hlt : lam < 3 / b := hlam_interval.2
+    rw [lt_div_iff₀ hb] at hlt
+    simpa [mul_comm] using hlt
+  have hge :
+      subGammaLogLogWidth sigma2 b n delta
+        ≤ subGammaBoundary sigma2 b (logLogBudget n delta) n lam :=
+    subGammaLogLogWidth_le_boundary hσ hb hn hg hlam_pos hlam_adm
+  exact ⟨lam, hlam_mem, le_antisymm hle hge⟩
+
 /-! ## Two-sided iterated-log interval-width confidence sequence
 
 The one-sided endpoint controls only the upper crossing of the optimized boundary. The

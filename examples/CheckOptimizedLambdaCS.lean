@@ -274,6 +274,7 @@ theorem witnessLogLogWidth_closed_form :
 #print axioms subGammaLogLogWidth_loglog_rate
 #print axioms subGammaLogLogWidth_le_boundary
 #print axioms subGammaLogLogWidth_eq_boundary_optTilt
+#print axioms fixedGrid_logLog_bridge_forces_exact_boundary
 #print axioms optimized_lambda_two_sided_confidence_sequence
 #print axioms optimized_lambda_two_sided_closed_form_pointwise
 
