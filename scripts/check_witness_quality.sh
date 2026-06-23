@@ -64,6 +64,7 @@ classify_witness() {
 #   maurer_pacbayes_kl_bound
 #   eProcess_typeI_control / eProcess_product_of_supermartingale / eProcess_optionalContinuation
 #   optimized_lambda_confidence_sequence_subGamma / subGammaLogLogWidth_loglog_rate
+#   timeUniformPACBayes_bound
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -79,6 +80,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckNamedTails.lean"
   "examples/CheckMaurerKLNonVacuityWitness.lean"
   "examples/CheckEProcess.lean"
+  "examples/CheckTimeUniformPACBayes.lean"
 )
 
 fail=0
