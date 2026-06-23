@@ -22,6 +22,7 @@ import FormalSLT.Concentration.SubGamma.CondVarianceFromSquare
 import FormalSLT.Concentration.SubGamma.Extractor
 import FormalSLT.Concentration.SharpMcDiarmid
 import FormalSLT.Concentration.HeterogeneousMcDiarmid
+import FormalSLT.Concentration.NamedTails
 import FormalSLT.AnytimeValid.VilleMaximalIneq
 import FormalSLT.AnytimeValid.SubGaussianCS
 import FormalSLT.AnytimeValid.AtTopCS
