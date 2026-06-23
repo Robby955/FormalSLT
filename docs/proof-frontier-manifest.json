@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 98,
-    "library_and_example_lean_lines": 59299,
-    "library_lean_lines": 52398,
-    "library_modules": 125,
-    "theorem_map_entries": 439
+    "example_lean_files": 100,
+    "library_and_example_lean_lines": 59780,
+    "library_lean_lines": 52804,
+    "library_modules": 126,
+    "theorem_map_entries": 445
   },
   "theorem_families": [
     {
@@ -2680,6 +2680,42 @@
           "module": "AnytimeValid.OptimizedLambdaCS",
           "name": "subGammaLogLogWidth_loglog_rate",
           "summary": "Stitched boundary half-width grows at the iterated-logarithm rate"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.EProcess",
+          "name": "eProcess_typeI_control",
+          "summary": "Safe-testing Type-I control: an e-process rejection event has mass at most the level \u03b1 over the Ville maximal inequality"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.EProcess",
+          "name": "eProcess_product_of_supermartingale",
+          "summary": "Product of nonnegative supermartingale factors with unit start is an e-process"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.EProcess",
+          "name": "eProcess_optionalContinuation",
+          "summary": "Optional continuation: the stopped value of an e-process keeps integral at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.BettingCS",
+          "name": "bettingWealth_supermartingale",
+          "summary": "Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.BettingCS",
+          "name": "betting_time_uniform_confidence_sequence",
+          "summary": "Countable-time Ville confidence sequence for the betting wealth e-process"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.BettingCS",
+          "name": "betting_confidence_sequence_of_condMean",
+          "summary": "End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null"
         }
       ],
       "name": "Anytime-valid confidence sequences"
