@@ -13,7 +13,9 @@ Each `#print axioms` line must report only `[propext, Classical.choice,
 Quot.sound]`. The non-vacuity witness (`uniformBool`, a genuine non-Dirac
 mixture, with mean `½` strictly between the two outcome values) confirms the
 bound is instantiated against a real averaging measure, not a domain-collapsing
-point evaluation.
+point evaluation. The witness uses a STRICT coarse budget `¼ < ½ = mean`
+(`nonvacuous_coarseBudget_lt_integral`), so the `4·√(2σ²)·entropy` term is
+load-bearing, not absorbed slack.
 
 `lake env lean examples/CheckMeasureDudley.lean` exits 0 iff every theorem below
 type-checks with the clean axiom profile.
@@ -44,3 +46,7 @@ type-checks with the clean axiom profile.
 
 #check @FormalSLT.Covering.MeasureDudley.continuous_dudley_entropy_integral_of_measure_nonvacuous
 #print axioms FormalSLT.Covering.MeasureDudley.continuous_dudley_entropy_integral_of_measure_nonvacuous
+
+-- The strict-budget guarantee: coarseBudget ¼ < ½ = mean, so the entropy term bites.
+#check @FormalSLT.Covering.MeasureDudley.nonvacuous_coarseBudget_lt_integral
+#print axioms FormalSLT.Covering.MeasureDudley.nonvacuous_coarseBudget_lt_integral

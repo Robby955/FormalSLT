@@ -119,6 +119,15 @@ theorem flagshipOnlineIidContribution_from_iidRegretConversion
 /--
 Derive the q063 Gaussian/Bernstein contribution from the q062 finite Gaussian
 measure/KL backend and the q060 analytic Bernstein route.
+
+SCOPE: the conclusion is literally the `hpenalty` hypothesis
+(`populationRisk ≤ empiricalRisk + flagshipGaussianBernsteinContribution spec`),
+so this wrapper passes the final population/penalty inequality through unchanged.
+The KL/variance closed-form data it consumes constrains the contribution value;
+it does not re-derive the population bound. The actual Bernstein derivation that
+produces the penalty from a worked example lives in `BernsteinDecompWorkedExample`,
+used by `FlagshipSimultaneousAssembly.flagshipSimultaneous_certificate`. Cite that
+for the non-vacuous Bernstein contribution, not this pass-through.
 -/
 theorem flagshipGaussianBernsteinContribution_from_sphericalGaussian
     {d : ℕ}
@@ -320,6 +329,19 @@ def flagshipCertificateOfComponents
 /--
 The component-assembled q063 certificate satisfies the flagship theorem without
 an externally supplied scalar assembly certificate.
+
+SCOPE: this layer COMPOSES pre-supplied component bounds; it does not derive them
+end-to-end. Its load-bearing population inequality enters as the
+`populationDecomposition` field of the `scalarBounds` hypothesis
+(`FlagshipScalarComponentBounds`, this file): the bound
+`populationRisk ≤ empiricalRisk + Σ gaps` is ASSUMED through that field, then
+arithmetically chained against the five per-component gap bounds. So the result
+shows the assembly is consistent and the gaps add up, not that the population
+decomposition itself is proved here.
+
+For non-vacuity evidence where the component bounds are DERIVED from worked
+examples, see `FlagshipSimultaneousAssembly.flagshipSimultaneous_certificate` and
+`FlagshipFourComponentAssembly.flagshipFourComponent_conclusion_from_incrementModel`.
 -/
 theorem flagshipCertificate_from_components
     {ι Z : Type*} {T d : ℕ}

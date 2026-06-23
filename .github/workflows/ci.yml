@@ -70,6 +70,14 @@ jobs:
       - name: Verify flagship axiom cleanliness
         run: bash scripts/check_axioms.sh
 
+      # A `#check` cannot fail on a vacuous theorem, so it certifies typing and
+      # axiom-cleanliness, not satisfiability. This gate fails if any headline
+      # witness file degenerates to `#check`/`#print`-only with no concrete
+      # instantiation, and self-tests its detector against a check-only /
+      # concrete fixture pair.
+      - name: Verify witness quality (ban fake check-only witnesses)
+        run: bash scripts/check_witness_quality.sh
+
       - name: Verify no custom constants
         run: |
           if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean examples/; then
