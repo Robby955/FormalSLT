@@ -23,9 +23,9 @@ jobs:
       - name: Build
         run: lake build FormalSLT
 
-      - name: Check examples
+      - name: Check examples and tutorials
         run: |
-          for f in examples/*.lean; do
+          for f in $(find examples -name '*.lean' | sort); do
             echo "$f"
             lake env lean "$f"
           done

@@ -30,6 +30,9 @@ import FormalSLT.AnytimeValid.MixtureCS
 import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 import FormalSLT.AnytimeValid.EProcess
 
+import FormalSLT.Statistics.Bernoulli
+import FormalSLT.Statistics.SampleStatistics
+
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization
 import FormalSLT.Rademacher.ProbabilityBridge
