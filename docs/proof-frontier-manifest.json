@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 97,
-    "library_and_example_lean_lines": 58671,
-    "library_lean_lines": 51967,
-    "library_modules": 124,
-    "theorem_map_entries": 435
+    "example_lean_files": 98,
+    "library_and_example_lean_lines": 59299,
+    "library_lean_lines": 52398,
+    "library_modules": 125,
+    "theorem_map_entries": 439
   },
   "theorem_families": [
     {
@@ -2656,6 +2656,30 @@
           "module": "AnytimeValid.MixtureCS",
           "name": "atTop_time_uniform_confidence_sequence_subGamma_mixture",
           "summary": "Time-uniform mixture confidence sequence from the sub-Gamma exponential supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "subGamma_stitched_boundary_supermartingale",
+          "summary": "Stitched-over-\u03bb sub-Gamma exponential process is a nonnegative supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "stitched_atTop_crossing_bound",
+          "summary": "Ville crossing bound for the stitched sub-Gamma boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "optimized_lambda_confidence_sequence_subGamma",
+          "summary": "Optimized-\u03bb sub-Gamma confidence sequence with the stitched boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "subGammaLogLogWidth_loglog_rate",
+          "summary": "Stitched boundary half-width grows at the iterated-logarithm rate"
         }
       ],
       "name": "Anytime-valid confidence sequences"
