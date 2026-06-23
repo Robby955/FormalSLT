@@ -371,6 +371,291 @@ theorem atTop_time_uniform_confidence_sequence_subGamma_mixture
     exact ⟨n, hn_cross⟩
   exact (measureReal_mono hsubset).trans h_atTop
 
+/-!
+## Discharging the measurability / integrability package for the uniform prior
+
+The headline `atTop_time_uniform_confidence_sequence_subGamma_mixture` carries six
+measurability / integrability obligations. For the concrete `uniformTiltPrior` (a probability
+measure supported on the compact interval `[lam0, lam1]`) they are all discharged from the
+increment model alone, with no free hypotheses:
+
+* joint measurability of `(λ, ω) ↦ subGammaExponentialProcess λ n ω` in the product σ-algebra;
+* the pointwise process bound `M ≤ exp (lam1 · n · b)` valid on the bounded-increment, admissible-tilt
+  region, which yields product-integrability over `[lam0, lam1] × Ω` (and its restricted variants)
+  via `Integrable.of_bound`, since the product of two finite measures is finite;
+* adaptedness of each fixed-tilt process and of the prior integral, from adaptedness of `X`.
+-/
+
+/-- Joint measurability of the parameterized sub-Gamma exponential process in the product
+σ-algebra, from measurability of each increment. -/
+theorem measurable_subGammaExponentialProcess_prod {Ω : Type*} [MeasurableSpace Ω]
+    (X : ℕ → Ω → ℝ) (sigma2 b : ℝ) (n : ℕ)
+    (hX_meas : ∀ k, Measurable (X k)) :
+    Measurable (fun p : ℝ × Ω => subGammaExponentialProcess X sigma2 b p.1 n p.2) := by
+  unfold subGammaExponentialProcess runningSum subGammaCgf
+  fun_prop (disch := intro i _; exact (hX_meas i).comp measurable_snd)
+
+/-- Pointwise upper bound `M_n ≤ exp (lam1 · n · b)` on the fixed-tilt exponential process when the
+increments are bounded (`|X_i ω| ≤ b` for `i < n`) and the tilt is admissible
+(`0 ≤ lam ≤ lam1`, `b · lam < 3`). The negative cumulant term only helps, so it is dropped. -/
+theorem subGammaExponentialProcess_le_of_bound {Ω : Type*}
+    (X : ℕ → Ω → ℝ) (sigma2 b lam lam1 : ℝ) (n : ℕ) (ω : Ω)
+    (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam0 : 0 ≤ lam) (hlam1 : lam ≤ lam1) (hblam : b * lam < 3)
+    (hbound : ∀ i ∈ Finset.range n, |X i ω| ≤ b) :
+    subGammaExponentialProcess X sigma2 b lam n ω ≤ Real.exp (lam1 * (n : ℝ) * b) := by
+  unfold subGammaExponentialProcess
+  apply Real.exp_le_exp.2
+  have hden : 0 < 2 * (1 - b * lam / 3) := by
+    have : b * lam / 3 < 1 := by linarith
+    linarith
+  have hcgf_nonneg : 0 ≤ subGammaCgf sigma2 b lam := by
+    unfold subGammaCgf
+    apply div_nonneg
+    · positivity
+    · linarith
+  have hsum_le : runningSum X n ω ≤ (n : ℝ) * b := by
+    have hle : ∀ i ∈ Finset.range n, X i ω ≤ b := fun i hi => (abs_le.mp (hbound i hi)).2
+    calc runningSum X n ω = Finset.sum (Finset.range n) (fun i => X i ω) := rfl
+      _ ≤ Finset.sum (Finset.range n) (fun _ => b) := Finset.sum_le_sum hle
+      _ = (n : ℝ) * b := by rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  have hlS : lam * runningSum X n ω ≤ lam * ((n : ℝ) * b) :=
+    mul_le_mul_of_nonneg_left hsum_le hlam0
+  have hlS2 : lam * ((n : ℝ) * b) ≤ lam1 * ((n : ℝ) * b) := by
+    apply mul_le_mul_of_nonneg_right hlam1
+    positivity
+  have hcgf2 : 0 ≤ (n : ℝ) * subGammaCgf sigma2 b lam := by positivity
+  nlinarith [hlS, hlS2, hcgf2]
+
+/-- For the uniform prior, almost every tilt lies in the closed parameter interval. -/
+theorem uniformTiltPrior_ae_mem_Icc {lam0 lam1 : ℝ} :
+    ∀ᵐ lam ∂uniformTiltPrior lam0 lam1, lam ∈ Set.Icc lam0 lam1 := by
+  unfold uniformTiltPrior
+  exact ae_cond_mem measurableSet_Icc
+
+/-- Product integrability for `subGammaExponentialProcess` under `(uniformTiltPrior …).prod μ`.
+The integrand is a.e. bounded by `exp (lam1 · n · b)` and the product of two probability measures
+is finite, so `Integrable.of_bound` applies. -/
+theorem integrable_subGammaExponentialProcess_prod_uniformPrior
+    {Ω : Type*} {mΩ : MeasurableSpace Ω} {μ : Measure Ω} [IsFiniteMeasure μ]
+    {X : ℕ → Ω → ℝ} {sigma2 b lam0 lam1 : ℝ} (n : ℕ)
+    (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam0 : 0 ≤ lam0) (h01 : lam0 < lam1)
+    (hlam1 : b * lam1 < 3)
+    (hX_meas : ∀ k, Measurable (X k))
+    (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b) :
+    Integrable
+      (fun p : ℝ × Ω => subGammaExponentialProcess X sigma2 b p.1 n p.2)
+      ((uniformTiltPrior lam0 lam1).prod μ) := by
+  haveI : IsProbabilityMeasure (uniformTiltPrior lam0 lam1) :=
+    uniformTiltPrior_isProbabilityMeasure h01
+  refine Integrable.of_bound ?_ (Real.exp (lam1 * (n : ℝ) * b)) ?_
+  · exact (measurable_subGammaExponentialProcess_prod X sigma2 b n hX_meas).aestronglyMeasurable
+  · have hlam_mem : ∀ᵐ p : ℝ × Ω ∂((uniformTiltPrior lam0 lam1).prod μ),
+        p.1 ∈ Set.Icc lam0 lam1 :=
+      (Measure.quasiMeasurePreserving_fst).ae uniformTiltPrior_ae_mem_Icc
+    have hX : ∀ᵐ p : ℝ × Ω ∂((uniformTiltPrior lam0 lam1).prod μ),
+        ∀ i ∈ Finset.range n, |X i p.2| ≤ b := by
+      have h1 : ∀ᵐ ω ∂μ, ∀ i ∈ Finset.range n, |X i ω| ≤ b := by
+        have hall : ∀ᵐ ω ∂μ, ∀ k, |X k ω| ≤ b := ae_all_iff.2 hbound
+        filter_upwards [hall] with ω hω i _ using hω i
+      exact (Measure.quasiMeasurePreserving_snd).ae h1
+    filter_upwards [hlam_mem, hX] with p hp hpX
+    rw [Real.norm_eq_abs,
+      abs_of_nonneg (by unfold subGammaExponentialProcess; exact (Real.exp_pos _).le)]
+    have hlam0' : 0 ≤ p.1 := hlam0.trans hp.1
+    have hlam1' : p.1 ≤ lam1 := hp.2
+    have hblam' : b * p.1 < 3 := by nlinarith [hp.2, hb]
+    exact subGammaExponentialProcess_le_of_bound X sigma2 b p.1 lam1 n p.2
+      hb hσ hlam0' hlam1' hblam' hpX
+
+/-- Product integrability in the `Ω × ℝ` orientation under `ν.prod (uniformTiltPrior …)`, for any
+finite measure `ν` on `Ω` carrying a `ν`-a.e. increment bound. This single statement covers both the
+full measure (`ν = μ`) and the filtration-restricted measure (`ν = μ.restrict s`) variants the
+supermartingale step needs. -/
+theorem integrable_subGammaExponentialProcess_omegaProd_uniformPrior
+    {Ω : Type*} {mΩ : MeasurableSpace Ω} (ν : Measure Ω) [IsFiniteMeasure ν]
+    {X : ℕ → Ω → ℝ} {sigma2 b lam0 lam1 : ℝ} (n : ℕ)
+    (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam0 : 0 ≤ lam0) (h01 : lam0 < lam1)
+    (hlam1 : b * lam1 < 3)
+    (hX_meas : ∀ k, Measurable (X k))
+    (hbound : ∀ k, ∀ᵐ ω ∂ν, |X k ω| ≤ b) :
+    Integrable
+      (fun p : Ω × ℝ => subGammaExponentialProcess X sigma2 b p.2 n p.1)
+      (ν.prod (uniformTiltPrior lam0 lam1)) := by
+  haveI : IsProbabilityMeasure (uniformTiltPrior lam0 lam1) :=
+    uniformTiltPrior_isProbabilityMeasure h01
+  refine Integrable.of_bound ?_ (Real.exp (lam1 * (n : ℝ) * b)) ?_
+  · have hmeas : Measurable (fun p : Ω × ℝ => subGammaExponentialProcess X sigma2 b p.2 n p.1) := by
+      unfold subGammaExponentialProcess runningSum subGammaCgf
+      fun_prop (disch := intro i _; exact (hX_meas i).comp measurable_fst)
+    exact hmeas.aestronglyMeasurable
+  · have hlam_mem : ∀ᵐ p : Ω × ℝ ∂(ν.prod (uniformTiltPrior lam0 lam1)),
+        p.2 ∈ Set.Icc lam0 lam1 :=
+      (Measure.quasiMeasurePreserving_snd).ae uniformTiltPrior_ae_mem_Icc
+    have hX : ∀ᵐ p : Ω × ℝ ∂(ν.prod (uniformTiltPrior lam0 lam1)),
+        ∀ i ∈ Finset.range n, |X i p.1| ≤ b := by
+      have h1 : ∀ᵐ ω ∂ν, ∀ i ∈ Finset.range n, |X i ω| ≤ b := by
+        have hall : ∀ᵐ ω ∂ν, ∀ k, |X k ω| ≤ b := ae_all_iff.2 hbound
+        filter_upwards [hall] with ω hω i _ using hω i
+      exact (Measure.quasiMeasurePreserving_fst).ae h1
+    filter_upwards [hlam_mem, hX] with p hp hpX
+    rw [Real.norm_eq_abs,
+      abs_of_nonneg (by unfold subGammaExponentialProcess; exact (Real.exp_pos _).le)]
+    have hlam0' : 0 ≤ p.2 := hlam0.trans hp.1
+    have hlam1' : p.2 ≤ lam1 := hp.2
+    have hblam' : b * p.2 < 3 := by nlinarith [hp.2, hb]
+    exact subGammaExponentialProcess_le_of_bound X sigma2 b p.2 lam1 n p.1
+      hb hσ hlam0' hlam1' hblam' hpX
+
+/-- Each fixed-tilt exponential process is adapted to `ℱ` once the increment process is. -/
+theorem stronglyAdapted_subGammaExponentialProcess_of_adapted
+    {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} (sigma2 b lam : ℝ)
+    (hX_adapted : StronglyAdapted ℱ X) :
+    StronglyAdapted ℱ (subGammaExponentialProcess X sigma2 b lam) := by
+  intro n
+  have hsum : StronglyMeasurable[ℱ n] (fun ω => runningSum X n ω) := by
+    have hrw : (fun ω => runningSum X n ω) = ∑ i ∈ Finset.range n, X i := by
+      funext ω; simp [runningSum, Finset.sum_apply]
+    rw [hrw]
+    apply Finset.stronglyMeasurable_sum
+    intro i hi
+    rw [Finset.mem_range] at hi
+    exact (hX_adapted i).mono (ℱ.mono (le_of_lt hi))
+  have hbody : StronglyMeasurable[ℱ n]
+      (fun ω => lam * runningSum X n ω - (n : ℝ) * subGammaCgf sigma2 b lam) :=
+    (hsum.const_mul lam).sub stronglyMeasurable_const
+  exact Real.continuous_exp.comp_stronglyMeasurable hbody
+
+/-- Joint strong-measurability of the parameterized process in the `ℱ n`-product σ-algebra, from
+adaptedness of the increment process. This is the input to the integral-over-tilt adaptedness. -/
+theorem stronglyMeasurable_filtration_prod_subGamma
+    {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} (sigma2 b : ℝ) (n : ℕ)
+    (hX_adapted : StronglyAdapted ℱ X) :
+    StronglyMeasurable[(ℱ n).prod (inferInstance : MeasurableSpace ℝ)]
+      (Function.uncurry (fun ω lam => subGammaExponentialProcess X sigma2 b lam n ω)) := by
+  rw [stronglyMeasurable_iff_measurable]
+  unfold Function.uncurry subGammaExponentialProcess runningSum subGammaCgf
+  have hXmeas : ∀ i ∈ Finset.range n,
+      Measurable[(ℱ n).prod (inferInstance : MeasurableSpace ℝ)]
+        (fun p : Ω × ℝ => X i p.1) := by
+    intro i hi
+    rw [Finset.mem_range] at hi
+    have hXi : Measurable[ℱ n] (X i) := by
+      rw [← stronglyMeasurable_iff_measurable]
+      exact (hX_adapted i).mono (ℱ.mono (le_of_lt hi))
+    exact hXi.comp measurable_fst
+  apply Measurable.exp
+  apply Measurable.sub
+  · apply Measurable.mul
+    · exact measurable_snd
+    · exact Finset.measurable_sum _ hXmeas
+  · apply Measurable.const_mul
+    apply Measurable.div
+    · apply Measurable.const_mul
+      exact (measurable_snd.pow_const 2)
+    · apply Measurable.const_mul
+      apply Measurable.const_sub
+      apply Measurable.div_const
+      apply Measurable.const_mul
+      exact measurable_snd
+
+/-- The prior integral preserves `ℱ n`-strong-measurability, so the mixture process is adapted
+to `ℱ` whenever the increment process is. -/
+theorem stronglyAdapted_mixtureExponentialProcess_of_adapted
+    {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} (sigma2 b : ℝ) (ρ : Measure ℝ) [SFinite ρ]
+    (hX_adapted : StronglyAdapted ℱ X) :
+    StronglyAdapted ℱ (mixtureExponentialProcess X sigma2 b ρ) := by
+  intro n
+  have hjoint := stronglyMeasurable_filtration_prod_subGamma (ℱ := ℱ) sigma2 b n hX_adapted
+  show StronglyMeasurable[ℱ n]
+    (fun ω => ∫ lam, subGammaExponentialProcess X sigma2 b lam n ω ∂ρ)
+  letI : MeasurableSpace Ω := ℱ n
+  exact MeasureTheory.StronglyMeasurable.integral_prod_right (ν := ρ) hjoint
+
+/--
+The mixture confidence sequence for the continuous uniform tilt prior, with **no free
+measurability or integrability hypotheses**. From the conditional sub-Gamma increment model on `X`
+(adapted, bounded `|X_k| ≤ b`, conditionally centered `μ[X_k | F_k] = 0`, conditional second moment
+`μ[X_k² | F_k] ≤ σ²`) and an admissible compact tilt interval `[lam0, lam1] ⊆ (0, 3/b)`, the
+prior-mixture exponential process is an anytime-valid confidence sequence:
+
+`μ.real {ω | ∃ n > 0, 1/δ ≤ ∫ lam, M_λ(n, ω) ∂Unif[lam0,lam1]} ≤ δ`.
+
+Every measurability / integrability obligation of
+`atTop_time_uniform_confidence_sequence_subGamma_mixture` is discharged internally for the concrete
+uniform prior: joint measurability from `hX_meas`, the four product-integrability conditions from the
+process bound `M ≤ exp (lam1 · n · b)` via `Integrable.of_bound`, and both adaptedness conditions
+from `hX_adapted`.
+-/
+theorem mixture_confidence_sequence_uniformPrior
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : @Measure Ω mΩ} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {sigma2 b delta lam0 lam1 : ℝ}
+    (hδ : 0 < delta)
+    (hb : 0 < b) (hσ : 0 ≤ sigma2)
+    (hlam0 : 0 < lam0) (h01 : lam0 < lam1) (hlam1 : lam1 < 3 / b)
+    (hX_meas : ∀ k, Measurable (X k)) (hX_int : ∀ k, Integrable (X k) μ)
+    (hX_adapted : StronglyAdapted ℱ X)
+    (hbound : ∀ k, ∀ᵐ ω ∂μ, |X k ω| ≤ b)
+    (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
+    (hvar : ∀ k, μ[fun ω => (X k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => sigma2) :
+    μ.real {ω | ∃ n : ℕ, 0 < n ∧
+      (1 / delta) ≤ mixtureExponentialProcess X sigma2 b (uniformTiltPrior lam0 lam1) n ω}
+        ≤ delta := by
+  haveI : IsProbabilityMeasure (uniformTiltPrior lam0 lam1) :=
+    uniformTiltPrior_isProbabilityMeasure h01
+  -- The tilt interval lies in `(0, 3/b)`, hence `b · lam1 < 3` and `lam0 ≥ 0`.
+  have hblam1 : b * lam1 < 3 := by
+    have hmul : b * lam1 < b * (3 / b) := mul_lt_mul_of_pos_left hlam1 hb
+    have hb_ne : b ≠ 0 := ne_of_gt hb
+    have hcancel : b * (3 / b) = 3 := by field_simp [hb_ne]
+    linarith
+  have hsupport : ∀ᵐ lam ∂uniformTiltPrior lam0 lam1, lam ∈ Set.Ioo 0 (3 / b) :=
+    uniformTiltPrior_valid_tilt_support hlam0 h01 hlam1
+  refine atTop_time_uniform_confidence_sequence_subGamma_mixture
+    (μ := μ) (ℱ := ℱ) (X := X) (sigma2 := sigma2) (b := b) (delta := delta)
+    (ρ := uniformTiltPrior lam0 lam1)
+    hδ hb hσ hsupport hX_meas hX_int
+    (fun lam => stronglyAdapted_subGammaExponentialProcess_of_adapted sigma2 b lam hX_adapted)
+    (stronglyAdapted_mixtureExponentialProcess_of_adapted sigma2 b _ hX_adapted)
+    ?_ ?_ ?_ ?_ ?_ hbound hcenter hvar
+  · -- h_integrable_mix
+    intro n
+    have hprod :=
+      integrable_subGammaExponentialProcess_omegaProd_uniformPrior
+        (ν := μ) (X := X) (sigma2 := sigma2) (b := b)
+        (lam0 := lam0) (lam1 := lam1) n hb hσ hlam0.le h01 hblam1 hX_meas hbound
+    simpa [mixtureExponentialProcess] using hprod.integral_prod_left
+  · -- hM_int
+    intro n
+    exact integrable_subGammaExponentialProcess_prod_uniformPrior
+      (μ := μ) (X := X) (sigma2 := sigma2) (b := b) (lam0 := lam0) (lam1 := lam1)
+      (n + 1) hb hσ hlam0.le h01 hblam1 hX_meas hbound
+  · -- hM_int_restrict
+    intro n s hs hμs
+    haveI : IsFiniteMeasure (μ.restrict s) := by
+      rw [isFiniteMeasure_restrict]; exact ne_of_lt hμs
+    exact integrable_subGammaExponentialProcess_omegaProd_uniformPrior
+      (ν := μ.restrict s) (X := X) (sigma2 := sigma2) (b := b)
+      (lam0 := lam0) (lam1 := lam1) (n + 1) hb hσ hlam0.le h01 hblam1 hX_meas
+      (fun k => ae_restrict_of_ae (hbound k))
+  · -- hM_int_step
+    intro n
+    exact integrable_subGammaExponentialProcess_omegaProd_uniformPrior
+      (ν := μ) (X := X) (sigma2 := sigma2) (b := b)
+      (lam0 := lam0) (lam1 := lam1) n hb hσ hlam0.le h01 hblam1 hX_meas hbound
+  · -- hM_int_step_restrict
+    intro n s hs hμs
+    haveI : IsFiniteMeasure (μ.restrict s) := by
+      rw [isFiniteMeasure_restrict]; exact ne_of_lt hμs
+    exact integrable_subGammaExponentialProcess_omegaProd_uniformPrior
+      (ν := μ.restrict s) (X := X) (sigma2 := sigma2) (b := b)
+      (lam0 := lam0) (lam1 := lam1) n hb hσ hlam0.le h01 hblam1 hX_meas
+      (fun k => ae_restrict_of_ae (hbound k))
+
 end
 
 end FormalSLT.AnytimeValid
