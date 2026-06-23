@@ -530,6 +530,29 @@ declarations; modules are relative to `FormalSLT`.
 | `sampleVariance_eq_secondMoment_sub_meanSq` | `Statistics.SampleStatistics` | Variance decomposition `Var = E[X²] - x̄²` |
 | `sampleMean_hoeffding_tail` | `Statistics.SampleStatistics` | Two-sided Hoeffding tail for the named sample mean |
 
+## Glivenko-Cantelli
+
+| Theorem | Module | Role |
+|---|---|---|
+| `lowerRayIndicator` | `GlivenkoCantelli` | Closed lower-ray indicator `1{x ≤ z}` as the empirical-CDF integrand |
+| `strictLowerRayIndicator` | `GlivenkoCantelli` | Open lower-ray indicator `1{x < z}`, the atom-safe upper bracket |
+| `empiricalCDF` | `GlivenkoCantelli` | Empirical CDF as the lower-ray indicator-class empirical average |
+| `empiricalCDFUniformDeviation` | `GlivenkoCantelli` | Uniform empirical-CDF deviation `sup_x abs(F_n(x) - F(x))` |
+| `IsGCClass` | `GlivenkoCantelli` | Glivenko-Cantelli class predicate: a.s. uniform-deviation convergence to zero |
+| `lowerRayGC_iff_classicalGlivenkoCantelli` | `GlivenkoCantelli` | The classical empirical-CDF GC statement is exactly the lower-ray indicator-class GC statement |
+| `empiricalCDF_eq_lowerRayEmpiricalAverage` | `GlivenkoCantelli` | Empirical CDF equals the lower-ray indicator empirical average |
+| `integral_lowerRayIndicator_comp_eq_cdf` | `GlivenkoCantelli` | Population lower-ray mass equals the CDF of the pushed-forward law |
+| `lowerRayBracketing_uniformDeviation_bound` | `GlivenkoCantelli` | Deterministic finite-grid bracketing bound on the uniform empirical-CDF deviation |
+| `finiteLowerRayBracketingGrid` | `GlivenkoCantelli` | Finite grid of bracket points that controls every threshold at a chosen mesh |
+| `lowerRayPointwiseStrongLaw` | `GlivenkoCantelli` | Pointwise empirical-CDF strong law at a fixed threshold from the mathlib strong law |
+| `strictLowerRayPointwiseStrongLaw` | `GlivenkoCantelli` | Open-upper-bracket pointwise strong law, the atom-safe companion |
+| `classicalGlivenkoCantelli_of_pointwise_lowerRay` | `GlivenkoCantelli` | Uniform a.s. GC from pointwise convergence on closed and strict lower rays |
+| `classicalGlivenkoCantelli_iid` | `GlivenkoCantelli` | Classical Glivenko-Cantelli for i.i.d. real samples: empirical CDF converges uniformly a.s. to the population CDF |
+| `vcHoeffdingBridge_for_gcClass` | `GlivenkoCantelli` | Wraps the GC class into the finite-class VC/Hoeffding empirical-process surface |
+| `rademacherERMBridge_for_gcClass` | `GlivenkoCantelli` | Wraps the GC class into the Rademacher ERM generalization surface |
+| `vcPacBayesHybridBridge_for_gcClass` | `GlivenkoCantelli` | Wraps the GC class into the VC/PAC-Bayes hybrid surface |
+| `bernoulliThreeZerosOneOne_uniformDeviation_le_quarter` | `GlivenkoCantelli` | Concrete non-vacuity witness: explicit four-sample uniform empirical-CDF deviation `≤ 1/4` |
+
 ## Partial dependency view for the original finite-class spine
 
 ```mermaid

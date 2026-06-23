@@ -61,6 +61,7 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "ERM": ["erm", "empiricalrisk", "excessrisk", "gengap", "generalization"],
     "stability": ["stability", "stable"],
     "sample statistics": ["samplemean", "samplevariance", "sample mean", "sample variance", "estimator"],
+    "Glivenko-Cantelli": ["glivenko", "cantelli", "empiricalcdf", "empirical cdf", "lowerray", "lower ray", "lower-ray", "uniformdeviation", "bracketing"],
     "Bernoulli": ["bernoulli"],
     "risk": ["risk"],
 }

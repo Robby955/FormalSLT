@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 101,
-    "library_and_example_lean_lines": 60847,
-    "library_lean_lines": 53748,
-    "library_modules": 127,
-    "theorem_map_entries": 445
+    "example_lean_files": 102,
+    "library_and_example_lean_lines": 62042,
+    "library_lean_lines": 54782,
+    "library_modules": 128,
+    "theorem_map_entries": 470
   },
   "theorem_families": [
     {
@@ -2683,6 +2683,30 @@
         },
         {
           "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "subGammaLogLogWidth_eq_boundary_optTilt",
+          "summary": "The closed-form log-log width equals the sub-Gamma boundary at the per-time optimal tilt"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "optimized_lambda_two_sided_confidence_sequence",
+          "summary": "Two-sided optimized-\u03bb iterated-log confidence sequence via the deterministic stitching bridge and the X/-X transfer"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "optimized_lambda_two_sided_closed_form_pointwise",
+          "summary": "Closed-form pointwise interval-width form of the two-sided optimized-\u03bb confidence sequence"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.OptimizedLambdaCS",
+          "name": "fixedGrid_logLog_bridge_forces_exact_boundary",
+          "summary": "Obstruction: a fixed finite-grid all-time closed-form bridge forces the grid to attain the exact per-time optimal boundary"
+        },
+        {
+          "kind": "theorem",
           "module": "AnytimeValid.EProcess",
           "name": "eProcess_typeI_control",
           "summary": "Safe-testing Type-I control: an e-process rejection event has mass at most the level \u03b1 over the Ville maximal inequality"
@@ -2716,6 +2740,24 @@
           "module": "AnytimeValid.BettingCS",
           "name": "betting_confidence_sequence_of_condMean",
           "summary": "End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformPACBayes",
+          "name": "pacBayesPriorMixture_supermartingale",
+          "summary": "Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformPACBayes",
+          "name": "timeUniformPACBayes_crossing_bound",
+          "summary": "Ville crossing bound for the prior-mixture process over all times"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformPACBayes",
+          "name": "timeUniformPACBayes_bound",
+          "summary": "Process-level time-uniform PAC-Bayes bound: with probability at least 1 - \u03b4, the posterior running mean of the abstract martingale-difference process stays under the cgf/KL/log(1/\u03b4) boundary for every n \u2265 1"
         }
       ],
       "name": "Anytime-valid confidence sequences"
@@ -2813,6 +2855,119 @@
         }
       ],
       "name": "Distribution bridges and sample statistics"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "lowerRayIndicator",
+          "summary": "Closed lower-ray indicator 1{x \u2264 z} as the empirical-CDF integrand"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "strictLowerRayIndicator",
+          "summary": "Open lower-ray indicator 1{x < z}, the atom-safe upper bracket"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "empiricalCDF",
+          "summary": "Empirical CDF as the lower-ray indicator-class empirical average"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "empiricalCDFUniformDeviation",
+          "summary": "Uniform empirical-CDF deviation sup_x abs(F_n(x) - F(x))"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "IsGCClass",
+          "summary": "Glivenko-Cantelli class predicate: a.s. uniform-deviation convergence to zero"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "lowerRayGC_iff_classicalGlivenkoCantelli",
+          "summary": "The classical empirical-CDF GC statement is exactly the lower-ray indicator-class GC statement"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "empiricalCDF_eq_lowerRayEmpiricalAverage",
+          "summary": "Empirical CDF equals the lower-ray indicator empirical average"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "integral_lowerRayIndicator_comp_eq_cdf",
+          "summary": "Population lower-ray mass equals the CDF of the pushed-forward law"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "lowerRayBracketing_uniformDeviation_bound",
+          "summary": "Deterministic finite-grid bracketing bound on the uniform empirical-CDF deviation"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "finiteLowerRayBracketingGrid",
+          "summary": "Finite grid of bracket points that controls every threshold at a chosen mesh"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "lowerRayPointwiseStrongLaw",
+          "summary": "Pointwise empirical-CDF strong law at a fixed threshold from the mathlib strong law"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "strictLowerRayPointwiseStrongLaw",
+          "summary": "Open-upper-bracket pointwise strong law, the atom-safe companion"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "classicalGlivenkoCantelli_of_pointwise_lowerRay",
+          "summary": "Uniform a.s. GC from pointwise convergence on closed and strict lower rays"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "classicalGlivenkoCantelli_iid",
+          "summary": "Classical Glivenko-Cantelli for i.i.d. real samples: empirical CDF converges uniformly a.s. to the population CDF"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "vcHoeffdingBridge_for_gcClass",
+          "summary": "Wraps the GC class into the finite-class VC/Hoeffding empirical-process surface"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "rademacherERMBridge_for_gcClass",
+          "summary": "Wraps the GC class into the Rademacher ERM generalization surface"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "vcPacBayesHybridBridge_for_gcClass",
+          "summary": "Wraps the GC class into the VC/PAC-Bayes hybrid surface"
+        },
+        {
+          "kind": "theorem",
+          "module": "GlivenkoCantelli",
+          "name": "bernoulliThreeZerosOneOne_uniformDeviation_le_quarter",
+          "summary": "Concrete non-vacuity witness: explicit four-sample uniform empirical-CDF deviation \u2264 1/4"
+        }
+      ],
+      "name": "Glivenko-Cantelli"
     }
   ],
   "toolchain": {
