@@ -60,6 +60,7 @@ classify_witness() {
 #   finitePACBayesBernsteinMargin_badEventMass_le_delta
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
+#   eProcess_typeI_control / eProcess_product_of_supermartingale / eProcess_optionalContinuation
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -71,6 +72,7 @@ HEADLINE_WITNESSES=(
   "examples/AdversarialWitnessBernstein.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
+  "examples/CheckEProcess.lean"
 )
 
 fail=0
