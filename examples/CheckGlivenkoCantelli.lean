@@ -1,0 +1,72 @@
+import FormalSLT.GlivenkoCantelli
+
+/-!
+# Glivenko-Cantelli bridge checker
+
+```bash
+lake env lean examples/CheckGlivenkoCantelli.lean
+```
+-/
+
+#check FormalSLT.GlivenkoCantelli.lowerRayIndicator
+#check FormalSLT.GlivenkoCantelli.strictLowerRayIndicator
+#check FormalSLT.GlivenkoCantelli.empiricalCDF
+#check FormalSLT.GlivenkoCantelli.strictEmpiricalCDF
+#check FormalSLT.GlivenkoCantelli.empiricalCDFUniformDeviation
+#check FormalSLT.GlivenkoCantelli.gcClassUniformDeviation
+
+#check FormalSLT.GlivenkoCantelli.lowerRayIndicator_mem_Icc
+#print axioms FormalSLT.GlivenkoCantelli.lowerRayIndicator_mem_Icc
+
+#check FormalSLT.GlivenkoCantelli.measurable_lowerRayIndicator
+#print axioms FormalSLT.GlivenkoCantelli.measurable_lowerRayIndicator
+
+#check FormalSLT.GlivenkoCantelli.empiricalCDF_eq_lowerRayEmpiricalAverage
+#print axioms FormalSLT.GlivenkoCantelli.empiricalCDF_eq_lowerRayEmpiricalAverage
+
+#check FormalSLT.GlivenkoCantelli.strictEmpiricalCDF_eq_strictLowerRayEmpiricalAverage
+#print axioms FormalSLT.GlivenkoCantelli.strictEmpiricalCDF_eq_strictLowerRayEmpiricalAverage
+
+#check FormalSLT.GlivenkoCantelli.empiricalCDFUniformDeviation_eq_gcClassUniformDeviation
+#print axioms FormalSLT.GlivenkoCantelli.empiricalCDFUniformDeviation_eq_gcClassUniformDeviation
+
+#check FormalSLT.GlivenkoCantelli.IsGCClass
+
+#check FormalSLT.GlivenkoCantelli.lowerRayGC_iff_classicalGlivenkoCantelli
+#print axioms FormalSLT.GlivenkoCantelli.lowerRayGC_iff_classicalGlivenkoCantelli
+
+#check FormalSLT.GlivenkoCantelli.lowerRayPointwiseStrongLaw
+#print axioms FormalSLT.GlivenkoCantelli.lowerRayPointwiseStrongLaw
+
+#check FormalSLT.GlivenkoCantelli.strictLowerRayPointwiseStrongLaw
+#print axioms FormalSLT.GlivenkoCantelli.strictLowerRayPointwiseStrongLaw
+
+#check FormalSLT.GlivenkoCantelli.finiteLowerRayBracketingGrid
+#print axioms FormalSLT.GlivenkoCantelli.finiteLowerRayBracketingGrid
+
+#check FormalSLT.GlivenkoCantelli.lowerRayBracketing_uniformDeviation_bound
+#print axioms FormalSLT.GlivenkoCantelli.lowerRayBracketing_uniformDeviation_bound
+
+#check FormalSLT.GlivenkoCantelli.classicalGlivenkoCantelli_of_pointwise_lowerRay
+#print axioms FormalSLT.GlivenkoCantelli.classicalGlivenkoCantelli_of_pointwise_lowerRay
+
+#check FormalSLT.GlivenkoCantelli.classicalGlivenkoCantelli_iid
+#print axioms FormalSLT.GlivenkoCantelli.classicalGlivenkoCantelli_iid
+
+#check FormalSLT.GlivenkoCantelli.finiteClassUniformConvergenceBridge
+#print axioms FormalSLT.GlivenkoCantelli.finiteClassUniformConvergenceBridge
+
+#check FormalSLT.GlivenkoCantelli.vcHoeffdingBridge_for_gcClass
+#print axioms FormalSLT.GlivenkoCantelli.vcHoeffdingBridge_for_gcClass
+
+#check FormalSLT.GlivenkoCantelli.rademacherERMBridge_for_gcClass
+#print axioms FormalSLT.GlivenkoCantelli.rademacherERMBridge_for_gcClass
+
+#check FormalSLT.GlivenkoCantelli.vcPacBayesHybridBridge_for_gcClass
+#print axioms FormalSLT.GlivenkoCantelli.vcPacBayesHybridBridge_for_gcClass
+
+#check FormalSLT.GlivenkoCantelli.bernoulliThreeZerosOneOneSampleCDF
+#check FormalSLT.GlivenkoCantelli.bernoulliHalfCDF
+
+#check FormalSLT.GlivenkoCantelli.bernoulliThreeZerosOneOne_uniformDeviation_le_quarter
+#print axioms FormalSLT.GlivenkoCantelli.bernoulliThreeZerosOneOne_uniformDeviation_le_quarter
