@@ -29,6 +29,7 @@ import FormalSLT.AnytimeValid.SubGaussianCS
 import FormalSLT.AnytimeValid.AtTopCS
 import FormalSLT.AnytimeValid.MixtureCS
 import FormalSLT.AnytimeValid.OptimizedLambdaCS
+import FormalSLT.AnytimeValid.DyadicEpochCS
 import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
