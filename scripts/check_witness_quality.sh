@@ -59,6 +59,7 @@ classify_witness() {
 #   finiteMcAllesterBoundedComplexity_badEventMass_le_delta
 #   finitePACBayesBernsteinMargin_badEventMass_le_delta
 #   vcPacBayesBernsteinPosteriorRisk_bound
+#   empiricalBernstein_confidence_sequence_uniformPrior
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -69,6 +70,7 @@ HEADLINE_WITNESSES=(
   "examples/WitnessMcAllesterBadEventNonempty.lean"
   "examples/AdversarialWitnessBernstein.lean"
   "examples/CheckVCHybridWitness.lean"
+  "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
 )
 
 fail=0
