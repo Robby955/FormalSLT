@@ -62,6 +62,7 @@ classify_witness() {
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
 #   maurer_pacbayes_kl_bound
+#   eProcess_typeI_control / eProcess_product_of_supermartingale / eProcess_optionalContinuation
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -75,6 +76,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"
   "examples/CheckMaurerKLNonVacuityWitness.lean"
+  "examples/CheckEProcess.lean"
 )
 
 fail=0
