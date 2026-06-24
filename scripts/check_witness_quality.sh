@@ -67,6 +67,8 @@ classify_witness() {
 #   betting_confidence_sequence_of_condMean (concrete Rademacher witness, bet 1/4)
 #   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
 #   cramerRao_unbiased / Bernoulli p = 1/2 Fisher-information witness
+#   finiteLogPartition_hasDerivAt / finiteExponentialFamily_fisherInformation_eq_variance
+#     (Bernoulli natural-parameter witness at theta = 0)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -87,6 +89,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckDyadicEpochCS.lean"
   "examples/CheckDyadicEpochPSeriesCS.lean"
   "examples/CheckCramerRao.lean"
+  "examples/CheckExponentialFamily.lean"
 )
 
 fail=0
