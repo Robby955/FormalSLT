@@ -66,6 +66,7 @@ classify_witness() {
 #   optimized_lambda_confidence_sequence_subGamma / subGammaLogLogWidth_loglog_rate
 #   betting_confidence_sequence_of_condMean (concrete Rademacher witness, bet 1/4)
 #   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
+#   cramerRao_unbiased / Bernoulli p = 1/2 Fisher-information witness
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -85,6 +86,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckTimeUniformPACBayes.lean"
   "examples/CheckDyadicEpochCS.lean"
   "examples/CheckDyadicEpochPSeriesCS.lean"
+  "examples/CheckCramerRao.lean"
 )
 
 fail=0

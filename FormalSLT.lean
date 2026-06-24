@@ -36,6 +36,9 @@ import FormalSLT.AnytimeValid.BettingCS
 
 import FormalSLT.Statistics.Bernoulli
 import FormalSLT.Statistics.SampleStatistics
+import FormalSLT.Statistics.ClassicalEstimation
+import FormalSLT.Statistics.FisherInformation
+import FormalSLT.Statistics.CramerRao
 
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization

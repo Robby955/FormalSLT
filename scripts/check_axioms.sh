@@ -91,10 +91,10 @@ MISSING=0
 for t in "${THEOREMS[@]}"; do
   # An axiom-free theorem prints "does not depend on any axioms" (no "depends on
   # axioms" substring), which is the cleanest case, so accept both phrasings.
-  if printf '%s\n' "$RAW" | grep -qF "'$t' depends on axioms"; then
+  if grep -qF "'$t' depends on axioms" <<< "$RAW"; then
     continue
   fi
-  if printf '%s\n' "$RAW" | grep -qF "'$t' does not depend on any axioms"; then
+  if grep -qF "'$t' does not depend on any axioms" <<< "$RAW"; then
     continue
   fi
   echo "ERROR: no axiom report for $t (renamed or removed?)" >&2
