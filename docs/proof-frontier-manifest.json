@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 104,
-    "library_and_example_lean_lines": 62728,
-    "library_lean_lines": 55405,
-    "library_modules": 129,
-    "theorem_map_entries": 478
+    "example_lean_files": 106,
+    "library_and_example_lean_lines": 63823,
+    "library_lean_lines": 56368,
+    "library_modules": 132,
+    "theorem_map_entries": 499
   },
   "theorem_families": [
     {
@@ -2903,6 +2903,142 @@
         }
       ],
       "name": "Distribution bridges and sample statistics"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "weightedExpectation",
+          "summary": "Finite weighted expectation \u2211 w x \u00b7 X x, the population-mean primitive"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "weightedExpectation_linear",
+          "summary": "Linearity of the weighted expectation in the estimator"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "sampleMean_unbiased_finite",
+          "summary": "Sample mean is unbiased for the finite population mean"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "sampleVarianceBessel",
+          "summary": "Bessel-corrected sample variance (1/(n-1)) \u2211 (x i - x\u0304)\u00b2"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "sampleVarianceBessel_unbiased_finite",
+          "summary": "Bessel-corrected sample variance is unbiased for the finite-population variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "bernoulliScoreAtSampleMean_eq_zero",
+          "summary": "Bernoulli log-likelihood score vanishes at the sample-mean MLE"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "bernoulliLogLikelihood_global_argmax_from_count",
+          "summary": "Sample mean is the global Bernoulli log-likelihood maximizer"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "gaussianKnownVarianceLogLikelihood_mle",
+          "summary": "Sample mean is the known-variance Gaussian MLE"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "horvitzThompson_design_unbiased",
+          "summary": "Horvitz-Thompson estimator is design-unbiased for the finite-population total"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.ClassicalEstimation",
+          "name": "bootstrapMean_eq_sampleMean",
+          "summary": "Bootstrap-resample mean equals the sample mean"
+        }
+      ],
+      "name": "Classical estimation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "weightedVariance",
+          "summary": "Finite weighted variance of an estimator under a weight vector"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "weightedCovariance",
+          "summary": "Finite weighted covariance of two functions"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "scoreFunction",
+          "summary": "Score \u2202_\u03b8 log p(x; \u03b8) as pmfDeriv / pmf"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "fisherInformation",
+          "summary": "Fisher information as the weighted variance of the score"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "score_mean_zero_of_finite_regular",
+          "summary": "Score has zero mean under regularity (\u2211 p' = 0)"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "covariance_score_eq_deriv_mean",
+          "summary": "Estimator-score covariance equals the derivative of the estimator mean"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.FisherInformation",
+          "name": "covariance_cauchy_schwarz",
+          "summary": "Weighted Cauchy-Schwarz: Cov\u00b2 \u2264 Var \u00b7 Var"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.CramerRao",
+          "name": "cramerRao_unbiased",
+          "summary": "Cram\u00e9r-Rao lower bound 1 / I(\u03b8) \u2264 Var(T) for an unbiased estimator"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.CramerRao",
+          "name": "bernoulliFisherInformation",
+          "summary": "Bernoulli Fisher information 1 / (p(1-p))"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.CramerRao",
+          "name": "bernoulliHalfFisherInformation",
+          "summary": "Concrete witness: I(1/2) = 4"
+        },
+        {
+          "kind": "theorem",
+          "module": "Statistics.CramerRao",
+          "name": "bernoulliHalfCramerRaoWitness",
+          "summary": "Concrete witness: identity estimator attains variance 1/4 = 1 / I(1/2)"
+        }
+      ],
+      "name": "Fisher information and Cram\u00e9r-Rao"
     },
     {
       "entries": [

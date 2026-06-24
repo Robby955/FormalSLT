@@ -538,6 +538,37 @@ declarations; modules are relative to `FormalSLT`.
 | `sampleVariance_eq_secondMoment_sub_meanSq` | `Statistics.SampleStatistics` | Variance decomposition `Var = E[X²] - x̄²` |
 | `sampleMean_hoeffding_tail` | `Statistics.SampleStatistics` | Two-sided Hoeffding tail for the named sample mean |
 
+## Classical estimation
+
+| Theorem | Module | Role |
+|---|---|---|
+| `weightedExpectation` | `Statistics.ClassicalEstimation` | Finite weighted expectation `∑ w x · X x`, the population-mean primitive |
+| `weightedExpectation_linear` | `Statistics.ClassicalEstimation` | Linearity of the weighted expectation in the estimator |
+| `sampleMean_unbiased_finite` | `Statistics.ClassicalEstimation` | Sample mean is unbiased for the finite population mean |
+| `sampleVarianceBessel` | `Statistics.ClassicalEstimation` | Bessel-corrected sample variance `(1/(n-1)) ∑ (x i - x̄)²` |
+| `sampleVarianceBessel_unbiased_finite` | `Statistics.ClassicalEstimation` | Bessel-corrected sample variance is unbiased for the finite-population variance |
+| `bernoulliScoreAtSampleMean_eq_zero` | `Statistics.ClassicalEstimation` | Bernoulli log-likelihood score vanishes at the sample-mean MLE |
+| `bernoulliLogLikelihood_global_argmax_from_count` | `Statistics.ClassicalEstimation` | Sample mean is the global Bernoulli log-likelihood maximizer |
+| `gaussianKnownVarianceLogLikelihood_mle` | `Statistics.ClassicalEstimation` | Sample mean is the known-variance Gaussian MLE |
+| `horvitzThompson_design_unbiased` | `Statistics.ClassicalEstimation` | Horvitz-Thompson estimator is design-unbiased for the finite-population total |
+| `bootstrapMean_eq_sampleMean` | `Statistics.ClassicalEstimation` | Bootstrap-resample mean equals the sample mean |
+
+## Fisher information and Cramér-Rao
+
+| Theorem | Module | Role |
+|---|---|---|
+| `weightedVariance` | `Statistics.FisherInformation` | Finite weighted variance of an estimator under a weight vector |
+| `weightedCovariance` | `Statistics.FisherInformation` | Finite weighted covariance of two functions |
+| `scoreFunction` | `Statistics.FisherInformation` | Score `∂_θ log p(x; θ)` as `pmfDeriv / pmf` |
+| `fisherInformation` | `Statistics.FisherInformation` | Fisher information as the weighted variance of the score |
+| `score_mean_zero_of_finite_regular` | `Statistics.FisherInformation` | Score has zero mean under regularity (`∑ p' = 0`) |
+| `covariance_score_eq_deriv_mean` | `Statistics.FisherInformation` | Estimator-score covariance equals the derivative of the estimator mean |
+| `covariance_cauchy_schwarz` | `Statistics.FisherInformation` | Weighted Cauchy-Schwarz: `Cov² ≤ Var · Var` |
+| `cramerRao_unbiased` | `Statistics.CramerRao` | Cramér-Rao lower bound `1 / I(θ) ≤ Var(T)` for an unbiased estimator |
+| `bernoulliFisherInformation` | `Statistics.CramerRao` | Bernoulli Fisher information `1 / (p(1-p))` |
+| `bernoulliHalfFisherInformation` | `Statistics.CramerRao` | Concrete witness: `I(1/2) = 4` |
+| `bernoulliHalfCramerRaoWitness` | `Statistics.CramerRao` | Concrete witness: identity estimator attains variance `1/4 = 1 / I(1/2)` |
+
 ## Glivenko-Cantelli
 
 | Theorem | Module | Role |
