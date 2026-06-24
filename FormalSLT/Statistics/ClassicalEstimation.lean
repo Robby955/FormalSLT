@@ -89,6 +89,35 @@ theorem weightedExpectation_linear {Ω : Type*} [Fintype Ω]
       = a * weightedExpectation w X + b * weightedExpectation w Y := by
   rw [weightedExpectation_add, weightedExpectation_smul, weightedExpectation_smul]
 
+/-- Finite weighted expectation commutes with finite sums. -/
+theorem weightedExpectation_sum {Ω ι : Type*} [Fintype Ω] [Fintype ι]
+    (w : Ω → ℝ) (X : ι → Ω → ℝ) :
+    weightedExpectation w (fun ω => ∑ i, X i ω)
+      = ∑ i, weightedExpectation w (fun ω => X i ω) := by
+  unfold weightedExpectation
+  calc
+    ∑ ω, w ω * (∑ i, X i ω)
+        = ∑ ω, ∑ i, w ω * X i ω := by
+          refine Finset.sum_congr rfl ?_
+          intro ω _hω
+          rw [Finset.mul_sum]
+    _ = ∑ i, ∑ ω, w ω * X i ω := by
+          rw [Finset.sum_comm]
+
+/-- Finite weighted expectation commutes with division by a fixed scalar. -/
+theorem weightedExpectation_div_const {Ω : Type*} [Fintype Ω]
+    (w X : Ω → ℝ) (c : ℝ) :
+    weightedExpectation w (fun ω => X ω / c) = weightedExpectation w X / c := by
+  unfold weightedExpectation
+  calc
+    ∑ ω, w ω * (X ω / c)
+        = ∑ ω, (w ω * X ω) / c := by
+          refine Finset.sum_congr rfl ?_
+          intro ω _hω
+          ring
+    _ = (∑ ω, w ω * X ω) / c := by
+          rw [Finset.sum_div]
+
 /-! ### Sample mean algebra -/
 
 /-- **The sample mean of a constant sample is that constant.** -/
@@ -248,6 +277,76 @@ theorem sampleVarianceBessel_two (x : Fin 2 → ℝ) :
   norm_num
   ring
 
+/-- Bessel variance as centered second moment minus squared sample-mean error. -/
+theorem sampleVarianceBessel_eq_centered_secondMoment_sub_meanSq {n : ℕ}
+    (hn : 0 < n) (x : Fin n → ℝ) (μ : ℝ) :
+    sampleVarianceBessel x =
+      ((∑ i, (x i - μ) ^ 2) - (n : ℝ) * (sampleMean x - μ) ^ 2) /
+        ((n : ℝ) - 1) := by
+  have hdecomp := sum_sq_sub_eq_sum_sq_sub_mean_add_card hn x μ
+  unfold sampleVarianceBessel
+  rw [hdecomp]
+  ring
+
+/-- **Bessel-corrected sample variance is unbiased under finite second-moment
+conditions.**
+
+For a finite probability model, if every coordinate has centered second moment
+`σ²` around `μ` and the sample mean has centered second moment `σ² / n`, then
+the `(n - 1)`-normalized sample variance has finite expectation `σ²`. This is
+the finite algebraic Bessel correction used by the iid theorem; the iid
+measurability/independence layer is deliberately not bundled here. -/
+theorem sampleVarianceBessel_unbiased_finite {Ω : Type*} [Fintype Ω] {n : ℕ}
+    (w : Ω → ℝ) (X : Fin n → Ω → ℝ) (μ sigma2 : ℝ) (hn : 2 ≤ n)
+    (hcoord :
+      ∀ i, weightedExpectation w (fun ω => (X i ω - μ) ^ 2) = sigma2)
+    (hmean :
+      weightedExpectation w
+          (fun ω => (sampleMean (fun i => X i ω) - μ) ^ 2)
+        = sigma2 / (n : ℝ)) :
+    weightedExpectation w
+        (fun ω => sampleVarianceBessel (fun i => X i ω))
+      = sigma2 := by
+  have hnpos : 0 < n := lt_of_lt_of_le (by norm_num) hn
+  have hnR : (n : ℝ) ≠ 0 := by exact_mod_cast hnpos.ne'
+  have hdenR : (n : ℝ) - 1 ≠ 0 := by
+    have hgt : (1 : ℝ) < (n : ℝ) := by
+      exact_mod_cast (lt_of_lt_of_le (by norm_num) hn)
+    linarith
+  have hsumCoord :
+      weightedExpectation w (fun ω => ∑ i, (X i ω - μ) ^ 2) = (n : ℝ) * sigma2 := by
+    calc
+      weightedExpectation w (fun ω => ∑ i, (X i ω - μ) ^ 2)
+          = ∑ i, weightedExpectation w (fun ω => (X i ω - μ) ^ 2) := by
+            rw [weightedExpectation_sum]
+      _ = ∑ _i : Fin n, sigma2 := by
+            refine Finset.sum_congr rfl ?_
+            intro i _hi
+            exact hcoord i
+      _ = (n : ℝ) * sigma2 := by
+            rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+  calc
+    weightedExpectation w (fun ω => sampleVarianceBessel (fun i => X i ω))
+        = weightedExpectation w
+            (fun ω =>
+              (((∑ i, (X i ω - μ) ^ 2)
+                  - (n : ℝ) * (sampleMean (fun i => X i ω) - μ) ^ 2) /
+                ((n : ℝ) - 1))) := by
+          apply congrArg
+          funext ω
+          exact sampleVarianceBessel_eq_centered_secondMoment_sub_meanSq hnpos
+            (fun i => X i ω) μ
+    _ = (weightedExpectation w (fun ω => ∑ i, (X i ω - μ) ^ 2)
+          - (n : ℝ) *
+            weightedExpectation w
+              (fun ω => (sampleMean (fun i => X i ω) - μ) ^ 2)) /
+        ((n : ℝ) - 1) := by
+          rw [weightedExpectation_div_const, weightedExpectation_sub,
+            weightedExpectation_smul]
+    _ = sigma2 := by
+          rw [hsumCoord, hmean]
+          field_simp [hnR, hdenR]
+
 /-! ### Bernoulli count likelihood -/
 
 /-- Bernoulli log-likelihood from `k` successes in `n` trials, omitting constants. -/
@@ -283,6 +382,94 @@ theorem bernoulliScore_mle_from_count {n k : ℕ}
     (hk0 : 0 < k) (hkn : k < n) :
     bernoulliScoreFromCount n k ((k : ℝ) / (n : ℝ)) = 0 :=
   bernoulliScoreAtSampleMean_eq_zero hk0 hkn
+
+/-- **Bernoulli interior global MLE.**
+
+For `0 < k < n`, the Bernoulli count log-likelihood is globally maximized on
+the open unit interval at the sample success rate `k / n`. -/
+theorem bernoulliLogLikelihood_global_argmax_from_count {n k : ℕ}
+    (hk0 : 0 < k) (hkn : k < n) {θ : ℝ} (hθ0 : 0 < θ) (hθ1 : θ < 1) :
+    bernoulliLogLikelihoodFromCount n k θ
+      ≤ bernoulliLogLikelihoodFromCount n k ((k : ℝ) / (n : ℝ)) := by
+  let p : ℝ := (k : ℝ) / (n : ℝ)
+  let q : ℝ := ((n - k : ℕ) : ℝ) / (n : ℝ)
+  have hnpos : 0 < n := lt_trans hk0 hkn
+  have hnR : (n : ℝ) ≠ 0 := by exact_mod_cast hnpos.ne'
+  have hkR : (k : ℝ) ≠ 0 := by exact_mod_cast hk0.ne'
+  have hsub : ((n - k : ℕ) : ℝ) = (n : ℝ) - (k : ℝ) := by
+    exact_mod_cast Nat.cast_sub hkn.le
+  have hnkR : (n : ℝ) - (k : ℝ) ≠ 0 := by
+    have hknR : (k : ℝ) < (n : ℝ) := by exact_mod_cast hkn
+    linarith
+  have hp0 : 0 < p := by
+    dsimp [p]
+    positivity
+  have hp1 : p < 1 := by
+    dsimp [p]
+    have hknR : (k : ℝ) < (n : ℝ) := by exact_mod_cast hkn
+    exact (div_lt_one (by positivity : 0 < (n : ℝ))).mpr hknR
+  have hq0 : 0 < q := by
+    dsimp [q]
+    rw [hsub]
+    have hknR : (k : ℝ) < (n : ℝ) := by exact_mod_cast hkn
+    exact div_pos (by linarith) (by positivity)
+  have hq_eq : q = 1 - p := by
+    dsimp [p, q]
+    rw [hsub]
+    field_simp [hnR]
+  have hθ_ne : θ ≠ 0 := hθ0.ne'
+  have hp_ne : p ≠ 0 := hp0.ne'
+  have h1θ_ne : 1 - θ ≠ 0 := by linarith
+  have hq_ne : q ≠ 0 := hq0.ne'
+  have hlog_left :
+      Real.log (θ / p) ≤ θ / p - 1 :=
+    Real.log_le_sub_one_of_pos (div_pos hθ0 hp0)
+  have hlog_right :
+      Real.log ((1 - θ) / q) ≤ (1 - θ) / q - 1 := by
+    exact Real.log_le_sub_one_of_pos (div_pos (by linarith) hq0)
+  have hleft :
+      (k : ℝ) * Real.log (θ / p) ≤ (k : ℝ) * (θ / p - 1) :=
+    mul_le_mul_of_nonneg_left hlog_left (Nat.cast_nonneg k)
+  have hright :
+      ((n - k : ℕ) : ℝ) * Real.log ((1 - θ) / q)
+        ≤ ((n - k : ℕ) : ℝ) * ((1 - θ) / q - 1) :=
+    mul_le_mul_of_nonneg_left hlog_right (Nat.cast_nonneg (n - k))
+  have hweighted :
+      (k : ℝ) * Real.log (θ / p)
+          + ((n - k : ℕ) : ℝ) * Real.log ((1 - θ) / q)
+        ≤ (k : ℝ) * (θ / p - 1)
+          + ((n - k : ℕ) : ℝ) * ((1 - θ) / q - 1) :=
+    add_le_add hleft hright
+  have hrhs :
+      (k : ℝ) * (θ / p - 1)
+          + ((n - k : ℕ) : ℝ) * ((1 - θ) / q - 1) = 0 := by
+    dsimp [p, q]
+    rw [hsub]
+    field_simp [hnR, hkR, hnkR]
+    ring_nf
+  have hdrop_eq :
+      bernoulliLogLikelihoodFromCount n k θ
+          - bernoulliLogLikelihoodFromCount n k ((k : ℝ) / (n : ℝ))
+        =
+      (k : ℝ) * Real.log (θ / p)
+          + ((n - k : ℕ) : ℝ) * Real.log ((1 - θ) / q) := by
+    unfold bernoulliLogLikelihoodFromCount
+    dsimp [p] at hp_ne
+    rw [Real.log_div hθ_ne hp_ne]
+    have h1p_ne : 1 - (k : ℝ) / (n : ℝ) ≠ 0 := by
+      have : (k : ℝ) / (n : ℝ) < 1 := by simpa [p] using hp1
+      linarith
+    rw [show ((k : ℝ) / (n : ℝ)) = p by rfl]
+    rw [← hq_eq] at h1p_ne
+    rw [Real.log_div h1θ_ne hq_ne]
+    rw [hq_eq]
+    ring
+  have hdrop_nonpos :
+      bernoulliLogLikelihoodFromCount n k θ
+          - bernoulliLogLikelihoodFromCount n k ((k : ℝ) / (n : ℝ)) ≤ 0 := by
+    rw [hdrop_eq]
+    exact hweighted.trans_eq hrhs
+  linarith
 
 /-! ### Gaussian known-variance likelihood -/
 
