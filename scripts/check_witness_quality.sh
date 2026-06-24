@@ -83,6 +83,8 @@ HEADLINE_WITNESSES=(
   "examples/CheckEProcess.lean"
   "examples/CheckBettingCSNonVacuityWitness.lean"
   "examples/CheckTimeUniformPACBayes.lean"
+  "examples/CheckDyadicEpochCS.lean"
+  "examples/CheckDyadicEpochPSeriesCS.lean"
 )
 
 fail=0

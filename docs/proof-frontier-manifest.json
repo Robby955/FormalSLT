@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 102,
-    "library_and_example_lean_lines": 62042,
-    "library_lean_lines": 54782,
-    "library_modules": 128,
-    "theorem_map_entries": 470
+    "example_lean_files": 104,
+    "library_and_example_lean_lines": 62728,
+    "library_lean_lines": 55405,
+    "library_modules": 129,
+    "theorem_map_entries": 478
   },
   "theorem_families": [
     {
@@ -2740,6 +2740,54 @@
           "module": "AnytimeValid.BettingCS",
           "name": "betting_confidence_sequence_of_condMean",
           "summary": "End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "literalDyadicEpochWeight_not_summable",
+          "summary": "Obstruction: the literal harmonic dyadic-epoch weights are not summable, ruling out the naive all-n epoch mixture"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "pSeriesDyadicEpochWeight_summable",
+          "summary": "The redirected p-series dyadic-epoch weights are summable, recovering a finite epoch-capital budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "pSeriesDyadicEpochWeight_zero_unitPenalty",
+          "summary": "The concrete unit-capital stitching penalty for the first p-series epoch is log 2"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "countableWeightedSupermartingale_tsum",
+          "summary": "Weighted countable sums of real supermartingales are supermartingales under the domination hypothesis, the countable analogue of supermartingale_finset_sum"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "dyadicEpochMixture_supermartingale",
+          "summary": "The p-series dyadic-epoch mixture of stitched sub-Gamma exponential processes is a nonnegative supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "subGammaLogLogWidth_add_stitchingPenalty",
+          "summary": "The all-n dyadic-epoch boundary is the log-log width plus the explicit per-epoch stitching penalty"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "dyadic_epoch_confidence_sequence_subGamma",
+          "summary": "One-sided all-n dyadic-epoch sub-Gamma confidence sequence with the explicit grid budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.DyadicEpochCS",
+          "name": "dyadic_epoch_two_sided_confidence_sequence",
+          "summary": "Two-sided all-n dyadic-epoch confidence sequence via the X/-X transfer and the explicit stitching penalty"
         },
         {
           "kind": "theorem",

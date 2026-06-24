@@ -502,6 +502,14 @@ declarations; modules are relative to `FormalSLT`.
 | `bettingWealth_supermartingale` | `AnytimeValid.BettingCS` | Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale |
 | `betting_time_uniform_confidence_sequence` | `AnytimeValid.BettingCS` | Countable-time Ville confidence sequence for the betting wealth e-process |
 | `betting_confidence_sequence_of_condMean` | `AnytimeValid.BettingCS` | End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null |
+| `literalDyadicEpochWeight_not_summable` | `AnytimeValid.DyadicEpochCS` | Obstruction: the literal harmonic dyadic-epoch weights are not summable, ruling out the naive all-`n` epoch mixture |
+| `pSeriesDyadicEpochWeight_summable` | `AnytimeValid.DyadicEpochCS` | The redirected p-series dyadic-epoch weights are summable, recovering a finite epoch-capital budget |
+| `pSeriesDyadicEpochWeight_zero_unitPenalty` | `AnytimeValid.DyadicEpochCS` | The concrete unit-capital stitching penalty for the first p-series epoch is `log 2` |
+| `countableWeightedSupermartingale_tsum` | `AnytimeValid.DyadicEpochCS` | Weighted countable sums of real supermartingales are supermartingales under the domination hypothesis, the countable analogue of `supermartingale_finset_sum` |
+| `dyadicEpochMixture_supermartingale` | `AnytimeValid.DyadicEpochCS` | The p-series dyadic-epoch mixture of stitched sub-Gamma exponential processes is a nonnegative supermartingale |
+| `subGammaLogLogWidth_add_stitchingPenalty` | `AnytimeValid.DyadicEpochCS` | The all-`n` dyadic-epoch boundary is the log-log width plus the explicit per-epoch stitching penalty |
+| `dyadic_epoch_confidence_sequence_subGamma` | `AnytimeValid.DyadicEpochCS` | One-sided all-`n` dyadic-epoch sub-Gamma confidence sequence with the explicit grid budget |
+| `dyadic_epoch_two_sided_confidence_sequence` | `AnytimeValid.DyadicEpochCS` | Two-sided all-`n` dyadic-epoch confidence sequence via the `X`/`-X` transfer and the explicit stitching penalty |
 | `pacBayesPriorMixture_supermartingale` | `PACBayes.TimeUniformPACBayes` | Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale |
 | `timeUniformPACBayes_crossing_bound` | `PACBayes.TimeUniformPACBayes` | Ville crossing bound for the prior-mixture process over all times |
 | `timeUniformPACBayes_bound` | `PACBayes.TimeUniformPACBayes` | Process-level time-uniform PAC-Bayes bound: with probability at least `1 - δ`, the posterior running mean of the abstract martingale-difference process stays under the `cgf`/KL/`log(1/δ)` boundary for every `n ≥ 1` |
