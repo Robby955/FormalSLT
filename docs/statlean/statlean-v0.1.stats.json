@@ -1,0 +1,49 @@
+{
+  "release": "StatLean-v0.1",
+  "source_repo": "Robby955/FormalSLT",
+  "harvested_declarations": 477,
+  "harvested_theorems": 355,
+  "harvested_definitions": 122,
+  "curated_tasks": 150,
+  "concept_tags_covered": 24,
+  "tasks_per_concept_tag": {
+    "Azuma": 1,
+    "Bennett": 5,
+    "Bernoulli": 5,
+    "Bernstein": 15,
+    "Chernoff": 1,
+    "ERM": 31,
+    "Glivenko-Cantelli": 15,
+    "Hoeffding": 15,
+    "KL divergence": 4,
+    "MGF": 18,
+    "Markov": 3,
+    "McDiarmid": 9,
+    "PAC-Bayes": 50,
+    "Rademacher": 22,
+    "VC dimension": 14,
+    "confidence sequence": 17,
+    "covering / chaining": 21,
+    "risk": 16,
+    "sample statistics": 6,
+    "stability": 48,
+    "sub-Gamma": 14,
+    "sub-Gaussian": 4,
+    "tail bound": 33,
+    "union bound": 20
+  },
+  "tasks_per_difficulty": {
+    "hard": 68,
+    "medium": 75,
+    "easy": 7
+  },
+  "fidelity_audited": 150,
+  "fidelity_flagged": 0,
+  "axiom_clean": 150,
+  "axiom_nonstandard": 0,
+  "allowed_axioms": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ]
+}
