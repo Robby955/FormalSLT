@@ -78,6 +78,18 @@ jobs:
       - name: Verify witness quality (ban fake check-only witnesses)
         run: bash scripts/check_witness_quality.sh
 
+      # Statement-level non-vacuity: lints the .lean files CHANGED by this PR
+      # for near-vacuity shapes (∀var ∃const quantifier inversion, `: True`
+      # conclusion, `: False` hypothesis) that build/axiom/witness gates miss,
+      # and fails on any unsigned flag. A genuine statement that trips the lint
+      # carries an inline `-- fidelity:` sign-off. Self-tests its detector on a
+      # vacuous/genuine fixture pair. The base ref is passed so the diff is
+      # scoped to the PR; on push it falls back to HEAD~1, else all files.
+      - name: Verify statement fidelity (non-vacuity, changed files)
+        env:
+          FIDELITY_BASE_REF: ${{ github.event.pull_request.base.sha }}
+        run: bash scripts/check_statement_fidelity.sh
+
       - name: Verify no custom constants
         run: |
           if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean examples/; then
