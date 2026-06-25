@@ -128,6 +128,13 @@ The first bridge lives in
 - `finite_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers` composes the
   total-bounded dyadic schedule with the finite Dudley entropy-budget theorem,
   using an identity terminal net on a finite index type.
+- `totalBoundedCoveringNumberAtRadius` in
+  [FormalSLT/Covering/TotalBoundedDudleyCovering.lean](../FormalSLT/Covering/TotalBoundedDudleyCovering.lean)
+  packages the selected adjacent dyadic cover-count products into a half-open,
+  right-closed real-radius staircase, exposes a finite `ℕ∞` surface, proves the
+  guarded closed-annulus entropy condition, and supplies a unit-interval
+  non-vacuity witness. This is a selected-net cover-count surface, not the
+  minimal metric covering-number theorem.
 
 This is still a bridge layer. It remains finite-index and finite-scale, and it
 does not prove the continuous Dudley entropy integral.
@@ -257,6 +264,15 @@ The lane should land in this order, one PR per step:
    is also closed with an explicit terminal approximation error. This is the
    analytic step toward continuous integral language, but it does **not** prove
    separability or measurable arbitrary suprema.
+
+4.5. **Step C4.5: selected-cover-count staircase.** Closed by
+   `Covering.TotalBoundedDudleyCovering`: the adjacent cover counts selected by
+   total boundedness are wrapped in a monotone prefix envelope and realized as a
+   half-open real-radius staircase. The resulting entropy profile satisfies the
+   guarded dyadic annulus condition and dominates the finite dyadic entropy
+   envelope at dyadic samples. This keeps the proof on selected finite nets; it
+   does not identify these counts with the minimal metric covering number
+   `N(T, d, ε)`.
 
 5. **Step C5: continuous Dudley wrapper.** Next, compose the closed
    total-bounded boundary wrapper with a continuous entropy integral statement

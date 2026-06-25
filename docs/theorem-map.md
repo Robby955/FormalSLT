@@ -218,6 +218,12 @@ declarations; modules are relative to `FormalSLT`.
 | `finite_epsilonizedSup_dudley_totalBounded_of_finiteCoverSupremumBoundaryChoice` | `Covering.TotalBoundedDudley` | Epsilonized total-bounded Dudley wrapper from finite-cover and pathwise-modulus certificates |
 | `finite_projected_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers` | `Covering.TotalBoundedDudley` | Total-bounded dyadic wrapper for the terminal projected supremum, without an identity terminal net |
 | `finite_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers` | `Covering.TotalBoundedDudley` | Finite-terminal total-bounded dyadic wrapper composed with the finite Dudley entropy-budget theorem |
+| `totalBoundedCoveringNumberAtRadius` | `Covering.TotalBoundedDudleyCovering` | Half-open real-radius selected-cover-count staircase for the total-bounded dyadic net schedule |
+| `totalBoundedCoveringNumberAtRadius_dyadic` | `Covering.TotalBoundedDudleyCovering` | The staircase samples the monotone prefix envelope of selected adjacent dyadic cover-count products at dyadic radii |
+| `totalBoundedCoveringNumberAtRadiusENat_ne_top` | `Covering.TotalBoundedDudleyCovering` | The selected-cover-count staircase has a finite `ℕ∞` surface |
+| `totalBoundedCoveringEntropyAtRadius_guarded` | `Covering.TotalBoundedDudleyCovering` | The induced entropy staircase satisfies the guarded closed-annulus condition |
+| `totalBoundedCoveringEntropy_dominates_dyadicEnvelope_sample` | `Covering.TotalBoundedDudleyCovering` | Dyadic samples dominate the finite entropy prefix envelope used by total-bounded finite wrappers |
+| `unitInterval_totalBoundedCoveringNumber_sample_positive` | `Covering.TotalBoundedDudleyCovering` | Concrete non-vacuity witness for the generic selected-cover-count surface on the unit interval |
 
 ## Two-point Dudley example
 
