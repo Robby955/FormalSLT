@@ -159,9 +159,20 @@ The first bridge lives in
   hypothesis. Its entropy integrand is the selected-cover-count envelope
   `totalBoundedCoveringEntropyAtRadius hT hradiusScale`, not the genuine
   minimal covering number.
+- `continuous_dudley_entropy_integral_iSup_totalBounded_minimalDyadicCoverCountEnvelope`
+  in
+  [FormalSLT/Covering/TotalBoundedDudleyMinimalCapstone.lean](../FormalSLT/Covering/TotalBoundedDudleyMinimalCapstone.lean)
+  threads the cardinal-minimal dyadic net schedule through the projected
+  finite-chain wrapper, rebuilds the half-open real-radius staircase, and
+  composes it with the guarded continuous-Dudley wrapper. Its entropy integrand
+  is the adjacent-product envelope from cardinal-minimal dyadic covers; each
+  factor is a genuine `minimalMetricCoveringNumber`, but the surface is not a
+  pure one-radius `sqrt(log N(T,d,ε))` integrand.
 
-This is still a bridge layer. It remains finite-index and finite-scale, and it
-does not prove the continuous Dudley entropy integral.
+The remaining minimal-covering-number work is the tighter one-radius
+`sqrt(log N(T,d,ε))` surface, which would need a projection-pair entropy
+tightening or another theorem replacing adjacent products by a single-radius
+minimal covering number.
 
 ## Mathlib tooling available
 
@@ -324,13 +335,19 @@ The lane should land in this order, one PR per step:
    index spaces, but its integrand is explicitly the selected-cover-count
    envelope, not `minimalMetricCoveringNumber`.
 
-5. **Step C5: genuine-minimal covering-number tightening.** Replace the
-   selected-cover-count capstone integrand by the genuine minimal covering
-   number by threading the cardinal-minimal dyadic net schedule through the
-   finite projected-chain wrapper, the real-radius staircase, and the guarded
-   entropy-integral assembly. The next missing piece is not a minimality
-   hypothesis; it is the generic staircase/envelope theorem for the
-   cardinal-minimal schedule.
+5. **Step C5: cardinal-minimal dyadic product capstone.** Closed by
+   `Covering.TotalBoundedDudleyMinimalCapstone`: thread the
+   cardinal-minimal dyadic net schedule through the finite projected-chain
+   wrapper, build the real-radius half-open staircase, prove the guarded
+   annulus property, and compose with the guarded continuous-Dudley assembly.
+   This removes arbitrary selected-cover counts from the net schedule, but the
+   finite chaining entropy still uses adjacent products of minimal counts.
+
+5.1. **Step C5.1: pure one-radius minimal-`N` tightening.** Remaining:
+   replace the adjacent-product envelope by a single-radius genuine
+   `minimalMetricCoveringNumber` integrand. This needs a projection-pair
+   entropy tightening or an explicit theorem bounding the adjacent-product
+   entropy by the target one-radius minimal-covering-number profile.
 
 6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral

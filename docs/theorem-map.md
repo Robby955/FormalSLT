@@ -240,6 +240,12 @@ declarations; modules are relative to `FormalSLT`.
 | `totalBoundedSelectedCoverCount_dyadicProfileBound_of_boundaryChoice` | `Covering.TotalBoundedDudleySelectedCapstone` | Boundary certificates give the guarded dyadic upper-sum input for the selected-cover-count entropy profile |
 | `continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber` | `Covering.TotalBoundedDudleySelectedCapstone` | Generic totally bounded continuous Dudley capstone with the selected-cover-count envelope integrand, not genuine minimal covering number |
 | `unitInterval_totalBoundedSelectedCoverCountEnvelope_sample_positive` | `Covering.TotalBoundedDudleySelectedCapstone` | Unit-interval non-vacuity witness for the selected-cover-count envelope surface |
+| `minimalDyadicChainingCoverCount_eq_minimalMetricCoveringNumber_mul` | `Covering.TotalBoundedDudleyMinimalCapstone` | Adjacent cardinal-minimal dyadic cover count equals the product of genuine minimal covering numbers at the sampled radii |
+| `minimalDyadicCoverCountEntropyAtRadius_guarded` | `Covering.TotalBoundedDudleyMinimalCapstone` | Cardinal-minimal dyadic adjacent-product entropy staircase satisfies the guarded closed-annulus condition |
+| `finite_projectedNet_dudley_entropy_sum_totalBounded_minimalDyadic_entropy_integral_comparison_nonempty` | `Covering.TotalBoundedDudleyMinimalCapstone` | Projected finite-chain Dudley wrapper threaded through the cardinal-minimal dyadic net schedule |
+| `totalBoundedMinimalDyadicCoverCount_dyadicProfileBound_of_boundaryChoice` | `Covering.TotalBoundedDudleyMinimalCapstone` | Minimal-schedule boundary certificates give the guarded dyadic upper-sum input |
+| `continuous_dudley_entropy_integral_iSup_totalBounded_minimalDyadicCoverCountEnvelope` | `Covering.TotalBoundedDudleyMinimalCapstone` | Generic totally bounded continuous Dudley capstone with the cardinal-minimal dyadic adjacent-product envelope |
+| `unitInterval_minimalDyadicCoverCountEnvelope_sample_positive` | `Covering.TotalBoundedDudleyMinimalCapstone` | Unit-interval non-vacuity witness for the cardinal-minimal dyadic cover-count envelope |
 
 ## Two-point Dudley example
 
