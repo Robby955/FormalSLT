@@ -144,6 +144,13 @@ The first bridge lives in
   covering-number surface, but it does not by itself justify replacing the
   selected-count entropy upper envelope by the smaller minimal-count entropy in
   the current upper-bound Dudley theorem.
+- The same module now also proves the route (a) extractor probe:
+  `minimalMetricCoverOfTotallyBoundedUniv` chooses a cardinal-minimal finite
+  cover from the `minimalMetricCoveringNumber` witness, packages it as
+  `minimalFiniteNetOfTotallyBoundedUniv`, and exposes
+  `minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_coveringNumber_eq` at
+  each dyadic sampled radius. This avoids adding a separate "covers are
+  minimal" hypothesis.
 - `continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber`
   in
   [FormalSLT/Covering/TotalBoundedDudleySelectedCapstone.lean](../FormalSLT/Covering/TotalBoundedDudleySelectedCapstone.lean)
@@ -297,11 +304,17 @@ The lane should land in this order, one PR per step:
    is positive on nonempty spaces, and compare it to the selected total-bounded
    dyadic covers. The proved direction is
    `minimalMetricCoveringNumber ≤ selected cover count`; this is the only
-   direction available for arbitrary selected covers. A Dudley capstone with
-   the genuine minimal-count integrand still needs either selected covers chosen
-   to be cardinal-minimal at each scale, or an explicit theorem/hypothesis that
-   the selected entropy envelope is bounded by the genuine minimal-count
-   entropy envelope used in the integral.
+   direction available for arbitrary selected covers. The later cardinal-minimal
+   extractor avoids this arbitrary-selection obstruction by changing the chosen
+   net schedule, not by adding a minimality hypothesis.
+
+4.6.1. **Step C4.6.1: cardinal-minimal extractor probe.** Closed by
+   `Covering.TotalBoundedMinimalCovering`: choose cardinal-minimal finite
+   covers directly from `minimalMetricCoveringNumber`, convert them to
+   `BundledFiniteNet`s, and build a dyadic minimal-net schedule whose
+   `coveringNumber` is definitionally tied to the genuine minimal covering
+   number at each sampled radius. This is route (a); it does not add a
+   separate minimality hypothesis.
 
 4.7. **Step C4.7: selected-cover-count continuous capstone.** Closed by
    `Covering.TotalBoundedDudleySelectedCapstone`: compose the selected-count
@@ -313,9 +326,11 @@ The lane should land in this order, one PR per step:
 
 5. **Step C5: genuine-minimal covering-number tightening.** Replace the
    selected-cover-count capstone integrand by the genuine minimal covering
-   number only after proving a cardinal-minimal selected-net schedule or an
-   explicit comparison that upper-bounds the selected entropy envelope by the
-   minimal-covering-number entropy envelope.
+   number by threading the cardinal-minimal dyadic net schedule through the
+   finite projected-chain wrapper, the real-radius staircase, and the guarded
+   entropy-integral assembly. The next missing piece is not a minimality
+   hypothesis; it is the generic staircase/envelope theorem for the
+   cardinal-minimal schedule.
 
 6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral

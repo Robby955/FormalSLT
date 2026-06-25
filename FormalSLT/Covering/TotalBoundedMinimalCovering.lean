@@ -98,6 +98,153 @@ theorem minimalMetricCoveringNumber_pos
   rcases hcover t with ⟨c, hc, _hdist⟩
   simp [hC_empty] at hc
 
+/-- A cardinal-minimal finite metric `ε`-cover of the whole index space.
+
+This is the selected-cover construction needed for the genuine-minimal route:
+the cover is chosen from the `Nat.find` witness for
+`minimalMetricCoveringNumber`, not supplied as an extra hypothesis. -/
+def minimalMetricCoverOfTotallyBoundedUniv
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) {ε : ℝ} (hε : 0 < ε) :
+    Finset T :=
+  Classical.choose (minimalMetricCoveringNumber_spec (T := T) hT hε)
+
+/-- The chosen minimal cover covers every index point within radius `ε`. -/
+theorem minimalMetricCoverOfTotallyBoundedUniv_cover
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) {ε : ℝ} (hε : 0 < ε)
+    (t : T) :
+    ∃ c ∈ minimalMetricCoverOfTotallyBoundedUniv (T := T) hT hε,
+      dist t c ≤ ε := by
+  classical
+  exact (Classical.choose_spec
+    (minimalMetricCoveringNumber_spec (T := T) hT hε)).2 t
+
+/-- The chosen minimal cover has at most the genuine minimal covering number
+many centers. -/
+theorem minimalMetricCoverOfTotallyBoundedUniv_card_le
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) {ε : ℝ} (hε : 0 < ε) :
+    (minimalMetricCoverOfTotallyBoundedUniv (T := T) hT hε).card ≤
+      minimalMetricCoveringNumber (T := T) hT hε := by
+  classical
+  exact (Classical.choose_spec
+    (minimalMetricCoveringNumber_spec (T := T) hT hε)).1
+
+/-- The chosen minimal cover has exactly the genuine minimal covering number
+of centers. -/
+theorem minimalMetricCoverOfTotallyBoundedUniv_card_eq
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) {ε : ℝ} (hε : 0 < ε) :
+    (minimalMetricCoverOfTotallyBoundedUniv (T := T) hT hε).card =
+      minimalMetricCoveringNumber (T := T) hT hε := by
+  classical
+  apply le_antisymm
+  · exact minimalMetricCoverOfTotallyBoundedUniv_card_le (T := T) hT hε
+  · exact minimalMetricCoveringNumber_le_of_metricCoverCardinalityLe
+      (T := T) hT hε
+      ⟨minimalMetricCoverOfTotallyBoundedUniv (T := T) hT hε, le_rfl,
+        minimalMetricCoverOfTotallyBoundedUniv_cover (T := T) hT hε⟩
+
+/-- Cardinal minimality of the chosen finite metric cover: every finite
+`ε`-cover has at least as many centers. -/
+theorem minimalMetricCoverOfTotallyBoundedUniv_card_minimal
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) {ε : ℝ} (hε : 0 < ε)
+    (C : Finset T) (hcover : ∀ t : T, ∃ c ∈ C, dist t c ≤ ε) :
+    (minimalMetricCoverOfTotallyBoundedUniv (T := T) hT hε).card ≤ C.card := by
+  rw [minimalMetricCoverOfTotallyBoundedUniv_card_eq (T := T) hT hε]
+  exact minimalMetricCoveringNumber_le_of_metricCoverCardinalityLe
+    (T := T) hT hε ⟨C, le_rfl, hcover⟩
+
+/-- Convert the cardinal-minimal finite cover into the finite-net record used
+by the chaining layer. -/
+def minimalFiniteNetOfTotallyBoundedUniv
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) (ε : ℝ) (hε : 0 < ε) :
+    BundledFiniteNet T := by
+  classical
+  let F := minimalMetricCoverOfTotallyBoundedUniv (T := T) hT hε
+  exact finiteNetOfCoverSet
+    (F : Set T)
+    (by exact F.finite_toSet)
+    ε hε.le
+    (by
+      intro t
+      rcases minimalMetricCoverOfTotallyBoundedUniv_cover
+          (T := T) hT hε t with
+        ⟨c, hc, hdist⟩
+      exact ⟨c, by simpa [F] using hc, hdist⟩)
+
+/-- The minimal finite-net extractor uses the requested radius. -/
+@[simp] theorem minimalFiniteNetOfTotallyBoundedUniv_radius
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) (ε : ℝ) (hε : 0 < ε) :
+    (minimalFiniteNetOfTotallyBoundedUniv (T := T) hT ε hε).net.radius = ε := by
+  rfl
+
+/-- The minimal finite-net extractor uses the ambient metric distance. -/
+@[simp] theorem minimalFiniteNetOfTotallyBoundedUniv_dist
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) (ε : ℝ) (hε : 0 < ε) :
+    (minimalFiniteNetOfTotallyBoundedUniv (T := T) hT ε hε).net.dist =
+      fun s t => dist s t := by
+  rfl
+
+/-- The bundled minimal finite net carries exactly the genuine minimal covering
+number of centers. -/
+theorem minimalFiniteNetOfTotallyBoundedUniv_coveringNumber_eq
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T)) {ε : ℝ} (hε : 0 < ε) :
+    (minimalFiniteNetOfTotallyBoundedUniv (T := T) hT ε hε).coveringNumber =
+      minimalMetricCoveringNumber (T := T) hT hε := by
+  classical
+  unfold minimalFiniteNetOfTotallyBoundedUniv BundledFiniteNet.coveringNumber
+    FiniteNet.coveringNumber finiteNetOfCoverSet
+  simp [minimalMetricCoverOfTotallyBoundedUniv_card_eq (T := T) hT hε]
+
+/-- Dyadic finite-net schedule whose cover at each scale is cardinal-minimal. -/
+def minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale) (j : ℕ) :
+    BundledFiniteNet T :=
+  minimalFiniteNetOfTotallyBoundedUniv
+    (T := T) hT (dyadicChainingNetRadius radiusScale j)
+    (dyadicChainingNetRadius_pos hradiusScale j)
+
+/-- The minimal dyadic finite-net schedule has the expected radius. -/
+@[simp] theorem minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_radius
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale) (j : ℕ) :
+    (minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net.radius =
+      dyadicChainingNetRadius radiusScale j := by
+  rfl
+
+/-- The minimal dyadic finite-net schedule uses the ambient metric distance. -/
+@[simp] theorem minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_dist
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale) (j : ℕ) :
+    (minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).net.dist = fun s t => dist s t := by
+  rfl
+
+/-- At each dyadic radius, the minimal dyadic finite net has cardinality equal
+to the genuine minimal covering number. -/
+theorem minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_coveringNumber_eq
+    [PseudoMetricSpace T] [Nonempty T]
+    (hT : TotallyBounded (Set.univ : Set T))
+    {radiusScale : ℝ} (hradiusScale : 0 < radiusScale) (j : ℕ) :
+    (minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
+      (T := T) hT hradiusScale j).coveringNumber =
+      minimalMetricCoveringNumber
+        (T := T) hT (dyadicChainingNetRadius_pos hradiusScale j) := by
+  exact minimalFiniteNetOfTotallyBoundedUniv_coveringNumber_eq
+    (T := T) hT (dyadicChainingNetRadius_pos hradiusScale j)
+
 /-- A bundled finite net using the ambient metric distance gives a finite metric
 cover with at most its selected covering count. -/
 theorem metricCoverCardinalityLe_of_bundledFiniteNet
@@ -198,6 +345,17 @@ theorem unitInterval_minimalMetricCoveringNumber_sample_positive :
     (T := FormalSLT.Covering.UnitIntervalDudley.UnitInterval)
     FormalSLT.Covering.UnitIntervalDudley.unitInterval_totallyBounded_univ
     (by norm_num : (0 : ℝ) < (1 : ℝ) / 2)
+
+/-- Non-vacuity witness: the chosen cardinal-minimal finite cover of the
+mechanized unit interval has positive cardinality at a concrete radius. -/
+theorem unitInterval_minimalMetricCoverOfTotallyBoundedUniv_sample_card_positive :
+    0 <
+      (minimalMetricCoverOfTotallyBoundedUniv
+        (T := FormalSLT.Covering.UnitIntervalDudley.UnitInterval)
+        FormalSLT.Covering.UnitIntervalDudley.unitInterval_totallyBounded_univ
+        (by norm_num : (0 : ℝ) < (1 : ℝ) / 2)).card := by
+  rw [minimalMetricCoverOfTotallyBoundedUniv_card_eq]
+  exact unitInterval_minimalMetricCoveringNumber_sample_positive
 
 end
 

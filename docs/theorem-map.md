@@ -228,9 +228,15 @@ declarations; modules are relative to `FormalSLT`.
 | `minimalMetricCoveringNumber_spec` | `Covering.TotalBoundedMinimalCovering` | The genuine minimal covering number is realized by a finite metric cover |
 | `minimalMetricCoveringNumber_le_of_metricCoverCardinalityLe` | `Covering.TotalBoundedMinimalCovering` | Any finite metric cover with at most `n` centers bounds the genuine minimal covering number by `n` |
 | `minimalMetricCoveringNumber_pos` | `Covering.TotalBoundedMinimalCovering` | Nonempty totally bounded spaces have positive genuine minimal covering number at positive radius |
+| `minimalMetricCoverOfTotallyBoundedUniv` | `Covering.TotalBoundedMinimalCovering` | Chooses a cardinal-minimal finite metric cover from the genuine minimal covering-number witness |
+| `minimalMetricCoverOfTotallyBoundedUniv_card_eq` | `Covering.TotalBoundedMinimalCovering` | The chosen finite metric cover has cardinality exactly equal to the genuine minimal covering number |
+| `minimalMetricCoverOfTotallyBoundedUniv_card_minimal` | `Covering.TotalBoundedMinimalCovering` | Every finite metric cover has at least as many centers as the chosen minimal cover |
+| `minimalFiniteNetOfTotallyBoundedUniv_coveringNumber_eq` | `Covering.TotalBoundedMinimalCovering` | The bundled finite net built from the minimal cover has covering count equal to the genuine minimal covering number |
+| `minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_coveringNumber_eq` | `Covering.TotalBoundedMinimalCovering` | The dyadic minimal-net schedule has genuine minimal covering count at each sampled radius |
 | `minimalMetricCoveringNumber_le_dyadicSelectedCoveringNumber` | `Covering.TotalBoundedMinimalCovering` | The genuine minimal covering number is bounded by each selected dyadic finite-net count |
 | `minimalMetricCoveringNumber_le_totalBoundedDyadicCoverCountEnvelope` | `Covering.TotalBoundedMinimalCovering` | The selected dyadic envelope dominates the genuine minimal covering number at sampled dyadic net radii |
 | `unitInterval_minimalMetricCoveringNumber_sample_positive` | `Covering.TotalBoundedMinimalCovering` | Concrete non-vacuity witness for the genuine minimal covering number on the unit interval |
+| `unitInterval_minimalMetricCoverOfTotallyBoundedUniv_sample_card_positive` | `Covering.TotalBoundedMinimalCovering` | Concrete non-vacuity witness for the chosen minimal finite cover on the unit interval |
 | `totalBoundedSelectedCoverCount_dyadicProfileBound_of_boundaryChoice` | `Covering.TotalBoundedDudleySelectedCapstone` | Boundary certificates give the guarded dyadic upper-sum input for the selected-cover-count entropy profile |
 | `continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber` | `Covering.TotalBoundedDudleySelectedCapstone` | Generic totally bounded continuous Dudley capstone with the selected-cover-count envelope integrand, not genuine minimal covering number |
 | `unitInterval_totalBoundedSelectedCoverCountEnvelope_sample_positive` | `Covering.TotalBoundedDudleySelectedCapstone` | Unit-interval non-vacuity witness for the selected-cover-count envelope surface |
