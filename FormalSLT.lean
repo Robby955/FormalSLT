@@ -88,6 +88,7 @@ import FormalSLT.Covering.DudleyToRademacher
 import FormalSLT.Covering.ContinuousDudley
 import FormalSLT.Covering.ContinuousDudleyCovering
 import FormalSLT.Covering.GuardedDudleyIntegral
+import FormalSLT.Covering.GuardedContinuousDudley
 import FormalSLT.Covering.MeasureDudley
 import FormalSLT.Covering.FiniteDiscreteDudley
 
