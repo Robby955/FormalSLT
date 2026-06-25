@@ -97,6 +97,225 @@ theorem unitInterval_entropyProfile_integral_positive :
           linarith)
   nlinarith
 
+/-- Positive-radius singular entropy profile. It is zero off positive radii,
+but diverges like `ε^(-1/2)` as `ε ↓ 0` along positive radii. -/
+def unitIntervalDivergingEntropyProfile (ε : ℝ) : ℝ :=
+  if 0 < ε then 20 * ε ^ (-(1 : ℝ) / 2) else 0
+
+theorem unitIntervalDivergingEntropyProfile_nonneg (ε : ℝ) :
+    0 ≤ unitIntervalDivergingEntropyProfile ε := by
+  by_cases hε : 0 < ε
+  · simp [unitIntervalDivergingEntropyProfile, hε,
+      mul_nonneg (by norm_num : (0 : ℝ) ≤ 20)
+        (Real.rpow_nonneg hε.le (-(1 : ℝ) / 2))]
+  · simp [unitIntervalDivergingEntropyProfile, hε]
+
+theorem unitIntervalDivergingEntropyProfile_guarded (j : ℕ) :
+    GuardedAntitoneOnDyadicAnnulus
+      unitIntervalDivergingEntropyProfile (1 : ℝ) j := by
+  intro ε hleft hright
+  have hright_pos : 0 < (1 : ℝ) / (2 : ℝ) ^ (j + 1) := by positivity
+  have hε_pos : 0 < ε := by
+    have hleft_pos : 0 < (1 : ℝ) / (2 : ℝ) ^ (j + 2) := by positivity
+    exact lt_of_lt_of_le hleft_pos hleft
+  simp [unitIntervalDivergingEntropyProfile, hε_pos]
+  simpa [div_eq_mul_inv, one_mul] using
+    Real.rpow_le_rpow_of_nonpos hε_pos hright
+      (by norm_num : (-(1 : ℝ) / 2) ≤ 0)
+
+theorem unitIntervalDivergingEntropyProfile_intervalIntegrable_zero_half :
+    IntervalIntegrable unitIntervalDivergingEntropyProfile volume
+      (0 : ℝ) ((1 : ℝ) / 2) := by
+  have hbase :
+      IntervalIntegrable (fun ε : ℝ => 20 * ε ^ (-(1 : ℝ) / 2))
+        volume (0 : ℝ) ((1 : ℝ) / 2) :=
+    (intervalIntegral.intervalIntegrable_rpow'
+      (a := (0 : ℝ)) (b := ((1 : ℝ) / 2))
+      (r := (-(1 : ℝ) / 2)) (by norm_num)).const_mul 20
+  refine hbase.congr ?_
+  intro ε hε
+  rw [Set.uIoc_of_le (by norm_num : (0 : ℝ) ≤ (1 : ℝ) / 2)] at hε
+  simp [unitIntervalDivergingEntropyProfile, hε.1]
+
+theorem unitIntervalDivergingEntropyProfile_intervalIntegrable_dyadic
+    (j : ℕ) :
+    IntervalIntegrable unitIntervalDivergingEntropyProfile volume
+      ((1 : ℝ) / (2 : ℝ) ^ (j + 2))
+      ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) := by
+  have hbase :
+      IntervalIntegrable (fun ε : ℝ => 20 * ε ^ (-(1 : ℝ) / 2))
+        volume ((1 : ℝ) / (2 : ℝ) ^ (j + 2))
+          ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) :=
+    (intervalIntegral.intervalIntegrable_rpow'
+      (a := ((1 : ℝ) / (2 : ℝ) ^ (j + 2)))
+      (b := ((1 : ℝ) / (2 : ℝ) ^ (j + 1)))
+      (r := (-(1 : ℝ) / 2)) (by norm_num)).const_mul 20
+  have hab :
+      (1 : ℝ) / (2 : ℝ) ^ (j + 2) ≤
+        (1 : ℝ) / (2 : ℝ) ^ (j + 1) := by
+    have hwidth :=
+      FiniteSubGaussianProcess.dyadic_annulus_width_nonneg
+        (radiusScale := (1 : ℝ)) (by norm_num : (0 : ℝ) ≤ 1) (j + 1)
+    linarith
+  refine hbase.congr ?_
+  intro ε hε
+  rw [Set.uIoc_of_le hab] at hε
+  have hleft_pos : 0 < (1 : ℝ) / (2 : ℝ) ^ (j + 2) := by positivity
+  have hε_pos : 0 < ε := lt_trans hleft_pos hε.1
+  simp [unitIntervalDivergingEntropyProfile, hε_pos]
+
+private lemma unitIntervalRoundedDyadicGridCoverCount_le_pow (j : ℕ) :
+    unitIntervalRoundedDyadicGridCoverCount j ≤ 2 ^ (2 * j + 5) := by
+  have h1 : 2 ^ (j + 1) + 1 ≤ 2 ^ (j + 2) := by
+    have hp : 1 ≤ 2 ^ (j + 1) :=
+      Nat.one_le_pow (j + 1) 2 (by norm_num)
+    rw [show j + 2 = (j + 1) + 1 by omega, pow_succ]
+    omega
+  have h2 : 2 ^ (j + 2) + 1 ≤ 2 ^ (j + 3) := by
+    have hp : 1 ≤ 2 ^ (j + 2) :=
+      Nat.one_le_pow (j + 2) 2 (by norm_num)
+    rw [show j + 3 = (j + 2) + 1 by omega, pow_succ]
+    omega
+  have hmul := Nat.mul_le_mul h1 h2
+  have hpow : 2 ^ (j + 2) * 2 ^ (j + 3) = 2 ^ (2 * j + 5) := by
+    rw [← pow_add]
+    congr 1
+    omega
+  simpa [unitIntervalRoundedDyadicGridCoverCount, hpow] using hmul
+
+/-- The singular profile dominates every rounded-dyadic entropy sample.
+
+-- fidelity: The domination is uniform in the dyadic index and uses the
+actual rounded-grid cover counts, while the profile diverges at positive radii
+approaching zero. -/
+theorem unitInterval_divergingEntropyProfile_dominates_roundedDyadicEntropy
+    (j : ℕ) :
+    Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)) ≤
+      unitIntervalDivergingEntropyProfile
+        ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) := by
+  let c : ℕ := unitIntervalRoundedDyadicGridCoverCount j
+  have hc_pos_nat : 0 < c := by
+    dsimp [c, unitIntervalRoundedDyadicGridCoverCount]
+    positivity
+  have hlog_nonneg : 0 ≤ Real.log (c : ℝ) :=
+    Real.log_natCast_nonneg c
+  have hcount_le : (c : ℝ) ≤ (2 : ℝ) ^ (2 * j + 5) := by
+    exact_mod_cast unitIntervalRoundedDyadicGridCoverCount_le_pow j
+  have hlog_le_sqrt : Real.log (c : ℝ) ≤
+      2 * (c : ℝ) ^ ((1 : ℝ) / 2) := by
+    simpa [one_div, mul_comm] using
+      Real.log_natCast_le_rpow_div c
+        (by norm_num : 0 < (1 : ℝ) / 2)
+  have hcpow_le :
+      (c : ℝ) ^ ((1 : ℝ) / 2) ≤
+        ((2 : ℝ) ^ (2 * j + 5)) ^ ((1 : ℝ) / 2) := by
+    exact Real.rpow_le_rpow (by exact_mod_cast Nat.zero_le c)
+      hcount_le (by norm_num)
+  have hpow_sqrt_le :
+      ((2 : ℝ) ^ (2 * j + 5)) ^ ((1 : ℝ) / 2) ≤
+        (2 : ℝ) ^ (j + 3) := by
+    have hbase : (0 : ℝ) ≤ 2 := by norm_num
+    rw [← Real.rpow_natCast]
+    rw [← Real.rpow_mul hbase]
+    rw [← Real.rpow_natCast (2 : ℝ) (j + 3)]
+    have hexp_le :
+        ((2 * j + 5 : ℕ) : ℝ) * ((1 : ℝ) / 2) ≤
+          ((j + 3 : ℕ) : ℝ) := by
+      have hj_nonneg : (0 : ℝ) ≤ (j : ℝ) := by
+        exact_mod_cast Nat.zero_le j
+      norm_num
+      nlinarith
+    exact Real.rpow_le_rpow_of_exponent_le
+      (by norm_num : (1 : ℝ) ≤ 2) hexp_le
+  have hlog_le_pow : Real.log (c : ℝ) ≤ (2 : ℝ) ^ (j + 4) := by
+    calc
+      Real.log (c : ℝ) ≤ 2 * (c : ℝ) ^ ((1 : ℝ) / 2) :=
+        hlog_le_sqrt
+      _ ≤ 2 * ((2 : ℝ) ^ (2 * j + 5)) ^ ((1 : ℝ) / 2) := by
+        nlinarith [hcpow_le]
+      _ ≤ 2 * (2 : ℝ) ^ (j + 3) := by
+        nlinarith [hpow_sqrt_le]
+      _ = (2 : ℝ) ^ (j + 4) := by
+        rw [show j + 4 = (j + 3) + 1 by omega, pow_succ]
+        ring
+  have hradius_pos : 0 < (1 : ℝ) / (2 : ℝ) ^ (j + 1) := by
+    positivity
+  have hprofile_sq :
+      (unitIntervalDivergingEntropyProfile
+          ((1 : ℝ) / (2 : ℝ) ^ (j + 1))) ^ 2 =
+        400 * (2 : ℝ) ^ (j + 1) := by
+    simp [unitIntervalDivergingEntropyProfile]
+    have hnonneg : 0 ≤ ((2 : ℝ) ^ (j + 1))⁻¹ := by positivity
+    rw [mul_pow]
+    norm_num
+    rw [← Real.rpow_two]
+    rw [← Real.rpow_mul hnonneg]
+    ring_nf
+    rw [Real.rpow_neg_one]
+    field_simp [pow_ne_zero j (by norm_num : (2 : ℝ)⁻¹ ≠ 0)]
+    rw [← mul_pow]
+    norm_num
+  have hlog_le_profile_sq :
+      Real.log (c : ℝ) ≤
+        (unitIntervalDivergingEntropyProfile
+          ((1 : ℝ) / (2 : ℝ) ^ (j + 1))) ^ 2 := by
+    rw [hprofile_sq]
+    have hpow_mono :
+        (2 : ℝ) ^ (j + 4) ≤ 400 * (2 : ℝ) ^ (j + 1) := by
+      have hpos : 0 < (2 : ℝ) ^ (j + 1) :=
+        pow_pos (by norm_num) _
+      rw [show j + 4 = (j + 1) + 3 by omega, pow_add]
+      norm_num
+      nlinarith [hpos]
+    exact hlog_le_pow.trans hpow_mono
+  rw [Real.sqrt_le_iff]
+  exact ⟨unitIntervalDivergingEntropyProfile_nonneg _, hlog_le_profile_sq⟩
+
+/-- The singular entropy profile has positive integral mass on `0..1/2`.
+
+-- fidelity: The positive lower bound comes from the concrete subinterval
+`[1 / 4, 1 / 2]`, so the load-bearing entropy term is not concentrated in a
+formal singularity at zero. -/
+theorem unitInterval_divergingEntropyProfile_integral_positive :
+    0 < ∫ ε in (0 : ℝ)..((1 : ℝ) / 2),
+      unitIntervalDivergingEntropyProfile ε := by
+  have htrunc_rect :
+      (((1 : ℝ) / 2) - (1 / 4)) * 20 ≤
+        ∫ ε in ((1 : ℝ) / 4)..((1 : ℝ) / 2),
+          unitIntervalDivergingEntropyProfile ε := by
+    refine
+      FiniteSubGaussianProcess.interval_const_mul_le_integral_of_le_on
+        (f := unitIntervalDivergingEntropyProfile) (a := ((1 : ℝ) / 4))
+        (b := ((1 : ℝ) / 2)) (c := (20 : ℝ)) (by norm_num)
+        (by
+          have hI :=
+            unitIntervalDivergingEntropyProfile_intervalIntegrable_dyadic 0
+          norm_num at hI
+          simpa [one_div] using hI) ?_
+    intro ε hε
+    rcases hε with ⟨hε_left, hε_right⟩
+    have hε_pos : 0 < ε := by linarith
+    have hε_le_one : ε ≤ (1 : ℝ) := by linarith
+    have hpow_ge_one : (1 : ℝ) ≤ ε ^ (-(1 : ℝ) / 2) := by
+      have h :=
+        Real.rpow_le_rpow_of_nonpos hε_pos hε_le_one
+          (by norm_num : (-(1 : ℝ) / 2) ≤ 0)
+      simpa using h
+    simp [unitIntervalDivergingEntropyProfile, hε_pos]
+    nlinarith
+  have htrunc_pos :
+      0 < ∫ ε in ((1 : ℝ) / 4)..((1 : ℝ) / 2),
+        unitIntervalDivergingEntropyProfile ε := by
+    nlinarith
+  have hdom :=
+    GuardedContinuousDudley.guarded_truncatedIntegral_le_full_integral
+      (m := 1) (entropyAtRadius := unitIntervalDivergingEntropyProfile)
+      (radiusScale := (1 : ℝ)) (by norm_num)
+      unitIntervalDivergingEntropyProfile_nonneg
+      unitIntervalDivergingEntropyProfile_intervalIntegrable_zero_half
+  norm_num at hdom
+  exact lt_of_lt_of_le htrunc_pos hdom
+
 private lemma unitIntervalEntropyProfile_dominates_first_roundedDyadicEntropy :
     Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount 0 : ℝ)) ≤
       unitIntervalEntropyProfile ((1 : ℝ) / 2) := by
@@ -173,6 +392,60 @@ private theorem unitInterval_roundedDyadic_hdyadicProfile_bound :
       mul_le_mul_of_nonneg_left hbudget hcoef_nonneg
     linarith [hfinite, hmul, heta.le]
 
+private theorem unitInterval_roundedDyadic_hdyadicDivergingProfile_bound :
+    ∀ eta : ℝ, 0 < eta →
+      ∃ m : ℕ,
+        (∀ j ∈ Finset.range m,
+          GuardedAntitoneOnDyadicAnnulus
+            unitIntervalDivergingEntropyProfile (1 : ℝ) j) ∧
+        (∀ j ∈ Finset.range m,
+          IntervalIntegrable unitIntervalDivergingEntropyProfile volume
+            ((1 : ℝ) / (2 : ℝ) ^ (j + 2))
+            ((1 : ℝ) / (2 : ℝ) ^ (j + 1))) ∧
+        finiteExpectation unitIntervalRademacherLinearProcess.weight
+            unitIntervalRademacherLinearSup ≤
+          1 + 2 * Real.sqrt (2 *
+              unitIntervalRademacherLinearProcess.varianceProxy) *
+            FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
+              (1 : ℝ) m unitIntervalDivergingEntropyProfile + eta := by
+  intro eta heta
+  refine ⟨1, ?_, ?_, ?_⟩
+  · intro j _hj
+    exact unitIntervalDivergingEntropyProfile_guarded j
+  · intro j _hj
+    exact unitIntervalDivergingEntropyProfile_intervalIntegrable_dyadic j
+  · have hfinite :=
+      unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree 1
+    have hbudget :
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget (1 : ℝ) 1
+            (fun j : ℕ =>
+              Real.sqrt
+                (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) ≤
+          FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
+            (1 : ℝ) 1 unitIntervalDivergingEntropyProfile := by
+      refine
+        FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget_le_entropyAtRadiusUpperSum
+          (m := 1)
+          (entropyEnvelope := fun j : ℕ =>
+            Real.sqrt
+              (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))
+          (entropyAtRadius := unitIntervalDivergingEntropyProfile)
+          (radiusScale := (1 : ℝ)) (by norm_num) ?_
+      intro j hj
+      have hj0 : j = 0 := by
+        have hjlt : j < 1 := Finset.mem_range.mp hj
+        omega
+      subst j
+      simpa using
+        unitInterval_divergingEntropyProfile_dominates_roundedDyadicEntropy 0
+    have hcoef_nonneg :
+        0 ≤ 2 * Real.sqrt (2 *
+            unitIntervalRademacherLinearProcess.varianceProxy) := by
+      positivity
+    have hmul :=
+      mul_le_mul_of_nonneg_left hbudget hcoef_nonneg
+    linarith [hfinite, hmul, heta.le]
+
 /-- Corrected guarded continuous Dudley wrapper using a dyadic profile side
 condition instead of a global antitone entropy profile.
 
@@ -230,6 +503,30 @@ theorem continuous_dudley_entropy_integral_iSup_unitInterval :
       unitIntervalEntropyProfile_nonneg
       (unitIntervalEntropyProfile_intervalIntegrable 0 ((1 : ℝ) / 2))
       unitInterval_roundedDyadic_hdyadicProfile_bound
+
+/-- Continuous Dudley entropy-integral bound for the unit-interval process
+using the integrable positive-radius singular entropy profile.
+
+-- fidelity: This capstone uses the same concrete nonzero process and supplied
+supremum as the bounded-profile theorem, but its entropy profile diverges as
+`ε ↓ 0` along positive radii and dominates every rounded-dyadic entropy sample. -/
+theorem continuous_dudley_entropy_integral_iSup_unitInterval_diverging :
+    finiteExpectation unitIntervalRademacherLinearProcess.weight
+        unitIntervalRademacherLinearSup ≤
+      1 + 4 * Real.sqrt
+          (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
+        (∫ ε in (0 : ℝ)..((1 : ℝ) / 2),
+          unitIntervalDivergingEntropyProfile ε) := by
+  exact
+    continuous_dudley_entropy_integral_iSup_of_dyadicProfile_guarded
+      (P := unitIntervalRademacherLinearProcess)
+      (coarseBudget := (1 : ℝ)) (radiusScale := (1 : ℝ))
+      (entropyAtRadius := unitIntervalDivergingEntropyProfile)
+      (supFunctional := unitIntervalRademacherLinearSup)
+      (by norm_num)
+      unitIntervalDivergingEntropyProfile_nonneg
+      unitIntervalDivergingEntropyProfile_intervalIntegrable_zero_half
+      unitInterval_roundedDyadic_hdyadicDivergingProfile_bound
 
 end
 
