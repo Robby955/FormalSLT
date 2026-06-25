@@ -135,6 +135,15 @@ The first bridge lives in
   guarded closed-annulus entropy condition, and supplies a unit-interval
   non-vacuity witness. This is a selected-net cover-count surface, not the
   minimal metric covering-number theorem.
+- `minimalMetricCoveringNumber` in
+  [FormalSLT/Covering/TotalBoundedMinimalCovering.lean](../FormalSLT/Covering/TotalBoundedMinimalCovering.lean)
+  defines the genuine minimal finite metric covering number at positive radius
+  for nonempty totally bounded metric spaces. It proves the valid comparison
+  `N_min(T, d, ε_j) ≤ selected_j` at each dyadic selected-net radius, and hence
+  `N_min(T, d, ε_j) ≤ selectedEnvelope_j`. This supplies the genuine
+  covering-number surface, but it does not by itself justify replacing the
+  selected-count entropy upper envelope by the smaller minimal-count entropy in
+  the current upper-bound Dudley theorem.
 
 This is still a bridge layer. It remains finite-index and finite-scale, and it
 does not prove the continuous Dudley entropy integral.
@@ -273,6 +282,18 @@ The lane should land in this order, one PR per step:
    envelope at dyadic samples. This keeps the proof on selected finite nets; it
    does not identify these counts with the minimal metric covering number
    `N(T, d, ε)`.
+
+4.6. **Step C4.6: genuine minimal-covering-number surface.** Closed by
+   `Covering.TotalBoundedMinimalCovering`: define `minimalMetricCoveringNumber`
+   from finite metric covers, prove its specification and minimality, prove it
+   is positive on nonempty spaces, and compare it to the selected total-bounded
+   dyadic covers. The proved direction is
+   `minimalMetricCoveringNumber ≤ selected cover count`; this is the only
+   direction available for arbitrary selected covers. A Dudley capstone with
+   the genuine minimal-count integrand still needs either selected covers chosen
+   to be cardinal-minimal at each scale, or an explicit theorem/hypothesis that
+   the selected entropy envelope is bounded by the genuine minimal-count
+   entropy envelope used in the integral.
 
 5. **Step C5: continuous Dudley wrapper.** Next, compose the closed
    total-bounded boundary wrapper with a continuous entropy integral statement

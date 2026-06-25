@@ -224,6 +224,13 @@ declarations; modules are relative to `FormalSLT`.
 | `totalBoundedCoveringEntropyAtRadius_guarded` | `Covering.TotalBoundedDudleyCovering` | The induced entropy staircase satisfies the guarded closed-annulus condition |
 | `totalBoundedCoveringEntropy_dominates_dyadicEnvelope_sample` | `Covering.TotalBoundedDudleyCovering` | Dyadic samples dominate the finite entropy prefix envelope used by total-bounded finite wrappers |
 | `unitInterval_totalBoundedCoveringNumber_sample_positive` | `Covering.TotalBoundedDudleyCovering` | Concrete non-vacuity witness for the generic selected-cover-count surface on the unit interval |
+| `minimalMetricCoveringNumber` | `Covering.TotalBoundedMinimalCovering` | Genuine minimal finite metric covering number for a nonempty totally bounded metric index space |
+| `minimalMetricCoveringNumber_spec` | `Covering.TotalBoundedMinimalCovering` | The genuine minimal covering number is realized by a finite metric cover |
+| `minimalMetricCoveringNumber_le_of_metricCoverCardinalityLe` | `Covering.TotalBoundedMinimalCovering` | Any finite metric cover with at most `n` centers bounds the genuine minimal covering number by `n` |
+| `minimalMetricCoveringNumber_pos` | `Covering.TotalBoundedMinimalCovering` | Nonempty totally bounded spaces have positive genuine minimal covering number at positive radius |
+| `minimalMetricCoveringNumber_le_dyadicSelectedCoveringNumber` | `Covering.TotalBoundedMinimalCovering` | The genuine minimal covering number is bounded by each selected dyadic finite-net count |
+| `minimalMetricCoveringNumber_le_totalBoundedDyadicCoverCountEnvelope` | `Covering.TotalBoundedMinimalCovering` | The selected dyadic envelope dominates the genuine minimal covering number at sampled dyadic net radii |
+| `unitInterval_minimalMetricCoveringNumber_sample_positive` | `Covering.TotalBoundedMinimalCovering` | Concrete non-vacuity witness for the genuine minimal covering number on the unit interval |
 
 ## Two-point Dudley example
 

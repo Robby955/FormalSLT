@@ -1,0 +1,27 @@
+import FormalSLT.Covering.TotalBoundedMinimalCovering
+
+/-!
+Checks for the totally bounded genuine minimal-covering-number bridge.
+-/
+
+open FormalSLT.Covering.TotalBoundedMinimalCovering
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.MetricCoverCardinalityLe
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber_spec
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber_le_of_metricCoverCardinalityLe
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber_pos
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.metricCoverCardinalityLe_of_bundledFiniteNet
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber_le_bundledFiniteNet_coveringNumber
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber_le_dyadicSelectedCoveringNumber
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.minimalMetricCoveringNumber_le_totalBoundedDyadicCoverCountEnvelope
+
+#print axioms FormalSLT.Covering.TotalBoundedMinimalCovering.unitInterval_minimalMetricCoveringNumber_sample_positive
