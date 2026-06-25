@@ -144,6 +144,14 @@ The first bridge lives in
   covering-number surface, but it does not by itself justify replacing the
   selected-count entropy upper envelope by the smaller minimal-count entropy in
   the current upper-bound Dudley theorem.
+- `continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber`
+  in
+  [FormalSLT/Covering/TotalBoundedDudleySelectedCapstone.lean](../FormalSLT/Covering/TotalBoundedDudleySelectedCapstone.lean)
+  closes the guarded continuous-Dudley capstone for arbitrary totally bounded
+  metric index spaces under the existing finite boundary-certificate
+  hypothesis. Its entropy integrand is the selected-cover-count envelope
+  `totalBoundedCoveringEntropyAtRadius hT hradiusScale`, not the genuine
+  minimal covering number.
 
 This is still a bridge layer. It remains finite-index and finite-scale, and it
 does not prove the continuous Dudley entropy integral.
@@ -295,11 +303,19 @@ The lane should land in this order, one PR per step:
    the selected entropy envelope is bounded by the genuine minimal-count
    entropy envelope used in the integral.
 
-5. **Step C5: continuous Dudley wrapper.** Next, compose the closed
-   total-bounded boundary wrapper with a continuous entropy integral statement
-   under explicit measurability/separability or supplied-supremum assumptions.
-   This is the public continuous Dudley target and should remain separate from
-   the finite boundary adapter already proved.
+4.7. **Step C4.7: selected-cover-count continuous capstone.** Closed by
+   `Covering.TotalBoundedDudleySelectedCapstone`: compose the selected-count
+   guarded staircase into
+   `continuous_dudley_entropy_integral_iSup_of_dyadicProfile_guarded`. The
+   resulting continuous integral bound is generic over totally bounded metric
+   index spaces, but its integrand is explicitly the selected-cover-count
+   envelope, not `minimalMetricCoveringNumber`.
+
+5. **Step C5: genuine-minimal covering-number tightening.** Replace the
+   selected-cover-count capstone integrand by the genuine minimal covering
+   number only after proving a cardinal-minimal selected-net schedule or an
+   explicit comparison that upper-bounds the selected entropy envelope by the
+   minimal-covering-number entropy envelope.
 
 6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral

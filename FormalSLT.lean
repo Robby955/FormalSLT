@@ -91,6 +91,7 @@ import FormalSLT.Covering.GuardedDudleyIntegral
 import FormalSLT.Covering.GuardedContinuousDudley
 import FormalSLT.Covering.TotalBoundedDudleyCovering
 import FormalSLT.Covering.TotalBoundedMinimalCovering
+import FormalSLT.Covering.TotalBoundedDudleySelectedCapstone
 import FormalSLT.Covering.ContinuousDudleyUnitInterval
 import FormalSLT.Covering.ContinuousDudleyUnitIntervalCovering
 import FormalSLT.Covering.MeasureDudley

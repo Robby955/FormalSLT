@@ -1,0 +1,11 @@
+import FormalSLT.Covering.TotalBoundedDudleySelectedCapstone
+
+/-!
+Checks for the selected-cover-count total-bounded Dudley capstone.
+-/
+
+#print axioms FormalSLT.Covering.TotalBoundedDudleySelectedCapstone.totalBoundedSelectedCoverCount_dyadicProfileBound_of_boundaryChoice
+
+#print axioms FormalSLT.Covering.TotalBoundedDudleySelectedCapstone.continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber
+
+#print axioms FormalSLT.Covering.TotalBoundedDudleySelectedCapstone.unitInterval_totalBoundedSelectedCoverCountEnvelope_sample_positive
