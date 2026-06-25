@@ -39,6 +39,7 @@ import FormalSLT.Statistics.SampleStatistics
 import FormalSLT.Statistics.ClassicalEstimation
 import FormalSLT.Statistics.FisherInformation
 import FormalSLT.Statistics.CramerRao
+import FormalSLT.Statistics.ExponentialFamily
 
 import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization
