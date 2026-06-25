@@ -1,0 +1,22 @@
+import FormalSLT.Covering.ContinuousDudleyUnitInterval
+
+/-!
+# Continuous Dudley unit-interval checker
+
+This checker records the guarded unit-interval capstone surface.
+-/
+
+#check FormalSLT.Covering.ContinuousDudleyUnitInterval.continuous_dudley_entropy_integral_iSup_of_dyadicProfile_guarded
+#print axioms FormalSLT.Covering.ContinuousDudleyUnitInterval.continuous_dudley_entropy_integral_iSup_of_dyadicProfile_guarded
+
+#check FormalSLT.Covering.ContinuousDudleyUnitInterval.unitInterval_coveringNumber_profile_dominates
+#print axioms FormalSLT.Covering.ContinuousDudleyUnitInterval.unitInterval_coveringNumber_profile_dominates
+
+#check FormalSLT.Covering.ContinuousDudleyUnitInterval.continuous_dudley_entropy_integral_iSup_unitInterval
+#print axioms FormalSLT.Covering.ContinuousDudleyUnitInterval.continuous_dudley_entropy_integral_iSup_unitInterval
+
+#check FormalSLT.Covering.ContinuousDudleyUnitInterval.unitInterval_entropyProfile_nonconstant
+#print axioms FormalSLT.Covering.ContinuousDudleyUnitInterval.unitInterval_entropyProfile_nonconstant
+
+#check FormalSLT.Covering.ContinuousDudleyUnitInterval.unitInterval_entropyProfile_integral_positive
+#print axioms FormalSLT.Covering.ContinuousDudleyUnitInterval.unitInterval_entropyProfile_integral_positive
