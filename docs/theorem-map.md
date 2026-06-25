@@ -346,6 +346,11 @@ declarations; modules are relative to `FormalSLT`.
 | `unitIntervalRademacherLinearSup_dudley_m0_bound` | `Covering.UnitIntervalDudley` | Coarse finite-horizon `m = 0` Dudley bound for the supplied supremum |
 | `unitIntervalRademacherLinearSup_dudley_m1_bound_of_entropy` | `Covering.UnitIntervalDudley` | First-scale supplied-supremum Dudley bound under an explicit entropy envelope |
 | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `Covering.UnitIntervalDudley` | Constant-envelope first-scale bound evaluated to a scalar expression |
+| `unitIntervalCoveringNumber` | `Covering.ContinuousDudleyUnitIntervalCovering` | Real-radius half-open dyadic covering-number staircase for `[0,1]` |
+| `unitIntervalCoveringEntropy_eq_genuine_count_sample` | `Covering.ContinuousDudleyUnitIntervalCovering` | The staircase entropy samples the genuine rounded-grid covering-number product at every dyadic radius |
+| `unitInterval_coveringEntropy_nonconstant` | `Covering.ContinuousDudleyUnitIntervalCovering` | The genuine covering-number entropy integrand is nonconstant |
+| `unitInterval_coveringEntropy_integral_positive` | `Covering.ContinuousDudleyUnitIntervalCovering` | The genuine covering-number entropy integrand has positive interval mass |
+| `continuous_dudley_entropy_integral_iSup_unitInterval_coveringNumber` | `Covering.ContinuousDudleyUnitIntervalCovering` | Guarded continuous Dudley capstone for `[0,1]` with the genuine covering-number integrand |
 
 ## Stability and PAC-Bayes foundations
 
