@@ -1,9 +1,9 @@
 {
   "release": "StatLean-v0.1",
   "source_repo": "Robby955/FormalSLT",
-  "harvested_declarations": 498,
+  "harvested_declarations": 530,
   "harvested_theorems": 376,
-  "harvested_definitions": 122,
+  "harvested_definitions": 154,
   "curated_tasks": 150,
   "concept_tags_covered": 24,
   "tasks_per_concept_tag": {

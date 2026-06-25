@@ -569,6 +569,43 @@ declarations; modules are relative to `FormalSLT`.
 | `bernoulliHalfFisherInformation` | `Statistics.CramerRao` | Concrete witness: `I(1/2) = 4` |
 | `bernoulliHalfCramerRaoWitness` | `Statistics.CramerRao` | Concrete witness: identity estimator attains variance `1/4 = 1 / I(1/2)` |
 
+## Finite exponential families
+
+| Declaration | Module | Role |
+|---|---|---|
+| `finitePartition` | `Statistics.ExponentialFamily` | Finite exponential-family partition sum `Z(theta)` |
+| `finiteLogPartition` | `Statistics.ExponentialFamily` | Log-partition function `A(theta) = log Z(theta)` |
+| `finiteExponentialPMF` | `Statistics.ExponentialFamily` | Natural-parameter finite exponential-family probability mass |
+| `finiteExponentialPMFDeriv` | `Statistics.ExponentialFamily` | Natural-parameter derivative of the finite exponential-family mass |
+| `finitePartition_pos` | `Statistics.ExponentialFamily` | Positive base weights give positive finite partition sum |
+| `finiteExponentialPMF_sum_one` | `Statistics.ExponentialFamily` | Normalized exponential-family masses sum to one |
+| `finiteExponentialPMF_pos` | `Statistics.ExponentialFamily` | Positive base weights give positive normalized masses |
+| `finitePartition_hasDerivAt` | `Statistics.ExponentialFamily` | Termwise derivative of the finite partition sum |
+| `finiteExponentialFamily_mean_eq_logPartition_deriv` | `Statistics.ExponentialFamily` | Finite exponential-family mean equals the log-partition derivative numerator divided by `Z(theta)` |
+| `finiteLogPartition_hasDerivAt` | `Statistics.ExponentialFamily` | Log-partition derivative identity `A'(theta) = E_theta[T]` |
+| `finiteLogPartition_hasDerivAt_of_positiveBase` | `Statistics.ExponentialFamily` | Positive-base wrapper for `A'(theta) = E_theta[T]` |
+| `finiteExponentialPMF_hasDerivAt` | `Statistics.ExponentialFamily` | Derivative of the normalized finite exponential-family mass |
+| `finiteMean_hasDerivAt` | `Statistics.ExponentialFamily` | Differentiating the finite mean gives a centered second moment |
+| `finiteMean_deriv_eq_variance` | `Statistics.ExponentialFamily` | Centered second-moment derivative equals finite weighted variance |
+| `finiteLogPartition_hasSecondDerivAt` | `Statistics.ExponentialFamily` | Log-partition curvature identity `A''(theta) = Var_theta(T)` |
+| `finiteLogPartition_hasSecondDerivAt_of_positiveBase` | `Statistics.ExponentialFamily` | Positive-base wrapper for `A''(theta) = Var_theta(T)` |
+| `finiteExponentialFamily_variance_eq_logPartition_secondDeriv` | `Statistics.ExponentialFamily` | Finite exponential-family variance equals log-partition second derivative |
+| `finiteExponentialFamily_score_eq_centered` | `Statistics.ExponentialFamily` | Natural-parameter score equals the centered sufficient statistic |
+| `finiteExponentialFamily_fisherInformation_eq_variance` | `Statistics.ExponentialFamily` | Natural-parameter Fisher information equals finite variance |
+| `finiteExponentialFamily_logPartition_secondDeriv_eq_fisherInformation` | `Statistics.ExponentialFamily` | Direct bridge `I(theta) = A''(theta)` |
+| `bernoulliNaturalBase` | `Statistics.ExponentialFamily` | Bernoulli natural-family base weights on `Bool` |
+| `bernoulliNaturalStatistic` | `Statistics.ExponentialFamily` | Bernoulli natural sufficient statistic `1{true}` |
+| `bernoulliNatural_partition` | `Statistics.ExponentialFamily` | Bernoulli natural partition sum is `1 + exp(theta)` |
+| `bernoulliNatural_logPartition_zero` | `Statistics.ExponentialFamily` | Bernoulli natural log-partition at `theta = 0` is `log 2` |
+| `bernoulliNatural_mean_zero` | `Statistics.ExponentialFamily` | Bernoulli natural mean at `theta = 0` is `1/2` |
+| `bernoulliNatural_logPartition_deriv_zero` | `Statistics.ExponentialFamily` | Bernoulli natural `A'(0) = 1/2` |
+| `bernoulliNatural_pmf_zero` | `Statistics.ExponentialFamily` | Both Bernoulli natural atoms have mass `1/2` at `theta = 0` |
+| `bernoulliNatural_variance_zero` | `Statistics.ExponentialFamily` | Bernoulli natural variance at `theta = 0` is `1/4` |
+| `bernoulliNatural_logPartition_secondDeriv_zero` | `Statistics.ExponentialFamily` | Bernoulli natural `A''(0) = 1/4` |
+| `bernoulliNatural_fisher_zero` | `Statistics.ExponentialFamily` | Bernoulli natural Fisher information at `theta = 0` is `1/4` |
+| `bernoulliNatural_fisher_eq_variance_zero` | `Statistics.ExponentialFamily` | Bernoulli natural Fisher information equals variance at `theta = 0` |
+| `bernoulliNatural_witness` | `Statistics.ExponentialFamily` | Concrete Bernoulli witness with mean `1/2`, variance `1/4`, and Fisher information `1/4` |
+
 ## Glivenko-Cantelli
 
 | Theorem | Module | Role |
