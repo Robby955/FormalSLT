@@ -349,6 +349,27 @@ The lane should land in this order, one PR per step:
    entropy tightening or an explicit theorem bounding the adjacent-product
    entropy by the target one-radius minimal-covering-number profile.
 
+   Probe result, 2026-06-25: the same-radius comparison needed by the current
+   guarded wrapper is false. The finite wrapper samples
+   `radiusScale / 2^(j+1)`, while the cardinal-minimal adjacent product at
+   level `j` uses minimal covers at `radiusScale / 2^(j+2)` and
+   `radiusScale / 2^(j+3)`. In a two-point metric space with interpoint
+   distance `1`, take `radiusScale = 3` and `j = 0`. The sampled one-radius
+   cover at `3 / 2` has minimal count `1`, but the two adjacent covers at
+   `3 / 4` and `3 / 8` each have minimal count `2`, so the adjacent product is
+   `4`. Thus no theorem of the form
+   `N(3 / 4) * N(3 / 8) ≤ N(3 / 2)` can hold for arbitrary totally bounded
+   spaces, and the entropy comparison fails already because
+   `sqrt(log 4) > sqrt(log 1)`.
+
+   The viable route is shifted, not same-radius: prove monotonicity of
+   `minimalMetricCoveringNumber` in the radius, bound each adjacent product by
+   a smaller-radius single count such as
+   `N(radiusScale / 2^(j+3))^2`, and then prove a dyadic summation or
+   interval-integral shift comparison that absorbs the radius shift and the
+   `sqrt 2` factor into constants. That is a new analytic lemma, not a local
+   rewrite of the existing capstone.
+
 6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral
    over a probability space requires a measurable-supremum theory (Talagrand
