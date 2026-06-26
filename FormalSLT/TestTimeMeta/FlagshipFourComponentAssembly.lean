@@ -94,6 +94,13 @@ def derived (lam : ℝ) (n : ℕ) (t : ℝ) : FlagshipDerivedContributions where
   prefixKernelContributionNonnegative :=
     FlagshipSimultaneousAssembly.derived.prefixKernelContributionNonnegative
 
+/--
+Four-slot population decomposition with the anytime gap carried as a
+nonnegative risk slot.
+
+The tight anytime event-mass certificate lives in the separate `anytimeUniform`
+field consumed by the public four-component conclusion.
+-/
 theorem populationDecomposition_holds {Ω : Type*} [MeasurableSpace Ω]
     (μ : Measure Ω) (X : ℕ → Ω → ℝ) (sigma2 b lam t : ℝ) (n : ℕ) (hn : 0 < n) :
     (user n hn).populationRisk ≤

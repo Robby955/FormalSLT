@@ -53,7 +53,8 @@ Every module must have a `/-! ... -/` docstring that states:
 
 ## Naming conventions
 
-- Theorem names use `snake_case` and describe the bound or result.
+- Theorem and lemma names follow nearby Mathlib/FormalSLT APIs, including
+  descriptive camelCase segments such as `finiteClassUniformDeviationUnionBound`.
 - Definitions use `camelCase`.
 - Module names use `PascalCase`.
 - Namespace hierarchy follows the module path: `FormalSLT.VC.BinaryVCBridge`.

@@ -31,7 +31,7 @@ The only hypotheses the headline keeps are the genuine domain hypotheses of the
 bound: the empirical risks lie in `[0,1]` and the population risks in `(0,1)`
 (valid Bernoulli parameters), exactly as the McAllester square-root form carries
 `0 < populationRisk < 1`.  These are statement-domain hypotheses, not
-sorry-equivalent carries.
+proof-gap-equivalent carries.
 
 ## Main results
 

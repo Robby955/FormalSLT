@@ -16,7 +16,8 @@ reviewable proof steps and accurate theorem statements.
 
 ## Style
 
-- Theorem names use `snake_case`.
+- Theorem and lemma names follow nearby Mathlib/FormalSLT APIs, including
+  descriptive camelCase segments such as `finiteClassUniformDeviationUnionBound`.
 - Definitions use `camelCase`.
 - Module names use `PascalCase`.
 - Public modules need docstrings that state what is proved, proof strategy,

@@ -128,9 +128,51 @@ The first bridge lives in
 - `finite_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers` composes the
   total-bounded dyadic schedule with the finite Dudley entropy-budget theorem,
   using an identity terminal net on a finite index type.
+- `totalBoundedCoveringNumberAtRadius` in
+  [FormalSLT/Covering/TotalBoundedDudleyCovering.lean](../FormalSLT/Covering/TotalBoundedDudleyCovering.lean)
+  packages the selected adjacent dyadic cover-count products into a half-open,
+  right-closed real-radius staircase, exposes a finite `ℕ∞` surface, proves the
+  guarded closed-annulus entropy condition, and supplies a unit-interval
+  non-vacuity witness. This is a selected-net cover-count surface, not the
+  minimal metric covering-number theorem.
+- `minimalMetricCoveringNumber` in
+  [FormalSLT/Covering/TotalBoundedMinimalCovering.lean](../FormalSLT/Covering/TotalBoundedMinimalCovering.lean)
+  defines the genuine minimal finite metric covering number at positive radius
+  for nonempty totally bounded metric spaces. It proves the valid comparison
+  `N_min(T, d, ε_j) ≤ selected_j` at each dyadic selected-net radius, and hence
+  `N_min(T, d, ε_j) ≤ selectedEnvelope_j`. This supplies the genuine
+  covering-number surface, but it does not by itself justify replacing the
+  selected-count entropy upper envelope by the smaller minimal-count entropy in
+  the current upper-bound Dudley theorem.
+- The same module now also proves the route (a) extractor probe:
+  `minimalMetricCoverOfTotallyBoundedUniv` chooses a cardinal-minimal finite
+  cover from the `minimalMetricCoveringNumber` witness, packages it as
+  `minimalFiniteNetOfTotallyBoundedUniv`, and exposes
+  `minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_coveringNumber_eq` at
+  each dyadic sampled radius. This avoids adding a separate "covers are
+  minimal" hypothesis.
+- `continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber`
+  in
+  [FormalSLT/Covering/TotalBoundedDudleySelectedCapstone.lean](../FormalSLT/Covering/TotalBoundedDudleySelectedCapstone.lean)
+  closes the guarded continuous-Dudley capstone for arbitrary totally bounded
+  metric index spaces under the existing finite boundary-certificate
+  hypothesis. Its entropy integrand is the selected-cover-count envelope
+  `totalBoundedCoveringEntropyAtRadius hT hradiusScale`, not the genuine
+  minimal covering number.
+- `continuous_dudley_entropy_integral_iSup_totalBounded_minimalDyadicCoverCountEnvelope`
+  in
+  [FormalSLT/Covering/TotalBoundedDudleyMinimalCapstone.lean](../FormalSLT/Covering/TotalBoundedDudleyMinimalCapstone.lean)
+  threads the cardinal-minimal dyadic net schedule through the projected
+  finite-chain wrapper, rebuilds the half-open real-radius staircase, and
+  composes it with the guarded continuous-Dudley wrapper. Its entropy integrand
+  is the adjacent-product envelope from cardinal-minimal dyadic covers; each
+  factor is a genuine `minimalMetricCoveringNumber`, but the surface is not a
+  pure one-radius `sqrt(log N(T,d,ε))` integrand.
 
-This is still a bridge layer. It remains finite-index and finite-scale, and it
-does not prove the continuous Dudley entropy integral.
+The remaining minimal-covering-number work is the tighter one-radius
+`sqrt(log N(T,d,ε))` surface, which would need a projection-pair entropy
+tightening or another theorem replacing adjacent products by a single-radius
+minimal covering number.
 
 ## Mathlib tooling available
 
@@ -258,11 +300,79 @@ The lane should land in this order, one PR per step:
    analytic step toward continuous integral language, but it does **not** prove
    separability or measurable arbitrary suprema.
 
-5. **Step C5: continuous Dudley wrapper.** Next, compose the closed
-   total-bounded boundary wrapper with a continuous entropy integral statement
-   under explicit measurability/separability or supplied-supremum assumptions.
-   This is the public continuous Dudley target and should remain separate from
-   the finite boundary adapter already proved.
+- **Step C4.5: selected-cover-count staircase.** Closed by
+   `Covering.TotalBoundedDudleyCovering`: the adjacent cover counts selected by
+   total boundedness are wrapped in a monotone prefix envelope and realized as a
+   half-open real-radius staircase. The resulting entropy profile satisfies the
+   guarded dyadic annulus condition and dominates the finite dyadic entropy
+   envelope at dyadic samples. This keeps the proof on selected finite nets; it
+   does not identify these counts with the minimal metric covering number
+   `N(T, d, ε)`.
+
+4.6. **Step C4.6: genuine minimal-covering-number surface.** Closed by
+   `Covering.TotalBoundedMinimalCovering`: define `minimalMetricCoveringNumber`
+   from finite metric covers, prove its specification and minimality, prove it
+   is positive on nonempty spaces, and compare it to the selected total-bounded
+   dyadic covers. The proved direction is
+   `minimalMetricCoveringNumber ≤ selected cover count`; this is the only
+   direction available for arbitrary selected covers. The later cardinal-minimal
+   extractor avoids this arbitrary-selection obstruction by changing the chosen
+   net schedule, not by adding a minimality hypothesis.
+
+- **Step C4.6.1: cardinal-minimal extractor probe.** Closed by
+   `Covering.TotalBoundedMinimalCovering`: choose cardinal-minimal finite
+   covers directly from `minimalMetricCoveringNumber`, convert them to
+   `BundledFiniteNet`s, and build a dyadic minimal-net schedule whose
+   `coveringNumber` is definitionally tied to the genuine minimal covering
+   number at each sampled radius. This is route (a); it does not add a
+   separate minimality hypothesis.
+
+4.7. **Step C4.7: selected-cover-count continuous capstone.** Closed by
+   `Covering.TotalBoundedDudleySelectedCapstone`: compose the selected-count
+   guarded staircase into
+   `continuous_dudley_entropy_integral_iSup_of_dyadicProfile_guarded`. The
+   resulting continuous integral bound is generic over totally bounded metric
+   index spaces, but its integrand is explicitly the selected-cover-count
+   envelope, not `minimalMetricCoveringNumber`.
+
+5. **Step C5: cardinal-minimal dyadic product capstone.** Closed by
+   `Covering.TotalBoundedDudleyMinimalCapstone`: thread the
+   cardinal-minimal dyadic net schedule through the finite projected-chain
+   wrapper, build the real-radius half-open staircase, prove the guarded
+   annulus property, and compose with the guarded continuous-Dudley assembly.
+   This removes arbitrary selected-cover counts from the net schedule, but the
+   finite chaining entropy still uses adjacent products of minimal counts.
+
+- **Step C5.1: shifted pure one-radius minimal-`N` tightening.** Closed by
+   `Covering.TotalBoundedDudleyMinimalShift`: replace the adjacent-product
+   envelope in the conclusion by a single-radius genuine
+   `minimalMetricCoveringNumber` entropy integral, with an explicit dyadic
+   shift loss in the constants and a shifted entropy boundary-certificate
+   profile.
+
+   Probe result, 2026-06-25: the same-radius comparison needed by the current
+   guarded wrapper is false. The finite wrapper samples
+   `radiusScale / 2^(j+1)`, while the cardinal-minimal adjacent product at
+   level `j` uses minimal covers at `radiusScale / 2^(j+2)` and
+   `radiusScale / 2^(j+3)`. In a two-point metric space with interpoint
+   distance `1`, take `radiusScale = 3` and `j = 0`. The sampled one-radius
+   cover at `3 / 2` has minimal count `1`, but the two adjacent covers at
+   `3 / 4` and `3 / 8` each have minimal count `2`, so the adjacent product is
+   `4`. Thus no theorem of the form
+   `N(3 / 4) * N(3 / 8) ≤ N(3 / 2)` can hold for arbitrary totally bounded
+   spaces, and the entropy comparison fails already because
+   `sqrt(log 4) > sqrt(log 1)`.
+
+   The closed route is shifted, not same-radius: prove monotonicity of
+   `minimalMetricCoveringNumber` in the radius, bound each adjacent product by
+   a smaller-radius single count such as
+   `N(radiusScale / 2^(j+3))^2`, then prove a dyadic upper-sum shift comparison
+   that absorbs the radius shift and the `sqrt 2` factor into constants. The
+   capstone
+   `continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveringNumber_shifted`
+   has pure genuine minimal-cover entropy in the displayed integral, while its
+   finite boundary certificates use the shifted profile
+   `ε ↦ sqrt 2 * sqrt(log N(T,d,ε/4))`.
 
 6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral

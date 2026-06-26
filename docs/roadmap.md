@@ -118,6 +118,17 @@
   finite-cover/pathwise-modulus certificates now discharge the cleaner
   separable-terminal boundary interface, connecting usable finite-cover
   hypotheses to the global-budget Dudley boundary statement.
+- [x] Guarded unit-interval pair-count Dudley endpoint:
+  the concrete `[0,1]` Rademacher process now has a guarded continuous Dudley
+  capstone whose integrand is the pair-count chaining envelope
+  `unitIntervalChainingPairCountEnvelope`, not a metric covering number
+  `N(ε)`. The exported surface includes
+  `unitIntervalPairCountEntropy_eq_pair_count_sample`,
+  `unitInterval_pairCountEntropy_nonconstant`,
+  `unitInterval_pairCountEntropy_integral_positive`, and
+  `continuous_dudley_oneStep_entropy_integral_iSup_unitInterval_pairCountEnvelope`.
+  This remains the concrete unit-interval endpoint, not the general
+  totally-bounded or measurable-supremum lane.
 - [x] Algorithmic stability bounded differences (Bousquet-Elisseeff 2002):
   training loss constant β + 2B/n, gen gap constant 2β + 2B/n
 - [x] Finite algorithmic stability expected-gap adapter:

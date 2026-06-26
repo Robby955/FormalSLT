@@ -45,6 +45,7 @@ import FormalSLT.Rademacher.FiniteSample
 import FormalSLT.Rademacher.FiniteSampleSymmetrization
 import FormalSLT.Rademacher.ProbabilityBridge
 import FormalSLT.Rademacher.Decoupling
+import FormalSLT.Rademacher.RademacherBoundedDifferences
 import FormalSLT.Rademacher.Symmetrization
 import FormalSLT.Rademacher.Massart
 import FormalSLT.Rademacher.HighProbability
@@ -72,6 +73,8 @@ import FormalSLT.VC.SauerShelah
 import FormalSLT.VC.Rademacher
 import FormalSLT.VC.SampleComplexity
 import FormalSLT.VC.BinaryVCBridge
+import FormalSLT.VC.SampleComplexityBinary
+import FormalSLT.VC.BinaryCapstone
 
 import FormalSLT.Covering.Rademacher
 import FormalSLT.Covering.DudleyChaining
@@ -87,6 +90,15 @@ import FormalSLT.Covering.TwoPointDudleyIntegral
 import FormalSLT.Covering.DudleyToRademacher
 import FormalSLT.Covering.ContinuousDudley
 import FormalSLT.Covering.ContinuousDudleyCovering
+import FormalSLT.Covering.GuardedDudleyIntegral
+import FormalSLT.Covering.GuardedContinuousDudley
+import FormalSLT.Covering.TotalBoundedDudleyCovering
+import FormalSLT.Covering.TotalBoundedMinimalCovering
+import FormalSLT.Covering.TotalBoundedDudleySelectedCapstone
+import FormalSLT.Covering.TotalBoundedDudleyMinimalCapstone
+import FormalSLT.Covering.TotalBoundedDudleyMinimalShift
+import FormalSLT.Covering.ContinuousDudleyUnitInterval
+import FormalSLT.Covering.ContinuousDudleyUnitIntervalCovering
 import FormalSLT.Covering.MeasureDudley
 import FormalSLT.Covering.FiniteDiscreteDudley
 
@@ -125,6 +137,9 @@ import FormalSLT.PACBayes.VCHybrid
 import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
+
+import FormalSLT.Test.PACBayesBernsteinTest
+import FormalSLT.Test.SharpMcDiarmidTest
 
 import FormalSLT.TestTimeMeta.Assumptions
 import FormalSLT.TestTimeMeta.CompositionLemmas

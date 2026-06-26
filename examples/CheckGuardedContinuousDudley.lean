@@ -1,0 +1,17 @@
+import FormalSLT.Covering.GuardedContinuousDudley
+
+/-!
+# Guarded continuous Dudley checker
+
+This checker records the continuous finite-to-integral passage that avoids a
+global `Antitone entropyAtRadius` assumption.
+-/
+
+#check FormalSLT.Covering.GuardedContinuousDudley.guarded_truncatedIntegral_le_full_integral
+#print axioms FormalSLT.Covering.GuardedContinuousDudley.guarded_truncatedIntegral_le_full_integral
+
+#check FormalSLT.Covering.GuardedContinuousDudley.guarded_continuous_dudley_entropy_integral_nonempty_of_truncated_bounds
+#print axioms FormalSLT.Covering.GuardedContinuousDudley.guarded_continuous_dudley_entropy_integral_nonempty_of_truncated_bounds
+
+#check FormalSLT.Covering.GuardedContinuousDudley.guarded_continuous_dudley_entropy_integral_nonempty_of_upper_sum_bounds
+#print axioms FormalSLT.Covering.GuardedContinuousDudley.guarded_continuous_dudley_entropy_integral_nonempty_of_upper_sum_bounds

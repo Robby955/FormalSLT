@@ -498,7 +498,7 @@ private lemma abs_signedEmpiricalSum_le
         rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
 
 /-- Boundedness of `empiricalRademacherComplexity` by `B`. -/
-private lemma abs_empiricalRademacherComplexity_le
+lemma abs_empiricalRademacherComplexity_le
     {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 ≤ B) (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
     (hn : 0 < n) (z : Fin n → Z) :
     |empiricalRademacherComplexity ℓ z| ≤ B := by
@@ -662,7 +662,7 @@ private lemma measurable_signedDecoupledGap
 
 /-- Measurability of `empiricalRademacherComplexity ℓ z` as a function of
 `z`. -/
-private lemma measurable_empiricalRademacherComplexity
+lemma measurable_empiricalRademacherComplexity
     [MeasurableSpace Z] {ℓ : ι → Z → ℝ}
     (hℓ_meas : ∀ i, Measurable (ℓ i)) :
     Measurable

@@ -1,0 +1,8 @@
+import FormalSLT.VC.BinaryCapstone
+import FormalSLT.VC.SampleComplexityBinary
+
+#check FormalSLT.VC.SampleComplexity.vc_erm_excessRisk_tail_binary_zeroOneLoss
+#print axioms FormalSLT.VC.SampleComplexity.vc_erm_excessRisk_tail_binary_zeroOneLoss
+
+#check FormalSLT.VC.SampleComplexityBinary.vc_erm_excessRisk_tail_binary_zeroOneLoss
+#print axioms FormalSLT.VC.SampleComplexityBinary.vc_erm_excessRisk_tail_binary_zeroOneLoss

@@ -23,7 +23,7 @@ conditionally centered with respect to the past, `μ[X k | ℱ k] = 0`.
 The variance proxy is the constant `V k = 1`. It is `ℱ`-adapted (`StronglyAdapted`),
 nonnegative, and dominates the conditional second moment: for `k = 0`,
 `μ[X 0 ^ 2 | ℱ 0] = 1 ≤ 1`, and for `k ≥ 1`, `μ[X k ^ 2 | ℱ k] = 0 ≤ 1`. The
-constant proxy is genuinely `ℱ 0 = ⊥`-measurable, so it is correctly predictable.
+the constant proxy is genuinely `ℱ 0 = ⊥`-measurable, so it is correctly predictable.
 
 This is the point of the corrected hypothesis. Under the earlier
 `StronglyAdapted ℱ X` (present-conditioning) requirement on the increment, pairing

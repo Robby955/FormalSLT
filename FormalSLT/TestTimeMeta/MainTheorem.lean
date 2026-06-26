@@ -20,7 +20,13 @@ contribution.
 
 namespace FormalSLT.TestTimeMeta
 
-/-- Framework adapter with all narrowed assumptions named. -/
+/--
+Framework adapter with all narrowed assumptions named.
+
+Indirection layer: `hbound` is the assembled scalar inequality; this theorem
+only repackages it as `testTimeMetaConclusion`. The public constructed endpoint
+is `flagshipFourComponent_conclusion_from_incrementModel`.
+-/
 theorem pacBayesTestTimeMeta_theorem
     (assumptions : TestTimeMetaAssumptions)
     (hmcAllesterScaled :

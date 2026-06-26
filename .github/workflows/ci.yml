@@ -23,6 +23,9 @@ jobs:
       - name: Build
         run: lake build FormalSLT
 
+      - name: Verify no orphaned Lean modules
+        run: python3 scripts/check_no_orphan_lean_modules.py
+
       - name: Check examples and tutorials
         run: |
           for f in $(find examples -name '*.lean' | sort); do

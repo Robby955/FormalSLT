@@ -304,7 +304,7 @@ theorem witness_product : EProcess μBool filtBool (fun n ω => Ewit n ω * Ewit
 
 /--
 **Optional continuation fires on the witness with a numeric bound.** For the
-constant stopping time `τ ≡ n` (bounded by `n`), the stopped e-value integrates to
+the constant stopping time `τ ≡ n` (bounded by `n`), the stopped e-value integrates to
 at most `1`: `∫ ω, stoppedValue E (fun _ => n) ω ∂μBool ≤ 1`. This is the `E[E_τ] ≤ 1`
 guarantee. -/
 theorem witness_optionalContinuation (n : ℕ) :

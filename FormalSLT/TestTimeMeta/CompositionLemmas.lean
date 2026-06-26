@@ -28,7 +28,12 @@ open MeasureTheory ProbabilityTheory
 
 noncomputable section
 
-/-- q053 contribution wrapper for the unit-interval McAllester compiler route. -/
+/--
+q053 contribution wrapper for the unit-interval McAllester compiler route.
+
+Indirection layer: `hcontribution` is a supplied nonnegative scalar slot; the
+compiler call records the dependency, not a derived scalar value.
+-/
 theorem mcAllesterCompilerContribution_from_unitIntervalCompiler
     {ι Z : Type*}
     [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z]
@@ -103,7 +108,13 @@ theorem onlineToPACContribution_from_iidRegretConversion
     hT μ input X ω regretRate hlossBound hpopulationBounded hempiricalBounded
     hpopulationEq hempiricalEq hdeviationRadius hnotBad hregret hregretRate
 
-/-- q056 contribution wrapper for continuous-prior Bernstein certificates. -/
+/--
+q056 contribution wrapper for continuous-prior Bernstein certificates.
+
+Indirection layer: the final risk inequality is the certificate premise
+`hpenalty`; this wrapper routes the continuous-certificate gates into the shared
+composition interface.
+-/
 theorem bernsteinContribution_from_continuousCertificate
     {Θ : Type*} [MeasurableSpace Θ]
     (spec : ContinuousPriorPosteriorSpec Θ)
@@ -120,7 +131,12 @@ theorem bernsteinContribution_from_continuousCertificate
   exact bernsteinPACBayes_continuousPriorPosterior_certificate
     spec control hsamePrior hsamePosterior hvariance hkl hklBound hpenalty
 
-/-- q062 contribution wrapper for concrete spherical Gaussian continuous certificates. -/
+/--
+q062 contribution wrapper for concrete spherical Gaussian continuous certificates.
+
+Indirection layer: the final risk inequality is the certificate premise
+`hpenalty`; the Gaussian work here derives the KL gate used by the wrapper.
+-/
 theorem bernsteinContribution_from_sphericalGaussianCertificate
     {d : ℕ}
     (spec : ContinuousPriorPosteriorSpec (GaussianParameterSpace d))
