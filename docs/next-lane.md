@@ -343,11 +343,12 @@ The lane should land in this order, one PR per step:
    This removes arbitrary selected-cover counts from the net schedule, but the
    finite chaining entropy still uses adjacent products of minimal counts.
 
-5.1. **Step C5.1: pure one-radius minimal-`N` tightening.** Remaining:
-   replace the adjacent-product envelope by a single-radius genuine
-   `minimalMetricCoveringNumber` integrand. This needs a projection-pair
-   entropy tightening or an explicit theorem bounding the adjacent-product
-   entropy by the target one-radius minimal-covering-number profile.
+5.1. **Step C5.1: shifted pure one-radius minimal-`N` tightening.** Closed by
+   `Covering.TotalBoundedDudleyMinimalShift`: replace the adjacent-product
+   envelope in the conclusion by a single-radius genuine
+   `minimalMetricCoveringNumber` entropy integral, with an explicit dyadic
+   shift loss in the constants and a shifted entropy boundary-certificate
+   profile.
 
    Probe result, 2026-06-25: the same-radius comparison needed by the current
    guarded wrapper is false. The finite wrapper samples
@@ -362,13 +363,16 @@ The lane should land in this order, one PR per step:
    spaces, and the entropy comparison fails already because
    `sqrt(log 4) > sqrt(log 1)`.
 
-   The viable route is shifted, not same-radius: prove monotonicity of
+   The closed route is shifted, not same-radius: prove monotonicity of
    `minimalMetricCoveringNumber` in the radius, bound each adjacent product by
    a smaller-radius single count such as
-   `N(radiusScale / 2^(j+3))^2`, and then prove a dyadic summation or
-   interval-integral shift comparison that absorbs the radius shift and the
-   `sqrt 2` factor into constants. That is a new analytic lemma, not a local
-   rewrite of the existing capstone.
+   `N(radiusScale / 2^(j+3))^2`, then prove a dyadic upper-sum shift comparison
+   that absorbs the radius shift and the `sqrt 2` factor into constants. The
+   capstone
+   `continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveringNumber_shifted`
+   has pure genuine minimal-cover entropy in the displayed integral, while its
+   finite boundary certificates use the shifted profile
+   `ε ↦ sqrt 2 * sqrt(log N(T,d,ε/4))`.
 
 6. **Step C6: measurable-supremum layer (optional, separate lane).**
    Promoting `expectedSup` from a finite-`Ω` sum to a Bochner integral

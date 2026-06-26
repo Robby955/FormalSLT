@@ -246,6 +246,13 @@ declarations; modules are relative to `FormalSLT`.
 | `totalBoundedMinimalDyadicCoverCount_dyadicProfileBound_of_boundaryChoice` | `Covering.TotalBoundedDudleyMinimalCapstone` | Minimal-schedule boundary certificates give the guarded dyadic upper-sum input |
 | `continuous_dudley_entropy_integral_iSup_totalBounded_minimalDyadicCoverCountEnvelope` | `Covering.TotalBoundedDudleyMinimalCapstone` | Generic totally bounded continuous Dudley capstone with the cardinal-minimal dyadic adjacent-product envelope |
 | `unitInterval_minimalDyadicCoverCountEnvelope_sample_positive` | `Covering.TotalBoundedDudleyMinimalCapstone` | Unit-interval non-vacuity witness for the cardinal-minimal dyadic cover-count envelope |
+| `minimalMetricCoveringNumber_antitone` | `Covering.TotalBoundedDudleyMinimalShift` | Genuine minimal covering numbers are antitone in the positive radius |
+| `minimalDyadicChainingCoverCount_le_next_minimalMetricCoveringNumber_sq` | `Covering.TotalBoundedDudleyMinimalShift` | Adjacent cardinal-minimal dyadic cover products are bounded by the next smaller-radius minimal covering number squared |
+| `minimalDyadicChainingCoverCount_entropy_le_sqrt_two_mul_next_minimalMetricCoveringEntropy` | `Covering.TotalBoundedDudleyMinimalShift` | Adjacent-product entropy is bounded by `sqrt 2` times one shifted minimal-cover entropy |
+| `minimalDyadicChainingCoverCountEntropy_dominates_shiftedMinimalEntropy_sample` | `Covering.TotalBoundedDudleyMinimalShift` | The shifted one-radius minimal-cover entropy dominates the finite prefix-envelope sample |
+| `finiteDyadicEntropyAtRadiusUpperSum_shifted_div_four_le_eight_mul_full_integral` | `Covering.TotalBoundedDudleyMinimalShift` | Finite shifted dyadic upper sums are bounded by the pure entropy integral with explicit shift constants |
+| `continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveringNumber_shifted` | `Covering.TotalBoundedDudleyMinimalShift` | Generic totally bounded continuous Dudley capstone with pure genuine minimal-cover entropy in the conclusion, paid by shifted boundary certificates and constants |
+| `unitInterval_shiftedMinimalMetricCoveringEntropy_sample_nonneg` | `Covering.TotalBoundedDudleyMinimalShift` | Unit-interval non-vacuity witness for the shifted minimal-cover entropy profile |
 
 ## Two-point Dudley example
 
