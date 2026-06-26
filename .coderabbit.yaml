@@ -8,7 +8,7 @@ reviews:
   review_status: true
   auto_review:
     enabled: true
-    drafts: true
+    drafts: false
   path_filters:
     - "!**/*.olean"
     - "!.lake/**"
@@ -24,7 +24,12 @@ reviews:
         beyond {propext, Classical.choice, Quot.sound};
         (3) a definition that silently changes the certified quantity (e.g. folding an error
         term into the field instead of the proof).
-        Do NOT nitpick formatting, naming, or import order — the build and lean_style_gate
-        cover those.
+        Do NOT nitpick formatting, theorem/lemma/def naming conventions, import order, or
+        missing Scope/Assumptions/Current-boundaries docstring sections. This repo follows
+        existing mathlib-style names with camelCase domain segments; match nearby APIs.
+code_generation:
+  unit_tests:
+    disabled_paths:
+      - "**"
 chat:
   auto_reply: true

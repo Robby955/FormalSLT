@@ -125,6 +125,19 @@ theorem vc_erm_excessRisk_tail_binary_zeroOneLoss
   -- Apply the audited capstone with `B := 1`.
   have key := vc_erm_excessRisk_tail (μ := μ) (ℓ := zeroOneLoss h) (B := 1)
     one_pos hℓ_meas hℓ_bdd hn hd hdn growth growth_neg hhat hERM i_star hε
-  simpa only [mul_one, one_pow] using key
+  have hstrong :
+      (piMeasure μ n).real
+          {S | risk μ (zeroOneLoss h) i_star
+                + 4 * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ))
+                + 2 * ε
+              ≤ risk μ (zeroOneLoss h) (hhat S)}
+        ≤ 2 * Real.exp (- ε ^ 2 * ↑n / 2) := by
+    simpa only [mul_one, one_pow] using key
+  refine hstrong.trans ?_
+  refine mul_le_mul_of_nonneg_left ?_ (by norm_num : (0 : ℝ) ≤ 2)
+  apply Real.exp_le_exp.mpr
+  have hnonneg : 0 ≤ ε ^ 2 * (n : ℝ) :=
+    mul_nonneg (sq_nonneg ε) (by exact_mod_cast Nat.zero_le n)
+  nlinarith [hnonneg]
 
 end FormalSLT.VC.SampleComplexity

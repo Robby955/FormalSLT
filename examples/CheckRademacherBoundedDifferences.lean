@@ -1,0 +1,10 @@
+import FormalSLT.Rademacher.RademacherBoundedDifferences
+
+#check FormalSLT.Rademacher.empiricalRademacher_hasBoundedDifferences
+#print axioms FormalSLT.Rademacher.empiricalRademacher_hasBoundedDifferences
+
+#check FormalSLT.Rademacher.empiricalRademacher_tail_bound_azuma
+#print axioms FormalSLT.Rademacher.empiricalRademacher_tail_bound_azuma
+
+#check FormalSLT.Rademacher.empiricalRademacher_lower_tail_bound_azuma
+#print axioms FormalSLT.Rademacher.empiricalRademacher_lower_tail_bound_azuma

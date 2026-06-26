@@ -43,6 +43,10 @@ The theorem is a certificate-form statement: it consumes explicit
 variance-control, continuous KL, and Bernstein high-probability gates and emits
 the final risk bound. It is not a finite-hypothesis theorem and does not replace
 the analytic continuous PAC-Bayes proof still needed upstream.
+
+Indirection layer: `hpenalty` is the final PAC-Bayes inequality for the supplied
+continuous certificate; this theorem records the KL and variance gates around
+that certificate rather than deriving a new posterior-risk inequality.
 -/
 theorem bernsteinPACBayes_continuousPriorPosterior_certificate
     {Θ : Type*} [MeasurableSpace Θ]

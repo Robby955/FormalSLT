@@ -20,18 +20,18 @@ open FormalSLT.Covering.UnitIntervalDudley
 
 noncomputable section
 
-/-- Dyadic-indexed rounded-grid covering profile for the unit interval. -/
-def unitIntervalCoverProfile (j : ℕ) : ℕ :=
+/-- Dyadic-indexed rounded-grid cover-count profile for the unit interval. -/
+def unitIntervalRoundedGridCoverProfile (j : ℕ) : ℕ :=
   unitIntervalRoundedDyadicGridCoverCount j
 
-/-- The dyadic-indexed profile dominates the concrete rounded-grid cover count.
+/-- The dyadic-indexed profile is definitionally the rounded-grid cover count.
 
 This is intentionally a dyadic-indexed statement, not a global real-radius
 covering-number antitonicity claim. -/
--- fidelity: The domination is exact at every dyadic index, so the profile is
--- not an unused free constant.
-theorem unitInterval_coveringNumber_profile_dominates (j : ℕ) :
-    unitIntervalRoundedDyadicGridCoverCount j ≤ unitIntervalCoverProfile j := by
+-- fidelity: This is only a definitional identity for the rounded-grid profile;
+-- it is not advertised as a separate domination theorem.
+theorem unitInterval_coverProfile_eq_roundedDyadicGridCoverCount (j : ℕ) :
+    unitIntervalRoundedGridCoverProfile j = unitIntervalRoundedDyadicGridCoverCount j := by
   rfl
 
 /-- A bounded, nonconstant positive entropy profile used for the guarded

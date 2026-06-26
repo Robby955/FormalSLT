@@ -5,11 +5,13 @@ import Mathlib.MeasureTheory.Function.SpecialFunctions.Basic
 import Mathlib.MeasureTheory.Function.Floor
 
 /-!
-# Genuine covering-number continuous Dudley capstone on `[0,1]`
+# One-step pair-count envelope for the `[0,1]` Dudley bound
 
 This module instantiates the guarded continuous Dudley wrapper for the concrete
-unit-interval Rademacher process using the real-radius staircase whose dyadic
-samples are the rounded-grid covering-number products.
+unit-interval Rademacher process using a real-radius staircase whose dyadic
+samples are adjacent rounded-grid chaining pair counts. This is an envelope for
+the adjacent chaining pairs used by the proof, not a true metric covering number
+`N(ε)`.
 -/
 
 namespace FormalSLT.Covering.ContinuousDudleyUnitIntervalCovering
@@ -29,21 +31,22 @@ noncomputable section
 For positive radii this is `⌊log_2 (1 / ε)⌋ - 1`. Values outside the positive
 Dudley interval are harmless default values for the surrounding concrete
 capstone. -/
-def unitIntervalCoveringIndex (ε : ℝ) : ℕ :=
+def unitIntervalPairCountEnvelopeIndex (ε : ℝ) : ℕ :=
   Nat.floor (Real.logb 2 ε⁻¹) - 1
 
-/-- Real-radius covering staircase for the unit interval. At dyadic radius
-`1 / 2^(j+1)` it is the genuine adjacent rounded-grid finite-cover product. -/
-def unitIntervalCoveringNumber (ε : ℝ) : ℕ :=
-  unitIntervalRoundedDyadicGridCoverCount (unitIntervalCoveringIndex ε)
+/-- Real-radius adjacent-pair-count envelope for the unit interval. At dyadic
+radius `1 / 2^(j+1)` it is the rounded-grid pair count used by the chaining
+step. -/
+def unitIntervalChainingPairCountEnvelope (ε : ℝ) : ℕ :=
+  unitIntervalRoundedDyadicGridCoverCount (unitIntervalPairCountEnvelopeIndex ε)
 
-/-- The same covering-number staircase as an `ℕ∞`-valued surface. -/
-def unitIntervalCoveringNumberENat (ε : ℝ) : ℕ∞ :=
-  (unitIntervalCoveringNumber ε : ℕ∞)
+/-- The same adjacent-pair-count envelope as an `ℕ∞`-valued surface. -/
+def unitIntervalChainingPairCountEnvelopeENat (ε : ℝ) : ℕ∞ :=
+  (unitIntervalChainingPairCountEnvelope ε : ℕ∞)
 
-/-- Entropy integrand built from the genuine covering-number staircase. -/
-def unitIntervalCoveringEntropyAtRadius (ε : ℝ) : ℝ :=
-  Real.sqrt (Real.log (unitIntervalCoveringNumber ε : ℝ))
+/-- Entropy integrand built from the adjacent-pair-count envelope. -/
+def unitIntervalPairCountEntropyAtRadius (ε : ℝ) : ℝ :=
+  Real.sqrt (Real.log (unitIntervalChainingPairCountEnvelope ε : ℝ))
 
 private lemma inv_dyadic_radius (j : ℕ) :
     (((1 : ℝ) / (2 : ℝ) ^ (j + 1))⁻¹) = (2 : ℝ) ^ (j + 1) := by
@@ -58,25 +61,25 @@ private lemma logb_inv_dyadic_radius (j : ℕ) :
     (x := ((j + 1 : ℕ) : ℝ)) hpos hne]
   simp [Nat.cast_add, Nat.cast_one]
 
-private lemma unitIntervalCoveringIndex_dyadic (j : ℕ) :
-    unitIntervalCoveringIndex ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) = j := by
-  unfold unitIntervalCoveringIndex
+private lemma unitIntervalPairCountEnvelopeIndex_dyadic (j : ℕ) :
+    unitIntervalPairCountEnvelopeIndex ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) = j := by
+  unfold unitIntervalPairCountEnvelopeIndex
   rw [logb_inv_dyadic_radius j]
   rw [show (j + 1 : ℝ) = ((j + 1 : ℕ) : ℝ) by simp]
   rw [Nat.floor_natCast]
   omega
 
-/-- The real-radius staircase samples the genuine rounded-grid finite-cover
-product at every dyadic Dudley radius. -/
-theorem unitIntervalCoveringNumber_dyadic (j : ℕ) :
-    unitIntervalCoveringNumber ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) =
+/-- The real-radius envelope samples the rounded-grid chaining pair count at
+every dyadic Dudley radius. -/
+theorem unitIntervalChainingPairCountEnvelope_dyadic (j : ℕ) :
+    unitIntervalChainingPairCountEnvelope ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) =
       unitIntervalRoundedDyadicGridCoverCount j := by
-  rw [unitIntervalCoveringNumber, unitIntervalCoveringIndex_dyadic]
+  rw [unitIntervalChainingPairCountEnvelope, unitIntervalPairCountEnvelopeIndex_dyadic]
 
-private theorem unitIntervalCoveringNumber_dyadic_inv (j : ℕ) :
-    unitIntervalCoveringNumber (((2 : ℝ) ^ (j + 1))⁻¹) =
+private theorem unitIntervalChainingPairCountEnvelope_dyadic_inv (j : ℕ) :
+    unitIntervalChainingPairCountEnvelope (((2 : ℝ) ^ (j + 1))⁻¹) =
       unitIntervalRoundedDyadicGridCoverCount j := by
-  simpa [one_div] using unitIntervalCoveringNumber_dyadic j
+  simpa [one_div] using unitIntervalChainingPairCountEnvelope_dyadic j
 
 private lemma dyadic_radius_pos (j : ℕ) :
     0 < (1 : ℝ) / (2 : ℝ) ^ (j + 1) := by
@@ -94,11 +97,11 @@ private lemma dyadic_radius_lt_of_lt {i j : ℕ} (hij : i < j) :
   exact one_div_pow_lt_one_div_pow_of_lt
     (by norm_num : (1 : ℝ) < 2) (Nat.add_lt_add_right hij 1)
 
-private lemma unitIntervalCoveringIndex_of_mem_halfOpenAnnulus
+private lemma unitIntervalPairCountEnvelopeIndex_of_mem_halfOpenAnnulus
     {ε : ℝ} (j : ℕ)
     (hleft : (1 : ℝ) / (2 : ℝ) ^ (j + 2) < ε)
     (hright : ε ≤ (1 : ℝ) / (2 : ℝ) ^ (j + 1)) :
-    unitIntervalCoveringIndex ε = j := by
+    unitIntervalPairCountEnvelopeIndex ε = j := by
   have hε_pos : 0 < ε := by
     exact lt_trans (by positivity : (0 : ℝ) < (1 : ℝ) / (2 : ℝ) ^ (j + 2)) hleft
   have hinv_lower :
@@ -125,7 +128,7 @@ private lemma unitIntervalCoveringIndex_of_mem_halfOpenAnnulus
       (by norm_num : (1 : ℝ) < 2) hpos_inv hinv_upper
     simpa [← Real.rpow_natCast, Real.logb_rpow
       (by norm_num : (0 : ℝ) < 2) (by norm_num : (2 : ℝ) ≠ 1)] using h
-  unfold unitIntervalCoveringIndex
+  unfold unitIntervalPairCountEnvelopeIndex
   have hfloor : Nat.floor (Real.logb 2 ε⁻¹) = j + 1 := by
     rw [Nat.floor_eq_iff]
     · exact ⟨by simpa [Nat.cast_add, Nat.cast_one] using hlog_lower,
@@ -137,51 +140,51 @@ private lemma unitIntervalCoveringIndex_of_mem_halfOpenAnnulus
   omega
 
 /-- The staircase is constant on each half-open, right-closed dyadic annulus. -/
-theorem unitIntervalCoveringNumber_const_on_halfOpenAnnulus
+theorem unitIntervalChainingPairCountEnvelope_const_on_halfOpenAnnulus
     {ε : ℝ} (j : ℕ)
     (hleft : (1 : ℝ) / (2 : ℝ) ^ (j + 2) < ε)
     (hright : ε ≤ (1 : ℝ) / (2 : ℝ) ^ (j + 1)) :
-    unitIntervalCoveringNumber ε = unitIntervalRoundedDyadicGridCoverCount j := by
-  simp [unitIntervalCoveringNumber,
-    unitIntervalCoveringIndex_of_mem_halfOpenAnnulus j hleft hright]
+    unitIntervalChainingPairCountEnvelope ε = unitIntervalRoundedDyadicGridCoverCount j := by
+  simp [unitIntervalChainingPairCountEnvelope,
+    unitIntervalPairCountEnvelopeIndex_of_mem_halfOpenAnnulus j hleft hright]
 
-theorem unitIntervalCoveringNumberENat_ne_top (ε : ℝ) :
-    unitIntervalCoveringNumberENat ε ≠ ⊤ := by
-  simp [unitIntervalCoveringNumberENat]
+theorem unitIntervalChainingPairCountEnvelopeENat_ne_top (ε : ℝ) :
+    unitIntervalChainingPairCountEnvelopeENat ε ≠ ⊤ := by
+  simp [unitIntervalChainingPairCountEnvelopeENat]
 
-theorem unitIntervalCoveringNumberENat_toReal (ε : ℝ) :
-    ENNReal.toReal (ENat.toENNReal (unitIntervalCoveringNumberENat ε)) =
-      (unitIntervalCoveringNumber ε : ℝ) := by
-  simp [unitIntervalCoveringNumberENat, ENNReal.toReal_natCast]
+theorem unitIntervalChainingPairCountEnvelopeENat_toReal (ε : ℝ) :
+    ENNReal.toReal (ENat.toENNReal (unitIntervalChainingPairCountEnvelopeENat ε)) =
+      (unitIntervalChainingPairCountEnvelope ε : ℝ) := by
+  simp [unitIntervalChainingPairCountEnvelopeENat, ENNReal.toReal_natCast]
 
-private lemma unitIntervalCoveringNumber_pos (ε : ℝ) :
-    0 < unitIntervalCoveringNumber ε := by
-  unfold unitIntervalCoveringNumber unitIntervalRoundedDyadicGridCoverCount
+private lemma unitIntervalChainingPairCountEnvelope_pos (ε : ℝ) :
+    0 < unitIntervalChainingPairCountEnvelope ε := by
+  unfold unitIntervalChainingPairCountEnvelope unitIntervalRoundedDyadicGridCoverCount
   positivity
 
-theorem unitIntervalCoveringEntropyAtRadius_nonneg (ε : ℝ) :
-    0 ≤ unitIntervalCoveringEntropyAtRadius ε := by
-  simp [unitIntervalCoveringEntropyAtRadius]
+theorem unitIntervalPairCountEntropyAtRadius_nonneg (ε : ℝ) :
+    0 ≤ unitIntervalPairCountEntropyAtRadius ε := by
+  simp [unitIntervalPairCountEntropyAtRadius]
 
-private lemma unitIntervalCoveringEntropyAtRadius_measurable :
-    Measurable unitIntervalCoveringEntropyAtRadius := by
+private lemma unitIntervalPairCountEntropyAtRadius_measurable :
+    Measurable unitIntervalPairCountEntropyAtRadius := by
   have hlogb : Measurable fun ε : ℝ => Real.logb 2 ε⁻¹ := by
     simpa [Real.logb] using ((measurable_id.inv).log.div_const (Real.log 2))
-  have hidx : Measurable unitIntervalCoveringIndex := by
-    unfold unitIntervalCoveringIndex
+  have hidx : Measurable unitIntervalPairCountEnvelopeIndex := by
+    unfold unitIntervalPairCountEnvelopeIndex
     measurability
-  have hnum : Measurable fun ε : ℝ => (unitIntervalCoveringNumber ε : ℝ) := by
-    unfold unitIntervalCoveringNumber
+  have hnum : Measurable fun ε : ℝ => (unitIntervalChainingPairCountEnvelope ε : ℝ) := by
+    unfold unitIntervalChainingPairCountEnvelope
     measurability
   exact hnum.log.sqrt
 
-private lemma unitIntervalCoveringEntropyAtRadius_dominated
+private lemma unitIntervalPairCountEntropyAtRadius_dominated
     {ε : ℝ} (hε_mem : ε ∈ Set.Ioc (0 : ℝ) ((1 : ℝ) / 2)) :
-    unitIntervalCoveringEntropyAtRadius ε ≤
+    unitIntervalPairCountEntropyAtRadius ε ≤
       unitIntervalDivergingEntropyProfile ε := by
   have hε_pos : 0 < ε := hε_mem.1
   have hε_le : ε ≤ (1 : ℝ) / 2 := hε_mem.2
-  let j := unitIntervalCoveringIndex ε
+  let j := unitIntervalPairCountEnvelopeIndex ε
   have hlog_ge_one : (1 : ℝ) ≤ Real.logb 2 ε⁻¹ := by
     have hinv_ge : (2 : ℝ) ≤ ε⁻¹ := by
       have h := one_div_le_one_div_of_le hε_pos hε_le
@@ -195,7 +198,7 @@ private lemma unitIntervalCoveringEntropyAtRadius_dominated
   have hfloor_ge : 1 ≤ Nat.floor (Real.logb 2 ε⁻¹) :=
     Nat.le_floor (by simpa using hlog_ge_one)
   have hfloor_eq : Nat.floor (Real.logb 2 ε⁻¹) = j + 1 := by
-    unfold j unitIntervalCoveringIndex
+    unfold j unitIntervalPairCountEnvelopeIndex
     omega
   have hfloor_bounds :=
     (Nat.floor_eq_iff (le_trans (by norm_num : (0 : ℝ) ≤ 1) hlog_ge_one)).mp
@@ -245,9 +248,9 @@ private lemma unitIntervalCoveringEntropyAtRadius_dominated
     simpa [one_div, inv_inv, inv_dyadic_radius (j + 1),
       show j + 1 + 1 = j + 2 by omega] using h
   have hsample :
-      unitIntervalCoveringEntropyAtRadius ε =
+      unitIntervalPairCountEntropyAtRadius ε =
         Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)) := by
-    simp [unitIntervalCoveringEntropyAtRadius, unitIntervalCoveringNumber, j]
+    simp [unitIntervalPairCountEntropyAtRadius, unitIntervalChainingPairCountEnvelope, j]
   have hdom_sample :=
     unitInterval_divergingEntropyProfile_dominates_roundedDyadicEntropy j
   have hprofile_mono :
@@ -258,59 +261,59 @@ private lemma unitIntervalCoveringEntropyAtRadius_dominated
   rw [hsample]
   exact hdom_sample.trans hprofile_mono
 
-theorem unitIntervalCoveringEntropyAtRadius_intervalIntegrable_zero_half :
-    IntervalIntegrable unitIntervalCoveringEntropyAtRadius volume
+theorem unitIntervalPairCountEntropyAtRadius_intervalIntegrable_zero_half :
+    IntervalIntegrable unitIntervalPairCountEntropyAtRadius volume
       (0 : ℝ) ((1 : ℝ) / 2) := by
   refine IntervalIntegrable.mono_fun'
     (g := unitIntervalDivergingEntropyProfile)
     unitIntervalDivergingEntropyProfile_intervalIntegrable_zero_half
     ?_ ?_
-  · exact unitIntervalCoveringEntropyAtRadius_measurable.aestronglyMeasurable
+  · exact unitIntervalPairCountEntropyAtRadius_measurable.aestronglyMeasurable
   · filter_upwards [ae_restrict_mem measurableSet_Ioc] with ε hε
-    rw [Real.norm_of_nonneg (unitIntervalCoveringEntropyAtRadius_nonneg ε)]
+    rw [Real.norm_of_nonneg (unitIntervalPairCountEntropyAtRadius_nonneg ε)]
     rw [Set.uIoc_of_le (by norm_num : (0 : ℝ) ≤ (1 : ℝ) / 2)] at hε
-    exact unitIntervalCoveringEntropyAtRadius_dominated hε
+    exact unitIntervalPairCountEntropyAtRadius_dominated hε
 
-theorem unitIntervalCoveringEntropyAtRadius_guarded (j : ℕ) :
-    GuardedAntitoneOnDyadicAnnulus unitIntervalCoveringEntropyAtRadius (1 : ℝ) j := by
+theorem unitIntervalPairCountEntropyAtRadius_guarded (j : ℕ) :
+    GuardedAntitoneOnDyadicAnnulus unitIntervalPairCountEntropyAtRadius (1 : ℝ) j := by
   intro ε hleft hright
   by_cases hstrict : (1 : ℝ) / (2 : ℝ) ^ (j + 2) < ε
-  · rw [unitIntervalCoveringEntropyAtRadius, unitIntervalCoveringEntropyAtRadius,
-      unitIntervalCoveringNumber_const_on_halfOpenAnnulus j hstrict hright,
-      unitIntervalCoveringNumber_dyadic j]
+  · rw [unitIntervalPairCountEntropyAtRadius, unitIntervalPairCountEntropyAtRadius,
+      unitIntervalChainingPairCountEnvelope_const_on_halfOpenAnnulus j hstrict hright,
+      unitIntervalChainingPairCountEnvelope_dyadic j]
   · have hε_eq : ε = (1 : ℝ) / (2 : ℝ) ^ (j + 2) := by linarith
     subst ε
-    rw [unitIntervalCoveringEntropyAtRadius, unitIntervalCoveringEntropyAtRadius,
-      unitIntervalCoveringNumber_dyadic (j + 1),
-      unitIntervalCoveringNumber_dyadic j]
+    rw [unitIntervalPairCountEntropyAtRadius, unitIntervalPairCountEntropyAtRadius,
+      unitIntervalChainingPairCountEnvelope_dyadic (j + 1),
+      unitIntervalChainingPairCountEnvelope_dyadic j]
     exact monotone_unitIntervalRoundedDyadicGridEntropy
       (Nat.le_add_right j 1)
 
-/-- The integrand samples the genuine rounded-grid covering-number product. -/
--- fidelity: the integrand IS the genuine covering number at dyadic radii,
--- namely the rounded-grid finite-cover product `unitIntervalRoundedDyadicGridCoverCount`.
-theorem unitIntervalCoveringEntropy_eq_genuine_count_sample (j : ℕ) :
-    unitIntervalCoveringEntropyAtRadius
+/-- The integrand samples the rounded-grid chaining pair count. -/
+-- fidelity: the integrand is the adjacent dyadic chaining-pair envelope,
+-- namely `unitIntervalRoundedDyadicGridCoverCount`, not a metric `N(ε)`.
+theorem unitIntervalPairCountEntropy_eq_pair_count_sample (j : ℕ) :
+    unitIntervalPairCountEntropyAtRadius
         ((1 : ℝ) / (2 : ℝ) ^ (j + 1)) =
       Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)) := by
-  rw [unitIntervalCoveringEntropyAtRadius, unitIntervalCoveringNumber_dyadic]
+  rw [unitIntervalPairCountEntropyAtRadius, unitIntervalChainingPairCountEnvelope_dyadic]
 
-/-- The genuine covering-number integrand is not a disguised constant profile. -/
+/-- The pair-count entropy integrand is not a disguised constant profile. -/
 -- fidelity: the samples at `1 / 2` and `1 / 8` use different genuine
--- rounded-grid covering-number products.
-theorem unitInterval_coveringEntropy_nonconstant :
-    unitIntervalCoveringEntropyAtRadius ((1 : ℝ) / 2) ≠
-      unitIntervalCoveringEntropyAtRadius ((1 : ℝ) / 8) := by
+-- rounded-grid chaining pair counts.
+theorem unitInterval_pairCountEntropy_nonconstant :
+    unitIntervalPairCountEntropyAtRadius ((1 : ℝ) / 2) ≠
+      unitIntervalPairCountEntropyAtRadius ((1 : ℝ) / 8) := by
   have h0 :
-      unitIntervalCoveringEntropyAtRadius ((1 : ℝ) / 2) =
+      unitIntervalPairCountEntropyAtRadius ((1 : ℝ) / 2) =
         Real.sqrt (Real.log (15 : ℝ)) := by
-    have hsample := unitIntervalCoveringEntropy_eq_genuine_count_sample 0
+    have hsample := unitIntervalPairCountEntropy_eq_pair_count_sample 0
     norm_num [unitIntervalRoundedDyadicGridCoverCount] at hsample ⊢
     exact hsample
   have h2 :
-      unitIntervalCoveringEntropyAtRadius ((1 : ℝ) / 8) =
+      unitIntervalPairCountEntropyAtRadius ((1 : ℝ) / 8) =
         Real.sqrt (Real.log (153 : ℝ)) := by
-    have hsample := unitIntervalCoveringEntropy_eq_genuine_count_sample 2
+    have hsample := unitIntervalPairCountEntropy_eq_pair_count_sample 2
     norm_num [unitIntervalRoundedDyadicGridCoverCount] at hsample ⊢
     exact hsample
   intro h
@@ -330,12 +333,12 @@ theorem unitInterval_coveringEntropy_nonconstant :
       (by norm_num : (15 : ℝ) < 153)
   exact (ne_of_lt hlog_lt) hsq
 
-/-- The genuine covering-number entropy integral has positive mass. -/
+/-- The pair-count entropy integral has positive mass. -/
 -- fidelity: positivity comes from the concrete `j = 0` sample on the
 -- positive-width subinterval `(1 / 4, 1 / 2]`.
-theorem unitInterval_coveringEntropy_integral_positive :
+theorem unitInterval_pairCountEntropy_integral_positive :
     0 < ∫ ε in (0 : ℝ)..((1 : ℝ) / 2),
-      unitIntervalCoveringEntropyAtRadius ε := by
+      unitIntervalPairCountEntropyAtRadius ε := by
   have hsample_pos :
       0 < Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount 0 : ℝ)) := by
     have hcount : unitIntervalRoundedDyadicGridCoverCount 0 = 15 := by
@@ -347,13 +350,13 @@ theorem unitInterval_coveringEntropy_integral_positive :
       (((1 : ℝ) / 2) - (1 / 4)) *
           Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount 0 : ℝ)) ≤
         ∫ ε in ((1 : ℝ) / 4)..((1 : ℝ) / 2),
-          unitIntervalCoveringEntropyAtRadius ε := by
+          unitIntervalPairCountEntropyAtRadius ε := by
     refine FiniteSubGaussianProcess.interval_const_mul_le_integral_of_le_on
-      (f := unitIntervalCoveringEntropyAtRadius)
+      (f := unitIntervalPairCountEntropyAtRadius)
       (a := ((1 : ℝ) / 4)) (b := ((1 : ℝ) / 2))
       (c := Real.sqrt (Real.log (unitIntervalRoundedDyadicGridCoverCount 0 : ℝ)))
       (by norm_num)
-      (unitIntervalCoveringEntropyAtRadius_intervalIntegrable_zero_half.mono_set' ?_)
+      (unitIntervalPairCountEntropyAtRadius_intervalIntegrable_zero_half.mono_set' ?_)
       ?_
     · intro x hx
       rw [Set.uIoc_of_le (by norm_num : ((1 : ℝ) / 4) ≤ (1 : ℝ) / 2)] at hx
@@ -363,12 +366,12 @@ theorem unitInterval_coveringEntropy_integral_positive :
       rcases hε with ⟨hleft, hright⟩
       by_cases hstrict : (1 : ℝ) / 4 < ε
       · have hconst :=
-          unitIntervalCoveringNumber_const_on_halfOpenAnnulus
+          unitIntervalChainingPairCountEnvelope_const_on_halfOpenAnnulus
             (ε := ε) 0 (by norm_num; exact hstrict) (by simpa using hright)
-        simp [unitIntervalCoveringEntropyAtRadius, hconst]
+        simp [unitIntervalPairCountEntropyAtRadius, hconst]
       · have hε_eq : ε = (1 : ℝ) / 4 := by linarith
         subst ε
-        have hsample1 := unitIntervalCoveringEntropy_eq_genuine_count_sample 1
+        have hsample1 := unitIntervalPairCountEntropy_eq_pair_count_sample 1
         norm_num at hsample1
         rw [hsample1]
         have hmono := monotone_unitIntervalRoundedDyadicGridEntropy
@@ -376,24 +379,24 @@ theorem unitInterval_coveringEntropy_integral_positive :
         simpa using hmono
   have htrunc_pos :
       0 < ∫ ε in ((1 : ℝ) / 4)..((1 : ℝ) / 2),
-        unitIntervalCoveringEntropyAtRadius ε := by
+        unitIntervalPairCountEntropyAtRadius ε := by
     nlinarith [hsample_pos]
   have hdom :=
     GuardedContinuousDudley.guarded_truncatedIntegral_le_full_integral
-      (m := 1) (entropyAtRadius := unitIntervalCoveringEntropyAtRadius)
+      (m := 1) (entropyAtRadius := unitIntervalPairCountEntropyAtRadius)
       (radiusScale := (1 : ℝ)) (by norm_num)
-      unitIntervalCoveringEntropyAtRadius_nonneg
-      unitIntervalCoveringEntropyAtRadius_intervalIntegrable_zero_half
+      unitIntervalPairCountEntropyAtRadius_nonneg
+      unitIntervalPairCountEntropyAtRadius_intervalIntegrable_zero_half
   norm_num at hdom
   exact lt_of_lt_of_le htrunc_pos hdom
 
-private theorem unitInterval_roundedDyadic_hdyadicCoveringNumber_bound :
+private theorem unitInterval_roundedDyadic_hdyadicPairCount_bound :
     ∀ eta : ℝ, 0 < eta →
       ∃ m : ℕ,
         (∀ j ∈ Finset.range m,
-          GuardedAntitoneOnDyadicAnnulus unitIntervalCoveringEntropyAtRadius (1 : ℝ) j) ∧
+          GuardedAntitoneOnDyadicAnnulus unitIntervalPairCountEntropyAtRadius (1 : ℝ) j) ∧
         (∀ j ∈ Finset.range m,
-          IntervalIntegrable unitIntervalCoveringEntropyAtRadius volume
+          IntervalIntegrable unitIntervalPairCountEntropyAtRadius volume
             ((1 : ℝ) / (2 : ℝ) ^ (j + 2))
             ((1 : ℝ) / (2 : ℝ) ^ (j + 1))) ∧
         finiteExpectation unitIntervalRademacherLinearProcess.weight
@@ -401,13 +404,13 @@ private theorem unitInterval_roundedDyadic_hdyadicCoveringNumber_bound :
           1 + 2 * Real.sqrt (2 *
               unitIntervalRademacherLinearProcess.varianceProxy) *
             FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
-              (1 : ℝ) m unitIntervalCoveringEntropyAtRadius + eta := by
+              (1 : ℝ) m unitIntervalPairCountEntropyAtRadius + eta := by
   intro eta heta
   refine ⟨1, ?_, ?_, ?_⟩
   · intro j _hj
-    exact unitIntervalCoveringEntropyAtRadius_guarded j
+    exact unitIntervalPairCountEntropyAtRadius_guarded j
   · intro j _hj
-    refine unitIntervalCoveringEntropyAtRadius_intervalIntegrable_zero_half.mono_set' ?_
+    refine unitIntervalPairCountEntropyAtRadius_intervalIntegrable_zero_half.mono_set' ?_
     intro x hx
     rw [Set.uIoc_of_le (by
       have hwidth := FiniteSubGaussianProcess.dyadic_annulus_width_nonneg
@@ -427,21 +430,21 @@ private theorem unitInterval_roundedDyadic_hdyadicCoveringNumber_bound :
               Real.sqrt
                 (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ))) ≤
           FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
-            (1 : ℝ) 1 unitIntervalCoveringEntropyAtRadius := by
+            (1 : ℝ) 1 unitIntervalPairCountEntropyAtRadius := by
       refine
         FiniteSubGaussianProcess.finiteDyadicEntropyIntegralBudget_le_entropyAtRadiusUpperSum
           (m := 1)
           (entropyEnvelope := fun j : ℕ =>
             Real.sqrt
               (Real.log (unitIntervalRoundedDyadicGridCoverCount j : ℝ)))
-          (entropyAtRadius := unitIntervalCoveringEntropyAtRadius)
+          (entropyAtRadius := unitIntervalPairCountEntropyAtRadius)
           (radiusScale := (1 : ℝ)) (by norm_num) ?_
       intro j hj
       have hj0 : j = 0 := by
         have hjlt : j < 1 := Finset.mem_range.mp hj
         omega
       subst j
-      rw [unitIntervalCoveringEntropy_eq_genuine_count_sample]
+      rw [unitIntervalPairCountEntropy_eq_pair_count_sample]
     have hcoef_nonneg :
         0 ≤ 2 * Real.sqrt (2 *
             unitIntervalRademacherLinearProcess.varianceProxy) := by
@@ -450,27 +453,29 @@ private theorem unitInterval_roundedDyadic_hdyadicCoveringNumber_bound :
       mul_le_mul_of_nonneg_left hbudget hcoef_nonneg
     linarith [hfinite, hmul, heta.le]
 
-/-- Continuous Dudley entropy-integral bound for the unit-interval process
-using the genuine real-radius covering-number staircase. -/
--- fidelity: the entropy integrand is `sqrt (log (unitIntervalCoveringNumber ε))`,
--- with dyadic samples equal to the genuine rounded-grid finite-cover products.
-theorem continuous_dudley_entropy_integral_iSup_unitInterval_coveringNumber :
+/-- One-step continuous Dudley entropy-integral bound for the unit-interval
+process using the real-radius adjacent-pair-count envelope. -/
+-- fidelity: the entropy integrand is
+-- `sqrt (log (unitIntervalChainingPairCountEnvelope ε))`; the proof supplies
+-- only the `m = 1` dyadic annulus and then compares that one-step input to the
+-- full positive-radius integral.
+theorem continuous_dudley_oneStep_entropy_integral_iSup_unitInterval_pairCountEnvelope :
     finiteExpectation unitIntervalRademacherLinearProcess.weight
         unitIntervalRademacherLinearSup ≤
       1 + 4 * Real.sqrt
           (2 * unitIntervalRademacherLinearProcess.varianceProxy) *
         (∫ ε in (0 : ℝ)..((1 : ℝ) / 2),
-          unitIntervalCoveringEntropyAtRadius ε) := by
+          unitIntervalPairCountEntropyAtRadius ε) := by
   exact
     continuous_dudley_entropy_integral_iSup_of_dyadicProfile_guarded
       (P := unitIntervalRademacherLinearProcess)
       (coarseBudget := (1 : ℝ)) (radiusScale := (1 : ℝ))
-      (entropyAtRadius := unitIntervalCoveringEntropyAtRadius)
+      (entropyAtRadius := unitIntervalPairCountEntropyAtRadius)
       (supFunctional := unitIntervalRademacherLinearSup)
       (by norm_num)
-      unitIntervalCoveringEntropyAtRadius_nonneg
-      unitIntervalCoveringEntropyAtRadius_intervalIntegrable_zero_half
-      unitInterval_roundedDyadic_hdyadicCoveringNumber_bound
+      unitIntervalPairCountEntropyAtRadius_nonneg
+      unitIntervalPairCountEntropyAtRadius_intervalIntegrable_zero_half
+      unitInterval_roundedDyadic_hdyadicPairCount_bound
 
 end
 
