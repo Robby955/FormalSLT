@@ -41,6 +41,21 @@ protected lemma exposed_vacuous {x : ℝ} (f g : ℝ → ℝ) :
     assert "--- checked 2 decl(s), 2 flag(s)" in result.stdout
 
 
+def test_attribute_prefixed_decls_are_checked(tmp_path: Path) -> None:
+    result = run_checker(
+        tmp_path,
+        """
+@[simp] theorem attributed_vacuous {t : ℝ} (f g : ℝ → ℝ) :
+    ∃ c : ℝ, ‖f t‖ ≤ c * (g t) := by
+  sorry
+""",
+    )
+
+    assert result.returncode == 1
+    assert "attributed_vacuous" in result.stdout
+    assert "--- checked 1 decl(s), 1 flag(s)" in result.stdout
+
+
 def test_param_mentions_use_whole_tokens(tmp_path: Path) -> None:
     result = run_checker(
         tmp_path,
@@ -69,6 +84,22 @@ theorem spoofed_fidelity {t : ℝ} (f g : ℝ → ℝ)
     assert result.returncode == 1
     assert "FLAG QUANTIFIER-INVERSION" in result.stdout
     assert "ok(signed)" not in result.stdout
+
+
+def test_term_proof_after_walrus_is_not_linted_as_statement(tmp_path: Path) -> None:
+    result = run_checker(
+        tmp_path,
+        """
+theorem term_proof_body_is_ignored {t : ℝ} (f g : ℝ → ℝ) : 0 = 0 := (by
+    have h : ∃ c : ℝ, ‖f t‖ ≤ c * (g t) := by
+      exact ⟨0, by simp⟩
+    rfl)
+""",
+    )
+
+    assert result.returncode == 0
+    assert "QUANTIFIER-INVERSION" not in result.stdout
+    assert "--- checked 1 decl(s), 0 flag(s)" in result.stdout
 
 
 def test_comment_line_fidelity_signoff_is_accepted(tmp_path: Path) -> None:

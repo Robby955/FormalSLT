@@ -540,7 +540,7 @@ theorem continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveri
   rcases hchoose eta heta with ⟨m, hchoice⟩
   rcases hchoice with
     ⟨K, instK, nonemptyK, embed, separabilityError, terminalError,
-      herror, _hentropyAtRadius, _hintervalIntegrable, hseparable,
+      herror, _hintervalIntegrable, hseparable,
       hterminalApprox, hcoarse⟩
   letI : Fintype K := instK
   letI : Nonempty K := nonemptyK
@@ -661,8 +661,8 @@ theorem continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveri
     linarith [hsum_budget]
   exact hfinite_eta.trans htarget_eta
 
-/-- Unit-interval non-vacuity witness for the shifted minimal-cover entropy
-profile. -/
+/-- Unit-interval nonnegativity sanity check for the shifted minimal-cover
+entropy profile. -/
 theorem unitInterval_shiftedMinimalMetricCoveringEntropy_sample_nonneg :
     0 ≤
       shiftedMinimalMetricCoveringEntropyAtRadius

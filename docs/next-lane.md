@@ -300,7 +300,7 @@ The lane should land in this order, one PR per step:
    analytic step toward continuous integral language, but it does **not** prove
    separability or measurable arbitrary suprema.
 
-4.5. **Step C4.5: selected-cover-count staircase.** Closed by
+- **Step C4.5: selected-cover-count staircase.** Closed by
    `Covering.TotalBoundedDudleyCovering`: the adjacent cover counts selected by
    total boundedness are wrapped in a monotone prefix envelope and realized as a
    half-open real-radius staircase. The resulting entropy profile satisfies the
@@ -319,7 +319,7 @@ The lane should land in this order, one PR per step:
    extractor avoids this arbitrary-selection obstruction by changing the chosen
    net schedule, not by adding a minimality hypothesis.
 
-4.6.1. **Step C4.6.1: cardinal-minimal extractor probe.** Closed by
+- **Step C4.6.1: cardinal-minimal extractor probe.** Closed by
    `Covering.TotalBoundedMinimalCovering`: choose cardinal-minimal finite
    covers directly from `minimalMetricCoveringNumber`, convert them to
    `BundledFiniteNet`s, and build a dyadic minimal-net schedule whose
@@ -343,7 +343,7 @@ The lane should land in this order, one PR per step:
    This removes arbitrary selected-cover counts from the net schedule, but the
    finite chaining entropy still uses adjacent products of minimal counts.
 
-5.1. **Step C5.1: shifted pure one-radius minimal-`N` tightening.** Closed by
+- **Step C5.1: shifted pure one-radius minimal-`N` tightening.** Closed by
    `Covering.TotalBoundedDudleyMinimalShift`: replace the adjacent-product
    envelope in the conclusion by a single-radius genuine
    `minimalMetricCoveringNumber` entropy integral, with an explicit dyadic

@@ -166,9 +166,9 @@ theorem hvar : ∀ k, μ[fun ω => (X k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => (1 
     simp only [Pi.zero_apply]
     norm_num
 
-/-- The exponential process is strongly adapted to `ℱ`. `M 0 = exp 0 = 1` is
-it is constant hence `⊥`-measurable; for `n ≥ 1`, `ℱ n = ⊤` makes everything strongly
-measurable. -/
+/-- The exponential process is strongly adapted to `ℱ`. `M 0 = exp 0 = 1`
+is constant hence `⊥`-measurable; for `n ≥ 1`, `ℱ n = ⊤` makes everything
+strongly measurable. -/
 theorem h_adapted :
     StronglyAdapted ℱ (subGammaExponentialProcess X 1 1 1) := by
   intro n

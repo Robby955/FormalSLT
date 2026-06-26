@@ -23,7 +23,7 @@ NORM = r'(?:‖|\bnorm\b|abs |\|)'  # a magnitude on the LHS of a bound
 ID_CHARS = r"A-Za-z0-9_\'₀-₉Ͱ-Ͽ"
 ID = r"[" + ID_CHARS + r"]+"
 DECL_RE = re.compile(
-    r"(?m)^\s*(?:(?:private|protected|noncomputable)\s+)*(?:theorem|lemma)\s+("
+    r"(?m)^\s*(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|noncomputable)\s+)*(?:theorem|lemma)\s+("
     + ID
     + r")"
 )
@@ -67,6 +67,37 @@ def conclusion_of(stmt):
             return stmt[i + 1:]
     return stmt
 
+def top_level_proof_delimiter(stmt):
+    depth = 0
+    in_string = False
+    escaped = False
+    closers = {")": "(", "}": "{", "]": "["}
+    stack = []
+    for i, ch in enumerate(stmt):
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+            continue
+        if ch in "({[":
+            stack.append(ch)
+            depth += 1
+            continue
+        if ch in closers:
+            if stack and stack[-1] == closers[ch]:
+                stack.pop()
+                depth -= 1
+            continue
+        if ch == ":" and depth == 0 and i + 1 < len(stmt) and stmt[i + 1] == "=":
+            return i
+    return None
+
 def theorems(src):
     # crude: split on top-level `theorem`/`lemma` keywords, keep name + the statement up to `:= by`/`:=`.
     # The vacuity lint runs on `stmt` (the statement only). The `-- fidelity:` sign-off, however, may sit
@@ -83,7 +114,8 @@ def theorems(src):
         # bound the body to THIS declaration (next top-level decl, capped) so a statement that ends with
         # `:= term` (no newline after `:=`) does not bleed into the following theorem and mis-attribute flags.
         body = src[start:min(nxt, start + 1600)]
-        stmt = re.split(r':=\s*by|:=\s*$|:=\n', body)[0]
+        proof_start = top_level_proof_delimiter(body)
+        stmt = body[:proof_start] if proof_start is not None else body
         # Sign-offs must be genuine contiguous comment lines on the declaration.
         # Strings or arbitrary proof-body text containing `-- fidelity:` do not count.
         pre = src[:start]

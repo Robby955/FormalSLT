@@ -502,11 +502,6 @@ def MinimalSeparableTerminalSupremumBoundaryChoiceNonempty
   ∃ (separabilityError : ℝ), ∃ (terminalError : ℝ),
     separabilityError + terminalError ≤ eta ∧
     (∀ j ∈ Finset.range m,
-      FiniteSubGaussianProcess.finitePrefixSupEnvelope
-          (fun j => Real.sqrt (Real.log
-            (minimalDyadicChainingCoverCount (T := T) hT hradiusScale j : ℝ))) j ≤
-        entropyAtRadius (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
-    (∀ j ∈ Finset.range m,
       IntervalIntegrable entropyAtRadius MeasureTheory.volume
         (radiusScale / (2 : ℝ) ^ (j + 2))
         (radiusScale / (2 : ℝ) ^ (j + 1))) ∧
@@ -576,7 +571,7 @@ theorem totalBoundedMinimalDyadicCoverCount_dyadicProfileBound_of_boundaryChoice
   rcases hchoose eta heta with ⟨m, hchoice⟩
   rcases hchoice with
     ⟨K, instK, nonemptyK, embed, separabilityError, terminalError,
-      herror, hentropyAtRadius, hintervalIntegrable, hseparable,
+      herror, hintervalIntegrable, hseparable,
       hterminalApprox, hcoarse⟩
   letI : Fintype K := instK
   letI : Nonempty K := nonemptyK
