@@ -58,7 +58,7 @@ posterior-dependent square-root-plus-linear wrapper. This is a supplied-proxy
 finite shell: it is not yet a concrete classifier-margin extractor, an
 all-real-`λ` optimization theorem, or a continuous hypothesis-space theorem.
 
-The library's top-level result is a non-vacuous five-component PAC-Bayes bound
+The library's top-level result is a five-component PAC-Bayes bound
 on test-time population risk (`pacBayesTestTimeFlagship_theorem`). The bound is
 empirical risk plus five named, separately-checked, nonnegative contributions: a
 general-width McAllester term, an online-to-iid term, a Bernstein/Gaussian-
@@ -466,8 +466,8 @@ The expected result is:
   homogeneous product measure: one-sided, lower-tail, and two-sided
   (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`), with the sharp `2B²`
   exponent propagated into the high-probability Rademacher and VC wrappers
-- [ ] Sharp McDiarmid over arbitrary non-iid product spaces (different law per
-  coordinate)
+- [x] Sharp McDiarmid over arbitrary non-iid product spaces (different law per
+  coordinate) (`mcdiarmid_twoSided_of_hasBoundedDifferences_sharp_hetero`)
 - [ ] Continuous Dudley-style entropy integral
 
 ## Dependencies
