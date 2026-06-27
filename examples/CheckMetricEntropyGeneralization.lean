@@ -1,0 +1,17 @@
+import FormalSLT.Rademacher.MetricEntropyGeneralization
+
+/-!
+Checks for the finite metric-entropy mean generalization bridge.
+-/
+
+#check FormalSLT.Rademacher.MetricEntropyGeneralization.expected_empiricalRademacher_le_dudley_uniform
+
+#check FormalSLT.Rademacher.MetricEntropyGeneralization.metricEntropy_generalization_mean
+
+#check FormalSLT.Rademacher.MetricEntropyGeneralization.metricEntropy_generalization_nonvacuous
+
+#print axioms FormalSLT.Rademacher.MetricEntropyGeneralization.expected_empiricalRademacher_le_dudley_uniform
+
+#print axioms FormalSLT.Rademacher.MetricEntropyGeneralization.metricEntropy_generalization_mean
+
+#print axioms FormalSLT.Rademacher.MetricEntropyGeneralization.metricEntropy_generalization_nonvacuous
