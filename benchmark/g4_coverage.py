@@ -156,6 +156,50 @@ PEERS: List[Dict] = [
     },
 ]
 
+# ---------------------------------------------------------------------------
+# Verified peer cells — Zhang-Lee-Liu 2026 (YuanheZ, arXiv:2602.02285).
+# Source-checked 2026-07-03 against the raw repo (github.com/YuanheZ/
+# lean-stat-learning-theory @ be5d5a8) and README. Each cell carries a decl
+# name + textbook ref. "no" = confirmed absent by whole-repo grep, not
+# un-checked. The other two peer columns remain TODO/UNVERIFIED.
+# Full write-up: HQ/ROB_QUEUE/yuanhez_coverage_diff_2026-07-03.md
+# ---------------------------------------------------------------------------
+
+_ZHANG_LEE_LIU_2026: Dict[str, str] = {
+    "Concentration":
+        "partial (gaussian_lipschitz_concentration/efronStein/gaussianPoincare, "
+        "BLM 5.6/3.1/3.20; no Azuma/McDiarmid/Bennett/sub-Gamma)",
+    "Rademacher":
+        "no (no Rademacher-complexity spine; Gaussian analogue only: "
+        "local_gaussian_complexity_bound, Wainwright 5.48)",
+    "VC Theory":
+        "no (no shatter/Sauer-Shelah/VC; grep=0)",
+    "Covering / Dudley":
+        "yes (dudley, BLM Cor 13.2, SLT/Dudley.lean:2517; continuous, more general)",
+    "PAC-Bayes":
+        "no (no PAC-Bayes/KL/posterior; convex-dual sibling only: "
+        "entropy_duality, BLM Thm 4.13)",
+    "Stability":
+        "no (no Bousquet-Elisseeff/uniform stability; grep=0)",
+    "Anytime-Valid":
+        "no (no sequential/anytime-valid content)",
+    "Online-to-PAC":
+        "no (no online-learning/regret content)",
+    "Probability Foundations":
+        "partial (subGaussian_finite_max_bound, Wainwright Ex 2.12; "
+        "lipschitz_cgf_bound, BLM Thm 5.5)",
+    "Flagship Meta":
+        "no (no analogue; their top-level assembly = master_error_bound, "
+        "Wainwright Thm 13.5)",
+}
+
+
+def _peer_cell(peer_name: str, category: str) -> str:
+    """Return the coverage cell for a given peer/category, cited where verified."""
+    if peer_name == "Zhang-Lee-Liu 2026":
+        return _ZHANG_LEE_LIU_2026.get(category, "TODO/UNVERIFIED")
+    return "TODO/UNVERIFIED"
+
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -323,7 +367,7 @@ def render_table(stats: Dict[str, CategoryStats]) -> str:
             continue
         s = stats[cat]
         sorry_flag = "YES" if not s.any_sorry else "NO (check source)"
-        peer_vals = ["TODO/UNVERIFIED"] * len(PEERS)
+        peer_vals = [_peer_cell(p["name"], cat) for p in PEERS]
         rows.append([cat, str(s.n_files), str(s.n_theorems), str(s.n_lemmas),
                      str(s.n_total), str(s.n_lines), sorry_flag] + peer_vals)
 
@@ -386,7 +430,7 @@ def render_csv(stats: Dict[str, CategoryStats]) -> str:
             "notes":       CATEGORY_NOTES.get(cat, ""),
         }
         for p in PEERS:
-            row[p["name"]] = "TODO/UNVERIFIED"
+            row[p["name"]] = _peer_cell(p["name"], cat)
         writer.writerow(row)
 
     # Totals

@@ -1,14 +1,14 @@
-Category                 Files  Theorems  Lemmas  Total Decls  LoC    Sorry-free  Sonoda et al. 2025  Zhang-Lee-Liu 2026  Karayel-Tan 2023
------------------------  -----  --------  ------  -----------  -----  ----------  ------------------  ------------------  ----------------
-Concentration            20     48        50      98           4747   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Rademacher               15     155       38      193          9817   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-VC Theory                8      14        13      27           1383   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Covering / Dudley        14     236       33      269          11797  YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-PAC-Bayes                17     121       1       122          6061   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Stability                4      50        16      66           2790   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Anytime-Valid            2      6         0       6            372    YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Online-to-PAC            3      4         0       4            266    YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Probability Foundations  7      15        19      34           1654   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
-Flagship Meta            4      35        0       35           1103   YES         TODO/UNVERIFIED     TODO/UNVERIFIED     TODO/UNVERIFIED 
------------------------  -----  --------  ------  -----------  -----  ----------  ------------------  ------------------  ----------------
-TOTAL                    94     684       170     854          39990  YES         —                   —                   —               
+Category                 Files  Theorems  Lemmas  Total Decls  LoC    Sorry-free  Sonoda et al. 2025  Zhang-Lee-Liu 2026                                                                                                              Karayel-Tan 2023
+-----------------------  -----  --------  ------  -----------  -----  ----------  ------------------  ------------------------------------------------------------------------------------------------------------------------------  ----------------
+Concentration            20     48        50      98           4747   YES         TODO/UNVERIFIED     partial (gaussian_lipschitz_concentration/efronStein/gaussianPoincare, BLM 5.6/3.1/3.20; no Azuma/McDiarmid/Bennett/sub-Gamma)  TODO/UNVERIFIED
+Rademacher               15     155       38      193          9817   YES         TODO/UNVERIFIED     no (no Rademacher-complexity spine; Gaussian analogue only: local_gaussian_complexity_bound, Wainwright 5.48)                   TODO/UNVERIFIED
+VC Theory                8      14        13      27           1383   YES         TODO/UNVERIFIED     no (no shatter/Sauer-Shelah/VC; grep=0)                                                                                         TODO/UNVERIFIED
+Covering / Dudley        14     236       33      269          11797  YES         TODO/UNVERIFIED     yes (dudley, BLM Cor 13.2, SLT/Dudley.lean:2517; continuous, more general)                                                      TODO/UNVERIFIED
+PAC-Bayes                17     121       1       122          6061   YES         TODO/UNVERIFIED     no (no PAC-Bayes/KL/posterior; convex-dual sibling only: entropy_duality, BLM Thm 4.13)                                         TODO/UNVERIFIED
+Stability                4      50        16      66           2790   YES         TODO/UNVERIFIED     no (no Bousquet-Elisseeff/uniform stability; grep=0)                                                                            TODO/UNVERIFIED
+Anytime-Valid            2      6         0       6            372    YES         TODO/UNVERIFIED     no (no sequential/anytime-valid content)                                                                                        TODO/UNVERIFIED
+Online-to-PAC            3      4         0       4            266    YES         TODO/UNVERIFIED     no (no online-learning/regret content)                                                                                          TODO/UNVERIFIED
+Probability Foundations  7      15        19      34           1654   YES         TODO/UNVERIFIED     partial (subGaussian_finite_max_bound, Wainwright Ex 2.12; lipschitz_cgf_bound, BLM Thm 5.5)                                    TODO/UNVERIFIED
+Flagship Meta            4      35        0       35           1103   YES         TODO/UNVERIFIED     no (no analogue; their top-level assembly = master_error_bound, Wainwright Thm 13.5)                                            TODO/UNVERIFIED
+-----------------------  -----  --------  ------  -----------  -----  ----------  ------------------  ------------------------------------------------------------------------------------------------------------------------------  ----------------
+TOTAL                    94     684       170     854          39990  YES         —                   —                                                                                                                               —
