@@ -35,8 +35,14 @@ jobs:
           key: docs-lake-${{ runner.os }}-${{ hashFiles('lake-manifest.json') }}
           restore-keys: docs-lake-${{ runner.os }}-
 
-      - name: Get Mathlib cache
-        run: lake exe cache get
+      # Run with -Kenv=dev so the very first Lake invocation elaborates the
+      # lakefile config with the doc-gen4 dev dependency active. This resolves
+      # and clones doc-gen4 (registering its `docs` library facet) alongside the
+      # Mathlib olean download. Without it, a plain `lake exe cache get` caches a
+      # config that omits doc-gen4, and the later docs build fails with
+      # "unknown lean_lib facet `docs`".
+      - name: Get Mathlib cache and resolve doc-gen4
+        run: lake -Kenv=dev exe cache get
 
       - name: Build docs
         run: lake -Kenv=dev build FormalSLT:docs
