@@ -1,6 +1,7 @@
 # FormalSLT
 
 [![CI](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml)
+[![Docs](https://github.com/Robby955/FormalSLT/actions/workflows/docs.yml/badge.svg?branch=main)](https://robby955.github.io/FormalSLT/)
 [![Lean 4](https://img.shields.io/badge/Lean-4.30.0--rc2-blue.svg)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-25b7ac7-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
@@ -15,6 +16,8 @@
 > FormalSLT records explicit theorem statements, constants, and scope
 > boundaries for finite learning-theory proof routes. Hypotheses and constants
 > live in the type signatures, not buried in tactic blocks.
+
+**[Browse the API docs](https://robby955.github.io/FormalSLT/)** — every theorem, definition, and proof, fully searchable, no Lean installation needed.
 
 A verifier-gated formalization route built on this library was accepted at the
 ICML 2026 AI for Math workshop (*From Agents to Axioms: Verifier-Gated Lean
@@ -189,6 +192,9 @@ If `lake` is not on the shell path, use `~/.elan/bin/lake`.
 - **For related Lean projects:** see [Related work](./docs/related-work.md).
   FormalSLT is scoped as a finite-class theorem spine and is complementary to
   existing empirical-process and Rademacher-generalization formalizations.
+- **Companion library:** [formal-martingales](https://github.com/Robby955/formal-martingales),
+  a Lean 4 library for martingale inequalities, anytime-valid inference, and
+  concentration, is the companion to this finite-sample surface.
 
 ## For researchers
 
@@ -490,7 +496,8 @@ in the roadmap above. Before a public release, maintainers can use the
 
 ## Citation
 
-If you use FormalSLT in academic work, please cite:
+If you use FormalSLT in academic work, please cite the library and, where
+relevant, the ICML 2026 AI for Math workshop paper:
 
 ```bibtex
 @software{formal_slt,
@@ -499,6 +506,13 @@ If you use FormalSLT in academic work, please cite:
   year   = {2026},
   url    = {https://github.com/Robby955/FormalSLT},
   note   = {Lean 4 formalization of finite-sample SLT bounds.}
+}
+
+@inproceedings{sneiderman2026agents,
+  title     = {From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory},
+  author    = {Sneiderman, Robert},
+  booktitle = {ICML 2026 Workshop on AI for Math (AI4Math)},
+  year      = {2026}
 }
 ```
 
