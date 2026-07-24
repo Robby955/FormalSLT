@@ -47,6 +47,7 @@ import FormalSLT.Rademacher.ProbabilityBridge
 import FormalSLT.Rademacher.Decoupling
 import FormalSLT.Rademacher.RademacherBoundedDifferences
 import FormalSLT.Rademacher.Symmetrization
+import FormalSLT.Rademacher.MetricEntropyGeneralization
 import FormalSLT.Rademacher.Massart
 import FormalSLT.Rademacher.HighProbability
 import FormalSLT.Rademacher.FiniteClassHighProb
