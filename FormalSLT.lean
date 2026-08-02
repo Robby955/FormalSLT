@@ -128,6 +128,7 @@ import FormalSLT.OnlineToPAC.IIDConcentration
 
 import FormalSLT.PACBayes.VitaleLemma
 import FormalSLT.PACBayes.GaussianKL
+import FormalSLT.PACBayes.GaussianMeasureKL
 import FormalSLT.PACBayes.StabilityBridge
 import FormalSLT.PACBayes.VitaleAnalytic
 import FormalSLT.PACBayes.BernsteinAnalytic
@@ -139,6 +140,7 @@ import FormalSLT.PACBayes.VCHybrid
 import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
+import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
 
 import FormalSLT.Test.PACBayesBernsteinTest
 import FormalSLT.Test.SharpMcDiarmidTest
