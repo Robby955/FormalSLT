@@ -142,13 +142,15 @@ theorem integrable_gaussianCoordinateDensity
 theorem integral_gaussianCoordinateDensity_eq_one
     (mean variance : ℝ) (hvariance : 0 < variance) :
     ∫ x, gaussianCoordinateDensity mean variance x = 1 := by
-  have hv : (⟨variance, hvariance.le⟩ : ℝ≥0) ≠ 0 := by
+  let v : NNReal := ⟨variance, hvariance.le⟩
+  have hv : v ≠ 0 := by
     intro h
-    have hcoe : ((⟨variance, hvariance.le⟩ : ℝ≥0) : ℝ) = (0 : ℝ) :=
-      congrArg (fun x : ℝ≥0 => (x : ℝ)) h
+    have hcoe : (v : ℝ) = (0 : ℝ) :=
+      congrArg (fun x : NNReal => (x : ℝ)) h
+    dsimp [v] at hcoe
     exact hvariance.ne' hcoe
   simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
-    (integral_gaussianPDFReal_eq_one mean hv)
+    (integral_gaussianPDFReal_eq_one mean (v := v) hv)
 
 /-- The diagonal Gaussian density integrates to one over finite-dimensional
 Lebesgue space. -/
