@@ -142,10 +142,12 @@ theorem integrable_gaussianCoordinateDensity
 theorem integral_gaussianCoordinateDensity_eq_one
     (mean variance : ℝ) (hvariance : 0 < variance) :
     ∫ x, gaussianCoordinateDensity mean variance x = 1 := by
+  have hv : (⟨variance, hvariance.le⟩ : ℝ≥0) ≠ 0 := by
+    intro h
+    have : variance = 0 := congrArg ((↑·) : ℝ≥0 → ℝ) h
+    exact hvariance.ne' this
   simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
-    (integral_gaussianPDFReal_eq_one mean
-      (show (⟨variance, hvariance.le⟩ : ℝ≥0) ≠ 0 by
-        exact NNReal.ne_iff.mpr hvariance.ne'))
+    (integral_gaussianPDFReal_eq_one mean hv)
 
 /-- The diagonal Gaussian density integrates to one over finite-dimensional
 Lebesgue space. -/
@@ -156,15 +158,22 @@ theorem integral_diagonalGaussianDensity_eq_one {d : ℕ}
       fun x => ∏ i, gaussianCoordinateDensity
         (params.mean i) (params.variance i) (x i) by rfl]
   rw [integral_fintype_prod_volume_eq_prod]
-  simp [integral_gaussianCoordinateDensity_eq_one _ _]
+  have hcoord : ∀ i : Fin d,
+      ∫ x, gaussianCoordinateDensity
+        (params.mean i) (params.variance i) x = 1 := fun i =>
+    integral_gaussianCoordinateDensity_eq_one
+      (params.mean i) (params.variance i) (params.variance_pos i)
+  simp_rw [hcoord]
+  simp
 
 /-- The repository diagonal Gaussian measure has total mass one. -/
 theorem diagonalGaussianMeasure_apply_univ {d : ℕ}
     (params : DiagonalGaussianParams d) :
     diagonalGaussianMeasure params Set.univ = 1 := by
-  rw [diagonalGaussianMeasure, withDensity_apply _ measurableSet_univ]
+  rw [diagonalGaussianMeasure, withDensity_apply' _ Set.univ]
   simp only [Measure.restrict_univ]
-  rw [← ENNReal.ofReal_integral_eq_lintegral_ofReal]
+  unfold diagonalGaussianENNRealDensity
+  rw [← ofReal_integral_eq_lintegral_ofReal]
   · rw [integral_diagonalGaussianDensity_eq_one]
     simp
   · exact
