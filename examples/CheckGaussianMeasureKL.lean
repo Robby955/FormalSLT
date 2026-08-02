@@ -1,0 +1,85 @@
+import FormalSLT.PACBayes.GaussianMeasureKL
+
+/-!
+# Gaussian measure-theoretic KL bridge audit
+
+Checks the absolute-continuity, normalization, Radon--Nikodym density-ratio,
+explicit finite-sum log-likelihood-ratio, integrability, finiteness, and
+closed-form Gaussian `klDiv` identification.
+-/
+
+open FormalSLT.PACBayes
+
+#check @gaussianCoordinateDensity_pos
+#check @log_gaussianCoordinateDensity_ratio
+#check @log_diagonalGaussianDensity_ratio_eq_sum
+#check @diagonalGaussianDensity_pos
+#check @measurable_diagonalGaussianDensity
+#check @measurable_diagonalGaussianENNRealDensity
+#check @diagonalGaussianENNRealDensity_toReal
+#check @rnDeriv_diagonalGaussianMeasure_volume
+#check @volume_absolutelyContinuous_diagonalGaussianMeasure
+#check @diagonalGaussianMeasure_mutuallyAbsolutelyContinuous_volume
+#check @volume_absolutelyContinuous_sphericalGaussianMeasure
+#check @sphericalGaussianMeasure_mutuallyAbsolutelyContinuous_volume
+#check @diagonalGaussianMeasure_mutuallyAbsolutelyContinuous
+#check @sphericalGaussianMeasure_mutuallyAbsolutelyContinuous
+#check @sphericalGaussianMeasure_absolutelyContinuous
+#check @gaussianCoordinateDensity_eq_gaussianPDFReal
+#check @integrable_gaussianCoordinateDensity
+#check @integrable_gaussianCoordinateDensity_mul_sq_sub
+#check @integral_gaussianCoordinateDensity_mul_sq_sub
+#check @diagonalGaussianDensity_mul_sq_sub_eq_prod
+#check @integrable_sq_sub_coordinate_diagonalGaussianMeasure
+#check @integral_sq_sub_coordinate_diagonalGaussianMeasure
+#check @integral_gaussianCoordinateDensity_eq_one
+#check @integral_diagonalGaussianDensity_eq_one
+#check @diagonalGaussianMeasure_apply_univ
+#check @instIsProbabilityMeasureDiagonalGaussianMeasure
+#check @sphericalGaussianMeasure_apply_univ
+#check @instIsProbabilityMeasureSphericalGaussianMeasure
+#check @rnDeriv_diagonalGaussianMeasure_eq_density_ratio
+#check @llr_diagonalGaussianMeasure_eq_log_density_ratio
+#check @llr_diagonalGaussianMeasure_eq_sum
+#check @integrable_llr_diagonalGaussianMeasure
+#check @integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
+#check @diagonalGaussianMeasure_klDiv_ne_top
+#check @diagonalGaussianMeasure_klDiv_toReal_eq
+#check @sphericalGaussianMeasure_klDiv_ne_top
+#check @sphericalGaussianMeasure_klDiv_toReal_eq
+
+#print axioms gaussianCoordinateDensity_pos
+#print axioms log_gaussianCoordinateDensity_ratio
+#print axioms log_diagonalGaussianDensity_ratio_eq_sum
+#print axioms diagonalGaussianDensity_pos
+#print axioms measurable_diagonalGaussianDensity
+#print axioms measurable_diagonalGaussianENNRealDensity
+#print axioms diagonalGaussianENNRealDensity_toReal
+#print axioms rnDeriv_diagonalGaussianMeasure_volume
+#print axioms volume_absolutelyContinuous_diagonalGaussianMeasure
+#print axioms diagonalGaussianMeasure_mutuallyAbsolutelyContinuous_volume
+#print axioms volume_absolutelyContinuous_sphericalGaussianMeasure
+#print axioms sphericalGaussianMeasure_mutuallyAbsolutelyContinuous_volume
+#print axioms diagonalGaussianMeasure_mutuallyAbsolutelyContinuous
+#print axioms sphericalGaussianMeasure_mutuallyAbsolutelyContinuous
+#print axioms sphericalGaussianMeasure_absolutelyContinuous
+#print axioms gaussianCoordinateDensity_eq_gaussianPDFReal
+#print axioms integrable_gaussianCoordinateDensity
+#print axioms integrable_gaussianCoordinateDensity_mul_sq_sub
+#print axioms integral_gaussianCoordinateDensity_mul_sq_sub
+#print axioms diagonalGaussianDensity_mul_sq_sub_eq_prod
+#print axioms integrable_sq_sub_coordinate_diagonalGaussianMeasure
+#print axioms integral_sq_sub_coordinate_diagonalGaussianMeasure
+#print axioms integral_gaussianCoordinateDensity_eq_one
+#print axioms integral_diagonalGaussianDensity_eq_one
+#print axioms diagonalGaussianMeasure_apply_univ
+#print axioms sphericalGaussianMeasure_apply_univ
+#print axioms rnDeriv_diagonalGaussianMeasure_eq_density_ratio
+#print axioms llr_diagonalGaussianMeasure_eq_log_density_ratio
+#print axioms llr_diagonalGaussianMeasure_eq_sum
+#print axioms integrable_llr_diagonalGaussianMeasure
+#print axioms integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
+#print axioms diagonalGaussianMeasure_klDiv_ne_top
+#print axioms diagonalGaussianMeasure_klDiv_toReal_eq
+#print axioms sphericalGaussianMeasure_klDiv_ne_top
+#print axioms sphericalGaussianMeasure_klDiv_toReal_eq
