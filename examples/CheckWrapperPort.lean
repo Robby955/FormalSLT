@@ -1,0 +1,78 @@
+/- Axiom audit for the q100 public wrapper port. -/
+import FormalSLT.Rademacher.HighProbRademacher
+import FormalSLT.Rademacher.LinearPredictorRademacher
+import FormalSLT.Rademacher.RademacherContraction
+import FormalSLT.Rademacher.RademacherSymmetrization
+import FormalSLT.VC.VCDimension
+import FormalSLT.VC.VCRademacher
+import FormalSLT.VC.VCSampleComplexity
+import FormalSLT.LinearAlgebra.CommonInequalities
+import FormalSLT.Probability.BorelCantelli
+import FormalSLT.Probability.KolmogorovAxioms
+import FormalSLT.Probability.LawOfLargeNumbers
+import FormalSLT.Probability.Martingale
+import FormalSLT.Probability.MeasureConvergence
+import FormalSLT.Probability.Moments
+import FormalSLT.Statistics.AsymptoticStatistics
+
+#print axioms FormalSLT.Rademacher.HighProbRademacher.genGap_highProb_rademacher
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.signProduct_same
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.sum_signProduct
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.avg_signProduct
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.sum_sign_norm_sq
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.sup_inner_le
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.sign_avg_norm_le_sqrt
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.linearPredictor_rademacher
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.linearPredictor_rademacher_uniform
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.linearPredictor_rademacher_finiteDim
+#print axioms FormalSLT.Rademacher.LinearPredictorRademacher.linearPredictor_rademacher_uniform_finiteDim
+#print axioms FormalSLT.Rademacher.RademacherContraction.comparison_lemma
+#print axioms FormalSLT.Rademacher.RademacherContraction.comparison_lemma_scaled
+#print axioms FormalSLT.Rademacher.RademacherContraction.sum_equiv_perm
+#print axioms FormalSLT.Rademacher.RademacherContraction.one_step_contraction
+#print axioms FormalSLT.Rademacher.RademacherContraction.contraction_1lip
+#print axioms FormalSLT.Rademacher.RademacherContraction.finiteSampleScalarContraction_lipschitz
+#print axioms FormalSLT.Rademacher.RademacherContraction.contraction_empirical
+#print axioms FormalSLT.Rademacher.RademacherContraction.empiricalRademacherComplexity_contraction_lipschitz
+#print axioms FormalSLT.Rademacher.RademacherSymmetrization.expected_genGap_le_two_expected_empiricalRademacherComplexity
+#print axioms FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
+#print axioms FormalSLT.VC.VCRademacher.effectiveClass_nonempty
+#print axioms FormalSLT.VC.VCRademacher.effectiveClass_card_le
+#print axioms FormalSLT.VC.VCRademacher.sup'_eq_sup'_effectiveClass
+#print axioms FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
+#print axioms FormalSLT.VC.VCSampleComplexity.vcRademacher_pointwise
+#print axioms FormalSLT.VC.VCSampleComplexity.expected_rademacher_le_vc
+#print axioms FormalSLT.VC.VCSampleComplexity.genGap_highProb_vcClass
+#print axioms FormalSLT.VC.VCSampleComplexity.uniformDeviation_highProb_vcClass
+#print axioms FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail
+#print axioms FormalSLT.LinearAlgebra.CommonInequalities.cauchySchwarzRealInner
+#print axioms FormalSLT.LinearAlgebra.CommonInequalities.jensenIntegralAverageConvex
+#print axioms FormalSLT.LinearAlgebra.CommonInequalities.jensenProbabilityIntegralConvex
+#print axioms FormalSLT.LinearAlgebra.CommonInequalities.jensenProbabilityIntegralConcave
+#print axioms FormalSLT.LinearAlgebra.CommonInequalities.jensenFiniteWeightedConvex
+#print axioms FormalSLT.LinearAlgebra.CommonInequalities.jensenFiniteWeightedConcave
+#print axioms FormalSLT.Probability.BorelCantelli.borelCantelliFirstLimsupMeasureZero
+#print axioms FormalSLT.Probability.BorelCantelli.borelCantelliFirstEventuallyNotMem
+#print axioms FormalSLT.Probability.BorelCantelli.borelCantelliSecondIndependentLimsupMeasureOne
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureBasicIdentities
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureFiniteAdditivity
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureCountableAdditivity
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureComplementRule
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureFiniteUnionBound
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureCountableUnionBound
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureContinuityFromBelow
+#print axioms FormalSLT.Probability.KolmogorovAxioms.probabilityMeasureContinuityFromAbove
+#print axioms FormalSLT.Probability.LawOfLargeNumbers.strongLawAverageTendstoAlmostSure
+#print axioms FormalSLT.Probability.LawOfLargeNumbers.weakLawAverageTendstoInMeasure
+#print axioms FormalSLT.Probability.Martingale.doobWeakMaximalInequality
+#print axioms FormalSLT.Probability.MeasureConvergence.monotoneConvergenceLIntegral
+#print axioms FormalSLT.Probability.MeasureConvergence.fatouLemmaLIntegral
+#print axioms FormalSLT.Probability.MeasureConvergence.dominatedConvergenceIntegral
+#print axioms FormalSLT.Probability.Moments.varianceOfFiniteSumWithCovariance
+#print axioms FormalSLT.Probability.Moments.varianceOfFiniteSumPairwiseUncorrelated
+#print axioms FormalSLT.Probability.Moments.lawOfTotalVariance
+#print axioms FormalSLT.Statistics.AsymptoticStatistics.continuousMappingTheoremContinuous
+#print axioms FormalSLT.Statistics.AsymptoticStatistics.slutskyTheoremPair
+#print axioms FormalSLT.Statistics.AsymptoticStatistics.slutskyTheoremAdd
+#print axioms FormalSLT.Statistics.AsymptoticStatistics.slutskyTheoremContinuous
+
