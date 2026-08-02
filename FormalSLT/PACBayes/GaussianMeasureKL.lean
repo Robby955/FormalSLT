@@ -1,5 +1,7 @@
 import FormalSLT.PACBayes.GaussianKL
 import Mathlib.InformationTheory.KullbackLeibler.Basic
+import Mathlib.MeasureTheory.Integral.Pi
+import Mathlib.Probability.Distributions.Gaussian.Real
 import Mathlib.Tactic
 
 /-!
@@ -8,19 +10,15 @@ import Mathlib.Tactic
 This module develops the measure-theoretic facts required to identify the
 repository's analytic Gaussian KL expression with mathlib's `klDiv`.
 
-The first completed slice proves that every positive-variance diagonal or
-spherical Gaussian measure defined in `GaussianKL.lean` is equivalent to
-Lebesgue measure. Consequently any two such Gaussian measures are mutually
-absolutely continuous. This discharges the absolute-continuity premise in the
-continuous PAC-Bayes theorem without assuming it as an external certificate.
-
-Normalization, log-likelihood-ratio integrability, and the final `klDiv`
-closed-form identity remain separate targets.
+It proves equivalence with Lebesgue measure and normalization for the
+positive-variance diagonal and spherical Gaussian measures defined in
+`GaussianKL.lean`. The remaining targets are an explicit log-likelihood-ratio
+formula, its posterior integrability, and the final `klDiv` closed form.
 -/
 
 namespace FormalSLT.PACBayes
 
-open MeasureTheory
+open MeasureTheory ProbabilityTheory
 open Finset Real BigOperators
 open scoped ENNReal
 
@@ -124,6 +122,74 @@ theorem sphericalGaussianMeasure_absolutelyContinuous {d : ℕ}
     (posterior prior : SphericalGaussianParams d) :
     sphericalGaussianMeasure posterior ≪ sphericalGaussianMeasure prior :=
   (sphericalGaussianMeasure_mutuallyAbsolutelyContinuous posterior prior).1
+
+/-- The repository coordinate density agrees with mathlib's normalized Gaussian
+density after packaging the positive variance as an `NNReal`. -/
+theorem gaussianCoordinateDensity_eq_gaussianPDFReal
+    (mean variance x : ℝ) (hvariance : 0 < variance) :
+    gaussianCoordinateDensity mean variance x =
+      gaussianPDFReal mean ⟨variance, hvariance.le⟩ x := by
+  rfl
+
+/-- Each coordinate density is integrable with respect to Lebesgue measure. -/
+theorem integrable_gaussianCoordinateDensity
+    (mean variance : ℝ) (hvariance : 0 < variance) :
+    Integrable (gaussianCoordinateDensity mean variance) := by
+  simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
+    (integrable_gaussianPDFReal mean ⟨variance, hvariance.le⟩)
+
+/-- Each positive-variance coordinate density integrates to one. -/
+theorem integral_gaussianCoordinateDensity_eq_one
+    (mean variance : ℝ) (hvariance : 0 < variance) :
+    ∫ x, gaussianCoordinateDensity mean variance x = 1 := by
+  simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
+    (integral_gaussianPDFReal_eq_one mean
+      (show (⟨variance, hvariance.le⟩ : ℝ≥0) ≠ 0 by
+        exact NNReal.ne_iff.mpr hvariance.ne'))
+
+/-- The diagonal Gaussian density integrates to one over finite-dimensional
+Lebesgue space. -/
+theorem integral_diagonalGaussianDensity_eq_one {d : ℕ}
+    (params : DiagonalGaussianParams d) :
+    ∫ x, diagonalGaussianDensity params x = 1 := by
+  rw [show diagonalGaussianDensity params =
+      fun x => ∏ i, gaussianCoordinateDensity
+        (params.mean i) (params.variance i) (x i) by rfl]
+  rw [integral_fintype_prod_volume_eq_prod]
+  simp [integral_gaussianCoordinateDensity_eq_one _ _]
+
+/-- The repository diagonal Gaussian measure has total mass one. -/
+theorem diagonalGaussianMeasure_apply_univ {d : ℕ}
+    (params : DiagonalGaussianParams d) :
+    diagonalGaussianMeasure params Set.univ = 1 := by
+  rw [diagonalGaussianMeasure, withDensity_apply _ measurableSet_univ]
+  simp only [Measure.restrict_univ]
+  rw [← ENNReal.ofReal_integral_eq_lintegral_ofReal]
+  · rw [integral_diagonalGaussianDensity_eq_one]
+    simp
+  · exact
+      (Integrable.fintype_prod fun i =>
+        integrable_gaussianCoordinateDensity
+          (params.mean i) (params.variance i) (params.variance_pos i))
+  · exact ae_of_all _ (diagonalGaussianDensity_nonneg params)
+
+/-- Every repository diagonal Gaussian measure is a probability measure. -/
+instance instIsProbabilityMeasureDiagonalGaussianMeasure {d : ℕ}
+    (params : DiagonalGaussianParams d) :
+    IsProbabilityMeasure (diagonalGaussianMeasure params) where
+  measure_univ := diagonalGaussianMeasure_apply_univ params
+
+/-- The repository spherical Gaussian measure has total mass one. -/
+theorem sphericalGaussianMeasure_apply_univ {d : ℕ}
+    (params : SphericalGaussianParams d) :
+    sphericalGaussianMeasure params Set.univ = 1 :=
+  diagonalGaussianMeasure_apply_univ params.toDiagonal
+
+/-- Every repository spherical Gaussian measure is a probability measure. -/
+instance instIsProbabilityMeasureSphericalGaussianMeasure {d : ℕ}
+    (params : SphericalGaussianParams d) :
+    IsProbabilityMeasure (sphericalGaussianMeasure params) where
+  measure_univ := sphericalGaussianMeasure_apply_univ params
 
 end
 
