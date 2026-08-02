@@ -3,10 +3,9 @@ import FormalSLT.PACBayes.GaussianMeasureKL
 /-!
 # Gaussian measure-theoretic KL bridge audit
 
-Checks the completed absolute-continuity, normalization, and Radon--Nikodym
-density-ratio slices together with the explicit finite-sum log-likelihood-ratio
-formula preceding the Gaussian `klDiv` identity. Posterior integrability and
-the closed-form KL identification are not claimed here.
+Checks the absolute-continuity, normalization, Radon--Nikodym density-ratio,
+explicit finite-sum log-likelihood-ratio, integrability, and closed-form
+Gaussian `klDiv` identification.
 -/
 
 open FormalSLT.PACBayes
@@ -28,6 +27,11 @@ open FormalSLT.PACBayes
 #check @sphericalGaussianMeasure_absolutelyContinuous
 #check @gaussianCoordinateDensity_eq_gaussianPDFReal
 #check @integrable_gaussianCoordinateDensity
+#check @integrable_gaussianCoordinateDensity_mul_sq_sub
+#check @integral_gaussianCoordinateDensity_mul_sq_sub
+#check @diagonalGaussianDensity_mul_sq_sub_eq_prod
+#check @integrable_sq_sub_coordinate_diagonalGaussianMeasure
+#check @integral_sq_sub_coordinate_diagonalGaussianMeasure
 #check @integral_gaussianCoordinateDensity_eq_one
 #check @integral_diagonalGaussianDensity_eq_one
 #check @diagonalGaussianMeasure_apply_univ
@@ -37,6 +41,10 @@ open FormalSLT.PACBayes
 #check @rnDeriv_diagonalGaussianMeasure_eq_density_ratio
 #check @llr_diagonalGaussianMeasure_eq_log_density_ratio
 #check @llr_diagonalGaussianMeasure_eq_sum
+#check @integrable_llr_diagonalGaussianMeasure
+#check @integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
+#check @diagonalGaussianMeasure_klDiv_toReal_eq
+#check @sphericalGaussianMeasure_klDiv_toReal_eq
 
 #print axioms gaussianCoordinateDensity_pos
 #print axioms log_gaussianCoordinateDensity_ratio
@@ -55,6 +63,11 @@ open FormalSLT.PACBayes
 #print axioms sphericalGaussianMeasure_absolutelyContinuous
 #print axioms gaussianCoordinateDensity_eq_gaussianPDFReal
 #print axioms integrable_gaussianCoordinateDensity
+#print axioms integrable_gaussianCoordinateDensity_mul_sq_sub
+#print axioms integral_gaussianCoordinateDensity_mul_sq_sub
+#print axioms diagonalGaussianDensity_mul_sq_sub_eq_prod
+#print axioms integrable_sq_sub_coordinate_diagonalGaussianMeasure
+#print axioms integral_sq_sub_coordinate_diagonalGaussianMeasure
 #print axioms integral_gaussianCoordinateDensity_eq_one
 #print axioms integral_diagonalGaussianDensity_eq_one
 #print axioms diagonalGaussianMeasure_apply_univ
@@ -62,3 +75,7 @@ open FormalSLT.PACBayes
 #print axioms rnDeriv_diagonalGaussianMeasure_eq_density_ratio
 #print axioms llr_diagonalGaussianMeasure_eq_log_density_ratio
 #print axioms llr_diagonalGaussianMeasure_eq_sum
+#print axioms integrable_llr_diagonalGaussianMeasure
+#print axioms integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
+#print axioms diagonalGaussianMeasure_klDiv_toReal_eq
+#print axioms sphericalGaussianMeasure_klDiv_toReal_eq
