@@ -23,10 +23,9 @@ at least `1 - δ` simultaneously for every `n ≥ 1`, the posterior running mean
 This is therefore a process-level Ville-supermartingale confidence sequence, not
 a proven generalization bound.  The PAC-Bayes reading — taking each `X i` to be a
 per-sample population-minus-empirical risk gap so the running mean is the
-generalization gap — is the intended interpretation, and follows once a concrete
-loss and sampling model are wired in (the hypotheses then become the standard
-boundedness/centering/variance conditions on the loss).  That wiring is not done
-here; the statements below are about the abstract process.
+generalization gap — is the intended interpretation.  The statements below are
+about the abstract process; `FormalSLT.PACBayes.TimeUniformIID` discharges these
+hypotheses for a concrete i.i.d. sample stream with measurable `[0,1]` losses.
 
 The theorem names avoid priority or "first" wording.  The disambiguation is
 source-level: the bound is time-uniform in `n`, not a fixed-sample bound with a
