@@ -1,0 +1,17 @@
+import FormalSLT.Rademacher.MetricEntropyHighProbability
+
+/-!
+Checks for the finite high-probability metric-entropy generalization bridge.
+-/
+
+#check FormalSLT.Rademacher.MetricEntropyHighProbability.genGap_highProb_uniformDudleyBudget
+
+#check FormalSLT.Rademacher.MetricEntropyHighProbability.metricEntropy_generalization_highProb
+
+#check FormalSLT.Rademacher.MetricEntropyHighProbability.metricEntropy_highProb_tail_nontrivial
+
+#print axioms FormalSLT.Rademacher.MetricEntropyHighProbability.genGap_highProb_uniformDudleyBudget
+
+#print axioms FormalSLT.Rademacher.MetricEntropyHighProbability.metricEntropy_generalization_highProb
+
+#print axioms FormalSLT.Rademacher.MetricEntropyHighProbability.metricEntropy_highProb_tail_nontrivial
