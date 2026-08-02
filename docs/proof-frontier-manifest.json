@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 107,
-    "library_and_example_lean_lines": 64356,
-    "library_lean_lines": 56858,
-    "library_modules": 133,
-    "theorem_map_entries": 531
+    "example_lean_files": 120,
+    "library_and_example_lean_lines": 68815,
+    "library_lean_lines": 60948,
+    "library_modules": 143,
+    "theorem_map_entries": 570
   },
   "theorem_families": [
     {
@@ -93,12 +93,6 @@
           "module": "ERM",
           "name": "IsERM",
           "summary": "Predicate selecting empirical risk minimizers over a finite class"
-        },
-        {
-          "kind": "definition",
-          "module": "ERM",
-          "name": "excessRisk",
-          "summary": "Risk above the best-in-class comparator"
         },
         {
           "kind": "definition",
@@ -1192,6 +1186,216 @@
           "module": "Covering.TotalBoundedDudley",
           "name": "finite_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers",
           "summary": "Finite-terminal total-bounded dyadic wrapper composed with the finite Dudley entropy-budget theorem"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyCovering",
+          "name": "totalBoundedCoveringNumberAtRadius",
+          "summary": "Half-open real-radius selected-cover-count staircase for the total-bounded dyadic net schedule"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyCovering",
+          "name": "totalBoundedCoveringNumberAtRadius_dyadic",
+          "summary": "The staircase samples the monotone prefix envelope of selected adjacent dyadic cover-count products at dyadic radii"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyCovering",
+          "name": "totalBoundedCoveringNumberAtRadiusENat_ne_top",
+          "summary": "The selected-cover-count staircase has a finite \u2115\u221e surface"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyCovering",
+          "name": "totalBoundedCoveringEntropyAtRadius_guarded",
+          "summary": "The induced entropy staircase satisfies the guarded closed-annulus condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyCovering",
+          "name": "totalBoundedCoveringEntropy_dominates_dyadicEnvelope_sample",
+          "summary": "Dyadic samples dominate the finite entropy prefix envelope used by total-bounded finite wrappers"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyCovering",
+          "name": "unitInterval_totalBoundedCoveringNumber_sample_positive",
+          "summary": "Concrete non-vacuity witness for the generic selected-cover-count surface on the unit interval"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoveringNumber",
+          "summary": "Genuine minimal finite metric covering number for a nonempty totally bounded metric index space"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoveringNumber_spec",
+          "summary": "The genuine minimal covering number is realized by a finite metric cover"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoveringNumber_le_of_metricCoverCardinalityLe",
+          "summary": "Any finite metric cover with at most n centers bounds the genuine minimal covering number by n"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoveringNumber_pos",
+          "summary": "Nonempty totally bounded spaces have positive genuine minimal covering number at positive radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoverOfTotallyBoundedUniv",
+          "summary": "Chooses a cardinal-minimal finite metric cover from the genuine minimal covering-number witness"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoverOfTotallyBoundedUniv_card_eq",
+          "summary": "The chosen finite metric cover has cardinality exactly equal to the genuine minimal covering number"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoverOfTotallyBoundedUniv_card_minimal",
+          "summary": "Every finite metric cover has at least as many centers as the chosen minimal cover"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalFiniteNetOfTotallyBoundedUniv_coveringNumber_eq",
+          "summary": "The bundled finite net built from the minimal cover has covering count equal to the genuine minimal covering number"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalDyadicChainingFiniteNetOfTotallyBoundedUniv_coveringNumber_eq",
+          "summary": "The dyadic minimal-net schedule has genuine minimal covering count at each sampled radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoveringNumber_le_dyadicSelectedCoveringNumber",
+          "summary": "The genuine minimal covering number is bounded by each selected dyadic finite-net count"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "minimalMetricCoveringNumber_le_totalBoundedDyadicCoverCountEnvelope",
+          "summary": "The selected dyadic envelope dominates the genuine minimal covering number at sampled dyadic net radii"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "unitInterval_minimalMetricCoveringNumber_sample_positive",
+          "summary": "Concrete non-vacuity witness for the genuine minimal covering number on the unit interval"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedMinimalCovering",
+          "name": "unitInterval_minimalMetricCoverOfTotallyBoundedUniv_sample_card_positive",
+          "summary": "Concrete non-vacuity witness for the chosen minimal finite cover on the unit interval"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleySelectedCapstone",
+          "name": "totalBoundedSelectedCoverCount_dyadicProfileBound_of_boundaryChoice",
+          "summary": "Boundary certificates give the guarded dyadic upper-sum input for the selected-cover-count entropy profile"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleySelectedCapstone",
+          "name": "continuous_dudley_entropy_integral_iSup_totalBounded_selectedCoverCountEnvelope_not_minimalCoveringNumber",
+          "summary": "Generic totally bounded continuous Dudley capstone with the selected-cover-count envelope integrand, not genuine minimal covering number"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleySelectedCapstone",
+          "name": "unitInterval_totalBoundedSelectedCoverCountEnvelope_sample_positive",
+          "summary": "Unit-interval non-vacuity witness for the selected-cover-count envelope surface"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalCapstone",
+          "name": "minimalDyadicChainingCoverCount_eq_minimalMetricCoveringNumber_mul",
+          "summary": "Adjacent cardinal-minimal dyadic cover count equals the product of genuine minimal covering numbers at the sampled radii"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalCapstone",
+          "name": "minimalDyadicCoverCountEntropyAtRadius_guarded",
+          "summary": "Cardinal-minimal dyadic adjacent-product entropy staircase satisfies the guarded closed-annulus condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalCapstone",
+          "name": "finite_projectedNet_dudley_entropy_sum_totalBounded_minimalDyadic_entropy_integral_comparison_nonempty",
+          "summary": "Projected finite-chain Dudley wrapper threaded through the cardinal-minimal dyadic net schedule"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalCapstone",
+          "name": "totalBoundedMinimalDyadicCoverCount_dyadicProfileBound_of_boundaryChoice",
+          "summary": "Minimal-schedule boundary certificates give the guarded dyadic upper-sum input"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalCapstone",
+          "name": "continuous_dudley_entropy_integral_iSup_totalBounded_minimalDyadicCoverCountEnvelope",
+          "summary": "Generic totally bounded continuous Dudley capstone with the cardinal-minimal dyadic adjacent-product envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalCapstone",
+          "name": "unitInterval_minimalDyadicCoverCountEnvelope_sample_positive",
+          "summary": "Unit-interval non-vacuity witness for the cardinal-minimal dyadic cover-count envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "minimalMetricCoveringNumber_antitone",
+          "summary": "Genuine minimal covering numbers are antitone in the positive radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "minimalDyadicChainingCoverCount_le_next_minimalMetricCoveringNumber_sq",
+          "summary": "Adjacent cardinal-minimal dyadic cover products are bounded by the next smaller-radius minimal covering number squared"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "minimalDyadicChainingCoverCount_entropy_le_sqrt_two_mul_next_minimalMetricCoveringEntropy",
+          "summary": "Adjacent-product entropy is bounded by sqrt 2 times one shifted minimal-cover entropy"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "minimalDyadicChainingCoverCountEntropy_dominates_shiftedMinimalEntropy_sample",
+          "summary": "The shifted one-radius minimal-cover entropy dominates the finite prefix-envelope sample"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "finiteDyadicEntropyAtRadiusUpperSum_shifted_div_four_le_eight_mul_full_integral",
+          "summary": "Finite shifted dyadic upper sums are bounded by the pure entropy integral with explicit shift constants"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveringNumber_shifted",
+          "summary": "Generic totally bounded continuous Dudley capstone with pure genuine minimal-cover entropy in the conclusion, paid by shifted boundary certificates and constants"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.TotalBoundedDudleyMinimalShift",
+          "name": "unitInterval_shiftedMinimalMetricCoveringEntropy_sample_nonneg",
+          "summary": "Unit-interval non-vacuity witness for the shifted minimal-cover entropy profile"
         }
       ],
       "name": "Covering and finite chaining"
@@ -1885,6 +2089,36 @@
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval",
           "summary": "Constant-envelope first-scale bound evaluated to a scalar expression"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.ContinuousDudleyUnitIntervalCovering",
+          "name": "unitIntervalChainingPairCountEnvelope",
+          "summary": "Real-radius half-open pair-count chaining envelope for [0,1]; not a metric covering number"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.ContinuousDudleyUnitIntervalCovering",
+          "name": "unitIntervalPairCountEntropy_eq_pair_count_sample",
+          "summary": "The staircase entropy samples the rounded-grid adjacent pair-count product at every dyadic radius"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.ContinuousDudleyUnitIntervalCovering",
+          "name": "unitInterval_pairCountEntropy_nonconstant",
+          "summary": "The pair-count entropy integrand is nonconstant"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.ContinuousDudleyUnitIntervalCovering",
+          "name": "unitInterval_pairCountEntropy_integral_positive",
+          "summary": "The pair-count entropy integrand has positive interval mass"
+        },
+        {
+          "kind": "definition",
+          "module": "Covering.ContinuousDudleyUnitIntervalCovering",
+          "name": "continuous_dudley_oneStep_entropy_integral_iSup_unitInterval_pairCountEnvelope",
+          "summary": "Guarded continuous Dudley capstone for [0,1] with the pair-count chaining envelope integrand"
         }
       ],
       "name": "Unit-interval Dudley example"
