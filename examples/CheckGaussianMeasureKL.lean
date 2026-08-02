@@ -4,8 +4,8 @@ import FormalSLT.PACBayes.GaussianMeasureKL
 # Gaussian measure-theoretic KL bridge audit
 
 Checks the absolute-continuity, normalization, Radon--Nikodym density-ratio,
-explicit finite-sum log-likelihood-ratio, integrability, and closed-form
-Gaussian `klDiv` identification.
+explicit finite-sum log-likelihood-ratio, integrability, finiteness, and
+closed-form Gaussian `klDiv` identification.
 -/
 
 open FormalSLT.PACBayes
@@ -43,7 +43,9 @@ open FormalSLT.PACBayes
 #check @llr_diagonalGaussianMeasure_eq_sum
 #check @integrable_llr_diagonalGaussianMeasure
 #check @integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
+#check @diagonalGaussianMeasure_klDiv_ne_top
 #check @diagonalGaussianMeasure_klDiv_toReal_eq
+#check @sphericalGaussianMeasure_klDiv_ne_top
 #check @sphericalGaussianMeasure_klDiv_toReal_eq
 
 #print axioms gaussianCoordinateDensity_pos
@@ -77,5 +79,7 @@ open FormalSLT.PACBayes
 #print axioms llr_diagonalGaussianMeasure_eq_sum
 #print axioms integrable_llr_diagonalGaussianMeasure
 #print axioms integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
+#print axioms diagonalGaussianMeasure_klDiv_ne_top
 #print axioms diagonalGaussianMeasure_klDiv_toReal_eq
+#print axioms sphericalGaussianMeasure_klDiv_ne_top
 #print axioms sphericalGaussianMeasure_klDiv_toReal_eq

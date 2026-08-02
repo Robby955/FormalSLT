@@ -24,6 +24,15 @@ open scoped ENNReal
 
 noncomputable section
 
+/-- Packaging a positive real as an `NNReal` yields a nonzero value. -/
+private theorem nnrealOfPos_ne_zero {variance : ℝ}
+    (hvariance : 0 < variance) :
+    (⟨variance, hvariance.le⟩ : NNReal) ≠ 0 := by
+  intro hzero
+  have hcoe := congrArg (fun v : NNReal => (v : ℝ)) hzero
+  change variance = 0 at hcoe
+  exact hvariance.ne' hcoe
+
 /-- A positive-variance one-dimensional Gaussian density is strictly positive. -/
 theorem gaussianCoordinateDensity_pos
     (mean variance x : ℝ) (hvariance : 0 < variance) :
@@ -213,6 +222,7 @@ theorem gaussianCoordinateDensity_eq_gaussianPDFReal
     (mean variance x : ℝ) (hvariance : 0 < variance) :
     gaussianCoordinateDensity mean variance x =
       gaussianPDFReal mean ⟨variance, hvariance.le⟩ x := by
+  rw [gaussianPDFReal_def]
   rfl
 
 /-- Each coordinate density is integrable with respect to Lebesgue measure. -/
@@ -229,12 +239,7 @@ theorem integrable_gaussianCoordinateDensity_mul_sq_sub
     Integrable (fun x => gaussianCoordinateDensity mean variance x *
       (x - center) ^ (2 : Nat)) := by
   let v : NNReal := ⟨variance, hvariance.le⟩
-  have hv : v ≠ 0 := by
-    intro h
-    have hcoe : (v : ℝ) = (0 : ℝ) :=
-      congrArg (fun x : NNReal => (x : ℝ)) h
-    dsimp [v] at hcoe
-    exact hvariance.ne' hcoe
+  have hv : v ≠ 0 := nnrealOfPos_ne_zero hvariance
   have hmem : MemLp (fun x : ℝ => x) 2 (gaussianReal mean v) :=
     memLp_of_mem_interior_integrableExpSet (by simp) 2
   have hshift : MemLp (fun x : ℝ => x - center) 2
@@ -256,12 +261,7 @@ theorem integral_gaussianCoordinateDensity_mul_sq_sub
         (x - center) ^ (2 : Nat) =
       variance + (mean - center) ^ (2 : Nat) := by
   let v : NNReal := ⟨variance, hvariance.le⟩
-  have hv : v ≠ 0 := by
-    intro h
-    have hcoe : (v : ℝ) = (0 : ℝ) :=
-      congrArg (fun x : NNReal => (x : ℝ)) h
-    dsimp [v] at hcoe
-    exact hvariance.ne' hcoe
+  have hv : v ≠ 0 := nnrealOfPos_ne_zero hvariance
   have hmem : MemLp (fun x : ℝ => x) 2 (gaussianReal mean v) :=
     memLp_of_mem_interior_integrableExpSet (by simp) 2
   have hid : Integrable (fun x : ℝ => x) (gaussianReal mean v) :=
@@ -314,12 +314,7 @@ theorem integral_gaussianCoordinateDensity_eq_one
     (mean variance : ℝ) (hvariance : 0 < variance) :
     ∫ x, gaussianCoordinateDensity mean variance x = 1 := by
   let v : NNReal := ⟨variance, hvariance.le⟩
-  have hv : v ≠ 0 := by
-    intro h
-    have hcoe : (v : ℝ) = (0 : ℝ) :=
-      congrArg (fun x : NNReal => (x : ℝ)) h
-    dsimp [v] at hcoe
-    exact hvariance.ne' hcoe
+  have hv : v ≠ 0 := nnrealOfPos_ne_zero hvariance
   simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
     (integral_gaussianPDFReal_eq_one mean (v := v) hv)
 
@@ -681,6 +676,17 @@ theorem integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL {d : ℕ}
   simp [posterior.variance_pos i |>.ne']
   ring
 
+/-- Mathlib's KL divergence between two repository diagonal Gaussian measures
+is finite. -/
+theorem diagonalGaussianMeasure_klDiv_ne_top {d : ℕ}
+    (posterior prior : DiagonalGaussianParams d) :
+    InformationTheory.klDiv
+      (diagonalGaussianMeasure posterior)
+      (diagonalGaussianMeasure prior) ≠ ∞ := by
+  exact InformationTheory.klDiv_ne_top
+    (diagonalGaussianMeasure_mutuallyAbsolutelyContinuous posterior prior).1
+    (integrable_llr_diagonalGaussianMeasure posterior prior)
+
 /-- Mathlib's measure-theoretic KL divergence between two repository diagonal
 Gaussian measures equals the repository's analytic diagonal Gaussian KL
 expression. -/
@@ -693,14 +699,20 @@ theorem diagonalGaussianMeasure_klDiv_toReal_eq {d : ℕ}
   have hposteriorPrior :
       diagonalGaussianMeasure posterior ≪ diagonalGaussianMeasure prior :=
     (diagonalGaussianMeasure_mutuallyAbsolutelyContinuous posterior prior).1
-  have hmass :
-      diagonalGaussianMeasure posterior Set.univ =
-        diagonalGaussianMeasure prior Set.univ := by
-    rw [diagonalGaussianMeasure_apply_univ,
-      diagonalGaussianMeasure_apply_univ]
-  rw [InformationTheory.toReal_klDiv_of_measure_eq hposteriorPrior hmass]
-  exact integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL
-    posterior prior
+  have hllr := integrable_llr_diagonalGaussianMeasure posterior prior
+  rw [InformationTheory.toReal_klDiv hposteriorPrior hllr]
+  simpa using
+    integral_llr_diagonalGaussianMeasure_eq_diagonalGaussianKL posterior prior
+
+/-- Mathlib's KL divergence between two repository spherical Gaussian measures
+is finite. -/
+theorem sphericalGaussianMeasure_klDiv_ne_top {d : ℕ}
+    (posterior prior : SphericalGaussianParams d) :
+    InformationTheory.klDiv
+      (sphericalGaussianMeasure posterior)
+      (sphericalGaussianMeasure prior) ≠ ∞ := by
+  exact diagonalGaussianMeasure_klDiv_ne_top
+    posterior.toDiagonal prior.toDiagonal
 
 /-- Mathlib's measure-theoretic KL divergence between two repository spherical
 Gaussian measures equals the repository's analytic spherical Gaussian KL

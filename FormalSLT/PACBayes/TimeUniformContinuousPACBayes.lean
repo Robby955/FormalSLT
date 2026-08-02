@@ -113,8 +113,8 @@ theorem continuousPriorMixture_condExp_step_of_fixed_hypothesis_steps
               (f := fun ω θ => M θ n ω) hcurrent_restrict).symm
 
 /--
-A probability-prior integral of almost-everywhere nonnegative
-supermartingales is a nonnegative supermartingale.
+A probability-prior integral of a prior-almost-everywhere supermartingale
+family with everywhere-nonnegative values is a nonnegative supermartingale.
 
 All joint and restricted-product integrability assumptions needed by Fubini are
 explicit.  The theorem therefore supplies the missing continuous-hypothesis
