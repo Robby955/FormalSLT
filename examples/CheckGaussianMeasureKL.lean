@@ -3,9 +3,9 @@ import FormalSLT.PACBayes.GaussianMeasureKL
 /-!
 # Gaussian measure-theoretic KL bridge audit
 
-Checks the completed absolute-continuity slice preceding the Gaussian `klDiv`
-identity. The remaining normalization, log-likelihood-ratio integrability, and
-closed-form KL identification are not claimed here.
+Checks the completed absolute-continuity and normalization slices preceding the
+Gaussian `klDiv` identity. The remaining log-likelihood-ratio formula,
+integrability proof, and closed-form KL identification are not claimed here.
 -/
 
 open FormalSLT.PACBayes
@@ -21,6 +21,14 @@ open FormalSLT.PACBayes
 #check @diagonalGaussianMeasure_mutuallyAbsolutelyContinuous
 #check @sphericalGaussianMeasure_mutuallyAbsolutelyContinuous
 #check @sphericalGaussianMeasure_absolutelyContinuous
+#check @gaussianCoordinateDensity_eq_gaussianPDFReal
+#check @integrable_gaussianCoordinateDensity
+#check @integral_gaussianCoordinateDensity_eq_one
+#check @integral_diagonalGaussianDensity_eq_one
+#check @diagonalGaussianMeasure_apply_univ
+#check @instIsProbabilityMeasureDiagonalGaussianMeasure
+#check @sphericalGaussianMeasure_apply_univ
+#check @instIsProbabilityMeasureSphericalGaussianMeasure
 
 #print axioms gaussianCoordinateDensity_pos
 #print axioms diagonalGaussianDensity_pos
@@ -33,3 +41,9 @@ open FormalSLT.PACBayes
 #print axioms diagonalGaussianMeasure_mutuallyAbsolutelyContinuous
 #print axioms sphericalGaussianMeasure_mutuallyAbsolutelyContinuous
 #print axioms sphericalGaussianMeasure_absolutelyContinuous
+#print axioms gaussianCoordinateDensity_eq_gaussianPDFReal
+#print axioms integrable_gaussianCoordinateDensity
+#print axioms integral_gaussianCoordinateDensity_eq_one
+#print axioms integral_diagonalGaussianDensity_eq_one
+#print axioms diagonalGaussianMeasure_apply_univ
+#print axioms sphericalGaussianMeasure_apply_univ
