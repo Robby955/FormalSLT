@@ -213,6 +213,27 @@ instance instIsProbabilityMeasureSphericalGaussianMeasure {d : ℕ}
     IsProbabilityMeasure (sphericalGaussianMeasure params) where
   measure_univ := sphericalGaussianMeasure_apply_univ params
 
+/-- The Radon--Nikodym derivative between two repository diagonal Gaussian
+measures is the ratio of their Lebesgue densities, almost everywhere under the
+prior. -/
+theorem rnDeriv_diagonalGaussianMeasure_eq_density_ratio {d : ℕ}
+    (posterior prior : DiagonalGaussianParams d) :
+    (diagonalGaussianMeasure posterior).rnDeriv
+        (diagonalGaussianMeasure prior)
+      =ᵐ[diagonalGaussianMeasure prior]
+        fun x => diagonalGaussianENNRealDensity posterior x /
+          diagonalGaussianENNRealDensity prior x := by
+  have hpriorVolume : diagonalGaussianMeasure prior ≪ volume :=
+    diagonalGaussianMeasure_absolutelyContinuous_volume prior
+  have hratio := Measure.rnDeriv_eq_div
+    (diagonalGaussianMeasure_absolutelyContinuous_volume posterior)
+    hpriorVolume
+  filter_upwards [hratio,
+      hpriorVolume (rnDeriv_diagonalGaussianMeasure_volume posterior),
+      hpriorVolume (rnDeriv_diagonalGaussianMeasure_volume prior)] with x
+      hxRatio hxPosterior hxPrior
+  rw [hxRatio, hxPosterior, hxPrior]
+
 end
 
 end FormalSLT.PACBayes
