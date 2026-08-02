@@ -141,6 +141,7 @@ import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformIID
+import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
 import FormalSLT.PACBayes.TimeUniformGaussianPACBayes
 
