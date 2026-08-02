@@ -144,8 +144,9 @@ theorem integral_gaussianCoordinateDensity_eq_one
     ∫ x, gaussianCoordinateDensity mean variance x = 1 := by
   have hv : (⟨variance, hvariance.le⟩ : ℝ≥0) ≠ 0 := by
     intro h
-    have : variance = 0 := congrArg ((↑·) : ℝ≥0 → ℝ) h
-    exact hvariance.ne' this
+    have hcoe : ((⟨variance, hvariance.le⟩ : ℝ≥0) : ℝ) = (0 : ℝ) :=
+      congrArg (fun x : ℝ≥0 => (x : ℝ)) h
+    exact hvariance.ne' hcoe
   simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
     (integral_gaussianPDFReal_eq_one mean hv)
 
