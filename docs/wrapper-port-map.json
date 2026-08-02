@@ -1,0 +1,123 @@
+[
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/HighProbRademacher.lean",
+    "internalName": "TheoremPath.LearningTheory.HighProbRademacher",
+    "publicFile": "FormalSLT/Rademacher/HighProbRademacher.lean",
+    "publicName": "FormalSLT.Rademacher.HighProbRademacher",
+    "status": "ported",
+    "note": "Ported with the statement unchanged; updated the backing Azuma theorem's renamed measure argument from μ to ν."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/LinearPredictorRademacher.lean",
+    "internalName": "TheoremPath.LearningTheory.LinearPredictorRademacher",
+    "publicFile": "FormalSLT/Rademacher/LinearPredictorRademacher.lean",
+    "publicName": "FormalSLT.Rademacher.LinearPredictorRademacher",
+    "status": "ported",
+    "note": "Ported with statements unchanged; translated the finite-sample Rademacher import and namespace."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/RademacherContraction.lean",
+    "internalName": "TheoremPath.LearningTheory.RademacherContraction",
+    "publicFile": "FormalSLT/Rademacher/RademacherContraction.lean",
+    "publicName": "FormalSLT.Rademacher.RademacherContraction",
+    "status": "ported",
+    "note": "Ported with statements unchanged; translated the finite-sample Rademacher import and namespace."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/RademacherSymmetrization.lean",
+    "internalName": "TheoremPath.LearningTheory.RademacherSymmetrization",
+    "publicFile": "FormalSLT/Rademacher/RademacherSymmetrization.lean",
+    "publicName": "FormalSLT.Rademacher.RademacherSymmetrization",
+    "status": "ported",
+    "note": "Ported with statements unchanged; translated Risk, ghost-sample, decoupling, and finite-sample imports."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/VCDimension.lean",
+    "internalName": "TheoremPath.LearningTheory.VCDimension",
+    "publicFile": "FormalSLT/VC/VCDimension.lean",
+    "publicName": "FormalSLT.VC.VCDimension",
+    "status": "ported",
+    "note": "Ported with the statement unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/VCRademacher.lean",
+    "internalName": "TheoremPath.LearningTheory.VCRademacher",
+    "publicFile": "FormalSLT/VC/VCRademacher.lean",
+    "publicName": "FormalSLT.VC.VCRademacher",
+    "status": "ported",
+    "note": "Ported with statements unchanged; translated Massart and VC bridge imports."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LearningTheory/VCSampleComplexity.lean",
+    "internalName": "TheoremPath.LearningTheory.VCSampleComplexity",
+    "publicFile": "FormalSLT/VC/VCSampleComplexity.lean",
+    "publicName": "FormalSLT.VC.VCSampleComplexity",
+    "status": "ported",
+    "note": "Ported with statements unchanged; wired the public wrapper counterparts for the high-probability and effective-class dependencies."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/LinearAlgebra/CommonInequalities.lean",
+    "internalName": "TheoremPath.LinearAlgebra.CommonInequalities",
+    "publicFile": "FormalSLT/LinearAlgebra/CommonInequalities.lean",
+    "publicName": "FormalSLT.LinearAlgebra.CommonInequalities",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Probability/BorelCantelli.lean",
+    "internalName": "TheoremPath.Probability.BorelCantelli",
+    "publicFile": "FormalSLT/Probability/BorelCantelli.lean",
+    "publicName": "FormalSLT.Probability.BorelCantelli",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Probability/KolmogorovAxioms.lean",
+    "internalName": "TheoremPath.Probability.KolmogorovAxioms",
+    "publicFile": "FormalSLT/Probability/KolmogorovAxioms.lean",
+    "publicName": "FormalSLT.Probability.KolmogorovAxioms",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Probability/LawOfLargeNumbers.lean",
+    "internalName": "TheoremPath.Probability.LawOfLargeNumbers",
+    "publicFile": "FormalSLT/Probability/LawOfLargeNumbers.lean",
+    "publicName": "FormalSLT.Probability.LawOfLargeNumbers",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Probability/Martingale.lean",
+    "internalName": "TheoremPath.Probability.Martingale",
+    "publicFile": "FormalSLT/Probability/Martingale.lean",
+    "publicName": "FormalSLT.Probability.Martingale",
+    "status": "ported",
+    "note": "Ported with the statement unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Probability/MeasureConvergence.lean",
+    "internalName": "TheoremPath.Probability.MeasureConvergence",
+    "publicFile": "FormalSLT/Probability/MeasureConvergence.lean",
+    "publicName": "FormalSLT.Probability.MeasureConvergence",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Probability/Moments.lean",
+    "internalName": "TheoremPath.Probability.Moments",
+    "publicFile": "FormalSLT/Probability/Moments.lean",
+    "publicName": "FormalSLT.Probability.Moments",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  },
+  {
+    "internalFile": "verification/lean/TheoremPath/Statistics/AsymptoticStatistics.lean",
+    "internalName": "TheoremPath.Statistics.AsymptoticStatistics",
+    "publicFile": "FormalSLT/Statistics/AsymptoticStatistics.lean",
+    "publicName": "FormalSLT.Statistics.AsymptoticStatistics",
+    "status": "ported",
+    "note": "Ported with statements unchanged."
+  }
+]
+
