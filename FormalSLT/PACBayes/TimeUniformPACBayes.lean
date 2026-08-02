@@ -209,6 +209,20 @@ def timeUniformPACBayesUpperFailure
       + (klDiv posterior prior + Real.log (1 / delta)) / ((n : ℝ) * lam)
       ≤ posteriorAverage posterior (fun i => runningMean (X i) n ω)}
 
+/-- Bad event that the time-uniform PAC-Bayes boundary fails for some posterior.
+
+Unlike `timeUniformPACBayesUpperFailure`, which fixes the posterior before
+forming the event, this event quantifies over every posterior PMF on the finite
+hypothesis class. Its complement is therefore a single sample event on which
+the bound holds simultaneously for every time and every posterior, including a
+posterior selected after observing the sample path. -/
+def timeUniformPACBayesAnyPosteriorUpperFailure
+    (prior : ι → ℝ) (X : ι → ℕ → Ω → ℝ)
+    (sigma2 b lam delta : ℝ) : Set Ω :=
+  {ω | ∃ posterior : ι → ℝ,
+    IsPMF posterior ∧
+      ω ∈ timeUniformPACBayesUpperFailure prior posterior X sigma2 b lam delta}
+
 omit [DecidableEq ι] in
 private theorem pacBayesPriorMixtureProcess_pos
     {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
@@ -300,6 +314,21 @@ theorem timeUniformPACBayesUpperFailure_subset_crossing
   exact (Real.log_le_log_iff hdelta_inv_pos hM_pos).mp hlog_le
 
 omit [DecidableEq ι] in
+/-- A failure for any posterior forces the common prior-mixture process to cross. -/
+theorem timeUniformPACBayesAnyPosteriorUpperFailure_subset_crossing
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    {X : ι → ℕ → Ω → ℝ} {sigma2 b lam delta : ℝ}
+    (hδ : 0 < delta) (hlam : 0 < lam) :
+    timeUniformPACBayesAnyPosteriorUpperFailure prior X sigma2 b lam delta
+      ⊆
+    {ω | ∃ n : ℕ, 0 < n ∧
+      (1 / delta) ≤ pacBayesPriorMixtureProcess prior X sigma2 b lam n ω} := by
+  intro ω hω
+  rcases hω with ⟨posterior, hposterior, hfail⟩
+  exact timeUniformPACBayesUpperFailure_subset_crossing
+    hprior hposterior hδ hlam hfail
+
+omit [DecidableEq ι] in
 /--
 Time-uniform fixed-tilt PAC-Bayes bound. With probability at least `1 - δ`,
 simultaneously for every `n >= 1`, the posterior running-mean gap is at most
@@ -326,6 +355,38 @@ theorem timeUniformPACBayes_bound
   exact (measureReal_mono
     (timeUniformPACBayesUpperFailure_subset_crossing
       (Ω := Ω) hprior hposterior (X := X) (sigma2 := sigma2) (b := b)
+      (lam := lam) (delta := delta) hδ hlam)).trans
+    (timeUniformPACBayes_crossing_bound
+      (μ := μ) (ℱ := ℱ) hprior hδ hb hσ hlam hblam
+      hX_meas hX_int hX_adapted h_integrable hbound hcenter hvar)
+
+omit [DecidableEq ι] in
+/-- Time-uniform fixed-tilt PAC-Bayes bound, simultaneous over all posteriors.
+
+With probability at least `1 - δ`, the fixed-tilt boundary holds for every
+positive time and every posterior PMF on the finite hypothesis class. Because
+the exceptional event already quantifies over all posteriors, the posterior may
+be selected from the observed sample path; no separate union bound over
+posteriors is needed. -/
+theorem timeUniformPACBayes_allPosteriors_bound
+    [IsProbabilityMeasure μ]
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    {X : ι → ℕ → Ω → ℝ} {sigma2 b lam delta : ℝ}
+    (hδ : 0 < delta)
+    (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam : 0 < lam) (hblam : b * lam < 3)
+    (hX_meas : ∀ i k, Measurable (X i k))
+    (hX_int : ∀ i k, Integrable (X i k) μ)
+    (hX_adapted : ∀ i, IncrementAdapted ℱ (X i))
+    (h_integrable :
+      ∀ i n, Integrable (subGammaExponentialProcess (X i) sigma2 b lam n) μ)
+    (hbound : ∀ i k, ∀ᵐ ω ∂μ, |X i k ω| ≤ b)
+    (hcenter : ∀ i k, μ[X i k | ℱ k] =ᵐ[μ] 0)
+    (hvar : ∀ i k, μ[fun ω => (X i k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => sigma2) :
+    μ.real (timeUniformPACBayesAnyPosteriorUpperFailure
+      prior X sigma2 b lam delta) ≤ delta := by
+  exact (measureReal_mono
+    (timeUniformPACBayesAnyPosteriorUpperFailure_subset_crossing
+      (Ω := Ω) hprior (X := X) (sigma2 := sigma2) (b := b)
       (lam := lam) (delta := delta) hδ hlam)).trans
     (timeUniformPACBayes_crossing_bound
       (μ := μ) (ℱ := ℱ) hprior hδ hb hσ hlam hblam
@@ -393,21 +454,21 @@ theorem rademacherHypGap_nonzero :
   constructor <;> norm_num [rademacherHypGap]
 
 /--
-Concrete non-vacuity witness: two hypotheses, uniform prior/posterior, and a
-nonzero Rademacher-style first increment give a numeric time-uniform PAC-Bayes
-bound at `δ = 1/2`, `λ = 1/2`, `b = σ² = 1`.
+Concrete all-posterior witness: two hypotheses, a uniform prior, and a nonzero
+Rademacher-style first increment give a numeric time-uniform PAC-Bayes bound
+simultaneously over every posterior at `δ = 1/2`, `λ = 1/2`, `b = σ² = 1`.
 -/
-theorem rademacher_timeUniformPACBayes_witness :
+theorem rademacher_timeUniformPACBayes_allPosteriors_witness :
     (μBool).real
-      (timeUniformPACBayesUpperFailure
-        twoHypPrior twoHypPosterior rademacherHypGap 1 1 (1 / 2) (1 / 2))
+      (timeUniformPACBayesAnyPosteriorUpperFailure
+        twoHypPrior rademacherHypGap 1 1 (1 / 2) (1 / 2))
       ≤ (1 / 2 : ℝ) := by
-  refine timeUniformPACBayes_bound
+  refine timeUniformPACBayes_allPosteriors_bound
     (μ := μBool) (ℱ := boolDelayFiltration)
-    (prior := twoHypPrior) (posterior := twoHypPosterior)
+    (prior := twoHypPrior)
     (X := rademacherHypGap)
     (sigma2 := 1) (b := 1) (lam := 1 / 2) (delta := 1 / 2)
-    twoHypPrior_isFullSupportPMF twoHypPosterior_isPMF
+    twoHypPrior_isFullSupportPMF
     (by norm_num) (by norm_num) (by norm_num) (by norm_num) (by norm_num)
     ?_ ?_ ?_ ?_ ?_ ?_ ?_
   · intro i k
@@ -465,6 +526,17 @@ theorem rademacher_timeUniformPACBayes_witness :
         simp [hXk]
       rw [hsq, condExp_zero]
       exact Filter.Eventually.of_forall (by intro ω; norm_num)
+
+/-- Fixed-posterior specialization of the all-posterior Rademacher witness. -/
+theorem rademacher_timeUniformPACBayes_witness :
+    (μBool).real
+      (timeUniformPACBayesUpperFailure
+        twoHypPrior twoHypPosterior rademacherHypGap 1 1 (1 / 2) (1 / 2))
+      ≤ (1 / 2 : ℝ) := by
+  refine (measureReal_mono ?_).trans
+    rademacher_timeUniformPACBayes_allPosteriors_witness
+  intro ω hω
+  exact ⟨twoHypPosterior, twoHypPosterior_isPMF, hω⟩
 
 end
 
