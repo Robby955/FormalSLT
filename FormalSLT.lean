@@ -139,6 +139,7 @@ import FormalSLT.PACBayes.VCHybrid
 import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
+import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
 
 import FormalSLT.Test.PACBayesBernsteinTest
 import FormalSLT.Test.SharpMcDiarmidTest
