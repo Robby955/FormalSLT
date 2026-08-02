@@ -10,10 +10,11 @@ import Mathlib.Tactic
 This module develops the measure-theoretic facts required to identify the
 repository's analytic Gaussian KL expression with mathlib's `klDiv`.
 
-It proves equivalence with Lebesgue measure and normalization for the
-positive-variance diagonal and spherical Gaussian measures defined in
-`GaussianKL.lean`. The remaining targets are an explicit log-likelihood-ratio
-formula, its posterior integrability, and the final `klDiv` closed form.
+It proves equivalence with Lebesgue measure, normalization, and the
+Radon--Nikodym derivative against Lebesgue measure for the positive-variance
+diagonal and spherical Gaussian measures defined in `GaussianKL.lean`. The
+remaining targets are an explicit log-likelihood-ratio formula, its posterior
+integrability, and the final `klDiv` closed form.
 -/
 
 namespace FormalSLT.PACBayes
@@ -57,6 +58,15 @@ theorem measurable_diagonalGaussianENNRealDensity {d : ℕ}
   unfold diagonalGaussianENNRealDensity
   exact ENNReal.measurable_ofReal.comp
     (measurable_diagonalGaussianDensity params)
+
+/-- The Radon--Nikodym derivative of a repository diagonal Gaussian measure
+with respect to Lebesgue measure is its defining `ENNReal` density. -/
+theorem rnDeriv_diagonalGaussianMeasure_volume {d : ℕ}
+    (params : DiagonalGaussianParams d) :
+    (diagonalGaussianMeasure params).rnDeriv volume
+      =ᵐ[volume] diagonalGaussianENNRealDensity params := by
+  exact Measure.rnDeriv_withDensity volume
+    (measurable_diagonalGaussianENNRealDensity params)
 
 /-- Lebesgue measure is absolutely continuous with respect to a positive-variance
 repository diagonal Gaussian measure. -/

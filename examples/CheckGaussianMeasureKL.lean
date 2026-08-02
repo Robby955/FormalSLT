@@ -3,9 +3,10 @@ import FormalSLT.PACBayes.GaussianMeasureKL
 /-!
 # Gaussian measure-theoretic KL bridge audit
 
-Checks the completed absolute-continuity and normalization slices preceding the
-Gaussian `klDiv` identity. The remaining log-likelihood-ratio formula,
-integrability proof, and closed-form KL identification are not claimed here.
+Checks the completed absolute-continuity, normalization, and Lebesgue
+Radon--Nikodym derivative slices preceding the Gaussian `klDiv` identity. The
+remaining log-likelihood-ratio formula, integrability proof, and closed-form KL
+identification are not claimed here.
 -/
 
 open FormalSLT.PACBayes
@@ -14,6 +15,7 @@ open FormalSLT.PACBayes
 #check @diagonalGaussianDensity_pos
 #check @measurable_diagonalGaussianDensity
 #check @measurable_diagonalGaussianENNRealDensity
+#check @rnDeriv_diagonalGaussianMeasure_volume
 #check @volume_absolutelyContinuous_diagonalGaussianMeasure
 #check @diagonalGaussianMeasure_mutuallyAbsolutelyContinuous_volume
 #check @volume_absolutelyContinuous_sphericalGaussianMeasure
@@ -34,6 +36,7 @@ open FormalSLT.PACBayes
 #print axioms diagonalGaussianDensity_pos
 #print axioms measurable_diagonalGaussianDensity
 #print axioms measurable_diagonalGaussianENNRealDensity
+#print axioms rnDeriv_diagonalGaussianMeasure_volume
 #print axioms volume_absolutelyContinuous_diagonalGaussianMeasure
 #print axioms diagonalGaussianMeasure_mutuallyAbsolutelyContinuous_volume
 #print axioms volume_absolutelyContinuous_sphericalGaussianMeasure
