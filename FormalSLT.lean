@@ -52,6 +52,7 @@ import FormalSLT.Rademacher.HighProbability
 import FormalSLT.Rademacher.FiniteClassHighProb
 import FormalSLT.Rademacher.UniformDeviation
 import FormalSLT.Rademacher.MetricEntropyGeneralization
+import FormalSLT.Rademacher.MetricEntropyHighProbability
 import FormalSLT.Rademacher.ERMGeneralization
 import FormalSLT.Rademacher.Contraction
 import FormalSLT.Rademacher.LinearPredictor
