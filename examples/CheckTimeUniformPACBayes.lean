@@ -8,7 +8,7 @@ Checks the finite fixed-tilt PAC-Bayes confidence sequence:
 * the prior-mixture exponential process is a nonnegative supermartingale;
 * Ville controls its countable-time crossing event;
 * Donsker-Varadhan inverts the crossing event into a posterior-risk bound for
-  every time `n >= 1`;
+  every time `n >= 1` and every posterior PMF on one common good event;
 * a concrete two-hypothesis Rademacher witness instantiates the result with a
   nonzero increment.
 
@@ -22,11 +22,19 @@ open FormalSLT.PACBayes.TimeUniform
 #check @pacBayesPriorMixture_supermartingale
 #check @timeUniformPACBayes_crossing_bound
 #check @timeUniformPACBayes_bound
+#check @timeUniformPACBayesAnyPosteriorUpperFailure
+#check @timeUniformPACBayesAnyPosteriorUpperFailure_subset_crossing
+#check @timeUniformPACBayes_allPosteriors_bound
+#check rademacher_timeUniformPACBayes_allPosteriors_witness
 #check rademacher_timeUniformPACBayes_witness
 
 #print axioms pacBayesPriorMixture_supermartingale
 #print axioms timeUniformPACBayes_crossing_bound
 #print axioms timeUniformPACBayes_bound
+#print axioms timeUniformPACBayesAnyPosteriorUpperFailure
+#print axioms timeUniformPACBayesAnyPosteriorUpperFailure_subset_crossing
+#print axioms timeUniformPACBayes_allPosteriors_bound
+#print axioms rademacher_timeUniformPACBayes_allPosteriors_witness
 #print axioms rademacher_timeUniformPACBayes_witness
 
 example :
