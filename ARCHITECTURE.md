@@ -59,6 +59,8 @@ necessary should be narrow and documented in the module docstring.
 ## Public imports
 
 - Import the narrowest module that provides the theorem you need.
+- Use `FormalSLT.PACBayes`, `FormalSLT.VC`, or `FormalSLT.Sequential` when an
+  application deliberately depends on a complete topic surface.
 - `FormalSLT.lean` is the whole-library umbrella used by the root build,
   documentation, and repository audits. It is not required for downstream use.
 - New subject-level umbrella modules may re-export stable public endpoints, but
@@ -99,6 +101,22 @@ For each theorem family:
 
 This keeps reviews small and preserves a buildable public surface throughout
 the migration.
+
+The first consolidation pass establishes these canonical owners while keeping
+the previous verbose paths as compatibility aliases:
+
+| Canonical implementation | Compatibility path |
+|---|---|
+| `Rademacher.Symmetrization` | `Rademacher.RademacherSymmetrization` |
+| `Rademacher.Contraction` | `Rademacher.RademacherContraction` |
+| `Rademacher.LinearPredictor` | `Rademacher.LinearPredictorRademacher` |
+| `Rademacher.HighProbability` | `Rademacher.HighProbRademacher` |
+| `VC.Dimension` | `VC.VCDimension` |
+| `VC.Rademacher` | `VC.VCRademacher` |
+| `VC.SampleComplexity` | `VC.VCSampleComplexity` |
+
+Compatibility modules contain aliases only; theorem proofs and implementation
+helpers remain in the canonical module.
 
 ## Audit boundary
 
