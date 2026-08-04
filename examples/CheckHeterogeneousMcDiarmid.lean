@@ -1,5 +1,5 @@
 import FormalSLT.Concentration.HeterogeneousMcDiarmid
-import Mathlib.Probability.ProbabilityMassFunction.Binomial
+import Mathlib.Probability.Distributions.Bernoulli
 
 open MeasureTheory
 open scoped BigOperators ENNReal NNReal
@@ -15,10 +15,12 @@ open scoped BigOperators ENNReal NNReal
 #print axioms FormalSLT.Concentration.mcdiarmid_of_hasBoundedDifferences_sharp_of_hetero
 
 noncomputable def boolLawOneThird : Measure Bool :=
-  (PMF.bernoulli ((1 : ℝ≥0) / (3 : ℝ≥0)) (by norm_num [div_le_iff₀])).toMeasure
+  ProbabilityTheory.bernoulliMeasure true false
+    ⟨(1 : ℝ) / 3, by norm_num, by norm_num⟩
 
 noncomputable def boolLawOneHalf : Measure Bool :=
-  (PMF.bernoulli ((1 : ℝ≥0) / (2 : ℝ≥0)) (by norm_num)).toMeasure
+  ProbabilityTheory.bernoulliMeasure true false
+    ⟨(1 : ℝ) / 2, by norm_num, by norm_num⟩
 
 noncomputable def heteroBoolLaw : Fin 2 → Measure Bool :=
   fun k => if (k : ℕ) = 0 then boolLawOneThird else boolLawOneHalf
@@ -45,8 +47,9 @@ example : heteroBoolLaw 1 Set.univ = 1 := by
 
 example : boolLawOneThird ≠ boolLawOneHalf := by
   intro h
-  have htrue := congrArg (fun m : Measure Bool => m ({true} : Set Bool)) h
-  norm_num [boolLawOneThird, boolLawOneHalf, PMF.toMeasure_apply_singleton] at htrue
+  have htrue := congrArg (fun m : Measure Bool => m.real ({true} : Set Bool)) h
+  norm_num [boolLawOneThird, boolLawOneHalf,
+    ProbabilityTheory.bernoulliMeasure_real_apply] at htrue
 
 example :
     Real.exp (-2 * ((1 / 2 : ℝ) ^ 2) / (((1 : ℝ) ^ 2) + ((1 : ℝ) ^ 2))) < 1 := by

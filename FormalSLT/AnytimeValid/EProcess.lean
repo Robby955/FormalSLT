@@ -188,7 +188,7 @@ theorem eProcess_optionalContinuation [IsProbabilityMeasure μ]
   -- `E[stoppedValue E τ] ≤ E[stoppedValue E 0] = E[E 0] = 1`.
   have hsub : Submartingale (-E) 𝒢 μ := hE.supermartingale.neg
   have hmono := hsub.expected_stoppedValue_mono (isStoppingTime_const 𝒢 0) hτ_stop
-      (fun ω => zero_le _) hτ_le
+      (fun _ => bot_le) hτ_le
   -- `E[stoppedValue (-E) σ] = -E[stoppedValue E σ]` for any stopping time `σ`.
   have key : ∀ σ : Ω → ℕ∞,
       ∫ ω, stoppedValue (-E) σ ω ∂μ = -∫ ω, stoppedValue E σ ω ∂μ := by

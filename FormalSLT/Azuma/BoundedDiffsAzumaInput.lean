@@ -65,12 +65,14 @@ variable {n : ℕ} {Z : Type*} [MeasurableSpace Z] {μ : Fin n → Measure Z}
 def splice (k : Fin (n + 1)) (S T : Fin n → Z) : Fin n → Z :=
   fun i => if (i : ℕ) < (k : ℕ) then S i else T i
 
+omit [MeasurableSpace Z] in
 @[simp]
 lemma splice_zero (S T : Fin n → Z) : splice (0 : Fin (n + 1)) S T = T := by
   funext i
   unfold splice
   simp
 
+omit [MeasurableSpace Z] in
 @[simp]
 lemma splice_last (S T : Fin n → Z) : splice (Fin.last n) S T = S := by
   funext i
@@ -91,6 +93,7 @@ lemma measurable_splice (k : Fin (n + 1)) :
   · simp only [h, if_false]
     exact (measurable_pi_apply i).comp measurable_snd
 
+omit [MeasurableSpace Z] in
 /-- `splice` is unaffected by changing `S` at any tail index. -/
 lemma splice_update_tail (k : Fin (n + 1)) (S T : Fin n → Z)
     {i : Fin n} (hi : ¬ ((i : ℕ) < (k : ℕ))) (z' : Z) :
@@ -106,6 +109,7 @@ lemma splice_update_tail (k : Fin (n + 1)) (S T : Fin n → Z)
     rw [Function.update_of_ne hji]
   · simp [hjk]
 
+omit [MeasurableSpace Z] in
 /-- `splice` is unaffected by changing `T` at any prefix index. -/
 lemma splice_update_prefix (k : Fin (n + 1)) (S T : Fin n → Z)
     {i : Fin n} (hi : (i : ℕ) < (k : ℕ)) (z' : Z) :
@@ -324,7 +328,7 @@ private abbrev splicePred (k : Fin (n + 1)) : Fin n → Prop :=
   fun i => (i : ℕ) < (k : ℕ)
 
 private instance (k : Fin (n + 1)) : DecidablePred (splicePred (n := n) k) :=
-  fun i => Nat.decLt _ _
+  fun _ => Nat.decLt _ _
 
 /-- The mathlib prefix/tail equivalence specialized to our setup. -/
 private noncomputable def spliceEquiv (k : Fin (n + 1)) :
@@ -334,6 +338,7 @@ private noncomputable def spliceEquiv (k : Fin (n + 1)) :
   MeasurableEquiv.piEquivPiSubtypeProd (fun _ : Fin n => Z)
     (splicePred (n := n) k)
 
+omit [Nonempty Z] in
 /-- Pointwise: `splice k S T` equals applying the inverse of
 `spliceEquiv` to `(prefix of S, tail of T)`. -/
 private lemma splice_eq_spliceEquiv_symm (k : Fin (n + 1)) (S T : Fin n → Z) :
@@ -353,6 +358,7 @@ private lemma splice_eq_spliceEquiv_symm (k : Fin (n + 1)) (S T : Fin n → Z) :
   · simp [Equiv.piEquivPiSubtypeProd, hi]
   · simp [Equiv.piEquivPiSubtypeProd, hi]
 
+omit [Nonempty Z] in
 /-- The map `(S, T) ↦ (prefix of S, tail of T)` is measure-preserving from
 `μⁿ × μⁿ` to `μ^prefix × μ^tail` under any probability measure `μ`. -/
 private lemma measurePreserving_pairProj (k : Fin (n + 1)) :
@@ -396,6 +402,7 @@ private lemma measurePreserving_pairProj (k : Fin (n + 1)) :
   -- Combined product map is MP.
   exact MeasurePreserving.prod hψ_fst hψ_snd
 
+omit [Nonempty Z] in
 /-- Under any probability measure `μ`, the joint splice map
 `(S, T) ↦ splice k S T` is measure-preserving from `μⁿ × μⁿ` to `μⁿ`. -/
 lemma measurePreserving_splice (k : Fin (n + 1)) :
@@ -432,6 +439,7 @@ the structural fact that lets us turn ℱ_k-measurable sets into
 preimages of prefix-measurable sets, and yields the set-invariance
 lemma `mem_iff_of_agree_prefix`. -/
 
+omit [Nonempty Z] in
 private lemma coordinateSubAlgebra_eq_comap_prefix (k : Fin (n + 1)) :
     coordinateSubAlgebra n Z k =
       MeasurableSpace.comap
@@ -462,6 +470,7 @@ private lemma coordinateSubAlgebra_eq_comap_prefix (k : Fin (n + 1)) :
       (inferInstance : MeasurableSpace Z).comap
         (fun s : Fin n → Z => s i)) j.val j.property
 
+omit [Nonempty Z] in
 /-- Set-invariance: an `ℱ_k`-measurable set's membership depends only
 on prefix coordinates of its argument. -/
 private lemma mem_iff_of_agree_prefix
@@ -491,6 +500,7 @@ private lemma mem_iff_of_agree_prefix
 
 /-! ### Integrability and the set-integral identity -/
 
+omit [Nonempty Z] in
 /-- `partialIntegral μ k f` is integrable when `f` is. -/
 lemma integrable_partialIntegral
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
@@ -505,10 +515,10 @@ lemma integrable_partialIntegral
   -- partialIntegral = inner integral of g; use Integrable.integral_prod_left.
   exact hg.integral_prod_left
 
+omit [Nonempty Z] in
 /-- The set-integral identity: for any `ℱ_k`-measurable set `s`,
 the set-integral of `partialIntegral μ k f` equals that of `f`. -/
 lemma setIntegral_partialIntegral_eq
-    [∀ i, IsProbabilityMeasure (μ i)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f)
     (hfi : Integrable f (Measure.pi μ))
@@ -592,7 +602,6 @@ This is the conditional-expectation identification: it says that
 `M_k S = E[f | first k coords](S)` admits the explicit prefix/tail
 integral representation `partialIntegral μ k f S = ∫ T, f(splice k S T) ∂μⁿ`. -/
 theorem partialIntegral_eq_condExp_ae
-    [∀ i, IsProbabilityMeasure (μ i)]
     (k : Fin (n + 1)) {f : (Fin n → Z) → ℝ}
     (hf : StronglyMeasurable f)
     (hfi : Integrable f (Measure.pi μ)) :

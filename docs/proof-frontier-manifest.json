@@ -67,10 +67,10 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 127,
-    "library_and_example_lean_lines": 73359,
-    "library_lean_lines": 65214,
-    "library_modules": 164,
+    "example_lean_files": 128,
+    "library_and_example_lean_lines": 72079,
+    "library_lean_lines": 63905,
+    "library_modules": 167,
     "theorem_map_entries": 570
   },
   "theorem_families": [
@@ -3586,7 +3586,7 @@
     }
   ],
   "toolchain": {
-    "lean": "leanprover/lean4:v4.30.0-rc2",
-    "mathlib_revision": "25b7ac7d0cf8eef34ced5525f4a62b7613ad649b"
+    "lean": "leanprover/lean4:v4.32.0",
+    "mathlib_revision": "v4.32.0"
   }
 }

@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.WithDensity
 import Mathlib.Tactic
 
 /-!

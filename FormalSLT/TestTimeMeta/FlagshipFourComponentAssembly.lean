@@ -130,12 +130,15 @@ theorem flagshipFourComponent_four_slots_positive (lam : ℝ) (n : ℕ) (t : ℝ
         (FlagshipFourComponentAssembly.derived lam n t).bernsteinOrGaussianContribution ∧
       0 < (FlagshipFourComponentAssembly.derived lam n t).anytimeVilleContribution := by
   refine ⟨?_, ?_, ?_, ?_⟩
-  · simpa [FlagshipFourComponentAssembly.derived] using
-      FlagshipSimultaneousAssembly.mcAllesterContribution_pos
-  · simpa [FlagshipFourComponentAssembly.derived] using
-      FlagshipSimultaneousAssembly.onlineContribution_pos
-  · simpa [FlagshipFourComponentAssembly.derived] using
-      FlagshipSimultaneousAssembly.bernsteinContribution_pos
+  · change 0 < FlagshipSimultaneousAssembly.derived.mcAllesterGeneralWidthContribution
+    unfold FlagshipSimultaneousAssembly.derived
+    exact FlagshipSimultaneousAssembly.mcAllesterContribution_pos
+  · change 0 < FlagshipSimultaneousAssembly.derived.onlineIidContribution
+    unfold FlagshipSimultaneousAssembly.derived
+    exact FlagshipSimultaneousAssembly.onlineContribution_pos
+  · change 0 < FlagshipSimultaneousAssembly.derived.bernsteinOrGaussianContribution
+    unfold FlagshipSimultaneousAssembly.derived
+    exact FlagshipSimultaneousAssembly.bernsteinContribution_pos
   · unfold FlagshipFourComponentAssembly.derived anytimeVilleTailContribution
     exact Real.exp_pos _
 

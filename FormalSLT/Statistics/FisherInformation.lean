@@ -94,9 +94,12 @@ theorem hasDerivAt_weightedExpectation_param {Ω : Type*} [Fintype Ω]
     (∑ x, pmfDeriv theta x * T x) theta
   have h := HasDerivAt.sum (u := (Finset.univ : Finset Ω)) fun x _ =>
     (hderiv x).mul_const (T x)
-  convert h using 1
-  ext u
-  simp
+  have hfun : (∑ x : Ω, fun u => pmf u x * T x) =
+      fun u => ∑ x : Ω, pmf u x * T x := by
+    funext u
+    rw [Fintype.sum_apply]
+  rw [← hfun]
+  exact h
 
 /-- **Regularity: the finite score has mean zero.**
 
@@ -182,14 +185,14 @@ theorem covariance_cauchy_schwarz {Ω : Type*} [Fintype Ω]
   let mx := weightedExpectation w X
   let my := weightedExpectation w Y
   have hcs :=
-    Finset.sum_sq_le_sum_mul_sum_of_sq_eq_mul
+    Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul
       (s := (Finset.univ : Finset Ω))
       (r := fun x => w x * (X x - mx) * (Y x - my))
       (f := fun x => w x * (X x - mx) ^ 2)
       (g := fun x => w x * (Y x - my) ^ 2)
       (fun x _ => mul_nonneg (hw x) (sq_nonneg _))
       (fun x _ => mul_nonneg (hw x) (sq_nonneg _))
-      (fun x _ => by ring)
+      (fun x _ => le_of_eq (by ring))
   simpa [weightedCovariance, weightedVariance, mx, my] using hcs
 
 end

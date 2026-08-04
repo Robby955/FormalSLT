@@ -57,7 +57,7 @@ theorem hybridBad_empty :
   obtain ⟨usePAC, _, hev⟩ := hmem
   rcases usePAC with _ | _
   · -- usePAC = false branch is `vcBad = ∅`
-    simpa using hev
+    simp at hev
   · -- usePAC = true branch: PAC bad event. Show it is empty.
     rw [if_pos rfl, finitePACBayesBernsteinFixedLambdaBadSamples,
       Finset.mem_filter] at hev
@@ -139,7 +139,7 @@ theorem concrete_numbers :
     have hvar : posteriorMarginVarianceProxy rhoU varU = 1 / 10 := by
       unfold posteriorMarginVarianceProxy; simp [rhoU, varU]
     rw [hcap, hkl, hvar]
-    simp only [Real.log_one, anchorU]
+    simp only [anchorU]
     norm_num
 
 end

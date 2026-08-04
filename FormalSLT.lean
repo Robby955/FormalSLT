@@ -32,15 +32,7 @@ import FormalSLT.Concentration.SubGamma.Extractor
 import FormalSLT.Concentration.SharpMcDiarmid
 import FormalSLT.Concentration.HeterogeneousMcDiarmid
 import FormalSLT.Concentration.NamedTails
-import FormalSLT.AnytimeValid.VilleMaximalIneq
-import FormalSLT.AnytimeValid.SubGaussianCS
-import FormalSLT.AnytimeValid.AtTopCS
-import FormalSLT.AnytimeValid.MixtureCS
-import FormalSLT.AnytimeValid.OptimizedLambdaCS
-import FormalSLT.AnytimeValid.DyadicEpochCS
-import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
-import FormalSLT.AnytimeValid.EProcess
-import FormalSLT.AnytimeValid.BettingCS
+import FormalSLT.Sequential
 
 import FormalSLT.Statistics.Bernoulli
 import FormalSLT.Statistics.SampleStatistics
@@ -82,17 +74,7 @@ import FormalSLT.Azuma.ExposureIncrementCondMGF
 import FormalSLT.Azuma.GenGapTail
 import FormalSLT.Azuma.SharpMcDiarmid
 
-import FormalSLT.VC.Dimension
-import FormalSLT.VC.PACBridge
-import FormalSLT.VC.SauerShelah
-import FormalSLT.VC.Rademacher
-import FormalSLT.VC.SampleComplexity
-import FormalSLT.VC.BinaryVCBridge
-import FormalSLT.VC.SampleComplexityBinary
-import FormalSLT.VC.BinaryCapstone
-import FormalSLT.VC.VCDimension
-import FormalSLT.VC.VCRademacher
-import FormalSLT.VC.VCSampleComplexity
+import FormalSLT.VC
 
 import FormalSLT.Covering.Rademacher
 import FormalSLT.Covering.DudleyChaining
@@ -123,43 +105,11 @@ import FormalSLT.Covering.FiniteDiscreteDudley
 import FormalSLT.AlgorithmicStability
 import FormalSLT.Stability.BousquetElisseeff
 import FormalSLT.Stability.RKHSRegularisedERM
-import FormalSLT.PACBayesKL
-import FormalSLT.PACBayesFiniteProductMGF
-import FormalSLT.PACBayesBoundedLoss
-import FormalSLT.PACBayesMcAllester
-import FormalSLT.PACBayesSeeger
-import FormalSLT.PACBayesBernstein
-import FormalSLT.PACBayes.McAllesterBound
-import FormalSLT.PACBayes.McAllesterBoundGeneral
-import FormalSLT.PACBayes.Compiler
-import FormalSLT.PACBayes.Generated.Cert_A
-import FormalSLT.PACBayes.Generated.Cert_B
-import FormalSLT.PACBayes.Generated.Cert_C
-import FormalSLT.PACBayes.Generated.Cert_D
-import FormalSLT.PACBayes.Generated.Cert_E
+import FormalSLT.PACBayes
 
 import FormalSLT.OnlineToPAC.RegretConversion
 import FormalSLT.OnlineToPAC.CesaBianchi
 import FormalSLT.OnlineToPAC.IIDConcentration
-
-import FormalSLT.PACBayes.VitaleLemma
-import FormalSLT.PACBayes.GaussianKL
-import FormalSLT.PACBayes.GaussianMeasureKL
-import FormalSLT.PACBayes.StabilityBridge
-import FormalSLT.PACBayes.VitaleAnalytic
-import FormalSLT.PACBayes.BernsteinAnalytic
-import FormalSLT.PACBayes.ContinuousChangeOfMeasure
-import FormalSLT.PACBayes.ContinuousPriorPosterior
-import FormalSLT.PACBayes.BernsteinBound
-import FormalSLT.PACBayes.McAllesterCompilerHighProbability
-import FormalSLT.PACBayes.VCHybrid
-import FormalSLT.PACBayes.ChangeOfMeasure
-import FormalSLT.PACBayes.MaurerKL
-import FormalSLT.PACBayes.TimeUniformPACBayes
-import FormalSLT.PACBayes.TimeUniformIID
-import FormalSLT.PACBayes.TimeUniformIIDGrid
-import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
-import FormalSLT.PACBayes.TimeUniformGaussianPACBayes
 
 import FormalSLT.Test.PACBayesBernsteinTest
 import FormalSLT.Test.SharpMcDiarmidTest

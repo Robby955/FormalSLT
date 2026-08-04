@@ -1036,7 +1036,10 @@ theorem dyadic_limit_of_total_bounded_bricks
       Tendsto (fun m : ℕ => ∫ t in (0 : ℝ)..(radiusScale / (2 : ℝ) ^ (m + 1)), entropyAtRadius t)
         atTop (𝓝 0) := by
     have hcomp := (hcwa.tendsto).comp ha_within
-    simpa [Function.comp, intervalIntegral.integral_same] using hcomp
+    change Tendsto
+      (fun m : ℕ => ∫ t in (0 : ℝ)..(radiusScale / (2 : ℝ) ^ (m + 1)), entropyAtRadius t)
+      atTop (𝓝 (∫ t in (0 : ℝ)..0, entropyAtRadius t)) at hcomp
+    simpa only [intervalIntegral.integral_same] using hcomp
   -- decompose each truncated integral via adjacent-interval additivity
   have hdecomp : ∀ m : ℕ,
       (∫ ε in (radiusScale / (2 : ℝ) ^ (m + 1))..(radiusScale / 2), entropyAtRadius ε)
@@ -1127,7 +1130,6 @@ theorem continuous_dudley_entropy_integral
       (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε))
     hradiusScale hdistP hvariance hentropy_antitone hchoose ?_
   intro m
-  dsimp only
   have hb_pos : (0 : ℝ) < radiusScale / 2 := half_pos hradiusScale
   have ha_nonneg : (0 : ℝ) ≤ radiusScale / (2 : ℝ) ^ (m + 1) :=
     (div_pos hradiusScale (pow_pos (by norm_num) _)).le
@@ -1200,7 +1202,6 @@ theorem continuous_dudley_entropy_integral_nonempty
       (∫ ε in (0 : ℝ)..(radiusScale / 2), entropyAtRadius ε))
     hradiusScale hdistP hvariance hentropy_antitone hchoose ?_
   intro m
-  dsimp only
   have hb_pos : (0 : ℝ) < radiusScale / 2 := half_pos hradiusScale
   have ha_nonneg : (0 : ℝ) ≤ radiusScale / (2 : ℝ) ^ (m + 1) :=
     (div_pos hradiusScale (pow_pos (by norm_num) _)).le

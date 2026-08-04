@@ -157,14 +157,14 @@ theorem condSubGammaMGF_of_bounded_centered_condVariance
   -- `Pi.add` / `Pi.smul` rewrites so they unify with the lambda-form `condExp`s
   -- in the assembled goal.
   have h_lin_eq : μ[fun ω => lam * X ω | m] =ᵐ[μ] fun ω => lam * (μ[X | m]) ω := by
-    have := h_smul_lin
-    -- `lam • X = fun ω => lam * X ω` by `Pi.smul_apply` + `smul_eq_mul`.
-    simpa [Pi.smul_apply, smul_eq_mul] using this
+    change μ[fun ω => lam * X ω | m] =ᵐ[μ] fun ω => lam * (μ[X | m]) ω at h_smul_lin
+    exact h_smul_lin
   have h_quad_eq :
       μ[fun ω => lam ^ 2 / K * X ω ^ 2 | m]
         =ᵐ[μ] fun ω => lam ^ 2 / K * (μ[fun ω => X ω ^ 2 | m]) ω := by
-    have := h_smul_quad
-    simpa [Pi.smul_apply, smul_eq_mul] using this
+    change μ[fun ω => lam ^ 2 / K * X ω ^ 2 | m]
+      =ᵐ[μ] fun ω => lam ^ 2 / K * (μ[fun ω => X ω ^ 2 | m]) ω at h_smul_quad
+    exact h_smul_quad
   -- Translate `h_step1` / `h_step2` from `Pi.add` form to `μ[fun ω => …]` form.
   -- `(f + g) ω = f ω + g ω` is `Pi.add_apply`; for `condExp` the integrand is
   -- the function itself, and `(fun _ => 1) + g` is definitionally

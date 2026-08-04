@@ -137,7 +137,8 @@ theorem hoeffding_mean_tail_twoSided
       iIndepFun (fun i ω => (1 / n : ℝ) * (X i ω - μ[X i])) μ := by
     have h := hIndep.comp (fun i x => (1 / n : ℝ) * (x - μ[X i]))
       (fun _ => (measurable_id.sub measurable_const).const_mul _)
-    simpa [Function.comp] using h
+    change iIndepFun (fun i => (fun x => (1 / n : ℝ) * (x - μ[X i])) ∘ X i) μ
+    exact h
   -- Their sum is sub-Gaussian with the summed proxy.
   have hSumSubG :
       HasSubgaussianMGF

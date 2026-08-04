@@ -1085,8 +1085,23 @@ private theorem unitIntervalExplicitMeshNet_pair_card_gt_one_m1 :
   intro j hj
   simp at hj
   subst j
-  simpa [unitIntervalExplicitMeshNet, unitIntervalExplicitMeshIndex]
-    using unitIntervalHalfQuarterPair_card_gt_one
+  classical
+  let p0 : FiniteNet.ProjectionPair
+      (unitIntervalExplicitMeshNet 0) (unitIntervalExplicitMeshNet 1) :=
+    FiniteNet.projectionPairOf
+      (unitIntervalExplicitMeshNet 0) (unitIntervalExplicitMeshNet 1) unitIntervalZero
+  let p1 : FiniteNet.ProjectionPair
+      (unitIntervalExplicitMeshNet 0) (unitIntervalExplicitMeshNet 1) :=
+    FiniteNet.projectionPairOf
+      (unitIntervalExplicitMeshNet 0) (unitIntervalExplicitMeshNet 1) unitIntervalOne
+  refine Fintype.one_lt_card_iff.mpr ⟨p0, p1, ?_⟩
+  intro hp
+  have hproj := congrArg
+    (fun p : FiniteNet.ProjectionPair
+      (unitIntervalExplicitMeshNet 0) (unitIntervalExplicitMeshNet 1) => p.1.1) hp
+  norm_num [p0, p1, FiniteNet.projectionPairOf, unitIntervalExplicitMeshNet,
+    unitIntervalExplicitMeshIndex, unitIntervalHalfMeshNet, unitIntervalHalfMeshProject,
+    unitIntervalZero, unitIntervalOne] at hproj
 
 private theorem unitIntervalExplicitMeshNet_coverCount_le_15_m1 :
     ∀ j ∈ Finset.range 1,
@@ -1327,7 +1342,8 @@ theorem unitIntervalRoundedDyadicGridNet_pair_card_gt_one (j : ℕ) :
       dist (N0.projection unitIntervalZero) unitIntervalOne ≤ N0.radius := by
     have h := N0.projection_dist_le unitIntervalOne
     rw [hcenter]
-    simpa [dist_comm] using h
+    change dist unitIntervalOne (N0.projection unitIntervalOne) ≤ N0.radius at h
+    simpa only [dist_comm] using h
   have hdist_le :
       dist unitIntervalZero unitIntervalOne ≤ N0.radius + N0.radius := by
     calc
@@ -1656,6 +1672,7 @@ theorem unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound
     FiniteSubGaussianProcess.FiniteDyadicDudleyInstance.projected_dudley_bound
       unitIntervalRoundedDyadicGridDudleyInstance m
   simpa [unitIntervalRoundedDyadicGridDudleyInstance,
+    unitIntervalRoundedDyadicGridNetSequence,
     unitIntervalRademacherLinearProcess] using hbase
 
 /-- Prefix-free finite-horizon rounded-dyadic-grid projected Dudley bound.
@@ -1887,7 +1904,9 @@ def unitIntervalRademacherLinearSupRoundedDyadicGridAdapter :
   terminalError := 0
   terminal_bound := by
     intro m ω
-    simpa [unitIntervalRoundedDyadicGridNet] using
+    simpa [unitIntervalRoundedDyadicGridDudleyInstance,
+      unitIntervalRoundedDyadicGridNetSequence,
+      unitIntervalRoundedDyadicGridNet] using
       unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup
         (m + 1) ω
 
@@ -2100,6 +2119,7 @@ theorem unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound
       unitIntervalRoundedDyadicGridDudleyInstance
       unitIntervalRademacherLinearSupRoundedDyadicGridAdapter m
   simpa [unitIntervalRoundedDyadicGridDudleyInstance,
+    unitIntervalRoundedDyadicGridNetSequence,
     unitIntervalRademacherLinearSupRoundedDyadicGridAdapter,
     unitIntervalRademacherLinearProcess] using hbase
 

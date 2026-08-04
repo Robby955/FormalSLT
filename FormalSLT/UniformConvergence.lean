@@ -994,8 +994,18 @@ theorem empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail_le_of_sample
   have hscaled' :
       Real.log 2 - Real.log target
         ≤ (2 * ε ^ (2 : ℕ)) / ((R : ℝ) ^ (2 : ℕ)) * sampleSize := by
-    convert hscaled using 1
-    field_simp [hden_pos.ne', hR_sq_pos.ne']
+    have hcancel :
+        (2 * ε ^ (2 : ℕ)) / ((R : ℝ) ^ (2 : ℕ)) *
+            (((R : ℝ) ^ (2 : ℕ)) / (2 * ε ^ (2 : ℕ)) *
+              (Real.log 2 - Real.log target)) =
+          Real.log 2 - Real.log target := by
+      field_simp [hden_pos.ne', hR_sq_pos.ne']
+    calc
+      Real.log 2 - Real.log target =
+          (2 * ε ^ (2 : ℕ)) / ((R : ℝ) ^ (2 : ℕ)) *
+            (((R : ℝ) ^ (2 : ℕ)) / (2 * ε ^ (2 : ℕ)) *
+              (Real.log 2 - Real.log target)) := hcancel.symm
+      _ ≤ (2 * ε ^ (2 : ℕ)) / ((R : ℝ) ^ (2 : ℕ)) * sampleSize := hscaled
   have hscaled'' :
       Real.log 2 - Real.log target
         ≤ 2 * sampleSize * ε ^ (2 : ℕ) / ((R : ℝ) ^ (2 : ℕ)) := by
@@ -1093,7 +1103,7 @@ theorem empiricalAverageRangeSum_pos_of_exists_range_pos
       0 < ∑ j ∈ s, ((‖b j - a j‖₊ / 2) ^ (2 : ℕ)) := by
     exact Finset.sum_pos'
       (fun j hj => by
-        exact zero_le ((‖b j - a j‖₊ / 2) ^ (2 : ℕ)))
+        positivity)
       ⟨i, hi, hterm_pos⟩
   exact NNReal.coe_pos.mpr hsum_pos
 
@@ -2147,8 +2157,20 @@ theorem empiricalAverageUniformRangeSampleSize_ge_of_sqrtBudget_le
     have hfactor_nonneg : 0 ≤ sampleSize / (ε ^ (2 : ℕ)) := by
       positivity
     have hmul := mul_le_mul_of_nonneg_right hA_le_eps_sq hfactor_nonneg
-    convert hmul using 1 <;>
-      field_simp [hden_sample_pos.ne', hden_eps_pos.ne', hε_sq_pos.ne']
+    have hleft :
+        ((((R : ℝ) ^ (2 : ℕ)) / (2 * sampleSize)) * logBudget) *
+            (sampleSize / ε ^ (2 : ℕ)) =
+          (((R : ℝ) ^ (2 : ℕ)) / (2 * ε ^ (2 : ℕ))) * logBudget := by
+      field_simp [hSampleSize_pos.ne', hε_sq_pos.ne']
+    have hright :
+        ε ^ (2 : ℕ) * (sampleSize / ε ^ (2 : ℕ)) = sampleSize := by
+      field_simp [hε_sq_pos.ne']
+    calc
+      (((R : ℝ) ^ (2 : ℕ)) / (2 * ε ^ (2 : ℕ))) * logBudget =
+          ((((R : ℝ) ^ (2 : ℕ)) / (2 * sampleSize)) * logBudget) *
+            (sampleSize / ε ^ (2 : ℕ)) := hleft.symm
+      _ ≤ ε ^ (2 : ℕ) * (sampleSize / ε ^ (2 : ℕ)) := hmul
+      _ = sampleSize := hright
 
 /--
 Shared-sample finite-horizon Hoeffding bridge with a radius-style sample-size

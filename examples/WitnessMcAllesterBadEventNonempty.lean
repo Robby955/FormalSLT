@@ -42,7 +42,7 @@ def deltaW : ℝ := 1
 -- Hypotheses
 theorem pW_isPMF : IsPMF pW := by
   refine ⟨fun z => by simp [pW], ?_⟩
-  simp [pW, Fintype.sum_bool]
+  simp [pW]
 
 theorem priorW_isFullSupport : IsFullSupportPMF priorW := by
   refine ⟨⟨fun i => by simp [priorW], ?_⟩, fun i => by simp [priorW]⟩
@@ -109,7 +109,6 @@ theorem overfit_ok :
   rw [postPopRisk_eq, postEmpRisk_eq]
   have h := sqrt_lt_half
   push_cast
-  push_cast at h
   linarith
 
 /-- **The bad-event set is NON-EMPTY**: `SW` is a member. -/
@@ -188,7 +187,7 @@ theorem badSet_mass_eq_half :
       have hemp : posteriorEmpiricalRisk lossW ρ S = 1 := by
         unfold posteriorEmpiricalRisk posteriorAverage finiteEmpiricalRisk
         have hl : lossW () (S 0) = 1 := by rw [hbtrue]; simp [lossW]
-        simp [Fin.sum_univ_one, hl, hsum1]
+        simp [hl, hsum1]
       have hpop : posteriorPopulationRisk pW lossW ρ ≤ 1 := by
         unfold posteriorPopulationRisk posteriorAverage
         simp [popRisk_eq, hsum1]; norm_num
@@ -199,7 +198,7 @@ theorem badSet_mass_eq_half :
     fin_cases k
     simpa [SW] using hb
   rw [hset, Finset.sum_singleton]
-  simp [finiteProductSampleWeight, SW, pW]
+  simp [finiteProductSampleWeight, pW]
 
 end
 

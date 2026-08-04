@@ -101,6 +101,7 @@ expresses the increment as a single-coordinate update at index `k`.
 Combined with `HasBoundedDifferences f c`, this yields a pointwise
 range bound `|partialIntegral_{k.succ} - partialIntegral_{k.castSucc}| ≤ c k`. -/
 
+omit [MeasurableSpace Z] in
 /-- Single-coordinate "reveal" identity for `splice`:
 `splice k.succ S T` and `splice k.castSucc S T` differ exactly at
 coordinate `k`, where the former takes the prefix value `S k` and the
@@ -139,6 +140,7 @@ For each fixed `S` and any `T`, the integrand difference
 `f(splice k.succ S T) - f(splice k.castSucc S T)` is bounded in absolute
 value by `c k`. Direct application of `HasBoundedDifferences` after the
 `splice_succ_eq_update_castSucc` rewrite. -/
+omit [MeasurableSpace Z] in
 private lemma abs_integrand_diff_le
     {f : (Fin n → Z) → ℝ} {c : Fin n → ℝ}
     (hbdd : HasBoundedDifferences f c)
@@ -148,6 +150,7 @@ private lemma abs_integrand_diff_le
   rw [abs_sub_comm]
   exact hbdd (splice k.castSucc S T) k (S k)
 
+omit [MeasurableSpace Z] in
 /-- If two prefixes agree before coordinate `k`, then the two `k.succ`
 spliced integrands differ by at most the bounded-differences width `c k`.
 

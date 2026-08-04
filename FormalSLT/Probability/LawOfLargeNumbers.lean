@@ -61,8 +61,10 @@ theorem weakLawAverageTendstoInMeasure
           (fun (ω : Ω) => ∑ i ∈ Finset.range n, X i ω)
           μ :=
       Finset.aestronglyMeasurable_fun_sum _ fun i _ => hMeas i
-    simpa [Pi.smul_apply] using
-      AEStronglyMeasurable.const_smul hSum ((n : ℝ)⁻¹)
+    have h := AEStronglyMeasurable.const_smul hSum ((n : ℝ)⁻¹)
+    change AEStronglyMeasurable
+      (fun ω => (n : ℝ)⁻¹ * ∑ i ∈ Finset.range n, X i ω) μ at h
+    exact h
   exact tendstoInMeasure_of_tendsto_ae hAverage
     (strongLawAverageTendstoAlmostSure hIntegrable hIndependent hIdentDistrib)
 

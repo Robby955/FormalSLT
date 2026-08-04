@@ -59,8 +59,8 @@ theorem unitIntervalEntropyProfile_guarded (j : ℕ) :
 theorem unitIntervalEntropyProfile_intervalIntegrable (a b : ℝ) :
     IntervalIntegrable unitIntervalEntropyProfile volume a b := by
   have hcont : Continuous unitIntervalEntropyProfile := by
-    simpa [unitIntervalEntropyProfile] using
-      (continuous_const.add (Real.continuous_exp.comp continuous_neg))
+    change Continuous ((fun _ : ℝ => (20 : ℝ)) + Real.exp ∘ fun a => -a)
+    exact continuous_const.add (Real.continuous_exp.comp continuous_neg)
   exact hcont.intervalIntegrable a b
 
 /-- The entropy integrand is load-bearing: it is not a constant profile. -/

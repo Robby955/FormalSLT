@@ -111,7 +111,8 @@ lemma integral_lowerRayIndicator_comp_eq_cdf {Ω : Type*} [MeasurableSpace Ω]
   rw [hfun]
   have hint :
       ∫ ω, A.indicator (fun _ : Ω => (1 : ℝ)) ω ∂P = P.real A := by
-    simpa using (integral_indicator_one (μ := P) hA)
+    rw [show (fun _ : Ω => (1 : ℝ)) = (1 : Ω → ℝ) by funext _; rfl]
+    exact integral_indicator_one (μ := P) hA
   rw [hint]
   rw [ProbabilityTheory.cdf_eq_real]
   have hmap : (Measure.map X0 P) (Set.Iic x) = P A := by
@@ -137,7 +138,8 @@ lemma integral_strictLowerRayIndicator_comp_eq_cdfLeftLimit
   rw [hfun]
   have hint :
       ∫ ω, A.indicator (fun _ : Ω => (1 : ℝ)) ω ∂P = P.real A := by
-    simpa using (integral_indicator_one (μ := P) hA)
+    rw [show (fun _ : Ω => (1 : ℝ)) = (1 : Ω → ℝ) by funext _; rfl]
+    exact integral_indicator_one (μ := P) hA
   rw [hint]
   have hmap : (Measure.map X0 P) (Set.Iio x) = P A := by
     rw [Measure.map_apply hX0 measurableSet_Iio]
@@ -643,7 +645,8 @@ lemma empiricalCDFUniformDeviation_le_of_forall {ι Ω : Type*}
   unfold empiricalCDFUniformDeviation gcClassUniformDeviation
   exact Real.sSup_le (by
     rintro r ⟨x, rfl⟩
-    simpa using hPointwise x) hC
+    change |empiricalCDF X s ω x - ProbabilityTheory.cdf μ x| ≤ C
+    exact hPointwise x) hC
 
 /-- Empirical-CDF uniform deviation is the lower-ray GC-class deviation. -/
 theorem empiricalCDFUniformDeviation_eq_gcClassUniformDeviation {ι Ω : Type*}

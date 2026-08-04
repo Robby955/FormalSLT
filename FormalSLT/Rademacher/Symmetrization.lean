@@ -102,10 +102,11 @@ private lemma measurable_decoupledGap_joint
   unfold decoupledGap
   simp [Finset.sup'_apply]
 
+omit [MeasurableSpace Z] in
 /-- Boundedness of `decoupledGap` on the iid product by `2B`, mirroring
 Stage 1's univariate `abs_decoupledGap_le`. -/
 private lemma abs_decoupledGap_joint_le
-    {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 ≤ B)
+    {ℓ : ι → Z → ℝ} {B : ℝ} (_hB : 0 ≤ B)
     (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B) (hn : 0 < n)
     (p : (Fin n → Z) × (Fin n → Z)) :
     |decoupledGap ℓ p.1 p.2| ≤ 2 * B := by

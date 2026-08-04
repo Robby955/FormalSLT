@@ -229,8 +229,12 @@ theorem gaussianCoordinateDensity_eq_gaussianPDFReal
 theorem integrable_gaussianCoordinateDensity
     (mean variance : ℝ) (hvariance : 0 < variance) :
     Integrable (gaussianCoordinateDensity mean variance) := by
-  simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
-    (integrable_gaussianPDFReal mean ⟨variance, hvariance.le⟩)
+  have hfun : gaussianCoordinateDensity mean variance =
+      gaussianPDFReal mean ⟨variance, hvariance.le⟩ := by
+    funext x
+    exact gaussianCoordinateDensity_eq_gaussianPDFReal mean variance x hvariance
+  rw [hfun]
+  exact integrable_gaussianPDFReal mean ⟨variance, hvariance.le⟩
 
 /-- A coordinate Gaussian density times any shifted square is integrable with
 respect to Lebesgue measure. -/
@@ -250,8 +254,14 @@ theorem integrable_gaussianCoordinateDensity_mul_sq_sub
   rw [gaussianReal_of_var_ne_zero mean hv,
     integrable_withDensity_iff (measurable_gaussianPDF mean v)
       (ae_of_all _ fun x => gaussianPDF_lt_top)] at hint
-  simpa [toReal_gaussianPDF, smul_eq_mul, mul_comm,
-    gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using hint
+  have hfun : (fun x : ℝ => gaussianCoordinateDensity mean variance x *
+      (x - center) ^ (2 : Nat)) =
+      fun x => (x - center) ^ (2 : Nat) * gaussianPDFReal mean v x := by
+    funext x
+    rw [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance x hvariance]
+    simp only [v, mul_comm]
+  rw [hfun]
+  simpa only [toReal_gaussianPDF, smul_eq_mul] using hint
 
 /-- The weighted shifted-square moment of a one-dimensional repository
 Gaussian density is its variance plus squared displacement from the mean. -/
@@ -306,8 +316,15 @@ theorem integral_gaussianCoordinateDensity_mul_sq_sub
             rw [hx2, integral_id_gaussianReal]
             ring
   rw [integral_gaussianReal_eq_integral_smul hv] at hshift
-  simpa [smul_eq_mul,
-    gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using hshift
+  have hfun : (fun x : ℝ => gaussianCoordinateDensity mean variance x *
+      (x - center) ^ (2 : Nat)) =
+      fun x => gaussianPDFReal mean v x * (x - center) ^ (2 : Nat) := by
+    funext x
+    rw [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance x hvariance]
+  rw [hfun]
+  have hvcoe : (v : ℝ) = variance := rfl
+  rw [hvcoe] at hshift
+  simpa only [smul_eq_mul] using hshift
 
 /-- Each positive-variance coordinate density integrates to one. -/
 theorem integral_gaussianCoordinateDensity_eq_one
@@ -315,8 +332,11 @@ theorem integral_gaussianCoordinateDensity_eq_one
     ∫ x, gaussianCoordinateDensity mean variance x = 1 := by
   let v : NNReal := ⟨variance, hvariance.le⟩
   have hv : v ≠ 0 := nnrealOfPos_ne_zero hvariance
-  simpa [gaussianCoordinateDensity_eq_gaussianPDFReal mean variance] using
-    (integral_gaussianPDFReal_eq_one mean (v := v) hv)
+  have hfun : gaussianCoordinateDensity mean variance = gaussianPDFReal mean v := by
+    funext x
+    exact gaussianCoordinateDensity_eq_gaussianPDFReal mean variance x hvariance
+  rw [hfun]
+  exact integral_gaussianPDFReal_eq_one mean (v := v) hv
 
 /-- Multiplying a diagonal Gaussian density by a shifted square in one
 coordinate preserves its separated product form. -/
@@ -380,7 +400,8 @@ theorem integrable_sq_sub_coordinate_diagonalGaussianMeasure {d : ℕ}
     rw [diagonalGaussianENNRealDensity_toReal, mul_comm,
       diagonalGaussianDensity_mul_sq_sub_eq_prod params i center x]
   rw [hfactor]
-  simpa using
+  rw [volume_pi]
+  exact
     (Integrable.fintype_prod
       (μ := fun _ : Fin d => (volume : Measure ℝ))
       (f := fun j y => if j = i then

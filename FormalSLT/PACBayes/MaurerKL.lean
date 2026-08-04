@@ -213,11 +213,11 @@ theorem binKL_posteriorMixture_jensen {ι : Type*} [Fintype ι]
     apply Finset.sum_congr rfl
     intro i _
     rcases eq_or_lt_of_le (hρ0 i) with hρ0i | hρpos
-    · simp only []; rw [← hρ0i]; ring
+    · rw [← hρ0i]; ring
     · have hne : ρ i ≠ 0 := ne_of_gt hρpos
       rcases eq_or_lt_of_le (hâ'0 i) with hâ0i | hâpos
-      · simp only []; rw [← hâ0i]; ring
-      · simp only []
+      · rw [← hâ0i]; ring
+      ·
         have hratio : (ρ i * â' i) / (ρ i * a' i) = â' i / a' i := by
           rw [mul_div_mul_left _ _ hne]
         rw [hratio]; ring

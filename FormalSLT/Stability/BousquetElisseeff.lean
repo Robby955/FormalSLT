@@ -506,7 +506,9 @@ theorem boundedLoss_stabilityGap_integrable
   have htrain_int : Integrable (fun S : Fin n → Z => trainingLoss A ℓ S) μn := by
     unfold trainingLoss
     exact hsum_int.const_mul _
-  simpa [risk, μn] using hrisk_int.sub htrain_int
+  change Integrable
+    ((fun S : Fin n → Z => risk μ ℓ (A S)) - fun S => trainingLoss A ℓ S) μn
+  exact hrisk_int.sub htrain_int
 
 /-- Bounded-loss Bousquet-Elisseeff high-probability stability wrapper.
 

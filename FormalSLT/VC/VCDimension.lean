@@ -1,22 +1,19 @@
-import Mathlib.Combinatorics.SetFamily.Shatter
+/-
+Copyright (c) 2026 Robby Sneiderman. All rights reserved.
+Released under MIT license as described in the file LICENSE.
+Authors: Robby Sneiderman
+-/
+import FormalSLT.VC.Dimension
+
+/-!
+# Compatibility import: VC dimension
+
+The implementation lives in `FormalSLT.VC.Dimension`. This alias preserves the
+earlier verbose namespace and import path.
+-/
 
 namespace FormalSLT.VC.VCDimension
 
-/--
-Sauer-Shelah lemma for finite set families, binomial-sum form.
-
-This claim-facing wrapper is the finite combinatorial core behind the
-`vc-dimension` page's growth-function statement. A hypothesis class restricted
-to a fixed finite sample is represented as a finite family of subsets of the
-sample. Mathlib's `Finset.card_le_card_shatterer` gives Pajor's trace bound,
-and `Finset.card_shatterer_le_sum_vcDim` gives the Sauer-Shelah binomial
-bound in terms of the VC dimension of that finite family.
-Claim-facing wrapper for theorempath.com evidence entry `claim:vc-dimension::sauer-shelah-lemma`.
--/
-theorem sauerShelahFiniteSetFamily
-    {α : Type*} [DecidableEq α] [Fintype α] (𝒜 : Finset (Finset α)) :
-    𝒜.card ≤ ∑ k ∈ Finset.Iic 𝒜.vcDim, (Fintype.card α).choose k :=
-  (Finset.card_le_card_shatterer 𝒜).trans
-    (Finset.card_shatterer_le_sum_vcDim (𝒜 := 𝒜))
+alias sauerShelahFiniteSetFamily := FormalSLT.VC.Dimension.sauerShelahFiniteSetFamily
 
 end FormalSLT.VC.VCDimension

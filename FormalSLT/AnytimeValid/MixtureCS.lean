@@ -655,7 +655,10 @@ theorem mixture_confidence_sequence_uniformPrior
       integrable_subGammaExponentialProcess_omegaProd_uniformPrior
         (ν := μ) (X := X) (sigma2 := sigma2) (b := b)
         (lam0 := lam0) (lam1 := lam1) n hb hσ hlam0.le h01 hblam1 hX_meas hbound
-    simpa [mixtureExponentialProcess] using hprod.integral_prod_left
+    change Integrable
+      (fun ω => ∫ lam, subGammaExponentialProcess X sigma2 b lam n ω
+        ∂uniformTiltPrior lam0 lam1) μ
+    exact hprod.integral_prod_left
   · -- hM_int
     intro n
     exact integrable_subGammaExponentialProcess_prod_uniformPrior

@@ -122,7 +122,9 @@ theorem pacBayesPriorMixture_supermartingale
         (condSubGamma_supermartingale_step hb hσ hlam.le hblam
           (hX_meas i) (hX_int i) hadapted (hbound i) (hcenter i) (hvar i))).1
     have hscaled := hsup_i.smul_nonneg (c := prior i) (hprior.nonneg i)
-    simpa [Pi.smul_apply, smul_eq_mul] using hscaled
+    change Supermartingale
+      (prior i • subGammaExponentialProcess (X i) sigma2 b lam) ℱ μ
+    exact hscaled
   refine ⟨?_, ?_⟩
   · have hsum : Supermartingale
         (fun n ω =>
@@ -131,7 +133,10 @@ theorem pacBayesPriorMixture_supermartingale
       supermartingale_finset_sum_index (Finset.univ : Finset ι)
         (fun i n ω => prior i * subGammaExponentialProcess (X i) sigma2 b lam n ω)
         (fun i _ => hfixed i)
-    simpa [pacBayesPriorMixtureProcess] using hsum
+    change Supermartingale
+      (fun n ω => ∑ i ∈ (Finset.univ : Finset ι),
+        prior i * subGammaExponentialProcess (X i) sigma2 b lam n ω) ℱ μ
+    exact hsum
   · intro n ω
     exact Finset.sum_nonneg fun i _ =>
       mul_nonneg (hprior.nonneg i) (Real.exp_pos _).le

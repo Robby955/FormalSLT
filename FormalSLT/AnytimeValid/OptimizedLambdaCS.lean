@@ -175,15 +175,15 @@ theorem supermartingale_finset_sum
   | empty =>
       simp only [Finset.sum_empty]
       have h : Martingale (0 : ℕ → Ω → ℝ) ℱ μ := MeasureTheory.martingale_zero ℝ ℱ μ
-      have hs := h.supermartingale
-      convert hs using 1
+      change Supermartingale (0 : ℕ → Ω → ℝ) ℱ μ
+      exact h.supermartingale
   | @insert a s ha ih =>
       simp only [Finset.sum_insert ha]
       have ha' : Supermartingale (M a) ℱ μ := hM a (Finset.mem_insert_self a s)
       have ihs : Supermartingale (fun n ω => ∑ j ∈ s, M j n ω) ℱ μ :=
         ih (fun j hj => hM j (Finset.mem_insert_of_mem hj))
-      have hadd := ha'.add ihs
-      convert hadd using 2
+      change Supermartingale (M a + fun n ω => ∑ j ∈ s, M j n ω) ℱ μ
+      exact ha'.add ihs
 
 /--
 **Stitched-grid nonnegative supermartingale.** Given a nonempty grid `Lam` of

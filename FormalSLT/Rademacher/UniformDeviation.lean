@@ -128,7 +128,9 @@ theorem uniformDeviation_highProb_finiteClass {ι : Type*} [Fintype ι] [Nonempt
       ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by
     have := genGap_highProb_finiteClass (μ := μ) (n := n) hB
       (fun i => (hℓ_meas i).neg)
-      (fun i z => by simp only [abs_neg]; exact hℓ_bdd i z)
+      (fun i z => by
+        rw [Pi.neg_apply, abs_neg]
+        exact hℓ_bdd i z)
       hn hCard hε
     simp only [piMeasure] at this
     exact this
