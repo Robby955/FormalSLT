@@ -1,4 +1,7 @@
 import FormalSLT.PACBayes
+import FormalSLT.VC.VCDimension
+import FormalSLT.VC.VCRademacher
+import FormalSLT.VC.VCSampleComplexity
 import FormalSLT.VC
 import FormalSLT.Sequential
 
@@ -15,6 +18,8 @@ without carrying duplicate proof bodies.
 #check FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #check FormalSLT.AnytimeValid.eProcess_typeI_control
 
+#check FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
+#check FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
 #check FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail
 
 #print axioms FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound

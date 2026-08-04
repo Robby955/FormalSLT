@@ -160,7 +160,7 @@ theorem Xc_proc_integrable (sigma2 b lam : ℝ) (n : ℕ) :
 
 /-! ### The concrete instantiation: all 12 hypotheses discharged with `X ≠ 0`. -/
 
-theorem witness_atTopCS (delta : ℝ) (hδ : 0 < delta) (_hsmall : delta < 1) :
+theorem witness_atTopCS (delta : ℝ) (hδ : 0 < delta) :
     μcoin.real (atTopSubGammaUpperFailure Xc 1 1 1 delta) ≤ delta := by
   have hblam : (1 : ℝ) * 1 < 3 := by norm_num
   exact atTop_time_uniform_confidence_sequence_subGamma

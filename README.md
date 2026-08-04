@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C721-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C723-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-167-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C026-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C079-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -39,8 +39,10 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   A checked two-point witness makes both the entropy budget and tail factor
   nontrivial.
 - **Sharp McDiarmid concentration:** one-sided, lower-tail, and two-sided
-  bounds with exponent `2B²`, including independent coordinates with
-  heterogeneous marginal laws. The sharper constant reaches the
+  bounds with exponent `-2ε² / ∑ k, (c k)²` for coordinate sensitivities
+  `c k`, including independent coordinates with heterogeneous marginal laws.
+  For a common per-coordinate sensitivity bound `B`, the denominator is
+  `nB²`. The sharper constant reaches the
   high-probability finite-class, Rademacher, VC, and algorithmic-stability
   wrappers.
 - **Time-uniform PAC-Bayes:** finite-class i.i.d. bounds simultaneous over all
