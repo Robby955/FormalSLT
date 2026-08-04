@@ -94,17 +94,17 @@ packaged `FiniteDyadicDudleyInstance` API.
 Main local declarations:
 
 - `FiniteDyadicDudleyInstance`
-  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3722`)
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4573`)
 - `FiniteDyadicDudleyInstance.SupremumAdapter`
-  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3741`)
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4592`)
 - `FiniteDyadicDudleyInstance.projected_dudley_bound`
-  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3756`)
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4607`)
 - `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound`
-  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3775`)
+  (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4626`)
 - `dyadicChainingFiniteNetSequenceOfTotallyBounded`
-  (`FormalSLT/Covering/TotalBoundedDudley.lean:337`)
+  (`FormalSLT/Covering/TotalBoundedDudley.lean:614`)
 - `finiteDyadicDudleyInstanceOfTotallyBounded`
-  (`FormalSLT/Covering/TotalBoundedDudley.lean:390`)
+  (`FormalSLT/Covering/TotalBoundedDudley.lean:667`)
 
 Meaning: the finite examples package the finite sub-Gaussian process, dyadic
 net sequence, coarse budget, variance positivity, and terminal supplied-supremum

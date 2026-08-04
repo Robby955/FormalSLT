@@ -256,12 +256,12 @@ Finite-chaining anchors:
 
 | Step | Declaration | Anchor |
 |---|---|---|
-| Finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:744` |
-| Sub-Gaussian finite max wrapper | `finite_expectedSup_le_of_subGaussian_mgf_sqrt` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:839` |
-| Finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:2343` |
-| Total-bounded dyadic net-sequence constructor | `dyadicChainingFiniteNetSequenceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:337` |
-| Total-bounded packaged Dudley constructor | `finiteDyadicDudleyInstanceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:390` |
-| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:851` |
+| Finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:752` |
+| Sub-Gaussian finite max wrapper | `finite_expectedSup_le_of_subGaussian_mgf_sqrt` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:847` |
+| Finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:3003` |
+| Total-bounded dyadic net-sequence constructor | `dyadicChainingFiniteNetSequenceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:614` |
+| Total-bounded packaged Dudley constructor | `finiteDyadicDudleyInstanceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:667` |
+| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:1476` |
 
 Unit-interval anchors:
 
@@ -327,13 +327,13 @@ FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
 
 Anchors:
 `FiniteDyadicDudleyInstance` at
-`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3722`,
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4573`,
 `FiniteDyadicDudleyInstance.SupremumAdapter` at
-`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3741`,
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4592`,
 `FiniteDyadicDudleyInstance.projected_dudley_bound` at
-`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3756`, and
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4607`, and
 `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound` at
-`FormalSLT/Covering/FiniteSubGaussianChaining.lean:3775`.
+`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4626`.
 
 The two-point module packages the data as:
 
