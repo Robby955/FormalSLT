@@ -6,9 +6,7 @@ assumptions, reproducible builds, and careful public claims.
 
 ## Branch and PR flow
 
-- Open pull requests against the repository default branch. In the private
-  preview repo this is currently `release-candidate`; in a public release
-  mirror it may be `main`.
+- Open pull requests against the repository default branch, currently `main`.
 - Use a topic branch with a descriptive name, for example
   `feat/lean-small-helper-lemma` or `docs/theorem-map-cleanup`.
 - Keep theorem PRs small. A good PR usually proves one public theorem or one
@@ -51,6 +49,11 @@ Every module must have a `/-! ... -/` docstring that states:
 - Current boundaries and assumptions
 - Whether sorry/admit/custom axioms are used (should always be "none")
 
+Every new module must also carry the repository copyright and author header.
+Follow the subject ownership and import direction in
+[`ARCHITECTURE.md`](./ARCHITECTURE.md); avoid adding new top-level implementation
+files when an existing subject directory owns the result.
+
 ## Naming conventions
 
 - Theorem and lemma names follow nearby Mathlib/FormalSLT APIs, including
@@ -70,7 +73,7 @@ Every module must have a `/-! ... -/` docstring that states:
 6. Run `#print axioms <your_theorem>` and verify only standard axioms.
 7. Update `README.md` (module structure, main theorems table, roadmap).
 8. Update `docs/theorem-map.md` and `docs/roadmap.md`.
-9. Open a PR against `release-candidate`.
+9. Open a PR against `main`.
 
 ## Build, tests, and audits
 

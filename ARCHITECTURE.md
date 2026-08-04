@@ -1,0 +1,127 @@
+# FormalSLT architecture
+
+FormalSLT is organized around a checked finite-sample learning-theory spine.
+The library also contains probability, statistics, metric-entropy, and
+sequential-inference infrastructure needed by that spine. This document records
+where new code belongs and how imports should flow while older flat modules are
+migrated incrementally.
+
+## Subject ownership
+
+| Subject | Owns |
+|---|---|
+| `Probability` | General probability, finite expectations, product measures, moments, and concentration primitives not tied to a learning theorem. |
+| `LinearAlgebra` | Deterministic algebraic and analytic inequalities. |
+| `Concentration` and `Azuma` | Bounded-difference, martingale, and sub-Gamma concentration machinery. |
+| `Rademacher` | Empirical Rademacher complexity, symmetrization, contraction, finite-class bounds, and metric-entropy generalization. |
+| `VC` | Growth functions, Sauer--Shelah, binary trace bridges, and VC sample-complexity results. |
+| `Covering` | Finite nets, covering numbers, finite chaining, and explicitly scoped Dudley interfaces. |
+| `Stability` | Algorithmic-stability definitions and generalization theorems. |
+| `PACBayes` | Change of measure, KL calculations, bounded-loss and Bernstein bounds, and time-uniform PAC-Bayes results. |
+| `AnytimeValid` | Ville bounds, e-processes, betting processes, mixtures, and confidence sequences. |
+| `OnlineToPAC` | Online-regret to statistical-risk conversions. |
+| `Statistics` | Estimation and statistical-model interfaces built on the foundational layers. |
+| `TestTimeMeta` | Application-level compositions of already established learning and sequential bounds. |
+
+Top-level files such as `Risk.lean`, `ERM.lean`, and `UniformConvergence.lean`
+form the small core learning vocabulary. New multi-module theorem families
+should use a subject directory rather than add another top-level implementation
+file.
+
+## Import direction
+
+New modules should follow this dependency direction:
+
+```text
+Probability / LinearAlgebra / core definitions
+                    |
+                    v
+        Concentration / Azuma
+                    |
+                    v
+Rademacher / VC / Covering / Stability / PACBayes / AnytimeValid
+                    |
+                    v
+         OnlineToPAC / Statistics
+                    |
+                    v
+              TestTimeMeta
+```
+
+Imports within a subject are expected. A foundational module must not import an
+application-level composition merely to reuse a local helper; move the helper
+to the lowest subject that owns its statement instead.
+
+The diagram is a rule for new and refactored code, not a claim that every
+legacy module already follows it. Cross-subject imports that are mathematically
+necessary should be narrow and documented in the module docstring.
+
+## Public imports
+
+- Import the narrowest module that provides the theorem you need.
+- Use `FormalSLT.PACBayes`, `FormalSLT.VC`, or `FormalSLT.Sequential` when an
+  application deliberately depends on a complete topic surface.
+- `FormalSLT.lean` is the whole-library umbrella used by the root build,
+  documentation, and repository audits. It is not required for downstream use.
+- New subject-level umbrella modules may re-export stable public endpoints, but
+  must contain no declarations and must not create import cycles.
+- File paths, namespaces, and theorem families should agree. New declarations
+  under `FormalSLT.PACBayes`, for example, belong below `FormalSLT/PACBayes/`.
+
+## Module standards
+
+Every new Lean module should have:
+
+- the repository copyright and author header;
+- a module docstring naming the main result, assumptions, proof route, and
+  current boundaries;
+- a focused public API with private or namespaced implementation helpers;
+- no `sorry`, `admit`, custom axioms, or custom constants;
+- a dedicated checker for a new public theorem, including `#check`,
+  `#print axioms`, and a concrete witness when non-vacuity is not immediate.
+
+Prefer `set_option autoImplicit false` in new standalone module families when
+it does not make the surrounding API inconsistent. Existing modules should be
+migrated separately so that implicit-parameter changes remain reviewable.
+
+## Legacy-module migration
+
+The current tree contains older parallel surfaces, including top-level
+PAC-Bayes files alongside `PACBayes/` modules and similarly named Rademacher or
+VC modules. Do not resolve this with a whole-tree rename.
+
+For each theorem family:
+
+1. identify the canonical subject-owned module;
+2. move shared helpers downward only when a concrete consumer needs them;
+3. preserve a declaration-free compatibility import when downstream users may
+   rely on the old path;
+4. mark the old path as compatibility-only in its docstring;
+5. remove it only in a release that records the breaking change.
+
+This keeps reviews small and preserves a buildable public surface throughout
+the migration.
+
+The first consolidation pass establishes these canonical owners while keeping
+the previous verbose paths as compatibility aliases:
+
+| Canonical implementation | Compatibility path |
+|---|---|
+| `Rademacher.Symmetrization` | `Rademacher.RademacherSymmetrization` |
+| `Rademacher.Contraction` | `Rademacher.RademacherContraction` |
+| `Rademacher.LinearPredictor` | `Rademacher.LinearPredictorRademacher` |
+| `Rademacher.HighProbability` | `Rademacher.HighProbRademacher` |
+| `VC.Dimension` | `VC.VCDimension` |
+| `VC.Rademacher` | `VC.VCRademacher` |
+| `VC.SampleComplexity` | `VC.VCSampleComplexity` |
+
+Compatibility modules contain aliases only; theorem proofs and implementation
+helpers remain in the canonical module.
+
+## Audit boundary
+
+Repository organization does not establish theorem scope. Public claims remain
+grounded in theorem signatures and checker output. A public theorem addition is
+complete only when the library build, its checker, the example sweep, proof-debt
+scans, axiom audit, statement-fidelity gate, and whitespace check pass as
+described in [CONTRIBUTING.md](./CONTRIBUTING.md).

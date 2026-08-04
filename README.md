@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C752-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-164-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C497-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C721-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-167-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C026-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -39,9 +39,10 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   A checked two-point witness makes both the entropy budget and tail factor
   nontrivial.
 - **Sharp McDiarmid concentration:** one-sided, lower-tail, and two-sided
-  bounds with exponent `2B²` over a homogeneous product measure. The sharper
-  constant reaches the high-probability finite-class, Rademacher, VC, and
-  algorithmic-stability wrappers.
+  bounds with exponent `2B²`, including independent coordinates with
+  heterogeneous marginal laws. The sharper constant reaches the
+  high-probability finite-class, Rademacher, VC, and algorithmic-stability
+  wrappers.
 - **Time-uniform PAC-Bayes:** finite-class i.i.d. bounds simultaneous over all
   posteriors, finite-grid data-dependent tilt selection, a process-level
   theorem over arbitrary measurable hypothesis spaces, and a spherical-
@@ -96,6 +97,9 @@ declaration and prints its axiom profile.
 - **Sharp two-sided McDiarmid inequality** —
   `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp`;
   [`CheckSharpMcDiarmid.lean`](./examples/CheckSharpMcDiarmid.lean)
+- **Sharp heterogeneous-product McDiarmid inequality** —
+  `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp_hetero`;
+  [`CheckHeterogeneousMcDiarmid.lean`](./examples/CheckHeterogeneousMcDiarmid.lean)
 - **PAC-Bayes Bernstein supplied margin-proxy shell** —
   `finitePACBayesBernsteinMargin_badEventMass_le_delta`;
   [`CheckPACBayesBernstein.lean`](./examples/CheckPACBayesBernstein.lean)
@@ -160,6 +164,7 @@ declaration and prints its axiom profile.
   [quickstart](./docs/formalslt-v0.1-quickstart.md) and
   [technical note](./docs/formalslt-v0.1-technical-note.md).
 - **Understand the proof structure:** start with
+  [Architecture](./ARCHITECTURE.md),
   [How to read the proofs](./docs/how-to-read-the-proofs.md),
   [Intuition](./docs/intuition.md), and [Diagrams](./docs/diagrams.md).
 - **Audit public claims:** use the generated
@@ -255,11 +260,13 @@ The main learning-theory results are deliberately finite and explicit.
 
 - **Hypothesis classes:** finite index types unless a theorem states a finite
   net or the process-level continuous PAC-Bayes interface
-- **Samples:** finite i.i.d. samples through product measures
+- **Samples:** finite i.i.d. samples through product measures for the main
+  learning spine; the heterogeneous McDiarmid theorem allows a separate
+  probability law in each independent coordinate
 - **Losses and processes:** real-valued, with boundedness or finite
   sub-Gaussian MGF assumptions
-- **Sharp bounded differences:** the general theorem uses the same product law
-  in every coordinate, not arbitrary non-i.i.d. product measures
+- **Sharp bounded differences:** independent finite product measures, including
+  heterogeneous coordinate laws, with a common coordinate state space
 - **PAC-Bayes Bernstein:** finite priors and posteriors with a supplied variance
   proxy and normalized prior-moment certificate
 - **Time-uniform PAC-Bayes:** finite-class for the i.i.d. bounded-loss theorem;
@@ -273,7 +280,6 @@ The main learning-theory results are deliberately finite and explicit.
   measurable suprema
 - A general measurable-supremum or separability construction for non-finite
   classes
-- A sharp McDiarmid theorem over arbitrary non-i.i.d. product spaces
 - An infinite-class confidence sequence
 - A concrete classifier-margin extractor or all-real-`λ` PAC-Bayes Bernstein
   optimization theorem
@@ -349,7 +355,6 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 [theorem index](./docs/INDEX.md). The remaining public boundaries are:
 
 - [ ] Continuous Dudley entropy integral over total-bounded classes
-- [ ] Sharp McDiarmid over arbitrary non-i.i.d. product spaces
 - [ ] Concrete PAC-Bayes margin extractor and all-real-`λ` optimization
 - [ ] End-to-end i.i.d. bounded-loss PAC-Bayes over arbitrary measurable
   hypothesis spaces
@@ -364,7 +369,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 Read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request. The
 short version: one theorem per pull request, no `sorry` or `admit`, only the
 standard `[propext, Classical.choice, Quot.sound]` axioms, and assumptions in
-the theorem signature.
+the theorem signature. New modules should also follow the subject ownership and
+import direction in [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 For candidate contributions, see
 [open formalization problems](./docs/open-formalization-problems.md) and

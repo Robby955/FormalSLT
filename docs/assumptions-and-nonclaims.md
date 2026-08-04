@@ -30,14 +30,21 @@ The high-probability generalization bounds require a known range bound:
 The 0-1 classification loss satisfies this with `B = 1`. Squared loss on an
 unbounded domain needs additional assumptions before these bounds apply.
 
-### IID samples
+### Product samples
 
-The sample `S : Fin n → Z` is drawn from the product measure
-`piMeasure μ n = μ^⊗n`. Each coordinate is independent and identically
-distributed.
+For the main learning spine, the sample `S : Fin n → Z` is drawn from the
+product measure `piMeasure μ n = μ^⊗n`. Each coordinate is independent and
+identically distributed.
 
-The current bounds do not cover time series, online learning, active learning,
-or dependent data without additional assumptions.
+The sharp heterogeneous McDiarmid API separately permits coordinate laws
+`μ : Fin n → Measure Z` and works over `Measure.pi μ`; the coordinates remain
+independent but need not be identically distributed. Its public upper, lower,
+and two-sided endpoints are checked in
+[`CheckHeterogeneousMcDiarmid.lean`](../examples/CheckHeterogeneousMcDiarmid.lean).
+
+These product-sample results do not cover time series, active learning, or
+dependent data without additional assumptions. The repository's separate
+online-to-PAC and anytime-valid modules state their own sequential assumptions.
 
 ### Azuma and sharp McDiarmid constants
 
@@ -156,8 +163,11 @@ total iid product mass to state the finite high-confidence good event directly.
 proxy is supplied per hypothesis, and the theorem consumes a normalized
 Bernstein prior-moment certificate. It does not yet derive that variance proxy
 from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
-Bernstein optimization, infinite-hypothesis, and continuous-posterior
-PAC-Bayes theorems are not yet implemented.
+  Bernstein optimization theorem is not yet implemented. The repository now
+  has an arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and a
+  spherical-Gaussian KL specialization; it does not yet discharge that
+  process-level interface into a general end-to-end i.i.d. bounded-loss
+  learning theorem.
 
 ### Algorithmic stability expected bound
 
