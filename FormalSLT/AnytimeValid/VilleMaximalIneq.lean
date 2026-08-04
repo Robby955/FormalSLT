@@ -76,7 +76,7 @@ theorem ville_maximal_ineq [IsFiniteMeasure μ]
   have hD : ∫ ω, stoppedValue M τ ω ∂μ ≤ ∫ ω, M 0 ω ∂μ := by
     have hsub : Submartingale (-M) 𝒢 μ := hsup.neg
     have hmono := hsub.expected_stoppedValue_mono (isStoppingTime_const 𝒢 0) hτ_stop
-        (fun ω => zero_le _) hτ_le
+        (fun _ => bot_le) hτ_le
     -- E[stoppedValue (-M) σ] = -E[stoppedValue M σ] for any stopping time σ
     have key : ∀ σ : Ω → ℕ∞,
         ∫ ω, stoppedValue (-M) σ ω ∂μ = -∫ ω, stoppedValue M σ ω ∂μ := by

@@ -50,7 +50,7 @@ theorem μ_real_true : μ.real {true} = 1/2 := by
   unfold μ Measure.real
   rw [Measure.add_apply, Measure.smul_apply, Measure.smul_apply,
     Measure.dirac_apply' _ (by trivial), Measure.dirac_apply' _ (by trivial)]
-  simp only [Set.mem_singleton_iff, smul_eq_mul]
+  simp only [smul_eq_mul]
   rw [Set.indicator_of_mem (by trivial), Set.indicator_of_notMem (by decide)]
   simp only [Pi.one_apply, mul_one, mul_zero, add_zero]
   rw [show (1/2 : ENNReal) = ENNReal.ofReal (1/2) by
@@ -62,7 +62,7 @@ theorem μ_real_false : μ.real {false} = 1/2 := by
   unfold μ Measure.real
   rw [Measure.add_apply, Measure.smul_apply, Measure.smul_apply,
     Measure.dirac_apply' _ (by trivial), Measure.dirac_apply' _ (by trivial)]
-  simp only [Set.mem_singleton_iff, smul_eq_mul]
+  simp only [smul_eq_mul]
   rw [Set.indicator_of_notMem (by decide), Set.indicator_of_mem (by trivial)]
   simp only [Pi.one_apply, mul_one, mul_zero, zero_add]
   rw [show (1/2 : ENNReal) = ENNReal.ofReal (1/2) by
@@ -81,7 +81,7 @@ def ℱ : Filtration ℕ (⊤ : MeasurableSpace Ω) where
   mono' := by
     intro i j hij
     rcases Nat.eq_zero_or_pos i with hi | hi
-    · subst hi; simp only [if_pos rfl]; exact bot_le
+    · subst hi; exact bot_le
     · have hj : j ≠ 0 := by omega
       have hi' : i ≠ 0 := by omega
       simp only [if_neg hi', if_neg hj]
@@ -101,7 +101,7 @@ theorem integral_X_eq_zero (k : ℕ) : ∫ ω, X k ω ∂μ = 0 := by
   · subst hk
     have hint : Integrable (X 0) μ := Integrable.of_finite
     rw [integral_fintype hint, Fintype.sum_bool]
-    simp only [X, if_pos rfl, if_true, if_false, smul_eq_mul]
+    simp only [X, if_true, smul_eq_mul]
     rw [μ_real_true, μ_real_false]
     norm_num
   · have hk0 : k ≠ 0 := by omega
@@ -113,7 +113,7 @@ theorem integral_Xsq_le_one (k : ℕ) : ∫ ω, (X k ω) ^ 2 ∂μ ≤ 1 := by
   · subst hk
     have hint : Integrable (fun ω => (X 0 ω) ^ 2) μ := Integrable.of_finite
     rw [integral_fintype hint, Fintype.sum_bool]
-    simp only [X, if_pos rfl, smul_eq_mul]
+    simp only [X, smul_eq_mul]
     rw [μ_real_true, μ_real_false]
     norm_num
   · have hk0 : k ≠ 0 := by omega

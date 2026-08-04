@@ -89,8 +89,8 @@ theorem cond_markov_of_nonneg
   have h_smul := condExp_smul (𝕜 := ℝ) (μ := μ) (m := m) c Z
   -- `c • Z = fun ω => c * Z ω` and `(c • μ[Z | m]) ω = c * (μ[Z | m]) ω`.
   have h_factor : μ[fun ω => c * Z ω | m] =ᵐ[μ] fun ω => c * (μ[Z | m]) ω := by
-    filter_upwards [h_smul] with ω hω
-    simpa [Pi.smul_apply, smul_eq_mul] using hω
+    change μ[fun ω => c * Z ω | m] =ᵐ[μ] fun ω => c * (μ[Z | m]) ω at h_smul
+    exact h_smul
   -- Step 6: combine.
   filter_upwards [h_mono, h_factor] with ω h_mono' h_factor'
   exact h_factor' ▸ h_mono'

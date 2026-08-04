@@ -144,12 +144,24 @@ lemma measurable_swapBy [MeasurableSpace Z] (σ : Fin n → Bool) :
   refine Measurable.prodMk ?_ ?_
   · refine measurable_pi_lambda _ (fun k => ?_)
     by_cases hσ : σ k = true
-    · simpa [swapBy, hσ] using (measurable_pi_apply k).comp measurable_fst
-    · simpa [swapBy, hσ] using (measurable_pi_apply k).comp measurable_snd
+    · change Measurable (fun p : (Fin n → Z) × (Fin n → Z) =>
+        if σ k = true then p.1 k else p.2 k)
+      simp only [if_pos hσ]
+      fun_prop
+    · change Measurable (fun p : (Fin n → Z) × (Fin n → Z) =>
+        if σ k = true then p.1 k else p.2 k)
+      simp only [if_neg hσ]
+      fun_prop
   · refine measurable_pi_lambda _ (fun k => ?_)
     by_cases hσ : σ k = true
-    · simpa [swapBy, hσ] using (measurable_pi_apply k).comp measurable_snd
-    · simpa [swapBy, hσ] using (measurable_pi_apply k).comp measurable_fst
+    · change Measurable (fun p : (Fin n → Z) × (Fin n → Z) =>
+        if σ k = true then p.2 k else p.1 k)
+      simp only [if_pos hσ]
+      fun_prop
+    · change Measurable (fun p : (Fin n → Z) × (Fin n → Z) =>
+        if σ k = true then p.2 k else p.1 k)
+      simp only [if_neg hσ]
+      fun_prop
 
 /-- **Pointwise swap identity.** For any sample pair `(S, S')` and any
 sign vector `σ`, evaluating `decoupledGap` at the σ-swapped pair gives
@@ -478,6 +490,7 @@ theorem signedDecoupledGap_avg_le_two_empiricalRademacher
 
 /-! ### Boundedness and measurability helpers for the final theorem -/
 
+omit [Fintype ι] [Nonempty ι] in
 /-- Bound `|signedEmpiricalSum ℓ z σ i| ≤ n * B` when `|ℓ i z| ≤ B`. -/
 private lemma abs_signedEmpiricalSum_le
     {ℓ : ι → Z → ℝ} {B : ℝ} (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
@@ -499,7 +512,7 @@ private lemma abs_signedEmpiricalSum_le
 
 /-- Boundedness of `empiricalRademacherComplexity` by `B`. -/
 lemma abs_empiricalRademacherComplexity_le
-    {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 ≤ B) (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    {ℓ : ι → Z → ℝ} {B : ℝ} (_hB : 0 ≤ B) (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
     (hn : 0 < n) (z : Fin n → Z) :
     |empiricalRademacherComplexity ℓ z| ≤ B := by
   -- Step: show inner `sup_i (1/n) signedEmpiricalSum ℓ z σ i` ∈ [-B, B] for each σ.
@@ -572,7 +585,7 @@ lemma abs_empiricalRademacherComplexity_le
 
 /-- Boundedness of `signedDecoupledGap` by `2 * B`. -/
 private lemma abs_signedDecoupledGap_le
-    {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 ≤ B) (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    {ℓ : ι → Z → ℝ} {B : ℝ} (_hB : 0 ≤ B) (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
     (hn : 0 < n) (σ : Fin n → Bool) (S S' : Fin n → Z) :
     |signedDecoupledGap ℓ σ S S'| ≤ 2 * B := by
   -- Each inner term `(n)⁻¹ * ∑_k σ_k (ℓ_i S'_k - ℓ_i S_k)` is bounded by 2B.

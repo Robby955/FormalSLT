@@ -617,7 +617,13 @@ theorem continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveri
         8 * Real.sqrt 2 *
           (∫ ε in (0 : ℝ)..(radiusScale / 2),
             minimalMetricCoveringEntropyAtRadius (T := T) hT ε) := by
-    simpa [shiftedEntropy, pureEntropy, shiftedMinimalMetricCoveringEntropyAtRadius] using
+    change FiniteSubGaussianProcess.finiteDyadicEntropyAtRadiusUpperSum
+        radiusScale m
+        (fun ε => Real.sqrt 2 * minimalMetricCoveringEntropyAtRadius hT (ε / 4)) ≤
+      8 * Real.sqrt 2 *
+        (∫ ε in (0 : ℝ)..(radiusScale / 2),
+          minimalMetricCoveringEntropyAtRadius hT ε)
+    simpa [pureEntropy] using
       finiteDyadicEntropyAtRadiusUpperSum_shifted_div_four_le_eight_mul_full_integral
         (m := m) (entropyAtRadius := pureEntropy) hradiusScale
         (by

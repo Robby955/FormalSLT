@@ -444,11 +444,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_minimalDyadic_entrop
   let A : ℕ → Type u := fun j =>
     (minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (minimalDyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -480,7 +475,7 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_minimalDyadic_entrop
     rfl
   · intro j hj
     simpa using hentropyAtRadius j hj
-  · simpa [N] using hcoarse
+  · exact hcoarse
 
 /-- Boundary certificate for the cardinal-minimal dyadic net schedule.
 

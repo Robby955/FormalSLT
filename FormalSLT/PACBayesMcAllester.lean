@@ -4,7 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import FormalSLT.PACBayesKL
-import Mathlib.Data.Real.Sqrt
+import Mathlib.Analysis.Real.Sqrt
 
 /-!
 # McAllester PAC-Bayes generalization bound (deterministic core)

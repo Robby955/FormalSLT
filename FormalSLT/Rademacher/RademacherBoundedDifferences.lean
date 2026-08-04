@@ -167,8 +167,9 @@ theorem empiricalRademacher_lower_tail_bound_azuma [MeasurableSpace Z] (μ : Mea
   have hbase := hasBoundedDifferences_tail_azuma (μ := fun _ : Fin n => μ) hbdd_neg
     ((Decoupling.measurable_empiricalRademacherComplexity hℓ_meas).neg).stronglyMeasurable
     (by
-      simpa only [Pi.neg_apply] using
-        (empiricalRademacher_integrable μ ℓ hB hℓ_meas hℓ_bdd hn).neg)
+      change Integrable (-fun S => empiricalRademacherComplexity ℓ S)
+        (Measure.pi fun _ : Fin n => μ)
+      exact (empiricalRademacher_integrable μ ℓ hB hℓ_meas hℓ_bdd hn).neg)
     (fun _ => div_nonneg (by linarith) hn_real) hε
   have hset :
       {S : Fin n → Z | empiricalRademacherComplexity ℓ S + ε

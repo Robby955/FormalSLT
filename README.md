@@ -2,13 +2,13 @@
 
 [![CI](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml)
 [![Docs](https://github.com/Robby955/FormalSLT/actions/workflows/docs.yml/badge.svg?branch=main)](https://robby955.github.io/FormalSLT/)
-[![Lean 4](https://img.shields.io/badge/Lean-4.30.0--rc2-blue.svg)](https://lean-lang.org/)
-[![Mathlib](https://img.shields.io/badge/Mathlib-25b7ac7-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
+[![Lean 4](https://img.shields.io/badge/Lean-4.32.0-blue.svg)](https://lean-lang.org/)
+[![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C752-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-164-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C359-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C497-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -356,8 +356,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 
 ## Dependencies
 
-- [Lean 4](https://lean-lang.org/) v4.30.0-rc2
-- [Mathlib4](https://github.com/leanprover-community/mathlib4) @ `25b7ac7`
+- [Lean 4](https://lean-lang.org/) v4.32.0
+- [Mathlib4](https://github.com/leanprover-community/mathlib4) @ `81a5d257`
 
 ## Contributing
 

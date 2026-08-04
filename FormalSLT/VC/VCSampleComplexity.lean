@@ -306,7 +306,9 @@ theorem uniformDeviation_highProb_vcClass
       ≤ Real.exp (-ε ^ 2 * ↑n / (8 * B ^ 2)) := by
     have := genGap_highProb_vcClass (μ := μ) (n := n) hB
       (fun i => (hℓ_meas i).neg)
-      (fun i z => by simp only [abs_neg]; exact hℓ_bdd i z)
+      (fun i z => by
+        rw [Pi.neg_apply, abs_neg]
+        exact hℓ_bdd i z)
       hn hd hdn hGrowth_neg hε
     simp only [piMeasure] at this
     exact this

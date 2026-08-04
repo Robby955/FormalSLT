@@ -223,7 +223,8 @@ theorem finDiscreteDyadicNet_pair_card_gt_one {n : ℕ} [Fact (2 ≤ n)] (j : �
   refine Fintype.one_lt_card_iff.mpr ⟨p0, p1, ?_⟩
   intro hp
   have hfst : p0.1.1 = p1.1.1 := congrArg (fun p => p.1.1) hp
-  exact finZero_ne_finOne (n := n) (by simpa [p0, p1, finDiscreteDyadicNet] using hfst)
+  change finZero = finOne at hfst
+  exact finZero_ne_finOne (n := n) hfst
 
 theorem finDiscreteDyadicNet_coveringNumber (n : ℕ) (j : ℕ) :
     (finDiscreteDyadicNet n j).coveringNumber = n := by
@@ -305,7 +306,9 @@ theorem finDiscreteRademacher_projected_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)
   have hbase :=
     FiniteDyadicDudleyInstance.projected_dudley_bound
       (finDiscreteDudleyInstance n) m
-  simpa [finDiscreteDudleyInstance, finDiscreteRademacherProcess] using hbase
+  convert hbase using 1 <;>
+    simp [finDiscreteDudleyInstance, finDiscreteDyadicNetSequence,
+      finDiscreteRademacherProcess]
 
 /-- Supremum functional for the embedded Rademacher process on `Fin n`. -/
 def finDiscreteRademacherSup {n : ℕ} [Fact (2 ≤ n)] (ω : Bool) : ℝ :=
@@ -350,7 +353,8 @@ def finDiscreteRademacherSupAdapter (n : ℕ) [Fact (2 ≤ n)] :
   terminalError := 0
   terminal_bound := by
     intro m ω
-    simpa using finDiscreteRademacherSup_le_projectedSup (n := n) m ω
+    convert finDiscreteRademacherSup_le_projectedSup (n := n) m ω using 1;
+      simp [finDiscreteDudleyInstance, finDiscreteDyadicNetSequence]
 
 /-- Supplied-supremum Dudley bound for the embedded Rademacher process on
 `Fin n`, routed through the packaged finite-dyadic Dudley API. -/
@@ -365,8 +369,9 @@ theorem finDiscreteRademacherSup_dudley_m_bound {n : ℕ} [Fact (2 ≤ n)] (m : 
   have hbase :=
     FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
       (finDiscreteDudleyInstance n) (finDiscreteRademacherSupAdapter n) m
-  simpa [finDiscreteDudleyInstance, finDiscreteRademacherSupAdapter,
-    finDiscreteRademacherProcess] using hbase
+  convert hbase using 1 <;>
+    simp [finDiscreteDudleyInstance, finDiscreteDyadicNetSequence,
+      finDiscreteRademacherSupAdapter, finDiscreteRademacherProcess]
 
 end
 

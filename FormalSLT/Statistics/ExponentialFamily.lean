@@ -40,6 +40,12 @@ namespace ExponentialFamily
 
 noncomputable section
 
+-- Keep calculus elaboration on the normed-space instances selected by
+-- mathlib's derivative API rather than the algebraically equivalent instances
+-- synthesized from the semiring hierarchy.
+local instance : AddCommGroup ℝ := Real.normedCommRing.toAddCommGroup
+local instance : Module ℝ ℝ := (inferInstance : NormedSpace ℝ ℝ).toModule
+
 open ClassicalEstimation
 open FisherInformation
 
@@ -114,13 +120,14 @@ theorem finitePartition_hasDerivAt {Ω : Type*} [Fintype Ω]
       (∑ x, h x * Real.exp (theta * T x) * T x)
       theta := by
   unfold finitePartition
-  have hsum := HasDerivAt.sum (u := (Finset.univ : Finset Ω)) fun x _ =>
-    ((Real.hasDerivAt_exp (theta * T x)).comp theta
-      ((hasDerivAt_id theta).mul_const (T x))).const_mul (h x)
-  convert hsum using 1
-  · ext u
-    simp
-  · ring_nf
+  apply HasDerivAt.fun_sum
+  intro x _hx
+  have hmul : HasDerivAt (fun u : ℝ => u * T x) (T x) theta := by
+    simpa only [id_eq, one_mul] using (hasDerivAt_id theta).mul_const (T x)
+  have hx := ((Real.hasDerivAt_exp (theta * T x)).comp theta hmul).const_mul (h x)
+  change HasDerivAt (fun u => h x * Real.exp (u * T x))
+    (h x * (Real.exp (theta * T x) * T x)) theta at hx
+  simpa only [mul_assoc] using hx
 
 /-- The normalized expectation is the logarithmic derivative numerator divided by `Z`. -/
 theorem finiteExponentialFamily_mean_eq_logPartition_deriv {Ω : Type*} [Fintype Ω]
@@ -182,8 +189,10 @@ theorem finiteExponentialPMF_hasDerivAt {Ω : Type*} [Fintype Ω]
   unfold finiteExponentialPMFDeriv finiteExponentialPMF
   have hlin : HasDerivAt (fun u => u * T x - finiteLogPartition h T u)
       (T x - weightedExpectation (finiteExponentialPMF h T theta) T) theta := by
-    simpa using (((hasDerivAt_id theta).mul_const (T x)).sub
-      (finiteLogPartition_hasDerivAt (h := h) (T := T) hZ))
+    have hmul : HasDerivAt (fun u : ℝ => u * T x) (T x) theta := by
+      simpa only [id_eq, one_mul] using (hasDerivAt_id theta).mul_const (T x)
+    exact hmul.sub
+      (finiteLogPartition_hasDerivAt (h := h) (T := T) hZ)
   have hexp := hlin.exp
   simpa [finiteExponentialPMF, finiteExponentialPMFDeriv, weightedExpectation,
     mul_assoc, mul_left_comm, mul_comm] using hexp.const_mul (h x)

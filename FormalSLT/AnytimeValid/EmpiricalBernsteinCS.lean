@@ -204,11 +204,14 @@ theorem condBernsteinMGF_of_bounded_centered_condVarianceProxy
   have h_smul_quad :=
     condExp_smul (𝕜 := ℝ) (μ := μ) (m := m) (lam ^ 2 / K) (fun ω => X ω ^ 2)
   have h_lin_eq : μ[fun ω => lam * X ω | m] =ᵐ[μ] fun ω => lam * (μ[X | m]) ω := by
-    simpa [Pi.smul_apply, smul_eq_mul] using h_smul_lin
+    change μ[lam • X | m] =ᵐ[μ] lam • μ[X | m]
+    exact h_smul_lin
   have h_quad_eq :
       μ[fun ω => lam ^ 2 / K * X ω ^ 2 | m]
         =ᵐ[μ] fun ω => lam ^ 2 / K * (μ[fun ω => X ω ^ 2 | m]) ω := by
-    simpa [Pi.smul_apply, smul_eq_mul] using h_smul_quad
+    change μ[(lam ^ 2 / K) • fun ω => X ω ^ 2 | m]
+      =ᵐ[μ] (lam ^ 2 / K) • μ[fun ω => X ω ^ 2 | m]
+    exact h_smul_quad
   have h_sum_eq :
       μ[fun ω => 1 + lam * X ω + lam ^ 2 * X ω ^ 2 / K | m]
         =ᵐ[μ]
@@ -834,7 +837,10 @@ theorem empiricalBernstein_confidence_sequence_uniformPrior
         (ν := μ) (X := X) (V := V) (b := b)
         (lam0 := lam0) (lam1 := lam1) n hb hlam0.le h01 hblam1
         hX_meas hV_meas hV_nonneg hbound
-    simpa [empiricalBernsteinMixtureProcess] using hprod.integral_prod_left
+    change Integrable
+      (fun ω => ∫ lam, empiricalBernsteinExponentialProcess X V b lam n ω
+        ∂uniformTiltPrior lam0 lam1) μ
+    exact hprod.integral_prod_left
   have hsup : Supermartingale
       (empiricalBernsteinMixtureProcess X V b (uniformTiltPrior lam0 lam1)) ℱ μ :=
     (empiricalBernstein_mixture_is_supermartingale

@@ -1761,15 +1761,31 @@ private theorem binKLPinsker_hasDerivAt_G (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1
   have d3 : HasDerivAt (fun x : ℝ => (1 - x) * Real.log (1 - x))
       (-(Real.log (1 - p) + 1)) p := by
     have := (Real.hasDerivAt_mul_log h1mne).comp p du
+    have hfun :
+        (fun x : ℝ => x * Real.log x) ∘ (fun x : ℝ => 1 - x) =
+          fun x : ℝ => (1 - x) * Real.log (1 - x) := by
+      rfl
+    rw [hfun] at this
     simpa using this
   have d4 : HasDerivAt (fun x : ℝ => (1 - x) * Real.log (1 - q))
       (-(Real.log (1 - q))) p := by
     have := du.mul_const (Real.log (1 - q))
     simpa using this
   have := ((d1.sub d2).add (d3.sub d4))
-  unfold binKLPinskerG
-  convert this using 1
-  ring
+  have hfun :
+      ((fun x : ℝ => x * Real.log x) - (fun x : ℝ => x * Real.log q)) +
+          ((fun x : ℝ => (1 - x) * Real.log (1 - x)) -
+            (fun x : ℝ => (1 - x) * Real.log (1 - q))) =
+        binKLPinskerG q := by
+    funext x
+    rfl
+  have hcoeff :
+      Real.log p + 1 - Real.log q +
+          (-(Real.log (1 - p) + 1) - -Real.log (1 - q)) =
+        Real.log p - Real.log (1 - p) - Real.log q + Real.log (1 - q) := by
+    ring
+  rw [hfun, hcoeff] at this
+  exact this
 
 private theorem binKLPinsker_hasDerivAt_F (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
     HasDerivAt (binKLPinskerF q) (binKLPinskerD q p) p := by
@@ -1777,16 +1793,26 @@ private theorem binKLPinsker_hasDerivAt_F (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1
   have hsq : HasDerivAt (fun x : ℝ => 2 * (x - q) ^ 2) (4 * (p - q)) p := by
     have h : HasDerivAt (fun x : ℝ => (x - q) ^ 2) (2 * (p - q) ^ 1 * 1) p := by
       have := (hasDerivAt_id p).sub_const q
-      simpa using (this.pow 2)
+      have hpow := this.pow 2
+      have hfun : (fun x : ℝ => id x - q) ^ 2 = fun x : ℝ => (x - q) ^ 2 := by
+        rfl
+      rw [hfun] at hpow
+      simpa using hpow
     have := h.const_mul (2 : ℝ)
-    convert this using 1
-    ring
+    have hcoeff : 2 * (2 * (p - q) ^ 1 * 1) = 4 * (p - q) := by ring
+    rw [hcoeff] at this
+    exact this
   have hd := hg.sub hsq
   have heq : binKLPinskerD q p =
       (Real.log p - Real.log (1 - p) - Real.log q + Real.log (1 - q)) - 4 * (p - q) := by
     unfold binKLPinskerD; ring
   rw [heq]
-  simpa only [binKLPinskerF] using hd
+  have hfun :
+      binKLPinskerG q - (fun x : ℝ => 2 * (x - q) ^ 2) = binKLPinskerF q := by
+    funext x
+    rfl
+  rw [hfun] at hd
+  exact hd
 
 private theorem binKLPinsker_hasDerivAt_D (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
     HasDerivAt (binKLPinskerD q) (p⁻¹ + (1 - p)⁻¹ - 4) p := by
@@ -1797,6 +1823,9 @@ private theorem binKLPinsker_hasDerivAt_D (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1
     simpa using (hasDerivAt_id p).const_sub 1
   have d2 : HasDerivAt (fun x : ℝ => Real.log (1 - x)) (-(1 - p)⁻¹) p := by
     have := (Real.hasDerivAt_log h1mne).comp p du
+    have hfun : Real.log ∘ (fun x : ℝ => 1 - x) = fun x : ℝ => Real.log (1 - x) := by
+      rfl
+    rw [hfun] at this
     simpa [div_eq_mul_inv] using this
   have d3 : HasDerivAt (fun _ : ℝ => Real.log q) (0 : ℝ) p := hasDerivAt_const p _
   have d4 : HasDerivAt (fun _ : ℝ => Real.log (1 - q)) (0 : ℝ) p := hasDerivAt_const p _
@@ -1804,9 +1833,16 @@ private theorem binKLPinsker_hasDerivAt_D (q p : ℝ) (hp0 : 0 < p) (hp1 : p < 1
     have := ((hasDerivAt_id p).sub_const q).const_mul (4 : ℝ)
     simpa using this
   have := (((d1.sub d2).sub d3).add d4).sub d5
-  unfold binKLPinskerD
-  convert this using 1
-  ring
+  have hfun :
+      ((((fun x : ℝ => Real.log x) - (fun x : ℝ => Real.log (1 - x))) -
+          (fun _ : ℝ => Real.log q)) + (fun _ : ℝ => Real.log (1 - q))) -
+        (fun x : ℝ => 4 * (x - q)) = binKLPinskerD q := by
+    funext x
+    rfl
+  have hcoeff : p⁻¹ - -(1 - p)⁻¹ - 0 + 0 - 4 = p⁻¹ + (1 - p)⁻¹ - 4 := by
+    ring
+  rw [hfun, hcoeff] at this
+  exact this
 
 private theorem binKLPinsker_derivD_nonneg (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) :
     0 ≤ p⁻¹ + (1 - p)⁻¹ - 4 := by

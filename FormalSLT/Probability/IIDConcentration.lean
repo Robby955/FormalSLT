@@ -103,7 +103,8 @@ theorem iidDeviationBadEventMass_le_exp_of_sharpMcDiarmid
     exact (hmeas t).neg
   have hYindep : iIndepFun Y μ := by
     have h := hindep.comp (fun _ => fun x : ℝ => -x) (fun _ => measurable_id.neg)
-    simpa [Y, Function.comp] using h
+    change iIndepFun (fun t => (fun x : ℝ => -x) ∘ X t) μ
+    exact h
   have hYrange : ∀ t, ∀ᵐ ω ∂μ, Y t ω ∈ Set.Icc (-lossBound) 0 := by
     intro t
     filter_upwards [hbounded t] with ω hω

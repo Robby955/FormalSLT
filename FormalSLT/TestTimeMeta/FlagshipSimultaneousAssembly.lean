@@ -105,8 +105,11 @@ theorem bernsteinContribution_pos :
   linarith
 
 theorem mcAllesterGap_pos : 0 < mcAllesterGap := by
-  unfold mcAllesterGap mcAllesterGeneralPenalty
-  simpa [McAllesterDecompWorkedExample.spec] using mcAllesterContribution_pos
+  unfold mcAllesterGap mcAllesterGeneralPenalty mcAllesterPenalty
+  apply mul_pos
+  · norm_num [McAllesterDecompWorkedExample.spec]
+  · apply Real.sqrt_pos.2
+    norm_num [McAllesterDecompWorkedExample.spec]
 
 theorem onlineGap_pos : 0 < onlineGap := by
   simpa [onlineGap, flagshipOnlineIidContribution] using onlineContribution_pos

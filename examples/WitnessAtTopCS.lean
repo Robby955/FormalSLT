@@ -40,7 +40,7 @@ def ℱc : Filtration ℕ (⊤ : MeasurableSpace Bool) where
     · have : j ≠ 0 := by omega
       simp [hi, this]
   le' := by
-    intro i; by_cases hi : i = 0 <;> simp [hi] <;> exact bot_le
+    intro i; by_cases hi : i = 0 <;> simp [hi]
 
 instance : IsProbabilityMeasure μcoin := by
   constructor
@@ -78,7 +78,7 @@ theorem integral_coin (f : Bool → ℝ) :
 /-- Integral of the single increment is zero (fair-coin centering). -/
 theorem integral_Xc_zero (k : ℕ) : ∫ ω, Xc k ω ∂μcoin = 0 := by
   rw [integral_coin]
-  by_cases hk : k = 0 <;> simp [Xc, hk] <;> ring
+  by_cases hk : k = 0 <;> simp [Xc, hk]
 
 theorem ℱc_zero : (ℱc : Filtration ℕ (⊤ : MeasurableSpace Bool)) 0 = ⊥ := rfl
 
@@ -102,7 +102,7 @@ theorem Xc_var (k : ℕ) :
     rw [ℱc_zero, condExp_bot]
     refine Filter.Eventually.of_forall (fun ω => ?_)
     rw [integral_coin]
-    simp only [Xc, if_pos rfl]
+    simp only [Xc]
     norm_num
   · have hXk2 : (fun ω => (Xc k ω) ^ 2) = (0 : Bool → ℝ) := by
       funext ω; simp [Xc, hk]
@@ -160,7 +160,7 @@ theorem Xc_proc_integrable (sigma2 b lam : ℝ) (n : ℕ) :
 
 /-! ### The concrete instantiation: all 12 hypotheses discharged with `X ≠ 0`. -/
 
-theorem witness_atTopCS (delta : ℝ) (hδ : 0 < delta) (hsmall : delta < 1) :
+theorem witness_atTopCS (delta : ℝ) (hδ : 0 < delta) (_hsmall : delta < 1) :
     μcoin.real (atTopSubGammaUpperFailure Xc 1 1 1 delta) ≤ delta := by
   have hblam : (1 : ℝ) * 1 < 3 := by norm_num
   exact atTop_time_uniform_confidence_sequence_subGamma

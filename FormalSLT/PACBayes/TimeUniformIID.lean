@@ -212,7 +212,10 @@ theorem timeUniformIIDPACBayes_allPosteriors_bound
     intro i k
     have hcomp : StronglyMeasurable (fun ω => loss i (sample (k + 1) ω)) :=
       (hloss i).comp_measurable (hsample (k + 1)).measurable
-    simpa [X, iidLossGap] using (stronglyMeasurable_const.sub hcomp).measurable
+    change Measurable
+      ((fun _ : Ω => iidLossPopulationRisk dataLaw loss i) -
+        fun ω => loss i (sample (k + 1) ω))
+    exact (stronglyMeasurable_const.sub hcomp).measurable
   have hbound : ∀ i k, ∀ᵐ ω ∂μ, |X i k ω| ≤ (1 : ℝ) := by
     intro i k
     exact Filter.Eventually.of_forall fun ω => by
@@ -231,7 +234,10 @@ theorem timeUniformIIDPACBayes_allPosteriors_bound
     have hcomp : StronglyMeasurable[ℱ (k + 1)]
         (fun ω => loss i (sample (k + 1) ω)) :=
       (hloss i).comp_measurable (hsample_adapted (k + 1)).measurable
-    simpa [X, iidLossGap] using stronglyMeasurable_const.sub hcomp
+    change StronglyMeasurable[ℱ (k + 1)]
+      ((fun _ : Ω => iidLossPopulationRisk dataLaw loss i) -
+        fun ω => loss i (sample (k + 1) ω))
+    exact stronglyMeasurable_const.sub hcomp
   have hcenter : ∀ i k, μ[X i k | ℱ k] =ᵐ[μ] 0 := by
     intro i k
     let observedLoss : Ω → ℝ := fun ω => loss i (sample (k + 1) ω)

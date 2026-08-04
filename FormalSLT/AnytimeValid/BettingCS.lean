@@ -75,7 +75,9 @@ theorem stronglyAdapted_bettingWealthProcess_of_adapted
     have hX : StronglyMeasurable[ℱ n] (X k) :=
       (hX_adapted k).mono (ℱ.mono (Nat.succ_le_of_lt hk))
     exact stronglyMeasurable_const.add (hlambda.mul (hX.sub stronglyMeasurable_const))
-  simpa [bettingWealthProcess] using hprod
+  change StronglyMeasurable[ℱ n]
+    (fun ω => ∏ k ∈ Finset.range n, bettingFactor X lambda m k ω)
+  exact hprod
 
 /--
 The one-step betting factor has conditional expectation at most `1` under the
@@ -95,7 +97,8 @@ theorem bettingFactor_condExp_le_one_of_condMean
     μ[bettingFactor X lambda m k | ℱ k] ≤ᵐ[μ] fun _ => (1 : ℝ) := by
   set Y : Ω → ℝ := fun ω => X k ω - m with hY_def
   have hY_int : Integrable Y μ := by
-    simpa [Y] using hX_int.sub (integrable_const m)
+    change Integrable (X k - fun _ => m) μ
+    exact hX_int.sub (integrable_const m)
   have hprod_int : Integrable (fun ω => lambda k ω * Y ω) μ := by
     refine hY_int.bdd_mul (c := C)
       ((hlambda_meas.mono (ℱ.le k)).aestronglyMeasurable) ?_
@@ -106,7 +109,11 @@ theorem bettingFactor_condExp_le_one_of_condMean
       μ[bettingFactor X lambda m k | ℱ k]
         =ᵐ[μ]
       μ[(fun _ : Ω => (1 : ℝ)) | ℱ k] + μ[fun ω => lambda k ω * Y ω | ℱ k] :=
-    by simpa [bettingFactor, Y] using condExp_add hconst_int hprod_int (ℱ k)
+    by
+      change μ[(fun _ : Ω => (1 : ℝ)) + fun ω => lambda k ω * Y ω | ℱ k]
+        =ᵐ[μ]
+        μ[(fun _ : Ω => (1 : ℝ)) | ℱ k] + μ[fun ω => lambda k ω * Y ω | ℱ k]
+      exact condExp_add hconst_int hprod_int (ℱ k)
   have hpull :
       μ[fun ω => lambda k ω * Y ω | ℱ k]
         =ᵐ[μ] fun ω => lambda k ω * (μ[Y | ℱ k]) ω :=

@@ -239,7 +239,8 @@ theorem twoPointRademacher_projected_dudley_m_bound (m : ℕ) :
   have hbase :=
     FiniteDyadicDudleyInstance.projected_dudley_bound
       twoPointDudleyInstance m
-  simpa [twoPointDudleyInstance, twoPointRademacherProcess] using hbase
+  convert hbase using 1 <;>
+    simp [twoPointDudleyInstance, twoPointDyadicNetSequence, twoPointRademacherProcess]
 
 /-- Supremum functional for the two-point Rademacher process. -/
 def twoPointRademacherSup (ω : Bool) : ℝ :=
@@ -268,7 +269,8 @@ def twoPointRademacherSupAdapter :
   terminalError := 0
   terminal_bound := by
     intro m ω
-    simpa using twoPointRademacherSup_le_projectedSup m ω
+    convert twoPointRademacherSup_le_projectedSup m ω using 1;
+      simp [twoPointDudleyInstance, twoPointDyadicNetSequence]
 
 /-- Supplied-supremum Dudley bound for the two-point process through the
 packaged finite-dyadic Dudley API. -/
@@ -282,8 +284,9 @@ theorem twoPointRademacherSup_dudley_m_bound (m : ℕ) :
   have hbase :=
     FiniteDyadicDudleyInstance.suppliedSup_dudley_bound
       twoPointDudleyInstance twoPointRademacherSupAdapter m
-  simpa [twoPointDudleyInstance, twoPointRademacherSupAdapter,
-    twoPointRademacherProcess] using hbase
+  convert hbase using 1 <;>
+    simp [twoPointDudleyInstance, twoPointDyadicNetSequence,
+      twoPointRademacherSupAdapter, twoPointRademacherProcess]
 
 end
 

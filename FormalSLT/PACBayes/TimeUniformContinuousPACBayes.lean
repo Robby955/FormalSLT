@@ -321,9 +321,12 @@ theorem timeUniformContinuousPACBayes_bound
       (M := fun θ n ω => Real.exp (score θ n ω))
       ?_ ?_ hM_int_next hM_int_next_restrict hM_int_current
         hM_int_current_restrict hfixed ?_
-    · simpa [continuousExponentialMixtureProcess] using h_adapted_mix
+    · change StronglyAdapted ℱ
+        (continuousExponentialMixtureProcess prior score)
+      exact h_adapted_mix
     · intro n
-      simpa [continuousExponentialMixtureProcess] using h_integrable_mix n
+      change Integrable (continuousExponentialMixtureProcess prior score n) μ
+      exact h_integrable_mix n
     · intro θ n ω
       exact (Real.exp_pos _).le
   have hcross :

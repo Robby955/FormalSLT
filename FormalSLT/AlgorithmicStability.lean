@@ -126,12 +126,10 @@ lemma measurable_sampleCoordinateSwap [MeasurableSpace Z] {n : ℕ} (k : Fin n) 
     · subst j
       simpa [sampleCoordinateSwap] using
         (measurable_snd : Measurable (fun P : (Fin n → Z) × Z => P.2))
-    · simpa [sampleCoordinateSwap, Function.update_of_ne hj] using
-        ((measurable_pi_apply j).comp
-          (measurable_fst : Measurable (fun P : (Fin n → Z) × Z => P.1)))
-  · simpa [sampleCoordinateSwap] using
-      ((measurable_pi_apply k).comp
-        (measurable_fst : Measurable (fun P : (Fin n → Z) × Z => P.1)))
+    · simp only [sampleCoordinateSwap, Function.update_of_ne hj]
+      fun_prop
+  · simp only [sampleCoordinateSwap]
+    fun_prop
 
 omit [Fintype ι] in
 /-- The sample-coordinate swap as a measurable equivalence. -/

@@ -256,7 +256,8 @@ theorem mcdiarmid_additive_independent
   have hZindep : iIndepFun (fun i ω => X i ω - ∫ x, X i x ∂μ) μ := by
     have h := hindep.comp (fun i => fun x : ℝ => x - ∫ x, X i x ∂μ)
       (fun i => measurable_id.sub_const _)
-    simpa [Function.comp] using h
+    change iIndepFun (fun i ω => X i ω - ∫ x, X i x ∂μ) μ at h
+    exact h
   have hengine := HasSubgaussianMGF.measure_sum_ge_le_of_iIndepFun
     hZindep (c := c) (s := s) hZsub ht
   refine hengine.trans (le_of_eq ?_)

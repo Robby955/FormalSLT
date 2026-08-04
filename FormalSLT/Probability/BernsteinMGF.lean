@@ -62,6 +62,7 @@ lemma one_add_add_sq_le_exp_of_nonneg {u : ℝ} (hu : 0 ≤ u) :
       ((Continuous.sub Real.continuous_exp (by fun_prop)).continuousOn)
       (fun x _ => (hasDerivAt_expSub x).differentiableAt.differentiableWithinAt)
     intro x _
+    change 0 ≤ deriv (fun y => Real.exp y - (1 + y + y ^ 2 / 2)) x
     rw [(hasDerivAt_expSub x).deriv]
     have := Real.add_one_le_exp x; linarith
   have h0 : (fun y => Real.exp y - (1 + y + y ^ 2 / 2)) 0 = 0 := by simp
@@ -76,6 +77,7 @@ lemma exp_le_one_add_add_sq_of_nonpos {u : ℝ} (hu : u ≤ 0) :
       ((Continuous.sub Real.continuous_exp (by fun_prop)).continuousOn)
       (fun x _ => (hasDerivAt_expSub x).differentiableAt.differentiableWithinAt)
     intro x _
+    change 0 ≤ deriv (fun y => Real.exp y - (1 + y + y ^ 2 / 2)) x
     rw [(hasDerivAt_expSub x).deriv]
     have := Real.add_one_le_exp x; linarith
   have h0 : (fun y => Real.exp y - (1 + y + y ^ 2 / 2)) 0 = 0 := by simp

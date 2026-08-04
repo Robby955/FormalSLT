@@ -267,9 +267,8 @@ theorem dyadicChainingFiniteNetOfTotallyBoundedUniv_covers
         ((dyadicChainingFiniteNetOfTotallyBoundedUniv
           (T := T) hT hradiusScale j).net.projection t) ≤
       dyadicChainingNetRadius radiusScale j := by
-  simpa using
-    (finiteNetOfTotallyBoundedUniv_covers
-      (T := T) hT (dyadicChainingNetRadius_pos hradiusScale j) t)
+  unfold dyadicChainingFiniteNetOfTotallyBoundedUniv
+  apply finiteNetOfTotallyBoundedUniv_covers
 
 /-- Adjacent extracted dyadic nets satisfy the radius hypothesis expected by
 the existing finite Dudley chaining theorems. -/
@@ -758,11 +757,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbe
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -843,11 +837,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_coveringNumbe
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -936,11 +925,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_integ
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1044,11 +1028,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_inter
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1151,11 +1130,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_trunc
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1240,11 +1214,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_integ
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1331,11 +1300,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_inter
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1420,11 +1384,6 @@ theorem finite_projectedNet_dudley_entropy_sum_totalBounded_dyadic_entropy_trunc
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1532,11 +1491,6 @@ theorem finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedInterva
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1651,11 +1605,6 @@ theorem finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncat
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1754,11 +1703,6 @@ theorem finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedInterva
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -1853,11 +1797,6 @@ theorem finite_separableSupFunctional_dudley_totalBounded_dyadic_entropy_truncat
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
@@ -3510,11 +3449,6 @@ theorem finite_projected_dudley_entropy_sum_totalBounded_dyadic_coveringNumbers
   let A : ℕ → Type u := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).A
-  letI : ∀ j, Fintype (A j) := by
-    intro j
-    dsimp [A]
-    exact (dyadicChainingFiniteNetOfTotallyBoundedUniv
-      (T := T) hT hradiusScale j).instFintype
   let N : ∀ j : ℕ, FiniteNet T (A j) := fun j =>
     (dyadicChainingFiniteNetOfTotallyBoundedUniv
       (T := T) hT hradiusScale j).net
