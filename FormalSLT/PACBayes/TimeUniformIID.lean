@@ -126,7 +126,7 @@ theorem timeUniformIIDPACBayesAnyPosteriorUpperFailure_subset_processFailure
   exact hfail
 
 /-- A fixed-tilt sub-Gamma exponential process is integrable under bounded increments. -/
-private theorem integrable_subGammaExponentialProcess_of_bounded
+theorem integrable_subGammaExponentialProcess_of_bounded
     {mΩ : MeasurableSpace Ω} {μ : Measure Ω} [IsFiniteMeasure μ]
     {X : ℕ → Ω → ℝ} {sigma2 b lam : ℝ} (n : ℕ)
     (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam : 0 ≤ lam) (hblam : b * lam < 3)
@@ -150,7 +150,7 @@ private theorem integrable_subGammaExponentialProcess_of_bounded
 the earlier coordinates.  This is the measurable-space form needed for
 nonlinear loss functions; unlike the real-valued convenience lemma in
 `BorelCantelli`, the observation type need not be a normed group. -/
-private theorem iIndepFun_indep_comap_natural_of_lt
+theorem iIndepFun_indep_comap_natural_of_lt
     {κ : Type*} [LinearOrder κ]
     {mZ : MeasurableSpace Z} [TopologicalSpace Z] [BorelSpace Z]
     [TopologicalSpace.MetrizableSpace Z]

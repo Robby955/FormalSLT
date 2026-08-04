@@ -164,10 +164,13 @@ proxy is supplied per hypothesis, and the theorem consumes a normalized
 Bernstein prior-moment certificate. It does not yet derive that variance proxy
 from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
   Bernstein optimization theorem is not yet implemented. The repository now
-  has an arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and a
-  spherical-Gaussian KL specialization; it does not yet discharge that
-  process-level interface into a general end-to-end i.i.d. bounded-loss
-  learning theorem.
+  has an arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
+  end-to-end i.i.d. bounded-loss specialization for finite-dimensional
+  spherical Gaussian priors and posteriors. The latter derives the increment
+  and mixture-process obligations from a jointly measurable `[0,1]` loss and
+  an i.i.d. sample stream, and displays the checked Gaussian KL closed form. It
+  does not yet cover arbitrary prior/posterior families or an unrestricted
+  measurable hypothesis space at the i.i.d. learning-theorem level.
 
 ### Algorithmic stability expected bound
 

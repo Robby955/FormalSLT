@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C723-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-167-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C079-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C730-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-168-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C690-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -47,8 +47,9 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   wrappers.
 - **Time-uniform PAC-Bayes:** finite-class i.i.d. bounds simultaneous over all
   posteriors, finite-grid data-dependent tilt selection, a process-level
-  theorem over arbitrary measurable hypothesis spaces, and a spherical-
-  Gaussian specialization with a checked measure-theoretic KL identity.
+  theorem over arbitrary measurable hypothesis spaces, and an end-to-end i.i.d.
+  bounded-loss theorem over finite-dimensional Gaussian hypotheses with a
+  checked closed-form KL penalty.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -58,8 +59,9 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   information, Cramer-Rao, finite exponential families, and asymptotic
   statistics.
 
-The Dudley development is finite by design. The continuous PAC-Bayes theorem
-is process-level, not an end-to-end i.i.d. learning theorem. The statistics
+The Dudley development is finite by design. The general continuous PAC-Bayes
+theorem remains process-level; the i.i.d. specialization currently covers
+finite-dimensional spherical Gaussian priors and posteriors. The statistics
 interfaces preserve the hypotheses of the Mathlib results they expose. See
 [Scope and open boundaries](#scope-and-open-boundaries) for the exact limits.
 
@@ -142,6 +144,10 @@ declaration and prints its axiom profile.
 - **Spherical-Gaussian specialization** —
   `timeUniformSphericalGaussianPACBayes_bound`;
   [`CheckTimeUniformGaussianPACBayes.lean`](./examples/CheckTimeUniformGaussianPACBayes.lean)
+- **End-to-end i.i.d. continuous Gaussian bound** —
+  `timeUniformIIDGaussianPACBayes_bound`, with `N(1,1)` versus `N(0,1)` KL
+  evaluated to `1/2` and a complete time-10 penalty evaluated to `9/10`;
+  [`CheckIIDContinuousGaussianPACBayes.lean`](./examples/CheckIIDContinuousGaussianPACBayes.lean)
 - **Finite-class i.i.d. bound, simultaneous over all posteriors** —
   `timeUniformIIDPACBayes_allPosteriors_bound`;
   [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean)
@@ -211,6 +217,10 @@ release check is in [Audit commands](#audit-commands).
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.
+- Use `timeUniformIIDGaussianPACBayes_bound` when the hypotheses are
+  finite-dimensional real vectors, the prior and posterior are spherical
+  Gaussians, and the jointly measurable loss lies in `[0,1]`; its proof derives
+  the process obligations from the i.i.d. sample model.
 
 See [Related work](./docs/related-work.md) for the relationship to Mathlib's
 empirical-process and Rademacher-generalization developments.
@@ -252,7 +262,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
-  `PACBayes.TimeUniformIIDGrid`
+  `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`
 
 ## Scope and open boundaries
 
@@ -271,8 +281,9 @@ The main learning-theory results are deliberately finite and explicit.
   heterogeneous coordinate laws, with a common coordinate state space
 - **PAC-Bayes Bernstein:** finite priors and posteriors with a supplied variance
   proxy and normalized prior-moment certificate
-- **Time-uniform PAC-Bayes:** finite-class for the i.i.d. bounded-loss theorem;
-  process-level for the arbitrary measurable-hypothesis theorem
+- **Time-uniform PAC-Bayes:** finite-class and finite-dimensional Gaussian
+  i.i.d. bounded-loss theorems; process-level for a fully arbitrary measurable
+  hypothesis space
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -285,8 +296,8 @@ The main learning-theory results are deliberately finite and explicit.
 - An infinite-class confidence sequence
 - A concrete classifier-margin extractor or all-real-`λ` PAC-Bayes Bernstein
   optimization theorem
-- An end-to-end i.i.d. bounded-loss PAC-Bayes specialization over an arbitrary
-  measurable hypothesis space
+- An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
+  finite-dimensional spherical Gaussian family
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -358,8 +369,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 
 - [ ] Continuous Dudley entropy integral over total-bounded classes
 - [ ] Concrete PAC-Bayes margin extractor and all-real-`λ` optimization
-- [ ] End-to-end i.i.d. bounded-loss PAC-Bayes over arbitrary measurable
-  hypothesis spaces
+- [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
+  spherical Gaussian priors and posteriors
 
 ## Dependencies
 
