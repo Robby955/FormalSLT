@@ -24,6 +24,8 @@ THEOREMS=(
   "FormalSLT.TestTimeMeta.flagshipFourComponent_population_le_bound_from_incrementModel"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel"
   "FormalSLT.TestTimeMeta.flagshipAnytimeValid_conclusion_from_incrementModel"
+  "FormalSLT.PACBayes.IIDContinuousGaussian.timeUniformIIDGaussianPACBayes_bound"
+  "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolThreshold_endToEnd_certificate"
 )
 
 # Axioms permitted in a clean proof.
@@ -36,6 +38,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 {
   echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
   echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
+  echo "import FormalSLT.PACBayes.IIDContinuousGaussian"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -44,7 +47,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 echo "== building flagship modules =="
 "$LAKE" build \
   FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \
-  FormalSLT.TestTimeMeta.FlagshipAnytimeValid >/dev/null
+  FormalSLT.TestTimeMeta.FlagshipAnytimeValid \
+  FormalSLT.PACBayes.IIDContinuousGaussian >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

@@ -61,17 +61,22 @@ FRONTIER_LANES: list[dict[str, str]] = [
     },
     {
         "id": "pac-bayes-all-real-lambda",
-        "status": "open",
-        "scope": "finite hypotheses first; continuous posteriors later",
+        "status": "partially_closed",
+        "scope": (
+            "finite hypotheses plus a fixed spherical-Gaussian "
+            "continuous-hypothesis specialization"
+        ),
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
             "Extend the finite-grid confidence layer toward an all-real lambda "
-            "optimization statement with explicit post-sample optimization rules."
+            "optimization statement with explicit post-sample optimization rules, "
+            "then generalize the fixed spherical-Gaussian posterior lane."
         ),
         "boundary": (
-            "The current PAC-Bayes layer is finite-grid and finite-hypothesis; "
-            "continuous posterior claims remain future work."
+            "The continuous-hypothesis i.i.d. theorem is fixed-tilt, "
+            "fixed-posterior, and spherical-Gaussian; it is not simultaneous "
+            "over all continuous posteriors or all real tilts."
         ),
     },
     {

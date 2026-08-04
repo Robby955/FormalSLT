@@ -58,10 +58,11 @@ bounded-loss wrappers for the sharp high-probability stability surface.
 through the product-kernel decomposition, and add algorithm-specific stability
 interfaces once the theorem assumptions are clean enough to reuse.
 
-### 3. PAC-Bayes all-real-`λ` and continuous-posterior extensions
+### 3. PAC-Bayes all-real-`λ` and general continuous-posterior extensions
 
 **Target.** Extend the finite PAC-Bayes layer beyond finite λ-grids toward
-all-real-`λ` optimization and, later, continuous posterior families.
+all-real-`λ` optimization and extend the current fixed spherical-Gaussian
+specialization to broader posterior families.
 
 The current repo proves finite PMFs, KL divergence nonnegativity, Gibbs
 inequality, Donsker-Varadhan, the finite iid product MGF bridge, the
@@ -76,17 +77,23 @@ buckets, and the optimized finite-grid wrapper supports posterior-dependent
 penalties certified by that finite grid. The current code also includes the
 closed finite good-event payoff `pac_bayes_generalization`, obtained by
 complementing the Catoni bad event against total iid product mass.
+For continuous hypotheses, the repo now also proves a process-level theorem on
+arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
+specialization for a fixed finite-dimensional spherical-Gaussian prior and
+posterior, with an explicit KL formula. This does not make the result
+simultaneous over all continuous posteriors.
 
 **Dependencies.**
 
 - add an all-`λ` confidence event beyond finite grids;
 - justify optimizing `λ` posterior-by-posterior after the sample is drawn;
-- state any continuous-posterior theorem with the required measurable-space
-  assumptions.
+- extend beyond the fixed spherical-Gaussian posterior family while retaining
+  explicit measurable-space and integrability assumptions.
 
-**Boundary.** The repo should not claim infinite-hypothesis, continuous
-posterior, or arbitrary measurable-space PAC-Bayes bounds from this finite
-grid layer.
+**Boundary.** The finite-grid theorem remains a finite-hypothesis result. The
+continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
+specialized to spherical Gaussians; it is not an all-posterior or all-`λ`
+confidence statement.
 
 ## Medium-term
 

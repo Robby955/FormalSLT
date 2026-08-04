@@ -59,7 +59,8 @@ files.
   example now verifies the total-bounded bridge on a concrete non-finite
   metric index space, with explicit half/quarter meshes and a supplied
   supremum bound through the projected quarter-mesh Dudley theorem.
-- `pac-bayes-all-real-lambda`: finite-grid extension toward all-real lambda
-  optimization.
+- `pac-bayes-all-real-lambda`: the fixed-tilt, fixed-posterior
+  spherical-Gaussian i.i.d. specialization is checked; all-real lambda
+  optimization and posterior-uniform general continuous families remain open.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

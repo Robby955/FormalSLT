@@ -17,7 +17,7 @@ migrated incrementally.
 | `VC` | Growth functions, Sauer--Shelah, binary trace bridges, and VC sample-complexity results. |
 | `Covering` | Finite nets, covering numbers, finite chaining, and explicitly scoped Dudley interfaces. |
 | `Stability` | Algorithmic-stability definitions and generalization theorems. |
-| `PACBayes` | Change of measure, KL calculations, bounded-loss and Bernstein bounds, and finite or continuous time-uniform PAC-Bayes results, including the i.i.d. Gaussian capstone. |
+| `PACBayes` | Change of measure, KL calculations, bounded-loss and Bernstein bounds, process-level time-uniform results for fixed prior/posterior pairs on arbitrary measurable hypothesis spaces, and finite-class or finite-dimensional spherical-Gaussian i.i.d. results at discrete sample times. |
 | `AnytimeValid` | Ville bounds, e-processes, betting processes, mixtures, and confidence sequences. |
 | `OnlineToPAC` | Online-regret to statistical-risk conversions. |
 | `Statistics` | Estimation and statistical-model interfaces built on the foundational layers. |

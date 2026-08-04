@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C730-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C745-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-168-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C690-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-72%2C957-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -48,8 +48,9 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
 - **Time-uniform PAC-Bayes:** finite-class i.i.d. bounds simultaneous over all
   posteriors, finite-grid data-dependent tilt selection, a process-level
   theorem over arbitrary measurable hypothesis spaces, and an end-to-end i.i.d.
-  bounded-loss theorem over finite-dimensional Gaussian hypotheses with a
-  checked closed-form KL penalty.
+  bounded-loss theorem over finite-dimensional spherical-Gaussian hypotheses
+  with a checked closed-form KL penalty and a stochastic fair-Bernoulli
+  product-stream certificate.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -146,7 +147,9 @@ declaration and prints its axiom profile.
   [`CheckTimeUniformGaussianPACBayes.lean`](./examples/CheckTimeUniformGaussianPACBayes.lean)
 - **End-to-end i.i.d. continuous Gaussian bound** —
   `timeUniformIIDGaussianPACBayes_bound`, with `N(1,1)` versus `N(0,1)` KL
-  evaluated to `1/2` and a complete time-10 penalty evaluated to `9/10`;
+  evaluated to `1/2`; the fair-Bernoulli product-stream example has a
+  nonconstant Gaussian-threshold loss, population risk `1/2`, a time-100
+  penalty `54/275`, and an explicit path proving its failure event nonempty;
   [`CheckIIDContinuousGaussianPACBayes.lean`](./examples/CheckIIDContinuousGaussianPACBayes.lean)
 - **Finite-class i.i.d. bound, simultaneous over all posteriors** —
   `timeUniformIIDPACBayes_allPosteriors_bound`;
@@ -281,9 +284,9 @@ The main learning-theory results are deliberately finite and explicit.
   heterogeneous coordinate laws, with a common coordinate state space
 - **PAC-Bayes Bernstein:** finite priors and posteriors with a supplied variance
   proxy and normalized prior-moment certificate
-- **Time-uniform PAC-Bayes:** finite-class and finite-dimensional Gaussian
-  i.i.d. bounded-loss theorems; process-level for a fully arbitrary measurable
-  hypothesis space
+- **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
+  spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
+  process-level for a fully arbitrary measurable hypothesis space
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 

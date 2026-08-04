@@ -28,13 +28,13 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The current PAC-Bayes layer is finite-grid and finite-hypothesis; continuous posterior claims remain future work.",
+      "boundary": "The continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian; it is not simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the finite-grid confidence layer toward an all-real lambda optimization statement with explicit post-sample optimization rules.",
-      "scope": "finite hypotheses first; continuous posteriors later",
+      "next_step": "Extend the finite-grid confidence layer toward an all-real lambda optimization statement with explicit post-sample optimization rules, then generalize the fixed spherical-Gaussian posterior lane.",
+      "scope": "finite hypotheses plus a fixed spherical-Gaussian continuous-hypothesis specialization",
       "source": "docs/open-formalization-problems.md#near-term",
-      "status": "open"
+      "status": "partially_closed"
     },
     {
       "boundary": "The current high-probability bounds use the Azuma constant; sharp McDiarmid should wait for the required measure-theoretic layer.",
@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 129,
-    "library_and_example_lean_lines": 72690,
-    "library_lean_lines": 64494,
+    "library_and_example_lean_lines": 72957,
+    "library_lean_lines": 64721,
     "library_modules": 168,
-    "theorem_map_entries": 570
+    "theorem_map_entries": 577
   },
   "theorem_families": [
     {
@@ -3022,7 +3022,12 @@
           "module": "AnytimeValid.DyadicEpochCS",
           "name": "dyadic_epoch_two_sided_confidence_sequence",
           "summary": "Two-sided all-n dyadic-epoch confidence sequence via the X/-X transfer and the explicit stitching penalty"
-        },
+        }
+      ],
+      "name": "Anytime-valid confidence sequences"
+    },
+    {
+      "entries": [
         {
           "kind": "theorem",
           "module": "PACBayes.TimeUniformPACBayes",
@@ -3040,9 +3045,51 @@
           "module": "PACBayes.TimeUniformPACBayes",
           "name": "timeUniformPACBayes_bound",
           "summary": "Process-level time-uniform PAC-Bayes bound: with probability at least 1 - \u03b4, the posterior running mean of the abstract martingale-difference process stays under the cgf/KL/log(1/\u03b4) boundary for every n \u2265 1"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIID",
+          "name": "timeUniformIIDPACBayes_allPosteriors_bound",
+          "summary": "End-to-end finite-class i.i.d. bounded-loss theorem, simultaneous over all posterior PMFs at every positive sample time"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDGrid",
+          "name": "timeUniformIIDPACBayes_grid_allPosteriors_bound",
+          "summary": "Finite-class i.i.d. theorem with a fixed finite grid of data-dependent tilt choices, simultaneous over all posterior PMFs"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformContinuousPACBayes",
+          "name": "timeUniformContinuousPACBayes_bound",
+          "summary": "Process-level time-uniform PAC-Bayes theorem on an arbitrary measurable hypothesis space for a fixed prior and posterior"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.GaussianMeasureKL",
+          "name": "sphericalGaussianMeasure_klDiv_toReal_eq",
+          "summary": "Measure-theoretic KL between finite-dimensional spherical Gaussian laws equals its explicit closed form"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformGaussianPACBayes",
+          "name": "timeUniformSphericalGaussianPACBayes_bound",
+          "summary": "Process-level time-uniform PAC-Bayes theorem specialized to a fixed finite-dimensional spherical-Gaussian prior/posterior pair"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussian",
+          "name": "timeUniformIIDGaussianPACBayes_bound",
+          "summary": "End-to-end i.i.d. bounded-loss theorem over a continuous finite-dimensional hypothesis space with explicit spherical-Gaussian KL"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussian",
+          "name": "fairBoolThreshold_endToEnd_certificate",
+          "summary": "Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk 1/2, evaluated penalty 54/275, and an explicit nonempty-event witness"
         }
       ],
-      "name": "Anytime-valid confidence sequences"
+      "name": "Time-uniform PAC-Bayes"
     },
     {
       "entries": [

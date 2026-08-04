@@ -5,6 +5,8 @@ Authors: Robby Sneiderman
 -/
 import FormalSLT.PACBayes.TimeUniformGaussianPACBayes
 import FormalSLT.PACBayes.TimeUniformIID
+import Mathlib.Probability.Distributions.Bernoulli
+import Mathlib.Probability.Independence.InfinitePi
 
 /-!
 # I.i.d. continuous-hypothesis PAC-Bayes with explicit Gaussian KL
@@ -568,7 +570,7 @@ theorem shiftedGaussian_penalty_evaluated :
   rw [Real.log_exp]
   norm_num [subGammaCgf]
 
-/-! ### Fully instantiated sanity check -/
+/-! ### Minimal deterministic sanity check -/
 
 /-- Deterministic i.i.d. stream used to instantiate every assumption of the theorem. -/
 def unitSample (_k : ℕ) (_ω : Unit) : Unit := ()
@@ -629,6 +631,231 @@ theorem unitHalfLoss_endToEnd_certificate :
   · intro k
     exact hasLaw_dirac_of_ae_eq
       (Filter.Eventually.of_forall fun ω => by simp [unitSample])
+
+/-! ### Stochastic fair-Bernoulli example -/
+
+/-- The fair law on `Bool`, used as the marginal law in the stochastic example. -/
+noncomputable def fairBoolLaw : Measure Bool :=
+  bernoulliMeasure true false
+    ⟨(1 : ℝ) / 2, by norm_num, by norm_num⟩
+
+/-- The fair Bernoulli law is a probability measure. -/
+theorem fairBoolLaw_isProbabilityMeasure :
+    IsProbabilityMeasure fairBoolLaw := by
+  unfold fairBoolLaw
+  infer_instance
+
+/-- Sample space for an infinite sequence of fair Boolean observations. -/
+abbrev FairBoolStream := ℕ → Bool
+
+/-- Infinite product law for the fair Bernoulli sample stream. -/
+noncomputable def fairBoolStreamLaw : Measure FairBoolStream :=
+  Measure.infinitePi (fun _ : ℕ => fairBoolLaw)
+
+/-- The infinite fair-Bernoulli product law is a probability measure. -/
+theorem fairBoolStreamLaw_isProbabilityMeasure :
+    IsProbabilityMeasure fairBoolStreamLaw := by
+  letI := fairBoolLaw_isProbabilityMeasure
+  unfold fairBoolStreamLaw
+  infer_instance
+
+/-- The `k`th observation in the Bernoulli product stream. -/
+def fairBoolCoordinateSample (k : ℕ) (ω : FairBoolStream) : Bool :=
+  ω k
+
+/--
+A nonconstant bounded loss whose value changes with both the Boolean label and
+the sign of the Gaussian parameter's only coordinate.
+-/
+def gaussianThresholdBoolLoss
+    (θ : GaussianParameterSpace 1) (z : Bool) : ℝ :=
+  if z then
+    if 0 ≤ θ 0 then 0 else (1 : ℝ) / 4
+  else
+    if 0 ≤ θ 0 then 1 else (3 : ℝ) / 4
+
+/-- On the nonnegative branch, the two Boolean labels have losses `0` and `1`. -/
+theorem gaussianThresholdBoolLoss_of_nonneg
+    (θ : GaussianParameterSpace 1) (hθ : 0 ≤ θ 0) :
+    gaussianThresholdBoolLoss θ true = 0 ∧
+      gaussianThresholdBoolLoss θ false = 1 := by
+  simp [gaussianThresholdBoolLoss, hθ]
+
+/-- On the negative branch, the two Boolean labels have losses `1/4` and `3/4`. -/
+theorem gaussianThresholdBoolLoss_of_neg
+    (θ : GaussianParameterSpace 1) (hθ : θ 0 < 0) :
+    gaussianThresholdBoolLoss θ true = (1 : ℝ) / 4 ∧
+      gaussianThresholdBoolLoss θ false = (3 : ℝ) / 4 := by
+  simp [gaussianThresholdBoolLoss, not_le.mpr hθ]
+
+/-- The Gaussian-threshold Boolean loss is jointly strongly measurable. -/
+theorem gaussianThresholdBoolLoss_stronglyMeasurable :
+    StronglyMeasurable
+      (fun p : GaussianParameterSpace 1 × Bool =>
+        gaussianThresholdBoolLoss p.1 p.2) := by
+  unfold gaussianThresholdBoolLoss
+  refine StronglyMeasurable.ite
+    (measurable_snd (measurableSet_singleton true)) ?_ ?_
+  · exact StronglyMeasurable.ite
+      (measurableSet_le measurable_const (by fun_prop))
+      stronglyMeasurable_const stronglyMeasurable_const
+  · exact StronglyMeasurable.ite
+      (measurableSet_le measurable_const (by fun_prop))
+      stronglyMeasurable_const stronglyMeasurable_const
+
+/-- The Gaussian-threshold Boolean loss takes values in `[0,1]`. -/
+theorem gaussianThresholdBoolLoss_range :
+    ∀ θ z, 0 ≤ gaussianThresholdBoolLoss θ z ∧
+      gaussianThresholdBoolLoss θ z ≤ 1 := by
+  intro θ z
+  simp only [gaussianThresholdBoolLoss]
+  split <;> split <;> norm_num
+
+/-- Every Gaussian threshold has population risk `1/2` under the fair law. -/
+theorem fairBoolPopulationRisk_eq_half (θ : GaussianParameterSpace 1) :
+    iidLossPopulationRisk fairBoolLaw gaussianThresholdBoolLoss θ =
+      (1 : ℝ) / 2 := by
+  unfold iidLossPopulationRisk fairBoolLaw
+  rw [integral_bernoulliMeasure]
+  by_cases hθ : 0 ≤ θ 0 <;>
+    simp [gaussianThresholdBoolLoss, hθ] <;> norm_num
+
+/-- The coordinate observations are mutually independent under the product law. -/
+theorem fairBoolCoordinateSample_iIndep :
+    iIndepFun fairBoolCoordinateSample fairBoolStreamLaw := by
+  letI := fairBoolLaw_isProbabilityMeasure
+  exact iIndepFun_infinitePi (X := fun _ (z : Bool) => z)
+    (fun _ => measurable_id)
+
+/-- Every coordinate observation has the fair Bernoulli marginal law. -/
+theorem fairBoolCoordinateSample_hasLaw (k : ℕ) :
+    HasLaw (fairBoolCoordinateSample k) fairBoolLaw fairBoolStreamLaw := by
+  letI := fairBoolLaw_isProbabilityMeasure
+  exact MeasurePreserving.hasLaw
+    (measurePreserving_eval_infinitePi
+      (fun _ : ℕ => fairBoolLaw) k)
+
+/-- The all-true stream witnesses that the worked failure event is nonempty. -/
+def allTrueBoolStream : FairBoolStream := fun _ => true
+
+/-- At time 100, the all-true empirical risk is the loss at `true`. -/
+theorem gaussianThresholdBoolEmpiricalRisk_allTrue
+    (θ : GaussianParameterSpace 1) :
+    iidLossEmpiricalRisk gaussianThresholdBoolLoss fairBoolCoordinateSample
+        θ 100 allTrueBoolStream =
+      gaussianThresholdBoolLoss θ true := by
+  simp [iidLossEmpiricalRisk, fairBoolCoordinateSample, allTrueBoolStream]
+
+/-- The posterior-averaged population risk in the worked example is `1/2`. -/
+theorem fairBoolGaussianPosteriorPopulationRisk_eq_half :
+    gaussianPosteriorPopulationRisk fairBoolLaw gaussianThresholdBoolLoss
+        shiftedGaussianPosterior =
+      (1 : ℝ) / 2 := by
+  unfold gaussianPosteriorPopulationRisk
+  simp_rw [fairBoolPopulationRisk_eq_half]
+  simp
+
+/-- On the all-true path, the time-100 posterior empirical risk is at most `1/4`. -/
+theorem fairBoolGaussianPosteriorEmpiricalRisk_allTrue_le_quarter :
+    gaussianPosteriorEmpiricalRisk gaussianThresholdBoolLoss
+        fairBoolCoordinateSample shiftedGaussianPosterior 100
+        allTrueBoolStream ≤
+      (1 : ℝ) / 4 := by
+  have hloss_true : StronglyMeasurable
+      (fun θ : GaussianParameterSpace 1 => gaussianThresholdBoolLoss θ true) :=
+    gaussianThresholdBoolLoss_stronglyMeasurable.comp_measurable
+      (measurable_id.prodMk measurable_const)
+  have hloss_true_int : Integrable
+      (fun θ : GaussianParameterSpace 1 => gaussianThresholdBoolLoss θ true)
+      (sphericalGaussianMeasure shiftedGaussianPosterior) := by
+    refine Integrable.of_bound hloss_true.aestronglyMeasurable 1 ?_
+    exact Filter.Eventually.of_forall fun θ => by
+      rw [Real.norm_eq_abs, abs_of_nonneg
+        (gaussianThresholdBoolLoss_range θ true).1]
+      exact (gaussianThresholdBoolLoss_range θ true).2
+  have hle :
+      (∫ θ, gaussianThresholdBoolLoss θ true
+          ∂sphericalGaussianMeasure shiftedGaussianPosterior) ≤
+        ∫ _ : GaussianParameterSpace 1, (1 : ℝ) / 4
+          ∂sphericalGaussianMeasure shiftedGaussianPosterior := by
+    refine integral_mono hloss_true_int (integrable_const _) ?_
+    intro θ
+    by_cases hθ : 0 ≤ θ 0 <;>
+      simp [gaussianThresholdBoolLoss, hθ]
+  unfold gaussianPosteriorEmpiricalRisk
+  simp_rw [gaussianThresholdBoolEmpiricalRisk_allTrue]
+  simpa using hle
+
+/--
+At `λ = 1/4`, `n = 100`, and `δ = exp(-1)`, the displayed penalty is
+`54/275`, which is strictly below the achievable gap `1/4`.
+-/
+theorem shiftedGaussian_nonvacuityPenalty_evaluated :
+    subGammaCgf 1 1 ((1 : ℝ) / 4) / ((1 : ℝ) / 4) +
+        (sphericalGaussianKLClosedForm shiftedGaussianPosterior
+            standardGaussianPrior + Real.log (1 / Real.exp (-1))) /
+          ((100 : ℝ) * ((1 : ℝ) / 4)) =
+      (54 : ℝ) / 275 := by
+  rw [shiftedGaussian_kl_closedForm]
+  rw [show (1 / Real.exp (-1 : ℝ)) = Real.exp 1 by
+    rw [one_div, ← Real.exp_neg]
+    norm_num]
+  rw [Real.log_exp]
+  norm_num [subGammaCgf]
+
+/-- The worked time-uniform failure event is nonempty at sample time 100. -/
+theorem allTrueBoolStream_mem_gaussianPACBayesFailure :
+    allTrueBoolStream ∈
+      timeUniformIIDGaussianPACBayesUpperFailure
+        fairBoolLaw standardGaussianPrior shiftedGaussianPosterior
+        gaussianThresholdBoolLoss fairBoolCoordinateSample ((1 : ℝ) / 4)
+        (Real.exp (-1)) := by
+  refine ⟨100, by norm_num, ?_⟩
+  change
+    subGammaCgf 1 1 ((1 : ℝ) / 4) / ((1 : ℝ) / 4) +
+        (sphericalGaussianKLClosedForm shiftedGaussianPosterior
+            standardGaussianPrior + Real.log (1 / Real.exp (-1))) /
+          ((100 : ℝ) * ((1 : ℝ) / 4)) ≤
+      gaussianPosteriorPopulationRisk fairBoolLaw gaussianThresholdBoolLoss
+          shiftedGaussianPosterior -
+        gaussianPosteriorEmpiricalRisk gaussianThresholdBoolLoss
+          fairBoolCoordinateSample shiftedGaussianPosterior 100 allTrueBoolStream
+  rw [shiftedGaussian_nonvacuityPenalty_evaluated,
+    fairBoolGaussianPosteriorPopulationRisk_eq_half]
+  have hemp := fairBoolGaussianPosteriorEmpiricalRisk_allTrue_le_quarter
+  norm_num at hemp ⊢
+  linarith
+
+/--
+Stochastic end-to-end certificate on a fair Bernoulli product stream.  It uses
+the explicit `N(0,1)` prior and `N(1,1)` posterior, the nonconstant Gaussian
+threshold loss, `δ = exp(-1)`, and `λ = 1/4`.
+
+The population risk is exactly `1/2` by `fairBoolPopulationRisk_eq_half`; the
+closed-form KL is `1/2`, and the time-100 penalty is `54/275`.  The event is
+provably nonempty by `allTrueBoolStream_mem_gaussianPACBayesFailure`.
+-/
+theorem fairBoolThreshold_endToEnd_certificate :
+    fairBoolStreamLaw.real
+        (timeUniformIIDGaussianPACBayesUpperFailure
+          fairBoolLaw standardGaussianPrior shiftedGaussianPosterior
+          gaussianThresholdBoolLoss fairBoolCoordinateSample ((1 : ℝ) / 4)
+          (Real.exp (-1))) ≤
+      Real.exp (-1) := by
+  letI := fairBoolLaw_isProbabilityMeasure
+  letI := fairBoolStreamLaw_isProbabilityMeasure
+  refine timeUniformIIDGaussianPACBayes_bound
+    (μ := fairBoolStreamLaw) (dataLaw := fairBoolLaw)
+    standardGaussianPrior shiftedGaussianPosterior
+    (loss := gaussianThresholdBoolLoss) (sample := fairBoolCoordinateSample)
+    (lam := (1 : ℝ) / 4) (delta := Real.exp (-1))
+    (Real.exp_pos _)
+    (by norm_num) (by norm_num)
+    gaussianThresholdBoolLoss_stronglyMeasurable
+    gaussianThresholdBoolLoss_range ?_ fairBoolCoordinateSample_iIndep ?_
+  · intro k
+    exact (measurable_pi_apply k).stronglyMeasurable
+  · exact fairBoolCoordinateSample_hasLaw
 
 end
 
