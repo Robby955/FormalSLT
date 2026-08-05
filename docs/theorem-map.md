@@ -508,6 +508,8 @@ declarations; modules are relative to `FormalSLT`.
 | `indicator_oneCoordinateDeviationMGF_le` | `PACBayes.FiniteProductBernstein` | One-coordinate indicator sub-Gamma MGF using exact hypothesis-specific variance |
 | `indicator_product_mgf_le` | `PACBayes.FiniteProductBernstein` | Tensorized finite-product MGF with exact `R * (1 - R)` Bernstein budget |
 | `indicator_product_normalizedMGF_le_one` | `PACBayes.FiniteProductBernstein` | Hypothesis-specific normalized product MGF at fixed `0 < lambda < 3n` |
+| `indicatorBernstein_normalization_eq_budget` | `PACBayes.IndicatorBernsteinMoment` | Exact identification of the product-MGF budget with scale `1/(3n)` and variance proxy `R * (1 - R) / n` |
+| `indicator_expectedPriorBernsteinExpMoment_le_one` | `PACBayes.IndicatorBernsteinMoment` | Prior-averaged normalized indicator Bernstein moment under the finite i.i.d. product law |
 | `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
 | `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |

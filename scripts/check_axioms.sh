@@ -34,6 +34,7 @@ THEOREMS=(
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianSelected_certificate"
   "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_secondMoment_eq"
   "FormalSLT.PACBayes.FiniteProductBernstein.indicator_product_normalizedMGF_le_one"
+  "FormalSLT.PACBayes.IndicatorBernsteinMoment.indicator_expectedPriorBernsteinExpMoment_le_one"
 )
 
 # Axioms permitted in a clean proof.
@@ -50,6 +51,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussianGrid"
   echo "import FormalSLT.PACBayes.IndicatorVariance"
   echo "import FormalSLT.PACBayes.FiniteProductBernstein"
+  echo "import FormalSLT.PACBayes.IndicatorBernsteinMoment"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done

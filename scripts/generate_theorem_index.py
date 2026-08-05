@@ -77,6 +77,8 @@ DECLARATION_CONCEPTS: dict[str, list[str]] = {
     "indicator_oneCoordinateDeviationMGF_le": ["Bernoulli"],
     "indicator_product_mgf_le": ["Bernoulli"],
     "indicator_product_normalizedMGF_le_one": ["Bernoulli"],
+    "indicatorBernstein_normalization_eq_budget": ["Bernoulli"],
+    "indicator_expectedPriorBernsteinExpMoment_le_one": ["Bernoulli"],
 }
 
 KIND_PATTERN = (

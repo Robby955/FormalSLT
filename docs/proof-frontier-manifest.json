@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 132,
-    "library_and_example_lean_lines": 74022,
-    "library_lean_lines": 65586,
-    "library_modules": 171,
-    "theorem_map_entries": 589
+    "example_lean_files": 133,
+    "library_and_example_lean_lines": 74218,
+    "library_lean_lines": 65724,
+    "library_modules": 172,
+    "theorem_map_entries": 591
   },
   "theorem_families": [
     {
@@ -2826,6 +2826,18 @@
           "module": "PACBayes.FiniteProductBernstein",
           "name": "indicator_product_normalizedMGF_le_one",
           "summary": "Hypothesis-specific normalized product MGF at fixed 0 < lambda < 3n"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinMoment",
+          "name": "indicatorBernstein_normalization_eq_budget",
+          "summary": "Exact identification of the product-MGF budget with scale 1/(3n) and variance proxy R * (1 - R) / n"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinMoment",
+          "name": "indicator_expectedPriorBernsteinExpMoment_le_one",
+          "summary": "Prior-averaged normalized indicator Bernstein moment under the finite i.i.d. product law"
         },
         {
           "kind": "theorem",
