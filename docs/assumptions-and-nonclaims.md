@@ -168,9 +168,12 @@ from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
   end-to-end i.i.d. bounded-loss specialization for finite-dimensional
   spherical Gaussian priors and posteriors. The latter derives the increment
   and mixture-process obligations from a jointly measurable `[0,1]` loss and
-  an i.i.d. sample stream, and displays the checked Gaussian KL closed form. It
-  does not yet cover arbitrary prior/posterior families or an unrestricted
-  measurable hypothesis space at the i.i.d. learning-theorem level.
+  an i.i.d. sample stream, displays the checked Gaussian KL closed form, and has
+  a fair-Bernoulli worked instance whose failure event contains an explicit
+  cylinder of probability `2⁻¹⁰⁰`. This positive lower bound is a
+  non-vacuity witness, not a tightness claim. The theorem does not yet cover
+  arbitrary prior/posterior families or an unrestricted measurable hypothesis
+  space at the i.i.d. learning-theorem level.
 
 ### Algorithmic stability expected bound
 

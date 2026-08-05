@@ -539,9 +539,9 @@ Together with `shiftedGaussian_penalty_evaluated`, the time-10 term in this
 certificate has the fully evaluated penalty `9/10`. This deterministic sanity
 check is deliberately vacuous: the constant `1/2` loss makes population and
 empirical risks equal, so its failure event is empty. For a stochastic,
-nonconstant example with a proved nonempty failure event, see
+nonconstant example with a positive-mass failure cylinder, see
 `fairBoolThreshold_endToEnd_certificate` and
-`allTrueBoolStream_mem_gaussianPACBayesFailure`.
+`fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred`.
 -/
 theorem unitHalfLoss_endToEnd_certificate :
     (Measure.dirac ()).real
@@ -668,7 +668,66 @@ theorem fairBoolCoordinateSample_hasLaw (k : ℕ) :
     (measurePreserving_eval_infinitePi
       (fun _ : ℕ => fairBoolLaw) k)
 
-/-- The all-true stream witnesses that the worked failure event is nonempty. -/
+/-- The finite cylinder on which observations `1, ..., n` are all `true`. -/
+def firstNTrueCylinder (n : ℕ) : Set FairBoolStream :=
+  Set.pi (Finset.Icc 1 n) (fun _ => {true})
+
+/-- The all-true finite cylinder is measurable in the product sigma-algebra. -/
+theorem measurableSet_firstNTrueCylinder (n : ℕ) :
+    MeasurableSet (firstNTrueCylinder n) := by
+  exact MeasurableSet.pi (Finset.countable_toSet _)
+    (fun _ _ => MeasurableSet.singleton true)
+
+/-- The fair product measure of the first-`n` all-true cylinder is `2⁻ⁿ`. -/
+theorem fairBoolStreamLaw_firstNTrueCylinder (n : ℕ) :
+    fairBoolStreamLaw (firstNTrueCylinder n) =
+      ((1 : ℝ≥0∞) / 2) ^ n := by
+  letI := fairBoolLaw_isProbabilityMeasure
+  unfold fairBoolStreamLaw firstNTrueCylinder
+  rw [Measure.infinitePi_pi]
+  · simp only [fairBoolLaw, bernoulliMeasure_apply_of_mem_of_notMem,
+      MeasurableSet.singleton, Set.mem_singleton_iff, Bool.false_eq_true,
+      not_false_eq_true, Finset.prod_const, Nat.card_Icc, Nat.add_sub_cancel]
+    congr 1
+    apply (ENNReal.toReal_eq_toReal_iff' (by simp) (by simp)).mp
+    norm_num
+  · intro i hi
+    exact MeasurableSet.singleton true
+
+/-- Real-valued form of the fair all-true cylinder probability. -/
+theorem fairBoolStreamLaw_real_firstNTrueCylinder (n : ℕ) :
+    fairBoolStreamLaw.real (firstNTrueCylinder n) =
+      ((1 : ℝ) / 2) ^ n := by
+  rw [measureReal_def, fairBoolStreamLaw_firstNTrueCylinder]
+  norm_num [ENNReal.toReal_pow]
+
+/-- Every finite all-true cylinder has strictly positive fair product mass. -/
+theorem fairBoolStreamLaw_real_firstNTrueCylinder_pos (n : ℕ) :
+    0 < fairBoolStreamLaw.real (firstNTrueCylinder n) := by
+  rw [fairBoolStreamLaw_real_firstNTrueCylinder]
+  positivity
+
+/-- On the first-`n` all-true cylinder, the empirical risk is the loss at `true`. -/
+theorem gaussianThresholdBoolEmpiricalRisk_of_mem_firstNTrueCylinder
+    {n : ℕ} (hn : 0 < n) (omega : FairBoolStream)
+    (homega : omega ∈ firstNTrueCylinder n)
+    (theta : GaussianParameterSpace 1) :
+    iidLossEmpiricalRisk gaussianThresholdBoolLoss fairBoolCoordinateSample
+        theta n omega =
+      gaussianThresholdBoolLoss theta true := by
+  unfold iidLossEmpiricalRisk fairBoolCoordinateSample
+  have hcoordinate : ∀ k ∈ Finset.range n, omega (k + 1) = true := by
+    intro k hk
+    have hkIcc : k + 1 ∈ Finset.Icc 1 n := by
+      exact Finset.mem_Icc.mpr
+        ⟨Nat.succ_le_succ (Nat.zero_le k),
+          Nat.succ_le_iff.mpr (Finset.mem_range.mp hk)⟩
+    exact homega (k + 1) hkIcc
+  rw [Finset.sum_congr rfl (fun k hk => by rw [hcoordinate k hk])]
+  simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  field_simp [Nat.cast_ne_zero.mpr hn.ne']
+
+/-- The all-true stream is the canonical point of every all-true cylinder. -/
 def allTrueBoolStream : FairBoolStream := fun _ => true
 
 /-- At time 100, the all-true empirical risk is the loss at `true`. -/
@@ -719,12 +778,30 @@ theorem fairBoolGaussianPosteriorEmpiricalRisk_allTrue_le_quarter :
   simp_rw [gaussianThresholdBoolEmpiricalRisk_allTrue]
   simpa using hle
 
+/-- The time-100 posterior empirical risk is at most `1/4` on the full cylinder. -/
+theorem fairBoolGaussianPosteriorEmpiricalRisk_of_mem_firstHundredTrue_le_quarter
+    (omega : FairBoolStream) (homega : omega ∈ firstNTrueCylinder 100) :
+    gaussianPosteriorEmpiricalRisk gaussianThresholdBoolLoss
+        fairBoolCoordinateSample shiftedGaussianPosterior 100 omega ≤
+      (1 : ℝ) / 4 := by
+  have heq :
+      gaussianPosteriorEmpiricalRisk gaussianThresholdBoolLoss
+          fairBoolCoordinateSample shiftedGaussianPosterior 100 omega =
+        gaussianPosteriorEmpiricalRisk gaussianThresholdBoolLoss
+          fairBoolCoordinateSample shiftedGaussianPosterior 100 allTrueBoolStream := by
+    unfold gaussianPosteriorEmpiricalRisk
+    congr with theta
+    rw [gaussianThresholdBoolEmpiricalRisk_of_mem_firstNTrueCylinder
+      (by norm_num) omega homega theta]
+    exact (gaussianThresholdBoolEmpiricalRisk_allTrue theta).symm
+  rw [heq]
+  exact fairBoolGaussianPosteriorEmpiricalRisk_allTrue_le_quarter
+
 /--
 At `λ = 1/4`, `n = 100`, and `δ = exp(-1)`, the displayed penalty is
 `54/275`, which is strictly below the pathwise gap lower bound `1/4`
-established on `allTrueBoolStream`. This comparison proves event nonemptiness
-only; it does not establish positive failure probability or tightness of the
-penalty.
+on the entire first-100-true cylinder. This comparison proves positive failure
+mass; it does not establish tightness of the penalty.
 -/
 theorem shiftedGaussian_nonvacuityPenalty_evaluated :
     subGammaCgf 1 1 ((1 : ℝ) / 4) / ((1 : ℝ) / 4) +
@@ -739,13 +816,14 @@ theorem shiftedGaussian_nonvacuityPenalty_evaluated :
   rw [Real.log_exp]
   norm_num [subGammaCgf]
 
-/-- The worked time-uniform failure event is nonempty at sample time 100. -/
-theorem allTrueBoolStream_mem_gaussianPACBayesFailure :
-    allTrueBoolStream ∈
+/-- The first-100-true cylinder is contained in the worked failure event. -/
+theorem firstHundredTrueCylinder_subset_gaussianPACBayesFailure :
+    firstNTrueCylinder 100 ⊆
       timeUniformIIDGaussianPACBayesUpperFailure
         fairBoolLaw standardGaussianPrior shiftedGaussianPosterior
         gaussianThresholdBoolLoss fairBoolCoordinateSample ((1 : ℝ) / 4)
         (Real.exp (-1)) := by
+  intro omega homega
   refine ⟨100, by norm_num, ?_⟩
   change
     subGammaCgf 1 1 ((1 : ℝ) / 4) / ((1 : ℝ) / 4) +
@@ -755,12 +833,48 @@ theorem allTrueBoolStream_mem_gaussianPACBayesFailure :
       gaussianPosteriorPopulationRisk fairBoolLaw gaussianThresholdBoolLoss
           shiftedGaussianPosterior -
         gaussianPosteriorEmpiricalRisk gaussianThresholdBoolLoss
-          fairBoolCoordinateSample shiftedGaussianPosterior 100 allTrueBoolStream
+          fairBoolCoordinateSample shiftedGaussianPosterior 100 omega
   rw [shiftedGaussian_nonvacuityPenalty_evaluated,
     fairBoolGaussianPosteriorPopulationRisk_eq_half]
-  have hemp := fairBoolGaussianPosteriorEmpiricalRisk_allTrue_le_quarter
+  have hemp :=
+    fairBoolGaussianPosteriorEmpiricalRisk_of_mem_firstHundredTrue_le_quarter
+      omega homega
   norm_num at hemp ⊢
   linarith
+
+/-- The worked failure event has fair-product mass at least `2⁻¹⁰⁰`. -/
+theorem fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred :
+    ((1 : ℝ) / 2) ^ 100 ≤
+      fairBoolStreamLaw.real
+        (timeUniformIIDGaussianPACBayesUpperFailure
+          fairBoolLaw standardGaussianPrior shiftedGaussianPosterior
+          gaussianThresholdBoolLoss fairBoolCoordinateSample ((1 : ℝ) / 4)
+          (Real.exp (-1))) := by
+  letI := fairBoolStreamLaw_isProbabilityMeasure
+  rw [← fairBoolStreamLaw_real_firstNTrueCylinder 100]
+  exact measureReal_mono
+    firstHundredTrueCylinder_subset_gaussianPACBayesFailure
+
+/-- The worked failure event has strictly positive fair-product mass. -/
+theorem fairBoolGaussianPACBayesFailure_mass_pos :
+    0 < fairBoolStreamLaw.real
+      (timeUniformIIDGaussianPACBayesUpperFailure
+        fairBoolLaw standardGaussianPrior shiftedGaussianPosterior
+        gaussianThresholdBoolLoss fairBoolCoordinateSample ((1 : ℝ) / 4)
+        (Real.exp (-1))) := by
+  exact (by positivity : 0 < ((1 : ℝ) / 2) ^ 100).trans_le
+    fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred
+
+/-- The all-true path is one point in the positive-mass failure cylinder. -/
+theorem allTrueBoolStream_mem_gaussianPACBayesFailure :
+    allTrueBoolStream ∈
+      timeUniformIIDGaussianPACBayesUpperFailure
+        fairBoolLaw standardGaussianPrior shiftedGaussianPosterior
+        gaussianThresholdBoolLoss fairBoolCoordinateSample ((1 : ℝ) / 4)
+        (Real.exp (-1)) := by
+  apply firstHundredTrueCylinder_subset_gaussianPACBayesFailure
+  intro i hi
+  rfl
 
 /--
 Stochastic end-to-end certificate on a fair Bernoulli product stream.  It uses
@@ -768,12 +882,9 @@ the explicit `N(0,1)` prior and `N(1,1)` posterior, the nonconstant Gaussian
 threshold loss, `δ = exp(-1)`, and `λ = 1/4`.
 
 The population risk is exactly `1/2` by `fairBoolPopulationRisk_eq_half`; the
-closed-form KL is `1/2`, and the time-100 penalty is `54/275`.  The event is
-provably nonempty by `allTrueBoolStream_mem_gaussianPACBayesFailure`.
-
-The displayed witness `allTrueBoolStream` is one specific sample path. Its
-membership proves only event nonemptiness; it supplies neither a positive lower
-bound on failure probability nor evidence that the penalty is tight.
+closed-form KL is `1/2`, and the time-100 penalty is `54/275`. The complete
+first-100-true cylinder lies in the failure event, giving the explicit positive
+lower bound `2⁻¹⁰⁰`. This does not claim that either probability bound is tight.
 -/
 theorem fairBoolThreshold_endToEnd_certificate :
     fairBoolStreamLaw.real

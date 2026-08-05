@@ -25,6 +25,8 @@ THEOREMS=(
   "FormalSLT.TestTimeMeta.flagshipFourComponent_conclusion_from_incrementModel"
   "FormalSLT.TestTimeMeta.flagshipAnytimeValid_conclusion_from_incrementModel"
   "FormalSLT.PACBayes.IIDContinuousGaussian.timeUniformIIDGaussianPACBayes_bound"
+  "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred"
+  "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolGaussianPACBayesFailure_mass_pos"
   "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolThreshold_endToEnd_certificate"
 )
 
