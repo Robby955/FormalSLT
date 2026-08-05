@@ -74,6 +74,9 @@ DECLARATION_CONCEPTS: dict[str, list[str]] = {
     "indicatorPopulationRisk_mem_Icc": ["Bernoulli"],
     "indicatorDeviation_centered": ["Bernoulli"],
     "indicatorDeviation_secondMoment_eq": ["Bernoulli"],
+    "indicator_oneCoordinateDeviationMGF_le": ["Bernoulli"],
+    "indicator_product_mgf_le": ["Bernoulli"],
+    "indicator_product_normalizedMGF_le_one": ["Bernoulli"],
 }
 
 KIND_PATTERN = (

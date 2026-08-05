@@ -504,6 +504,10 @@ declarations; modules are relative to `FormalSLT`.
 | `indicatorPopulationRisk_mem_Icc` | `PACBayes.IndicatorVariance` | Population risk of an arbitrary Boolean indicator under a finite PMF lies in `[0,1]` |
 | `indicatorDeviation_centered` | `PACBayes.IndicatorVariance` | The population-centered indicator loss has exactly zero finite-PMF mean |
 | `indicatorDeviation_secondMoment_eq` | `PACBayes.IndicatorVariance` | Exact finite-PMF variance identity `R * (1 - R)` for arbitrary Boolean indicator predicates |
+| `finiteProductSampleWeight_isPMF` | `PACBayes.FiniteProductBernstein` | Finite i.i.d. product weights package as a PMF on the sample space |
+| `indicator_oneCoordinateDeviationMGF_le` | `PACBayes.FiniteProductBernstein` | One-coordinate indicator sub-Gamma MGF using exact hypothesis-specific variance |
+| `indicator_product_mgf_le` | `PACBayes.FiniteProductBernstein` | Tensorized finite-product MGF with exact `R * (1 - R)` Bernstein budget |
+| `indicator_product_normalizedMGF_le_one` | `PACBayes.FiniteProductBernstein` | Hypothesis-specific normalized product MGF at fixed `0 < lambda < 3n` |
 | `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
 | `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |

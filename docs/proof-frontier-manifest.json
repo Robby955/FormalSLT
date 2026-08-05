@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 131,
-    "library_and_example_lean_lines": 73769,
-    "library_lean_lines": 65386,
-    "library_modules": 170,
-    "theorem_map_entries": 585
+    "example_lean_files": 132,
+    "library_and_example_lean_lines": 74022,
+    "library_lean_lines": 65586,
+    "library_modules": 171,
+    "theorem_map_entries": 589
   },
   "theorem_families": [
     {
@@ -2802,6 +2802,30 @@
           "module": "PACBayes.IndicatorVariance",
           "name": "indicatorDeviation_secondMoment_eq",
           "summary": "Exact finite-PMF variance identity R * (1 - R) for arbitrary Boolean indicator predicates"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteProductBernstein",
+          "name": "finiteProductSampleWeight_isPMF",
+          "summary": "Finite i.i.d. product weights package as a PMF on the sample space"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteProductBernstein",
+          "name": "indicator_oneCoordinateDeviationMGF_le",
+          "summary": "One-coordinate indicator sub-Gamma MGF using exact hypothesis-specific variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteProductBernstein",
+          "name": "indicator_product_mgf_le",
+          "summary": "Tensorized finite-product MGF with exact R * (1 - R) Bernstein budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteProductBernstein",
+          "name": "indicator_product_normalizedMGF_le_one",
+          "summary": "Hypothesis-specific normalized product MGF at fixed 0 < lambda < 3n"
         },
         {
           "kind": "theorem",
