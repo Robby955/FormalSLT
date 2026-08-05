@@ -3,59 +3,68 @@ name: Docs
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: docs-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'pages' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Install elan
         run: |
           curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
             | sh -s -- -y --default-toolchain none
-          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Cache Lake packages
-        uses: actions/cache@v4
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
         with:
           path: |
             ~/.elan
             .lake/packages
-          key: docs-lake-${{ runner.os }}-${{ hashFiles('lake-manifest.json') }}
+          key: docs-lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lakefile.lean', 'lake-manifest.json') }}
           restore-keys: docs-lake-${{ runner.os }}-
 
-      # Run with -Kenv=dev so the very first Lake invocation elaborates the
-      # lakefile config with the doc-gen4 dev dependency active. This resolves
-      # and clones doc-gen4 (registering its `docs` library facet) alongside the
-      # Mathlib olean download. Without it, a plain `lake exe cache get` caches a
-      # config that omits doc-gen4, and the later docs build fails with
-      # "unknown lean_lib facet `docs`".
+      # Re-elaborate the Lake configuration with the doc-gen4 dev dependency
+      # active. `-R` prevents a restored non-dev configuration from omitting
+      # doc-gen4 and causing "unknown lean_lib facet `docs`" in the next step.
       - name: Get Mathlib cache and resolve doc-gen4
-        run: lake -Kenv=dev exe cache get
+        run: lake -R -Kenv=dev exe cache get
+
+      - name: Build doc-gen4 smoke target
+        if: github.event_name == 'pull_request'
+        run: lake -Kenv=dev build doc-gen4
 
       - name: Build docs
+        if: github.event_name != 'pull_request'
         run: lake -Kenv=dev build FormalSLT:docs
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: .lake/build/doc
 
   deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
@@ -64,4 +73,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deploy
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
