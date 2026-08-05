@@ -234,8 +234,11 @@
     In Lean this is stated with the sample-level exponent `lam` as
     `R(ρ) ≤ R̂(ρ,S) + (KL(ρ‖π) + log(1/δ))/lam + lam/(8n)`~~ ✓
     (`PACBayesBoundedLoss.finiteCatoni_badEventMass_le_delta`)
-  - Remaining PAC-Bayes extensions: exact all-real-`λ` optimization,
-    continuous posteriors, and infinite hypothesis classes.
+  - The continuous-hypothesis layer now includes a process theorem and an
+    end-to-end fixed-posterior spherical-Gaussian i.i.d. specialization with
+    explicit KL. Remaining extensions include exact all-real-`λ`
+    optimization, posterior-uniform continuous families, and general infinite
+    hypothesis classes.
 
 - [x] **PAC-Bayes finite Bernstein margin-proxy shell**
   - ~~Step 1: add a posterior average of a supplied per-hypothesis variance
@@ -251,8 +254,10 @@
     (`PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta`)
   - Remaining PAC-Bayes Bernstein extensions: concrete classifier-margin
     variance extractors, finite-grid `lambda` optimization, exact all-real
-    `lambda` optimization, continuous posteriors, and infinite hypothesis
-    classes.
+    `lambda` optimization, continuous Bernstein posteriors, and infinite
+    hypothesis classes. The separate bounded-loss continuous lane currently
+    covers a fixed spherical-Gaussian posterior; it does not close these
+    Bernstein extensions.
 
 ### Long-term
 

@@ -202,7 +202,7 @@ def render_html(rows: list[dict[str, Any]]) -> str:
         )
 
     concept_buttons = "".join(
-        f'<button class="cbtn" data-concept="{esc(c)}">{esc(c)}</button>'
+        f'<button type="button" class="cbtn" data-concept="{esc(c)}">{esc(c)}</button>'
         for c in all_concepts
     )
 
@@ -242,7 +242,7 @@ main {{ padding:14px 20px 60px; }}
 <header>
   <h1>FormalSLT theorem index</h1>
   <div class="sub">{len(rows)} public declarations &middot; {n_resolved} linked to source &middot; search by concept or name</div>
-  <input id="q" type="search" placeholder="Search: Bernstein, sample mean, PAC-Bayes, confidence sequence, ...">
+  <input id="q" type="search" aria-label="Search the theorem index" placeholder="Search: Bernstein, sample mean, PAC-Bayes, confidence sequence, ...">
   <div class="concepts">{concept_buttons}</div>
 </header>
 <main>
@@ -255,13 +255,16 @@ const q = document.getElementById('q');
 const count = document.getElementById('count');
 const cbtns = Array.from(document.querySelectorAll('.cbtn'));
 let activeConcept = null;
+function normalize(value) {{
+  return value.toLowerCase().replace(/[-\u2010-\u2015]/g, '');
+}}
 function apply() {{
-  const term = q.value.trim().toLowerCase();
+  const term = normalize(q.value.trim());
   let shown = 0;
   for (const r of rows) {{
-    const hay = r.dataset.search;
+    const hay = normalize(r.dataset.search);
     const okTerm = !term || hay.includes(term);
-    const okConcept = !activeConcept || hay.includes(activeConcept.toLowerCase());
+    const okConcept = !activeConcept || hay.includes(normalize(activeConcept));
     const show = okTerm && okConcept;
     r.classList.toggle('hidden', !show);
     if (show) shown++;

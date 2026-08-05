@@ -549,9 +549,21 @@ declarations; modules are relative to `FormalSLT`.
 | `subGammaLogLogWidth_add_stitchingPenalty` | `AnytimeValid.DyadicEpochCS` | The all-`n` dyadic-epoch boundary is the log-log width plus the explicit per-epoch stitching penalty |
 | `dyadic_epoch_confidence_sequence_subGamma` | `AnytimeValid.DyadicEpochCS` | One-sided all-`n` dyadic-epoch sub-Gamma confidence sequence with the explicit grid budget |
 | `dyadic_epoch_two_sided_confidence_sequence` | `AnytimeValid.DyadicEpochCS` | Two-sided all-`n` dyadic-epoch confidence sequence via the `X`/`-X` transfer and the explicit stitching penalty |
+
+## Time-uniform PAC-Bayes
+
+| Theorem | Module | Role |
+|---|---|---|
 | `pacBayesPriorMixture_supermartingale` | `PACBayes.TimeUniformPACBayes` | Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale |
 | `timeUniformPACBayes_crossing_bound` | `PACBayes.TimeUniformPACBayes` | Ville crossing bound for the prior-mixture process over all times |
 | `timeUniformPACBayes_bound` | `PACBayes.TimeUniformPACBayes` | Process-level time-uniform PAC-Bayes bound: with probability at least `1 - δ`, the posterior running mean of the abstract martingale-difference process stays under the `cgf`/KL/`log(1/δ)` boundary for every `n ≥ 1` |
+| `timeUniformIIDPACBayes_allPosteriors_bound` | `PACBayes.TimeUniformIID` | End-to-end finite-class i.i.d. bounded-loss theorem, simultaneous over all posterior PMFs at every positive sample time |
+| `timeUniformIIDPACBayes_grid_allPosteriors_bound` | `PACBayes.TimeUniformIIDGrid` | Finite-class i.i.d. theorem with a fixed finite grid of data-dependent tilt choices, simultaneous over all posterior PMFs |
+| `timeUniformContinuousPACBayes_bound` | `PACBayes.TimeUniformContinuousPACBayes` | Process-level time-uniform PAC-Bayes theorem on an arbitrary measurable hypothesis space for a fixed prior and posterior |
+| `sphericalGaussianMeasure_klDiv_toReal_eq` | `PACBayes.GaussianMeasureKL` | Measure-theoretic KL between finite-dimensional spherical Gaussian laws equals its explicit closed form |
+| `timeUniformSphericalGaussianPACBayes_bound` | `PACBayes.TimeUniformGaussianPACBayes` | Process-level time-uniform PAC-Bayes theorem specialized to a fixed finite-dimensional spherical-Gaussian prior/posterior pair |
+| `timeUniformIIDGaussianPACBayes_bound` | `PACBayes.IIDContinuousGaussian` | End-to-end i.i.d. bounded-loss theorem over a continuous finite-dimensional hypothesis space with explicit spherical-Gaussian KL |
+| `fairBoolThreshold_endToEnd_certificate` | `PACBayes.IIDContinuousGaussian` | Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk `1/2`, evaluated penalty `54/275`, and a specific path proving event nonemptiness without a positive-probability or tightness claim |
 
 ## Named tail-probability corollaries
 

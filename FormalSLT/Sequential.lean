@@ -18,6 +18,7 @@ import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
 import FormalSLT.PACBayes.TimeUniformGaussianPACBayes
+import FormalSLT.PACBayes.IIDContinuousGaussian
 
 /-!
 # Stable sequential-inference imports
