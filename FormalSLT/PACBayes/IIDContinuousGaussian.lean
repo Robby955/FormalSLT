@@ -185,21 +185,11 @@ theorem timeUniformIIDGaussianPACBayes_bound
   have hloss : ∀ θ, StronglyMeasurable (loss θ) := by
     intro θ
     exact hloss_joint.comp_measurable (measurable_const.prodMk measurable_id)
-  have hloss_int : ∀ θ, Integrable (loss θ) dataLaw := by
-    intro θ
-    refine Integrable.of_bound (hloss θ).aestronglyMeasurable 1 ?_
-    exact Filter.Eventually.of_forall fun z => by
-      rw [Real.norm_eq_abs, abs_of_nonneg (hloss_range θ z).1]
-      exact (hloss_range θ z).2
   have hrisk_range : ∀ θ,
       iidLossPopulationRisk dataLaw loss θ ∈ Set.Icc (0 : ℝ) 1 := by
     intro θ
-    constructor
-    · exact integral_nonneg_of_ae
-        (Filter.Eventually.of_forall fun z => (hloss_range θ z).1)
-    · have hle := integral_mono_ae (hloss_int θ) (integrable_const (1 : ℝ))
-          (Filter.Eventually.of_forall fun z => (hloss_range θ z).2)
-      simpa [iidLossPopulationRisk] using hle
+    exact iidLossPopulationRisk_mem_Icc
+      (dataLaw := dataLaw) θ (hloss θ) (hloss_range θ)
   have hrisk_meas : StronglyMeasurable
       (iidLossPopulationRisk dataLaw loss) := by
     change StronglyMeasurable (fun θ => ∫ z, loss θ z ∂dataLaw)
@@ -219,87 +209,25 @@ theorem timeUniformIIDGaussianPACBayes_bound
     exact (hrisk_meas.comp_measurable measurable_fst).sub hobs
   have hX_meas : ∀ θ k, Measurable (X θ k) := by
     intro θ k
-    exact ((hX_joint k).comp_measurable
-      (measurable_const.prodMk measurable_id)).measurable
+    exact iidLossGap_measurable θ k (hloss θ) hsample
   have hX_bound : ∀ θ k ω, |X θ k ω| ≤ (1 : ℝ) := by
     intro θ k ω
-    change |iidLossPopulationRisk dataLaw loss θ -
-      loss θ (sample (k + 1) ω)| ≤ 1
-    rw [abs_le]
-    constructor <;>
-      nlinarith [(hrisk_range θ).1, (hrisk_range θ).2,
-        (hloss_range θ (sample (k + 1) ω)).1,
-        (hloss_range θ (sample (k + 1) ω)).2]
+    exact abs_iidLossGap_le_one θ k ω (hloss θ) (hloss_range θ)
   have hX_int : ∀ θ k, Integrable (X θ k) μ := by
     intro θ k
-    exact Integrable.of_bound (hX_meas θ k).aestronglyMeasurable 1
-      (Filter.Eventually.of_forall fun ω => hX_bound θ k ω)
+    exact iidLossGap_integrable θ k (hloss θ) (hloss_range θ) hsample
   have hsample_adapted := Filtration.stronglyAdapted_natural hsample
   have hX_adapted : ∀ θ, IncrementAdapted ℱ (X θ) := by
-    intro θ k
-    have hcomp : StronglyMeasurable[ℱ (k + 1)]
-        (fun ω => loss θ (sample (k + 1) ω)) :=
-      (hloss θ).comp_measurable (hsample_adapted (k + 1)).measurable
-    change StronglyMeasurable[ℱ (k + 1)]
-      ((fun _ : Ω => iidLossPopulationRisk dataLaw loss θ) -
-        fun ω => loss θ (sample (k + 1) ω))
-    exact stronglyMeasurable_const.sub hcomp
+    intro θ
+    exact iidLossGap_incrementAdapted θ (hloss θ) hsample
   have hcenter : ∀ θ k, μ[X θ k | ℱ k] =ᵐ[μ] 0 := by
     intro θ k
-    let observedLoss : Ω → ℝ := fun ω => loss θ (sample (k + 1) ω)
-    have hobserved_strong : StronglyMeasurable observedLoss :=
-      (hloss θ).comp_measurable (hsample (k + 1)).measurable
-    have hobserved_int : Integrable observedLoss μ := by
-      refine Integrable.of_bound hobserved_strong.aestronglyMeasurable 1 ?_
-      exact Filter.Eventually.of_forall fun ω => by
-        rw [Real.norm_eq_abs,
-          abs_of_nonneg (hloss_range θ (sample (k + 1) ω)).1]
-        exact (hloss_range θ (sample (k + 1) ω)).2
-    have hsample_independent := iIndepFun_indep_comap_natural_of_lt
-      hsample hsample_indep (Nat.lt_succ_self k)
-    have hcomap :
-        MeasurableSpace.comap observedLoss (borel ℝ) ≤
-          MeasurableSpace.comap (sample (k + 1)) mZ := by
-      change MeasurableSpace.comap (loss θ ∘ sample (k + 1)) (borel ℝ) ≤ _
-      rw [← MeasurableSpace.comap_comp]
-      exact MeasurableSpace.comap_mono (hloss θ).measurable.comap_le
-    have hobserved_independent :
-        Indep (MeasurableSpace.comap observedLoss (borel ℝ)) (ℱ k) μ :=
-      indep_of_indep_of_le_left hsample_independent hcomap
-    have hcond := condExp_indep_eq
-      (m₁ := MeasurableSpace.comap observedLoss (borel ℝ))
-      (m₂ := ℱ k) (m := mΩ) (μ := μ) (f := observedLoss)
-      hobserved_strong.measurable.comap_le (ℱ.le k)
-      (comap_measurable observedLoss).stronglyMeasurable hobserved_independent
-    have hmean : (∫ ω, observedLoss ω ∂μ) =
-        iidLossPopulationRisk dataLaw loss θ := by
-      simpa [observedLoss, iidLossPopulationRisk, Function.comp_def] using
-        (hsample_law (k + 1)).integral_comp (hloss θ).aestronglyMeasurable
-    have hsub := condExp_sub
-      (integrable_const (iidLossPopulationRisk dataLaw loss θ))
-      hobserved_int (ℱ k)
-    filter_upwards [hsub, hcond] with ω hsubω hcondω
-    change μ[(fun _ : Ω => iidLossPopulationRisk dataLaw loss θ) -
-      observedLoss | ℱ k] ω = 0
-    rw [hsubω, condExp_const (ℱ.le k)]
-    change iidLossPopulationRisk dataLaw loss θ - μ[observedLoss | ℱ k] ω = 0
-    rw [hcondω, hmean, sub_self]
+    exact iidLossGap_condExp_eq_zero θ k (hloss θ) (hloss_range θ)
+      hsample hsample_indep hsample_law
   have hvar : ∀ θ k,
       μ[fun ω => (X θ k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => (1 : ℝ) := by
     intro θ k
-    have hsq_int : Integrable (fun ω => (X θ k ω) ^ 2) μ := by
-      refine Integrable.of_bound ((hX_meas θ k).pow_const 2).aestronglyMeasurable 1 ?_
-      exact Filter.Eventually.of_forall fun ω => by
-        rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg (X θ k ω))]
-        rcases abs_le.mp (hX_bound θ k ω) with ⟨hneg, hpos⟩
-        nlinarith
-    have hmono := condExp_mono (m := ℱ k) (μ := μ)
-      hsq_int (integrable_const (1 : ℝ))
-      (Filter.Eventually.of_forall fun ω => by
-        rcases abs_le.mp (hX_bound θ k ω) with ⟨hneg, hpos⟩
-        nlinarith)
-    filter_upwards [hmono] with ω hω
-    simpa [condExp_const (ℱ.le k)] using hω
+    exact iidLossGap_condExp_sq_le_one θ k (hloss θ) (hloss_range θ) hsample
   have hM_int : ∀ θ n,
       Integrable (subGammaExponentialProcess (X θ) 1 1 lam n) μ := by
     intro θ n
@@ -608,7 +536,12 @@ Concrete end-to-end certificate: `N(0,1)` prior, `N(1,1)` posterior,
 `δ = exp(-1)`, `λ = 1`, and an explicitly bounded i.i.d. loss model.
 
 Together with `shiftedGaussian_penalty_evaluated`, the time-10 term in this
-certificate has the fully evaluated penalty `9/10`.
+certificate has the fully evaluated penalty `9/10`. This deterministic sanity
+check is deliberately vacuous: the constant `1/2` loss makes population and
+empirical risks equal, so its failure event is empty. For a stochastic,
+nonconstant example with a proved nonempty failure event, see
+`fairBoolThreshold_endToEnd_certificate` and
+`allTrueBoolStream_mem_gaussianPACBayesFailure`.
 -/
 theorem unitHalfLoss_endToEnd_certificate :
     (Measure.dirac ()).real

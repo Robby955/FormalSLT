@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C747-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C755-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-168-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C010-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C070-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -223,7 +223,8 @@ release check is in [Audit commands](#audit-commands).
 - Use `timeUniformIIDGaussianPACBayes_bound` when the hypotheses are
   finite-dimensional real vectors, the prior and posterior are spherical
   Gaussians, and the jointly measurable loss lies in `[0,1]`; its proof derives
-  the process obligations from the i.i.d. sample model.
+  the process obligations from the i.i.d. sample model. The confidence and tilt
+  parameters must satisfy `0 < delta` and `0 < lam < 3`.
 
 See [Related work](./docs/related-work.md) for the relationship to Mathlib's
 empirical-process and Rademacher-generalization developments.

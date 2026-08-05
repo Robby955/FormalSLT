@@ -167,6 +167,194 @@ theorem iIndepFun_indep_comap_natural_of_lt
   exact indep_iSup_of_disjoint
     (fun k => (hsample k).measurable.comap_le) hsample_indep (by simpa)
 
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- A strongly measurable `[0,1]` loss is integrable under a finite data law. -/
+theorem iidLoss_integrable
+    [MeasurableSpace Z] {dataLaw : Measure Z} [IsFiniteMeasure dataLaw]
+    {loss : ι → Z → ℝ} (i : ι)
+    (hloss : StronglyMeasurable (loss i))
+    (hloss_range : ∀ z, 0 ≤ loss i z ∧ loss i z ≤ 1) :
+    Integrable (loss i) dataLaw := by
+  refine Integrable.of_bound hloss.aestronglyMeasurable 1 ?_
+  exact Filter.Eventually.of_forall fun z => by
+    rw [Real.norm_eq_abs, abs_of_nonneg (hloss_range z).1]
+    exact (hloss_range z).2
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- The population risk of a `[0,1]` loss remains in `[0,1]`. -/
+theorem iidLossPopulationRisk_mem_Icc
+    [MeasurableSpace Z] {dataLaw : Measure Z} [IsProbabilityMeasure dataLaw]
+    {loss : ι → Z → ℝ} (i : ι)
+    (hloss : StronglyMeasurable (loss i))
+    (hloss_range : ∀ z, 0 ≤ loss i z ∧ loss i z ≤ 1) :
+    iidLossPopulationRisk dataLaw loss i ∈ Set.Icc (0 : ℝ) 1 := by
+  have hloss_int := iidLoss_integrable (dataLaw := dataLaw) i hloss hloss_range
+  constructor
+  · exact integral_nonneg_of_ae
+      (Filter.Eventually.of_forall fun z => (hloss_range z).1)
+  · have hle := integral_mono_ae hloss_int (integrable_const (1 : ℝ))
+        (Filter.Eventually.of_forall fun z => (hloss_range z).2)
+    simpa [iidLossPopulationRisk] using hle
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- Each centered i.i.d. loss increment is measurable. -/
+theorem iidLossGap_measurable
+    [MeasurableSpace Z] [TopologicalSpace Z] [BorelSpace Z]
+    [TopologicalSpace.MetrizableSpace Z]
+    [MeasurableSpace Ω] {dataLaw : Measure Z}
+    {loss : ι → Z → ℝ} {sample : ℕ → Ω → Z} (i : ι) (k : ℕ)
+    (hloss : StronglyMeasurable (loss i))
+    (hsample : ∀ j, StronglyMeasurable (sample j)) :
+    Measurable (iidLossGap dataLaw loss sample i k) := by
+  have hcomp : StronglyMeasurable (fun ω => loss i (sample (k + 1) ω)) :=
+    hloss.comp_measurable (hsample (k + 1)).measurable
+  change Measurable
+    ((fun _ : Ω => iidLossPopulationRisk dataLaw loss i) -
+      fun ω => loss i (sample (k + 1) ω))
+  exact (stronglyMeasurable_const.sub hcomp).measurable
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- A centered `[0,1]` loss increment has absolute value at most one. -/
+theorem abs_iidLossGap_le_one
+    [MeasurableSpace Z] {dataLaw : Measure Z} [IsProbabilityMeasure dataLaw]
+    {loss : ι → Z → ℝ} {sample : ℕ → Ω → Z} (i : ι) (k : ℕ) (ω : Ω)
+    (hloss : StronglyMeasurable (loss i))
+    (hloss_range : ∀ z, 0 ≤ loss i z ∧ loss i z ≤ 1) :
+    |iidLossGap dataLaw loss sample i k ω| ≤ (1 : ℝ) := by
+  have hrisk := iidLossPopulationRisk_mem_Icc
+    (dataLaw := dataLaw) i hloss hloss_range
+  change |iidLossPopulationRisk dataLaw loss i - loss i (sample (k + 1) ω)| ≤ 1
+  rw [abs_le]
+  constructor <;>
+    nlinarith [hrisk.1, hrisk.2,
+      (hloss_range (sample (k + 1) ω)).1,
+      (hloss_range (sample (k + 1) ω)).2]
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- Each centered bounded i.i.d. loss increment is integrable. -/
+theorem iidLossGap_integrable
+    [MeasurableSpace Z] [TopologicalSpace Z] [BorelSpace Z]
+    [TopologicalSpace.MetrizableSpace Z]
+    {dataLaw : Measure Z} [IsProbabilityMeasure dataLaw]
+    [MeasurableSpace Ω] {μ : Measure Ω} [IsFiniteMeasure μ]
+    {loss : ι → Z → ℝ} {sample : ℕ → Ω → Z} (i : ι) (k : ℕ)
+    (hloss : StronglyMeasurable (loss i))
+    (hloss_range : ∀ z, 0 ≤ loss i z ∧ loss i z ≤ 1)
+    (hsample : ∀ j, StronglyMeasurable (sample j)) :
+    Integrable (iidLossGap dataLaw loss sample i k) μ := by
+  refine Integrable.of_bound
+    (iidLossGap_measurable i k hloss hsample).aestronglyMeasurable 1 ?_
+  exact Filter.Eventually.of_forall fun ω =>
+    abs_iidLossGap_le_one i k ω hloss hloss_range
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- Centered i.i.d. loss increments are adapted to the natural filtration. -/
+theorem iidLossGap_incrementAdapted
+    [MeasurableSpace Z] [TopologicalSpace Z] [BorelSpace Z]
+    [TopologicalSpace.MetrizableSpace Z]
+    [mΩ : MeasurableSpace Ω] {dataLaw : Measure Z}
+    {loss : ι → Z → ℝ} {sample : ℕ → Ω → Z} (i : ι)
+    (hloss : StronglyMeasurable (loss i))
+    (hsample : ∀ j, StronglyMeasurable (sample j)) :
+    IncrementAdapted (Filtration.natural sample hsample)
+      (iidLossGap dataLaw loss sample i) := by
+  have hsample_adapted := Filtration.stronglyAdapted_natural hsample
+  intro k
+  have hcomp : StronglyMeasurable[Filtration.natural sample hsample (k + 1)]
+      (fun ω => loss i (sample (k + 1) ω)) :=
+    hloss.comp_measurable (hsample_adapted (k + 1)).measurable
+  change StronglyMeasurable[Filtration.natural sample hsample (k + 1)]
+    ((fun _ : Ω => iidLossPopulationRisk dataLaw loss i) -
+      fun ω => loss i (sample (k + 1) ω))
+  exact stronglyMeasurable_const.sub hcomp
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- A centered i.i.d. loss increment has conditional mean zero given the past. -/
+theorem iidLossGap_condExp_eq_zero
+    [mZ : MeasurableSpace Z] [TopologicalSpace Z] [BorelSpace Z]
+    [TopologicalSpace.MetrizableSpace Z]
+    [mΩ : MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {dataLaw : Measure Z} [IsProbabilityMeasure dataLaw]
+    {loss : ι → Z → ℝ} {sample : ℕ → Ω → Z} (i : ι) (k : ℕ)
+    (hloss : StronglyMeasurable (loss i))
+    (hloss_range : ∀ z, 0 ≤ loss i z ∧ loss i z ≤ 1)
+    (hsample : ∀ j, StronglyMeasurable (sample j))
+    (hsample_indep : iIndepFun sample μ)
+    (hsample_law : ∀ j, HasLaw (sample j) dataLaw μ) :
+    μ[iidLossGap dataLaw loss sample i k | Filtration.natural sample hsample k] =ᵐ[μ] 0 := by
+  let ℱ : Filtration ℕ mΩ := Filtration.natural sample hsample
+  let observedLoss : Ω → ℝ := fun ω => loss i (sample (k + 1) ω)
+  have hobserved_strong : StronglyMeasurable observedLoss :=
+    hloss.comp_measurable (hsample (k + 1)).measurable
+  have hobserved_int : Integrable observedLoss μ := by
+    refine Integrable.of_bound hobserved_strong.aestronglyMeasurable 1 ?_
+    exact Filter.Eventually.of_forall fun ω => by
+      rw [Real.norm_eq_abs, abs_of_nonneg (hloss_range (sample (k + 1) ω)).1]
+      exact (hloss_range (sample (k + 1) ω)).2
+  have hsample_independent := iIndepFun_indep_comap_natural_of_lt
+    hsample hsample_indep (Nat.lt_succ_self k)
+  have hcomap :
+      MeasurableSpace.comap observedLoss (borel ℝ) ≤
+        MeasurableSpace.comap (sample (k + 1)) mZ := by
+    change MeasurableSpace.comap (loss i ∘ sample (k + 1)) (borel ℝ) ≤ _
+    rw [← MeasurableSpace.comap_comp]
+    exact MeasurableSpace.comap_mono hloss.measurable.comap_le
+  have hobserved_independent :
+      Indep (MeasurableSpace.comap observedLoss (borel ℝ)) (ℱ k) μ :=
+    indep_of_indep_of_le_left hsample_independent hcomap
+  have hcond := condExp_indep_eq
+    (m₁ := MeasurableSpace.comap observedLoss (borel ℝ))
+    (m₂ := ℱ k) (m := mΩ) (μ := μ) (f := observedLoss)
+    hobserved_strong.measurable.comap_le (ℱ.le k)
+    (comap_measurable observedLoss).stronglyMeasurable hobserved_independent
+  have hmean : (∫ ω, observedLoss ω ∂μ) =
+      iidLossPopulationRisk dataLaw loss i := by
+    simpa [observedLoss, iidLossPopulationRisk, Function.comp_def] using
+      (hsample_law (k + 1)).integral_comp hloss.aestronglyMeasurable
+  have hsub := condExp_sub
+    (integrable_const (iidLossPopulationRisk dataLaw loss i))
+    hobserved_int (ℱ k)
+  filter_upwards [hsub, hcond] with ω hsubω hcondω
+  change μ[(fun _ : Ω => iidLossPopulationRisk dataLaw loss i) - observedLoss | ℱ k] ω = 0
+  rw [hsubω, condExp_const (ℱ.le k)]
+  change iidLossPopulationRisk dataLaw loss i - μ[observedLoss | ℱ k] ω = 0
+  rw [hcondω, hmean, sub_self]
+
+omit [Fintype ι] [DecidableEq ι] [Nonempty ι] in
+/-- The conditional squared moment of a centered `[0,1]` loss increment is at most one. -/
+theorem iidLossGap_condExp_sq_le_one
+    [MeasurableSpace Z] [TopologicalSpace Z] [BorelSpace Z]
+    [TopologicalSpace.MetrizableSpace Z]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {dataLaw : Measure Z} [IsProbabilityMeasure dataLaw]
+    {loss : ι → Z → ℝ} {sample : ℕ → Ω → Z} (i : ι) (k : ℕ)
+    (hloss : StronglyMeasurable (loss i))
+    (hloss_range : ∀ z, 0 ≤ loss i z ∧ loss i z ≤ 1)
+    (hsample : ∀ j, StronglyMeasurable (sample j)) :
+    μ[fun ω => (iidLossGap dataLaw loss sample i k ω) ^ 2 |
+        Filtration.natural sample hsample k] ≤ᵐ[μ] fun _ => (1 : ℝ) := by
+  let ℱ : Filtration ℕ mΩ := Filtration.natural sample hsample
+  have hX_meas := iidLossGap_measurable
+    (dataLaw := dataLaw) (loss := loss) (sample := sample) i k hloss hsample
+  have hbound : ∀ᵐ ω ∂μ, |iidLossGap dataLaw loss sample i k ω| ≤ (1 : ℝ) :=
+    Filter.Eventually.of_forall fun ω =>
+      abs_iidLossGap_le_one i k ω hloss hloss_range
+  have hsq_int : Integrable
+      (fun ω => (iidLossGap dataLaw loss sample i k ω) ^ 2) μ := by
+    refine Integrable.of_bound (hX_meas.pow_const 2).aestronglyMeasurable 1 ?_
+    filter_upwards [hbound] with ω hω
+    rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
+    rcases abs_le.mp hω with ⟨hneg, hpos⟩
+    nlinarith
+  have hmono := condExp_mono (m := ℱ k) (μ := μ)
+    hsq_int (integrable_const (1 : ℝ))
+    (hbound.mono fun ω hω => by
+      rcases abs_le.mp hω with ⟨hneg, hpos⟩
+      nlinarith)
+  filter_upwards [hmono] with ω hω
+  simpa [condExp_const (ℱ.le k)] using hω
+
 omit [DecidableEq ι] in
 /-- Time-uniform PAC-Bayes generalization bound for finite classes and i.i.d. `[0,1]` losses.
 
@@ -194,103 +382,26 @@ theorem timeUniformIIDPACBayes_allPosteriors_bound
       dataLaw prior loss sample lam delta) ≤ delta := by
   let ℱ : Filtration ℕ mΩ := Filtration.natural sample hsample
   let X : ι → ℕ → Ω → ℝ := iidLossGap dataLaw loss sample
-  have hloss_int : ∀ i, Integrable (loss i) dataLaw := by
-    intro i
-    refine Integrable.of_bound (hloss i).aestronglyMeasurable 1 ?_
-    exact Filter.Eventually.of_forall fun z => by
-      rw [Real.norm_eq_abs, abs_of_nonneg (hloss_range i z).1]
-      exact (hloss_range i z).2
-  have hrisk : ∀ i, iidLossPopulationRisk dataLaw loss i ∈ Set.Icc (0 : ℝ) 1 := by
-    intro i
-    constructor
-    · exact integral_nonneg_of_ae
-        (Filter.Eventually.of_forall fun z => (hloss_range i z).1)
-    · have hle := integral_mono_ae (hloss_int i) (integrable_const (1 : ℝ))
-          (Filter.Eventually.of_forall fun z => (hloss_range i z).2)
-      simpa [iidLossPopulationRisk] using hle
   have hX_meas : ∀ i k, Measurable (X i k) := by
     intro i k
-    have hcomp : StronglyMeasurable (fun ω => loss i (sample (k + 1) ω)) :=
-      (hloss i).comp_measurable (hsample (k + 1)).measurable
-    change Measurable
-      ((fun _ : Ω => iidLossPopulationRisk dataLaw loss i) -
-        fun ω => loss i (sample (k + 1) ω))
-    exact (stronglyMeasurable_const.sub hcomp).measurable
+    exact iidLossGap_measurable i k (hloss i) hsample
   have hbound : ∀ i k, ∀ᵐ ω ∂μ, |X i k ω| ≤ (1 : ℝ) := by
     intro i k
-    exact Filter.Eventually.of_forall fun ω => by
-      change |iidLossPopulationRisk dataLaw loss i - loss i (sample (k + 1) ω)| ≤ 1
-      rw [abs_le]
-      constructor <;>
-        nlinarith [(hrisk i).1, (hrisk i).2,
-          (hloss_range i (sample (k + 1) ω)).1,
-          (hloss_range i (sample (k + 1) ω)).2]
+    exact Filter.Eventually.of_forall fun ω =>
+      abs_iidLossGap_le_one i k ω (hloss i) (hloss_range i)
   have hX_int : ∀ i k, Integrable (X i k) μ := by
     intro i k
-    exact Integrable.of_bound (hX_meas i k).aestronglyMeasurable 1 (hbound i k)
+    exact iidLossGap_integrable i k (hloss i) (hloss_range i) hsample
   have hX_adapted : ∀ i, IncrementAdapted ℱ (X i) := by
-    have hsample_adapted := Filtration.stronglyAdapted_natural hsample
-    intro i k
-    have hcomp : StronglyMeasurable[ℱ (k + 1)]
-        (fun ω => loss i (sample (k + 1) ω)) :=
-      (hloss i).comp_measurable (hsample_adapted (k + 1)).measurable
-    change StronglyMeasurable[ℱ (k + 1)]
-      ((fun _ : Ω => iidLossPopulationRisk dataLaw loss i) -
-        fun ω => loss i (sample (k + 1) ω))
-    exact stronglyMeasurable_const.sub hcomp
+    intro i
+    exact iidLossGap_incrementAdapted i (hloss i) hsample
   have hcenter : ∀ i k, μ[X i k | ℱ k] =ᵐ[μ] 0 := by
     intro i k
-    let observedLoss : Ω → ℝ := fun ω => loss i (sample (k + 1) ω)
-    have hobserved_strong : StronglyMeasurable observedLoss :=
-      (hloss i).comp_measurable (hsample (k + 1)).measurable
-    have hobserved_int : Integrable observedLoss μ := by
-      refine Integrable.of_bound hobserved_strong.aestronglyMeasurable 1 ?_
-      exact Filter.Eventually.of_forall fun ω => by
-        rw [Real.norm_eq_abs, abs_of_nonneg (hloss_range i (sample (k + 1) ω)).1]
-        exact (hloss_range i (sample (k + 1) ω)).2
-    have hsample_independent := iIndepFun_indep_comap_natural_of_lt
-      hsample hsample_indep (Nat.lt_succ_self k)
-    have hcomap :
-        MeasurableSpace.comap observedLoss (borel ℝ) ≤
-          MeasurableSpace.comap (sample (k + 1)) mZ := by
-      change MeasurableSpace.comap (loss i ∘ sample (k + 1)) (borel ℝ) ≤ _
-      rw [← MeasurableSpace.comap_comp]
-      exact MeasurableSpace.comap_mono (hloss i).measurable.comap_le
-    have hobserved_independent :
-        Indep (MeasurableSpace.comap observedLoss (borel ℝ)) (ℱ k) μ :=
-      indep_of_indep_of_le_left hsample_independent hcomap
-    have hcond := condExp_indep_eq
-      (m₁ := MeasurableSpace.comap observedLoss (borel ℝ))
-      (m₂ := ℱ k) (m := mΩ) (μ := μ) (f := observedLoss)
-      hobserved_strong.measurable.comap_le (ℱ.le k)
-      (comap_measurable observedLoss).stronglyMeasurable hobserved_independent
-    have hmean : (∫ ω, observedLoss ω ∂μ) =
-        iidLossPopulationRisk dataLaw loss i := by
-      simpa [observedLoss, iidLossPopulationRisk, Function.comp_def] using
-        (hsample_law (k + 1)).integral_comp (hloss i).aestronglyMeasurable
-    have hsub := condExp_sub
-      (integrable_const (iidLossPopulationRisk dataLaw loss i))
-      hobserved_int (ℱ k)
-    filter_upwards [hsub, hcond] with ω hsubω hcondω
-    change μ[(fun _ : Ω => iidLossPopulationRisk dataLaw loss i) - observedLoss | ℱ k] ω = 0
-    rw [hsubω, condExp_const (ℱ.le k)]
-    change iidLossPopulationRisk dataLaw loss i - μ[observedLoss | ℱ k] ω = 0
-    rw [hcondω, hmean, sub_self]
+    exact iidLossGap_condExp_eq_zero i k (hloss i) (hloss_range i)
+      hsample hsample_indep hsample_law
   have hvar : ∀ i k, μ[fun ω => (X i k ω) ^ 2 | ℱ k] ≤ᵐ[μ] fun _ => (1 : ℝ) := by
     intro i k
-    have hsq_int : Integrable (fun ω => (X i k ω) ^ 2) μ := by
-      refine Integrable.of_bound ((hX_meas i k).pow_const 2).aestronglyMeasurable 1 ?_
-      filter_upwards [hbound i k] with ω hω
-      rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg (X i k ω))]
-      rcases abs_le.mp hω with ⟨hneg, hpos⟩
-      nlinarith
-    have hmono := condExp_mono (m := ℱ k) (μ := μ)
-      hsq_int (integrable_const (1 : ℝ))
-      ((hbound i k).mono fun ω hω => by
-        rcases abs_le.mp hω with ⟨hneg, hpos⟩
-        nlinarith)
-    filter_upwards [hmono] with ω hω
-    simpa [condExp_const (ℱ.le k)] using hω
+    exact iidLossGap_condExp_sq_le_one i k (hloss i) (hloss_range i) hsample
   have h_integrable :
       ∀ i n, Integrable (subGammaExponentialProcess (X i) 1 1 lam n) μ := by
     intro i n
