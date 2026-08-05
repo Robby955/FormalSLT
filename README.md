@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C755-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C764-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-168-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C077-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C206-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -149,8 +149,9 @@ declaration and prints its axiom profile.
   `timeUniformIIDGaussianPACBayes_bound`, with `N(1,1)` versus `N(0,1)` KL
   evaluated to `1/2`; the fair-Bernoulli product-stream example has a
   nonconstant Gaussian-threshold loss, population risk `1/2`, a time-100
-  penalty `54/275`, and a specific path proving event nonemptiness, without a
-  positive-probability or tightness claim;
+  penalty `54/275`, and a first-100-true cylinder of probability `2⁻¹⁰⁰`
+  contained in the failure event. This proves strictly positive failure-event
+  mass without claiming that either bound is tight;
   [`CheckIIDContinuousGaussianPACBayes.lean`](./examples/CheckIIDContinuousGaussianPACBayes.lean)
 - **Finite-class i.i.d. bound, simultaneous over all posteriors** —
   `timeUniformIIDPACBayes_allPosteriors_bound`;

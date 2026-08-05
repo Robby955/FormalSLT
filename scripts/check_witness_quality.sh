@@ -67,7 +67,7 @@ classify_witness() {
 #   betting_confidence_sequence_of_condMean (concrete Rademacher witness, bet 1/4)
 #   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
 #   timeUniformIIDGaussianPACBayes_bound (fair-Bernoulli product stream with
-#     explicit KL, evaluated penalty, and a nonempty failure-event witness)
+#     explicit KL, evaluated penalty, and a positive-mass failure cylinder)
 #   cramerRao_unbiased / Bernoulli p = 1/2 Fisher-information witness
 #   finiteLogPartition_hasDerivAt / finiteExponentialFamily_fisherInformation_eq_variance
 #     (Bernoulli natural-parameter witness at theta = 0)

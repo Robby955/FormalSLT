@@ -68,10 +68,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 129,
-    "library_and_example_lean_lines": 73077,
-    "library_lean_lines": 64820,
+    "library_and_example_lean_lines": 73206,
+    "library_lean_lines": 64931,
     "library_modules": 168,
-    "theorem_map_entries": 577
+    "theorem_map_entries": 578
   },
   "theorem_families": [
     {
@@ -3085,8 +3085,14 @@
         {
           "kind": "theorem",
           "module": "PACBayes.IIDContinuousGaussian",
+          "name": "fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred",
+          "summary": "Explicit positive-mass witness: the first-100-true cylinder has probability 2\u207b\u00b9\u2070\u2070 and lies inside the worked Gaussian PAC-Bayes failure event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussian",
           "name": "fairBoolThreshold_endToEnd_certificate",
-          "summary": "Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk 1/2, evaluated penalty 54/275, and a specific path proving event nonemptiness without a positive-probability or tightness claim"
+          "summary": "Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk 1/2, evaluated penalty 54/275, and a positive-probability failure cylinder, without a tightness claim"
         }
       ],
       "name": "Time-uniform PAC-Bayes"
