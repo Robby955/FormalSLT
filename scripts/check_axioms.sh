@@ -32,6 +32,7 @@ THEOREMS=(
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.timeUniformIIDGaussianPACBayes_selected_bound"
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianGrid_certificate"
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianSelected_certificate"
+  "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_secondMoment_eq"
 )
 
 # Axioms permitted in a clean proof.
@@ -46,6 +47,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussian"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussianGrid"
+  echo "import FormalSLT.PACBayes.IndicatorVariance"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -56,7 +58,8 @@ echo "== building flagship modules =="
   FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \
   FormalSLT.TestTimeMeta.FlagshipAnytimeValid \
   FormalSLT.PACBayes.IIDContinuousGaussian \
-  FormalSLT.PACBayes.IIDContinuousGaussianGrid >/dev/null
+  FormalSLT.PACBayes.IIDContinuousGaussianGrid \
+  FormalSLT.PACBayes.IndicatorVariance >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

@@ -501,6 +501,9 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteMcAllesterGridPeeling_badEventMass_le_delta` | `PACBayesBoundedLoss` | Finite-grid McAllester peeling bound with allocated confidence mass |
 | `finiteMcAllesterGridOptimized_badEventMass_le_delta` | `PACBayesBoundedLoss` | Posterior-dependent finite-grid McAllester wrapper under an explicit bucket certificate |
 | `pac_bayes_generalization` | `PACBayesBoundedLoss` | Closed PAC-Bayes good-event theorem: with product-sample mass at least `1 - delta`, every posterior satisfies the Catoni-form risk bound |
+| `indicatorPopulationRisk_mem_Icc` | `PACBayes.IndicatorVariance` | Population risk of an arbitrary Boolean indicator under a finite PMF lies in `[0,1]` |
+| `indicatorDeviation_centered` | `PACBayes.IndicatorVariance` | The population-centered indicator loss has exactly zero finite-PMF mean |
+| `indicatorDeviation_secondMoment_eq` | `PACBayes.IndicatorVariance` | Exact finite-PMF variance identity `R * (1 - R)` for arbitrary Boolean indicator predicates |
 | `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
 | `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |
