@@ -28,11 +28,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian; it is not simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs now support simultaneous validity and sample-dependent selection, but the result is not simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
       "next_step": "Extend the finite-grid confidence layer toward an all-real lambda optimization statement with explicit post-sample optimization rules, then generalize the fixed spherical-Gaussian posterior lane.",
-      "scope": "finite hypotheses plus a fixed spherical-Gaussian continuous-hypothesis specialization",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
@@ -68,8 +68,8 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 130,
-    "library_and_example_lean_lines": 73565,
-    "library_lean_lines": 65257,
+    "library_and_example_lean_lines": 73583,
+    "library_lean_lines": 65262,
     "library_modules": 169,
     "theorem_map_entries": 582
   },

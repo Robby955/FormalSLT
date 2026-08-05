@@ -18,6 +18,11 @@ Consequently, a selector may choose an entry after observing the sample path.
 The total failure probability is the sum of the entrywise budgets.  This is a
 finite-catalog result: it does not assert simultaneous validity over every
 Gaussian posterior or every real-valued tilt.
+
+The bounds assume probability measures on the data and sample spaces, an
+i.i.d. sample stream with the stated data law, a jointly strongly measurable
+loss with values in `[0, 1]`, positive entrywise confidence budgets, and
+entrywise tilts strictly between `0` and `3`.
 -/
 
 open MeasureTheory ProbabilityTheory
