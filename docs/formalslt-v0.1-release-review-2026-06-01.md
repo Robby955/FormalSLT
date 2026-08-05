@@ -37,18 +37,18 @@ must be checked in the TheoremPath worktree before any TheoremPath action.
 Main bundled API:
 
 - `FiniteClassConfidenceSequence.failure_probability_le`
-- Anchor: `FormalSLT/UniformConvergence.lean:3718`
+- Anchor: `FormalSLT/UniformConvergence.lean:3740`
 
 Supporting declarations:
 
 - `finiteClassConfidenceSequenceFailureEvent`
-  (`FormalSLT/UniformConvergence.lean:3624`)
+  (`FormalSLT/UniformConvergence.lean:3646`)
 - `FiniteClassConfidenceSequence`
-  (`FormalSLT/UniformConvergence.lean:3641`)
-- `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`
   (`FormalSLT/UniformConvergence.lean:3663`)
+- `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`
+  (`FormalSLT/UniformConvergence.lean:3685`)
 - `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge`
-  (`FormalSLT/UniformConvergence.lean:3748`)
+  (`FormalSLT/UniformConvergence.lean:3770`)
 
 Meaning: for a finite nonempty hypothesis class, a fixed finite sample, a
 probability measure, coordinate-wise independent `[0,1]` losses, a risk identity,
@@ -71,17 +71,17 @@ Main local declarations:
 - `unitIntervalRademacherLinearSup_expectation`
   (`FormalSLT/Covering/UnitIntervalDudley.lean:912`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2054`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2073`)
 - `unitIntervalRoundedDyadicGridDudleyInstance`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:1555`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:1571`)
 - `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:1883`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:1900`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2088`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2107`)
 - `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2113`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2133`)
 - `unitIntervalRademacherLinearSup_dudley_m0_bound`
-  (`FormalSLT/Covering/UnitIntervalDudley.lean:2178`)
+  (`FormalSLT/Covering/UnitIntervalDudley.lean:2198`)
 
 Meaning: the finite-net Dudley machinery reaches a concrete non-finite metric
 index space, the unit interval, through supplied supremum and rounded dyadic
@@ -102,9 +102,9 @@ Main local declarations:
 - `FiniteDyadicDudleyInstance.suppliedSup_dudley_bound`
   (`FormalSLT/Covering/FiniteSubGaussianChaining.lean:4626`)
 - `dyadicChainingFiniteNetSequenceOfTotallyBounded`
-  (`FormalSLT/Covering/TotalBoundedDudley.lean:614`)
+  (`FormalSLT/Covering/TotalBoundedDudley.lean:613`)
 - `finiteDyadicDudleyInstanceOfTotallyBounded`
-  (`FormalSLT/Covering/TotalBoundedDudley.lean:667`)
+  (`FormalSLT/Covering/TotalBoundedDudley.lean:666`)
 
 Meaning: the finite examples package the finite sub-Gaussian process, dyadic
 net sequence, coarse budget, variance positivity, and terminal supplied-supremum
@@ -122,9 +122,9 @@ Main local declarations:
 - `twoPointRademacher_projected_dudley_m_bound`
   (`FormalSLT/Covering/TwoPointDudley.lean:229`)
 - `twoPointRademacherSupAdapter`
-  (`FormalSLT/Covering/TwoPointDudley.lean:265`)
+  (`FormalSLT/Covering/TwoPointDudley.lean:266`)
 - `twoPointRademacherSup_dudley_m_bound`
-  (`FormalSLT/Covering/TwoPointDudley.lean:275`)
+  (`FormalSLT/Covering/TwoPointDudley.lean:277`)
 
 Meaning: the generic `FiniteDyadicNetSequence` and packaged
 `FiniteDyadicDudleyInstance` wrappers are instantiated on a second metric index
@@ -135,19 +135,19 @@ family. This is an API-usability check, not a stronger Dudley theorem.
 Main local declarations:
 
 - `finDiscreteDyadicNetSequence`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:240`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:241`)
 - `finDiscreteDyadicCoverCount`
   (`FormalSLT/Covering/FiniteDiscreteDudley.lean:171`)
 - `finDiscreteDudleyInstance`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:287`)
 - `finDiscreteRademacher_projected_dudley_m_bound`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:295`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:296`)
 - `finDiscreteRademacherSup_true`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:314`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:317`)
 - `finDiscreteRademacherSupAdapter`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:347`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:350`)
 - `finDiscreteRademacherSup_dudley_m_bound`
-  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:357`)
+  (`FormalSLT/Covering/FiniteDiscreteDudley.lean:361`)
 
 Meaning: the generic `FiniteDyadicNetSequence` wrapper is instantiated for
 `Fin n` with the discrete metric under `[Fact (2 ≤ n)]`. The example embeds a

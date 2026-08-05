@@ -73,24 +73,24 @@ Dyadic and countable-time budget shell:
 
 Finite-prefix Hoeffding and route-facing radii:
 
-- `FormalSLT/UniformConvergence.lean:3127`
+- `FormalSLT/UniformConvergence.lean:3149`
   `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius`
-- `FormalSLT/UniformConvergence.lean:3202`
+- `FormalSLT/UniformConvergence.lean:3224`
   `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding`
 
 Countable-time confidence-sequence surface:
 
-- `FormalSLT/UniformConvergence.lean:3318`
+- `FormalSLT/UniformConvergence.lean:3340`
   `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding`
-- `FormalSLT/UniformConvergence.lean:3582`
+- `FormalSLT/UniformConvergence.lean:3604`
   `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding`
-- `FormalSLT/UniformConvergence.lean:3624`
+- `FormalSLT/UniformConvergence.lean:3646`
   `finiteClassConfidenceSequenceFailureEvent`
-- `FormalSLT/UniformConvergence.lean:3641`
-  `FiniteClassConfidenceSequence`
 - `FormalSLT/UniformConvergence.lean:3663`
+  `FiniteClassConfidenceSequence`
+- `FormalSLT/UniformConvergence.lean:3685`
   `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding`
-- `FormalSLT/UniformConvergence.lean:3718`
+- `FormalSLT/UniformConvergence.lean:3740`
   `FiniteClassConfidenceSequence.failure_probability_le`
 
 Rounded dyadic-grid Dudley chain:
@@ -99,9 +99,9 @@ Rounded dyadic-grid Dudley chain:
   `unitIntervalDyadicGridRoundProject_dist_le`
 - `FormalSLT/Covering/UnitIntervalDudley.lean:983`
   `unitIntervalRademacherLinearSup_sSup_range`
-- `FormalSLT/Covering/UnitIntervalDudley.lean:1609`
+- `FormalSLT/Covering/UnitIntervalDudley.lean:1657`
   `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound`
-- `FormalSLT/Covering/UnitIntervalDudley.lean:2055`
+- `FormalSLT/Covering/UnitIntervalDudley.lean:2107`
   `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound`
 
 ## What landed

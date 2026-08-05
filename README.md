@@ -348,11 +348,9 @@ rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b'
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
 python3 scripts/generate_badge_counts.py --check
-python3 scripts/check_doc_anchors.py \
-  docs/formalslt-v0.1-technical-note.md \
-  docs/formalslt-v0.1-artifact-map-2026-06-01.md \
-  docs/formalslt-v0.1-release-review-2026-06-01.md \
-  docs/theorempath-formalslt-v0.1-page-draft.mdx
+python3 scripts/check_doc_anchors.py --self-test
+git ls-files -z -- '*.md' '*.mdx' | \
+  xargs -0 python3 scripts/check_doc_anchors.py
 git diff --check
 ```
 

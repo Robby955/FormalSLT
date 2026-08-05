@@ -33,6 +33,12 @@ jobs:
             lake env lean "$f"
           done
 
+      - name: Verify documentation source anchors
+        run: |
+          python3 scripts/check_doc_anchors.py --self-test
+          git ls-files -z -- '*.md' '*.mdx' | \
+            xargs -0 python3 scripts/check_doc_anchors.py
+
       # Metadata freshness: informational only. These regenerate-and-compare
       # checks drift on every content commit, so they must NOT gate the build.
       # Refresh anytime with the two generator scripts (no --check).

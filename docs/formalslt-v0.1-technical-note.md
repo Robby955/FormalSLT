@@ -98,7 +98,7 @@ FiniteClassConfidenceSequence.failure_probability_le
 ```
 
 Anchor: `FiniteClassConfidenceSequence.failure_probability_le` at
-`FormalSLT/UniformConvergence.lean:3718`.
+`FormalSLT/UniformConvergence.lean:3740`.
 
 The theorem controls the failure event for a simultaneous all-times,
 all-hypotheses confidence sequence. Its hypotheses expose the finite-class
@@ -147,14 +147,14 @@ The core anchors are:
 | Dyadic countable time budget | `finiteDyadicTimeBudget_tsum_le` | `FormalSLT/UniformConvergence.lean:244` |
 | Countable-time class union bound | `countableTimeClassUnionBound_dyadicBudget` | `FormalSLT/UniformConvergence.lean:286` |
 | Named confidence radius | `zeroOneDyadicFiniteClassConfidenceRadius` | `FormalSLT/UniformConvergence.lean:333` |
-| Finite-prefix variable-radius wrapper | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3202` |
-| Countable-time variable-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3318` |
-| Exists-form named-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3582` |
-| Named confidence-sequence failure event | `finiteClassConfidenceSequenceFailureEvent` | `FormalSLT/UniformConvergence.lean:3624` |
-| Confidence-sequence assumption bundle | `FiniteClassConfidenceSequence` | `FormalSLT/UniformConvergence.lean:3641` |
-| Confidence-sequence failure bound | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3663` |
-| Bundled confidence-sequence API | `FiniteClassConfidenceSequence.failure_probability_le` | `FormalSLT/UniformConvergence.lean:3718` |
-| Named-radius sample-size inversion | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `FormalSLT/UniformConvergence.lean:3748` |
+| Finite-prefix variable-radius wrapper | `finitePrefixFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3224` |
+| Countable-time variable-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_timeVaryingRadius_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3340` |
+| Exists-form named-radius wrapper | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_namedRadius_exists_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3604` |
+| Named confidence-sequence failure event | `finiteClassConfidenceSequenceFailureEvent` | `FormalSLT/UniformConvergence.lean:3646` |
+| Confidence-sequence assumption bundle | `FiniteClassConfidenceSequence` | `FormalSLT/UniformConvergence.lean:3663` |
+| Confidence-sequence failure bound | `anytimeFiniteClassDeviationFromHoeffding_zeroOneRange_confidenceSequence_fromHoeffding` | `FormalSLT/UniformConvergence.lean:3685` |
+| Bundled confidence-sequence API | `FiniteClassConfidenceSequence.failure_probability_le` | `FormalSLT/UniformConvergence.lean:3740` |
+| Named-radius sample-size inversion | `zeroOneDyadicFiniteClassConfidenceRadius_le_of_sampleSize_ge` | `FormalSLT/UniformConvergence.lean:3770` |
 
 ### Interpretation
 
@@ -213,7 +213,7 @@ unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree
 
 Anchor:
 `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`
-at `FormalSLT/Covering/UnitIntervalDudley.lean:2113`.
+at `FormalSLT/Covering/UnitIntervalDudley.lean:2133`.
 
 This theorem applies finite sub-Gaussian chaining infrastructure to a process
 indexed by the unit interval:
@@ -259,9 +259,9 @@ Finite-chaining anchors:
 | Finite expected-sup MGF bound | `finite_expectedSup_le_of_mgf_log` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:752` |
 | Sub-Gaussian finite max wrapper | `finite_expectedSup_le_of_subGaussian_mgf_sqrt` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:847` |
 | Finite Dudley entropy budget | `finite_dudley_entropy_sum_coveringNumbers_geometric_entropy_budget` | `FormalSLT/Covering/FiniteSubGaussianChaining.lean:3003` |
-| Total-bounded dyadic net-sequence constructor | `dyadicChainingFiniteNetSequenceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:614` |
-| Total-bounded packaged Dudley constructor | `finiteDyadicDudleyInstanceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:667` |
-| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:1476` |
+| Total-bounded dyadic net-sequence constructor | `dyadicChainingFiniteNetSequenceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:613` |
+| Total-bounded packaged Dudley constructor | `finiteDyadicDudleyInstanceOfTotallyBounded` | `FormalSLT/Covering/TotalBoundedDudley.lean:666` |
+| Supplied-supremum total-bounded adapter | `finite_supFunctional_dudley_totalBounded_dyadic_entropy_truncatedIntervalIntegral_comparison` | `FormalSLT/Covering/TotalBoundedDudley.lean:1435` |
 
 Unit-interval anchors:
 
@@ -269,14 +269,14 @@ Unit-interval anchors:
 |---|---|---|
 | Total boundedness | `unitInterval_totallyBounded_univ` | `FormalSLT/Covering/UnitIntervalDudley.lean:47` |
 | Rounded projection radius | `unitIntervalDyadicGridRoundProject_dist_le` | `FormalSLT/Covering/UnitIntervalDudley.lean:323` |
-| Rounded-grid distance match | `unitIntervalRoundedDyadicGridNet_dist` | `FormalSLT/Covering/UnitIntervalDudley.lean:1231` |
+| Rounded-grid distance match | `unitIntervalRoundedDyadicGridNet_dist` | `FormalSLT/Covering/UnitIntervalDudley.lean:1246` |
 | Supremum as range `sSup` | `unitIntervalRademacherLinearSup_sSup_range` | `FormalSLT/Covering/UnitIntervalDudley.lean:983` |
-| Packaged rounded-grid Dudley instance | `unitIntervalRoundedDyadicGridDudleyInstance` | `FormalSLT/Covering/UnitIntervalDudley.lean:1555` |
-| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1641` |
-| Supplied-supremum adapter | `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` | `FormalSLT/Covering/UnitIntervalDudley.lean:1883` |
-| Supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2088` |
-| Prefix-free supplied-supremum bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2113` |
-| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2497` |
+| Packaged rounded-grid Dudley instance | `unitIntervalRoundedDyadicGridDudleyInstance` | `FormalSLT/Covering/UnitIntervalDudley.lean:1571` |
+| Projected rounded-grid Dudley bound | `unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:1657` |
+| Supplied-supremum adapter | `unitIntervalRademacherLinearSupRoundedDyadicGridAdapter` | `FormalSLT/Covering/UnitIntervalDudley.lean:1900` |
+| Supplied-supremum Dudley bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound` | `FormalSLT/Covering/UnitIntervalDudley.lean:2107` |
+| Prefix-free supplied-supremum bound | `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree` | `FormalSLT/Covering/UnitIntervalDudley.lean:2133` |
+| Evaluated one-step scalar corollary | `unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval` | `FormalSLT/Covering/UnitIntervalDudley.lean:2517` |
 
 ### Interpretation
 
@@ -346,7 +346,7 @@ Anchors:
 `twoPointDudleyInstance` at
 `FormalSLT/Covering/TwoPointDudley.lean:220`, and
 `twoPointRademacherSupAdapter` at
-`FormalSLT/Covering/TwoPointDudley.lean:265`.
+`FormalSLT/Covering/TwoPointDudley.lean:266`.
 
 The two-point module then routes through the packaged projected and
 supplied-supremum wrappers:
@@ -378,7 +378,7 @@ finDiscreteDyadicNetSequence
 ```
 
 Anchor: `finDiscreteDyadicNetSequence` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:240`.
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:241`.
 
 This declaration instantiates `FiniteDyadicNetSequence` for `Fin n` with the
 discrete metric under the nondegeneracy assumption `[Fact (2 ≤ n)]`. The
@@ -403,9 +403,9 @@ finDiscreteRademacherSupAdapter
 
 Anchors:
 `finDiscreteDudleyInstance` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:286`, and
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:287`, and
 `finDiscreteRademacherSupAdapter` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:347`.
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:350`.
 
 The module then routes the embedded Rademacher process through the packaged
 projected and supplied-supremum wrappers:
@@ -418,11 +418,11 @@ finDiscreteRademacherSup_dudley_m_bound
 
 Anchors:
 `finDiscreteRademacher_projected_dudley_m_bound` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:295`, and
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:296`, and
 `finDiscreteRademacherSup_true` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:314`, and
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:317`, and
 `finDiscreteRademacherSup_dudley_m_bound` at
-`FormalSLT/Covering/FiniteDiscreteDudley.lean:357`.
+`FormalSLT/Covering/FiniteDiscreteDudley.lean:361`.
 
 This finite-discrete example is still deliberately simple. Its role is API
 pressure: it checks that the finite dyadic-net wrapper can be instantiated for
