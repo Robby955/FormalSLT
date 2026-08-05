@@ -721,7 +721,10 @@ theorem fairBoolGaussianPosteriorEmpiricalRisk_allTrue_le_quarter :
 
 /--
 At `λ = 1/4`, `n = 100`, and `δ = exp(-1)`, the displayed penalty is
-`54/275`, which is strictly below the achievable gap `1/4`.
+`54/275`, which is strictly below the pathwise gap `1/4` witnessed by
+`allTrueBoolStream`. This comparison establishes event nonemptiness only; the
+witness is a single null path under the fair product law, so it does not imply
+positive failure probability or tightness of the penalty.
 -/
 theorem shiftedGaussian_nonvacuityPenalty_evaluated :
     subGammaCgf 1 1 ((1 : ℝ) / 4) / ((1 : ℝ) / 4) +
@@ -767,6 +770,10 @@ threshold loss, `δ = exp(-1)`, and `λ = 1/4`.
 The population risk is exactly `1/2` by `fairBoolPopulationRisk_eq_half`; the
 closed-form KL is `1/2`, and the time-100 penalty is `54/275`.  The event is
 provably nonempty by `allTrueBoolStream_mem_gaussianPACBayesFailure`.
+
+The displayed witness `allTrueBoolStream` is a single null path under
+`fairBoolStreamLaw`. Event nonemptiness therefore supplies neither a positive
+lower bound on failure probability nor evidence that the penalty is tight.
 -/
 theorem fairBoolThreshold_endToEnd_certificate :
     fairBoolStreamLaw.real
