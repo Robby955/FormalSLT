@@ -349,8 +349,8 @@ rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
 python3 scripts/generate_badge_counts.py --check
 python3 scripts/check_doc_anchors.py --self-test
-python3 scripts/check_doc_anchors.py \
-  README.md ARCHITECTURE.md docs/*.md docs/*.mdx
+git ls-files -z -- '*.md' '*.mdx' | \
+  xargs -0 python3 scripts/check_doc_anchors.py
 git diff --check
 ```
 
