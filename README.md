@@ -149,7 +149,8 @@ declaration and prints its axiom profile.
   `timeUniformIIDGaussianPACBayes_bound`, with `N(1,1)` versus `N(0,1)` KL
   evaluated to `1/2`; the fair-Bernoulli product-stream example has a
   nonconstant Gaussian-threshold loss, population risk `1/2`, a time-100
-  penalty `54/275`, and an explicit path proving its failure event nonempty;
+  penalty `54/275`, and a specific path proving event nonemptiness, without a
+  positive-probability or tightness claim;
   [`CheckIIDContinuousGaussianPACBayes.lean`](./examples/CheckIIDContinuousGaussianPACBayes.lean)
 - **Finite-class i.i.d. bound, simultaneous over all posteriors** —
   `timeUniformIIDPACBayes_allPosteriors_bound`;

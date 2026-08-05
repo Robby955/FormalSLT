@@ -3086,7 +3086,7 @@
           "kind": "theorem",
           "module": "PACBayes.IIDContinuousGaussian",
           "name": "fairBoolThreshold_endToEnd_certificate",
-          "summary": "Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk 1/2, evaluated penalty 54/275, and an explicit nonempty-event witness"
+          "summary": "Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk 1/2, evaluated penalty 54/275, and a specific path proving event nonemptiness without a positive-probability or tightness claim"
         }
       ],
       "name": "Time-uniform PAC-Bayes"

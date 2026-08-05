@@ -563,7 +563,7 @@ declarations; modules are relative to `FormalSLT`.
 | `sphericalGaussianMeasure_klDiv_toReal_eq` | `PACBayes.GaussianMeasureKL` | Measure-theoretic KL between finite-dimensional spherical Gaussian laws equals its explicit closed form |
 | `timeUniformSphericalGaussianPACBayes_bound` | `PACBayes.TimeUniformGaussianPACBayes` | Process-level time-uniform PAC-Bayes theorem specialized to a fixed finite-dimensional spherical-Gaussian prior/posterior pair |
 | `timeUniformIIDGaussianPACBayes_bound` | `PACBayes.IIDContinuousGaussian` | End-to-end i.i.d. bounded-loss theorem over a continuous finite-dimensional hypothesis space with explicit spherical-Gaussian KL |
-| `fairBoolThreshold_endToEnd_certificate` | `PACBayes.IIDContinuousGaussian` | Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk `1/2`, evaluated penalty `54/275`, and an explicit nonempty-event witness |
+| `fairBoolThreshold_endToEnd_certificate` | `PACBayes.IIDContinuousGaussian` | Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk `1/2`, evaluated penalty `54/275`, and a specific path proving event nonemptiness without a positive-probability or tightness claim |
 
 ## Named tail-probability corollaries
 
