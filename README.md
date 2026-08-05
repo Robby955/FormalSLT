@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C764-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-168-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C206-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C774-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-169-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-73%2C565-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -153,6 +153,14 @@ declaration and prints its axiom profile.
   contained in the failure event. This proves strictly positive failure-event
   mass without claiming that either bound is tight;
   [`CheckIIDContinuousGaussianPACBayes.lean`](./examples/CheckIIDContinuousGaussianPACBayes.lean)
+- **Finite Gaussian posterior/tilt catalog** —
+  `timeUniformIIDGaussianPACBayes_grid_bound` controls a finite catalog of
+  fixed spherical-Gaussian posterior/tilt pairs simultaneously, while
+  `timeUniformIIDGaussianPACBayes_selected_bound` permits an arbitrary
+  sample-dependent catalog selector. The worked two-entry fair-Bernoulli
+  certificate uses `N(0,1)` at tilt `1/2` and `N(1,1)` at tilt `1/4` with
+  total failure budget `exp(-1)`;
+  [`CheckIIDContinuousGaussianGridPACBayes.lean`](./examples/CheckIIDContinuousGaussianGridPACBayes.lean)
 - **Finite-class i.i.d. bound, simultaneous over all posteriors** —
   `timeUniformIIDPACBayes_allPosteriors_bound`;
   [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean)
@@ -268,7 +276,8 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
-  `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`
+  `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
+  `PACBayes.IIDContinuousGaussianGrid`
 
 ## Scope and open boundaries
 

@@ -28,6 +28,10 @@ THEOREMS=(
   "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred"
   "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolGaussianPACBayesFailure_mass_pos"
   "FormalSLT.PACBayes.IIDContinuousGaussian.fairBoolThreshold_endToEnd_certificate"
+  "FormalSLT.PACBayes.IIDContinuousGaussianGrid.timeUniformIIDGaussianPACBayes_grid_bound"
+  "FormalSLT.PACBayes.IIDContinuousGaussianGrid.timeUniformIIDGaussianPACBayes_selected_bound"
+  "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianGrid_certificate"
+  "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianSelected_certificate"
 )
 
 # Axioms permitted in a clean proof.
@@ -41,6 +45,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
   echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussian"
+  echo "import FormalSLT.PACBayes.IIDContinuousGaussianGrid"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -50,7 +55,8 @@ echo "== building flagship modules =="
 "$LAKE" build \
   FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \
   FormalSLT.TestTimeMeta.FlagshipAnytimeValid \
-  FormalSLT.PACBayes.IIDContinuousGaussian >/dev/null
+  FormalSLT.PACBayes.IIDContinuousGaussian \
+  FormalSLT.PACBayes.IIDContinuousGaussianGrid >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

@@ -68,6 +68,8 @@ classify_witness() {
 #   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
 #   timeUniformIIDGaussianPACBayes_bound (fair-Bernoulli product stream with
 #     explicit KL, evaluated penalty, and a positive-mass failure cylinder)
+#   timeUniformIIDGaussianPACBayes_grid_bound / selected_bound (two fixed
+#     Gaussian posterior/tilt entries and an arbitrary sample-dependent selector)
 #   cramerRao_unbiased / Bernoulli p = 1/2 Fisher-information witness
 #   finiteLogPartition_hasDerivAt / finiteExponentialFamily_fisherInformation_eq_variance
 #     (Bernoulli natural-parameter witness at theta = 0)
@@ -89,6 +91,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckBettingCSNonVacuityWitness.lean"
   "examples/CheckTimeUniformPACBayes.lean"
   "examples/CheckIIDContinuousGaussianPACBayes.lean"
+  "examples/CheckIIDContinuousGaussianGridPACBayes.lean"
   "examples/CheckDyadicEpochCS.lean"
   "examples/CheckDyadicEpochPSeriesCS.lean"
   "examples/CheckCramerRao.lean"
