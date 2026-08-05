@@ -3,12 +3,12 @@ name: Docs
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -24,7 +24,7 @@ jobs:
         run: |
           curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
             | sh -s -- -y --default-toolchain none
-          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Cache Lake packages
         uses: actions/cache@v4
@@ -32,30 +32,33 @@ jobs:
           path: |
             ~/.elan
             .lake/packages
-          key: docs-lake-${{ runner.os }}-${{ hashFiles('lake-manifest.json') }}
+          key: docs-lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lakefile.lean', 'lake-manifest.json') }}
           restore-keys: docs-lake-${{ runner.os }}-
 
-      # Run with -Kenv=dev so the very first Lake invocation elaborates the
-      # lakefile config with the doc-gen4 dev dependency active. This resolves
-      # and clones doc-gen4 (registering its `docs` library facet) alongside the
-      # Mathlib olean download. Without it, a plain `lake exe cache get` caches a
-      # config that omits doc-gen4, and the later docs build fails with
-      # "unknown lean_lib facet `docs`".
+      # Re-elaborate the Lake configuration with the doc-gen4 dev dependency
+      # active. `-R` prevents a restored non-dev configuration from omitting
+      # doc-gen4 and causing "unknown lean_lib facet `docs`" in the next step.
       - name: Get Mathlib cache and resolve doc-gen4
-        run: lake -Kenv=dev exe cache get
+        run: lake -R -Kenv=dev exe cache get
 
       - name: Build docs
         run: lake -Kenv=dev build FormalSLT:docs
 
       - name: Setup Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: .lake/build/doc
 
   deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
