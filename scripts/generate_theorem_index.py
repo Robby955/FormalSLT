@@ -66,6 +66,16 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "risk": ["risk"],
 }
 
+# Concepts that are mathematically present but not reliably recoverable from a
+# declaration's name, summary, or family. Keep this list narrow: broad keyword
+# triggers such as "indicator" would incorrectly tag CDF indicator families as
+# Bernoulli results.
+DECLARATION_CONCEPTS: dict[str, list[str]] = {
+    "indicatorPopulationRisk_mem_Icc": ["Bernoulli"],
+    "indicatorDeviation_centered": ["Bernoulli"],
+    "indicatorDeviation_secondMoment_eq": ["Bernoulli"],
+}
+
 KIND_PATTERN = (
     r"^\s*(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?(?:private\s+)?(?:protected\s+)?"
     r"(?:theorem|lemma|def|abbrev|structure|class|instance|inductive)\s+"
@@ -104,6 +114,9 @@ def concepts_for(name: str, summary: str, family: str) -> list[str]:
         for concept, triggers in CONCEPT_TRIGGERS.items()
         if any(t in haystack for t in triggers)
     ]
+    for concept in DECLARATION_CONCEPTS.get(name, []):
+        if concept not in found:
+            found.append(concept)
     return found
 
 

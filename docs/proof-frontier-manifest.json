@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 130,
-    "library_and_example_lean_lines": 73583,
-    "library_lean_lines": 65262,
-    "library_modules": 169,
-    "theorem_map_entries": 582
+    "example_lean_files": 131,
+    "library_and_example_lean_lines": 73769,
+    "library_lean_lines": 65386,
+    "library_modules": 170,
+    "theorem_map_entries": 585
   },
   "theorem_families": [
     {
@@ -2784,6 +2784,24 @@
           "module": "PACBayesBoundedLoss",
           "name": "pac_bayes_generalization",
           "summary": "Closed PAC-Bayes good-event theorem: with product-sample mass at least 1 - delta, every posterior satisfies the Catoni-form risk bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorVariance",
+          "name": "indicatorPopulationRisk_mem_Icc",
+          "summary": "Population risk of an arbitrary Boolean indicator under a finite PMF lies in [0,1]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorVariance",
+          "name": "indicatorDeviation_centered",
+          "summary": "The population-centered indicator loss has exactly zero finite-PMF mean"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorVariance",
+          "name": "indicatorDeviation_secondMoment_eq",
+          "summary": "Exact finite-PMF variance identity R * (1 - R) for arbitrary Boolean indicator predicates"
         },
         {
           "kind": "theorem",
