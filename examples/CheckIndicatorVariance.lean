@@ -54,6 +54,7 @@ example : indicatorPopulationRisk fairBool alwaysBad () = 1 := by
 #check indicatorPopulationRisk_mem_Icc
 #check indicatorDeviation_centered
 #check indicatorDeviation_secondMoment_eq
+#check fairBool_isPMF
 #print axioms indicatorDeviation_secondMoment_eq
 
 end
