@@ -513,6 +513,12 @@ declarations; modules are relative to `FormalSLT`.
 | `indicatorFinitePACBayesBernsteinBadSamples` | `PACBayes.IndicatorBernsteinConfidence` | Samples on which some finite posterior violates the explicit fixed-tilt indicator Bernstein inequality |
 | `indicator_posteriorGeneralizationGap_le_of_not_mem` | `PACBayes.IndicatorBernsteinConfidence` | Every finite posterior satisfies the explicit indicator Bernstein inequality outside the specialized bad set |
 | `indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta` | `PACBayes.IndicatorBernsteinConfidence` | End-to-end finite i.i.d. indicator PAC-Bayes Bernstein bad-event mass bound, simultaneous over all finite posteriors |
+| `indicatorBernsteinVarianceProxy_le_risk_div` | `PACBayes.IndicatorBernsteinLowRisk` | Pointwise Bernoulli self-bound `R_i(1 - R_i)/n <= R_i/n` for positive sample size |
+| `posteriorIndicatorBernsteinVarianceProxy_le_risk_div` | `PACBayes.IndicatorBernsteinLowRisk` | Posterior-average self-bound `V_rho <= R_rho/n` |
+| `indicator_posteriorRisk_le_lowRisk_of_not_mem` | `PACBayes.IndicatorBernsteinLowRisk` | General fixed-tilt observable risk inequality for `0 < lambda < 6n/5`, with exact rearranged coefficients |
+| `indicator_posteriorRisk_le_twoThirds_of_not_mem` | `PACBayes.IndicatorBernsteinLowRisk` | At `lambda = 2n/3`, every posterior outside the parent bad set satisfies `R_rho <= (7/4) Rhat_rho + (21/(8n))(KL + log(1/delta))` |
+| `indicator_posteriorRisk_le_min_one_twoThirds_of_not_mem` | `PACBayes.IndicatorBernsteinLowRisk` | Public certificate form truncating the observable low-risk bound by the universal upper bound one |
+| `indicator_finitePACBayesBernstein_twoThirds_badEventMass_le_delta` | `PACBayes.IndicatorBernsteinLowRisk` | Product-law mass bound for the shared fixed-tilt exceptional set at `lambda = 2n/3` |
 | `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
 | `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |

@@ -161,12 +161,35 @@ theorem indicatorBadSamples_mass_le_half :
     6 ((1 : ℝ) / 2) (by norm_num) (by norm_num) (by norm_num)
 
 #check indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta
+#check fairBool_isPMF
+#check uniformBoolPrior_isFullSupportPMF
+#check truePosterior_isPMF
+#check true_populationRisk_eq_half
+#check true_allTrue20_empiricalRisk_eq_zero
+#check true_varianceProxy_eq_one_over_eighty
+#check truePosterior_kl_uniform_eq_log_two
+#check truePosterior_gap_allTrue20_eq_half
+#check truePosterior_varianceProxy_eq_one_over_eighty
+#check truePosterior_penalty_lt_half
 #check allTrue20_mem_badSamples
 #check indicatorBadSamples_nonempty
+#check allTrue20_productWeight_eq_twoPowNegTwenty
 #check indicatorBadSamples_mass_ge_twoPowNegTwenty
 #check indicatorBadSamples_mass_pos
 #check indicatorBadSamples_mass_le_half
+#print axioms fairBool_isPMF
+#print axioms uniformBoolPrior_isFullSupportPMF
+#print axioms truePosterior_isPMF
+#print axioms true_populationRisk_eq_half
+#print axioms true_allTrue20_empiricalRisk_eq_zero
+#print axioms true_varianceProxy_eq_one_over_eighty
+#print axioms truePosterior_kl_uniform_eq_log_two
+#print axioms truePosterior_gap_allTrue20_eq_half
+#print axioms truePosterior_varianceProxy_eq_one_over_eighty
+#print axioms truePosterior_penalty_lt_half
 #print axioms allTrue20_mem_badSamples
+#print axioms indicatorBadSamples_nonempty
+#print axioms allTrue20_productWeight_eq_twoPowNegTwenty
 #print axioms indicatorBadSamples_mass_ge_twoPowNegTwenty
 #print axioms indicatorBadSamples_mass_pos
 #print axioms indicatorBadSamples_mass_le_half

@@ -252,8 +252,12 @@
     posterior-dependent margin-style penalties under explicit complexity and
     penalty certificates.~~ ✓
     (`PACBayesBernstein.finitePACBayesBernsteinMargin_badEventMass_le_delta`)
-  - Remaining PAC-Bayes Bernstein extensions: concrete classifier-margin
-    variance extractors, finite-grid `lambda` optimization, exact all-real
+  - The finite indicator-loss specialization now derives exact Bernoulli
+    variance and the observable self-bound `V_rho <= R_rho/n`; at
+    `lambda = 2n/3` it yields the checked low-risk coefficients `7/4` and
+    `21/(8n)`, including a non-vacuous evaluated example. Remaining PAC-Bayes
+    Bernstein extensions are a source-faithful empirical sample-variance
+    theorem, finite or countable selectable `lambda` catalogs, exact all-real
     `lambda` optimization, continuous Bernstein posteriors, and infinite
     hypothesis classes. The separate bounded-loss continuous lane currently
     covers a fixed spherical-Gaussian posterior; it does not close these
