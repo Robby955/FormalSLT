@@ -4,6 +4,10 @@ Existing Lean 4 formalizations of statistical learning theory and probability.
 FormalSLT is intended to be complementary to these projects, not a replacement
 for them.
 
+This page records formalization prior art. Textbooks and primary mathematical
+papers are mapped to FormalSLT's theorem families in
+[Mathematical sources](./references.md).
+
 ## Adjacent Lean Projects
 
 | Project | Scope | Relation to FormalSLT |
@@ -54,4 +58,3 @@ comparison is by scope:
 FormalSLT does not import any of these repositories. Mathematical influence and
 overlap are recorded here as prior work; the implementations remain separate
 codebases with different theorem endpoints and dependency graphs.
-

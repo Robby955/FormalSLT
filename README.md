@@ -192,6 +192,10 @@ declaration and prints its axiom profile.
   [Architecture](./ARCHITECTURE.md),
   [How to read the proofs](./docs/how-to-read-the-proofs.md),
   [Intuition](./docs/intuition.md), and [Diagrams](./docs/diagrams.md).
+- **Trace mathematical provenance:** use the
+  [source-to-theorem-family map](./docs/references.md), then consult
+  [TheoremPath's broader curriculum references](https://theorempath.com/references)
+  for chapter-level learning context.
 - **Audit public claims:** use the generated
   [proof-frontier manifest](./docs/proof-frontier.md) and
   [scope statement](./docs/assumptions-and-nonclaims.md).
@@ -240,8 +244,9 @@ release check is in [Audit commands](#audit-commands).
   the process obligations from the i.i.d. sample model. The confidence and tilt
   parameters must satisfy `0 < delta` and `0 < lam < 3`.
 
-See [Related work](./docs/related-work.md) for the relationship to Mathlib's
-empirical-process and Rademacher-generalization developments.
+See [Mathematical sources](./docs/references.md) for textbook and primary-paper
+provenance, and [Related work](./docs/related-work.md) for the relationship to
+adjacent Lean empirical-process and learning-theory developments.
 
 ## Module map
 
