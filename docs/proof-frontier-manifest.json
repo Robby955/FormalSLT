@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 133,
-    "library_and_example_lean_lines": 74218,
-    "library_lean_lines": 65724,
-    "library_modules": 172,
-    "theorem_map_entries": 591
+    "example_lean_files": 134,
+    "library_and_example_lean_lines": 74400,
+    "library_lean_lines": 65851,
+    "library_modules": 173,
+    "theorem_map_entries": 594
   },
   "theorem_families": [
     {
@@ -2838,6 +2838,24 @@
           "module": "PACBayes.IndicatorBernsteinMoment",
           "name": "indicator_expectedPriorBernsteinExpMoment_le_one",
           "summary": "Prior-averaged normalized indicator Bernstein moment under the finite i.i.d. product law"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinConfidence",
+          "name": "indicatorFinitePACBayesBernsteinBadSamples",
+          "summary": "Samples on which some finite posterior violates the explicit fixed-tilt indicator Bernstein inequality"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinConfidence",
+          "name": "indicator_posteriorGeneralizationGap_le_of_not_mem",
+          "summary": "Every finite posterior satisfies the explicit indicator Bernstein inequality outside the specialized bad set"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinConfidence",
+          "name": "indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta",
+          "summary": "End-to-end finite i.i.d. indicator PAC-Bayes Bernstein bad-event mass bound, simultaneous over all finite posteriors"
         },
         {
           "kind": "theorem",
