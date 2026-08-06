@@ -63,8 +63,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "id": "pac-bayes-all-real-lambda",
         "status": "partially_closed",
         "scope": (
-            "finite hypotheses plus a fixed spherical-Gaussian "
-            "continuous-hypothesis specialization"
+            "finite hypotheses plus spherical-Gaussian continuous-hypothesis "
+            "single-pair and finite fixed-catalog specializations"
         ),
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
@@ -74,8 +74,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "then generalize the fixed spherical-Gaussian posterior lane."
         ),
         "boundary": (
-            "The continuous-hypothesis i.i.d. theorem is fixed-tilt, "
-            "fixed-posterior, and spherical-Gaussian; it is not simultaneous "
+            "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, "
+            "fixed-posterior, and spherical-Gaussian. Finite fixed catalogs "
+            "of posterior/tilt pairs now support simultaneous validity and "
+            "sample-dependent selection, but the result is not simultaneous "
             "over all continuous posteriors or all real tilts."
         ),
     },

@@ -565,6 +565,10 @@ declarations; modules are relative to `FormalSLT`.
 | `timeUniformIIDGaussianPACBayes_bound` | `PACBayes.IIDContinuousGaussian` | End-to-end i.i.d. bounded-loss theorem over a continuous finite-dimensional hypothesis space with explicit spherical-Gaussian KL |
 | `fairBoolGaussianPACBayesFailure_mass_ge_twoPowNegHundred` | `PACBayes.IIDContinuousGaussian` | Explicit positive-mass witness: the first-100-true cylinder has probability `2⁻¹⁰⁰` and lies inside the worked Gaussian PAC-Bayes failure event |
 | `fairBoolThreshold_endToEnd_certificate` | `PACBayes.IIDContinuousGaussian` | Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk `1/2`, evaluated penalty `54/275`, and a positive-probability failure cylinder, without a tightness claim |
+| `timeUniformIIDGaussianPACBayes_grid_bound` | `PACBayes.IIDContinuousGaussianGrid` | Simultaneous time-uniform i.i.d. bound for a finite catalog of fixed spherical-Gaussian posterior/tilt pairs, with entrywise confidence budgets summed explicitly |
+| `timeUniformIIDGaussianPACBayes_selected_bound` | `PACBayes.IIDContinuousGaussianGrid` | Data-dependent selector corollary for an arbitrary choice from the fixed finite Gaussian posterior/tilt catalog |
+| `fairBoolThreshold_twoGaussianGrid_certificate` | `PACBayes.IIDContinuousGaussianGrid` | Stochastic two-entry certificate for `N(0,1)` at tilt `1/2` and `N(1,1)` at tilt `1/4`, with total failure budget `exp(-1)` |
+| `fairBoolThreshold_twoGaussianSelected_certificate` | `PACBayes.IIDContinuousGaussianGrid` | The worked two-entry fair-Bernoulli catalog remains valid for every sample-dependent Boolean selector |
 
 ## Named tail-probability corollaries
 

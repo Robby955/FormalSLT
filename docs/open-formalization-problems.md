@@ -90,10 +90,11 @@ simultaneous over all continuous posteriors.
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
 
-**Boundary.** The finite-grid theorem remains a finite-hypothesis result. The
+**Boundary.** The finite-hypothesis grid theorem remains finite. The base
 continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
-specialized to spherical Gaussians; it is not an all-posterior or all-`λ`
-confidence statement.
+specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt
+pairs support simultaneous validity and sample-dependent selection, but this is
+not an all-posterior or all-`λ` confidence statement.
 
 ## Medium-term
 

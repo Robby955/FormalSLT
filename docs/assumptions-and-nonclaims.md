@@ -162,18 +162,21 @@ total iid product mass to state the finite high-confidence good event directly.
 `PACBayesBernstein` adds a finite Bernstein margin-proxy shell: the variance
 proxy is supplied per hypothesis, and the theorem consumes a normalized
 Bernstein prior-moment certificate. It does not yet derive that variance proxy
-from a concrete classifier-margin loss. Exact all-real `λ`, finite-grid
-  Bernstein optimization theorem is not yet implemented. The repository now
-  has an arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
-  end-to-end i.i.d. bounded-loss specialization for finite-dimensional
-  spherical Gaussian priors and posteriors. The latter derives the increment
-  and mixture-process obligations from a jointly measurable `[0,1]` loss and
-  an i.i.d. sample stream, displays the checked Gaussian KL closed form, and has
-  a fair-Bernoulli worked instance whose failure event contains an explicit
-  cylinder of probability `2⁻¹⁰⁰`. This positive lower bound is a
-  non-vacuity witness, not a tightness claim. The theorem does not yet cover
-  arbitrary prior/posterior families or an unrestricted measurable hypothesis
-  space at the i.i.d. learning-theorem level.
+from a concrete classifier-margin loss. An exact all-real `λ` Bernstein
+optimization theorem is not yet implemented. The repository now has an
+arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
+end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
+Gaussian priors and posteriors. The latter derives the increment and
+mixture-process obligations from a jointly measurable `[0,1]` loss and an
+i.i.d. sample stream, displays the checked Gaussian KL closed form, and has a
+fair-Bernoulli worked instance whose failure event contains an explicit
+cylinder of probability `2⁻¹⁰⁰`. This positive lower bound is a non-vacuity
+witness, not a tightness claim. A finite-catalog wrapper additionally supports
+sample-dependent selection among finitely many fixed spherical-Gaussian
+posterior/tilt pairs by summing their entrywise confidence budgets. It does not
+give uniformity over every Gaussian posterior or every real-valued tilt. The
+i.i.d. learning theorem still does not cover arbitrary prior/posterior families
+on an unrestricted measurable hypothesis space.
 
 ### Algorithmic stability expected bound
 

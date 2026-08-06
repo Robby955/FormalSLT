@@ -28,11 +28,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian; it is not simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs now support simultaneous validity and sample-dependent selection, but the result is not simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
       "next_step": "Extend the finite-grid confidence layer toward an all-real lambda optimization statement with explicit post-sample optimization rules, then generalize the fixed spherical-Gaussian posterior lane.",
-      "scope": "finite hypotheses plus a fixed spherical-Gaussian continuous-hypothesis specialization",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 129,
-    "library_and_example_lean_lines": 73206,
-    "library_lean_lines": 64931,
-    "library_modules": 168,
-    "theorem_map_entries": 578
+    "example_lean_files": 130,
+    "library_and_example_lean_lines": 73583,
+    "library_lean_lines": 65262,
+    "library_modules": 169,
+    "theorem_map_entries": 582
   },
   "theorem_families": [
     {
@@ -3093,6 +3093,30 @@
           "module": "PACBayes.IIDContinuousGaussian",
           "name": "fairBoolThreshold_endToEnd_certificate",
           "summary": "Stochastic fair-Bernoulli product-stream instance with a checked nonconstant Gaussian-threshold loss, exact population risk 1/2, evaluated penalty 54/275, and a positive-probability failure cylinder, without a tightness claim"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussianGrid",
+          "name": "timeUniformIIDGaussianPACBayes_grid_bound",
+          "summary": "Simultaneous time-uniform i.i.d. bound for a finite catalog of fixed spherical-Gaussian posterior/tilt pairs, with entrywise confidence budgets summed explicitly"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussianGrid",
+          "name": "timeUniformIIDGaussianPACBayes_selected_bound",
+          "summary": "Data-dependent selector corollary for an arbitrary choice from the fixed finite Gaussian posterior/tilt catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussianGrid",
+          "name": "fairBoolThreshold_twoGaussianGrid_certificate",
+          "summary": "Stochastic two-entry certificate for N(0,1) at tilt 1/2 and N(1,1) at tilt 1/4, with total failure budget exp(-1)"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IIDContinuousGaussianGrid",
+          "name": "fairBoolThreshold_twoGaussianSelected_certificate",
+          "summary": "The worked two-entry fair-Bernoulli catalog remains valid for every sample-dependent Boolean selector"
         }
       ],
       "name": "Time-uniform PAC-Bayes"
