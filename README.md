@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C795-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C811-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-173-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-74%2C400-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-74%2C576-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -126,8 +126,11 @@ declaration and prints its axiom profile.
   the i.i.d. product mass where any finite posterior violates the explicit
   fixed-tilt bound, with
   `indicator_posteriorGeneralizationGap_le_of_not_mem` as the pointwise
-  all-posteriors companion;
-  [`CheckIndicatorBernsteinConfidence.lean`](./examples/CheckIndicatorBernsteinConfidence.lean)
+  all-posteriors companion. The concrete classifier receipt proves an all-true
+  sample belongs to the bad set and sandwiches its mass between `2^-20` and
+  `1/2`;
+  [`CheckIndicatorBernsteinConfidence.lean`](./examples/CheckIndicatorBernsteinConfidence.lean),
+  [`CheckIIDIndicatorPACBayesBernstein.lean`](./examples/CheckIIDIndicatorPACBayesBernstein.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
