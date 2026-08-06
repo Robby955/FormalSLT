@@ -78,7 +78,10 @@ DECLARATION_CONCEPTS: dict[str, list[str]] = {
     "indicator_product_mgf_le": ["Bernoulli"],
     "indicator_product_normalizedMGF_le_one": ["Bernoulli"],
     "indicatorBernstein_normalization_eq_budget": ["Bernoulli"],
-    "indicator_expectedPriorBernsteinExpMoment_le_one": ["Bernoulli"],
+    "indicator_expectedPriorBernsteinExpMoment_le_one": ["Bernoulli", "MGF"],
+    "indicatorFinitePACBayesBernsteinBadSamples": ["Bernoulli"],
+    "indicator_posteriorGeneralizationGap_le_of_not_mem": ["Bernoulli"],
+    "indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta": ["Bernoulli"],
 }
 
 KIND_PATTERN = (
