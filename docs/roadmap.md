@@ -168,6 +168,10 @@
   conditional-expectation identity, a sharp `1/4` conditional-variance proxy
   for the centered `[0,1]` loss, and a measurable all-time finite-grid event
   comparing observed squared loss with average conditional risk
+- [x] Finite-catalog Markov PAC-Bayes certificate:
+  a fixed-tilt, all-time, all-posterior theorem under the actual finite Markov
+  path law, with a measurable exceptional event and an asymmetric
+  data-selected-posterior receipt
 
 ## Planned
 
@@ -175,8 +179,10 @@
 
 - [ ] **Finite stochastic-dynamics extensions**
   - Generalize the deterministic initial state to a supplied initial law.
-  - Support predictable or independently trained predictors without claiming
-    validity for arbitrary same-trajectory fitting.
+  - Support predictable or independently trained predictor catalogs without
+    claiming validity for arbitrary same-trajectory fitting.
+  - Add declared finite or normalized countable tilt selection without
+    optimizing an uncontrolled real parameter after observing the path.
   - Keep stationary, mixing, continuous-state, and multistep conclusions as
     separate later theorem families.
 

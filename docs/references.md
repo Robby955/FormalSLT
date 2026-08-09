@@ -21,7 +21,7 @@ source.
 | Algorithmic stability | Bousquet and Elisseeff (2002); McDiarmid (1989) | Expected-gap and bounded-differences route from uniform stability to generalization | Stability is supplied as a hypothesis; the library does not infer it for every learning algorithm |
 | PAC-Bayes change of measure and finite confidence bounds | Donsker and Varadhan (1975); McAllester (1999, 2003); Seeger (2002); Catoni (2007) | KL change of measure, fixed-tilt bounds, square-root consequences, finite confidence shells, and Bernoulli-KL infrastructure | Finite priors/posteriors for the main finite-sample layer; continuous results have their own explicit measure-theoretic assumptions |
 | PAC-Bayes Bernstein and Gaussian/variational interfaces | Tolstikhin and Seldin (2013); Alquier, Ridgway, and Chopin (2016) | Variance-sensitive penalties and continuous-posterior analytic interfaces | Supplied variance/moment certificates except where a concrete finite or spherical-Gaussian specialization discharges them |
-| Anytime-valid inference and e-processes | Ville (1939); Howard et al. (2020, 2021); Ramdas et al. (2023); Grünwald, de Heide, and Koolen (2024) | Ville inequalities, confidence sequences, line-crossing bounds, and safe-testing interfaces | Discrete-time processes with the adaptedness, integrability, conditional-MGF, or supermartingale assumptions shown in the signatures |
+| Anytime-valid inference and e-processes | Ville (1939); Howard et al. (2020, 2021); Chugg, Wang, and Ramdas (2023); Ramdas et al. (2023); Grünwald, de Heide, and Koolen (2024) | Ville inequalities, confidence sequences, time-uniform PAC-Bayes mixtures, line-crossing bounds, and safe-testing interfaces | Discrete-time processes with the adaptedness, integrability, conditional-MGF, or supermartingale assumptions shown in the signatures |
 | Probability and statistics interfaces | Durrett (2019); van der Vaart (1998); the corresponding Mathlib declarations | Background for convergence, moments, estimation, Fisher information, and asymptotic-statistics wrappers | The wrappers preserve the hypotheses and generality of the Mathlib results they expose |
 
 ## Repository routes
@@ -117,6 +117,10 @@ from supplied interfaces and open boundaries.
   "Time-uniform, nonparametric, nonasymptotic confidence sequences."
   *The Annals of Statistics* 49(2), 1055--1080.
   [Publisher record](https://doi.org/10.1214/20-AOS1991).
+- Chugg, B., Wang, H., and Ramdas, A. (2023). "A unified recipe for
+  deriving (time-uniform) PAC-Bayes bounds." *Journal of Machine Learning
+  Research* 24(372), 1--60.
+  [Open article](https://jmlr.org/papers/v24/23-0401.html).
 - Ramdas, A., Grünwald, P., Vovk, V., and Shafer, G. (2023).
   "Game-theoretic statistics and safe anytime-valid inference."
   *Statistical Science* 38(4), 576--601.

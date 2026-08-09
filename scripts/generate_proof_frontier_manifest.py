@@ -27,20 +27,24 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "id": "finite-markov-prequential-risk",
         "status": "partially_closed",
         "scope": (
-            "finite-state Markov paths with deterministic start and fixed "
-            "bounded observable and predictor, with a sharp one-quarter "
-            "conditional-variance proxy"
+            "finite-state Markov paths with deterministic start, a fixed "
+            "bounded observable, and a finite catalog of fixed predictors; "
+            "the checked surface includes a sharp one-quarter variance proxy "
+            "and fixed-tilt all-time posterior-uniform PAC-Bayes control"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Generalize the path law to a supplied initial distribution and "
-            "support predictable or independently trained predictors."
+            "Generalize the path law to a supplied initial distribution, "
+            "support predictable or independently trained catalogs, and add "
+            "declared finite or normalized countable tilt selection."
         ),
         "boundary": (
-            "The checked certificate targets average one-step conditional risk. "
-            "It does not cover same-trajectory fitting, stationarity, mixing, "
-            "continuous state spaces, multistep prediction, or long-run risk."
+            "The checked certificate targets posterior-average one-step "
+            "conditional risk at a fixed declared tilt. It does not cover "
+            "same-trajectory fitting, arbitrary post-sample real-tilt "
+            "optimization, stationarity, mixing, continuous state spaces, "
+            "multistep prediction, or long-run risk."
         ),
     },
     {

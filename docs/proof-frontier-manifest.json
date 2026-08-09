@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "The checked certificate targets average one-step conditional risk. It does not cover same-trajectory fitting, stationarity, mixing, continuous state spaces, multistep prediction, or long-run risk.",
+      "boundary": "The checked certificate targets posterior-average one-step conditional risk at a fixed declared tilt. It does not cover same-trajectory fitting, arbitrary post-sample real-tilt optimization, stationarity, mixing, continuous state spaces, multistep prediction, or long-run risk.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Generalize the path law to a supplied initial distribution and support predictable or independently trained predictors.",
-      "scope": "finite-state Markov paths with deterministic start and fixed bounded observable and predictor, with a sharp one-quarter conditional-variance proxy",
+      "next_step": "Generalize the path law to a supplied initial distribution, support predictable or independently trained catalogs, and add declared finite or normalized countable tilt selection.",
+      "scope": "finite-state Markov paths with deterministic start, a fixed bounded observable, and a finite catalog of fixed predictors; the checked surface includes a sharp one-quarter variance proxy and fixed-tilt all-time posterior-uniform PAC-Bayes control",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -76,11 +76,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 138,
-    "library_and_example_lean_lines": 76613,
-    "library_lean_lines": 67026,
-    "library_modules": 177,
-    "theorem_map_entries": 615
+    "example_lean_files": 139,
+    "library_and_example_lean_lines": 77260,
+    "library_lean_lines": 67361,
+    "library_modules": 178,
+    "theorem_map_entries": 631
   },
   "theorem_families": [
     {
@@ -3329,6 +3329,102 @@
           "module": "StochasticDynamics.MarkovRisk",
           "name": "averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem",
           "summary": "Bounds average conditional risk by observed prequential loss plus the declared sub-Gamma boundary outside that event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "runningMean_markovRiskShortfall",
+          "summary": "Reorients the Markov innovation as conditional risk minus observed loss, the sign required for an upper-risk certificate"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "posteriorAverage_runningMean_markovRiskShortfall",
+          "summary": "Identifies the posterior-averaged shortfall with posterior conditional risk minus posterior empirical prequential risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovRiskShortfall_incrementAdapted",
+          "summary": "Preserves increment adaptedness under the risk-shortfall sign change"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "measurable_markovRiskShortfall",
+          "summary": "Establishes measurability of every catalog member's risk-shortfall increment"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "integrable_markovRiskShortfall",
+          "summary": "Establishes integrability under the actual finite Markov path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "abs_markovRiskShortfall_le_one",
+          "summary": "Supplies the uniform absolute bound for [0,1] squared losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovRiskShortfall_condExp_eq_zero",
+          "summary": "Derives conditional centering of the risk shortfall from the Markov path-law identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovRiskShortfall_condSecondMoment_le_one_fourth",
+          "summary": "Transfers the sharp universal 1/4 conditional-second-moment proxy to the risk shortfall"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPACBayesAnyPosteriorUpperFailure_subset_processFailure",
+          "summary": "Embeds the risk-facing posterior failure event into the generic time-uniform PAC-Bayes process failure event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPACBayes_allPosteriors_bound",
+          "summary": "Controls the raw all-time, all-posterior Markov failure set in outer probability at fixed tilt"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPACBayesExceptionalEvent_measurable",
+          "summary": "Proves measurability of the hull used for the public confidence event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPACBayesRawFailure_subset_exceptionalEvent",
+          "summary": "Shows that the measurable hull contains every raw posterior-existential violation"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPACBayesExceptionalEvent_mass_le_delta",
+          "summary": "Gives one measurable exceptional event of ordinary probability at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPosteriorAverageConditionalRisk_lt_of_not_mem",
+          "summary": "Outside the common event, controls every posterior and every positive time by empirical prequential risk plus KL and the sub-Gamma boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "subGammaCgf_oneFourth_one_div",
+          "summary": "Rewrites the 1/4-variance sub-Gamma contribution as lambda / (8 * (1 - lambda / 3))"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayes",
+          "name": "markovPACBayes_prequentialRisk_certificate",
+          "summary": "Publication-facing finite-catalog theorem with a measurable common event, all-time and all-posterior validity, and explicit KL penalty"
         }
       ],
       "name": "Finite Markov prequential risk"

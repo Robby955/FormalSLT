@@ -607,6 +607,22 @@ declarations; modules are relative to `FormalSLT`.
 | `runningMean_markovRiskInnovation` | `StochasticDynamics.MarkovRisk` | Identifies the innovation mean with observed prequential risk minus average conditional risk |
 | `markovPrequentialRiskExceptionalEvent_mass_le_delta` | `StochasticDynamics.MarkovRisk` | Gives one measurable all-time finite-grid exceptional event with probability at most `delta` |
 | `averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem` | `StochasticDynamics.MarkovRisk` | Bounds average conditional risk by observed prequential loss plus the declared sub-Gamma boundary outside that event |
+| `runningMean_markovRiskShortfall` | `StochasticDynamics.MarkovPACBayes` | Reorients the Markov innovation as conditional risk minus observed loss, the sign required for an upper-risk certificate |
+| `posteriorAverage_runningMean_markovRiskShortfall` | `StochasticDynamics.MarkovPACBayes` | Identifies the posterior-averaged shortfall with posterior conditional risk minus posterior empirical prequential risk |
+| `markovRiskShortfall_incrementAdapted` | `StochasticDynamics.MarkovPACBayes` | Preserves increment adaptedness under the risk-shortfall sign change |
+| `measurable_markovRiskShortfall` | `StochasticDynamics.MarkovPACBayes` | Establishes measurability of every catalog member's risk-shortfall increment |
+| `integrable_markovRiskShortfall` | `StochasticDynamics.MarkovPACBayes` | Establishes integrability under the actual finite Markov path law |
+| `abs_markovRiskShortfall_le_one` | `StochasticDynamics.MarkovPACBayes` | Supplies the uniform absolute bound for `[0,1]` squared losses |
+| `markovRiskShortfall_condExp_eq_zero` | `StochasticDynamics.MarkovPACBayes` | Derives conditional centering of the risk shortfall from the Markov path-law identity |
+| `markovRiskShortfall_condSecondMoment_le_one_fourth` | `StochasticDynamics.MarkovPACBayes` | Transfers the sharp universal `1/4` conditional-second-moment proxy to the risk shortfall |
+| `markovPACBayesAnyPosteriorUpperFailure_subset_processFailure` | `StochasticDynamics.MarkovPACBayes` | Embeds the risk-facing posterior failure event into the generic time-uniform PAC-Bayes process failure event |
+| `markovPACBayes_allPosteriors_bound` | `StochasticDynamics.MarkovPACBayes` | Controls the raw all-time, all-posterior Markov failure set in outer probability at fixed tilt |
+| `markovPACBayesExceptionalEvent_measurable` | `StochasticDynamics.MarkovPACBayes` | Proves measurability of the hull used for the public confidence event |
+| `markovPACBayesRawFailure_subset_exceptionalEvent` | `StochasticDynamics.MarkovPACBayes` | Shows that the measurable hull contains every raw posterior-existential violation |
+| `markovPACBayesExceptionalEvent_mass_le_delta` | `StochasticDynamics.MarkovPACBayes` | Gives one measurable exceptional event of ordinary probability at most `delta` |
+| `markovPosteriorAverageConditionalRisk_lt_of_not_mem` | `StochasticDynamics.MarkovPACBayes` | Outside the common event, controls every posterior and every positive time by empirical prequential risk plus KL and the sub-Gamma boundary |
+| `subGammaCgf_oneFourth_one_div` | `StochasticDynamics.MarkovPACBayes` | Rewrites the `1/4`-variance sub-Gamma contribution as `lambda / (8 * (1 - lambda / 3))` |
+| `markovPACBayes_prequentialRisk_certificate` | `StochasticDynamics.MarkovPACBayes` | Publication-facing finite-catalog theorem with a measurable common event, all-time and all-posterior validity, and explicit KL penalty |
 
 ## Named tail-probability corollaries
 
