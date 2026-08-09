@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C861-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-175-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-75%2C735-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C893-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-177-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-76%2C571-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -51,6 +51,10 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   bounded-loss theorem over finite-dimensional spherical-Gaussian hypotheses
   with a checked closed-form KL penalty and a stochastic fair-Bernoulli
   product-stream certificate.
+- **Finite Markov prequential risk:** an actual Ionescu--Tulcea path law for a
+  finite transition PMF, a derived next-step conditional-risk identity, and an
+  anytime two-sided certificate comparing observed squared loss with average
+  conditional risk along one dependent trajectory.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -96,6 +100,13 @@ declaration and prints its axiom profile.
 - **Finite fixed-`λ` Catoni change-of-measure posterior-risk bound** —
   `catoni_changeOfMeasure_bound`;
   [`CheckPACBayesChangeOfMeasure.lean`](./examples/CheckPACBayesChangeOfMeasure.lean)
+- **Finite Markov trajectory prequential-risk certificate** —
+  `markovPrequentialRiskExceptionalEvent_mass_le_delta` and
+  `averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem`,
+  with a persistent two-state receipt at `n = 1024` whose failure probability
+  is at most `1/20`, whose width is below `1/10`, and whose good-path empirical
+  risk lies in the explicit interval `(7/80, 23/80)`;
+  [`CheckMarkovRisk.lean`](./examples/CheckMarkovRisk.lean)
 
 ### Concentration and metric entropy
 
@@ -336,6 +347,8 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
+- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk`, re-exported by the
+  stable topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -358,6 +371,9 @@ The main learning-theory results are deliberately finite and explicit.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
+- **Finite Markov prequential risk:** finite state space, transition PMFs,
+  deterministic initial state, and fixed `[0,1]` observable and predictor; the
+  target is average one-step conditional squared risk along the realized path
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -372,6 +388,9 @@ The main learning-theory results are deliberately finite and explicit.
   all-real-`λ` optimization theorem
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
+- Same-trajectory-trained or online-updated predictors, random initial laws,
+  continuous-state dynamics, and stationary or mixing-based long-run risk
+  guarantees
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -444,6 +463,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
+- [ ] Extend the finite Markov trajectory certificate to random initial laws
+  and predictable or independently trained predictors
 
 ## Dependencies
 

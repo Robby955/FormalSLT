@@ -46,6 +46,20 @@ These product-sample results do not cover time series, active learning, or
 dependent data without additional assumptions. The repository's separate
 online-to-PAC and anytime-valid modules state their own sequential assumptions.
 
+### Finite Markov prequential risk
+
+`StochasticDynamics.MarkovRisk` constructs a dependent path law from an actual
+finite-state transition PMF and a deterministic initial state. For fixed
+functions `f q : Z -> R` valued in `[0,1]`, it derives the conditional
+expectation of the next-step squared loss and applies an anytime finite tilt
+grid to the resulting centered innovation.
+
+The checked target is the average of the one-step conditional risks encountered
+along the realized trajectory. The theorem does not require stationarity,
+mixing, or irreducibility. It also does not cover a predictor fitted or updated
+on the same trajectory, a random initial distribution, continuous state spaces,
+multistep forecasts, or stationary long-run risk.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -210,3 +224,11 @@ and a supplied-supremum boundary adapter with an explicit terminal
 approximation error. It does not yet prove a continuous entropy integral,
 infinite-class separability theorem, or full empirical-process chaining
 theorem.
+
+### Stochastic-dynamics extensions
+
+The current finite Markov result freezes the observable and predictor before
+the trajectory is generated. Natural next layers are a random initial law and
+predictable or independently trained predictors. Same-trajectory training,
+continuous-state kernels, and stationary-risk conclusions require separate
+formal interfaces and are not consequences of the current certificate.

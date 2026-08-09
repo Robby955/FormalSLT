@@ -10,6 +10,15 @@
   },
   "frontier_lanes": [
     {
+      "boundary": "The checked certificate targets average one-step conditional risk. It does not cover same-trajectory fitting, stationarity, mixing, continuous state spaces, multistep prediction, or long-run risk.",
+      "difficulty": "medium",
+      "id": "finite-markov-prequential-risk",
+      "next_step": "Generalize the path law to a supplied initial distribution and support predictable or independently trained predictors.",
+      "scope": "finite-state Markov paths with deterministic start and fixed bounded observable and predictor",
+      "source": "docs/roadmap.md#near-term",
+      "status": "partially_closed"
+    },
+    {
       "boundary": "The current finite Bernstein theorem is not an infinite-class, measurable-supremum, or full oracle-inequality theorem; it assumes bounded excess losses, a Bernstein condition, and 0 < c*r.",
       "difficulty": "medium",
       "id": "localized-rademacher-finite-concentration",
@@ -67,11 +76,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 137,
-    "library_and_example_lean_lines": 75735,
-    "library_lean_lines": 66440,
-    "library_modules": 175,
-    "theorem_map_entries": 608
+    "example_lean_files": 138,
+    "library_and_example_lean_lines": 76571,
+    "library_lean_lines": 66987,
+    "library_modules": 177,
+    "theorem_map_entries": 614
   },
   "theorem_families": [
     {
@@ -3276,6 +3285,47 @@
         }
       ],
       "name": "Time-uniform PAC-Bayes"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "pathSquaredLoss_condExp",
+          "summary": "Derives the next-step squared-loss conditional expectation from the finite transition PMF and its Ionescu--Tulcea path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "markovRiskInnovation_condExp_eq_zero",
+          "summary": "Centers observed loss minus transition-row conditional risk under the generated filtration"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "markovRiskInnovation_condSecondMoment_le_one",
+          "summary": "Bounds the innovation conditional second moment for fixed [0,1] observables and predictors"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "runningMean_markovRiskInnovation",
+          "summary": "Identifies the innovation mean with observed prequential risk minus average conditional risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "markovPrequentialRiskExceptionalEvent_mass_le_delta",
+          "summary": "Gives one measurable all-time finite-grid exceptional event with probability at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem",
+          "summary": "Bounds average conditional risk by observed prequential loss plus the declared sub-Gamma boundary outside that event"
+        }
+      ],
+      "name": "Finite Markov prequential risk"
     },
     {
       "entries": [

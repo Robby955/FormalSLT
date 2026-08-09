@@ -163,10 +163,21 @@
   empirical excess-risk bookkeeping, a localized upper-deviation certificate,
   and a finite fast-rate shell that composes localized deviation with the
   Bernstein/fixed-point certificate
+- [x] Finite Markov prequential-risk certificate:
+  an Ionescu--Tulcea path law for finite transition PMFs, a derived next-step
+  conditional-expectation identity, and a measurable all-time finite-grid
+  event comparing observed squared loss with average conditional risk
 
 ## Planned
 
 ### Near-term
+
+- [ ] **Finite stochastic-dynamics extensions**
+  - Generalize the deterministic initial state to a supplied initial law.
+  - Support predictable or independently trained predictors without claiming
+    validity for arbitrary same-trajectory fitting.
+  - Keep stationary, mixing, continuous-state, and multistep conclusions as
+    separate later theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product

@@ -77,6 +77,8 @@ classify_witness() {
 #   cramerRao_unbiased / Bernoulli p = 1/2 Fisher-information witness
 #   finiteLogPartition_hasDerivAt / finiteExponentialFamily_fisherInformation_eq_variance
 #     (Bernoulli natural-parameter witness at theta = 0)
+#   markovPrequentialRiskExceptionalEvent_mass_le_delta
+#     (persistent two-state trajectory with an evaluated width below 1/10)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -103,6 +105,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckDyadicEpochPSeriesCS.lean"
   "examples/CheckCramerRao.lean"
   "examples/CheckExponentialFamily.lean"
+  "examples/CheckMarkovRisk.lean"
 )
 
 fail=0
