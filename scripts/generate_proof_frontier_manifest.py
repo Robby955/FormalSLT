@@ -28,7 +28,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "status": "partially_closed",
         "scope": (
             "finite-state Markov paths with deterministic start and fixed "
-            "bounded observable and predictor"
+            "bounded observable and predictor, with a sharp one-quarter "
+            "conditional-variance proxy"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",

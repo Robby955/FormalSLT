@@ -89,11 +89,12 @@ theorem periodEightPath_empiricalPrequentialRisk_1024_eq :
   norm_num
 
 /-- At `delta = 1/20`, singleton tilt `1/8`, and `n = 1024`, the
-two-sided boundary is strictly below `1/10`. -/
-theorem singletonTilt_boundary_lt_one_tenth :
-    AnytimeValid.subGammaCgf 1 1 (1 / 8) / (1 / 8) +
+two-sided boundary radius obtained from the sharp universal variance constant
+`1/4` is strictly below `1/20`. -/
+theorem singletonTilt_boundary_lt_one_twentieth :
+    AnytimeValid.subGammaCgf (1 / 4) 1 (1 / 8) / (1 / 8) +
         Real.log ((singletonTilt.card : ℝ) / ((1 / 20) / 2)) /
-          ((1024 : ℝ) * (1 / 8)) < 1 / 10 := by
+          ((1024 : ℝ) * (1 / 8)) < 1 / 20 := by
   have hlog : Real.log 40 < 4 := by
     rw [← Real.exp_lt_exp, Real.exp_log (by norm_num : (0 : ℝ) < 40)]
     have h := Real.sum_le_exp_of_nonneg (x := (4 : ℝ)) (by norm_num) 6
@@ -141,12 +142,12 @@ theorem persistentBool_empiricalPrequentialRisk_1024_mem_interval
     (hx : x ∉ markovPrequentialRiskExceptionalEvent
       persistentBoolTransition false boolObservable boolPredictor singletonTilt (1 / 20)) :
     empiricalPrequentialRisk boolObservable boolPredictor 1024 x ∈
-      Set.Ioo (7 / 80 : ℝ) (23 / 80 : ℝ) := by
+      Set.Ioo (11 / 80 : ℝ) (19 / 80 : ℝ) := by
   have habs := abs_prequentialRisk_sub_averageConditionalRisk_lt_of_not_mem
     persistentBoolTransition false boolObservable boolPredictor
     (Lam := singletonTilt) (delta := (1 / 20 : ℝ)) (lam := (1 / 8 : ℝ))
     (n := 1024) (x := x) hx (by norm_num) (by simp [singletonTilt])
-  have hboundary := singletonTilt_boundary_lt_one_tenth
+  have hboundary := singletonTilt_boundary_lt_one_twentieth
   have havg := persistentBool_averageConditionalRisk_1024_eq x
   rw [havg] at habs
   rw [Set.mem_Ioo, abs_lt] at *
@@ -158,7 +159,7 @@ theorem persistentBool_empirical_upperEndpoint_lt_one
     (x : ℕ → Bool)
     (hx : x ∉ markovPrequentialRiskExceptionalEvent
       persistentBoolTransition false boolObservable boolPredictor singletonTilt (1 / 20)) :
-    empiricalPrequentialRisk boolObservable boolPredictor 1024 x + 1 / 10 < 1 := by
+    empiricalPrequentialRisk boolObservable boolPredictor 1024 x + 1 / 20 < 1 := by
   have hinterval := persistentBool_empiricalPrequentialRisk_1024_mem_interval x hx
   rcases hinterval with ⟨_hlower, hupper⟩
   norm_num at hupper ⊢
@@ -166,9 +167,9 @@ theorem persistentBool_empirical_upperEndpoint_lt_one
 
 /-- Concrete end-to-end receipt: one measurable event has probability at most
 `1/20`; outside it, the latent trajectory-average conditional risk is below
-the observed prequential loss plus `1/10` at `n = 1024`.  The exact conditional
-risk is `3/16`, the observed loss lies in `(7/80, 23/80)`, and its upper endpoint
-remains below one. -/
+the observed prequential loss plus the `1/20` boundary radius at `n = 1024`.
+The exact conditional risk is `3/16`, the observed loss lies in
+`(11/80, 19/80)`, and its upper endpoint remains below one. -/
 theorem persistentBool_markovRisk_certificate :
     ∃ E : Set (ℕ → Bool),
       MeasurableSet E ∧
@@ -177,10 +178,10 @@ theorem persistentBool_markovRisk_certificate :
         averageConditionalRisk persistentBoolTransition boolObservable boolPredictor 1024 x =
             3 / 16 ∧
           empiricalPrequentialRisk boolObservable boolPredictor 1024 x ∈
-            Set.Ioo (7 / 80 : ℝ) (23 / 80 : ℝ) ∧
+            Set.Ioo (11 / 80 : ℝ) (19 / 80 : ℝ) ∧
           averageConditionalRisk persistentBoolTransition boolObservable boolPredictor 1024 x <
-            empiricalPrequentialRisk boolObservable boolPredictor 1024 x + 1 / 10 ∧
-          empiricalPrequentialRisk boolObservable boolPredictor 1024 x + 1 / 10 < 1 := by
+            empiricalPrequentialRisk boolObservable boolPredictor 1024 x + 1 / 20 ∧
+          empiricalPrequentialRisk boolObservable boolPredictor 1024 x + 1 / 20 < 1 := by
   let E := markovPrequentialRiskExceptionalEvent
     persistentBoolTransition false boolObservable boolPredictor singletonTilt (1 / 20)
   refine ⟨E, markovPrequentialRiskExceptionalEvent_measurable
@@ -204,7 +205,7 @@ theorem persistentBool_markovRisk_certificate :
         persistentBoolTransition false boolObservable boolPredictor
         (Lam := singletonTilt) (delta := (1 / 20 : ℝ)) (lam := (1 / 8 : ℝ))
         (n := 1024) (x := x) hx (by norm_num) (by simp [singletonTilt])
-    have hboundary := singletonTilt_boundary_lt_one_tenth
+    have hboundary := singletonTilt_boundary_lt_one_twentieth
     refine ⟨persistentBool_averageConditionalRisk_1024_eq x,
       persistentBool_empiricalPrequentialRisk_1024_mem_interval x hx, ?_,
       persistentBool_empirical_upperEndpoint_lt_one x hx⟩
@@ -213,7 +214,7 @@ theorem persistentBool_markovRisk_certificate :
 #check persistentBool_conditionalSquaredRisk_eq
 #check periodEightPath_empiricalPrequentialRisk_eight_eq
 #check periodEightPath_empiricalPrequentialRisk_1024_eq
-#check singletonTilt_boundary_lt_one_tenth
+#check singletonTilt_boundary_lt_one_twentieth
 #check persistentBool_averageConditionalRisk_1024_eq
 #check persistentBool_pathSquaredLoss_le_nine_sixteenths
 #check persistentBool_empiricalPrequentialRisk_1024_le_nine_sixteenths
@@ -224,7 +225,7 @@ theorem persistentBool_markovRisk_certificate :
 #print axioms persistentBool_conditionalSquaredRisk_eq
 #print axioms periodEightPath_empiricalPrequentialRisk_eight_eq
 #print axioms periodEightPath_empiricalPrequentialRisk_1024_eq
-#print axioms singletonTilt_boundary_lt_one_tenth
+#print axioms singletonTilt_boundary_lt_one_twentieth
 #print axioms persistentBool_averageConditionalRisk_1024_eq
 #print axioms persistentBool_pathSquaredLoss_le_nine_sixteenths
 #print axioms persistentBool_empiricalPrequentialRisk_1024_le_nine_sixteenths
@@ -259,6 +260,7 @@ theorem persistentBool_markovRisk_certificate :
 #check StochasticDynamics.abs_markovRiskInnovation_le_one
 #check StochasticDynamics.integrable_markovRiskInnovation
 #check StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one
+#check StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth
 #check StochasticDynamics.runningMean_markovRiskInnovation
 #check StochasticDynamics.markovPrequentialRiskRawFailure_mass_le_delta
 #check StochasticDynamics.markovPrequentialRiskExceptionalEvent_measurable
@@ -278,6 +280,7 @@ theorem persistentBool_markovRisk_certificate :
 #print axioms StochasticDynamics.abs_markovRiskInnovation_le_one
 #print axioms StochasticDynamics.integrable_markovRiskInnovation
 #print axioms StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one
+#print axioms StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth
 #print axioms StochasticDynamics.runningMean_markovRiskInnovation
 #print axioms StochasticDynamics.markovPrequentialRiskRawFailure_mass_le_delta
 #print axioms StochasticDynamics.markovPrequentialRiskExceptionalEvent_measurable

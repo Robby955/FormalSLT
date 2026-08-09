@@ -14,7 +14,7 @@
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
       "next_step": "Generalize the path law to a supplied initial distribution and support predictable or independently trained predictors.",
-      "scope": "finite-state Markov paths with deterministic start and fixed bounded observable and predictor",
+      "scope": "finite-state Markov paths with deterministic start and fixed bounded observable and predictor, with a sharp one-quarter conditional-variance proxy",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -77,10 +77,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 138,
-    "library_and_example_lean_lines": 76571,
-    "library_lean_lines": 66987,
+    "library_and_example_lean_lines": 76613,
+    "library_lean_lines": 67026,
     "library_modules": 177,
-    "theorem_map_entries": 614
+    "theorem_map_entries": 615
   },
   "theorem_families": [
     {
@@ -3304,7 +3304,13 @@
           "kind": "theorem",
           "module": "StochasticDynamics.MarkovRisk",
           "name": "markovRiskInnovation_condSecondMoment_le_one",
-          "summary": "Bounds the innovation conditional second moment for fixed [0,1] observables and predictors"
+          "summary": "Conservative unit conditional-second-moment bound retained as a simple compatibility lemma"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovRisk",
+          "name": "markovRiskInnovation_condSecondMoment_le_one_fourth",
+          "summary": "Sharp universal 1/4 conditional-second-moment bound for the centered [0,1] one-step loss"
         },
         {
           "kind": "theorem",

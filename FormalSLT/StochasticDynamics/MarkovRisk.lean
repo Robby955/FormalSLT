@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import FormalSLT.AnytimeValid.OptimizedLambdaCS
+import Mathlib.Probability.CondVar
 import Mathlib.Probability.Kernel.IonescuTulcea.Traj
 import Mathlib.Probability.ProbabilityMassFunction.Integrals
 
@@ -13,7 +14,8 @@ import Mathlib.Probability.ProbabilityMassFunction.Integrals
 This file connects a finite transition PMF to Mathlib's Ionescu--Tulcea trajectory
 measure.  Its core result identifies the conditional expectation of a bounded
 one-step squared loss under the generated path law.  The centered innovation is
-therefore derived from the dynamics rather than assumed.
+therefore derived from the dynamics rather than assumed.  Its conditional
+second moment uses the sharp universal `1/4` variance bound for `[0,1]` losses.
 
 The path construction follows the Ionescu--Tulcea extension used by
 `Mathlib.Probability.Kernel.IonescuTulcea.Traj`.  The time-uniform step uses the
@@ -336,6 +338,58 @@ theorem markovRiskInnovation_condExp_eq_zero
   rw [hlossx, hrisk]
   simp
 
+/-- The conditional second moment of the centered one-step loss has the sharp
+`1/4` bound for a random variable taking values in `[0,1]`.  The proof uses the
+actual transition-law conditional expectation, then applies
+`E[L² | ℱ] ≤ E[L | ℱ]` and `m(1-m) ≤ 1/4`. -/
+theorem markovRiskInnovation_condSecondMoment_le_one_fourth
+    (P : Z → PMF Z) (x0 : Z) {f q : Z → ℝ}
+    (hf : ∀ z, f z ∈ Set.Icc (0 : ℝ) 1)
+    (hq : ∀ z, q z ∈ Set.Icc (0 : ℝ) 1)
+    (n : ℕ) :
+    (markovPathMeasure P x0)[fun x ↦ (markovRiskInnovation P f q n x) ^ 2 |
+        Filtration.piLE (X := fun _ : ℕ ↦ Z) n] ≤ᵐ[markovPathMeasure P x0]
+      fun _ ↦ (1 / 4 : ℝ) := by
+  let μ := markovPathMeasure P x0
+  let ℱ := Filtration.piLE (X := fun _ : ℕ ↦ Z)
+  let L := pathSquaredLoss f q n
+  have hL_Icc : ∀ᵐ x ∂μ, L x ∈ Set.Icc (0 : ℝ) 1 :=
+    Filter.Eventually.of_forall fun x ↦ by
+      exact transitionSquaredLoss_mem_Icc hf hq (x n) (x (n + 1))
+  have hL_memLp : MemLp L 2 μ :=
+    memLp_of_bounded hL_Icc
+      (measurable_pathSquaredLoss f q n).aestronglyMeasurable 2
+  have hL_cond :
+      μ[L | ℱ n] =ᵐ[μ] conditionalSquaredRisk P f q n := by
+    simpa [μ, ℱ, L] using pathSquaredLoss_condExp P x0 f q hf hq n
+  have hinnovation_eq_condVar :
+      μ[fun x ↦ (markovRiskInnovation P f q n x) ^ 2 | ℱ n] =ᵐ[μ]
+        Var[L; μ | ℱ n] := by
+    unfold ProbabilityTheory.condVar
+    refine condExp_congr_ae ?_
+    filter_upwards [hL_cond] with x hx
+    change (L x - conditionalSquaredRisk P f q n x) ^ 2 =
+      (L x - μ[L | ℱ n] x) ^ 2
+    rw [hx]
+  have hcondVar_formula :=
+    condVar_ae_eq_condExp_sq_sub_sq_condExp (ℱ.le n) hL_memLp
+  have hL_sq_le : ∀ᵐ x ∂μ, L x ^ 2 ≤ L x :=
+    hL_Icc.mono fun x hx ↦ by
+      rcases hx with ⟨hx0, hx1⟩
+      nlinarith [sq_nonneg (L x)]
+  have hcond_sq_le := condExp_mono (m := ℱ n) (μ := μ)
+    hL_memLp.integrable_sq (integrable_pathSquaredLoss
+      (P := P) (x0 := x0) hf hq n) hL_sq_le
+  filter_upwards [hinnovation_eq_condVar, hcondVar_formula,
+    hcond_sq_le, hL_cond] with x hinnovation hformula hsq hmean
+  rw [hinnovation, hformula]
+  change μ[fun x ↦ L x ^ 2 | ℱ n] x - (μ[L | ℱ n] x) ^ 2 ≤ 1 / 4
+  have hrisk := conditionalSquaredRisk_mem_Icc P hf hq n x
+  rw [hmean] at hsq ⊢
+  nlinarith [sq_nonneg (conditionalSquaredRisk P f q n x - 1 / 2)]
+
+/-- Conservative unit bound, retained as a compatibility corollary of the
+sharp `1/4` conditional-second-moment theorem. -/
 lemma markovRiskInnovation_condSecondMoment_le_one
     (P : Z → PMF Z) (x0 : Z) {f q : Z → ℝ}
     (hf : ∀ z, f z ∈ Set.Icc (0 : ℝ) 1)
@@ -344,25 +398,9 @@ lemma markovRiskInnovation_condSecondMoment_le_one
     (markovPathMeasure P x0)[fun x ↦ (markovRiskInnovation P f q n x) ^ 2 |
         Filtration.piLE (X := fun _ : ℕ ↦ Z) n] ≤ᵐ[markovPathMeasure P x0]
       fun _ ↦ (1 : ℝ) := by
-  let μ := markovPathMeasure P x0
-  let ℱ := Filtration.piLE (X := fun _ : ℕ ↦ Z)
-  have hmeas := measurable_markovRiskInnovation P f q n
-  have hbound : ∀ᵐ x ∂μ, |markovRiskInnovation P f q n x| ≤ (1 : ℝ) :=
-    Filter.Eventually.of_forall fun x ↦ abs_markovRiskInnovation_le_one P hf hq n x
-  have hsq_int : Integrable
-      (fun x ↦ (markovRiskInnovation P f q n x) ^ 2) μ := by
-    refine Integrable.of_bound (hmeas.pow_const 2).aestronglyMeasurable 1 ?_
-    filter_upwards [hbound] with x hx
-    rw [Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _)]
-    rcases abs_le.mp hx with ⟨hneg, hpos⟩
-    nlinarith
-  have hmono := condExp_mono (m := ℱ n) (μ := μ)
-    hsq_int (integrable_const (1 : ℝ))
-    (hbound.mono fun x hx ↦ by
-      rcases abs_le.mp hx with ⟨hneg, hpos⟩
-      nlinarith)
-  filter_upwards [hmono] with x hx
-  simpa [condExp_const (ℱ.le n)] using hx
+  filter_upwards [markovRiskInnovation_condSecondMoment_le_one_fourth
+    P x0 hf hq n] with x hx
+  exact hx.trans (by norm_num)
 
 /-- Running empirical one-step squared loss along the observed trajectory. -/
 def empiricalPrequentialRisk (f q : Z → ℝ) (n : ℕ) (x : ℕ → Z) : ℝ :=
@@ -407,13 +445,14 @@ private theorem integrable_subGammaExponentialProcess_of_bounded
       X sigma2 b lam lam n omega hb hsigma hlam le_rfl hblam
       (fun i _hi ↦ homega i)
 
-/-- Raw two-sided failure set for single-trajectory Markov risk validation. -/
+/-- Raw two-sided failure set for single-trajectory Markov risk validation,
+using the sharp universal `1/4` conditional-variance proxy. -/
 def markovPrequentialRiskRawFailure
     (P : Z → PMF Z) (f q : Z → ℝ) (Lam : Finset ℝ) (delta : ℝ) :
     Set (ℕ → Z) :=
   {x | ∃ n : ℕ, 0 < n ∧
     ∃ lam ∈ Lam,
-      AnytimeValid.subGammaCgf 1 1 lam / lam +
+      AnytimeValid.subGammaCgf (1 / 4) 1 lam / lam +
           Real.log ((Lam.card : ℝ) / (delta / 2)) / ((n : ℝ) * lam) ≤
         |empiricalPrequentialRisk f q n x - averageConditionalRisk P f q n x|}
 
@@ -433,7 +472,7 @@ theorem markovPrequentialRiskRawFailure_mass_le_delta
   let X := markovRiskInnovation P f q
   have hcs := AnytimeValid.optimized_lambda_two_sided_confidence_sequence
     (μ := mu) (ℱ := filtration) (X := X)
-    (sigma2 := (1 : ℝ)) (b := (1 : ℝ)) (delta := delta) (Lam := Lam)
+    (sigma2 := (1 / 4 : ℝ)) (b := (1 : ℝ)) (delta := delta) (Lam := Lam)
     hdelta (by norm_num) (by norm_num) hLam (by simpa using hLam_mem)
     (measurable_markovRiskInnovation P f q)
     (integrable_markovRiskInnovation (P := P) (x0 := x0) hf hq)
@@ -453,7 +492,7 @@ theorem markovPrequentialRiskRawFailure_mass_le_delta
     (fun k ↦ Filter.Eventually.of_forall fun x ↦
       abs_markovRiskInnovation_le_one P hf hq k x)
     (markovRiskInnovation_condExp_eq_zero P x0 hf hq)
-    (markovRiskInnovation_condSecondMoment_le_one P x0 hf hq)
+    (markovRiskInnovation_condSecondMoment_le_one_fourth P x0 hf hq)
   simpa [mu, filtration, X, markovPrequentialRiskRawFailure,
     runningMean_markovRiskInnovation] using hcs
 
@@ -502,7 +541,7 @@ theorem abs_prequentialRisk_sub_averageConditionalRisk_lt_of_not_mem
     (hx : x ∉ markovPrequentialRiskExceptionalEvent P x0 f q Lam delta)
     (hn : 0 < n) (hlam : lam ∈ Lam) :
     |empiricalPrequentialRisk f q n x - averageConditionalRisk P f q n x| <
-      AnytimeValid.subGammaCgf 1 1 lam / lam +
+      AnytimeValid.subGammaCgf (1 / 4) 1 lam / lam +
         Real.log ((Lam.card : ℝ) / (delta / 2)) / ((n : ℝ) * lam) := by
   have hxraw : x ∉ markovPrequentialRiskRawFailure P f q Lam delta := fun hraw ↦
     hx (markovPrequentialRiskRawFailure_subset_exceptionalEvent
@@ -518,7 +557,7 @@ theorem averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_m
     (hx : x ∉ markovPrequentialRiskExceptionalEvent P x0 f q Lam delta)
     (hn : 0 < n) (hlam : lam ∈ Lam) :
     averageConditionalRisk P f q n x < empiricalPrequentialRisk f q n x +
-      (AnytimeValid.subGammaCgf 1 1 lam / lam +
+      (AnytimeValid.subGammaCgf (1 / 4) 1 lam / lam +
         Real.log ((Lam.card : ℝ) / (delta / 2)) / ((n : ℝ) * lam)) := by
   have habs := abs_prequentialRisk_sub_averageConditionalRisk_lt_of_not_mem
     P x0 f q hx hn hlam

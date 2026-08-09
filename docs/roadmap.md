@@ -165,8 +165,9 @@
   Bernstein/fixed-point certificate
 - [x] Finite Markov prequential-risk certificate:
   an Ionescu--Tulcea path law for finite transition PMFs, a derived next-step
-  conditional-expectation identity, and a measurable all-time finite-grid
-  event comparing observed squared loss with average conditional risk
+  conditional-expectation identity, a sharp `1/4` conditional-variance proxy
+  for the centered `[0,1]` loss, and a measurable all-time finite-grid event
+  comparing observed squared loss with average conditional risk
 
 ## Planned
 

@@ -602,7 +602,8 @@ declarations; modules are relative to `FormalSLT`.
 |---|---|---|
 | `pathSquaredLoss_condExp` | `StochasticDynamics.MarkovRisk` | Derives the next-step squared-loss conditional expectation from the finite transition PMF and its Ionescu--Tulcea path law |
 | `markovRiskInnovation_condExp_eq_zero` | `StochasticDynamics.MarkovRisk` | Centers observed loss minus transition-row conditional risk under the generated filtration |
-| `markovRiskInnovation_condSecondMoment_le_one` | `StochasticDynamics.MarkovRisk` | Bounds the innovation conditional second moment for fixed `[0,1]` observables and predictors |
+| `markovRiskInnovation_condSecondMoment_le_one` | `StochasticDynamics.MarkovRisk` | Conservative unit conditional-second-moment bound retained as a simple compatibility lemma |
+| `markovRiskInnovation_condSecondMoment_le_one_fourth` | `StochasticDynamics.MarkovRisk` | Sharp universal `1/4` conditional-second-moment bound for the centered `[0,1]` one-step loss |
 | `runningMean_markovRiskInnovation` | `StochasticDynamics.MarkovRisk` | Identifies the innovation mean with observed prequential risk minus average conditional risk |
 | `markovPrequentialRiskExceptionalEvent_mass_le_delta` | `StochasticDynamics.MarkovRisk` | Gives one measurable all-time finite-grid exceptional event with probability at most `delta` |
 | `averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem` | `StochasticDynamics.MarkovRisk` | Bounds average conditional risk by observed prequential loss plus the declared sub-Gamma boundary outside that event |

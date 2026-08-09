@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C893-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C894-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-177-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-76%2C571-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-76%2C613-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -52,7 +52,8 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   with a checked closed-form KL penalty and a stochastic fair-Bernoulli
   product-stream certificate.
 - **Finite Markov prequential risk:** an actual Ionescu--Tulcea path law for a
-  finite transition PMF, a derived next-step conditional-risk identity, and an
+  finite transition PMF, a derived next-step conditional-risk identity, the
+  sharp universal `1/4` conditional-variance proxy for `[0,1]` losses, and an
   anytime two-sided certificate comparing observed squared loss with average
   conditional risk along one dependent trajectory.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
@@ -104,8 +105,9 @@ declaration and prints its axiom profile.
   `markovPrequentialRiskExceptionalEvent_mass_le_delta` and
   `averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem`,
   with a persistent two-state receipt at `n = 1024` whose failure probability
-  is at most `1/20`, whose width is below `1/10`, and whose good-path empirical
-  risk lies in the explicit interval `(7/80, 23/80)`;
+  is at most `1/20`, whose boundary radius (half-width) is below `1/20`, and
+  whose good-path empirical risk lies in the displayed open interval
+  `(11/80, 19/80)`, which has endpoint width exactly `1/10`;
   [`CheckMarkovRisk.lean`](./examples/CheckMarkovRisk.lean)
 
 ### Concentration and metric entropy
@@ -449,9 +451,9 @@ Expected results:
 - generated proof-frontier, badge, and documentation anchors are current; and
 - `git diff --check` reports no whitespace errors.
 
-The badge script counts declarations under `FormalSLT/`, modules under
-`FormalSLT/`, and Lean lines under `FormalSLT/` and `examples/`. Running it
-without `--check` updates the JSON files under `docs/badges/`.
+The badge script counts theorem and lemma declarations under `FormalSLT/` and
+`examples/`, modules under `FormalSLT/`, and Lean lines under both trees.
+Running it without `--check` updates the JSON files under `docs/badges/`.
 
 ## Roadmap
 

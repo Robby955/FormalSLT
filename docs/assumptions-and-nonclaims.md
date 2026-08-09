@@ -51,8 +51,9 @@ online-to-PAC and anytime-valid modules state their own sequential assumptions.
 `StochasticDynamics.MarkovRisk` constructs a dependent path law from an actual
 finite-state transition PMF and a deterministic initial state. For fixed
 functions `f q : Z -> R` valued in `[0,1]`, it derives the conditional
-expectation of the next-step squared loss and applies an anytime finite tilt
-grid to the resulting centered innovation.
+expectation of the next-step squared loss, proves the sharp universal `1/4`
+conditional second-moment bound for the resulting centered innovation, and
+applies an anytime finite tilt grid with that variance proxy.
 
 The checked target is the average of the one-step conditional risks encountered
 along the realized trajectory. The theorem does not require stationarity,

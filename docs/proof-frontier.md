@@ -31,10 +31,11 @@ files.
 
 - `finite-markov-prequential-risk`: the finite-state, deterministic-start,
   fixed-predictor path-law bridge and anytime average conditional-risk
-  certificate are checked. The next reviewable extension is a supplied initial
-  law and a predictable or independently trained predictor. The current result
-  is not a same-trajectory training theorem, a stationarity or mixing theorem,
-  or a continuous-state stochastic-dynamics result.
+  certificate are checked, including the sharp universal `1/4` conditional
+  variance proxy for `[0,1]` losses. The next reviewable extension is a supplied
+  initial law and a predictable or independently trained predictor. The current
+  result is not a same-trajectory training theorem, a stationarity or mixing
+  theorem, or a continuous-state stochastic-dynamics result.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a
