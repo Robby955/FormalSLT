@@ -519,6 +519,14 @@ declarations; modules are relative to `FormalSLT`.
 | `indicator_posteriorRisk_le_twoThirds_of_not_mem` | `PACBayes.IndicatorBernsteinLowRisk` | At `lambda = 2n/3`, every posterior outside the parent bad set satisfies `R_rho <= (7/4) Rhat_rho + (21/(8n))(KL + log(1/delta))` |
 | `indicator_posteriorRisk_le_min_one_twoThirds_of_not_mem` | `PACBayes.IndicatorBernsteinLowRisk` | Public certificate form truncating the observable low-risk bound by the universal upper bound one |
 | `indicator_finitePACBayesBernstein_twoThirds_badEventMass_le_delta` | `PACBayes.IndicatorBernsteinLowRisk` | Product-law mass bound for the shared fixed-tilt exceptional set at `lambda = 2n/3` |
+| `indicatorFinitePACBayesBernsteinWeightedCatalogBadSamples` | `PACBayes.IndicatorBernsteinTiltCatalog` | Single exceptional set formed by the finite union of fixed indicator-Bernstein tilt events with budgets `delta * weight j` |
+| `indicator_mem_weightedCatalog_iff` | `PACBayes.IndicatorBernsteinTiltCatalog` | Membership in the weighted catalog event is equivalent to membership in at least one entrywise bad set |
+| `indicator_not_mem_weightedCatalog_iff` | `PACBayes.IndicatorBernsteinTiltCatalog` | A sample is outside the catalog event exactly when it is outside every entrywise bad set |
+| `indicatorFixedTiltBadSamples_subset_weightedCatalog` | `PACBayes.IndicatorBernsteinTiltCatalog` | Every entrywise indicator-Bernstein exceptional set is contained in the catalog union |
+| `indicator_posteriorGeneralizationGap_le_weightedCatalog_of_not_mem` | `PACBayes.IndicatorBernsteinTiltCatalog` | On one good event, every posterior satisfies every fixed tilt in the weighted finite catalog |
+| `indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta` | `PACBayes.IndicatorBernsteinTiltCatalog` | Finite weighted union bound giving catalog exceptional mass at most `delta` when positive weights sum to at most one |
+| `indicator_posteriorRisk_le_weightedLowRiskCatalog_of_not_mem` | `PACBayes.IndicatorBernsteinTiltCatalog` | Observable low-risk bound for every entry of the weighted finite catalog |
+| `indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem` | `PACBayes.IndicatorBernsteinTiltCatalog` | Valid post-sample and posterior-dependent selection from the fixed finite weighted tilt catalog |
 | `posteriorMarginVarianceProxy` | `PACBayesBernstein` | Posterior average of a supplied per-hypothesis margin-variance proxy |
 | `priorBernsteinExpMoment` | `PACBayesBernstein` | Normalized Bernstein prior exponential moment with variance and scale terms |
 | `posteriorGeneralizationGap_le_bernstein_of_priorBernsteinExpMoment_le` | `PACBayesBernstein` | Deterministic fixed-sample PAC-Bayes Bernstein adapter from a prior-moment certificate |

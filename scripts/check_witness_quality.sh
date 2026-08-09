@@ -60,6 +60,8 @@ classify_witness() {
 #   finitePACBayesBernsteinMargin_badEventMass_le_delta
 #   indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta
 #   indicator_posteriorRisk_le_twoThirds_of_not_mem
+#   indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta /
+#     indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -87,6 +89,7 @@ HEADLINE_WITNESSES=(
   "examples/AdversarialWitnessBernstein.lean"
   "examples/CheckIIDIndicatorPACBayesBernstein.lean"
   "examples/CheckIndicatorBernsteinLowRisk.lean"
+  "examples/CheckIndicatorBernsteinTiltCatalog.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"

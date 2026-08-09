@@ -28,10 +28,10 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs now support simultaneous validity and sample-dependent selection, but the result is not simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection, but neither result is simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the finite-grid confidence layer toward an all-real lambda optimization statement with explicit post-sample optimization rules, then generalize the fixed spherical-Gaussian posterior lane.",
+      "next_step": "Extend the checked finite weighted indicator-Bernstein catalog toward a countable normalized-moment mixture or all-real lambda statement, then generalize the fixed spherical-Gaussian posterior lane.",
       "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 136,
-    "library_and_example_lean_lines": 75120,
-    "library_lean_lines": 66156,
-    "library_modules": 174,
-    "theorem_map_entries": 600
+    "example_lean_files": 137,
+    "library_and_example_lean_lines": 75735,
+    "library_lean_lines": 66440,
+    "library_modules": 175,
+    "theorem_map_entries": 608
   },
   "theorem_families": [
     {
@@ -2892,6 +2892,54 @@
           "module": "PACBayes.IndicatorBernsteinLowRisk",
           "name": "indicator_finitePACBayesBernstein_twoThirds_badEventMass_le_delta",
           "summary": "Product-law mass bound for the shared fixed-tilt exceptional set at lambda = 2n/3"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicatorFinitePACBayesBernsteinWeightedCatalogBadSamples",
+          "summary": "Single exceptional set formed by the finite union of fixed indicator-Bernstein tilt events with budgets delta * weight j"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicator_mem_weightedCatalog_iff",
+          "summary": "Membership in the weighted catalog event is equivalent to membership in at least one entrywise bad set"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicator_not_mem_weightedCatalog_iff",
+          "summary": "A sample is outside the catalog event exactly when it is outside every entrywise bad set"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicatorFixedTiltBadSamples_subset_weightedCatalog",
+          "summary": "Every entrywise indicator-Bernstein exceptional set is contained in the catalog union"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicator_posteriorGeneralizationGap_le_weightedCatalog_of_not_mem",
+          "summary": "On one good event, every posterior satisfies every fixed tilt in the weighted finite catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta",
+          "summary": "Finite weighted union bound giving catalog exceptional mass at most delta when positive weights sum to at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicator_posteriorRisk_le_weightedLowRiskCatalog_of_not_mem",
+          "summary": "Observable low-risk bound for every entry of the weighted finite catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinTiltCatalog",
+          "name": "indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem",
+          "summary": "Valid post-sample and posterior-dependent selection from the fixed finite weighted tilt catalog"
         },
         {
           "kind": "theorem",

@@ -69,16 +69,17 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
-            "Extend the finite-grid confidence layer toward an all-real lambda "
-            "optimization statement with explicit post-sample optimization rules, "
+            "Extend the checked finite weighted indicator-Bernstein catalog toward "
+            "a countable normalized-moment mixture or all-real lambda statement, "
             "then generalize the fixed spherical-Gaussian posterior lane."
         ),
         "boundary": (
             "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, "
             "fixed-posterior, and spherical-Gaussian. Finite fixed catalogs "
-            "of posterior/tilt pairs now support simultaneous validity and "
-            "sample-dependent selection, but the result is not simultaneous "
-            "over all continuous posteriors or all real tilts."
+            "of posterior/tilt pairs and a posterior-uniform finite weighted "
+            "indicator-Bernstein tilt catalog support post-sample selection, "
+            "but neither result is simultaneous over all continuous posteriors "
+            "or all real tilts."
         ),
     },
     {
