@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C811-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-173-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-74%2C576-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C832-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-174-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-75%2C120-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -131,6 +131,14 @@ declaration and prints its axiom profile.
   `1/2`;
   [`CheckIndicatorBernsteinConfidence.lean`](./examples/CheckIndicatorBernsteinConfidence.lean),
   [`CheckIIDIndicatorPACBayesBernstein.lean`](./examples/CheckIIDIndicatorPACBayesBernstein.lean)
+- **Observable low-risk indicator PAC-Bayes--Bernstein corollary** —
+  `indicator_posteriorRisk_le_twoThirds_of_not_mem`, at the fixed sample-level
+  tilt `lambda = 2n/3`, gives
+  `R(rho) <= (7/4) Rhat(rho) + (21/(8n))(KL(rho||pi) + log(1/delta))`;
+  `indicator_posteriorRisk_le_min_one_twoThirds_of_not_mem` truncates this at
+  one. The concrete balanced sample of size `40` discharges the good-event
+  premise and yields the checked certificate `R(rho) <= 301/320 < 1`;
+  [`CheckIndicatorBernsteinLowRisk.lean`](./examples/CheckIndicatorBernsteinLowRisk.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -254,6 +262,10 @@ release check is in [Audit commands](#audit-commands).
 - Use the finite i.i.d. time-uniform PAC-Bayes endpoints for finite hypothesis
   classes with `[0,1]` losses. Use the grid theorem when the tilt is selected
   from a fixed finite family after observing the data.
+- Use `FormalSLT.PACBayes.IndicatorBernsteinLowRisk` for a posterior-uniform
+  finite indicator-loss bound with an observable empirical-risk right-hand
+  side. It self-bounds population Bernoulli variance by risk; it is not an
+  empirical sample-variance theorem.
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.
@@ -301,6 +313,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `Stability.RKHSRegularisedERM`
 - **PAC-Bayes:** `PACBayesKL`, `PACBayesMcAllester`,
   `PACBayesBoundedLoss`, `PACBayesBernstein`, `PACBayes.ChangeOfMeasure`,
+  `PACBayes.IndicatorBernsteinLowRisk`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
@@ -337,8 +350,8 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- A concrete classifier-margin extractor or all-real-`λ` PAC-Bayes Bernstein
-  optimization theorem
+- A source-faithful empirical sample-variance PAC-Bayes Bernstein theorem or
+  all-real-`λ` optimization theorem
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - A neural-network generalization theorem
@@ -409,7 +422,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 [theorem index](./docs/INDEX.md). The remaining public boundaries are:
 
 - [ ] Continuous Dudley entropy integral over total-bounded classes
-- [ ] Concrete PAC-Bayes margin extractor and all-real-`λ` optimization
+- [ ] Empirical sample-variance PAC-Bayes Bernstein and selectable finite or
+  countable `λ` catalogs
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 

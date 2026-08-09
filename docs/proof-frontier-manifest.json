@@ -67,11 +67,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 135,
-    "library_and_example_lean_lines": 74576,
-    "library_lean_lines": 65851,
-    "library_modules": 173,
-    "theorem_map_entries": 594
+    "example_lean_files": 136,
+    "library_and_example_lean_lines": 75120,
+    "library_lean_lines": 66156,
+    "library_modules": 174,
+    "theorem_map_entries": 600
   },
   "theorem_families": [
     {
@@ -2856,6 +2856,42 @@
           "module": "PACBayes.IndicatorBernsteinConfidence",
           "name": "indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta",
           "summary": "End-to-end finite i.i.d. indicator PAC-Bayes Bernstein bad-event mass bound, simultaneous over all finite posteriors"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinLowRisk",
+          "name": "indicatorBernsteinVarianceProxy_le_risk_div",
+          "summary": "Pointwise Bernoulli self-bound R_i(1 - R_i)/n <= R_i/n for positive sample size"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinLowRisk",
+          "name": "posteriorIndicatorBernsteinVarianceProxy_le_risk_div",
+          "summary": "Posterior-average self-bound V_rho <= R_rho/n"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinLowRisk",
+          "name": "indicator_posteriorRisk_le_lowRisk_of_not_mem",
+          "summary": "General fixed-tilt observable risk inequality for 0 < lambda < 6n/5, with exact rearranged coefficients"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinLowRisk",
+          "name": "indicator_posteriorRisk_le_twoThirds_of_not_mem",
+          "summary": "At lambda = 2n/3, every posterior outside the parent bad set satisfies R_rho <= (7/4) Rhat_rho + (21/(8n))(KL + log(1/delta))"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinLowRisk",
+          "name": "indicator_posteriorRisk_le_min_one_twoThirds_of_not_mem",
+          "summary": "Public certificate form truncating the observable low-risk bound by the universal upper bound one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.IndicatorBernsteinLowRisk",
+          "name": "indicator_finitePACBayesBernstein_twoThirds_badEventMass_le_delta",
+          "summary": "Product-law mass bound for the shared fixed-tilt exceptional set at lambda = 2n/3"
         },
         {
           "kind": "theorem",

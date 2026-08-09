@@ -161,9 +161,12 @@ posterior-dependent penalties certified by that finite grid. The closed
 total iid product mass to state the finite high-confidence good event directly.
 `PACBayesBernstein` adds a finite Bernstein margin-proxy shell: the variance
 proxy is supplied per hypothesis, and the theorem consumes a normalized
-Bernstein prior-moment certificate. It does not yet derive that variance proxy
-from a concrete classifier-margin loss. An exact all-real `λ` Bernstein
-optimization theorem is not yet implemented. The repository now has an
+Bernstein prior-moment certificate. The finite indicator specialization derives
+the exact Bernoulli proxy `R_i(1 - R_i)/n`; its observable low-risk corollary
+uses `R_i(1 - R_i) <= R_i` and therefore has empirical risk, but not empirical
+sample variance, on its right-hand side. A source-faithful empirical-variance
+theorem and exact all-real `λ` optimization are not yet implemented. The
+repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
 Gaussian priors and posteriors. The latter derives the increment and
