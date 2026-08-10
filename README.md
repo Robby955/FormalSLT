@@ -279,9 +279,9 @@ release check is in [Audit commands](#audit-commands).
   empirical sample-variance theorem.
 - Use `FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog` when a fixed finite
   family of indicator-Bernstein tilts should be selected after observing the
-  sample. Positive weights allocate the confidence budget, and the selected
-  entry may also depend on the posterior; the catalog itself must be fixed in
-  advance.
+  sample. Positive weights with finite total mass `∑ j, w_j ≤ 1` allocate the
+  confidence budget, and the selected entry may also depend on the posterior;
+  the catalog itself must be fixed in advance.
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.

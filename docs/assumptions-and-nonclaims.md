@@ -167,8 +167,9 @@ uses `R_i(1 - R_i) <= R_i` and therefore has empirical risk, but not empirical
 sample variance, on its right-hand side. Its finite weighted tilt catalog
 allocates entry `j` the budget `delta * w_j` and is simultaneous over every
 catalog entry and finite posterior, so a fixed selector may depend on both the
-sample and posterior. The finite catalog and positive weights must be declared
-in advance; this is not unrestricted optimization over real `λ`. A
+sample and posterior. The finite catalog and positive weights satisfying
+`∑ j, w_j ≤ 1` must be declared in advance; this is not unrestricted
+optimization over real `λ`. A
 source-faithful empirical-variance theorem, a countable indicator-Bernstein
 catalog, and exact all-real `λ` optimization are not yet implemented. The
 repository now has an
