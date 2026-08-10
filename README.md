@@ -55,8 +55,8 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   finite transition PMF, a derived next-step conditional-risk identity, the
   sharp universal `1/4` conditional-variance proxy for `[0,1]` losses, an
   anytime two-sided fixed-predictor certificate, and a fixed-tilt PAC-Bayes
-  certificate simultaneous over all times and all posteriors on a finite
-  predictor catalog.
+  certificate for `0 < λ < 3` simultaneous over all times and all posteriors
+  on a finite predictor catalog.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -113,10 +113,11 @@ declaration and prints its axiom profile.
 - **Finite-catalog Markov PAC-Bayes certificate** —
   `markovPACBayes_prequentialRisk_certificate` gives one measurable event of
   probability at most `delta` on whose complement the prequential-risk bound
-  holds at every positive time for every posterior PMF. The asymmetric
-  two-state receipt selects a point posterior from the first `1024`
-  transitions, has exact KL cost `log 2`, empirical risk at most `1/2`, and
-  posterior-average conditional risk below `11/20` at confidence `19/20`;
+  holds at every positive time for every posterior PMF, for one fixed declared
+  tilt satisfying `0 < λ < 3`. The asymmetric two-state receipt selects a point
+  posterior from the first `1024` transitions, has exact KL cost `log 2`,
+  empirical risk at most `1/2`, and posterior-average conditional risk below
+  `11/20` at confidence `19/20`;
   [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean)
 
 ### Concentration and metric entropy
@@ -387,8 +388,8 @@ The main learning-theory results are deliberately finite and explicit.
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
   PAC-Bayes endpoint is simultaneous over time and posterior at one fixed
-  declared tilt, and targets posterior-average one-step conditional squared
-  risk along the realized path
+  declared tilt satisfying `0 < λ < 3`, and targets posterior-average one-step
+  conditional squared risk along the realized path
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
