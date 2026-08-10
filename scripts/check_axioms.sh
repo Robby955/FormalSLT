@@ -40,6 +40,10 @@ THEOREMS=(
   "FormalSLT.PACBayes.IndicatorBernsteinLowRisk.indicator_finitePACBayesBernstein_twoThirds_badEventMass_le_delta"
   "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta"
   "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem"
+  "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
+  "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
+  "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
+  "FormalSLT.StochasticDynamics.averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem"
 )
 
 # Axioms permitted in a clean proof.
@@ -60,6 +64,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinConfidence"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinLowRisk"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog"
+  echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -76,7 +81,8 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.IndicatorBernsteinMoment \
   FormalSLT.PACBayes.IndicatorBernsteinConfidence \
   FormalSLT.PACBayes.IndicatorBernsteinLowRisk \
-  FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog >/dev/null
+  FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog \
+  FormalSLT.StochasticDynamics.MarkovRisk >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

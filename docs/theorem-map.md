@@ -596,6 +596,18 @@ declarations; modules are relative to `FormalSLT`.
 | `fairBoolThreshold_twoGaussianGrid_certificate` | `PACBayes.IIDContinuousGaussianGrid` | Stochastic two-entry certificate for `N(0,1)` at tilt `1/2` and `N(1,1)` at tilt `1/4`, with total failure budget `exp(-1)` |
 | `fairBoolThreshold_twoGaussianSelected_certificate` | `PACBayes.IIDContinuousGaussianGrid` | The worked two-entry fair-Bernoulli catalog remains valid for every sample-dependent Boolean selector |
 
+## Finite Markov prequential risk
+
+| Theorem | Module | Role |
+|---|---|---|
+| `pathSquaredLoss_condExp` | `StochasticDynamics.MarkovRisk` | Derives the next-step squared-loss conditional expectation from the finite transition PMF and its Ionescu--Tulcea path law |
+| `markovRiskInnovation_condExp_eq_zero` | `StochasticDynamics.MarkovRisk` | Centers observed loss minus transition-row conditional risk under the generated filtration |
+| `markovRiskInnovation_condSecondMoment_le_one` | `StochasticDynamics.MarkovRisk` | Conservative unit conditional-second-moment bound retained as a simple compatibility lemma |
+| `markovRiskInnovation_condSecondMoment_le_one_fourth` | `StochasticDynamics.MarkovRisk` | Sharp universal `1/4` conditional-second-moment bound for the centered `[0,1]` one-step loss |
+| `runningMean_markovRiskInnovation` | `StochasticDynamics.MarkovRisk` | Identifies the innovation mean with observed prequential risk minus average conditional risk |
+| `markovPrequentialRiskExceptionalEvent_mass_le_delta` | `StochasticDynamics.MarkovRisk` | Gives one measurable all-time finite-grid exceptional event with probability at most `delta` |
+| `averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem` | `StochasticDynamics.MarkovRisk` | Bounds average conditional risk by observed prequential loss plus the declared sub-Gamma boundary outside that event |
+
 ## Named tail-probability corollaries
 
 | Theorem | Module | Role |

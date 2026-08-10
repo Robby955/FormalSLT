@@ -33,6 +33,7 @@ import FormalSLT.Concentration.SharpMcDiarmid
 import FormalSLT.Concentration.HeterogeneousMcDiarmid
 import FormalSLT.Concentration.NamedTails
 import FormalSLT.Sequential
+import FormalSLT.StochasticDynamics
 
 import FormalSLT.Statistics.Bernoulli
 import FormalSLT.Statistics.SampleStatistics
