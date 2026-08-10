@@ -59,8 +59,9 @@ applies an anytime finite tilt grid with that variance proxy.
 finite catalog of predictors with a full-support prior. At one fixed declared
 tilt, one measurable exceptional event works simultaneously for every
 positive time and every posterior PMF, including a posterior selected after
-observing the trajectory. The penalty is the finite KL term plus
-`log (1 / delta)` divided by `n * lambda`.
+observing the trajectory. For `0 < lambda < 3`, the KL-confidence term is
+`(KL(rho || prior) + log (1 / delta)) / (n * lambda)`. The certificate also
+adds the sub-Gamma variance term `lambda / (8 * (1 - lambda / 3))`.
 
 The checked target is the posterior average of the one-step conditional risks
 encountered along the realized trajectory. The theorem does not require

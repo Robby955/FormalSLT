@@ -385,9 +385,10 @@ The main learning-theory results are deliberately finite and explicit.
   process-level for a fully arbitrary measurable hypothesis space
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
-  catalog of fixed predictors; the PAC-Bayes endpoint is simultaneous over
-  time and posterior at one fixed declared tilt, and targets posterior-average
-  one-step conditional squared risk along the realized path
+  catalog of fixed predictors with a full-support prior; the PAC-Bayes endpoint
+  is simultaneous over time and posterior at one fixed declared tilt, and
+  targets posterior-average one-step conditional squared risk along the
+  realized path
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
