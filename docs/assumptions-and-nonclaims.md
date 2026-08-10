@@ -55,11 +55,20 @@ expectation of the next-step squared loss, proves the sharp universal `1/4`
 conditional second-moment bound for the resulting centered innovation, and
 applies an anytime finite tilt grid with that variance proxy.
 
-The checked target is the average of the one-step conditional risks encountered
-along the realized trajectory. The theorem does not require stationarity,
-mixing, or irreducibility. It also does not cover a predictor fitted or updated
-on the same trajectory, a random initial distribution, continuous state spaces,
-multistep forecasts, or stationary long-run risk.
+`StochasticDynamics.MarkovPACBayes` lifts the same path-law argument to a
+finite catalog of predictors with a full-support prior. At one fixed declared
+tilt satisfying `0 < lambda < 3`, one measurable exceptional event works
+simultaneously for every positive time and every posterior PMF, including a
+posterior selected after observing the trajectory. The KL-confidence term is
+`(KL(rho || prior) + log (1 / delta)) / (n * lambda)`. The certificate also
+adds the sub-Gamma variance term `lambda / (8 * (1 - lambda / 3))`.
+
+The checked target is the posterior average of the one-step conditional risks
+encountered along the realized trajectory. The theorem does not require
+stationarity, mixing, or irreducibility. It also does not cover a predictor
+catalog fitted or updated on the same trajectory, a random initial
+distribution, continuous state spaces, multistep forecasts, stationary
+long-run risk, or post-sample selection of an arbitrary real tilt.
 
 ### Azuma and sharp McDiarmid constants
 
@@ -228,8 +237,11 @@ theorem.
 
 ### Stochastic-dynamics extensions
 
-The current finite Markov result freezes the observable and predictor before
-the trajectory is generated. Natural next layers are a random initial law and
-predictable or independently trained predictors. Same-trajectory training,
-continuous-state kernels, and stationary-risk conclusions require separate
-formal interfaces and are not consequences of the current certificate.
+The current finite Markov results freeze the observable and finite predictor
+catalog before the trajectory is generated. A posterior over that fixed
+catalog may be selected from the trajectory, but this does not validate
+fitting new predictors on the same observations. Natural next layers are a
+random initial law, predictable or independently trained catalogs, and a
+declared selectable tilt family. Same-trajectory training, continuous-state
+kernels, and stationary-risk conclusions require separate formal interfaces
+and are not consequences of the current certificate.

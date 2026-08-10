@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C894-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-177-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-76%2C613-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C927-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-178-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-77%2C260-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -53,9 +53,10 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   product-stream certificate.
 - **Finite Markov prequential risk:** an actual Ionescu--Tulcea path law for a
   finite transition PMF, a derived next-step conditional-risk identity, the
-  sharp universal `1/4` conditional-variance proxy for `[0,1]` losses, and an
-  anytime two-sided certificate comparing observed squared loss with average
-  conditional risk along one dependent trajectory.
+  sharp universal `1/4` conditional-variance proxy for `[0,1]` losses, an
+  anytime two-sided fixed-predictor certificate, and a fixed-tilt PAC-Bayes
+  certificate for `0 < λ < 3` simultaneous over all positive times and all
+  posteriors on a finite predictor catalog.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -109,6 +110,15 @@ declaration and prints its axiom profile.
   whose good-path empirical risk lies in the displayed open interval
   `(11/80, 19/80)`, which has endpoint width exactly `1/10`;
   [`CheckMarkovRisk.lean`](./examples/CheckMarkovRisk.lean)
+- **Finite-catalog Markov PAC-Bayes certificate** —
+  `markovPACBayes_prequentialRisk_certificate` gives one measurable event of
+  probability at most `delta` on whose complement the prequential-risk bound
+  holds at every positive time for every posterior PMF, for one fixed declared
+  tilt satisfying `0 < λ < 3`. The asymmetric two-state receipt selects a point
+  posterior from the first `1024` transitions, has exact KL cost `log 2`,
+  empirical risk at most `1/2`, and posterior-average conditional risk below
+  `11/20` at confidence `19/20`;
+  [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean)
 
 ### Concentration and metric entropy
 
@@ -349,8 +359,9 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
-- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk`, re-exported by the
-  stable topic import `FormalSLT.StochasticDynamics`
+- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk` and
+  `StochasticDynamics.MarkovPACBayes`, re-exported by the stable topic import
+  `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -374,8 +385,11 @@ The main learning-theory results are deliberately finite and explicit.
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
-  deterministic initial state, and fixed `[0,1]` observable and predictor; the
-  target is average one-step conditional squared risk along the realized path
+  deterministic initial state, and a fixed `[0,1]` observable and finite
+  catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
+  PAC-Bayes endpoint is simultaneous over every positive time and posterior at
+  one fixed declared tilt satisfying `0 < λ < 3`, and targets
+  posterior-average one-step conditional squared risk along the realized path
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -463,10 +477,14 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 - [ ] Continuous Dudley entropy integral over total-bounded classes
 - [ ] Empirical sample-variance PAC-Bayes Bernstein
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
+- [ ] Replace finite confidence allocation by a normalized joint
+  hypothesis--tilt e-process mixture, then study conditional e-variable
+  composition and composite nulls
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
-- [ ] Extend the finite Markov trajectory certificate to random initial laws
-  and predictable or independently trained predictors
+- [ ] Extend the finite Markov PAC-Bayes certificate to random initial laws,
+  predictable or independently trained predictor catalogs, and declared
+  selectable tilt families
 
 ## Dependencies
 

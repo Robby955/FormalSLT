@@ -58,11 +58,14 @@ bounded-loss wrappers for the sharp high-probability stability surface.
 through the product-kernel decomposition, and add algorithm-specific stability
 interfaces once the theorem assumptions are clean enough to reuse.
 
-### 3. PAC-Bayes all-real-`λ` and general continuous-posterior extensions
+### 3. Joint hypothesis--tilt processes and continuous-posterior extensions
 
-**Target.** Extend the finite PAC-Bayes layer beyond finite λ-grids toward
-all-real-`λ` optimization and extend the current fixed spherical-Gaussian
-specialization to broader posterior families.
+**Target.** Replace finite confidence-budget allocation with a normalized
+hypothesis--tilt e-process mixture, then extend the current fixed
+spherical-Gaussian specialization to broader posterior families. A first
+countable theorem should use declared positive tilt weights and expose the
+corresponding `log (1 / weight)` cost; it should not claim unrestricted
+post-sample optimization over all real tilts.
 
 The current repo proves finite PMFs, KL divergence nonnegativity, Gibbs
 inequality, Donsker-Varadhan, the finite iid product MGF bridge, the
@@ -82,6 +85,9 @@ budgets `delta * w_j` across fixed Bernstein tilts and is simultaneous over
 both catalog entries and finite posteriors. Its selector may depend on the
 sample and posterior, but neither the catalog nor its weights may be chosen
 after observing the sample.
+For dependent data, `StochasticDynamics.MarkovPACBayes` now checks a fixed-tilt
+(`0 < λ < 3`), all-positive-time theorem simultaneous over every posterior on
+a finite predictor catalog under an actual finite Markov path law.
 For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and
@@ -91,11 +97,15 @@ simultaneous over all continuous posteriors.
 **Dependencies.**
 
 - add a countable or all-`λ` confidence event beyond finite grids;
-- justify optimizing `λ` posterior-by-posterior after the sample is drawn;
+- construct a normalized joint hypothesis--tilt process beyond finite union
+  bounds;
+- derive post-sample tilt selection only from a common checked event;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
 
-**Boundary.** The finite-hypothesis grid theorem remains finite. The base
+**Boundary.** The finite-hypothesis grid theorem remains finite, and the Markov
+posterior-uniform theorem has one fixed declared tilt satisfying `0 < λ < 3`.
+The base
 continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
 specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt
 pairs support simultaneous validity and sample-dependent selection, but this is

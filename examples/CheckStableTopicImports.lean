@@ -4,6 +4,7 @@ import FormalSLT.VC.VCRademacher
 import FormalSLT.VC.VCSampleComplexity
 import FormalSLT.VC
 import FormalSLT.Sequential
+import FormalSLT.StochasticDynamics
 
 /-!
 # Stable topic-import smoke test
@@ -19,6 +20,7 @@ without carrying duplicate proof bodies.
 #check FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem
 #check FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #check FormalSLT.AnytimeValid.eProcess_typeI_control
+#check FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
 
 #check FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
 #check FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
@@ -29,3 +31,4 @@ without carrying duplicate proof bodies.
 #print axioms FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem
 #print axioms FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #print axioms FormalSLT.AnytimeValid.eProcess_typeI_control
+#print axioms FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate

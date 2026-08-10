@@ -80,6 +80,8 @@ classify_witness() {
 #   markovPrequentialRiskExceptionalEvent_mass_le_delta
 #     (persistent two-state trajectory with an evaluated boundary radius
 #      below 1/20 at n = 1024, delta = 1/20, lambda = 1/8)
+#   markovPACBayes_prequentialRisk_certificate
+#     (asymmetric two-state catalog with a path-selected point posterior)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -107,6 +109,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckCramerRao.lean"
   "examples/CheckExponentialFamily.lean"
   "examples/CheckMarkovRisk.lean"
+  "examples/CheckMarkovPACBayes.lean"
 )
 
 fail=0
