@@ -107,6 +107,30 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
     },
     {
+        "id": "pac-bayes-empirical-bernstein",
+        "status": "partially_closed",
+        "scope": (
+            "finite per-hypothesis Bessel empirical loss variance, exact "
+            "ordered-pair representation, bounded-loss estimates, and "
+            "finite-IID unbiasedness"
+        ),
+        "difficulty": "hard",
+        "source": (
+            "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
+        ),
+        "next_step": (
+            "Prove the source-faithful self-bounding or U-statistic "
+            "exponential moment comparing population and empirical variance, "
+            "then apply finite Donsker-Varadhan and declared tilt selection."
+        ),
+        "boundary": (
+            "The checked result is finite-IID, per hypothesis, and an "
+            "expectation identity. It is not a concentration theorem, a "
+            "posterior-uniform confidence event, an anytime-valid result, or "
+            "a PAC-Bayes empirical-Bernstein risk theorem."
+        ),
+    },
+    {
         "id": "sharp-mcdiarmid-product-kernel",
         "status": "blocked",
         "scope": "bounded-differences concentration",

@@ -195,6 +195,15 @@ sample and posterior. The finite catalog and positive weights satisfying
 `∑ j, w_j ≤ 1` must be declared in advance; this is not unrestricted
 optimization over real `λ`.
 
+`PACBayes.FiniteEmpiricalVariance` supplies the finite empirical-variance
+foundation for arbitrary real-valued per-hypothesis losses: population
+variance, Bessel-corrected empirical variance, its exact ordered-pair
+representation, and finite-IID unbiasedness for sample size at least two. The
+universal population bound `1/4`, empirical bound `1/2`, and empirical-risk
+self-bound additionally assume losses in `[0,1]`. Unbiasedness is an
+expectation identity; it does not itself provide a tail event or confidence
+bound, and it is not the variance of the posterior-averaged loss.
+
 The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
@@ -210,8 +219,10 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-A source-faithful empirical-variance theorem, a countable indicator-Bernstein
-catalog, and exact all-real `λ` optimization are not yet implemented.
+The source-faithful empirical-variance exponential-moment inequality and its
+posterior-uniform PAC-Bayes empirical-Bernstein confidence theorem are not yet
+implemented. A countable indicator-Bernstein catalog and exact all-real `λ`
+optimization are also open.
 
 ### Algorithmic stability expected bound
 

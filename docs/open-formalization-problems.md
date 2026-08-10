@@ -111,6 +111,30 @@ specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt
 pairs support simultaneous validity and sample-dependent selection, but this is
 not an all-posterior or all-`λ` confidence statement.
 
+### PAC-Bayes empirical sample variance
+
+**Target.** Derive a source-faithful exponential-moment comparison between the
+true per-hypothesis loss variance and its Bessel-corrected empirical estimate,
+then combine it with finite Donsker--Varadhan change of measure and a declared
+finite tilt family. The desired endpoint is posterior-uniform and observable,
+with empirical variance on the right-hand side.
+
+The checked foundation now defines the population and Bessel empirical loss
+variances, proves the exact ordered-pair second-order-statistic identity,
+establishes the `[0,1]` bounds `V <= 1/4` and `Vhat <= 1/2`, and discharges IID
+unbiasedness under the explicit finite product sample law. The remaining step
+is not ordinary tensorization: pair terms share observations, so the existing
+coordinatewise product-MGF factorization cannot be applied directly.
+
+**Dependencies.** Prove the self-bounding or U-statistic exponential moment
+with its exact normalization; only then add posterior averaging, finite tilt
+selection, and the final PAC-Bayes confidence event.
+
+**Boundary.** The current theorem is finite-IID, per hypothesis, and in
+expectation. It is not anytime-valid, does not compare posterior-averaged true
+and empirical variances with high probability, and does not yet imply a
+PAC-Bayes empirical-Bernstein risk bound.
+
 ## Medium-term
 
 ### 4. Downstream sharp McDiarmid propagation

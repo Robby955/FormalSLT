@@ -101,6 +101,10 @@ from supplied interfaces and open boundaries.
 - Tolstikhin, I. O., and Seldin, Y. (2013). "PAC-Bayes-Empirical-Bernstein
   inequality." In *Advances in Neural Information Processing Systems 26*.
   [Proceedings record](https://proceedings.neurips.cc/paper_files/paper/2013/hash/a97da629b098b75c294dffdc3e463904-Abstract.html).
+- Maurer, A., and Pontil, M. (2009). "Empirical Bernstein bounds and sample
+  variance penalization." In *Proceedings of the 22nd Annual Conference on
+  Learning Theory*.
+  [Open preprint](https://arxiv.org/abs/0907.3740).
 - Alquier, P., Ridgway, J., and Chopin, N. (2016). "On the properties of
   variational approximations of Gibbs posteriors." *Journal of Machine
   Learning Research* 17(239), 1--41.

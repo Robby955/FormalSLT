@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C927-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-178-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-77%2C260-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C950-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-179-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-78%2C132-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -65,6 +65,11 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   convergence, laws of large numbers, moments, finite estimation, Fisher
   information, Cramer-Rao, finite exponential families, and asymptotic
   statistics.
+- **Finite empirical-variance foundations:** Bessel-corrected loss variance,
+  its exact second-order pair representation, bounded-loss estimates, and an
+  end-to-end finite-i.i.d. unbiasedness theorem. This is the deterministic and
+  expectation layer only; the empirical-Bernstein exponential moment and
+  PAC-Bayes confidence theorem remain open.
 
 The Dudley development is finite by design. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
@@ -173,6 +178,16 @@ declaration and prints its axiom profile.
   This remains finite, fixed-sample, and population-variance self-bounding; it
   is not empirical sample variance or all-real tilt optimization;
   [`CheckIndicatorBernsteinTiltCatalog.lean`](./examples/CheckIndicatorBernsteinTiltCatalog.lean)
+- **Finite empirical loss variance and IID unbiasedness** —
+  `finiteEmpiricalVariance_eq_pairwise` identifies the Bessel-corrected
+  variance with its ordered off-diagonal second-order statistic, while
+  `finiteEmpiricalVariance_unbiased_finiteProduct` proves that its expectation
+  under the finite IID product law is the per-hypothesis population variance.
+  The three-level loss receipt evaluates population variance `1/6`, one
+  displayed empirical variance `1/4`, and the full `3^3`-sample expectation
+  `1/6`. No empirical-Bernstein exponential moment or confidence bound is
+  claimed;
+  [`CheckFiniteEmpiricalVariance.lean`](./examples/CheckFiniteEmpiricalVariance.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -305,6 +320,10 @@ release check is in [Audit commands](#audit-commands).
   sample. Positive weights with finite total mass `∑ j, w_j ≤ 1` allocate the
   confidence budget, and the selected entry may also depend on the posterior;
   the catalog itself must be fixed in advance.
+- Use `FormalSLT.PACBayes.FiniteEmpiricalVariance` for the Bessel-corrected
+  per-hypothesis loss variance, its exact pairwise form, bounded-loss
+  estimates, and finite-product unbiasedness. It is a foundation for a future
+  empirical-Bernstein theorem, not such a theorem itself.
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.
@@ -354,6 +373,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayesBoundedLoss`, `PACBayesBernstein`, `PACBayes.ChangeOfMeasure`,
   `PACBayes.IndicatorBernsteinLowRisk`,
   `PACBayes.IndicatorBernsteinTiltCatalog`,
+  `PACBayes.FiniteEmpiricalVariance`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
@@ -380,7 +400,9 @@ The main learning-theory results are deliberately finite and explicit.
   heterogeneous coordinate laws, with a common coordinate state space
 - **PAC-Bayes Bernstein:** finite priors and posteriors with a supplied variance
   proxy and normalized prior-moment certificate; the indicator specialization
-  also has a fixed finite weighted tilt catalog with simultaneous validity
+  also has a fixed finite weighted tilt catalog with simultaneous validity.
+  The separate empirical-variance foundation assumes a finite IID product law,
+  sample size at least two, and `[0,1]` losses for its boundedness corollaries.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
@@ -400,8 +422,10 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- A source-faithful empirical sample-variance PAC-Bayes Bernstein theorem or
-  all-real-`λ` optimization theorem
+- The source-faithful empirical-variance exponential-moment inequality and its
+  posterior-uniform PAC-Bayes Bernstein confidence theorem, as well as an
+  all-real-`λ` optimization theorem. The finite pairwise identity and IID
+  unbiasedness foundation are checked.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
@@ -475,7 +499,9 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 [theorem index](./docs/INDEX.md). The remaining public boundaries are:
 
 - [ ] Continuous Dudley entropy integral over total-bounded classes
-- [ ] Empirical sample-variance PAC-Bayes Bernstein
+- [ ] Empirical-variance exponential moment and posterior-uniform PAC-Bayes
+  Bernstein theorem (the finite pairwise and IID-unbiasedness foundation is
+  checked)
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
 - [ ] Replace finite confidence allocation by a normalized joint
   hypothesis--tilt e-process mixture, then study conditional e-variable
