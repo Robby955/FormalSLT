@@ -61,7 +61,9 @@ files.
   supremum bound through the projected quarter-mesh Dudley theorem.
 - `pac-bayes-all-real-lambda`: the base fixed-tilt, fixed-posterior
   spherical-Gaussian i.i.d. specialization and finite fixed catalogs with
-  sample-dependent selection are checked; all-real lambda optimization and
-  posterior-uniform general continuous families remain open.
+  sample-dependent selection are checked. The finite indicator-Bernstein lane
+  additionally has a posterior-uniform weighted tilt catalog; countable or
+  all-real lambda optimization and posterior-uniform general continuous
+  families remain open.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

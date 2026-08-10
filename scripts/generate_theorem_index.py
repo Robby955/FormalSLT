@@ -82,6 +82,14 @@ DECLARATION_CONCEPTS: dict[str, list[str]] = {
     "indicatorFinitePACBayesBernsteinBadSamples": ["Bernoulli"],
     "indicator_posteriorGeneralizationGap_le_of_not_mem": ["Bernoulli"],
     "indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta": ["Bernoulli"],
+    "indicatorFinitePACBayesBernsteinWeightedCatalogBadSamples": ["Bernoulli"],
+    "indicator_mem_weightedCatalog_iff": ["Bernoulli"],
+    "indicator_not_mem_weightedCatalog_iff": ["Bernoulli"],
+    "indicatorFixedTiltBadSamples_subset_weightedCatalog": ["Bernoulli"],
+    "indicator_posteriorGeneralizationGap_le_weightedCatalog_of_not_mem": ["Bernoulli"],
+    "indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta": ["Bernoulli"],
+    "indicator_posteriorRisk_le_weightedLowRiskCatalog_of_not_mem": ["Bernoulli"],
+    "indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem": ["Bernoulli"],
 }
 
 KIND_PATTERN = (

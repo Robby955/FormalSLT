@@ -16,6 +16,7 @@ without carrying duplicate proof bodies.
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
 #check FormalSLT.PACBayes.TimeUniformIID.timeUniformIIDPACBayes_allPosteriors_bound
 #check FormalSLT.PACBayes.IndicatorBernsteinLowRisk.indicator_posteriorRisk_le_twoThirds_of_not_mem
+#check FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem
 #check FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #check FormalSLT.AnytimeValid.eProcess_typeI_control
 
@@ -25,5 +26,6 @@ without carrying duplicate proof bodies.
 
 #print axioms FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
 #print axioms FormalSLT.PACBayes.IndicatorBernsteinLowRisk.indicator_posteriorRisk_le_twoThirds_of_not_mem
+#print axioms FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem
 #print axioms FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #print axioms FormalSLT.AnytimeValid.eProcess_typeI_control

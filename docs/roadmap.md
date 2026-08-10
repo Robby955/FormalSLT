@@ -255,13 +255,16 @@
   - The finite indicator-loss specialization now derives exact Bernoulli
     variance and the observable self-bound `V_rho <= R_rho/n`; at
     `lambda = 2n/3` it yields the checked low-risk coefficients `7/4` and
-    `21/(8n)`, including a non-vacuous evaluated example. Remaining PAC-Bayes
-    Bernstein extensions are a source-faithful empirical sample-variance
-    theorem, finite or countable selectable `lambda` catalogs, exact all-real
-    `lambda` optimization, continuous Bernstein posteriors, and infinite
-    hypothesis classes. The separate bounded-loss continuous lane currently
-    covers a fixed spherical-Gaussian posterior; it does not close these
-    Bernstein extensions.
+    `21/(8n)`, including a non-vacuous evaluated example. A finite weighted
+    indicator-Bernstein tilt catalog now gives one simultaneous event and
+    supports sample- and posterior-dependent selection from a fixed family,
+    with an unequal-weight four-entry receipt. Remaining PAC-Bayes Bernstein
+    extensions are a source-faithful empirical sample-variance theorem,
+    countable selectable `lambda` catalogs, exact all-real `lambda`
+    optimization, continuous Bernstein posteriors, and infinite hypothesis
+    classes. The separate bounded-loss continuous lane currently covers a
+    fixed spherical-Gaussian posterior; it does not close these Bernstein
+    extensions.
 
 ### Long-term
 

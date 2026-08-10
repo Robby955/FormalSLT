@@ -29,6 +29,7 @@ import FormalSLT.PACBayes.FiniteProductBernstein
 import FormalSLT.PACBayes.IndicatorBernsteinMoment
 import FormalSLT.PACBayes.IndicatorBernsteinConfidence
 import FormalSLT.PACBayes.IndicatorBernsteinLowRisk
+import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound

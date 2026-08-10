@@ -77,6 +77,11 @@ buckets, and the optimized finite-grid wrapper supports posterior-dependent
 penalties certified by that finite grid. The current code also includes the
 closed finite good-event payoff `pac_bayes_generalization`, obtained by
 complementing the Catoni bad event against total iid product mass.
+For indicator losses, the weighted finite tilt catalog separately allocates
+budgets `delta * w_j` across fixed Bernstein tilts and is simultaneous over
+both catalog entries and finite posteriors. Its selector may depend on the
+sample and posterior, but neither the catalog nor its weights may be chosen
+after observing the sample.
 For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and
@@ -85,7 +90,7 @@ simultaneous over all continuous posteriors.
 
 **Dependencies.**
 
-- add an all-`λ` confidence event beyond finite grids;
+- add a countable or all-`λ` confidence event beyond finite grids;
 - justify optimizing `λ` posterior-by-posterior after the sample is drawn;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.

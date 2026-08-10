@@ -164,9 +164,14 @@ proxy is supplied per hypothesis, and the theorem consumes a normalized
 Bernstein prior-moment certificate. The finite indicator specialization derives
 the exact Bernoulli proxy `R_i(1 - R_i)/n`; its observable low-risk corollary
 uses `R_i(1 - R_i) <= R_i` and therefore has empirical risk, but not empirical
-sample variance, on its right-hand side. A source-faithful empirical-variance
-theorem and exact all-real `λ` optimization are not yet implemented. The
-repository now has an
+sample variance, on its right-hand side. Its finite weighted tilt catalog
+allocates entry `j` the budget `delta * w_j` and is simultaneous over every
+catalog entry and finite posterior, so a selector may depend on both the
+sample and posterior. The finite catalog and positive weights satisfying
+`∑ j, w_j ≤ 1` must be declared in advance; this is not unrestricted
+optimization over real `λ`.
+
+The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
 Gaussian priors and posteriors. The latter derives the increment and
@@ -180,6 +185,9 @@ posterior/tilt pairs by summing their entrywise confidence budgets. It does not
 give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
+
+A source-faithful empirical-variance theorem, a countable indicator-Bernstein
+catalog, and exact all-real `λ` optimization are not yet implemented.
 
 ### Algorithmic stability expected bound
 

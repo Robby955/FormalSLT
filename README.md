@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C832-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-174-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-75%2C120-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C861-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-175-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-75%2C735-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -139,6 +139,17 @@ declaration and prints its axiom profile.
   one. The concrete balanced sample of size `40` discharges the good-event
   premise and yields the checked certificate `R(rho) <= 301/320 < 1`;
   [`CheckIndicatorBernsteinLowRisk.lean`](./examples/CheckIndicatorBernsteinLowRisk.lean)
+- **Finite weighted indicator-Bernstein tilt catalog** —
+  `indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta`
+  allocates confidence budget `delta * w_j` across a fixed finite tilt family,
+  while
+  `indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem`
+  permits the selected entry to depend on both the observed sample and
+  posterior. The four-entry unequal-weight receipt proves catalog mass at most
+  `1/2` and an empirical-risk-selected certificate `R(rho) <= 13/14 < 1`.
+  This remains finite, fixed-sample, and population-variance self-bounding; it
+  is not empirical sample variance or all-real tilt optimization;
+  [`CheckIndicatorBernsteinTiltCatalog.lean`](./examples/CheckIndicatorBernsteinTiltCatalog.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -266,6 +277,11 @@ release check is in [Audit commands](#audit-commands).
   finite indicator-loss bound with an observable empirical-risk right-hand
   side. It self-bounds population Bernoulli variance by risk; it is not an
   empirical sample-variance theorem.
+- Use `FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog` when a fixed finite
+  family of indicator-Bernstein tilts should be selected after observing the
+  sample. Positive weights with finite total mass `∑ j, w_j ≤ 1` allocate the
+  confidence budget, and the selected entry may also depend on the posterior;
+  the catalog itself must be fixed in advance.
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.
@@ -314,6 +330,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
 - **PAC-Bayes:** `PACBayesKL`, `PACBayesMcAllester`,
   `PACBayesBoundedLoss`, `PACBayesBernstein`, `PACBayes.ChangeOfMeasure`,
   `PACBayes.IndicatorBernsteinLowRisk`,
+  `PACBayes.IndicatorBernsteinTiltCatalog`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
@@ -336,7 +353,8 @@ The main learning-theory results are deliberately finite and explicit.
 - **Sharp bounded differences:** independent finite product measures, including
   heterogeneous coordinate laws, with a common coordinate state space
 - **PAC-Bayes Bernstein:** finite priors and posteriors with a supplied variance
-  proxy and normalized prior-moment certificate
+  proxy and normalized prior-moment certificate; the indicator specialization
+  also has a fixed finite weighted tilt catalog with simultaneous validity
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
@@ -422,8 +440,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 [theorem index](./docs/INDEX.md). The remaining public boundaries are:
 
 - [ ] Continuous Dudley entropy integral over total-bounded classes
-- [ ] Empirical sample-variance PAC-Bayes Bernstein and selectable finite or
-  countable `λ` catalogs
+- [ ] Empirical sample-variance PAC-Bayes Bernstein
+- [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 
