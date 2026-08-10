@@ -78,7 +78,8 @@ classify_witness() {
 #   finiteLogPartition_hasDerivAt / finiteExponentialFamily_fisherInformation_eq_variance
 #     (Bernoulli natural-parameter witness at theta = 0)
 #   markovPrequentialRiskExceptionalEvent_mass_le_delta
-#     (persistent two-state trajectory with an evaluated width below 1/10)
+#     (persistent two-state trajectory with an evaluated boundary radius
+#      below 1/20 at n = 1024, delta = 1/20, lambda = 1/8)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
