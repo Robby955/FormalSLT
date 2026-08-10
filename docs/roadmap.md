@@ -166,12 +166,12 @@
 - [x] Finite Markov prequential-risk certificate:
   an Ionescu--Tulcea path law for finite transition PMFs, a derived next-step
   conditional-expectation identity, a sharp `1/4` conditional-variance proxy
-  for the centered `[0,1]` loss, and a measurable all-time finite-grid event
-  comparing observed squared loss with average conditional risk
+  for the centered `[0,1]` loss, and a measurable all-positive-time finite-grid
+  event comparing observed squared loss with average conditional risk
 - [x] Finite-catalog Markov PAC-Bayes certificate:
-  a fixed-tilt, all-time, all-posterior theorem under the actual finite Markov
-  path law, with a measurable exceptional event and an asymmetric
-  data-selected-posterior receipt
+  a fixed-tilt (`0 < λ < 3`), all-positive-time, all-posterior theorem under the
+  actual finite Markov path law, with a measurable exceptional event and an
+  asymmetric data-selected-posterior receipt
 
 ## Planned
 

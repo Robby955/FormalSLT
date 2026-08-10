@@ -57,9 +57,9 @@ applies an anytime finite tilt grid with that variance proxy.
 
 `StochasticDynamics.MarkovPACBayes` lifts the same path-law argument to a
 finite catalog of predictors with a full-support prior. At one fixed declared
-tilt, one measurable exceptional event works simultaneously for every
-positive time and every posterior PMF, including a posterior selected after
-observing the trajectory. For `0 < lambda < 3`, the KL-confidence term is
+tilt satisfying `0 < lambda < 3`, one measurable exceptional event works
+simultaneously for every positive time and every posterior PMF, including a
+posterior selected after observing the trajectory. The KL-confidence term is
 `(KL(rho || prior) + log (1 / delta)) / (n * lambda)`. The certificate also
 adds the sub-Gamma variance term `lambda / (8 * (1 - lambda / 3))`.
 
