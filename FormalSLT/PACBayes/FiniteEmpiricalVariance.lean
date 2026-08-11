@@ -20,6 +20,10 @@ PAC-Bayes empirical-Bernstein arguments:
 * elementary `[0, 1]` bounds; and
 * unbiasedness under the explicit finite iid product sample law.
 
+Proof strategy: finite-sum algebra proves the deterministic identities; a
+coordinate-swap equivalence proves the finite-IID marginal identity; finite-sum
+reordering then proves unbiasedness.
+
 The ordered representation is the finite `U`-statistic form
 
 `(2 n (n - 1))⁻¹ ∑ᵢ ∑_{j ≠ i} (xᵢ - xⱼ)²`.
@@ -281,9 +285,9 @@ theorem orderedOffDiagonalSquaredDifference_le {n : ℕ} (hn : 2 ≤ n)
           rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
 
 /--
-For `[0,1]` losses, empirical variance is at most `n / (n - 1)` times empirical
-risk. This is the deterministic comparison used in Tolstikhin--Seldin after
-their equation (7).
+For samples whose observed losses lie in `[0,1]`, empirical variance is at most
+`n / (n - 1)` times empirical risk. This is the deterministic comparison used
+in Tolstikhin--Seldin after their equation (7).
 -/
 theorem finiteEmpiricalVariance_le_card_div_pred_mul_empiricalRisk
     {n : ℕ} (hn : 2 ≤ n)
