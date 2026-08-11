@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The checked risk result is finite-IID, fixed-sample, and fixed in both tilts. It uses separate confidence budgets and is not post-hoc tilt optimization, retained-log Bennett, or time-uniform inference.",
+      "boundary": "The checked risk result is finite-IID and fixed-sample. Its finite catalogs and positive weights are declared in advance; it is not all-real tilt optimization, retained-log Bennett, or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Add separately weighted finite variance-tilt and risk-tilt catalogs, then permit posterior and catalog selection on their shared event.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, and fixed-parameter observable risk",
+      "next_step": "Prove a retained-log Bennett risk endpoint; treat countable or all-real tilt adaptation as a separate normalized-mixture lane.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 143,
-    "library_and_example_lean_lines": 80918,
-    "library_lean_lines": 70191,
-    "library_modules": 184,
-    "theorem_map_entries": 665
+    "example_lean_files": 144,
+    "library_and_example_lean_lines": 81445,
+    "library_lean_lines": 70553,
+    "library_modules": 185,
+    "theorem_map_entries": 673
   },
   "theorem_families": [
     {
@@ -3203,6 +3203,54 @@
           "module": "PACBayes.FiniteEmpiricalBernsteinRisk",
           "name": "posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem",
           "summary": "Final fixed-parameter observable empirical-Bernstein risk bound simultaneous over every finite posterior"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteEmpiricalVarianceWeightedCatalogBadSamples",
+          "summary": "Finite union of empirical-variance bad sets with separately weighted variance budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteBoundedLossBernsteinWeightedCatalogBadSamples",
+          "summary": "Finite union of population-risk bad sets with separately weighted risk budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples",
+          "summary": "One exceptional set joining the variance and risk catalogs"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta",
+          "summary": "Weighted union bound for the finite empirical-variance tilt catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteBoundedLossBernstein_weightedCatalog_badEventMass_le_delta",
+          "summary": "Weighted union bound for the finite population-risk tilt catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le",
+          "summary": "Combined catalog mass bound deltaVariance + deltaRisk without a Cartesian-pair confidence charge"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem",
+          "summary": "Observable risk bound simultaneous over every pair of predeclared variance and risk tilts"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem",
+          "summary": "Valid sample- and posterior-dependent selection from separate finite variance and risk catalogs"
         }
       ],
       "name": "Finite empirical variance and fixed-parameter empirical-Bernstein risk"

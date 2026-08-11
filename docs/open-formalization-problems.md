@@ -132,17 +132,18 @@ has mass at most `deltaVariance + deltaRisk`, and outside it the checked final
 risk theorem substitutes the observable variance certificate with all
 denominators explicit.
 
-**Dependencies.** Allocate confidence across a fixed finite weighted tilt
-catalogs and prove posterior- and sample-dependent selection from those
-declared families. The variance and risk catalogs should be budgeted
-separately so every Cartesian pair is available without paying for every pair.
-After that, consider the stronger retained-log Bennett endpoint.
+**Dependencies.** The separately budgeted finite variance-tilt and risk-tilt
+catalogs are now checked, including posterior- and sample-dependent selection
+without paying separately for every Cartesian pair. The next reviewable step
+is the stronger retained-log Bennett endpoint; all-real or countable adaptation
+requires a distinct normalized-mixture argument.
 
-**Boundary.** The current final risk theorem is finite-IID, fixed-sample, and
-fixed in both tilts. It is posterior-uniform outside a two-event union, but it
-does not authorize tilt-grid or all-real post-hoc optimization and is not
-anytime-valid. The random-matching proof formalizes the source variance
-inequality; it is not presented as a new inequality or an entropy-method proof.
+**Boundary.** The current final risk theorem is finite-IID and fixed-sample.
+Its fixed-parameter and finite weighted-catalog forms are posterior-uniform;
+the latter permits selection only from catalogs declared in advance. It does
+not authorize all-real post-hoc optimization and is not anytime-valid. The
+random-matching proof formalizes the source variance inequality; it is not
+presented as a new inequality or an entropy-method proof.
 
 ## Medium-term
 

@@ -233,6 +233,14 @@ assume independence. Outside the union, the final observable risk inequality
 holds simultaneously for every finite posterior. Both tilts and both failure
 budgets must be declared before observing the sample.
 
+`PACBayes.FiniteEmpiricalBernsteinRiskCatalog` separately allocates the two
+failure budgets across finite, predeclared `eta` and `lambda` catalogs using
+positive weights whose sums are at most one. Its combined event still costs
+only `deltaVariance + deltaRisk`, rather than one budget for every Cartesian
+pair. Outside that event, both catalog entries may be selected after observing
+the sample and posterior. The catalogs, weights, and selector rules are fixed
+in advance; this is not optimization over all real tilts.
+
 The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
@@ -248,10 +256,10 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-The empirical-Bernstein risk result does not yet provide finite weighted tilt
-catalogs, post-sample tilt selection, all-real optimization, the retained-log
-Bennett endpoint, or a time-uniform counterpart. A countable indicator-
-Bernstein catalog and exact all-real `lambda` optimization are also open.
+The empirical-Bernstein risk result does not yet provide all-real optimization,
+the retained-log Bennett endpoint, or a time-uniform counterpart. A countable
+indicator-Bernstein catalog and exact all-real `lambda` optimization are also
+open.
 
 ### Algorithmic stability expected bound
 

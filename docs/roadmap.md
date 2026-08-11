@@ -285,10 +285,12 @@
     `delta` and a variance comparison simultaneous over every finite posterior.
     A separate arbitrary bounded-loss Bernstein event and an explicit finite
     union now yield the fixed-parameter observable empirical-Bernstein risk
-    theorem with total failure `deltaVariance + deltaRisk`. Separate finite
-    weighted catalogs for both tilts, retained-log Bennett, countable selectable
-    `lambda` catalogs, exact all-real optimization, continuous Bernstein
-    posteriors, and infinite hypothesis classes remain open. The separate
+    theorem with total failure `deltaVariance + deltaRisk`. Separately weighted
+    finite catalogs for both tilts now give sample- and posterior-dependent
+    selectors on one shared event without a Cartesian-pair confidence charge.
+    Retained-log Bennett, countable selectable `lambda` catalogs, exact all-real
+    optimization, continuous Bernstein posteriors, and infinite hypothesis
+    classes remain open. The separate
     bounded-loss continuous lane currently covers a fixed spherical-Gaussian
     posterior; it does not close these extensions.
 

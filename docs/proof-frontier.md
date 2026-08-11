@@ -87,9 +87,10 @@ files.
   average. A separate general bounded-loss Bernstein event now combines with
   that variance event; their union has mass at most the sum of the two declared
   budgets, and outside it every finite posterior satisfies the observable
-  fixed-parameter empirical-Bernstein risk bound. The next reviewable step is
-  separate finite weighted catalogs for the two tilts. The current result is
-  not post-hoc tilt optimization, retained-log Bennett, or time-uniform
-  inference.
+  fixed-parameter empirical-Bernstein risk bound. Separate finite weighted
+  catalogs for the two tilts now support sample- and posterior-dependent
+  selection on one shared event. The next reviewable step is retained-log
+  Bennett. The current result is not all-real tilt optimization or
+  time-uniform inference.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C041-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-184-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-80%2C918-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C063-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-185-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-81%2C445-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -71,8 +71,10 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   and a fixed-sample, fixed-tilt confidence event simultaneous over every
   finite posterior. A separate bounded-loss Bernstein event and a finite union
   bound now give the observable fixed-parameter risk theorem, with distinct
-  variance and risk failure budgets. Finite tilt catalogs, post-sample tilt
-  selection, and time-uniform empirical-Bernstein risk remain open.
+  variance and risk failure budgets. Separately weighted finite `eta` and
+  `lambda` catalogs now permit both tilts to be selected after seeing the
+  sample and posterior. All-real tilt optimization, retained-log Bennett, and
+  time-uniform empirical-Bernstein risk remain open.
 
 The Dudley development is finite by design. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
@@ -463,10 +465,10 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- Finite weighted `eta` and `lambda` catalogs, post-sample tilt selection,
-  all-real optimization, a retained-log Bennett risk endpoint, and a
+- All-real tilt optimization, a retained-log Bennett risk endpoint, and a
   time-uniform empirical-Bernstein risk theorem. The fixed rational two-event
-  risk theorem is checked.
+  theorem and separately weighted finite `eta`/`lambda` catalogs with
+  post-sample and posterior-dependent selectors are checked.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,

@@ -77,6 +77,10 @@ classify_witness() {
 #   posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem (fair Bool
 #     law, nonconstant loss, separate variance/risk budgets, combined bad mass
 #     below one, and an existential good-sample final-risk witness)
+#   finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le /
+#     posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem
+#     (two eta entries, two lambda entries, positive half-weights, separate
+#     budgets, and genuinely sample-dependent variance/risk selectors)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -115,6 +119,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalVarianceMGF.lean"
   "examples/CheckFiniteEmpiricalVariancePACBayes.lean"
   "examples/CheckFiniteEmpiricalBernsteinRisk.lean"
+  "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"
