@@ -322,11 +322,11 @@ filter box, open `docs/INDEX.html`.
 |  | `finitePartition` | definition | `FormalSLT/Statistics/ExponentialFamily.lean:55` | Finite exponential-family partition sum Z(theta) |
 | ERM | `finitePartition_hasDerivAt` | definition | `FormalSLT/Statistics/ExponentialFamily.lean:117` | Termwise derivative of the finite partition sum |
 |  | `finitePartition_pos` | definition | `FormalSLT/Statistics/ExponentialFamily.lean:74` | Positive base weights give positive finite partition sum |
-| union bound | `finiteMeasureUnionBound` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:130` | Finite-index measure union bound |
-| union bound | `finiteMeasureUnionBound_budget` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:143` | Supplied finite per-event budgets whose sum is bounded by a total budget |
-| union bound | `finiteMeasureUnionBound_cardInv` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:198` | Nonempty finite class with per-event budget α / card has union mass ≤ α |
-| union bound | `finiteMeasureUnionBound_const` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:163` | Common per-event budget gives card * β total mass |
-| union bound | `finiteMeasureUnionBound_equalBudget` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:183` | Explicit per-event budget whose finite sum is bounded by a total budget |
+| union bound | `finiteMeasureUnionBound` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:168` | Finite-index measure union bound |
+| union bound | `finiteMeasureUnionBound_budget` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:181` | Supplied finite per-event budgets whose sum is bounded by a total budget |
+| union bound | `finiteMeasureUnionBound_cardInv` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:236` | Nonempty finite class with per-event budget α / card has union mass ≤ α |
+| union bound | `finiteMeasureUnionBound_const` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:201` | Common per-event budget gives card * β total mass |
+| union bound | `finiteMeasureUnionBound_equalBudget` | theorem | `FormalSLT/Probability/FiniteUnionBound.lean:221` | Explicit per-event budget whose finite sum is bounded by a total budget |
 | Bernoulli | `bernoulliFisherInformation` | theorem | `FormalSLT/Statistics/CramerRao.lean:73` | Bernoulli Fisher information 1 / (p(1-p)) |
 | sample statistics, Bernoulli | `bernoulliHalfCramerRaoWitness` | theorem | `FormalSLT/Statistics/CramerRao.lean:135` | Concrete witness: identity estimator attains variance 1/4 = 1 / I(1/2) |
 | Bernoulli | `bernoulliHalfFisherInformation` | theorem | `FormalSLT/Statistics/CramerRao.lean:103` | Concrete witness: I(1/2) = 4 |

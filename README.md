@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C063-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-185-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-81%2C445-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C126-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-186-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-82%2C379-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -445,7 +445,9 @@ The main learning-theory results are deliberately finite and explicit.
   The empirical-variance specialization assumes a finite IID product law,
   sample size at least two, `[0,1]` losses, and one fixed positive tilt. Its one
   bad set is simultaneous over all finite posteriors and bounds the posterior
-  average of per-hypothesis variances.
+  average of per-hypothesis variances. A finite weighted empirical-variance tilt
+  catalog makes a family of such tilts simultaneously valid under one event and
+  supports sample- and posterior-dependent selection.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
