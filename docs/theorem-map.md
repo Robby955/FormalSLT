@@ -592,6 +592,19 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Combined catalog mass bound `deltaVariance + deltaRisk` without a Cartesian-pair confidence charge |
 | `posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Observable risk bound simultaneous over every pair of predeclared variance and risk tilts |
 | `posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Valid sample- and posterior-dependent selection from separate finite variance and risk catalogs |
+## Finite exponential tilting
+
+| Declaration | Module | Role |
+|---|---|---|
+| `finiteExponentialTiltNormalizer` | `PACBayes.FiniteExponentialTilt` | Finite partition sum for an arbitrary exponential score under a base weight function |
+| `finiteExponentialTiltPMF` | `PACBayes.FiniteExponentialTilt` | Base weight function reweighted by an exponential score and divided by its partition sum |
+
+| Theorem | Module | Role |
+|---|---|---|
+| `finiteExponentialTiltNormalizer_pos` | `PACBayes.FiniteExponentialTilt` | The finite exponential-tilt normalizer is positive under any PMF, without a full-support assumption |
+| `finiteExponentialTiltPMF_isPMF` | `PACBayes.FiniteExponentialTilt` | Normalizing an exponential tilt of a finite PMF produces another PMF |
+| `finiteExponentialTiltPMF_mul_normalizer` | `PACBayes.FiniteExponentialTilt` | Pointwise cancellation recovers the unnormalized exponential weight |
+| `finiteExponentialTilt_changeOfMeasure` | `PACBayes.FiniteExponentialTilt` | Exact one-coordinate finite change-of-measure identity for arbitrary observables |
 
 ## Conditional sub-Gamma extractor
 
