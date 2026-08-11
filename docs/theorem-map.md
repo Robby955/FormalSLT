@@ -542,6 +542,9 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteEmpiricalVariance` | `PACBayes.FiniteEmpiricalVariance` | Per-hypothesis Bessel-corrected empirical loss variance |
 | `orderedOffDiagonalSquaredDifference` | `PACBayes.FiniteEmpiricalVariance` | Ordered sum of squared differences across distinct sample indices |
 | `finitePairwiseEmpiricalVariance` | `PACBayes.FiniteEmpiricalVariance` | Normalized second-order pair-statistic form of empirical variance |
+
+| Theorem | Module | Role |
+|---|---|---|
 | `finitePopulationVariance_nonneg` | `PACBayes.FiniteEmpiricalVariance` | Population loss variance is nonnegative under a finite PMF |
 | `finitePopulationVariance_eq_secondMoment_sub_riskSq` | `PACBayes.FiniteEmpiricalVariance` | Identifies population loss variance with the second moment minus squared risk |
 | `finitePopulationRisk_mem_Icc_of_bounded` | `PACBayes.FiniteEmpiricalVariance` | Places the population risk of a finite `[0,1]` loss in `[0,1]` |

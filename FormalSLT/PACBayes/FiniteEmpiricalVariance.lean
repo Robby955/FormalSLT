@@ -288,7 +288,7 @@ their equation (7).
 theorem finiteEmpiricalVariance_le_card_div_pred_mul_empiricalRisk
     {n : ℕ} (hn : 2 ≤ n)
     (ℓ : ι → Z → ℝ) (i : ι) (S : Fin n → Z)
-    (hℓ : ∀ z : Z, ℓ i z ∈ Set.Icc (0 : ℝ) 1) :
+    (hℓ : ∀ k : Fin n, ℓ i (S k) ∈ Set.Icc (0 : ℝ) 1) :
     finiteEmpiricalVariance ℓ i S ≤
       (n : ℝ) / ((n : ℝ) - 1) * finiteEmpiricalRisk ℓ i S := by
   have hnpos : 0 < n := lt_of_lt_of_le (by norm_num) hn
@@ -310,8 +310,8 @@ theorem finiteEmpiricalVariance_le_card_div_pred_mul_empiricalRisk
       _ ≤ ∑ k : Fin n, x k := by
             exact Finset.sum_le_sum (fun k _ => by
               dsimp [x]
-              nlinarith [mul_nonneg (hℓ (S k)).1
-                (sub_nonneg.mpr (hℓ (S k)).2)])
+              nlinarith [mul_nonneg (hℓ k).1
+                (sub_nonneg.mpr (hℓ k).2)])
   change sampleVarianceBessel x ≤
     (n : ℝ) / ((n : ℝ) - 1) *
       ((n : ℝ)⁻¹ * ∑ k : Fin n, x k)
@@ -329,7 +329,7 @@ theorem finiteEmpiricalVariance_le_card_div_pred_mul_empiricalRisk
 /-- A Bessel-corrected empirical variance of `[0,1]` observations is at most `1/2`. -/
 theorem finiteEmpiricalVariance_le_half {n : ℕ} (hn : 2 ≤ n)
     (ℓ : ι → Z → ℝ) (i : ι) (S : Fin n → Z)
-    (hℓ : ∀ z : Z, ℓ i z ∈ Set.Icc (0 : ℝ) 1) :
+    (hℓ : ∀ k : Fin n, ℓ i (S k) ∈ Set.Icc (0 : ℝ) 1) :
     finiteEmpiricalVariance ℓ i S ≤ (1 : ℝ) / 2 := by
   have hnRpos : (0 : ℝ) < (n : ℝ) := by
     exact_mod_cast (lt_of_lt_of_le (by norm_num) hn)
@@ -337,7 +337,7 @@ theorem finiteEmpiricalVariance_le_half {n : ℕ} (hn : 2 ≤ n)
     have : (1 : ℝ) < (n : ℝ) := by exact_mod_cast (lt_of_lt_of_le (by norm_num) hn)
     linarith
   have hnum := orderedOffDiagonalSquaredDifference_le hn
-    (fun k => ℓ i (S k)) (fun k => hℓ (S k))
+    (fun k => ℓ i (S k)) hℓ
   rw [finiteEmpiricalVariance_eq_pairwise hn]
   unfold finitePairwiseEmpiricalVariance
   calc
