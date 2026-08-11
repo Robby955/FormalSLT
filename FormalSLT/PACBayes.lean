@@ -33,6 +33,7 @@ import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalVariance
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF
+import FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
@@ -52,5 +53,6 @@ import FormalSLT.PACBayes.IIDContinuousGaussianGrid
 # Stable PAC-Bayes imports
 
 This declaration-free umbrella re-exports the supported finite, continuous,
-Gaussian, Bernstein, empirical-variance, and time-uniform PAC-Bayes surfaces.
+Gaussian, Bernstein, empirical-variance concentration, and time-uniform
+PAC-Bayes surfaces.
 -/

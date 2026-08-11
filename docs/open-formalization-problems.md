@@ -113,28 +113,32 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Derive a source-faithful exponential-moment comparison between the
-true per-hypothesis loss variance and its Bessel-corrected empirical estimate,
-then combine it with finite Donsker--Varadhan change of measure and a declared
-finite tilt family. The desired endpoint is posterior-uniform and observable,
-with empirical variance on the right-hand side.
+**Target.** Extend the checked fixed-tilt variance certificate to a declared
+finite weighted tilt family, then consume the selected observable variance
+bound in a final PAC-Bayes empirical-Bernstein risk theorem.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
 establishes the `[0,1]` bounds `V <= 1/4` and `Vhat <= 1/2`, and discharges IID
-unbiasedness under the explicit finite product sample law. Shared-pair
+unbiasedness under the explicit finite product sample law. The shared-pair
 dependence is now handled by a random-matching argument: factor over disjoint
 pairs, average over coordinate permutations, and apply finite Jensen. This
-gives the source-normalized lower-tail MGF for every `n >= 2`.
+gives the source-normalized lower-tail MGF for every `n >= 2` and, after finite
+change of measure, one fixed-tilt bad set of mass at most `delta`. Outside that
+set, every finite posterior compares its average of per-hypothesis population
+variances to the corresponding empirical average.
 
-**Dependencies.** Lift the checked normalized moment through finite
-Donsker--Varadhan change of measure, then add a declared finite tilt family and
-the final empirical-Bernstein risk comparison.
+**Dependencies.** Allocate confidence across a fixed finite weighted tilt
+catalog and prove posterior- and sample-dependent selection from that declared
+catalog. Then thread the selected variance upper certificate into the finite
+Bernstein risk layer, with explicit accounting for both confidence events and
+their constants.
 
-**Boundary.** The current theorem is finite-IID, fixed-sample, and
-per-hypothesis. It is not anytime-valid, does not yet compare
-posterior-averaged true and empirical variances on a high-probability event,
-and does not imply a PAC-Bayes empirical-Bernstein risk bound.
+**Boundary.** The current theorem is finite-IID, fixed-sample, and fixed-tilt.
+It is posterior-uniform on one good event, but it is not tilt-grid or all-real
+optimization, anytime-valid inference, or itself a PAC-Bayes empirical-
+Bernstein risk bound. The random-matching proof formalizes the source
+inequality; it is not presented as a new inequality or an entropy-method proof.
 
 ## Medium-term
 

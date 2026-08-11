@@ -70,6 +70,10 @@ classify_witness() {
 #     correction, and strict improvement over the exponential relaxation)
 #   finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin
 #     (fair two-point law, nonconstant indicator loss, n = 2, eta = 1)
+#   finiteEmpiricalVariancePACBayes_badEventMass_le_delta /
+#     posteriorPopulationVariance_le_empiricalVariance_of_not_mem (unequal
+#     Bool law, two distinct loss variances, genuinely sample-selected
+#     posterior, two positive-mass good samples, certificate below 1/4)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -106,6 +110,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalVariance.lean"
   "examples/CheckBernsteinMGF.lean"
   "examples/CheckFiniteEmpiricalVarianceMGF.lean"
+  "examples/CheckFiniteEmpiricalVariancePACBayes.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"

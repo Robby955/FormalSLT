@@ -281,13 +281,14 @@
     and finite-IID unbiasedness under the actual product weights. Random
     matching, disjoint-pair factorization, and finite Jensen now prove the
     source-normalized empirical-variance exponential moment for every
-    `n >= 2`. The posterior-uniform confidence theorem remains open, as do
-    finite weighted and countable selectable `lambda`
-    catalogs, exact all-real `lambda`
+    `n >= 2`. Its fixed-tilt PAC-Bayes lift gives one bad set of mass at most
+    `delta` and a variance comparison simultaneous over every finite posterior.
+    A finite weighted empirical-variance tilt catalog, a final risk theorem,
+    countable selectable `lambda` catalogs, exact all-real `lambda`
     optimization, continuous Bernstein posteriors, and infinite hypothesis
-    classes. The separate bounded-loss continuous lane currently covers a
-    fixed spherical-Gaussian posterior; it does not close these Bernstein
-    extensions.
+    classes remain open. The separate bounded-loss continuous lane currently
+    covers a fixed spherical-Gaussian posterior; it does not close these
+    Bernstein extensions.
 
 ### Long-term
 
