@@ -535,7 +535,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
 | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite supplied margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
 
-## Finite empirical-variance foundations
+## Finite empirical variance and random-matching MGF
 
 | Declaration | Module | Role |
 |---|---|---|
@@ -560,6 +560,11 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePairVarianceKernelExpectation_eq_populationVariance` | `PACBayes.FiniteEmpiricalVariance` | The independent-pair half squared-difference kernel has expectation equal to population variance |
 | `finiteProductSampleWeight_pairSquaredDifferenceExpectation_eq` | `PACBayes.FiniteEmpiricalVariance` | Expected squared loss difference across two distinct IID coordinates is twice the population variance |
 | `finiteEmpiricalVariance_unbiased_finiteProduct` | `PACBayes.FiniteEmpiricalVariance` | End-to-end finite-IID unbiasedness of the per-hypothesis Bessel empirical loss variance |
+| `average_perm_pairSquaredDifference_eq_sampleVarianceBessel` | `PACBayes.FiniteEmpiricalVarianceMatching` | Identifies the permutation-average disjoint-pair statistic with Bessel empirical variance |
+| `finitePairBlock_factorization` | `PACBayes.FiniteEmpiricalVarianceMatching` | Factors the exponential moment over independent disjoint sample pairs |
+| `finiteEmpiricalVariance_lowerTailMGF_randomMatching` | `PACBayes.FiniteEmpiricalVarianceMGF` | Controls the empirical-variance lower-tail MGF by random matching and finite Jensen |
+| `finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin` | `PACBayes.FiniteEmpiricalVarianceMGF` | Source-normalized finite-IID empirical-variance MGF for every `n >= 2` |
+| `finiteEmpiricalVariance_normalizedLowerTailMGF_le_one` | `PACBayes.FiniteEmpiricalVarianceMGF` | Moves the deterministic variance penalty inside the exponential for PAC-Bayes reuse |
 
 ## Conditional sub-Gamma extractor
 

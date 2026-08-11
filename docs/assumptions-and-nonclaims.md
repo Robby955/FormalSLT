@@ -204,6 +204,13 @@ self-bound additionally assume losses in `[0,1]`. Unbiasedness is an
 expectation identity; it does not itself provide a tail event or confidence
 bound, and it is not the variance of the posterior-averaged loss.
 
+`PACBayes.FiniteEmpiricalVarianceMatching` and
+`PACBayes.FiniteEmpiricalVarianceMGF` turn that foundation into the
+source-normalized lower-tail exponential moment for finite IID samples and
+`n >= 2`. The proof averages disjoint-pair factorizations over coordinate
+permutations and applies finite Jensen. It is a random-matching proof, not an
+entropy-method proof, and no new statistical inequality is claimed.
+
 The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
@@ -219,10 +226,10 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-The source-faithful empirical-variance exponential-moment inequality and its
-posterior-uniform PAC-Bayes empirical-Bernstein confidence theorem are not yet
-implemented. A countable indicator-Bernstein catalog and exact all-real `λ`
-optimization are also open.
+The empirical-variance MGF does not yet provide a posterior-uniform PAC-Bayes
+confidence event, a finite selectable tilt catalog, a final empirical-
+Bernstein risk theorem, or all-real-`λ` optimization. A countable indicator-
+Bernstein catalog is also open.
 
 ### Algorithmic stability expected bound
 

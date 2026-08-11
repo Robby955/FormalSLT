@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 140,
-    "library_and_example_lean_lines": 78221,
-    "library_lean_lines": 68120,
-    "library_modules": 179,
-    "theorem_map_entries": 650
+    "example_lean_files": 141,
+    "library_and_example_lean_lines": 79564,
+    "library_lean_lines": 69402,
+    "library_modules": 181,
+    "theorem_map_entries": 655
   },
   "theorem_families": [
     {
@@ -3113,9 +3113,39 @@
           "module": "PACBayes.FiniteEmpiricalVariance",
           "name": "finiteEmpiricalVariance_unbiased_finiteProduct",
           "summary": "End-to-end finite-IID unbiasedness of the per-hypothesis Bessel empirical loss variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceMatching",
+          "name": "average_perm_pairSquaredDifference_eq_sampleVarianceBessel",
+          "summary": "Identifies the permutation-average disjoint-pair statistic with Bessel empirical variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceMatching",
+          "name": "finitePairBlock_factorization",
+          "summary": "Factors the exponential moment over independent disjoint sample pairs"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceMGF",
+          "name": "finiteEmpiricalVariance_lowerTailMGF_randomMatching",
+          "summary": "Controls the empirical-variance lower-tail MGF by random matching and finite Jensen"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceMGF",
+          "name": "finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin",
+          "summary": "Source-normalized finite-IID empirical-variance MGF for every n >= 2"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceMGF",
+          "name": "finiteEmpiricalVariance_normalizedLowerTailMGF_le_one",
+          "summary": "Moves the deterministic variance penalty inside the exponential for PAC-Bayes reuse"
         }
       ],
-      "name": "Finite empirical-variance foundations"
+      "name": "Finite empirical variance and random-matching MGF"
     },
     {
       "entries": [

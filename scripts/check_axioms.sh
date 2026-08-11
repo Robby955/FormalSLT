@@ -43,6 +43,7 @@ THEOREMS=(
   "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalVariance.finiteEmpiricalVariance_eq_pairwise"
   "FormalSLT.PACBayes.FiniteEmpiricalVariance.finiteEmpiricalVariance_unbiased_finiteProduct"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF.finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -71,6 +72,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinLowRisk"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVariance"
+  echo "import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   for t in "${THEOREMS[@]}"; do
@@ -92,6 +94,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.IndicatorBernsteinLowRisk \
   FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog \
   FormalSLT.PACBayes.FiniteEmpiricalVariance \
+  FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes >/dev/null
 

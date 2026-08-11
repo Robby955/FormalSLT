@@ -119,21 +119,22 @@ then combine it with finite Donsker--Varadhan change of measure and a declared
 finite tilt family. The desired endpoint is posterior-uniform and observable,
 with empirical variance on the right-hand side.
 
-The checked foundation now defines the population and Bessel empirical loss
+The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
 establishes the `[0,1]` bounds `V <= 1/4` and `Vhat <= 1/2`, and discharges IID
-unbiasedness under the explicit finite product sample law. The remaining step
-is not ordinary tensorization: pair terms share observations, so the existing
-coordinatewise product-MGF factorization cannot be applied directly.
+unbiasedness under the explicit finite product sample law. Shared-pair
+dependence is now handled by a random-matching argument: factor over disjoint
+pairs, average over coordinate permutations, and apply finite Jensen. This
+gives the source-normalized lower-tail MGF for every `n >= 2`.
 
-**Dependencies.** Prove the self-bounding or U-statistic exponential moment
-with its exact normalization; only then add posterior averaging, finite tilt
-selection, and the final PAC-Bayes confidence event.
+**Dependencies.** Lift the checked normalized moment through finite
+Donsker--Varadhan change of measure, then add a declared finite tilt family and
+the final empirical-Bernstein risk comparison.
 
-**Boundary.** The current theorem is finite-IID, per hypothesis, and in
-expectation. It is not anytime-valid, does not compare posterior-averaged true
-and empirical variances with high probability, and does not yet imply a
-PAC-Bayes empirical-Bernstein risk bound.
+**Boundary.** The current theorem is finite-IID, fixed-sample, and
+per-hypothesis. It is not anytime-valid, does not yet compare
+posterior-averaged true and empirical variances on a high-probability event,
+and does not imply a PAC-Bayes empirical-Bernstein risk bound.
 
 ## Medium-term
 

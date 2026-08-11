@@ -278,9 +278,11 @@
     supports sample- and posterior-dependent selection from a fixed family,
     with an unequal-weight four-entry receipt. The finite empirical-variance
     foundation now proves the exact Bessel/pairwise identity, `[0,1]` bounds,
-    and finite-IID unbiasedness under the actual product weights. The
-    load-bearing empirical-variance exponential moment and posterior-uniform
-    confidence theorem remain open, as do countable selectable `lambda`
+    and finite-IID unbiasedness under the actual product weights. Random
+    matching, disjoint-pair factorization, and finite Jensen now prove the
+    source-normalized empirical-variance exponential moment for every
+    `n >= 2`. The posterior-uniform confidence theorem remains open, as do
+    finite weighted and countable selectable `lambda`
     catalogs, exact all-real `lambda`
     optimization, continuous Bernstein posteriors, and infinite hypothesis
     classes. The separate bounded-loss continuous lane currently covers a

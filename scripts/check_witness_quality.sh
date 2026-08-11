@@ -68,6 +68,8 @@ classify_witness() {
 #   bennett_mgf_le_one_add
 #     (fair two-point law, nonconstant centered observable, positive retained
 #     correction, and strict improvement over the exponential relaxation)
+#   finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin
+#     (fair two-point law, nonconstant indicator loss, n = 2, eta = 1)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -103,6 +105,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckIndicatorBernsteinTiltCatalog.lean"
   "examples/CheckFiniteEmpiricalVariance.lean"
   "examples/CheckBernsteinMGF.lean"
+  "examples/CheckFiniteEmpiricalVarianceMGF.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"
