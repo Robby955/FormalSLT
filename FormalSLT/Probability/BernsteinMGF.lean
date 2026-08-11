@@ -151,22 +151,21 @@ lemma exp_le_quadratic_of_le {b : ℝ} (hb : 0 < b) {t : ℝ} (ht : 0 ≤ t) {x 
     rw [htranslate] at hkey
     linarith
 
-/-- **Finite Bennett MGF.** For a finite PMF `p` and an observable `X` that is
-centered (`∑ p z * X z = 0`), bounded above (`X z ≤ b`, `0 < b`), and has
-variance proxy `∑ p z * X z ^ 2 ≤ v`, the exponential moment at `0 ≤ lam`
-obeys the Bennett bound
-`∑ z, p z * exp (lam * X z) ≤ exp ((exp (lam*b) - 1 - lam*b)/b^2 * v)`.
+/-- **Finite Bennett MGF with the affine factor retained.** For a finite PMF
+`p` and an observable `X` that is centered, bounded above by `b`, and has
+second moment at most `v`, the exponential moment is at most
+`1 + ((exp (lam*b) - 1 - lam*b)/b^2) * v`.
 
-This is variance-aware: the exponent carries `v`, not the range, and for small
-`lam*b` behaves like `exp (lam^2 * v / 2)`. -/
-lemma bennett_mgf {Z : Type*} [Fintype Z] (p : Z → ℝ) (X : Z → ℝ)
+Keeping this factor instead of immediately relaxing it to an exponential is
+useful for change-of-measure arguments that later take its logarithm. -/
+lemma bennett_mgf_le_one_add {Z : Type*} [Fintype Z] (p : Z → ℝ) (X : Z → ℝ)
     {b v lam : ℝ} (hb : 0 < b) (hlam : 0 ≤ lam)
     (hp_nonneg : ∀ z, 0 ≤ p z) (hp_sum : ∑ z, p z = 1)
     (hcenter : ∑ z, p z * X z = 0)
     (hbound : ∀ z, X z ≤ b)
     (hvar : ∑ z, p z * X z ^ 2 ≤ v) :
     ∑ z, p z * Real.exp (lam * X z)
-      ≤ Real.exp ((Real.exp (lam * b) - 1 - lam * b) / b ^ 2 * v) := by
+      ≤ 1 + (Real.exp (lam * b) - 1 - lam * b) / b ^ 2 * v := by
   set C : ℝ := (Real.exp (lam * b) - 1 - lam * b) / b ^ 2 with hC
   have hCnonneg : 0 ≤ C := by
     rw [hC]
@@ -190,12 +189,34 @@ lemma bennett_mgf {Z : Type*} [Fintype Z] (p : Z → ℝ) (X : Z → ℝ)
   rw [hexpand, hp_sum, hcenter] at hsum
   have hmoment : (1 : ℝ) + lam * 0 + C * (∑ z, p z * X z ^ 2) ≤ 1 + C * v := by
     have := mul_le_mul_of_nonneg_left hvar hCnonneg; linarith
-  have hfinal : (1 : ℝ) + C * v ≤ Real.exp (C * v) := by
-    have := Real.add_one_le_exp (C * v); linarith
   calc ∑ z, p z * Real.exp (lam * X z)
       ≤ 1 + lam * 0 + C * (∑ z, p z * X z ^ 2) := hsum
     _ ≤ 1 + C * v := hmoment
-    _ ≤ Real.exp (C * v) := hfinal
+
+/-- **Finite Bennett MGF.** For a finite PMF `p` and an observable `X` that is
+centered (`∑ p z * X z = 0`), bounded above (`X z ≤ b`, `0 < b`), and has
+variance proxy `∑ p z * X z ^ 2 ≤ v`, the exponential moment at `0 ≤ lam`
+obeys the Bennett bound
+`∑ z, p z * exp (lam * X z) ≤ exp ((exp (lam*b) - 1 - lam*b)/b^2 * v)`.
+
+This is the exponential relaxation of `bennett_mgf_le_one_add`. It is
+variance-aware: the exponent carries `v`, not the range, and for small
+`lam*b` behaves like `exp (lam^2 * v / 2)`. -/
+lemma bennett_mgf {Z : Type*} [Fintype Z] (p : Z → ℝ) (X : Z → ℝ)
+    {b v lam : ℝ} (hb : 0 < b) (hlam : 0 ≤ lam)
+    (hp_nonneg : ∀ z, 0 ≤ p z) (hp_sum : ∑ z, p z = 1)
+    (hcenter : ∑ z, p z * X z = 0)
+    (hbound : ∀ z, X z ≤ b)
+    (hvar : ∑ z, p z * X z ^ 2 ≤ v) :
+    ∑ z, p z * Real.exp (lam * X z)
+      ≤ Real.exp ((Real.exp (lam * b) - 1 - lam * b) / b ^ 2 * v) := by
+  calc
+    ∑ z, p z * Real.exp (lam * X z)
+        ≤ 1 + (Real.exp (lam * b) - 1 - lam * b) / b ^ 2 * v :=
+      bennett_mgf_le_one_add p X hb hlam hp_nonneg hp_sum hcenter hbound hvar
+    _ ≤ Real.exp ((Real.exp (lam * b) - 1 - lam * b) / b ^ 2 * v) :=
+      by simpa [add_comm] using
+        Real.add_one_le_exp ((Real.exp (lam * b) - 1 - lam * b) / b ^ 2 * v)
 
 /-- `2 * 3^k ≤ (k+2)!` for all `k`. The factorial growth that converts the
 Bennett series into the geometric `1/(1 - s/3)` series. -/

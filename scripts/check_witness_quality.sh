@@ -65,6 +65,9 @@ classify_witness() {
 #   finiteEmpiricalVariance_eq_pairwise /
 #     finiteEmpiricalVariance_unbiased_finiteProduct (nonbinary Fin 3 loss at
 #     levels 0, 1/2, 1; exact product-law expectation over all 27 samples)
+#   bennett_mgf_le_one_add
+#     (fair two-point law, nonconstant centered observable, positive retained
+#     correction, and strict improvement over the exponential relaxation)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -99,6 +102,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckIndicatorBernsteinLowRisk.lean"
   "examples/CheckIndicatorBernsteinTiltCatalog.lean"
   "examples/CheckFiniteEmpiricalVariance.lean"
+  "examples/CheckBernsteinMGF.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"
