@@ -5,6 +5,7 @@ Authors: Robby Sneiderman
 -/
 
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk
+import FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog
 import FormalSLT.Probability.FiniteUnionBound
 
 /-!
@@ -16,6 +17,10 @@ has its own positive weights and confidence budget. A finite weighted union
 bound controls the variance catalog by `deltaVariance` and the risk catalog by
 `deltaRisk`; their union is controlled by `deltaVariance + deltaRisk` without
 an independence assumption.
+
+The variance half reuses `FiniteEmpiricalVarianceTiltCatalog`; the risk half
+uses the same reusable plain-sum union lemma. Thus there is one public variance
+catalog API rather than a duplicate event local to the final-risk layer.
 
 Outside the combined event, every finite posterior satisfies every pair of
 catalog bounds. Hence the two catalog entries may be selected after observing
@@ -32,6 +37,7 @@ open FormalSLT.PACBayesFiniteProductMGF
 open FormalSLT.PACBayes.FiniteProductBernstein
 open FormalSLT.PACBayes.FiniteEmpiricalVariance
 open FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes
+open FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog
 open FormalSLT.PACBayes.FiniteBoundedLossBernstein
 open FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk
 open FormalSLT.Probability.FiniteUnionBound
@@ -39,17 +45,6 @@ open FormalSLT.Probability.FiniteUnionBound
 noncomputable section
 
 variable {κv κr Z ι : Type*}
-
-/-- Union of the empirical-variance bad sets obtained by allocating entry `j`
-the confidence budget `deltaVariance * weightVariance j`. -/
-def finiteEmpiricalVarianceWeightedCatalogBadSamples
-    [Fintype κv] [Fintype Z] [DecidableEq Z] [Fintype ι]
-    (n : ℕ) (p : Z → ℝ) (prior : ι → ℝ) (ell : ι → Z → ℝ)
-    (eta weightVariance : κv → ℝ) (deltaVariance : ℝ) : Finset (Fin n → Z) := by
-  classical
-  exact (Finset.univ : Finset κv).biUnion fun j =>
-    finiteEmpiricalVariancePACBayesBadSamples
-      n p prior ell (eta j) (deltaVariance * weightVariance j)
 
 /-- Union of the population-risk Bernstein bad sets obtained by allocating
 entry `k` the confidence budget `deltaRisk * weightRisk k`. -/
@@ -62,6 +57,39 @@ def finiteBoundedLossBernsteinWeightedCatalogBadSamples
     finiteBoundedLossBernsteinBadSamples
       n p prior ell (lambda k) (deltaRisk * weightRisk k)
 
+/-- Membership in the population-risk catalog is exactly membership in at
+least one entrywise exceptional set. -/
+theorem finiteBoundedLossBernstein_mem_weightedCatalog_iff
+    [Fintype κr] [Fintype Z] [DecidableEq Z] [Fintype ι]
+    (n : ℕ) (p : Z → ℝ) (prior : ι → ℝ) (ell : ι → Z → ℝ)
+    (lambda weightRisk : κr → ℝ) (deltaRisk : ℝ) (S : Fin n → Z) :
+    S ∈ finiteBoundedLossBernsteinWeightedCatalogBadSamples
+        n p prior ell lambda weightRisk deltaRisk ↔
+      ∃ k, S ∈ finiteBoundedLossBernsteinBadSamples
+        n p prior ell (lambda k) (deltaRisk * weightRisk k) := by
+  classical
+  simp [finiteBoundedLossBernsteinWeightedCatalogBadSamples]
+
+/-- A sample is outside the population-risk catalog exactly when it is outside
+every entrywise exceptional set. -/
+theorem finiteBoundedLossBernstein_not_mem_weightedCatalog_iff
+    [Fintype κr] [Fintype Z] [DecidableEq Z] [Fintype ι]
+    (n : ℕ) (p : Z → ℝ) (prior : ι → ℝ) (ell : ι → Z → ℝ)
+    (lambda weightRisk : κr → ℝ) (deltaRisk : ℝ) (S : Fin n → Z) :
+    S ∉ finiteBoundedLossBernsteinWeightedCatalogBadSamples
+        n p prior ell lambda weightRisk deltaRisk ↔
+      ∀ k, S ∉ finiteBoundedLossBernsteinBadSamples
+        n p prior ell (lambda k) (deltaRisk * weightRisk k) := by
+  constructor
+  · intro hcatalog k hentry
+    exact hcatalog
+      ((finiteBoundedLossBernstein_mem_weightedCatalog_iff
+        n p prior ell lambda weightRisk deltaRisk S).2 ⟨k, hentry⟩)
+  · intro hentry hcatalog
+    rcases (finiteBoundedLossBernstein_mem_weightedCatalog_iff
+      n p prior ell lambda weightRisk deltaRisk S).1 hcatalog with ⟨k, hk⟩
+    exact hentry k hk
+
 /-- The single exceptional set for the separately weighted variance and risk
 parameter catalogs. -/
 def finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples
@@ -73,21 +101,6 @@ def finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples
       n p prior ell eta weightVariance deltaVariance ∪
     finiteBoundedLossBernsteinWeightedCatalogBadSamples
       n p prior ell lambda weightRisk deltaRisk
-
-/-- Every fixed empirical-variance entry lies inside the variance catalog. -/
-theorem finiteEmpiricalVarianceBadSamples_subset_weightedCatalog
-    [Fintype κv] [Fintype Z] [DecidableEq Z] [Fintype ι]
-    (n : ℕ) (p : Z → ℝ) (prior : ι → ℝ) (ell : ι → Z → ℝ)
-    (eta weightVariance : κv → ℝ) (deltaVariance : ℝ) (j : κv) :
-    finiteEmpiricalVariancePACBayesBadSamples
-        n p prior ell (eta j) (deltaVariance * weightVariance j) ⊆
-      finiteEmpiricalVarianceWeightedCatalogBadSamples
-        n p prior ell eta weightVariance deltaVariance := by
-  classical
-  intro S hS
-  unfold finiteEmpiricalVarianceWeightedCatalogBadSamples
-  rw [Finset.mem_biUnion]
-  exact ⟨j, Finset.mem_univ j, hS⟩
 
 /-- Every fixed population-risk entry lies inside the risk catalog. -/
 theorem finiteBoundedLossBernsteinBadSamples_subset_weightedCatalog
@@ -103,83 +116,6 @@ theorem finiteBoundedLossBernsteinBadSamples_subset_weightedCatalog
   unfold finiteBoundedLossBernsteinWeightedCatalogBadSamples
   rw [Finset.mem_biUnion]
   exact ⟨k, Finset.mem_univ k, hS⟩
-
-private lemma finiteEventMass_univ_eq_sum
-    [Fintype Z] [DecidableEq Z]
-    (nu : Z → ℝ) (event : Finset Z) :
-    finiteEventMass (Finset.univ : Finset Z) nu event =
-      ∑ z ∈ event, nu z := by
-  classical
-  unfold finiteEventMass
-  rw [← Finset.sum_filter]
-  simp
-
-private theorem weightedCatalog_mass_le_delta
-    [Fintype κv] [Fintype Z] [DecidableEq Z]
-    (nu : Z → ℝ) (hnu : ∀ z, 0 ≤ nu z)
-    (events : κv → Finset Z)
-    (weight : κv → ℝ) (delta : ℝ)
-    (hentry : ∀ j, (∑ z ∈ events j, nu z) ≤ delta * weight j)
-    (hweight_sum : ∑ j, weight j ≤ 1)
-    (hdelta : 0 < delta) :
-    (∑ z ∈ (Finset.univ : Finset κv).biUnion events, nu z) ≤ delta := by
-  classical
-  have hUnion :
-      finiteUnionEventMass (Finset.univ : Finset Z) nu events
-          (Finset.univ : Finset κv) ≤
-        finiteEventMassSum (Finset.univ : Finset Z) nu events
-          (Finset.univ : Finset κv) :=
-    finiteProbabilityUnionBound_proof
-      (support := (Finset.univ : Finset Z))
-      (w := nu) (events := events) (s := (Finset.univ : Finset κv)) hnu
-  have hsum :
-      finiteEventMassSum (Finset.univ : Finset Z) nu events
-          (Finset.univ : Finset κv) ≤
-        ∑ j, delta * weight j := by
-    unfold finiteEventMassSum
-    apply Finset.sum_le_sum
-    intro j _hj
-    simpa [finiteEventMass_univ_eq_sum] using hentry j
-  have hbudget : (∑ j, delta * weight j) ≤ delta := by
-    calc
-      (∑ j, delta * weight j) = delta * ∑ j, weight j := by
-        rw [Finset.mul_sum]
-      _ ≤ delta * 1 := mul_le_mul_of_nonneg_left hweight_sum hdelta.le
-      _ = delta := by ring
-  have hmass := hUnion.trans (hsum.trans hbudget)
-  simpa [finiteUnionEventMass, finiteEventMass_univ_eq_sum] using hmass
-
-/-- The separately weighted empirical-variance catalog has product-law mass
-at most `deltaVariance`. -/
-theorem finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta
-    [Fintype κv] [Fintype Z] [DecidableEq Z] [Fintype ι] [Nonempty ι]
-    {n : ℕ} (hn : 2 ≤ n)
-    (p : Z → ℝ) (hp : IsPMF p)
-    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
-    (ell : ι → Z → ℝ)
-    (hell : ∀ i z, ell i z ∈ Set.Icc (0 : ℝ) 1)
-    (eta weightVariance : κv → ℝ) (deltaVariance : ℝ)
-    (heta : ∀ j, 0 < eta j)
-    (hweightVariance : ∀ j, 0 < weightVariance j)
-    (hweightVariance_sum : ∑ j, weightVariance j ≤ 1)
-    (hdeltaVariance : 0 < deltaVariance) :
-    (∑ S ∈ finiteEmpiricalVarianceWeightedCatalogBadSamples
-        n p prior ell eta weightVariance deltaVariance,
-        finiteProductSampleWeight p S) ≤ deltaVariance := by
-  classical
-  let events : κv → Finset (Fin n → Z) := fun j =>
-    finiteEmpiricalVariancePACBayesBadSamples
-      n p prior ell (eta j) (deltaVariance * weightVariance j)
-  apply weightedCatalog_mass_le_delta
-      (nu := finiteProductSampleWeight p) (events := events)
-      (weight := weightVariance) (delta := deltaVariance)
-  · exact (finiteProductSampleWeight_isPMF hp).nonneg
-  · intro j
-    exact finiteEmpiricalVariancePACBayes_badEventMass_le_delta
-      hn p hp hprior ell hell (heta j)
-        (mul_pos hdeltaVariance (hweightVariance j))
-  · exact hweightVariance_sum
-  · exact hdeltaVariance
 
 /-- The separately weighted population-risk catalog has product-law mass at
 most `deltaRisk`. -/
@@ -203,17 +139,33 @@ theorem finiteBoundedLossBernstein_weightedCatalog_badEventMass_le_delta
   let events : κr → Finset (Fin n → Z) := fun k =>
     finiteBoundedLossBernsteinBadSamples
       n p prior ell (lambda k) (deltaRisk * weightRisk k)
-  apply weightedCatalog_mass_le_delta
-      (nu := finiteProductSampleWeight p) (events := events)
-      (weight := weightRisk) (delta := deltaRisk)
-  · exact (finiteProductSampleWeight_isPMF hp).nonneg
-  · intro k
+  have hUnion :
+      (∑ S ∈ finiteBoundedLossBernsteinWeightedCatalogBadSamples
+          n p prior ell lambda weightRisk deltaRisk,
+          finiteProductSampleWeight p S) ≤
+        ∑ k : κr, ∑ S ∈ events k, finiteProductSampleWeight p S := by
+    refine finiteWeightedUnionBound_sum_le_of_exists_mem _ _ _
+      (finiteProductSampleWeight_isPMF hp).nonneg ?_
+    intro S hS
+    exact (finiteBoundedLossBernstein_mem_weightedCatalog_iff
+      n p prior ell lambda weightRisk deltaRisk S).1 hS
+  have hentry : ∀ k : κr,
+      (∑ S ∈ events k, finiteProductSampleWeight p S) ≤
+        deltaRisk * weightRisk k := by
+    intro k
     have hnpos : 0 < n := lt_of_lt_of_le (by norm_num) hn
     exact finiteBoundedLossBernstein_badEventMass_le_delta
       hnpos p hp hprior ell hell (hlambda k) (hlambda_lt k)
         (mul_pos hdeltaRisk (hweightRisk k))
-  · exact hweightRisk_sum
-  · exact hdeltaRisk
+  have hbudget : (∑ k : κr, deltaRisk * weightRisk k) ≤ deltaRisk := by
+    calc
+      (∑ k : κr, deltaRisk * weightRisk k) =
+          deltaRisk * ∑ k, weightRisk k := by rw [Finset.mul_sum]
+      _ ≤ deltaRisk * 1 :=
+        mul_le_mul_of_nonneg_left hweightRisk_sum hdeltaRisk.le
+      _ = deltaRisk := by ring
+  exact hUnion.trans
+    ((Finset.sum_le_sum fun k _ => hentry k).trans hbudget)
 
 /-- The combined weighted-catalog bad set has mass at most the sum of the two
 declared confidence budgets. No independence is used. -/
@@ -308,7 +260,7 @@ theorem posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_
     rw [finiteEmpiricalBernsteinRiskBadSamples, Finset.mem_union] at hbad
     rcases hbad with hvariance | hrisk
     · exact Or.inl
-        (finiteEmpiricalVarianceBadSamples_subset_weightedCatalog
+        (finiteEmpiricalVarianceFixedTiltBadSamples_subset_weightedCatalog
           n p prior ell eta weightVariance deltaVariance j hvariance)
     · exact Or.inr
         (finiteBoundedLossBernsteinBadSamples_subset_weightedCatalog

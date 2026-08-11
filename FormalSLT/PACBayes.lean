@@ -36,6 +36,7 @@ import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF
 import FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes
 import FormalSLT.PACBayes.FiniteBoundedLossBernstein
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk
+import FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior

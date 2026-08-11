@@ -89,8 +89,10 @@ files.
   budgets, and outside it every finite posterior satisfies the observable
   fixed-parameter empirical-Bernstein risk bound. Separate finite weighted
   catalogs for the two tilts now support sample- and posterior-dependent
-  selection on one shared event. The next reviewable step is retained-log
-  Bennett. The current result is not all-real tilt optimization or
-  time-uniform inference.
+  selection on one shared event. The variance catalog is independently exposed
+  and witnessed with unequal weights and two selected branches; the final risk
+  layer reuses it rather than duplicating its event. The next reviewable step is
+  retained-log Bennett. The current result is not all-real tilt optimization
+  or time-uniform inference.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

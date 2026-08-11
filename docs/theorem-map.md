@@ -575,10 +575,19 @@ declarations; modules are relative to `FormalSLT`.
 | `boundedLoss_posteriorRisk_le_populationVariance_of_not_mem` | `PACBayes.FiniteBoundedLossBernstein` | Outside the risk event, bounds every posterior risk gap by KL complexity and posterior-averaged population variance |
 | `finiteEmpiricalBernsteinRisk_badEventMass_le` | `PACBayes.FiniteEmpiricalBernsteinRisk` | Bounds the union of variance and risk bad events by `deltaVariance + deltaRisk` without independence |
 | `posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRisk` | Final fixed-parameter observable empirical-Bernstein risk bound simultaneous over every finite posterior |
-| `finiteEmpiricalVarianceWeightedCatalogBadSamples` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Finite union of empirical-variance bad sets with separately weighted variance budgets |
+| `finiteWeightedUnionBound_sum_le_of_exists_mem` | `Probability.FiniteUnionBound` | Plain-sum finite weighted union bound stated through an existential membership cover, avoiding decidable-instance reconciliation |
+| `finiteEmpiricalVarianceWeightedCatalogBadSamples` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Finite union of empirical-variance bad sets with separately weighted variance budgets |
+| `finiteEmpiricalVariance_mem_weightedCatalog_iff` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Membership in the variance catalog is equivalent to membership in one fixed-tilt event |
+| `finiteEmpiricalVariance_not_mem_weightedCatalog_iff` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | A sample is outside the variance catalog exactly when it is outside every fixed-tilt event |
+| `finiteEmpiricalVarianceFixedTiltBadSamples_subset_weightedCatalog` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Every fixed empirical-variance tilt event is contained in the catalog event |
+| `finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Weighted union bound for the finite empirical-variance tilt catalog |
+| `finiteEmpiricalVariance_posteriorGap_le_weightedCatalog_of_not_mem` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Unrearranged posterior-uniform variance gap bound for every catalog entry |
+| `posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_of_not_mem` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Rearranged observable variance certificate for every catalog entry and posterior |
+| `posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_selected_of_not_mem` | `PACBayes.FiniteEmpiricalVarianceTiltCatalog` | Valid sample- and posterior-dependent selection from the finite variance-tilt catalog |
 | `finiteBoundedLossBernsteinWeightedCatalogBadSamples` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Finite union of population-risk bad sets with separately weighted risk budgets |
+| `finiteBoundedLossBernstein_mem_weightedCatalog_iff` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Membership in the risk catalog is equivalent to membership in one fixed-lambda event |
+| `finiteBoundedLossBernstein_not_mem_weightedCatalog_iff` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | A sample is outside the risk catalog exactly when it is outside every fixed-lambda event |
 | `finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | One exceptional set joining the variance and risk catalogs |
-| `finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Weighted union bound for the finite empirical-variance tilt catalog |
 | `finiteBoundedLossBernstein_weightedCatalog_badEventMass_le_delta` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Weighted union bound for the finite population-risk tilt catalog |
 | `finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Combined catalog mass bound `deltaVariance + deltaRisk` without a Cartesian-pair confidence charge |
 | `posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Observable risk bound simultaneous over every pair of predeclared variance and risk tilts |

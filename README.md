@@ -8,7 +8,7 @@
 
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C126-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-186-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-82%2C379-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-82%2C334-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -73,8 +73,10 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   bound now give the observable fixed-parameter risk theorem, with distinct
   variance and risk failure budgets. Separately weighted finite `eta` and
   `lambda` catalogs now permit both tilts to be selected after seeing the
-  sample and posterior. All-real tilt optimization, retained-log Bennett, and
-  time-uniform empirical-Bernstein risk remain open.
+  sample and posterior. The variance catalog is also exposed as its own API,
+  with unequal weights, two selector branches, positive-mass samples, and both
+  concrete certificates below `1/4`. All-real tilt optimization, retained-log
+  Bennett, and time-uniform empirical-Bernstein risk remain open.
 
 The Dudley development is finite by design. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers

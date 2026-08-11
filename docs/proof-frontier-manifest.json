@@ -50,7 +50,7 @@
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
       "next_step": "Prove a retained-log Bennett risk endpoint; treat countable or all-real tilt adaptation as a separate normalized-mixture lane.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -86,10 +86,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 145,
-    "library_and_example_lean_lines": 82379,
-    "library_lean_lines": 70849,
+    "library_and_example_lean_lines": 82334,
+    "library_lean_lines": 70802,
     "library_modules": 186,
-    "theorem_map_entries": 673
+    "theorem_map_entries": 682
   },
   "theorem_families": [
     {
@@ -3206,9 +3206,57 @@
         },
         {
           "kind": "theorem",
-          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "module": "Probability.FiniteUnionBound",
+          "name": "finiteWeightedUnionBound_sum_le_of_exists_mem",
+          "summary": "Plain-sum finite weighted union bound stated through an existential membership cover, avoiding decidable-instance reconciliation"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
           "name": "finiteEmpiricalVarianceWeightedCatalogBadSamples",
           "summary": "Finite union of empirical-variance bad sets with separately weighted variance budgets"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "finiteEmpiricalVariance_mem_weightedCatalog_iff",
+          "summary": "Membership in the variance catalog is equivalent to membership in one fixed-tilt event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "finiteEmpiricalVariance_not_mem_weightedCatalog_iff",
+          "summary": "A sample is outside the variance catalog exactly when it is outside every fixed-tilt event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "finiteEmpiricalVarianceFixedTiltBadSamples_subset_weightedCatalog",
+          "summary": "Every fixed empirical-variance tilt event is contained in the catalog event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta",
+          "summary": "Weighted union bound for the finite empirical-variance tilt catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "finiteEmpiricalVariance_posteriorGap_le_weightedCatalog_of_not_mem",
+          "summary": "Unrearranged posterior-uniform variance gap bound for every catalog entry"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_of_not_mem",
+          "summary": "Rearranged observable variance certificate for every catalog entry and posterior"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
+          "name": "posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_selected_of_not_mem",
+          "summary": "Valid sample- and posterior-dependent selection from the finite variance-tilt catalog"
         },
         {
           "kind": "theorem",
@@ -3219,14 +3267,20 @@
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
-          "name": "finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples",
-          "summary": "One exceptional set joining the variance and risk catalogs"
+          "name": "finiteBoundedLossBernstein_mem_weightedCatalog_iff",
+          "summary": "Membership in the risk catalog is equivalent to membership in one fixed-lambda event"
         },
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
-          "name": "finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta",
-          "summary": "Weighted union bound for the finite empirical-variance tilt catalog"
+          "name": "finiteBoundedLossBernstein_not_mem_weightedCatalog_iff",
+          "summary": "A sample is outside the risk catalog exactly when it is outside every fixed-lambda event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
+          "name": "finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples",
+          "summary": "One exceptional set joining the variance and risk catalogs"
         },
         {
           "kind": "theorem",

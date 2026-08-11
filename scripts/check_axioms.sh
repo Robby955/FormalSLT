@@ -46,6 +46,9 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF.finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin"
   "FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes.finiteEmpiricalVariancePACBayes_badEventMass_le_delta"
   "FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes.posteriorPopulationVariance_le_empiricalVariance_of_not_mem"
+  "FormalSLT.Probability.FiniteUnionBound.finiteWeightedUnionBound_sum_le_of_exists_mem"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog.finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog.posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_selected_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk.finiteEmpiricalBernsteinRisk_badEventMass_le"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk.posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog.finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le"
@@ -80,6 +83,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVariance"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes"
+  echo "import FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
@@ -105,6 +109,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteEmpiricalVariance \
   FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF \
   FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes \
+  FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog \
   FormalSLT.StochasticDynamics.MarkovRisk \

@@ -74,6 +74,11 @@ classify_witness() {
 #     posteriorPopulationVariance_le_empiricalVariance_of_not_mem (unequal
 #     Bool law, two distinct loss variances, genuinely sample-selected
 #     posterior, two positive-mass good samples, certificate below 1/4)
+#   finiteEmpiricalVariance_weightedCatalog_badEventMass_le_delta /
+#     posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_selected_of_not_mem
+#     (unequal positive weights and distinct tilts, two posterior-dependent
+#     selector branches, explicit positive-mass samples, and checked bounds
+#     below 1/4)
 #   posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem (fair Bool
 #     law, nonconstant loss, separate variance/risk budgets, combined bad mass
 #     below one, and an existential good-sample final-risk witness)
@@ -118,6 +123,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckBernsteinMGF.lean"
   "examples/CheckFiniteEmpiricalVarianceMGF.lean"
   "examples/CheckFiniteEmpiricalVariancePACBayes.lean"
+  "examples/CheckFiniteEmpiricalVarianceTiltCatalog.lean"
   "examples/CheckFiniteEmpiricalBernsteinRisk.lean"
   "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
   "examples/CheckVCHybridWitness.lean"

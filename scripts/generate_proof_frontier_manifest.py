@@ -113,8 +113,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite per-hypothesis Bessel empirical loss variance, exact "
             "ordered-pair representation, finite-IID unbiasedness, "
             "random-matching source MGF, fixed-tilt posterior-uniform "
-            "variance confidence, fixed-parameter observable risk, and "
-            "separately weighted finite eta/lambda catalogs"
+            "variance confidence, a standalone weighted finite variance-tilt "
+            "catalog, fixed-parameter observable risk, and separately "
+            "weighted finite eta/lambda catalogs"
         ),
         "difficulty": "hard",
         "source": (

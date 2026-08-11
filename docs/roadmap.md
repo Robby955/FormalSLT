@@ -288,6 +288,8 @@
     theorem with total failure `deltaVariance + deltaRisk`. Separately weighted
     finite catalogs for both tilts now give sample- and posterior-dependent
     selectors on one shared event without a Cartesian-pair confidence charge.
+    The variance catalog is also a standalone reusable module with a concrete
+    unequal-weight, two-branch receipt, and the final risk layer imports it.
     Retained-log Bennett, countable selectable `lambda` catalogs, exact all-real
     optimization, continuous Bernstein posteriors, and infinite hypothesis
     classes remain open. The separate
