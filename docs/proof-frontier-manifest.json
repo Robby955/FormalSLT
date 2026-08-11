@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The checked confidence result is finite-IID, fixed-sample, and fixed-tilt. It compares posterior averages of per-hypothesis variances; it is not post-hoc tilt optimization, time-uniform inference, or a PAC-Bayes empirical-Bernstein risk theorem.",
+      "boundary": "The checked risk result is finite-IID, fixed-sample, and fixed in both tilts. It uses separate confidence budgets and is not post-hoc tilt optimization, retained-log Bennett, or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Add a declared finite weighted tilt catalog, then combine the selected variance certificate with the finite Bernstein risk layer.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, and fixed-tilt posterior-uniform variance confidence",
+      "next_step": "Add separately weighted finite variance-tilt and risk-tilt catalogs, then permit posterior and catalog selection on their shared event.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, and fixed-parameter observable risk",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 142,
-    "library_and_example_lean_lines": 80267,
-    "library_lean_lines": 69655,
-    "library_modules": 182,
-    "theorem_map_entries": 659
+    "example_lean_files": 143,
+    "library_and_example_lean_lines": 80918,
+    "library_lean_lines": 70191,
+    "library_modules": 184,
+    "theorem_map_entries": 665
   },
   "theorem_families": [
     {
@@ -3167,9 +3167,45 @@
           "module": "PACBayes.FiniteEmpiricalVariancePACBayes",
           "name": "posteriorPopulationVariance_le_empiricalVariance_of_not_mem",
           "summary": "Outside the shared event, bounds the posterior average of per-hypothesis population variances by the corresponding empirical average and KL-confidence penalty"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossBernstein",
+          "name": "boundedLoss_oneCoordinateDeviationMGF_le",
+          "summary": "One-coordinate population-variance Bernstein MGF for arbitrary finite [0,1] losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossBernstein",
+          "name": "boundedLoss_product_normalizedMGF_le_one",
+          "summary": "Normalized finite-IID population-risk deviation MGF with exact 1 - lambda/(3n) denominator"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossBernstein",
+          "name": "finiteBoundedLossBernstein_badEventMass_le_delta",
+          "summary": "Bounds the separate fixed-lambda population-risk bad event by its declared risk budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossBernstein",
+          "name": "boundedLoss_posteriorRisk_le_populationVariance_of_not_mem",
+          "summary": "Outside the risk event, bounds every posterior risk gap by KL complexity and posterior-averaged population variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRisk",
+          "name": "finiteEmpiricalBernsteinRisk_badEventMass_le",
+          "summary": "Bounds the union of variance and risk bad events by deltaVariance + deltaRisk without independence"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinRisk",
+          "name": "posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem",
+          "summary": "Final fixed-parameter observable empirical-Bernstein risk bound simultaneous over every finite posterior"
         }
       ],
-      "name": "Finite empirical-variance foundations and fixed-tilt confidence"
+      "name": "Finite empirical variance and fixed-parameter empirical-Bernstein risk"
     },
     {
       "entries": [

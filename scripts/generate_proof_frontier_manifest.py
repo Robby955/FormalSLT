@@ -112,23 +112,23 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "scope": (
             "finite per-hypothesis Bessel empirical loss variance, exact "
             "ordered-pair representation, finite-IID unbiasedness, "
-            "random-matching source MGF, and fixed-tilt posterior-uniform "
-            "variance confidence"
+            "random-matching source MGF, fixed-tilt posterior-uniform "
+            "variance confidence, and fixed-parameter observable risk"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Add a declared finite weighted tilt catalog, then combine the "
-            "selected variance certificate with the finite Bernstein risk "
-            "layer."
+            "Add separately weighted finite variance-tilt and risk-tilt "
+            "catalogs, then permit posterior and catalog selection on their "
+            "shared event."
         ),
         "boundary": (
-            "The checked confidence result is finite-IID, fixed-sample, and "
-            "fixed-tilt. It compares posterior averages of per-hypothesis "
-            "variances; it is not post-hoc tilt optimization, time-uniform "
-            "inference, or a PAC-Bayes empirical-Bernstein risk theorem."
+            "The checked risk result is finite-IID, fixed-sample, and fixed "
+            "in both tilts. It uses separate confidence budgets and is not "
+            "post-hoc tilt optimization, retained-log Bennett, or "
+            "time-uniform inference."
         ),
     },
     {

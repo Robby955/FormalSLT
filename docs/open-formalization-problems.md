@@ -113,9 +113,9 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Extend the checked fixed-tilt variance certificate to a declared
-finite weighted tilt family, then consume the selected observable variance
-bound in a final PAC-Bayes empirical-Bernstein risk theorem.
+**Target.** Extend the checked fixed-parameter empirical-Bernstein risk theorem
+to separately weighted finite variance-tilt and risk-tilt catalogs, permitting
+posterior and catalog selection after observing the sample.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -126,18 +126,22 @@ pairs, average over coordinate permutations, and apply finite Jensen. This
 gives the source-normalized lower-tail MGF for every `n >= 2` and, after finite
 change of measure, one fixed-tilt bad set of mass at most `delta`. Outside that
 set, every finite posterior compares its average of per-hypothesis population
-variances to the corresponding empirical average.
+variances to the corresponding empirical average. A separate general bounded-
+loss Bernstein moment supplies the population-risk event. Their finite union
+has mass at most `deltaVariance + deltaRisk`, and outside it the checked final
+risk theorem substitutes the observable variance certificate with all
+denominators explicit.
 
 **Dependencies.** Allocate confidence across a fixed finite weighted tilt
-catalog and prove posterior- and sample-dependent selection from that declared
-catalog. Then thread the selected variance upper certificate into the finite
-Bernstein risk layer, with explicit accounting for both confidence events and
-their constants.
+catalogs and prove posterior- and sample-dependent selection from those
+declared families. The variance and risk catalogs should be budgeted
+separately so every Cartesian pair is available without paying for every pair.
+After that, consider the stronger retained-log Bennett endpoint.
 
-**Boundary.** The current theorem is finite-IID, fixed-sample, and fixed-tilt.
-It is posterior-uniform on one good event, but it is not tilt-grid or all-real
-optimization, anytime-valid inference, or itself a PAC-Bayes empirical-
-Bernstein risk bound. The random-matching proof formalizes the source
+**Boundary.** The current final risk theorem is finite-IID, fixed-sample, and
+fixed in both tilts. It is posterior-uniform outside a two-event union, but it
+does not authorize tilt-grid or all-real post-hoc optimization and is not
+anytime-valid. The random-matching proof formalizes the source variance
 inequality; it is not presented as a new inequality or an entropy-method proof.
 
 ## Medium-term

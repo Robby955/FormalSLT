@@ -535,7 +535,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
 | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite supplied margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
 
-## Finite empirical-variance foundations and fixed-tilt confidence
+## Finite empirical variance and fixed-parameter empirical-Bernstein risk
 
 | Declaration | Module | Role |
 |---|---|---|
@@ -569,6 +569,12 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteEmpiricalVariance_expectedPriorBernsteinExpMoment_le_one` | `PACBayes.FiniteEmpiricalVariancePACBayes` | Averages the normalized per-hypothesis empirical-variance moment under a finite prior |
 | `finiteEmpiricalVariancePACBayes_badEventMass_le_delta` | `PACBayes.FiniteEmpiricalVariancePACBayes` | Bounds one fixed-sample, fixed-tilt exceptional set by `delta`; the event is shared by every finite posterior |
 | `posteriorPopulationVariance_le_empiricalVariance_of_not_mem` | `PACBayes.FiniteEmpiricalVariancePACBayes` | Outside the shared event, bounds the posterior average of per-hypothesis population variances by the corresponding empirical average and KL-confidence penalty |
+| `boundedLoss_oneCoordinateDeviationMGF_le` | `PACBayes.FiniteBoundedLossBernstein` | One-coordinate population-variance Bernstein MGF for arbitrary finite `[0,1]` losses |
+| `boundedLoss_product_normalizedMGF_le_one` | `PACBayes.FiniteBoundedLossBernstein` | Normalized finite-IID population-risk deviation MGF with exact `1 - lambda/(3n)` denominator |
+| `finiteBoundedLossBernstein_badEventMass_le_delta` | `PACBayes.FiniteBoundedLossBernstein` | Bounds the separate fixed-`lambda` population-risk bad event by its declared risk budget |
+| `boundedLoss_posteriorRisk_le_populationVariance_of_not_mem` | `PACBayes.FiniteBoundedLossBernstein` | Outside the risk event, bounds every posterior risk gap by KL complexity and posterior-averaged population variance |
+| `finiteEmpiricalBernsteinRisk_badEventMass_le` | `PACBayes.FiniteEmpiricalBernsteinRisk` | Bounds the union of variance and risk bad events by `deltaVariance + deltaRisk` without independence |
+| `posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRisk` | Final fixed-parameter observable empirical-Bernstein risk bound simultaneous over every finite posterior |
 
 ## Conditional sub-Gamma extractor
 

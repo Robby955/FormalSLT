@@ -84,9 +84,12 @@ files.
   fixed-sample, fixed-tilt bad set of mass at most `delta`; outside it, every
   finite posterior satisfies the checked comparison between its average of
   per-hypothesis population variances and the corresponding empirical
-  average. The next reviewable step is a declared finite weighted tilt catalog,
-  followed by a final risk theorem that consumes the selected variance
-  certificate. The current result is not post-hoc tilt optimization,
-  time-uniform inference, or itself a PAC-Bayes empirical-Bernstein risk bound.
+  average. A separate general bounded-loss Bernstein event now combines with
+  that variance event; their union has mass at most the sum of the two declared
+  budgets, and outside it every finite posterior satisfies the observable
+  fixed-parameter empirical-Bernstein risk bound. The next reviewable step is
+  separate finite weighted catalogs for the two tilts. The current result is
+  not post-hoc tilt optimization, retained-log Bennett, or time-uniform
+  inference.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

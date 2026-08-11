@@ -220,6 +220,19 @@ population or empirical variance; it is not the variance of a
 posterior-averaged loss. The rearranged bound additionally requires
 `eta * n < 2 * (n - 1)` so its denominator is positive.
 
+`PACBayes.FiniteBoundedLossBernstein` proves the complementary one-sided
+population-risk Bernstein event for arbitrary finite `[0,1]` losses. Its fixed
+tilt satisfies `0 < lambda < 3n`, and its variance term is the posterior
+average of the per-hypothesis population variances. It is not the variance of
+the posterior-averaged loss.
+
+`PACBayes.FiniteEmpiricalBernsteinRisk` unions that event with the empirical-
+variance event. The combined bad mass is at most
+`deltaVariance + deltaRisk`; the two arguments use the same sample but do not
+assume independence. Outside the union, the final observable risk inequality
+holds simultaneously for every finite posterior. Both tilts and both failure
+budgets must be declared before observing the sample.
+
 The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
@@ -235,11 +248,10 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-The empirical-variance result does not yet provide a finite tilt catalog,
-post-sample tilt selection, an all-real-`eta` optimization, a time-uniform
-confidence sequence, or a final empirical-Bernstein risk theorem. A countable
-indicator-Bernstein catalog and exact all-real `lambda` optimization are also
-open.
+The empirical-Bernstein risk result does not yet provide finite weighted tilt
+catalogs, post-sample tilt selection, all-real optimization, the retained-log
+Bennett endpoint, or a time-uniform counterpart. A countable indicator-
+Bernstein catalog and exact all-real `lambda` optimization are also open.
 
 ### Algorithmic stability expected bound
 
