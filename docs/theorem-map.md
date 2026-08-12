@@ -603,6 +603,10 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteBoundedLossTiltNormalizer` | `PACBayes.FiniteBoundedLossExponentialTilt` | Partition sum for the specialized lower-tail bounded-loss tilt |
 | `finiteBoundedLossTiltPMF` | `PACBayes.FiniteBoundedLossExponentialTilt` | Finite PMF obtained by reweighting with `exp (-t * ell i z)` |
 | `finiteJointMeanVarianceKappa` | `PACBayes.FiniteJointMeanVarianceMGF` | Linear-minus-quadratic variance coefficient in the fixed-sample joint mean/Bessel-variance exponential moment |
+| `finiteJointMeanVarianceScore` | `PACBayes.FiniteJointMeanVariancePACBayes` | Per-hypothesis normalized fixed-sample joint mean/empirical-variance score |
+| `finiteJointMeanVariancePriorMoment` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior moment of the joint score at one sample and one catalog pair |
+| `finiteJointMeanVarianceMasterMixture` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior-and-catalog master mixture over the weighted per-entry prior score moments |
+| `finiteJointMeanVarianceCatalogBadSamples` | `PACBayes.FiniteJointMeanVariancePACBayes` | Single catalog bad-sample set thresholding the master mixture at `1 / delta` |
 
 | Theorem | Module | Role |
 |---|---|---|
@@ -625,6 +629,15 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteBoundedLossTilt_negativeEmpiricalVarianceMGF_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Negative Bessel empirical-variance moment bound under the lower-tail tilted finite PMF |
 | `finiteJointMeanVarianceMGF_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Unnormalized fixed-sample joint lower-tail mean and Bessel empirical-variance exponential-moment bound |
 | `finiteJointMeanVariance_normalizedMGF_le_one` | `PACBayes.FiniteJointMeanVarianceMGF` | Normalized fixed-sample joint score has finite-product expectation at most one |
+| `finiteJointMeanVariance_priorMoment_expectation_le_one` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior score moment has finite-product expectation at most one |
+| `finiteJointMeanVariance_masterMixture_expectation_le_one` | `PACBayes.FiniteJointMeanVariancePACBayes` | Master mixture expectation is at most the total catalog weight, hence at most one |
+| `finiteJointMeanVariance_catalogBadSamples_mass_le_delta` | `PACBayes.FiniteJointMeanVariancePACBayes` | The single catalog bad set has product-law mass at most `delta` |
+| `finiteJointMeanVariance_priorMoment_le_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Outside the one event, each entry keeps its prior moment at most `1 / (delta * w c)` |
+| `finiteJointMeanVariance_posteriorScore_le_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | One-KL Donsker-Varadhan score bound for every posterior and entry on the good event |
+| `finiteJointMeanVariance_posteriorGap_le_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Raw retained-variance posterior inequality with the Bennett log at the posterior-averaged variance |
+| `finiteJointMeanVariance_posteriorGap_div_le_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Division form of the retained-variance inequality for a strictly positive mean tilt |
+| `finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Selector endpoint: the catalog entry may depend on the sample and the posterior |
+| `finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Division form of the selector endpoint for all-positive mean tilts |
 
 ## Conditional sub-Gamma extractor
 

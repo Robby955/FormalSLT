@@ -221,6 +221,26 @@ coefficient. The module does not yet mix over a prior, invoke a variational
 inequality, define a confidence event, support post-data tilt selection, or
 construct a time-uniform process.
 
+`PACBayes.FiniteJointMeanVariancePACBayes` lifts the joint moment through a
+finite prior mixture and a finite weighted catalog of joint pairs
+`c ↦ (t c, eta c)`. One master mixture statistic is thresholded at
+`1 / delta`, giving one bad-sample set of product mass at most `delta`; on
+its complement a per-entry Donsker-Varadhan step yields a retained-variance
+inequality with one KL term for every posterior and every entry, so the entry
+may be selected after seeing the sample and the posterior. The mass theorem
+assumes finite data, hypothesis, and catalog types, an iid finite product
+PMF, `n >= 2`, `[0,1]` losses, nonnegative tilts with nonnegative variance
+coefficients, and positive weights of total at most one; the variational side
+additionally assumes a full-support prior. There is one shared confidence
+event and one KL term per selected bound, not one syntactic variational
+invocation across entries. The population-variance log term is stated at the
+posterior-averaged variance via concavity of the logarithm, and both variance
+quantities are posterior averages of per-hypothesis variances. The fixed-time
+normalized score is not an e-process, and no time-uniform, countable-catalog,
+or all-real optimization claim is made; broader time-uniform
+empirical-Bernstein PAC-Bayes results already exist in the literature (Jang,
+Jun, Neu, and Orabona, COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023).
+
 `PACBayes.FiniteEmpiricalVariancePACBayes` lifts the normalized moment to one
 fixed-sample, fixed-tilt exceptional set of finite-product mass at most
 `delta`. The mass theorem assumes finite data and hypothesis types, a
@@ -281,8 +301,9 @@ i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
 The separate-event empirical-Bernstein risk result does not yet use the
-fixed-sample joint moment. A posterior-uniform confidence theorem derived from
-that joint moment, all-real optimization, and a time-uniform joint process are
+fixed-sample joint moment; the one-event joint catalog is a distinct endpoint
+and does not replace it. The exact piecewise `xi` residual, its zero-residual
+specialization, all-real optimization, and a time-uniform joint process are
 still open. A countable indicator-Bernstein catalog and exact all-real
 `lambda` optimization are also open.
 

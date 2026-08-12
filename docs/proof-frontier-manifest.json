@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The joint MGF core is per hypothesis and fixed sample: it has no prior mixture, posterior variational step, confidence event, or tilt catalog. The checked risk result still uses separate events, and neither lane gives all-real or time-uniform inference.",
+      "boundary": "The one-event joint catalog is fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair, with the Bennett log stated at the posterior-averaged variance. The checked risk result still uses separate events, and neither lane gives all-real or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Lift the checked fixed-sample joint MGF through a finite prior mixture and one posterior-uniform confidence event; treat countable, all-real, and time-uniform adaptation separately.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core",
+      "next_step": "Formalize the exact piecewise xi residual and its zero-residual specialization, or package the integrated stack; treat countable, all-real, and time-uniform adaptation separately.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 149,
-    "library_and_example_lean_lines": 83634,
-    "library_lean_lines": 71716,
-    "library_modules": 190,
-    "theorem_map_entries": 707
+    "example_lean_files": 150,
+    "library_and_example_lean_lines": 84691,
+    "library_lean_lines": 72397,
+    "library_modules": 191,
+    "theorem_map_entries": 720
   },
   "theorem_families": [
     {
@@ -3348,6 +3348,30 @@
           "summary": "Linear-minus-quadratic variance coefficient in the fixed-sample joint mean/Bessel-variance exponential moment"
         },
         {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVarianceScore",
+          "summary": "Per-hypothesis normalized fixed-sample joint mean/empirical-variance score"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariancePriorMoment",
+          "summary": "Prior moment of the joint score at one sample and one catalog pair"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVarianceMasterMixture",
+          "summary": "Prior-and-catalog master mixture over the weighted per-entry prior score moments"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVarianceCatalogBadSamples",
+          "summary": "Single catalog bad-sample set thresholding the master mixture at 1 / delta"
+        },
+        {
           "kind": "theorem",
           "module": "PACBayes.FiniteExponentialTilt",
           "name": "finiteExponentialTiltNormalizer_pos",
@@ -3460,6 +3484,60 @@
           "module": "PACBayes.FiniteJointMeanVarianceMGF",
           "name": "finiteJointMeanVariance_normalizedMGF_le_one",
           "summary": "Normalized fixed-sample joint score has finite-product expectation at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_priorMoment_expectation_le_one",
+          "summary": "Prior score moment has finite-product expectation at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_masterMixture_expectation_le_one",
+          "summary": "Master mixture expectation is at most the total catalog weight, hence at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_catalogBadSamples_mass_le_delta",
+          "summary": "The single catalog bad set has product-law mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_priorMoment_le_of_not_mem",
+          "summary": "Outside the one event, each entry keeps its prior moment at most 1 / (delta * w c)"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorScore_le_of_not_mem",
+          "summary": "One-KL Donsker-Varadhan score bound for every posterior and entry on the good event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorGap_le_of_not_mem",
+          "summary": "Raw retained-variance posterior inequality with the Bennett log at the posterior-averaged variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorGap_div_le_of_not_mem",
+          "summary": "Division form of the retained-variance inequality for a strictly positive mean tilt"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem",
+          "summary": "Selector endpoint: the catalog entry may depend on the sample and the posterior"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem",
+          "summary": "Division form of the selector endpoint for all-positive mean tilts"
         }
       ],
       "name": "Finite exponential tilting"

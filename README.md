@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C160-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-190-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-83%2C634-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C207-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-191-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-84%2C691-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -226,6 +226,20 @@ declaration and prints its axiom profile.
   posterior-uniform confidence theorem, tilt catalog, or time-uniform process;
   [`CheckFiniteJointMeanVarianceMGF.lean`](./examples/CheckFiniteJointMeanVarianceMGF.lean),
   [`FiniteJointMeanVarianceMGF.lean`](./FormalSLT/PACBayes/FiniteJointMeanVarianceMGF.lean)
+- **One-event joint mean/variance posterior catalog** —
+  `finiteJointMeanVariance_catalogBadSamples_mass_le_delta` thresholds one
+  prior-and-catalog master mixture at `1 / delta` to get a single bad-sample
+  set of mass at most `delta`, and
+  `finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem` gives every
+  posterior a retained-variance inequality with one KL term at a catalog
+  entry selected after seeing the sample and the posterior. The Bennett log
+  is stated at the posterior-averaged variance via concavity. Fixed-sample,
+  finite, and declared in advance: the score is not an e-process, and
+  time-uniform empirical-Bernstein PAC-Bayes results exist in prior work
+  (Jang et al., COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023). The receipt
+  drives two unequal-weight entries with a selector attaining both;
+  [`CheckFiniteJointMeanVariancePACBayes.lean`](./examples/CheckFiniteJointMeanVariancePACBayes.lean),
+  [`FiniteJointMeanVariancePACBayes.lean`](./FormalSLT/PACBayes/FiniteJointMeanVariancePACBayes.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
