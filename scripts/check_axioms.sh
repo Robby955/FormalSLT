@@ -32,6 +32,7 @@ THEOREMS=(
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.timeUniformIIDGaussianPACBayes_selected_bound"
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianGrid_certificate"
   "FormalSLT.PACBayes.IIDContinuousGaussianGrid.fairBoolThreshold_twoGaussianSelected_certificate"
+  "FormalSLT.Probability.BernsteinMGF.bennett_mgf_le_one_add"
   "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_secondMoment_eq"
   "FormalSLT.PACBayes.FiniteProductBernstein.indicator_product_normalizedMGF_le_one"
   "FormalSLT.PACBayes.IndicatorBernsteinMoment.indicator_expectedPriorBernsteinExpMoment_le_one"
@@ -62,6 +63,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussian"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussianGrid"
+  echo "import FormalSLT.Probability.BernsteinMGF"
   echo "import FormalSLT.PACBayes.IndicatorVariance"
   echo "import FormalSLT.PACBayes.FiniteProductBernstein"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinMoment"
@@ -82,6 +84,7 @@ echo "== building flagship modules =="
   FormalSLT.TestTimeMeta.FlagshipAnytimeValid \
   FormalSLT.PACBayes.IIDContinuousGaussian \
   FormalSLT.PACBayes.IIDContinuousGaussianGrid \
+  FormalSLT.Probability.BernsteinMGF \
   FormalSLT.PACBayes.IndicatorVariance \
   FormalSLT.PACBayes.FiniteProductBernstein \
   FormalSLT.PACBayes.IndicatorBernsteinMoment \

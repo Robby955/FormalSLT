@@ -86,10 +86,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 140,
-    "library_and_example_lean_lines": 78136,
-    "library_lean_lines": 68099,
+    "library_and_example_lean_lines": 78221,
+    "library_lean_lines": 68120,
     "library_modules": 179,
-    "theorem_map_entries": 649
+    "theorem_map_entries": 650
   },
   "theorem_families": [
     {
@@ -2292,6 +2292,12 @@
           "module": "Probability.BernsteinMGF",
           "name": "exp_le_quadratic_of_le",
           "summary": "Pointwise Bennett inequality for a centered bounded variable"
+        },
+        {
+          "kind": "theorem",
+          "module": "Probability.BernsteinMGF",
+          "name": "bennett_mgf_le_one_add",
+          "summary": "Finite Bennett MGF with the affine variance factor retained"
         },
         {
           "kind": "theorem",

@@ -29,6 +29,9 @@ localized Bernstein theorem.
 
 /-! ## Finite Bennett MGF and sub-Gamma simplification -/
 
+#check @FormalSLT.Probability.BernsteinMGF.bennett_mgf_le_one_add
+#print axioms FormalSLT.Probability.BernsteinMGF.bennett_mgf_le_one_add
+
 #check @FormalSLT.Probability.BernsteinMGF.bennett_mgf
 #print axioms FormalSLT.Probability.BernsteinMGF.bennett_mgf
 
@@ -62,3 +65,64 @@ localized Bernstein theorem.
 
 #check @FormalSLT.Rademacher.Localized.localizedFiniteClassBernsteinHighConfidence_empirical_nonpos
 #print axioms FormalSLT.Rademacher.Localized.localizedFiniteClassBernsteinHighConfidence_empirical_nonpos
+
+/-! ## Concrete retained-factor witness -/
+
+namespace RetainedFactorBennettWitness
+
+/-- Fair weights on a two-point sample space. -/
+noncomputable def fairWeight (_z : Bool) : ℝ := 1 / 2
+
+/-- A nonconstant centered observable with second moment `1/4`. -/
+noncomputable def centeredSign : Bool → ℝ
+  | false => -(1 / 2)
+  | true => 1 / 2
+
+/-- The retained-factor Bennett endpoint applies to a genuine nonconstant
+two-point law at positive tilt, upper bound, and variance proxy. -/
+theorem fairCenteredSign_retained :
+    ∑ z : Bool, fairWeight z * Real.exp (1 * centeredSign z)
+      ≤ 1 + (Real.exp (1 * (1 / 2)) - 1 - 1 * (1 / 2)) / (1 / 2) ^ 2 * (1 / 4) := by
+  apply FormalSLT.Probability.BernsteinMGF.bennett_mgf_le_one_add
+      (b := 1 / 2) (v := 1 / 4) (lam := 1)
+  · norm_num
+  · norm_num
+  · intro z
+    norm_num [fairWeight]
+  · norm_num [fairWeight]
+  · norm_num [fairWeight, centeredSign]
+  · intro z
+    cases z <;> norm_num [centeredSign]
+  · norm_num [fairWeight, centeredSign]
+
+theorem centeredSign_nonconstant : centeredSign false ≠ centeredSign true := by
+  norm_num [centeredSign]
+
+/-- At this witness the retained Bennett correction is genuinely positive. -/
+theorem retainedBudget_pos :
+    0 < (Real.exp (1 * (1 / 2)) - 1 - 1 * (1 / 2)) / (1 / 2) ^ 2 * (1 / 4) := by
+  have h := Real.add_one_lt_exp (show (1 / 2 : ℝ) ≠ 0 by norm_num)
+  norm_num at h ⊢
+  linarith
+
+/-- The retained affine factor is strictly below its exponential relaxation on
+the concrete positive-budget witness. -/
+theorem retained_strictly_sharper :
+    1 + (Real.exp (1 * (1 / 2)) - 1 - 1 * (1 / 2)) / (1 / 2) ^ 2 * (1 / 4)
+      < Real.exp ((Real.exp (1 * (1 / 2)) - 1 - 1 * (1 / 2)) /
+          (1 / 2) ^ 2 * (1 / 4)) := by
+  simpa [add_comm] using Real.add_one_lt_exp (ne_of_gt retainedBudget_pos)
+
+#check fairCenteredSign_retained
+#print axioms fairCenteredSign_retained
+
+#check centeredSign_nonconstant
+#print axioms centeredSign_nonconstant
+
+#check retainedBudget_pos
+#print axioms retainedBudget_pos
+
+#check retained_strictly_sharper
+#print axioms retained_strictly_sharper
+
+end RetainedFactorBennettWitness
