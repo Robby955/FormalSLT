@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C152-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-189-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-83%2C051-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C160-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-190-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-83%2C634-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -215,6 +215,17 @@ declaration and prints its axiom profile.
   [`FiniteEmpiricalVariancePACBayes.lean`](./FormalSLT/PACBayes/FiniteEmpiricalVariancePACBayes.lean),
   [`FiniteBoundedLossBernstein.lean`](./FormalSLT/PACBayes/FiniteBoundedLossBernstein.lean),
   [`FiniteEmpiricalBernsteinRisk.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinRisk.lean)
+- **Fixed-sample joint mean/Bessel-variance MGF core** —
+  `finiteJointMeanVarianceMGF_le` combines the lower-tail mean score and
+  Bessel empirical-variance score by an exact finite exponential tilt, while
+  `finiteJointMeanVariance_normalizedMGF_le_one` moves the Bennett and
+  transported-variance corrections inside one normalized exponential. The
+  fair-Boolean receipt uses the nonconstant loss `0, 1`, `n = 2`, and positive
+  tilts `t = eta = 1/2`, for which the joint variance coefficient is `1/2`.
+  This is a per-hypothesis fixed-sample moment, not yet a prior mixture,
+  posterior-uniform confidence theorem, tilt catalog, or time-uniform process;
+  [`CheckFiniteJointMeanVarianceMGF.lean`](./examples/CheckFiniteJointMeanVarianceMGF.lean),
+  [`FiniteJointMeanVarianceMGF.lean`](./FormalSLT/PACBayes/FiniteJointMeanVarianceMGF.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -357,6 +368,10 @@ release check is in [Audit commands](#audit-commands).
   declared positive tilt should give a fixed-sample event simultaneous over
   every finite posterior. This endpoint averages each hypothesis's variance;
   it does not take the variance of a posterior-averaged loss.
+- Use `FormalSLT.PACBayes.FiniteJointMeanVarianceMGF` for the fixed-sample,
+  per-hypothesis exponential moment coupling the lower-tail mean score to the
+  Bessel empirical variance. The normalized endpoint has expectation at most
+  one but does not itself quantify over priors, posteriors, or tilt catalogs.
 - Use `FormalSLT.PACBayes.FiniteBoundedLossBernstein` for the separate
   fixed-`lambda` population-risk Bernstein event. Use
   `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk` to combine it with the
@@ -546,13 +561,13 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 [theorem index](./docs/INDEX.md). The remaining public boundaries are:
 
 - [ ] Continuous Dudley entropy integral over total-bounded classes
-- [ ] Empirical-variance exponential moment and posterior-uniform PAC-Bayes
-  Bernstein theorem (the finite pairwise and IID-unbiasedness foundation is
-  checked)
+- [ ] Lift the checked fixed-sample joint mean/Bessel-variance exponential
+  moment through a finite prior mixture and one posterior-uniform PAC-Bayes
+  confidence event
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
-- [ ] Replace finite confidence allocation by a normalized joint
-  hypothesis--tilt e-process mixture, then study conditional e-variable
-  composition and composite nulls
+- [ ] Extend fixed-sample joint scores to a normalized hypothesis--tilt
+  e-process mixture, then study conditional e-variable composition and
+  composite nulls
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 - [ ] Extend the finite Markov PAC-Bayes certificate to random initial laws,

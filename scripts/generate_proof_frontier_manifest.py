@@ -115,21 +115,23 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "random-matching source MGF, fixed-tilt posterior-uniform "
             "variance confidence, a standalone weighted finite variance-tilt "
             "catalog, fixed-parameter observable risk, and separately "
-            "weighted finite eta/lambda catalogs"
+            "weighted finite eta/lambda catalogs, plus a fixed-sample "
+            "per-hypothesis joint mean/Bessel-variance MGF core"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Prove a retained-log Bennett risk endpoint; treat countable or "
-            "all-real tilt adaptation as a separate normalized-mixture lane."
+            "Lift the checked fixed-sample joint MGF through a finite prior "
+            "mixture and one posterior-uniform confidence event; treat "
+            "countable, all-real, and time-uniform adaptation separately."
         ),
         "boundary": (
-            "The checked risk result is finite-IID and fixed-sample. Its "
-            "finite catalogs and positive weights are declared in advance; "
-            "it is not all-real tilt optimization, retained-log Bennett, or "
-            "time-uniform inference."
+            "The joint MGF core is per hypothesis and fixed sample: it has no "
+            "prior mixture, posterior variational step, confidence event, or "
+            "tilt catalog. The checked risk result still uses separate "
+            "events, and neither lane gives all-real or time-uniform inference."
         ),
     },
     {

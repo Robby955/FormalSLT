@@ -209,6 +209,18 @@ source-normalized lower-tail exponential moment for finite IID samples and
 permutations and applies finite Jensen. It is a random-matching proof, not an
 entropy-method proof, and no new statistical inequality is claimed.
 
+`PACBayes.FiniteBoundedLossExponentialTilt` specializes finite exponential
+tilting to the lower-tail score `-t * ell i z`, proves the exact coordinate and
+product change-of-measure identities, and transports population variance via
+`exp (-t) * V_p <= V_{q_t}` without assuming full support. Building on it,
+`PACBayes.FiniteJointMeanVarianceMGF` combines the lower-tail mean score and
+Bessel empirical-variance score into one fixed-sample per-hypothesis
+exponential moment. It assumes finite data, `[0,1]` losses, `n >= 2`,
+nonnegative tilts, and a nonnegative linear-minus-quadratic variance
+coefficient. The module does not yet mix over a prior, invoke a variational
+inequality, define a confidence event, support post-data tilt selection, or
+construct a time-uniform process.
+
 `PACBayes.FiniteEmpiricalVariancePACBayes` lifts the normalized moment to one
 fixed-sample, fixed-tilt exceptional set of finite-product mass at most
 `delta`. The mass theorem assumes finite data and hypothesis types, a
@@ -268,10 +280,11 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-The empirical-Bernstein risk result does not yet provide all-real optimization,
-the retained-log Bennett endpoint, or a time-uniform counterpart. A countable
-indicator-Bernstein catalog and exact all-real `lambda` optimization are also
-open.
+The separate-event empirical-Bernstein risk result does not yet use the
+fixed-sample joint moment. A posterior-uniform confidence theorem derived from
+that joint moment, all-real optimization, and a time-uniform joint process are
+still open. A countable indicator-Bernstein catalog and exact all-real
+`lambda` optimization are also open.
 
 ### Algorithmic stability expected bound
 
