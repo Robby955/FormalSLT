@@ -220,6 +220,39 @@ population or empirical variance; it is not the variance of a
 posterior-averaged loss. The rearranged bound additionally requires
 `eta * n < 2 * (n - 1)` so its denominator is positive.
 
+`PACBayes.FiniteEmpiricalVarianceTiltCatalog` allocates a single variance
+failure budget across a finite, predeclared `eta` catalog using positive
+weights whose sum is at most one. Its shared event is simultaneous over every
+catalog entry and finite posterior, so the entry may be selected from the
+observed sample and posterior. The concrete receipt uses unequal weights and
+distinct tilts, exercises two posterior-dependent selector branches on
+positive-mass samples, and proves both resulting certificates below `1/4`.
+This is still fixed-sample finite-catalog adaptation, not all-real or
+time-uniform optimization.
+
+`PACBayes.FiniteBoundedLossBernstein` proves the complementary one-sided
+population-risk Bernstein event for arbitrary finite `[0,1]` losses. Its fixed
+tilt satisfies `0 < lambda < 3n`, and its variance term is the posterior
+average of the per-hypothesis population variances. It is not the variance of
+the posterior-averaged loss.
+
+`PACBayes.FiniteEmpiricalBernsteinRisk` unions that event with the empirical-
+variance event. The combined bad mass is at most
+`deltaVariance + deltaRisk`; the two arguments use the same sample but do not
+assume independence. Outside the union, the final observable risk inequality
+holds simultaneously for every finite posterior. Both tilts and both failure
+budgets must be declared before observing the sample.
+
+`PACBayes.FiniteEmpiricalBernsteinRiskCatalog` separately allocates the two
+failure budgets across finite, predeclared `eta` and `lambda` catalogs using
+positive weights whose sums are at most one. Its combined event still costs
+only `deltaVariance + deltaRisk`, rather than one budget for every Cartesian
+pair. Outside that event, both catalog entries may be selected after observing
+the sample and posterior. Its variance half is the standalone variance catalog,
+and its risk half uses the same reusable plain-sum union-bound lemma. The
+catalogs, weights, and selector rules are fixed in advance; this is not
+optimization over all real tilts.
+
 The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
 end-to-end i.i.d. bounded-loss specialization for finite-dimensional spherical
@@ -235,9 +268,8 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-The empirical-variance result does not yet provide a finite tilt catalog,
-post-sample tilt selection, an all-real-`eta` optimization, a time-uniform
-confidence sequence, or a final empirical-Bernstein risk theorem. A countable
+The empirical-Bernstein risk result does not yet provide all-real optimization,
+the retained-log Bennett endpoint, or a time-uniform counterpart. A countable
 indicator-Bernstein catalog and exact all-real `lambda` optimization are also
 open.
 

@@ -123,6 +123,44 @@ theorem finiteProbabilityUnionBound_proof :
       rw [Finset.sum_comm]
 
 /--
+Finite weighted union bound in plain summation form.
+
+The covered set `U` is described only by the property that each of its elements
+lies in at least one `t j`.  Stating the hypothesis that way keeps the lemma
+independent of how `U` was built, so a caller whose union set carries its own
+`DecidableEq` instance never has to reconcile that instance with a freshly
+elaborated `Finset.biUnion`.
+-/
+theorem finiteWeightedUnionBound_sum_le_of_exists_mem
+    {α β : Type*} [Fintype β]
+    (U : Finset α) (t : β → Finset α) (w : α → ℝ)
+    (hw : ∀ a, 0 ≤ w a)
+    (hU : ∀ a ∈ U, ∃ j, a ∈ t j) :
+    ∑ a ∈ U, w a ≤ ∑ j, ∑ a ∈ t j, w a := by
+  classical
+  calc
+    (∑ a ∈ U, w a) ≤ ∑ a ∈ U, ∑ j : β, (if a ∈ t j then w a else 0) := by
+      refine Finset.sum_le_sum (fun a ha => ?_)
+      obtain ⟨j, hj⟩ := hU a ha
+      have hnonneg :
+          ∀ k ∈ (Finset.univ : Finset β), 0 ≤ (if a ∈ t k then w a else 0) := by
+        intro k _
+        by_cases hk : a ∈ t k <;> simp [hk, hw a]
+      have hsingle := Finset.single_le_sum hnonneg (Finset.mem_univ j)
+      simpa [hj] using hsingle
+    _ = ∑ j : β, ∑ a ∈ U, (if a ∈ t j then w a else 0) := Finset.sum_comm
+    _ ≤ ∑ j : β, ∑ a ∈ t j, w a := by
+      refine Finset.sum_le_sum (fun j _ => ?_)
+      calc
+        (∑ a ∈ U, if a ∈ t j then w a else 0)
+            = ∑ a ∈ U.filter (fun a => a ∈ t j), w a :=
+          (Finset.sum_filter _ _).symm
+        _ ≤ ∑ a ∈ t j, w a := by
+          refine Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun a _ _ => hw a)
+          intro a ha
+          exact (Finset.mem_filter.1 ha).2
+
+/--
 Finite measure-theoretic union bound.
 
 This is a thin wrapper around mathlib's finite-index subadditivity theorem.

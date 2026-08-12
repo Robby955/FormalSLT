@@ -57,9 +57,9 @@ Axiom status for printed declarations is within the expected mathlib profile:
 
 Finite union budgets:
 
-- `FormalSLT/Probability/FiniteUnionBound.lean:143`
+- `FormalSLT/Probability/FiniteUnionBound.lean:181`
   `finiteMeasureUnionBound_budget`
-- `FormalSLT/Probability/FiniteUnionBound.lean:198`
+- `FormalSLT/Probability/FiniteUnionBound.lean:236`
   `finiteMeasureUnionBound_cardInv`
 
 Dyadic and countable-time budget shell:

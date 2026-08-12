@@ -283,12 +283,18 @@
     source-normalized empirical-variance exponential moment for every
     `n >= 2`. Its fixed-tilt PAC-Bayes lift gives one bad set of mass at most
     `delta` and a variance comparison simultaneous over every finite posterior.
-    A finite weighted empirical-variance tilt catalog, a final risk theorem,
-    countable selectable `lambda` catalogs, exact all-real `lambda`
+    A separate arbitrary bounded-loss Bernstein event and an explicit finite
+    union now yield the fixed-parameter observable empirical-Bernstein risk
+    theorem with total failure `deltaVariance + deltaRisk`. Separately weighted
+    finite catalogs for both tilts now give sample- and posterior-dependent
+    selectors on one shared event without a Cartesian-pair confidence charge.
+    The variance catalog is also a standalone reusable module with a concrete
+    unequal-weight, two-branch receipt, and the final risk layer imports it.
+    Retained-log Bennett, countable selectable `lambda` catalogs, exact all-real
     optimization, continuous Bernstein posteriors, and infinite hypothesis
-    classes remain open. The separate bounded-loss continuous lane currently
-    covers a fixed spherical-Gaussian posterior; it does not close these
-    Bernstein extensions.
+    classes remain open. The separate
+    bounded-loss continuous lane currently covers a fixed spherical-Gaussian
+    posterior; it does not close these extensions.
 
 ### Long-term
 

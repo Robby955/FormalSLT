@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C023-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-182-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-80%2C267-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C126-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-186-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-82%2C334-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -65,13 +65,18 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   convergence, laws of large numbers, moments, finite estimation, Fisher
   information, Cramer-Rao, finite exponential families, and asymptotic
   statistics.
-- **Finite empirical-variance PAC-Bayes:** Bessel-corrected loss variance, its
+- **Finite empirical-Bernstein PAC-Bayes:** Bessel-corrected loss variance, its
   exact second-order pair representation and finite-i.i.d. unbiasedness, a
   source-normalized lower-tail MGF proved by random matching and finite Jensen,
   and a fixed-sample, fixed-tilt confidence event simultaneous over every
-  finite posterior. The endpoint controls the posterior average of
-  per-hypothesis population variances by the corresponding empirical average;
-  it is not yet a final empirical-Bernstein risk bound.
+  finite posterior. A separate bounded-loss Bernstein event and a finite union
+  bound now give the observable fixed-parameter risk theorem, with distinct
+  variance and risk failure budgets. Separately weighted finite `eta` and
+  `lambda` catalogs now permit both tilts to be selected after seeing the
+  sample and posterior. The variance catalog is also exposed as its own API,
+  with unequal weights, two selector branches, positive-mass samples, and both
+  concrete certificates below `1/4`. All-real tilt optimization, retained-log
+  Bennett, and time-uniform empirical-Bernstein risk remain open.
 
 The Dudley development is finite by design. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
@@ -180,7 +185,7 @@ declaration and prints its axiom profile.
   This remains finite, fixed-sample, and population-variance self-bounding; it
   is not empirical sample variance or all-real tilt optimization;
   [`CheckIndicatorBernsteinTiltCatalog.lean`](./examples/CheckIndicatorBernsteinTiltCatalog.lean)
-- **Finite empirical loss variance and fixed-tilt PAC-Bayes confidence** —
+- **Finite empirical loss variance and fixed-parameter PAC-Bayes risk** —
   `finiteEmpiricalVariance_eq_pairwise` identifies the Bessel-corrected
   variance with its ordered off-diagonal second-order statistic, while
   `finiteEmpiricalVariance_unbiased_finiteProduct` proves that its expectation
@@ -190,18 +195,26 @@ declaration and prints its axiom profile.
   `finiteEmpiricalVariancePACBayes_badEventMass_le_delta` gives one fixed-tilt
   bad set of mass at most `delta`. Outside it,
   `posteriorPopulationVariance_le_empiricalVariance_of_not_mem` holds for every
-  finite posterior, including one selected after observing the sample. The
+  finite posterior, including one selected after observing the sample.
+  `finiteBoundedLossBernstein_badEventMass_le_delta` supplies the separate
+  population-risk event, and
+  `posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem` combines
+  them with total failure at most `deltaVariance + deltaRisk`. The
   three-level loss receipt separately evaluates population variance `1/6`, one
   displayed empirical variance `1/4`, and the full `3^3`-sample expectation
   `1/6`. An asymmetric two-hypothesis receipt proves that the posterior selector
   takes both values on positive-mass samples and gives both branches a checked
-  certificate at most `202/825 < 1/4`. The confidence theorem has one declared
-  tilt and one fixed sample size; it is not tilt-grid, time-uniform, or a final
-  risk theorem;
+  certificate at most `202/825 < 1/4`. A fair nonconstant-loss receipt uses
+  separate `1/4` budgets, proves combined bad mass at most `1/2`, and derives a
+  good-sample final-risk witness. The theorem has two declared tilts and one
+  fixed sample size; it is not tilt-grid, all-real optimized, or time-uniform;
   [`CheckFiniteEmpiricalVariance.lean`](./examples/CheckFiniteEmpiricalVariance.lean),
   [`CheckFiniteEmpiricalVariancePACBayes.lean`](./examples/CheckFiniteEmpiricalVariancePACBayes.lean),
+  [`CheckFiniteEmpiricalBernsteinRisk.lean`](./examples/CheckFiniteEmpiricalBernsteinRisk.lean),
   [`FiniteEmpiricalVarianceMGF.lean`](./FormalSLT/PACBayes/FiniteEmpiricalVarianceMGF.lean),
-  [`FiniteEmpiricalVariancePACBayes.lean`](./FormalSLT/PACBayes/FiniteEmpiricalVariancePACBayes.lean)
+  [`FiniteEmpiricalVariancePACBayes.lean`](./FormalSLT/PACBayes/FiniteEmpiricalVariancePACBayes.lean),
+  [`FiniteBoundedLossBernstein.lean`](./FormalSLT/PACBayes/FiniteBoundedLossBernstein.lean),
+  [`FiniteEmpiricalBernsteinRisk.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinRisk.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -344,6 +357,11 @@ release check is in [Audit commands](#audit-commands).
   declared positive tilt should give a fixed-sample event simultaneous over
   every finite posterior. This endpoint averages each hypothesis's variance;
   it does not take the variance of a posterior-averaged loss.
+- Use `FormalSLT.PACBayes.FiniteBoundedLossBernstein` for the separate
+  fixed-`lambda` population-risk Bernstein event. Use
+  `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk` to combine it with the
+  empirical-variance event. The two confidence budgets are added; no
+  independence or single-event reuse is claimed.
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.
@@ -397,6 +415,8 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteEmpiricalVarianceMatching`,
   `PACBayes.FiniteEmpiricalVarianceMGF`,
   `PACBayes.FiniteEmpiricalVariancePACBayes`,
+  `PACBayes.FiniteBoundedLossBernstein`,
+  `PACBayes.FiniteEmpiricalBernsteinRisk`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
@@ -427,7 +447,9 @@ The main learning-theory results are deliberately finite and explicit.
   The empirical-variance specialization assumes a finite IID product law,
   sample size at least two, `[0,1]` losses, and one fixed positive tilt. Its one
   bad set is simultaneous over all finite posteriors and bounds the posterior
-  average of per-hypothesis variances.
+  average of per-hypothesis variances. A finite weighted empirical-variance tilt
+  catalog makes a family of such tilts simultaneously valid under one event and
+  supports sample- and posterior-dependent selection.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
@@ -447,9 +469,10 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- A finite tilt catalog or all-real-`eta` optimization for the empirical-
-  variance confidence theorem, a time-uniform counterpart, and a final
-  empirical-Bernstein risk theorem that consumes the variance certificate.
+- All-real tilt optimization, a retained-log Bennett risk endpoint, and a
+  time-uniform empirical-Bernstein risk theorem. The fixed rational two-event
+  theorem and separately weighted finite `eta`/`lambda` catalogs with
+  post-sample and posterior-dependent selectors are checked.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,

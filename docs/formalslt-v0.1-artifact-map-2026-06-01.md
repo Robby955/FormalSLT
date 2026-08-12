@@ -80,8 +80,8 @@ Main anchors:
 
 | Role | Declaration | Anchor |
 |---|---|---|
-| Finite budgeted union bound | `finiteMeasureUnionBound_budget` | `FormalSLT/Probability/FiniteUnionBound.lean:143` |
-| Equal-cardinality union budget | `finiteMeasureUnionBound_cardInv` | `FormalSLT/Probability/FiniteUnionBound.lean:198` |
+| Finite budgeted union bound | `finiteMeasureUnionBound_budget` | `FormalSLT/Probability/FiniteUnionBound.lean:181` |
+| Equal-cardinality union budget | `finiteMeasureUnionBound_cardInv` | `FormalSLT/Probability/FiniteUnionBound.lean:236` |
 | Countable dyadic budget sum | `finiteDyadicTimeBudget_tsum_le` | `FormalSLT/UniformConvergence.lean:244` |
 | Countable-time class union bound | `countableTimeClassUnionBound_dyadicBudget` | `FormalSLT/UniformConvergence.lean:286` |
 | Route-facing named radius | `zeroOneDyadicFiniteClassConfidenceRadius` | `FormalSLT/UniformConvergence.lean:333` |
