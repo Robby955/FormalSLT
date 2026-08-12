@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The checked result is finite-IID, per hypothesis, and an expectation identity. It is not a concentration theorem, a posterior-uniform confidence event, an anytime-valid result, or a PAC-Bayes empirical-Bernstein risk theorem.",
+      "boundary": "The checked confidence result is finite-IID, fixed-sample, and fixed-tilt. It compares posterior averages of per-hypothesis variances; it is not post-hoc tilt optimization, time-uniform inference, or a PAC-Bayes empirical-Bernstein risk theorem.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Prove the source-faithful self-bounding or U-statistic exponential moment comparing population and empirical variance, then apply finite Donsker-Varadhan and declared tilt selection.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, bounded-loss estimates, and finite-IID unbiasedness",
+      "next_step": "Add a declared finite weighted tilt catalog, then combine the selected variance certificate with the finite Bernstein risk layer.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, and fixed-tilt posterior-uniform variance confidence",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 141,
-    "library_and_example_lean_lines": 79564,
-    "library_lean_lines": 69402,
-    "library_modules": 181,
-    "theorem_map_entries": 655
+    "example_lean_files": 142,
+    "library_and_example_lean_lines": 80267,
+    "library_lean_lines": 69655,
+    "library_modules": 182,
+    "theorem_map_entries": 659
   },
   "theorem_families": [
     {
@@ -3117,35 +3117,59 @@
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalVarianceMatching",
-          "name": "average_perm_pairSquaredDifference_eq_sampleVarianceBessel",
-          "summary": "Identifies the permutation-average disjoint-pair statistic with Bessel empirical variance"
+          "name": "average_perm_pairCatalog_eq_sampleVarianceBessel",
+          "summary": "Averaging any fixed nonempty catalog of distinct coordinate pairs over all permutations recovers Bessel sample variance"
         },
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalVarianceMatching",
           "name": "finitePairBlock_factorization",
-          "summary": "Factors the exponential moment over independent disjoint sample pairs"
+          "summary": "Factors the finite-product expectation of a product over disjoint pair blocks into independent two-coordinate expectations"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVarianceMatching",
+          "name": "average_perm_finiteCanonicalPairMean_eq_sampleVarianceBessel",
+          "summary": "Identifies the permutation average of the canonical random-matching statistic with Bessel sample variance"
         },
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalVarianceMGF",
           "name": "finiteEmpiricalVariance_lowerTailMGF_randomMatching",
-          "summary": "Controls the empirical-variance lower-tail MGF by random matching and finite Jensen"
+          "summary": "Random-matching and finite-Jensen lower-tail MGF bound, with the exact disjoint-pair count in its coefficient"
         },
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalVarianceMGF",
           "name": "finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin",
-          "summary": "Source-normalized finite-IID empirical-variance MGF for every n >= 2"
+          "summary": "All-n >= 2 source-normalized finite-IID empirical-variance MGF inequality"
         },
         {
           "kind": "theorem",
           "module": "PACBayes.FiniteEmpiricalVarianceMGF",
           "name": "finiteEmpiricalVariance_normalizedLowerTailMGF_le_one",
-          "summary": "Moves the deterministic variance penalty inside the exponential for PAC-Bayes reuse"
+          "summary": "Moves the deterministic variance penalty inside the exponential to obtain the normalized moment used by change of measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariancePACBayes",
+          "name": "finiteEmpiricalVariance_expectedPriorBernsteinExpMoment_le_one",
+          "summary": "Averages the normalized per-hypothesis empirical-variance moment under a finite prior"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariancePACBayes",
+          "name": "finiteEmpiricalVariancePACBayes_badEventMass_le_delta",
+          "summary": "Bounds one fixed-sample, fixed-tilt exceptional set by delta; the event is shared by every finite posterior"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariancePACBayes",
+          "name": "posteriorPopulationVariance_le_empiricalVariance_of_not_mem",
+          "summary": "Outside the shared event, bounds the posterior average of per-hypothesis population variances by the corresponding empirical average and KL-confidence penalty"
         }
       ],
-      "name": "Finite empirical variance and random-matching MGF"
+      "name": "Finite empirical-variance foundations and fixed-tilt confidence"
     },
     {
       "entries": [

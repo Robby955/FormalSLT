@@ -535,7 +535,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
 | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite supplied margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
 
-## Finite empirical variance and random-matching MGF
+## Finite empirical-variance foundations and fixed-tilt confidence
 
 | Declaration | Module | Role |
 |---|---|---|
@@ -560,11 +560,15 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePairVarianceKernelExpectation_eq_populationVariance` | `PACBayes.FiniteEmpiricalVariance` | The independent-pair half squared-difference kernel has expectation equal to population variance |
 | `finiteProductSampleWeight_pairSquaredDifferenceExpectation_eq` | `PACBayes.FiniteEmpiricalVariance` | Expected squared loss difference across two distinct IID coordinates is twice the population variance |
 | `finiteEmpiricalVariance_unbiased_finiteProduct` | `PACBayes.FiniteEmpiricalVariance` | End-to-end finite-IID unbiasedness of the per-hypothesis Bessel empirical loss variance |
-| `average_perm_pairSquaredDifference_eq_sampleVarianceBessel` | `PACBayes.FiniteEmpiricalVarianceMatching` | Identifies the permutation-average disjoint-pair statistic with Bessel empirical variance |
-| `finitePairBlock_factorization` | `PACBayes.FiniteEmpiricalVarianceMatching` | Factors the exponential moment over independent disjoint sample pairs |
-| `finiteEmpiricalVariance_lowerTailMGF_randomMatching` | `PACBayes.FiniteEmpiricalVarianceMGF` | Controls the empirical-variance lower-tail MGF by random matching and finite Jensen |
-| `finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin` | `PACBayes.FiniteEmpiricalVarianceMGF` | Source-normalized finite-IID empirical-variance MGF for every `n >= 2` |
-| `finiteEmpiricalVariance_normalizedLowerTailMGF_le_one` | `PACBayes.FiniteEmpiricalVarianceMGF` | Moves the deterministic variance penalty inside the exponential for PAC-Bayes reuse |
+| `average_perm_pairCatalog_eq_sampleVarianceBessel` | `PACBayes.FiniteEmpiricalVarianceMatching` | Averaging any fixed nonempty catalog of distinct coordinate pairs over all permutations recovers Bessel sample variance |
+| `finitePairBlock_factorization` | `PACBayes.FiniteEmpiricalVarianceMatching` | Factors the finite-product expectation of a product over disjoint pair blocks into independent two-coordinate expectations |
+| `average_perm_finiteCanonicalPairMean_eq_sampleVarianceBessel` | `PACBayes.FiniteEmpiricalVarianceMatching` | Identifies the permutation average of the canonical random-matching statistic with Bessel sample variance |
+| `finiteEmpiricalVariance_lowerTailMGF_randomMatching` | `PACBayes.FiniteEmpiricalVarianceMGF` | Random-matching and finite-Jensen lower-tail MGF bound, with the exact disjoint-pair count in its coefficient |
+| `finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin` | `PACBayes.FiniteEmpiricalVarianceMGF` | All-`n >= 2` source-normalized finite-IID empirical-variance MGF inequality |
+| `finiteEmpiricalVariance_normalizedLowerTailMGF_le_one` | `PACBayes.FiniteEmpiricalVarianceMGF` | Moves the deterministic variance penalty inside the exponential to obtain the normalized moment used by change of measure |
+| `finiteEmpiricalVariance_expectedPriorBernsteinExpMoment_le_one` | `PACBayes.FiniteEmpiricalVariancePACBayes` | Averages the normalized per-hypothesis empirical-variance moment under a finite prior |
+| `finiteEmpiricalVariancePACBayes_badEventMass_le_delta` | `PACBayes.FiniteEmpiricalVariancePACBayes` | Bounds one fixed-sample, fixed-tilt exceptional set by `delta`; the event is shared by every finite posterior |
+| `posteriorPopulationVariance_le_empiricalVariance_of_not_mem` | `PACBayes.FiniteEmpiricalVariancePACBayes` | Outside the shared event, bounds the posterior average of per-hypothesis population variances by the corresponding empirical average and KL-confidence penalty |
 
 ## Conditional sub-Gamma extractor
 

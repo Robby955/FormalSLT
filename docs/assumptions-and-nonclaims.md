@@ -200,9 +200,7 @@ foundation for arbitrary real-valued per-hypothesis losses: population
 variance, Bessel-corrected empirical variance, its exact ordered-pair
 representation, and finite-IID unbiasedness for sample size at least two. The
 universal population bound `1/4`, empirical bound `1/2`, and empirical-risk
-self-bound additionally assume losses in `[0,1]`. Unbiasedness is an
-expectation identity; it does not itself provide a tail event or confidence
-bound, and it is not the variance of the posterior-averaged loss.
+self-bound additionally assume losses in `[0,1]`.
 
 `PACBayes.FiniteEmpiricalVarianceMatching` and
 `PACBayes.FiniteEmpiricalVarianceMGF` turn that foundation into the
@@ -210,6 +208,17 @@ source-normalized lower-tail exponential moment for finite IID samples and
 `n >= 2`. The proof averages disjoint-pair factorizations over coordinate
 permutations and applies finite Jensen. It is a random-matching proof, not an
 entropy-method proof, and no new statistical inequality is claimed.
+
+`PACBayes.FiniteEmpiricalVariancePACBayes` lifts the normalized moment to one
+fixed-sample, fixed-tilt exceptional set of finite-product mass at most
+`delta`. The mass theorem assumes finite data and hypothesis types, a
+full-support finite prior, `[0,1]` losses, `n >= 2`, and one declared positive
+tilt `eta`. Outside that one set, the confidence statement holds for every
+finite posterior, including a posterior selected after seeing the sample. It
+controls the posterior average computed after taking each hypothesis's
+population or empirical variance; it is not the variance of a
+posterior-averaged loss. The rearranged bound additionally requires
+`eta * n < 2 * (n - 1)` so its denominator is positive.
 
 The repository now has an
 arbitrary-measurable-hypothesis process-level PAC-Bayes theorem and an
@@ -226,10 +235,11 @@ give uniformity over every Gaussian posterior or every real-valued tilt. The
 i.i.d. learning theorem still does not cover arbitrary prior/posterior families
 on an unrestricted measurable hypothesis space.
 
-The empirical-variance MGF does not yet provide a posterior-uniform PAC-Bayes
-confidence event, a finite selectable tilt catalog, a final empirical-
-Bernstein risk theorem, or all-real-`λ` optimization. A countable indicator-
-Bernstein catalog is also open.
+The empirical-variance result does not yet provide a finite tilt catalog,
+post-sample tilt selection, an all-real-`eta` optimization, a time-uniform
+confidence sequence, or a final empirical-Bernstein risk theorem. A countable
+indicator-Bernstein catalog and exact all-real `lambda` optimization are also
+open.
 
 ### Algorithmic stability expected bound
 
