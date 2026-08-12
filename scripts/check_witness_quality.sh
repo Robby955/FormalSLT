@@ -134,6 +134,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckEProcess.lean"
   "examples/CheckBettingCSNonVacuityWitness.lean"
   "examples/CheckTimeUniformPACBayes.lean"
+  "examples/CheckTimeUniformScorePACBayes.lean"
   "examples/CheckIIDContinuousGaussianPACBayes.lean"
   "examples/CheckIIDContinuousGaussianGridPACBayes.lean"
   "examples/CheckDyadicEpochCS.lean"

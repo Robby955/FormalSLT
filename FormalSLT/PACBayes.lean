@@ -51,6 +51,7 @@ import FormalSLT.PACBayes.VCHybrid
 import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
+import FormalSLT.PACBayes.TimeUniformScorePACBayes
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
@@ -65,5 +66,6 @@ This declaration-free umbrella re-exports the supported finite, continuous,
 Gaussian, Bernstein, empirical-variance concentration, fixed and finite-catalog
 empirical-Bernstein risk, bounded-loss exponential-tilt variance comparison,
 fixed-n joint mean/empirical-variance exponential moments, the one-event
-joint mean/variance posterior catalog, and time-uniform PAC-Bayes surfaces.
+joint mean/variance posterior catalog, score-e-process, and time-uniform
+PAC-Bayes surfaces.
 -/

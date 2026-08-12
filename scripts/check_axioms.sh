@@ -79,6 +79,10 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes.finiteJointMeanVariance_posteriorGap_div_le_of_not_mem"
   "FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes.finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem"
   "FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes.finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem"
+  "FormalSLT.PACBayes.TimeUniformScore.scorePriorMixture_eProcess"
+  "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing"
+  "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayes_allPosteriors_bound"
+  "FormalSLT.PACBayes.TimeUniformScore.posteriorTarget_le_of_not_mem_timeUniformScorePACBayesFailure"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -117,6 +121,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes"
+  echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   for t in "${THEOREMS[@]}"; do
@@ -148,6 +153,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt \
   FormalSLT.PACBayes.FiniteJointMeanVarianceMGF \
   FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes \
+  FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes >/dev/null
 
