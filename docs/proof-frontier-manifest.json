@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 146,
-    "library_and_example_lean_lines": 82507,
-    "library_lean_lines": 70906,
-    "library_modules": 187,
-    "theorem_map_entries": 688
+    "example_lean_files": 147,
+    "library_and_example_lean_lines": 82673,
+    "library_lean_lines": 70998,
+    "library_modules": 188,
+    "theorem_map_entries": 690
   },
   "theorem_families": [
     {
@@ -3346,6 +3346,18 @@
           "module": "PACBayes.FiniteExponentialTilt",
           "name": "finiteExponentialTilt_changeOfMeasure",
           "summary": "Exact one-coordinate finite change-of-measure identity for arbitrary observables"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTiltProduct",
+          "name": "finiteProductSampleWeight_mul_exp_sum_eq",
+          "summary": "Pointwise identity relating the base product weight, the summed exponential score, and the tilted product weight"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTiltProduct",
+          "name": "finiteProductExponentialTilt_changeOfMeasure",
+          "summary": "Exact finite-product exponential change-of-measure identity for arbitrary sample functionals"
         }
       ],
       "name": "Finite exponential tilting"

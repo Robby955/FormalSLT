@@ -605,6 +605,8 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteExponentialTiltPMF_isPMF` | `PACBayes.FiniteExponentialTilt` | Normalizing an exponential tilt of a finite PMF produces another PMF |
 | `finiteExponentialTiltPMF_mul_normalizer` | `PACBayes.FiniteExponentialTilt` | Pointwise cancellation recovers the unnormalized exponential weight |
 | `finiteExponentialTilt_changeOfMeasure` | `PACBayes.FiniteExponentialTilt` | Exact one-coordinate finite change-of-measure identity for arbitrary observables |
+| `finiteProductSampleWeight_mul_exp_sum_eq` | `PACBayes.FiniteExponentialTiltProduct` | Pointwise identity relating the base product weight, the summed exponential score, and the tilted product weight |
+| `finiteProductExponentialTilt_changeOfMeasure` | `PACBayes.FiniteExponentialTiltProduct` | Exact finite-product exponential change-of-measure identity for arbitrary sample functionals |
 
 ## Conditional sub-Gamma extractor
 

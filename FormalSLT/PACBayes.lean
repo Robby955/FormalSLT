@@ -39,6 +39,7 @@ import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog
 import FormalSLT.PACBayes.FiniteExponentialTilt
+import FormalSLT.PACBayes.FiniteExponentialTiltProduct
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
