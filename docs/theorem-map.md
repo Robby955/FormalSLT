@@ -592,12 +592,16 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Combined catalog mass bound `deltaVariance + deltaRisk` without a Cartesian-pair confidence charge |
 | `posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Observable risk bound simultaneous over every pair of predeclared variance and risk tilts |
 | `posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinRiskCatalog` | Valid sample- and posterior-dependent selection from separate finite variance and risk catalogs |
+
 ## Finite exponential tilting
 
 | Declaration | Module | Role |
 |---|---|---|
 | `finiteExponentialTiltNormalizer` | `PACBayes.FiniteExponentialTilt` | Finite partition sum for an arbitrary exponential score under a base weight function |
 | `finiteExponentialTiltPMF` | `PACBayes.FiniteExponentialTilt` | Base weight function reweighted by an exponential score and divided by its partition sum |
+| `boundedLossTiltScore` | `PACBayes.FiniteBoundedLossExponentialTilt` | Lower-tail score `-t * ell i z` for a finite bounded loss |
+| `finiteBoundedLossTiltNormalizer` | `PACBayes.FiniteBoundedLossExponentialTilt` | Partition sum for the specialized lower-tail bounded-loss tilt |
+| `finiteBoundedLossTiltPMF` | `PACBayes.FiniteBoundedLossExponentialTilt` | Finite PMF obtained by reweighting with `exp (-t * ell i z)` |
 
 | Theorem | Module | Role |
 |---|---|---|
@@ -607,6 +611,15 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteExponentialTilt_changeOfMeasure` | `PACBayes.FiniteExponentialTilt` | Exact one-coordinate finite change-of-measure identity for arbitrary observables |
 | `finiteProductSampleWeight_mul_exp_sum_eq` | `PACBayes.FiniteExponentialTiltProduct` | Pointwise identity relating the base product weight, the summed exponential score, and the tilted product weight |
 | `finiteProductExponentialTilt_changeOfMeasure` | `PACBayes.FiniteExponentialTiltProduct` | Exact finite-product exponential change-of-measure identity for arbitrary sample functionals |
+| `finiteBoundedLossTiltPMF_isPMF` | `PACBayes.FiniteBoundedLossExponentialTilt` | The specialized lower-tail bounded-loss tilt is a PMF without a full-support assumption |
+| `finiteBoundedLossTilt_changeOfMeasure` | `PACBayes.FiniteBoundedLossExponentialTilt` | One-coordinate lower-tail loss change of measure, specialized from the generic identity |
+| `finiteBoundedLossTiltProduct_changeOfMeasure` | `PACBayes.FiniteBoundedLossExponentialTilt` | Finite-product lower-tail loss change of measure, specialized from the generic identity |
+| `finiteBoundedLossTiltNormalizer_le_one` | `PACBayes.FiniteBoundedLossExponentialTilt` | The partition sum of a nonnegative bounded-loss lower-tail tilt is at most one |
+| `finiteBoundedLossTilt_exp_neg_mul_le` | `PACBayes.FiniteBoundedLossExponentialTilt` | Pointwise density comparison `exp (-t) * p z <= q_t z` for losses in `[0,1]` |
+| `finiteWeightedSquaredError_eq_populationVariance_add_sq` | `PACBayes.FiniteBoundedLossExponentialTilt` | Exact finite-PMF squared-error decomposition around an arbitrary center |
+| `finitePopulationVariance_le_weightedSquaredError` | `PACBayes.FiniteBoundedLossExponentialTilt` | Population risk minimizes the finite-PMF weighted squared error |
+| `finitePopulationVariance_mul_exp_neg_le_tilted` | `PACBayes.FiniteBoundedLossExponentialTilt` | Tilted population variance is at least `exp (-t)` times the base population variance |
+| `finiteBoundedLoss_centeredBennettNormalizer_le` | `PACBayes.FiniteBoundedLossExponentialTilt` | Retained-affine-factor Bennett bound for the centered lower-tail loss score |
 
 ## Conditional sub-Gamma extractor
 
