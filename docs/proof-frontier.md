@@ -77,13 +77,12 @@ files.
   additionally has a posterior-uniform weighted tilt catalog; countable or
   all-real lambda optimization and posterior-uniform general continuous
   families remain open.
-- `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation now
-  checks Bessel-corrected empirical loss variance, its exact ordered-pair
-  second-order-statistic form, `[0,1]` bounds, and unbiasedness under the
-  explicit finite IID product law for sample size at least two. The next
-  load-bearing theorem is the source-faithful exponential-moment comparison
-  between population and empirical variance. Until that is checked, there is
-  no posterior-uniform confidence event or PAC-Bayes empirical-Bernstein risk
-  theorem; unbiasedness alone is not concentration.
+- `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation checks
+  Bessel-corrected empirical loss variance, its exact ordered-pair form,
+  `[0,1]` bounds, and finite-IID unbiasedness. A random-matching and finite-
+  Jensen argument now proves the source-normalized lower-tail exponential
+  moment for every sample size at least two. The next theorem is its finite
+  Donsker--Varadhan lift to one posterior-uniform confidence event; a final
+  empirical-Bernstein risk theorem remains open.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

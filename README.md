@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C955-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-179-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-78%2C221-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-1%2C978-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-181-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-79%2C564-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -65,11 +65,12 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   convergence, laws of large numbers, moments, finite estimation, Fisher
   information, Cramer-Rao, finite exponential families, and asymptotic
   statistics.
-- **Finite empirical-variance foundations:** Bessel-corrected loss variance,
-  its exact second-order pair representation, bounded-loss estimates, and an
-  end-to-end finite-i.i.d. unbiasedness theorem. This is the deterministic and
-  expectation layer only; the empirical-Bernstein exponential moment and
-  PAC-Bayes confidence theorem remain open.
+- **Finite empirical-variance MGF:** Bessel-corrected loss variance, its exact
+  second-order pair representation, bounded-loss estimates, finite-i.i.d.
+  unbiasedness, and the source-normalized lower-tail exponential moment. The
+  MGF uses random matching, disjoint-pair factorization, and finite Jensen to
+  handle shared observations. The posterior-uniform PAC-Bayes confidence and
+  final empirical-Bernstein risk theorems remain open.
 
 The Dudley development is finite by design. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
@@ -322,8 +323,11 @@ release check is in [Audit commands](#audit-commands).
   the catalog itself must be fixed in advance.
 - Use `FormalSLT.PACBayes.FiniteEmpiricalVariance` for the Bessel-corrected
   per-hypothesis loss variance, its exact pairwise form, bounded-loss
-  estimates, and finite-product unbiasedness. It is a foundation for a future
-  empirical-Bernstein theorem, not such a theorem itself.
+  estimates, and finite-product unbiasedness. Use
+  `FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching` and
+  `FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF` for the random-matching,
+  finite-Jensen proof of the source-normalized lower-tail MGF. These modules do
+  not yet provide a posterior-uniform confidence event or final risk theorem.
 - Use the continuous process-level PAC-Bayes endpoint only with a supplied
   prior-mixture supermartingale. The spherical-Gaussian specialization replaces
   its abstract KL term with the checked closed form.
@@ -422,10 +426,10 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- The source-faithful empirical-variance exponential-moment inequality and its
-  posterior-uniform PAC-Bayes Bernstein confidence theorem, as well as an
-  all-real-`λ` optimization theorem. The finite pairwise identity and IID
-  unbiasedness foundation are checked.
+- A posterior-uniform PAC-Bayes empirical-variance confidence theorem, a final
+  empirical-Bernstein risk theorem, and all-real-`λ` optimization. The
+  finite pairwise identity, IID unbiasedness, and source-normalized lower-tail
+  exponential moment are checked.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
