@@ -534,6 +534,32 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePACBayesBernsteinPenalty_badEventMass_le_delta` | `PACBayesBernstein` | Posterior-dependent finite Bernstein bad-event wrapper under complexity and penalty certificates |
 | `finitePACBayesBernsteinMargin_badEventMass_le_delta` | `PACBayesBernstein` | Finite supplied margin-proxy wrapper with `sqrt(2 * Vρ * Cρ) + scale * Cρ` penalty form |
 
+## Finite empirical-variance foundations
+
+| Declaration | Module | Role |
+|---|---|---|
+| `finitePopulationVariance` | `PACBayes.FiniteEmpiricalVariance` | Per-hypothesis population loss variance under a finite weight function |
+| `finiteEmpiricalVariance` | `PACBayes.FiniteEmpiricalVariance` | Per-hypothesis Bessel-corrected empirical loss variance |
+| `orderedOffDiagonalSquaredDifference` | `PACBayes.FiniteEmpiricalVariance` | Ordered sum of squared differences across distinct sample indices |
+| `finitePairwiseEmpiricalVariance` | `PACBayes.FiniteEmpiricalVariance` | Normalized second-order pair-statistic form of empirical variance |
+
+| Theorem | Module | Role |
+|---|---|---|
+| `finitePopulationVariance_nonneg` | `PACBayes.FiniteEmpiricalVariance` | Population loss variance is nonnegative under a finite PMF |
+| `finitePopulationVariance_eq_secondMoment_sub_riskSq` | `PACBayes.FiniteEmpiricalVariance` | Identifies population loss variance with the second moment minus squared risk |
+| `finitePopulationRisk_mem_Icc_of_bounded` | `PACBayes.FiniteEmpiricalVariance` | Places the population risk of a finite `[0,1]` loss in `[0,1]` |
+| `finitePopulationVariance_le_quarter` | `PACBayes.FiniteEmpiricalVariance` | Gives the universal `1/4` population-variance bound for finite `[0,1]` losses |
+| `finiteEmpiricalVariance_nonneg` | `PACBayes.FiniteEmpiricalVariance` | Bessel-corrected empirical loss variance is nonnegative for sample size at least two |
+| `orderedOffDiagonalSquaredDifference_eq_two_mul_card_mul_centeredSum` | `PACBayes.FiniteEmpiricalVariance` | Equates the ordered off-diagonal square-difference sum with twice the sample size times the centered sum of squares |
+| `finiteEmpiricalVariance_eq_pairwise` | `PACBayes.FiniteEmpiricalVariance` | Exact second-order pair-statistic representation of Bessel empirical variance |
+| `orderedOffDiagonalSquaredDifference_le` | `PACBayes.FiniteEmpiricalVariance` | Bounds the ordered pair numerator for samples in `[0,1]` |
+| `finiteEmpiricalVariance_le_card_div_pred_mul_empiricalRisk` | `PACBayes.FiniteEmpiricalVariance` | Source-facing self-bound `V_n <= n/(n-1) * Rhat_n` for `[0,1]` losses |
+| `finiteEmpiricalVariance_le_half` | `PACBayes.FiniteEmpiricalVariance` | Universal `1/2` bound for Bessel empirical variance of a finite `[0,1]` sample |
+| `finiteProductSampleWeight_pairExpectation` | `PACBayes.FiniteEmpiricalVariance` | Two distinct coordinates of the finite IID product sample have the product marginal |
+| `finitePairVarianceKernelExpectation_eq_populationVariance` | `PACBayes.FiniteEmpiricalVariance` | The independent-pair half squared-difference kernel has expectation equal to population variance |
+| `finiteProductSampleWeight_pairSquaredDifferenceExpectation_eq` | `PACBayes.FiniteEmpiricalVariance` | Expected squared loss difference across two distinct IID coordinates is twice the population variance |
+| `finiteEmpiricalVariance_unbiased_finiteProduct` | `PACBayes.FiniteEmpiricalVariance` | End-to-end finite-IID unbiasedness of the per-hypothesis Bessel empirical loss variance |
+
 ## Conditional sub-Gamma extractor
 
 | Theorem | Module | Role |

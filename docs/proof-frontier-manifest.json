@@ -46,6 +46,15 @@
       "status": "partially_closed"
     },
     {
+      "boundary": "The checked result is finite-IID, per hypothesis, and an expectation identity. It is not a concentration theorem, a posterior-uniform confidence event, an anytime-valid result, or a PAC-Bayes empirical-Bernstein risk theorem.",
+      "difficulty": "hard",
+      "id": "pac-bayes-empirical-bernstein",
+      "next_step": "Prove the source-faithful self-bounding or U-statistic exponential moment comparing population and empirical variance, then apply finite Donsker-Varadhan and declared tilt selection.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, bounded-loss estimates, and finite-IID unbiasedness",
+      "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
+      "status": "partially_closed"
+    },
+    {
       "boundary": "The current high-probability bounds use the Azuma constant; sharp McDiarmid should wait for the required measure-theoretic layer.",
       "difficulty": "hard",
       "id": "sharp-mcdiarmid-product-kernel",
@@ -76,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 139,
-    "library_and_example_lean_lines": 77260,
-    "library_lean_lines": 67361,
-    "library_modules": 178,
-    "theorem_map_entries": 631
+    "example_lean_files": 140,
+    "library_and_example_lean_lines": 78136,
+    "library_lean_lines": 68099,
+    "library_modules": 179,
+    "theorem_map_entries": 649
   },
   "theorem_families": [
     {
@@ -2988,6 +2997,119 @@
         }
       ],
       "name": "Stability and PAC-Bayes foundations"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePopulationVariance",
+          "summary": "Per-hypothesis population loss variance under a finite weight function"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteEmpiricalVariance",
+          "summary": "Per-hypothesis Bessel-corrected empirical loss variance"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "orderedOffDiagonalSquaredDifference",
+          "summary": "Ordered sum of squared differences across distinct sample indices"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePairwiseEmpiricalVariance",
+          "summary": "Normalized second-order pair-statistic form of empirical variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePopulationVariance_nonneg",
+          "summary": "Population loss variance is nonnegative under a finite PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePopulationVariance_eq_secondMoment_sub_riskSq",
+          "summary": "Identifies population loss variance with the second moment minus squared risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePopulationRisk_mem_Icc_of_bounded",
+          "summary": "Places the population risk of a finite [0,1] loss in [0,1]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePopulationVariance_le_quarter",
+          "summary": "Gives the universal 1/4 population-variance bound for finite [0,1] losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteEmpiricalVariance_nonneg",
+          "summary": "Bessel-corrected empirical loss variance is nonnegative for sample size at least two"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "orderedOffDiagonalSquaredDifference_eq_two_mul_card_mul_centeredSum",
+          "summary": "Equates the ordered off-diagonal square-difference sum with twice the sample size times the centered sum of squares"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteEmpiricalVariance_eq_pairwise",
+          "summary": "Exact second-order pair-statistic representation of Bessel empirical variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "orderedOffDiagonalSquaredDifference_le",
+          "summary": "Bounds the ordered pair numerator for samples in [0,1]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteEmpiricalVariance_le_card_div_pred_mul_empiricalRisk",
+          "summary": "Source-facing self-bound V_n <= n/(n-1) * Rhat_n for [0,1] losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteEmpiricalVariance_le_half",
+          "summary": "Universal 1/2 bound for Bessel empirical variance of a finite [0,1] sample"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteProductSampleWeight_pairExpectation",
+          "summary": "Two distinct coordinates of the finite IID product sample have the product marginal"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finitePairVarianceKernelExpectation_eq_populationVariance",
+          "summary": "The independent-pair half squared-difference kernel has expectation equal to population variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteProductSampleWeight_pairSquaredDifferenceExpectation_eq",
+          "summary": "Expected squared loss difference across two distinct IID coordinates is twice the population variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalVariance",
+          "name": "finiteEmpiricalVariance_unbiased_finiteProduct",
+          "summary": "End-to-end finite-IID unbiasedness of the per-hypothesis Bessel empirical loss variance"
+        }
+      ],
+      "name": "Finite empirical-variance foundations"
     },
     {
       "entries": [
