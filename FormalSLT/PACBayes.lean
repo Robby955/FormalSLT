@@ -38,6 +38,9 @@ import FormalSLT.PACBayes.FiniteBoundedLossBernstein
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog
+import FormalSLT.PACBayes.FiniteExponentialTilt
+import FormalSLT.PACBayes.FiniteExponentialTiltProduct
+import FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
 import FormalSLT.PACBayes.BernsteinBound
@@ -58,5 +61,6 @@ import FormalSLT.PACBayes.IIDContinuousGaussianGrid
 
 This declaration-free umbrella re-exports the supported finite, continuous,
 Gaussian, Bernstein, empirical-variance concentration, fixed and finite-catalog
-empirical-Bernstein risk, and time-uniform PAC-Bayes surfaces.
+empirical-Bernstein risk, bounded-loss exponential-tilt variance comparison,
+and time-uniform PAC-Bayes surfaces.
 -/

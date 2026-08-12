@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 145,
-    "library_and_example_lean_lines": 82334,
-    "library_lean_lines": 70802,
-    "library_modules": 186,
-    "theorem_map_entries": 682
+    "example_lean_files": 148,
+    "library_and_example_lean_lines": 83051,
+    "library_lean_lines": 71238,
+    "library_modules": 189,
+    "theorem_map_entries": 702
   },
   "theorem_families": [
     {
@@ -3308,6 +3308,131 @@
         }
       ],
       "name": "Finite empirical variance and fixed-parameter empirical-Bernstein risk"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteExponentialTilt",
+          "name": "finiteExponentialTiltNormalizer",
+          "summary": "Finite partition sum for an arbitrary exponential score under a base weight function"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteExponentialTilt",
+          "name": "finiteExponentialTiltPMF",
+          "summary": "Base weight function reweighted by an exponential score and divided by its partition sum"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "boundedLossTiltScore",
+          "summary": "Lower-tail score -t * ell i z for a finite bounded loss"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTiltNormalizer",
+          "summary": "Partition sum for the specialized lower-tail bounded-loss tilt"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTiltPMF",
+          "summary": "Finite PMF obtained by reweighting with exp (-t * ell i z)"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTilt",
+          "name": "finiteExponentialTiltNormalizer_pos",
+          "summary": "The finite exponential-tilt normalizer is positive under any PMF, without a full-support assumption"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTilt",
+          "name": "finiteExponentialTiltPMF_isPMF",
+          "summary": "Normalizing an exponential tilt of a finite PMF produces another PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTilt",
+          "name": "finiteExponentialTiltPMF_mul_normalizer",
+          "summary": "Pointwise cancellation recovers the unnormalized exponential weight"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTilt",
+          "name": "finiteExponentialTilt_changeOfMeasure",
+          "summary": "Exact one-coordinate finite change-of-measure identity for arbitrary observables"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTiltProduct",
+          "name": "finiteProductSampleWeight_mul_exp_sum_eq",
+          "summary": "Pointwise identity relating the base product weight, the summed exponential score, and the tilted product weight"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteExponentialTiltProduct",
+          "name": "finiteProductExponentialTilt_changeOfMeasure",
+          "summary": "Exact finite-product exponential change-of-measure identity for arbitrary sample functionals"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTiltPMF_isPMF",
+          "summary": "The specialized lower-tail bounded-loss tilt is a PMF without a full-support assumption"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTilt_changeOfMeasure",
+          "summary": "One-coordinate lower-tail loss change of measure, specialized from the generic identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTiltProduct_changeOfMeasure",
+          "summary": "Finite-product lower-tail loss change of measure, specialized from the generic identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTiltNormalizer_le_one",
+          "summary": "The partition sum of a nonnegative bounded-loss lower-tail tilt is at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLossTilt_exp_neg_mul_le",
+          "summary": "Pointwise density comparison exp (-t) * p z <= q_t z for losses in [0,1]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteWeightedSquaredError_eq_populationVariance_add_sq",
+          "summary": "Exact finite-PMF squared-error decomposition around an arbitrary center"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finitePopulationVariance_le_weightedSquaredError",
+          "summary": "Population risk minimizes the finite-PMF weighted squared error"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finitePopulationVariance_mul_exp_neg_le_tilted",
+          "summary": "Tilted population variance is at least exp (-t) times the base population variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteBoundedLossExponentialTilt",
+          "name": "finiteBoundedLoss_centeredBennettNormalizer_le",
+          "summary": "Retained-affine-factor Bennett bound for the centered lower-tail loss score"
+        }
+      ],
+      "name": "Finite exponential tilting"
     },
     {
       "entries": [
