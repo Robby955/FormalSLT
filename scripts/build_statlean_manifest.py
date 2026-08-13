@@ -129,7 +129,6 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
         "empiricalrisk",
         "excessrisk",
         "gengap",
-        "generalization",
     ],
     "stability": ["stability", "stable"],
     "sample statistics": ["samplemean", "samplevariance", "empiricalvariance", "sample mean", "sample variance", "empirical variance", "empirical-variance", "estimator"],
@@ -554,6 +553,7 @@ def main() -> int:
         assert "ERM" not in concepts_for(
             "finiteSupremumBound", "terminal supremum theorem", ""
         )
+        assert "ERM" not in concepts_for("pac_bayes_generalization", "", "")
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
         print("StatLean manifest self-test passed")
