@@ -257,8 +257,9 @@ declaration and prints its axiom profile.
 - **Continuous Dudley entropy integral under a supplied boundary certificate** —
   `continuous_dudley_entropy_integral` bounds the expected supremum of a
   finite sub-Gaussian process over a totally bounded metric index by
-  `coarseBudget + 4 * sqrt (2 * varianceProxy)` times the full interval
-  integral of the entropy profile on `(0, radiusScale / 2)`. The finite
+  `coarseBudget` plus the product of `4 * sqrt (2 * varianceProxy)` with the
+  full interval integral of the entropy profile on `(0, radiusScale / 2)`;
+  the coarse budget is added, not multiplied. The finite
   outcome support `[Fintype Ω]`, the antitone nonnegative integrable entropy
   profile, and the separable-terminal boundary certificate at every positive
   tolerance are caller-supplied hypotheses stated in the signature; arbitrary
