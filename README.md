@@ -81,9 +81,12 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   term per selected entry. The exact piecewise residual, all-real tilt
   optimization, and time-uniform empirical-Bernstein risk remain open.
 
-The Dudley core is finite by design; the continuous entropy-integral
-endpoints exist but carry their topological, finite-outcome, and
-boundary-certificate hypotheses in their signatures, and arbitrary measurable
+The Dudley core is finite by design. The finite-outcome endpoint
+`continuous_dudley_entropy_integral` assumes a totally bounded metric index,
+an antitone nonnegative interval-integrable entropy profile, and supplied
+separable-terminal boundary certificates. The measure-side endpoint is instead
+an expectation-operator lift from a supplied `MeasureChainingBudget`; it does
+not construct those metric or chaining hypotheses. Arbitrary measurable
 suprema remain out of scope. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
 finite-dimensional spherical Gaussian priors and posteriors. The statistics
@@ -266,8 +269,12 @@ declaration and prints its axiom profile.
   measurable suprema remain out of scope;
   [`CheckContinuousDudley.lean`](./examples/CheckContinuousDudley.lean)
 - **Measure-side continuous Dudley variant** —
-  `continuous_dudley_entropy_integral_of_measure`, the same
-  hypothesis-carrying endpoint stated against an integral expectation;
+  `continuous_dudley_entropy_integral_of_measure` is an expectation-operator
+  lift on a measurable space with a probability measure. It assumes a positive
+  `radiusScale`, nonnegative `varianceProxy` and entropy profile, interval
+  integrability on `[0, radiusScale / 2]`, and a supplied
+  `MeasureChainingBudget`; it does not inherit the finite-process or
+  topological hypotheses above;
   [`CheckMeasureDudley.lean`](./examples/CheckMeasureDudley.lean)
 - **Unit-interval finite-net bridge** —
   `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`;
