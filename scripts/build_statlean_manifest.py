@@ -16,7 +16,7 @@ Each selected record:
   id                 stable slug (family-shortmodule-name)
   source             "FormalSLT" + repo + commit
   concept_family     the manifest family this decl sits in
-  concept_tags       the 24-concept tags (Markov, Hoeffding, PAC-Bayes, ...)
+  concept_tags       the 25-concept tags (Markov, Hoeffding, PAC-Bayes, ...)
   informal_statement seeded from the Lean docstring (/-- ... -/)
   lean_statement     verbatim signature (decl head through the `:=`)
   lean_proof_pointer file:line of the declaration
@@ -27,7 +27,7 @@ Each selected record:
 
 Reuses:
   docs/proof-frontier-manifest.json   (family -> decl -> module -> role)
-  scripts/generate_theorem_index.py   (the 24-concept CONCEPT_TRIGGERS vocabulary)
+  scripts/generate_theorem_index.py   (the 25-concept CONCEPT_TRIGGERS vocabulary)
   scripts/statement_fidelity_check.py (the non-vacuity lint)
   scripts/check_axioms.sh             (the axiom-profile convention)
 
@@ -54,12 +54,14 @@ if __package__:
         resolve_source_declaration,
         source_resolution_self_test,
     )
+    from .generate_theorem_index import CONCEPT_TRIGGERS
 else:
     from generate_proof_frontier_manifest import (  # type: ignore[no-redef]
         LEAN_DECLARATION_PATTERN,
         resolve_source_declaration,
         source_resolution_self_test,
     )
+    from generate_theorem_index import CONCEPT_TRIGGERS  # type: ignore[no-redef]
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
@@ -82,62 +84,7 @@ FIDELITY = _find_fidelity()
 LAKE = os.path.expanduser("~/.elan/bin/lake")
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 
-# The 24-concept search vocabulary, kept in sync with generate_theorem_index.py.
-CONCEPT_TRIGGERS: dict[str, list[str]] = {
-    "Markov": ["markov"],
-    "Chebyshev": ["chebyshev"],
-    "Hoeffding": ["hoeffding"],
-    "Bernstein": ["bernstein"],
-    "Bennett": ["bennett"],
-    "Chernoff": ["chernoff"],
-    "sub-Gaussian": ["subgaussian", "sub-gaussian", "subgauss"],
-    "sub-Gamma": ["subgamma", "sub-gamma"],
-    "Azuma": ["azuma"],
-    "McDiarmid": ["mcdiarmid", "bounded difference", "boundeddiff"],
-    "union bound": ["unionbound", "union bound"],
-    "tail bound": ["_tail", "tail ", "tail-", "tail_", "tailbound"],
-    "MGF": ["mgf", "moment generating", "moment-generating"],
-    "confidence sequence": [
-        "confidence sequence",
-        "confidence-sequence",
-        "confidence_sequence",
-        "confidencesequence",
-        "time-uniform",
-        "time uniform",
-        "timeuniform",
-        "anytime",
-        "all-time",
-        "all time",
-        "ville",
-        "subgammacs",
-        "mixturecs",
-        "eprocess",
-        "e-process",
-        "subgaussiancs",
-        "attopcs",
-    ],
-    "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
-    "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "change of measure", "changeofmeasure"],
-    "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
-    "VC dimension": ["vc", "sauer", "shelah", "shatter"],
-    "covering / chaining": ["covering", "dudley", "chaining", "entropy", "net"],
-    "ERM": [
-        " iserm",
-        "_erm_",
-        "rademachererm",
-        " erm ",
-        "empiricalrisk",
-        "excessrisk",
-        "gengap",
-    ],
-    "stability": ["stability", "stable"],
-    "sample statistics": ["samplemean", "samplevariance", "empiricalvariance", "sample mean", "sample variance", "empirical variance", "empirical-variance", "estimator"],
-    "Glivenko-Cantelli": ["glivenko", "cantelli", "empiricalcdf", "empirical cdf", "lowerray", "lower ray", "lower-ray", "uniformdeviation", "bracketing"],
-    "Bernoulli": ["bernoulli"],
-    "risk": ["risk"],
-}
-
-# The 24 statistics concept families the harvest must span (the curation budget is
+# The 25 statistics concept families the harvest must span (the curation budget is
 # spread across these so no family is dropped).
 TARGET_CONCEPTS = list(CONCEPT_TRIGGERS.keys())
 
@@ -300,7 +247,8 @@ def harvest() -> list[dict[str, Any]]:
             res = resolve_decl(module, name)
             line1, idx0, kind = res
             lines = file_lines(module)
-            assert lines is not None
+            if lines is None:
+                raise ValueError(f"Lean source does not exist: {module_to_file(module)}")
             sig = extract_signature(lines, idx0)
             doc = extract_docstring(lines, idx0)
             body, body_lines = proof_body(lines, idx0)
@@ -378,7 +326,7 @@ def cleanliness(rec: dict[str, Any]) -> tuple:
 
 
 def curate(records: list[dict[str, Any]], target_lo: int, target_hi: int) -> list[dict[str, Any]]:
-    """Select the cleanest named theorems, spread across the 24 concept families.
+    """Select the cleanest named theorems, spread across the 25 concept families.
     Definitions are kept only as dependency context, never as benchmark tasks."""
     theorems = [r for r in records if r["kind"] in ("theorem", "lemma")]
     # bucket by primary concept tag (first tag), fall back to concept_family
@@ -556,6 +504,10 @@ def main() -> int:
         assert "ERM" not in concepts_for("pac_bayes_generalization", "", "")
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        line1, idx0, kind = resolve_decl(
+            "PACBayes.FiniteExponentialTilt", "finiteExponentialTiltNormalizer_pos"
+        )
+        assert line1 > 1 and idx0 == line1 - 1 and kind == "theorem"
         print("StatLean manifest self-test passed")
         return 0
 
