@@ -244,11 +244,10 @@ def harvest() -> list[dict[str, Any]]:
             name = entry["name"]
             module = entry["module"]
             summary = entry.get("summary", "")
-            res = resolve_decl(module, name)
-            line1, idx0, kind = res
             lines = file_lines(module)
             if lines is None:
                 raise ValueError(f"Lean source does not exist: {module_to_file(module)}")
+            line1, idx0, kind = resolve_decl(module, name)
             sig = extract_signature(lines, idx0)
             doc = extract_docstring(lines, idx0)
             body, body_lines = proof_body(lines, idx0)
