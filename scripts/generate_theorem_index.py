@@ -47,8 +47,10 @@ OUT_MD = ROOT / "docs" / "INDEX.md"
 REPO_URL = "https://github.com/Robby955/FormalSLT/blob/main"
 
 # Concept keywords: a declaration is tagged with every concept whose trigger
-# patterns appear (case-insensitively) in its name, summary, or family name.
-# This is the search vocabulary a user actually types.
+# patterns appear (case-insensitively) in its name or declaration-level summary.
+# The broader theorem-map family is deliberately excluded: family prose often
+# spans several neighboring ideas and otherwise leaks unrelated tags into every
+# declaration in the table.
 CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "Markov": ["markov"],
     "Chebyshev": ["chebyshev"],
@@ -83,24 +85,74 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
         "attopcs",
     ],
     "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
-    "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "change of measure", "changeofmeasure"],
+    "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "donsker", "variational"],
     "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
     "VC dimension": ["vc", "sauer", "shelah", "shatter"],
-    "covering / chaining": ["covering", "dudley", "chaining", "entropy", "net"],
+    "covering / chaining": [
+        "covering",
+        "dudley",
+        "chaining",
+        "entropy",
+        "finitenet",
+        "projectednet",
+        "dyadicnet",
+        "meshnet",
+        " finite net",
+        " projected net",
+        " dyadic net",
+        " net ",
+        "net_",
+    ],
     "ERM": [
-        " iserm",
+        "iserm",
         "_erm_",
         "rademachererm",
         " erm ",
-        "empiricalrisk",
-        "excessrisk",
-        "gengap",
+        "empirical risk minimizer",
+        "empirical-risk minimizer",
     ],
     "stability": ["stability", "stable"],
-    "sample statistics": ["samplemean", "samplevariance", "empiricalvariance", "sample mean", "sample variance", "empirical variance", "empirical-variance", "estimator"],
+    "sample statistics": [
+        "samplemean",
+        "samplevariance",
+        "empiricalvariance",
+        "weightedexpectation",
+        "weightedvariance",
+        "weightedcovariance",
+        "sample mean",
+        "sample variance",
+        "empirical variance",
+        "empirical-variance",
+        "estimator",
+    ],
     "Glivenko-Cantelli": ["glivenko", "cantelli", "empiricalcdf", "empirical cdf", "lowerray", "lower ray", "lower-ray", "uniformdeviation", "bracketing"],
     "Bernoulli": ["bernoulli"],
     "risk": ["risk"],
+    "exponential tilting": [
+        "exponentialtilt",
+        "exponential tilt",
+        "tiltpmf",
+        "tilted",
+        "change of measure",
+        "changeofmeasure",
+    ],
+    "likelihood / MLE": ["likelihood", "_mle", " mle", "argmax"],
+    "unbiasedness": ["unbiased"],
+    "Fisher information": ["fisherinformation", "fisher information"],
+    "Cramér-Rao": ["cramerrao", "cramer-rao", "cramér-rao"],
+    "survey sampling": ["horvitz", "survey sampling", "design-unbiased", "inclusion probability"],
+    "bootstrap": ["bootstrap"],
+    "exponential family": [
+        "exponentialfamily",
+        "exponential family",
+        "finiteexponentialpmf",
+        "finitepartition",
+        "finitemean_hasderiv",
+        "finitemean_deriv",
+        "bernoullinatural",
+        "logpartition",
+        "log-partition",
+    ],
 }
 
 # Concepts that are mathematically present but not reliably recoverable from a
@@ -108,25 +160,31 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
 # triggers such as "indicator" would incorrectly tag CDF indicator families as
 # Bernoulli results.
 DECLARATION_CONCEPTS: dict[str, list[str]] = {
-    "indicatorPopulationRisk_mem_Icc": ["Bernoulli"],
-    "indicatorDeviation_centered": ["Bernoulli"],
-    "indicatorDeviation_secondMoment_eq": ["Bernoulli"],
-    "indicator_oneCoordinateDeviationMGF_le": ["Bernoulli"],
-    "indicator_product_mgf_le": ["Bernoulli"],
-    "indicator_product_normalizedMGF_le_one": ["Bernoulli"],
-    "indicatorBernstein_normalization_eq_budget": ["Bernoulli"],
-    "indicator_expectedPriorBernsteinExpMoment_le_one": ["Bernoulli", "MGF"],
-    "indicatorFinitePACBayesBernsteinBadSamples": ["Bernoulli"],
-    "indicator_posteriorGeneralizationGap_le_of_not_mem": ["Bernoulli"],
-    "indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta": ["Bernoulli"],
-    "indicatorFinitePACBayesBernsteinWeightedCatalogBadSamples": ["Bernoulli"],
-    "indicator_mem_weightedCatalog_iff": ["Bernoulli"],
-    "indicator_not_mem_weightedCatalog_iff": ["Bernoulli"],
-    "indicatorFixedTiltBadSamples_subset_weightedCatalog": ["Bernoulli"],
-    "indicator_posteriorGeneralizationGap_le_weightedCatalog_of_not_mem": ["Bernoulli"],
-    "indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta": ["Bernoulli"],
-    "indicator_posteriorRisk_le_weightedLowRiskCatalog_of_not_mem": ["Bernoulli"],
-    "indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorVariance.indicatorPopulationRisk_mem_Icc": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_centered": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_secondMoment_eq": ["Bernoulli"],
+    "FormalSLT.PACBayes.FiniteProductBernstein.indicator_oneCoordinateDeviationMGF_le": ["Bernoulli"],
+    "FormalSLT.PACBayes.FiniteProductBernstein.indicator_product_mgf_le": ["Bernoulli"],
+    "FormalSLT.PACBayes.FiniteProductBernstein.indicator_product_normalizedMGF_le_one": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinMoment.indicatorBernstein_normalization_eq_budget": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinMoment.indicator_expectedPriorBernsteinExpMoment_le_one": ["Bernoulli", "MGF"],
+    "FormalSLT.PACBayes.IndicatorBernsteinConfidence.indicatorFinitePACBayesBernsteinBadSamples": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinConfidence.indicator_posteriorGeneralizationGap_le_of_not_mem": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinConfidence.indicator_finitePACBayesBernstein_fixedLambda_badEventMass_le_delta": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicatorFinitePACBayesBernsteinWeightedCatalogBadSamples": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_mem_weightedCatalog_iff": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_not_mem_weightedCatalog_iff": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicatorFixedTiltBadSamples_subset_weightedCatalog": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorGeneralizationGap_le_weightedCatalog_of_not_mem": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_of_not_mem": ["Bernoulli"],
+    "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem": ["Bernoulli"],
+    "FormalSLT.Statistics.FisherInformation.scoreFunction": ["Fisher information"],
+    "FormalSLT.Statistics.FisherInformation.score_mean_zero_of_finite_regular": ["Fisher information"],
+    "FormalSLT.Statistics.FisherInformation.covariance_score_eq_deriv_mean": ["Fisher information"],
+    "FormalSLT.Statistics.FisherInformation.covariance_cauchy_schwarz": ["Fisher information"],
+    "FormalSLT.Statistics.CramerRao.cramerRao_unbiased": ["Fisher information"],
+    "FormalSLT.Statistics.CramerRao.bernoulliHalfCramerRaoWitness": ["Fisher information"],
 }
 
 def module_to_file(module: str) -> Path:
@@ -138,8 +196,13 @@ def resolve_decl(module: str, name: str) -> dict[str, Any]:
     return resolve_source_declaration(module_to_file(module), name)
 
 
-def concepts_for(name: str, summary: str, family: str) -> list[str]:
-    haystack = f" {name} {summary} {family} ".lower()
+def concepts_for(name: str, summary: str, _family: str) -> list[str]:
+    """Return declaration-local concept tags.
+
+    ``_family`` remains in the public helper signature for generator callers,
+    but is intentionally not part of the tagging haystack.
+    """
+    haystack = f" {name} {summary} ".lower()
     found = [
         concept
         for concept, triggers in CONCEPT_TRIGGERS.items()
@@ -171,7 +234,9 @@ def build_rows() -> list[dict[str, Any]]:
                     "family": fam_name,
                     "file": rel,
                     "line": declaration["line"],
-                    "concepts": concepts_for(name, summary, fam_name),
+                    "concepts": concepts_for(
+                        declaration["qualified_name"], summary, fam_name
+                    ),
                 }
             )
     rows.sort(key=lambda r: (r["family"], r["name"]))
@@ -228,6 +293,7 @@ def render_html(rows: list[dict[str, Any]]) -> str:
         else:
             loc_html = f'<span class="loc">{esc(row["file"])}</span>'
         chips = "".join(f'<span class="chip">{esc(c)}</span>' for c in row["concepts"])
+        concept_data = esc(json.dumps(row["concepts"], ensure_ascii=False))
         haystack = esc(
             " ".join(
                 [row["name"], row["module"], row["summary"], row["family"]]
@@ -235,7 +301,7 @@ def render_html(rows: list[dict[str, Any]]) -> str:
             ).lower()
         )
         cards.append(
-            f'<div class="row" data-search="{haystack}">'
+            f'<div class="row" data-search="{haystack}" data-concepts="{concept_data}">'
             f'<div class="decl"><code>{esc(row["name"])}</code>'
             f'<span class="kind">{esc(row["kind"])}</span></div>'
             f'<div class="meta">{chips}</div>'
@@ -307,8 +373,9 @@ function apply() {{
   let shown = 0;
   for (const r of rows) {{
     const hay = normalize(r.dataset.search);
+    const concepts = JSON.parse(r.dataset.concepts);
     const okTerm = !term || hay.includes(term);
-    const okConcept = !activeConcept || hay.includes(normalize(activeConcept));
+    const okConcept = !activeConcept || concepts.includes(activeConcept);
     const show = okTerm && okConcept;
     r.classList.toggle('hidden', !show);
     if (show) shown++;
@@ -353,8 +420,63 @@ def main() -> int:
             "finiteSupremumBound", "terminal supremum theorem", ""
         )
         assert "ERM" not in concepts_for("pac_bayes_generalization", "", "")
+        assert "ERM" not in concepts_for("genGap", "generalization gap", "")
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        assert "covering / chaining" not in concepts_for("bennett_mgf", "Bennett MGF", "")
+        assert "risk" not in concepts_for(
+            "finiteWeightedUnionBound_sum_le_of_exists_mem",
+            "Plain-sum finite weighted union bound",
+            "Empirical risk and sample statistics",
+        )
+        sharp_tags = concepts_for(
+            "boundedDifferences_tail_sharp",
+            "Sharp McDiarmid tail theorem",
+            "Rademacher and VC generalization",
+        )
+        assert "McDiarmid" in sharp_tags
+        assert "Rademacher" not in sharp_tags and "VC dimension" not in sharp_tags
+        assert "exponential tilting" in concepts_for(
+            "finiteExponentialTilt_changeOfMeasure",
+            "Exact finite change of measure",
+            "",
+        )
+        assert "KL divergence" not in concepts_for(
+            "finiteExponentialTilt_changeOfMeasure",
+            "Exact finite change of measure",
+            "",
+        )
+        assert "unbiasedness" in concepts_for("sampleMean_unbiased_finite", "", "")
+        assert "Fisher information" in concepts_for("bernoulliFisherInformation", "", "")
+        cramer_tags = concepts_for(
+            "FormalSLT.Statistics.CramerRao.cramerRao_unbiased", "", ""
+        )
+        assert {"Cramér-Rao", "Fisher information", "unbiasedness"}.issubset(cramer_tags)
+        assert "survey sampling" in concepts_for("horvitzThompson_design_unbiased", "", "")
+        assert "bootstrap" in concepts_for("bootstrapMean_eq_sampleMean", "", "")
+        assert "exponential family" in concepts_for("finiteLogPartition_hasDerivAt", "", "")
+        assert {"Bernstein", "MGF", "Bernoulli"}.issubset(
+            concepts_for(
+                "FormalSLT.PACBayes.IndicatorBernsteinMoment."
+                "indicator_expectedPriorBernsteinExpMoment_le_one",
+                "",
+                "",
+            )
+        )
+        filter_fixture = render_html([
+            {
+                "name": "notCramerRao",
+                "module": "Statistics.CramerRao",
+                "kind": "theorem",
+                "summary": "A neighboring result",
+                "family": "Cramér-Rao information lower bounds",
+                "file": "FormalSLT/Statistics/CramerRao.lean",
+                "line": 1,
+                "concepts": ["Fisher information"],
+            }
+        ])
+        assert 'data-concepts="[&quot;Fisher information&quot;]"' in filter_fixture
+        assert "concepts.includes(activeConcept)" in filter_fixture
         print("theorem-index self-test passed")
         return 0
 
