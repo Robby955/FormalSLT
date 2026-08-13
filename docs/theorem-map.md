@@ -638,6 +638,9 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVariance_posteriorGap_div_le_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Division form of the retained-variance inequality for a strictly positive mean tilt |
 | `finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Selector endpoint: the catalog entry may depend on the sample and the posterior |
 | `finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Division form of the selector endpoint for all-positive mean tilts |
+| `finiteJointMeanVariance_logResidual_nonpos_of_balance` | `PACBayes.FiniteJointMeanVariancePACBayes` | Zero-residual coefficient balance absorbs the retained Bennett logarithm at every nonnegative variance |
+| `finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Explicit one-KL empirical-Bernstein posterior-risk bound for one balanced catalog entry |
+| `finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Sample- and posterior-dependent selector form of the zero-residual risk bound |
 
 ## Conditional sub-Gamma extractor
 

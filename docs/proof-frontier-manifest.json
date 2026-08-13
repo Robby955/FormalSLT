@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The one-event joint catalog is fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair, with the Bennett log stated at the posterior-averaged variance. The checked risk result still uses separate events, and neither lane gives all-real or time-uniform inference.",
+      "boundary": "The one-event joint catalog and its zero-residual risk specialization are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The separately budgeted rational risk theorem remains a distinct two-event result. Neither lane gives all-real or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Formalize the exact piecewise xi residual and its zero-residual specialization, or package the integrated stack; treat countable, all-real, and time-uniform adaptation separately.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector",
+      "next_step": "Formalize the remaining nonzero branches of the exact piecewise xi residual, or package the integrated stack; treat countable, all-real, and time-uniform adaptation separately.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual posterior-risk branch",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -86,10 +86,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 151,
-    "library_and_example_lean_lines": 85320,
-    "library_lean_lines": 72601,
+    "library_and_example_lean_lines": 85774,
+    "library_lean_lines": 72751,
     "library_modules": 192,
-    "theorem_map_entries": 726
+    "theorem_map_entries": 729
   },
   "theorem_families": [
     {
@@ -3538,6 +3538,24 @@
           "module": "PACBayes.FiniteJointMeanVariancePACBayes",
           "name": "finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem",
           "summary": "Division form of the selector endpoint for all-positive mean tilts"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_logResidual_nonpos_of_balance",
+          "summary": "Zero-residual coefficient balance absorbs the retained Bennett logarithm at every nonnegative variance"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem",
+          "summary": "Explicit one-KL empirical-Bernstein posterior-risk bound for one balanced catalog entry"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVariancePACBayes",
+          "name": "finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem",
+          "summary": "Sample- and posterior-dependent selector form of the zero-residual risk bound"
         }
       ],
       "name": "Finite exponential tilting"
