@@ -293,6 +293,7 @@ def render_html(rows: list[dict[str, Any]]) -> str:
         else:
             loc_html = f'<span class="loc">{esc(row["file"])}</span>'
         chips = "".join(f'<span class="chip">{esc(c)}</span>' for c in row["concepts"])
+        concept_data = esc(json.dumps(row["concepts"], ensure_ascii=False))
         haystack = esc(
             " ".join(
                 [row["name"], row["module"], row["summary"], row["family"]]
@@ -300,7 +301,7 @@ def render_html(rows: list[dict[str, Any]]) -> str:
             ).lower()
         )
         cards.append(
-            f'<div class="row" data-search="{haystack}">'
+            f'<div class="row" data-search="{haystack}" data-concepts="{concept_data}">'
             f'<div class="decl"><code>{esc(row["name"])}</code>'
             f'<span class="kind">{esc(row["kind"])}</span></div>'
             f'<div class="meta">{chips}</div>'
@@ -372,8 +373,9 @@ function apply() {{
   let shown = 0;
   for (const r of rows) {{
     const hay = normalize(r.dataset.search);
+    const concepts = JSON.parse(r.dataset.concepts);
     const okTerm = !term || hay.includes(term);
-    const okConcept = !activeConcept || hay.includes(normalize(activeConcept));
+    const okConcept = !activeConcept || concepts.includes(activeConcept);
     const show = okTerm && okConcept;
     r.classList.toggle('hidden', !show);
     if (show) shown++;
@@ -461,6 +463,20 @@ def main() -> int:
                 "",
             )
         )
+        filter_fixture = render_html([
+            {
+                "name": "notCramerRao",
+                "module": "Statistics.CramerRao",
+                "kind": "theorem",
+                "summary": "A neighboring result",
+                "family": "Cramér-Rao information lower bounds",
+                "file": "FormalSLT/Statistics/CramerRao.lean",
+                "line": 1,
+                "concepts": ["Fisher information"],
+            }
+        ])
+        assert 'data-concepts="[&quot;Fisher information&quot;]"' in filter_fixture
+        assert "concepts.includes(activeConcept)" in filter_fixture
         print("theorem-index self-test passed")
         return 0
 

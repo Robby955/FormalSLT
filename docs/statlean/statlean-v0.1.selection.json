@@ -1,6 +1,7 @@
 {
   "schema_version": "statlean-v0.1",
   "source_tree": "4c697769c863faa43edc4fc9b0f81082cd0baab3",
+  "harvest_input": "9ce9ee2007076281d182da1de9ee07bb38a15fc33d3c5e6b13d01140b234402e",
   "task_ids": [
     "optimizedlambdacs-fixedgrid-loglog-bridge-forces-exact-boundary",
     "optimizedlambdacs-stitched-attop-crossing-bound",

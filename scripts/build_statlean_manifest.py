@@ -40,6 +40,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import os
 import re
@@ -329,6 +330,36 @@ def source_tree_hash() -> str:
         raise RuntimeError("could not resolve the FormalSLT source tree hash") from error
 
 
+def harvest_input_fingerprint(source_tree: str) -> str:
+    """Hash every non-generated input that can change exported record metadata."""
+    digest = hashlib.sha256()
+
+    def add(label: str, value: bytes) -> None:
+        digest.update(label.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(str(len(value)).encode("ascii"))
+        digest.update(b"\0")
+        digest.update(value)
+        digest.update(b"\0")
+
+    add("FormalSLT source tree", source_tree.encode("ascii"))
+    for path in (
+        MANIFEST,
+        Path(__file__).resolve(),
+        ROOT / "scripts" / "generate_proof_frontier_manifest.py",
+        ROOT / "scripts" / "generate_theorem_index.py",
+        FIDELITY,
+        ROOT / "lean-toolchain",
+        ROOT / "lake-manifest.json",
+    ):
+        try:
+            label = path.relative_to(ROOT).as_posix()
+        except ValueError:
+            label = path.as_posix()
+        add(label, path.read_bytes())
+    return digest.hexdigest()
+
+
 # --------------------------------------------------------------------------- #
 # dependency edges
 # --------------------------------------------------------------------------- #
@@ -403,6 +434,7 @@ def harvest(*, source_tree: str | None = None) -> list[dict[str, Any]]:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     families = manifest["theorem_families"]
     tree_hash = source_tree if source_tree is not None else source_tree_hash()
+    input_fingerprint = harvest_input_fingerprint(tree_hash)
 
     records: list[dict[str, Any]] = []
     for family in families:
@@ -435,6 +467,7 @@ def harvest(*, source_tree: str | None = None) -> list[dict[str, Any]]:
                     "repo": manifest["repository"]["name"],
                     "module": module,
                     "tree": tree_hash,
+                    "harvest": input_fingerprint,
                 },
                 "concept_family": fam,
                 "concept_tags": concepts_for(qualified, summary, fam),
@@ -577,8 +610,9 @@ def select_tasks(
     target_hi: int,
     refresh_selection: bool,
 ) -> list[dict[str, Any]]:
-    """Load the source-tree-pinned v0.1 selection or explicitly refresh it."""
+    """Load the fully input-pinned v0.1 selection or explicitly refresh it."""
     tree = source_tree_hash()
+    input_fingerprint = harvest_input_fingerprint(tree)
     if refresh_selection:
         selected = curate(records, target_lo, target_hi)
         if len(selected) < min(target_lo, target_hi):
@@ -596,6 +630,10 @@ def select_tasks(
     if selection.get("source_tree") != tree:
         raise RuntimeError(
             "the pinned StatLean-v0.1 selection targets a different FormalSLT source tree"
+        )
+    if selection.get("harvest_input") != input_fingerprint:
+        raise RuntimeError(
+            "the pinned StatLean-v0.1 selection targets different manifest or generator inputs"
         )
     ids = selection.get("task_ids")
     if not isinstance(ids, list) or len(ids) != len(set(ids)):
@@ -988,6 +1026,7 @@ def main() -> int:
         selection = {
             "schema_version": SCHEMA_VERSION,
             "source_tree": source_tree_hash(),
+            "harvest_input": harvest_input_fingerprint(source_tree_hash()),
             "task_ids": [record["id"] for record in selected],
         }
         OUT_SELECTION.write_text(
@@ -1006,6 +1045,7 @@ def main() -> int:
         "schema_version": SCHEMA_VERSION,
         "source_repo": json.loads(MANIFEST.read_text())["repository"]["name"],
         "source_tree": source_tree_hash(),
+        "harvest_input": harvest_input_fingerprint(source_tree_hash()),
         "harvested_declarations": len(pool),
         "harvested_theorems": len(pool) - n_def,
         "harvested_definitions": n_def,

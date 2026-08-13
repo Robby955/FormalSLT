@@ -47,8 +47,9 @@ One JSON object per line:
 
 - `id`: stable slug (`module-tail` + theorem short name).
 - `schema_version`: record-schema identifier for this release.
-- `source`: `{library, repo, module, tree}`, including the immutable Git tree of
-  the harvested `FormalSLT/` source.
+- `source`: `{library, repo, module, tree, harvest}`, including the immutable Git
+  tree of the harvested `FormalSLT/` source and a fingerprint of every
+  non-generated manifest, generator, fidelity, and toolchain input.
 - `concept_family`: the FormalSLT spine family this theorem sits in.
 - `concept_tags`: subset of the 33 concept tags (Markov, Chebyshev, Hoeffding,
   Bernstein, Bennett, Chernoff, sub-Gaussian, sub-Gamma, Azuma, McDiarmid, union
@@ -88,8 +89,9 @@ The harvester reuses the canonical tag vocabulary from
 `docs/proof-frontier-manifest.json`, the non-vacuity lint
 `scripts/statement_fidelity_check.py`, and the axiom-profile convention from
 `scripts/check_axioms.sh`. It is read-only over the `.lean` sources. The checked
-v0.1 task IDs and source tree are pinned in `statlean-v0.1.selection.json`, so a
-later theorem-map change cannot silently recurate the versioned benchmark.
+v0.1 task IDs, source tree, and complete harvest-input fingerprint are pinned in
+`statlean-v0.1.selection.json`, so a later source, manifest, generator, fidelity,
+or toolchain change cannot silently rewrite the versioned benchmark.
 
 ### Fidelity gate
 
