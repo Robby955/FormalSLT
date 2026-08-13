@@ -82,11 +82,13 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   optimization, and time-uniform empirical-Bernstein risk remain open.
 
 The Dudley core is finite by design. The finite-outcome endpoint
-`continuous_dudley_entropy_integral` assumes a totally bounded metric index,
-an antitone nonnegative interval-integrable entropy profile, and supplied
-separable-terminal boundary certificates. The measure-side endpoint is instead
-an expectation-operator lift from a supplied `MeasureChainingBudget`; it does
-not construct those metric or chaining hypotheses. Arbitrary measurable
+`continuous_dudley_entropy_integral` assumes a finite sub-Gaussian process on a
+nonempty pseudometric index, a totally bounded universal index set, positive
+`radiusScale` and process variance proxy, agreement of the process and ambient
+distances, an antitone nonnegative interval-integrable entropy profile, and
+supplied separable-terminal boundary certificates. The measure-side endpoint is
+instead an expectation-operator lift from a supplied `MeasureChainingBudget`;
+it does not construct those metric or chaining hypotheses. Arbitrary measurable
 suprema remain out of scope. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
 finite-dimensional spherical Gaussian priors and posteriors. The statistics
@@ -259,7 +261,9 @@ declaration and prints its axiom profile.
 
 - **Continuous Dudley entropy integral under a supplied boundary certificate** —
   `continuous_dudley_entropy_integral` bounds the expected supremum of a
-  finite sub-Gaussian process over a totally bounded metric index by
+  finite sub-Gaussian process over a nonempty pseudometric index whose universal
+  set is totally bounded. It assumes positive `radiusScale` and
+  `P.varianceProxy`, with `P.dist` equal to the ambient distance, and bounds by
   `coarseBudget` plus the product of `4 * sqrt (2 * varianceProxy)` with the
   full interval integral of the entropy profile on `(0, radiusScale / 2)`;
   the coarse budget is added, not multiplied. The finite
