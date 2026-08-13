@@ -7,8 +7,10 @@ A fair two-point law, nonconstant indicator loss, and two-entry variance and
 risk catalogs instantiate the weighted-catalog theorem at `n = 2`. Both
 catalogs use weights `1/2, 1/2`; the variance tilts are `1/2, 1/4`, and the
 risk tilts are `1, 2`. The combined bad set has mass at most `1/2`, so a good
-sample exists. The two selectors genuinely inspect different sample
-coordinates before the final observable risk inequality is instantiated.
+sample exists. The variance selector reads coordinate zero and the risk
+selector reads coordinate one. Concrete positive-mass samples show that both
+selectors are nonconstant. The existential good-sample certificate does not
+identify which selector branches occur outside the bad set.
 -/
 
 namespace FormalSLT.Examples.CheckFiniteEmpiricalBernsteinRiskCatalog
@@ -91,6 +93,62 @@ def selectVariance (S : Fin 2 → Bool) (_rho : Unit → ℝ) : Fin 2 :=
 def selectRisk (S : Fin 2 → Bool) (_rho : Unit → ℝ) : Fin 2 :=
   if S 1 then 1 else 0
 
+def allFalseSample : Fin 2 → Bool := fun _ => false
+
+def firstOnlySample : Fin 2 → Bool := fun k => if k = 0 then true else false
+
+def secondOnlySample : Fin 2 → Bool := fun k => if k = 1 then true else false
+
+theorem selectVariance_allFalse :
+    selectVariance allFalseSample posterior = 1 := by
+  norm_num [selectVariance, allFalseSample]
+
+theorem selectRisk_allFalse : selectRisk allFalseSample posterior = 0 := by
+  norm_num [selectRisk, allFalseSample]
+
+theorem selectVariance_firstOnly :
+    selectVariance firstOnlySample posterior = 0 := by
+  norm_num [selectVariance, firstOnlySample]
+
+theorem selectRisk_firstOnly : selectRisk firstOnlySample posterior = 0 := by
+  norm_num [selectRisk, firstOnlySample]
+
+theorem selectVariance_secondOnly :
+    selectVariance secondOnlySample posterior = 1 := by
+  norm_num [selectVariance, secondOnlySample]
+
+theorem selectRisk_secondOnly : selectRisk secondOnlySample posterior = 1 := by
+  norm_num [selectRisk, secondOnlySample]
+
+theorem selectVariance_depends_on_coordinate_zero :
+    selectVariance allFalseSample posterior ≠
+      selectVariance firstOnlySample posterior := by
+  rw [selectVariance_allFalse, selectVariance_firstOnly]
+  norm_num
+
+theorem selectRisk_depends_on_coordinate_one :
+    selectRisk allFalseSample posterior ≠ selectRisk secondOnlySample posterior := by
+  rw [selectRisk_allFalse, selectRisk_secondOnly]
+  norm_num
+
+theorem selectors_inspect_distinct_coordinates :
+    selectVariance allFalseSample posterior ≠
+        selectVariance firstOnlySample posterior ∧
+      selectRisk allFalseSample posterior ≠ selectRisk secondOnlySample posterior :=
+  ⟨selectVariance_depends_on_coordinate_zero, selectRisk_depends_on_coordinate_one⟩
+
+theorem allFalseSample_productWeight_pos :
+    0 < finiteProductSampleWeight dataLaw allFalseSample := by
+  simp [finiteProductSampleWeight, dataLaw, allFalseSample]
+
+theorem firstOnlySample_productWeight_pos :
+    0 < finiteProductSampleWeight dataLaw firstOnlySample := by
+  simp [finiteProductSampleWeight, dataLaw, firstOnlySample]
+
+theorem secondOnlySample_productWeight_pos :
+    0 < finiteProductSampleWeight dataLaw secondOnlySample := by
+  simp [finiteProductSampleWeight, dataLaw, secondOnlySample]
+
 def badSamples : Finset (Fin 2 → Bool) :=
   finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples
     2 dataLaw prior loss etaCatalog varianceWeight (1 / 4)
@@ -153,9 +211,43 @@ theorem fairBool_empiricalBernsteinCatalog_witness :
 
 #check finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le
 #check posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem
+#check finiteBoundedLossBernstein_mem_weightedCatalog_iff
+#check finiteBoundedLossBernstein_not_mem_weightedCatalog_iff
+#check finiteBoundedLossBernsteinBadSamples_subset_weightedCatalog
+#check finiteBoundedLossBernstein_weightedCatalog_badEventMass_le_delta
+#check posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem
+#check selectVariance_allFalse
+#check selectRisk_allFalse
+#check selectVariance_firstOnly
+#check selectRisk_firstOnly
+#check selectVariance_secondOnly
+#check selectRisk_secondOnly
+#check selectVariance_depends_on_coordinate_zero
+#check selectRisk_depends_on_coordinate_one
+#check selectors_inspect_distinct_coordinates
+#check allFalseSample_productWeight_pos
+#check firstOnlySample_productWeight_pos
+#check secondOnlySample_productWeight_pos
 
 #print axioms finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le
 #print axioms posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem
+#print axioms finiteBoundedLossBernstein_mem_weightedCatalog_iff
+#print axioms finiteBoundedLossBernstein_not_mem_weightedCatalog_iff
+#print axioms finiteBoundedLossBernsteinBadSamples_subset_weightedCatalog
+#print axioms finiteBoundedLossBernstein_weightedCatalog_badEventMass_le_delta
+#print axioms posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem
+#print axioms selectVariance_allFalse
+#print axioms selectRisk_allFalse
+#print axioms selectVariance_firstOnly
+#print axioms selectRisk_firstOnly
+#print axioms selectVariance_secondOnly
+#print axioms selectRisk_secondOnly
+#print axioms selectVariance_depends_on_coordinate_zero
+#print axioms selectRisk_depends_on_coordinate_one
+#print axioms selectors_inspect_distinct_coordinates
+#print axioms allFalseSample_productWeight_pos
+#print axioms firstOnlySample_productWeight_pos
+#print axioms secondOnlySample_productWeight_pos
 #print axioms fairBool_empiricalBernsteinCatalog_witness
 
 end

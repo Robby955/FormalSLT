@@ -43,7 +43,13 @@ THEOREMS=(
   "FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog.indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalVariance.finiteEmpiricalVariance_eq_pairwise"
   "FormalSLT.PACBayes.FiniteEmpiricalVariance.finiteEmpiricalVariance_unbiased_finiteProduct"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching.average_perm_pair_eq_average_all_pairs"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching.average_perm_pairSquaredDifference_eq_sampleVarianceBessel"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching.average_perm_pairCatalog_eq_sampleVarianceBessel"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching.finitePairBlock_factorization"
+  "FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching.average_perm_finiteCanonicalPairMean_eq_sampleVarianceBessel"
   "FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF.finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin"
+  "FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes.finiteEmpiricalVariance_posteriorGap_le_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes.finiteEmpiricalVariancePACBayes_badEventMass_le_delta"
   "FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes.posteriorPopulationVariance_le_empiricalVariance_of_not_mem"
   "FormalSLT.Probability.FiniteUnionBound.finiteWeightedUnionBound_sum_le_of_exists_mem"
@@ -51,6 +57,12 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog.posteriorPopulationVariance_le_empiricalVariance_weightedCatalog_selected_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk.finiteEmpiricalBernsteinRisk_badEventMass_le"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk.posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem"
+  "FormalSLT.PACBayes.FiniteBoundedLossBernstein.boundedLoss_product_normalizedMGF_le_one"
+  "FormalSLT.PACBayes.FiniteBoundedLossBernstein.boundedLoss_expectedPriorBernsteinExpMoment_le_one"
+  "FormalSLT.PACBayes.FiniteBoundedLossBernstein.boundedLoss_posteriorRisk_le_populationVariance_of_not_mem"
+  "FormalSLT.PACBayes.FiniteBoundedLossBernstein.finiteBoundedLossBernstein_badEventMass_le_delta"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog.finiteBoundedLossBernstein_weightedCatalog_badEventMass_le_delta"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog.posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_of_not_mem"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog.finiteEmpiricalBernsteinRisk_weightedCatalog_badEventMass_le"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog.posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem"
   "FormalSLT.PACBayes.FiniteExponentialTilt.finiteExponentialTiltPMF_isPMF"
@@ -111,10 +123,12 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinLowRisk"
   echo "import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVariance"
+  echo "import FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk"
+  echo "import FormalSLT.PACBayes.FiniteBoundedLossBernstein"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog"
   echo "import FormalSLT.PACBayes.FiniteExponentialTilt"
   echo "import FormalSLT.PACBayes.FiniteExponentialTiltProduct"
@@ -143,10 +157,12 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.IndicatorBernsteinLowRisk \
   FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog \
   FormalSLT.PACBayes.FiniteEmpiricalVariance \
+  FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching \
   FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF \
   FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes \
   FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk \
+  FormalSLT.PACBayes.FiniteBoundedLossBernstein \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog \
   FormalSLT.PACBayes.FiniteExponentialTilt \
   FormalSLT.PACBayes.FiniteExponentialTiltProduct \

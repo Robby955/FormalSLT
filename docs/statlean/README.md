@@ -26,7 +26,7 @@ known-good ground truth in the same toolchain.
 
 - A harvest pool of every public declaration resolvable from the FormalSLT
   spine (`statlean-v0.1.full.jsonl`).
-- A curated task set of the cleanest named theorems, spread across 24 concept
+- A curated task set of the cleanest named theorems, spread across 25 concept
   families so no family is dropped (`statlean-v0.1.jsonl`).
 - Per task: an informal statement seeded from the Lean docstring, the verbatim
   Lean signature, a `file:line` pointer to the proof, parsed dependency edges,
@@ -43,7 +43,7 @@ One JSON object per line:
 - `id`: stable slug (`module-tail` + theorem short name).
 - `source`: `{library, repo, module}`.
 - `concept_family`: the FormalSLT spine family this theorem sits in.
-- `concept_tags`: subset of the 24 concept tags (Markov, Chebyshev, Hoeffding,
+- `concept_tags`: subset of the 25 concept tags (Markov, Chebyshev, Hoeffding,
   Bernstein, Bennett, Chernoff, sub-Gaussian, sub-Gamma, Azuma, McDiarmid, union
   bound, tail bound, MGF, confidence sequence, PAC-Bayes, KL divergence,
   Rademacher, VC dimension, covering / chaining, ERM, stability, sample
@@ -69,7 +69,7 @@ scripts/build_statlean_manifest.py --no-axioms   # skip the live #print axioms p
 scripts/build_statlean_manifest.py --limit N     # cap the curated task count
 ```
 
-The harvester reuses the existing tooling: the 24-concept vocabulary from
+The harvester reuses the existing tooling: the 25-concept vocabulary from
 `scripts/generate_theorem_index.py`, the family / declaration / module spine from
 `docs/proof-frontier-manifest.json`, the non-vacuity lint
 `scripts/statement_fidelity_check.py`, and the axiom-profile convention from

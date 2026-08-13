@@ -289,17 +289,20 @@
     finite catalogs for both tilts now give sample- and posterior-dependent
     selectors on one shared event without a Cartesian-pair confidence charge.
     The variance catalog is also a standalone reusable module with a concrete
-    unequal-weight, two-branch receipt, and the final risk layer imports it.
-    Retained-log Bennett, countable selectable `lambda` catalogs, exact all-real
-    optimization, continuous Bernstein posteriors, and infinite hypothesis
-    classes remain open. The separate
+    unequal-weight, two-branch receipt, and the final risk layer imports it. A
+    retained-Bennett joint mean/Bessel-variance score and one-event finite
+    joint-pair posterior catalog are also checked, with one KL term at the
+    selected entry. The exact piecewise `xi` residual and zero-residual explicit
+    specialization, countable selectable `lambda` catalogs, exact all-real
+    optimization, time-uniform empirical-Bernstein risk, continuous Bernstein
+    posteriors, and infinite hypothesis classes remain open. The separate
     bounded-loss continuous lane currently covers a fixed spherical-Gaussian
     posterior; it does not close these extensions.
 
 ### Long-term
 
-- [ ] **Full Dudley entropy integral**
-  - Continuous covering number integral
+- [ ] **Dudley beyond the checked boundary-certificate endpoint**
+  - Arbitrary measurable suprema and non-finite outcome constructions
   - Generic chaining (Talagrand)
 
 - [ ] **Minimax lower bounds**

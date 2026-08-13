@@ -19,7 +19,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Finite union and budget allocation
 
-| Theorem | Module | Bound |
+| Declaration | Module | Bound |
 |---|---|---|
 | `finiteMeasureUnionBound` | `Probability.FiniteUnionBound` | Finite-index measure union bound |
 | `finiteMeasureUnionBound_budget` | `Probability.FiniteUnionBound` | Supplied finite per-event budgets whose sum is bounded by a total budget |
@@ -29,7 +29,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Uniform-convergence probability bridges
 
-| Theorem | Module | Bound |
+| Declaration | Module | Bound |
 |---|---|---|
 | `finiteClassUniformDeviationUnionBound` | `UniformConvergence` | Pointwise finite-class bad-event tails imply a simultaneous `card * tail` bound |
 | `finiteClassUniformDeviationUnionBound_cardInv` | `UniformConvergence` | Equal split of a target failure budget gives simultaneous mass `≤ δ` |
@@ -107,7 +107,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Rademacher and VC spine
 
-| Theorem | Module | Bound |
+| Declaration | Module | Bound |
 |---|---|---|
 | `expected_genGap_le_two_expected_empiricalRademacherComplexity` | `Rademacher.Symmetrization` | `E[genGap] <= 2 * E[Rad]` |
 | `genGap_tail_bound_azuma_explicit` | `Azuma.GenGapTail` | `P(genGap - E[genGap] >= ε) <= exp(-ε² n / (8B²))` |
@@ -136,7 +136,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Contraction and linear predictors
 
-| Theorem | Module | Bound |
+| Declaration | Module | Bound |
 |---|---|---|
 | `one_step_contraction` | `Rademacher.Contraction` | One coordinate replacement step for the finite contraction proof |
 | `contraction_1lip` | `Rademacher.Contraction` | Finite-sample scalar contraction for 1-Lipschitz transforms |
@@ -147,15 +147,15 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Covering and finite chaining
 
-| Theorem | Module | Bound |
+| Declaration | Module | Bound |
 |---|---|---|
 | `rademacher_covering_bound` | `Covering.Rademacher` | `Rad(F) <= ε + Rad(N_ε)` |
 | `rademacher_covering_massart` | `Covering.Rademacher` | Covering plus Massart |
 | `rademacher_two_step_chaining` | `Covering.DudleyChaining` | Two-scale finite chaining bound |
 | `finite_expectedSup_le_of_mgf_log` | `Covering.FiniteSubGaussianChaining` | MGF control gives finite expected-sup entropy budget |
 | `finite_expectedSup_le_of_subGaussian_mgf_sqrt` | `Covering.FiniteSubGaussianChaining` | Optimized finite sub-Gaussian max bound |
-| `finite_chaining_expectation_bound` | `Covering.FiniteSubGaussianChaining` | Finite multiscale chaining decomposition in expectation |
-| `finite_projected_chaining_expectation_bound` | `Covering.FiniteSubGaussianChaining` | Finite projected-supremum chaining without an identity terminal projection |
+| `FormalSLT.Covering.FiniteSubGaussianChaining.finite_chaining_expectation_bound` | `Covering.FiniteSubGaussianChaining` | Finite multiscale chaining decomposition in expectation |
+| `FormalSLT.Covering.FiniteSubGaussianChaining.finite_projected_chaining_expectation_bound` | `Covering.FiniteSubGaussianChaining` | Finite projected-supremum chaining without an identity terminal projection |
 | `finite_chaining_expectation_bound_of_radius_sqrt` | `Covering.FiniteSubGaussianChaining` | Radius-bounded finite chaining with square-root entropy budgets |
 | `finite_chaining_expectation_bound_of_net_sequence_pairs_sqrt` | `Covering.FiniteSubGaussianChaining` | Projection-pair entropy version for finite net sequences |
 | `finite_chaining_expectation_bound_of_net_sequence_coveringNumbers_sqrt` | `Covering.FiniteSubGaussianChaining` | Covering-number version for finite net sequences |
@@ -388,7 +388,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Stability and PAC-Bayes foundations
 
-| Theorem | Module | Bound |
+| Declaration | Module | Bound |
 |---|---|---|
 | `trainingLoss_hasBoundedDifferences` | `AlgorithmicStability` | Uniform stability gives bounded differences for training loss |
 | `stability_genGap_hasBoundedDifferences` | `AlgorithmicStability` | Uniform stability gives bounded differences for the gen gap scaffold |
@@ -544,7 +544,7 @@ declarations; modules are relative to `FormalSLT`.
 | `orderedOffDiagonalSquaredDifference` | `PACBayes.FiniteEmpiricalVariance` | Ordered sum of squared differences across distinct sample indices |
 | `finitePairwiseEmpiricalVariance` | `PACBayes.FiniteEmpiricalVariance` | Normalized second-order pair-statistic form of empirical variance |
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `finitePopulationVariance_nonneg` | `PACBayes.FiniteEmpiricalVariance` | Population loss variance is nonnegative under a finite PMF |
 | `finitePopulationVariance_eq_secondMoment_sub_riskSq` | `PACBayes.FiniteEmpiricalVariance` | Identifies population loss variance with the second moment minus squared risk |
@@ -608,7 +608,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVarianceMasterMixture` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior-and-catalog master mixture over the weighted per-entry prior score moments |
 | `finiteJointMeanVarianceCatalogBadSamples` | `PACBayes.FiniteJointMeanVariancePACBayes` | Single catalog bad-sample set thresholding the master mixture at `1 / delta` |
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `finiteExponentialTiltNormalizer_pos` | `PACBayes.FiniteExponentialTilt` | The finite exponential-tilt normalizer is positive under any PMF, without a full-support assumption |
 | `finiteExponentialTiltPMF_isPMF` | `PACBayes.FiniteExponentialTilt` | Normalizing an exponential tilt of a finite PMF produces another PMF |
@@ -641,7 +641,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Conditional sub-Gamma extractor
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `bennett_taylor_bound` | `Concentration.SubGamma.BennettBound` | Pointwise Bennett Taylor bound for bounded increments in the regime `b * λ < 3` |
 | `integrable_exp_mul_of_bounded` | `Concentration.SubGamma.BoundedExpIntegrable` | Bounded real increments have integrable exponential tilts under a finite measure |
@@ -653,7 +653,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Anytime-valid confidence sequences
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `condExp_mixture_swap` | `AnytimeValid.MixtureCS` | Conditional-expectation swap for the mixture exponential process |
 | `mixture_is_supermartingale` | `AnytimeValid.MixtureCS` | Mixture of sub-Gamma exponential processes is a nonnegative supermartingale |
@@ -688,7 +688,7 @@ declarations; modules are relative to `FormalSLT`.
 | `scorePriorMixtureProcess` | `PACBayes.TimeUniformScorePACBayes` | Finite prior-weighted mixture of exponentiated hypothesis scores |
 | `timeUniformScorePACBayesAnyPosteriorFailure` | `PACBayes.TimeUniformScorePACBayes` | Common failure event existentially quantifying over every natural time and finite posterior PMF |
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `pacBayesPriorMixture_supermartingale` | `PACBayes.TimeUniformPACBayes` | Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale |
 | `timeUniformPACBayes_crossing_bound` | `PACBayes.TimeUniformPACBayes` | Ville crossing bound for the prior-mixture process over all times |
@@ -712,7 +712,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Finite Markov prequential risk
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `pathSquaredLoss_condExp` | `StochasticDynamics.MarkovRisk` | Derives the next-step squared-loss conditional expectation from the finite transition PMF and its Ionescu--Tulcea path law |
 | `markovRiskInnovation_condExp_eq_zero` | `StochasticDynamics.MarkovRisk` | Centers observed loss minus transition-row conditional risk under the generated filtration |
@@ -740,7 +740,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Named tail-probability corollaries
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `chernoff_tail` | `Concentration.NamedTails` | Generic two-sided sub-Gaussian tail `P(abs X ≥ t) ≤ 2 exp(-t²/(2c))` from an MGF bound |
 | `subGaussianMGF_tail_twoSided` | `Concentration.NamedTails` | Centered two-sided sub-Gaussian tail `P(abs (X - E X) ≥ t) ≤ 2 exp(-t²/(2c))` |
@@ -750,7 +750,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Distribution bridges and sample statistics
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `bernoulliPMF` | `Statistics.Bernoulli` | Bernoulli(p) probability mass function on `Bool` |
 | `bernoulliMean_eq` | `Statistics.Bernoulli` | Bernoulli mean equals `p` |
@@ -764,7 +764,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Classical estimation
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `weightedExpectation` | `Statistics.ClassicalEstimation` | Finite weighted expectation `∑ w x · X x`, the population-mean primitive |
 | `weightedExpectation_linear` | `Statistics.ClassicalEstimation` | Linearity of the weighted expectation in the estimator |
@@ -779,7 +779,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Fisher information and Cramér-Rao
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `weightedVariance` | `Statistics.FisherInformation` | Finite weighted variance of an estimator under a weight vector |
 | `weightedCovariance` | `Statistics.FisherInformation` | Finite weighted covariance of two functions |
@@ -832,7 +832,7 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Glivenko-Cantelli
 
-| Theorem | Module | Role |
+| Declaration | Module | Role |
 |---|---|---|
 | `lowerRayIndicator` | `GlivenkoCantelli` | Closed lower-ray indicator `1{x ≤ z}` as the empirical-CDF integrand |
 | `strictLowerRayIndicator` | `GlivenkoCantelli` | Open lower-ray indicator `1{x < z}`, the atom-safe upper bracket |

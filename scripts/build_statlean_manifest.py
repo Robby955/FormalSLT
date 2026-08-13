@@ -16,7 +16,7 @@ Each selected record:
   id                 stable slug (family-shortmodule-name)
   source             "FormalSLT" + repo + commit
   concept_family     the manifest family this decl sits in
-  concept_tags       the 24-concept tags (Markov, Hoeffding, PAC-Bayes, ...)
+  concept_tags       the 25-concept tags (Markov, Hoeffding, PAC-Bayes, ...)
   informal_statement seeded from the Lean docstring (/-- ... -/)
   lean_statement     verbatim signature (decl head through the `:=`)
   lean_proof_pointer file:line of the declaration
@@ -27,7 +27,7 @@ Each selected record:
 
 Reuses:
   docs/proof-frontier-manifest.json   (family -> decl -> module -> role)
-  scripts/generate_theorem_index.py   (the 24-concept CONCEPT_TRIGGERS vocabulary)
+  scripts/generate_theorem_index.py   (the 25-concept CONCEPT_TRIGGERS vocabulary)
   scripts/statement_fidelity_check.py (the non-vacuity lint)
   scripts/check_axioms.sh             (the axiom-profile convention)
 
@@ -47,6 +47,24 @@ import sys
 import tempfile
 from pathlib import Path
 from typing import Any
+
+if __package__:
+    from .generate_proof_frontier_manifest import (
+        LEAN_DECLARATION_PATTERN,
+        resolve_source_declaration,
+        source_resolution_self_test,
+    )
+    from .generate_theorem_index import CONCEPT_TRIGGERS, concepts_for
+else:
+    from generate_proof_frontier_manifest import (  # type: ignore[no-redef]
+        LEAN_DECLARATION_PATTERN,
+        resolve_source_declaration,
+        source_resolution_self_test,
+    )
+    from generate_theorem_index import (  # type: ignore[no-redef]
+        CONCEPT_TRIGGERS,
+        concepts_for,
+    )
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
@@ -69,44 +87,9 @@ FIDELITY = _find_fidelity()
 LAKE = os.path.expanduser("~/.elan/bin/lake")
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 
-# The 24-concept search vocabulary, kept in sync with generate_theorem_index.py.
-CONCEPT_TRIGGERS: dict[str, list[str]] = {
-    "Markov": ["markov"],
-    "Chebyshev": ["chebyshev"],
-    "Hoeffding": ["hoeffding"],
-    "Bernstein": ["bernstein"],
-    "Bennett": ["bennett"],
-    "Chernoff": ["chernoff"],
-    "sub-Gaussian": ["subgaussian", "sub-gaussian", "subgauss"],
-    "sub-Gamma": ["subgamma", "sub-gamma"],
-    "Azuma": ["azuma"],
-    "McDiarmid": ["mcdiarmid", "bounded difference", "boundeddiff"],
-    "union bound": ["unionbound", "union bound"],
-    "tail bound": ["_tail", "tail ", "tail-", "tail_", "tailbound"],
-    "MGF": ["mgf", "moment generating", "moment-generating"],
-    "confidence sequence": ["confidence", "anytime", "ville", "subgammacs", "mixturecs", "eprocess", "e-process", "subgaussiancs", "attopcs"],
-    "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
-    "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "change of measure", "changeofmeasure"],
-    "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
-    "VC dimension": ["vc", "sauer", "shelah", "shatter"],
-    "covering / chaining": ["covering", "dudley", "chaining", "entropy", "net"],
-    "ERM": ["erm", "empiricalrisk", "excessrisk", "gengap", "generalization"],
-    "stability": ["stability", "stable"],
-    "sample statistics": ["samplemean", "samplevariance", "empiricalvariance", "sample mean", "sample variance", "empirical variance", "empirical-variance", "estimator"],
-    "Glivenko-Cantelli": ["glivenko", "cantelli", "empiricalcdf", "empirical cdf", "lowerray", "lower ray", "lower-ray", "uniformdeviation", "bracketing"],
-    "Bernoulli": ["bernoulli"],
-    "risk": ["risk"],
-}
-
-# The 24 statistics concept families the harvest must span (the curation budget is
+# The 25 statistics concept families the harvest must span (the curation budget is
 # spread across these so no family is dropped).
 TARGET_CONCEPTS = list(CONCEPT_TRIGGERS.keys())
-
-KIND_PATTERN = (
-    r"^\s*(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?(?:private\s+)?(?:protected\s+)?"
-    r"(?:theorem|lemma|def|abbrev|structure|class|instance|inductive)\s+"
-)
-
 
 # --------------------------------------------------------------------------- #
 # source resolution
@@ -115,7 +98,7 @@ def module_to_file(module: str) -> Path:
     return SRC_ROOT / Path(module.replace(".", "/") + ".lean")
 
 
-_FILE_CACHE: dict[str, list[str]] = {}
+_FILE_CACHE: dict[str, list[str] | None] = {}
 
 
 def file_lines(module: str) -> list[str] | None:
@@ -130,20 +113,11 @@ def file_lines(module: str) -> list[str] | None:
     return lines
 
 
-def resolve_decl(module: str, name: str) -> tuple[int, int] | None:
-    """Return (1-based decl line, 0-based index) for `name` in its module."""
-    lines = file_lines(module)
-    if lines is None:
-        return None
-    candidates = [name]
-    if "." in name:
-        candidates.append(name.rsplit(".", 1)[1])
-    for cand in candidates:
-        pat = re.compile(KIND_PATTERN + re.escape(cand) + r"\b")
-        for idx, line in enumerate(lines):
-            if pat.search(line):
-                return idx + 1, idx
-    return None
+def resolve_decl(module: str, name: str) -> tuple[int, int, str]:
+    """Return source line, raw-line index, and source-derived declaration kind."""
+    declaration = resolve_source_declaration(module_to_file(module), name)
+    line = declaration["line"]
+    return line, line - 1, declaration["kind"]
 
 
 def active_namespace(lines: list[str], idx0: int) -> str:
@@ -211,7 +185,7 @@ def proof_body(lines: list[str], idx0: int) -> tuple[str, int]:
     started = False
     for i in range(idx0, len(lines)):
         line = lines[i]
-        if i > idx0 and re.match(KIND_PATTERN, line):
+        if i > idx0 and LEAN_DECLARATION_PATTERN.match(line):
             break
         if not started:
             if ":=" in line:
@@ -223,13 +197,8 @@ def proof_body(lines: list[str], idx0: int) -> tuple[str, int]:
 
 
 # --------------------------------------------------------------------------- #
-# tagging + dependency edges
+# dependency edges
 # --------------------------------------------------------------------------- #
-def concepts_for(name: str, summary: str, family: str) -> list[str]:
-    hay = f" {name} {summary} {family} ".lower()
-    return [c for c, trig in CONCEPT_TRIGGERS.items() if any(t in hay for t in trig)]
-
-
 def module_imports(module: str) -> list[str]:
     lines = file_lines(module)
     if lines is None:
@@ -273,12 +242,10 @@ def harvest() -> list[dict[str, Any]]:
             name = entry["name"]
             module = entry["module"]
             summary = entry.get("summary", "")
-            kind = entry.get("kind", "theorem")
-            res = resolve_decl(module, name)
-            if res is None:
-                continue
-            line1, idx0 = res
             lines = file_lines(module)
+            if lines is None:
+                raise ValueError(f"Lean source does not exist: {module_to_file(module)}")
+            line1, idx0, kind = resolve_decl(module, name)
             sig = extract_signature(lines, idx0)
             doc = extract_docstring(lines, idx0)
             body, body_lines = proof_body(lines, idx0)
@@ -356,7 +323,7 @@ def cleanliness(rec: dict[str, Any]) -> tuple:
 
 
 def curate(records: list[dict[str, Any]], target_lo: int, target_hi: int) -> list[dict[str, Any]]:
-    """Select the cleanest named theorems, spread across the 24 concept families.
+    """Select the cleanest named theorems, spread across the 25 concept families.
     Definitions are kept only as dependency context, never as benchmark tasks."""
     theorems = [r for r in records if r["kind"] in ("theorem", "lemma")]
     # bucket by primary concept tag (first tag), fall back to concept_family
@@ -512,7 +479,37 @@ def main() -> int:
     ap.add_argument("--no-fidelity", action="store_true", help="skip the per-task fidelity lint")
     ap.add_argument("--limit", type=int, default=150, help="max selected tasks (default 150)")
     ap.add_argument("--floor", type=int, default=120, help="target floor for selection")
+    ap.add_argument(
+        "--self-test", action="store_true", help="test declaration resolution and concepts"
+    )
     a = ap.parse_args()
+
+    if a.self_test:
+        source_resolution_self_test()
+        assert "confidence sequence" not in concepts_for(
+            "fixedHighConfidenceBound", "fixed-sample high-confidence theorem", ""
+        )
+        assert "confidence sequence" in concepts_for(
+            "timeUniformBound", "all-time Ville crossing theorem", ""
+        )
+        assert "ERM" not in concepts_for(
+            "finiteJointMeanVarianceMasterMixture", "master mixture", ""
+        )
+        assert "ERM" not in concepts_for(
+            "finiteSupremumBound", "terminal supremum theorem", ""
+        )
+        assert "ERM" not in concepts_for("pac_bayes_generalization", "", "")
+        assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
+        assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        assert {"Bernstein", "MGF", "Bernoulli"}.issubset(
+            concepts_for("indicator_expectedPriorBernsteinExpMoment_le_one", "", "")
+        )
+        line1, idx0, kind = resolve_decl(
+            "PACBayes.FiniteExponentialTilt", "finiteExponentialTiltNormalizer_pos"
+        )
+        assert line1 > 1 and idx0 == line1 - 1 and kind == "theorem"
+        print("StatLean manifest self-test passed")
+        return 0
 
     print("harvesting from", MANIFEST.relative_to(ROOT))
     pool = harvest()

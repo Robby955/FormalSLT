@@ -50,7 +50,7 @@
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
       "next_step": "Formalize the exact piecewise xi residual and its zero-residual specialization, or package the integrated stack; treat countable, all-real, and time-uniform adaptation separately.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -86,7 +86,7 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 151,
-    "library_and_example_lean_lines": 85144,
+    "library_and_example_lean_lines": 85320,
     "library_lean_lines": 72601,
     "library_modules": 192,
     "theorem_map_entries": 726
@@ -243,7 +243,7 @@
           "summary": "Finite-horizon absolute-deviation shell with a threshold depending on (time, hypothesis)"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "finiteDyadicTimeBudget",
           "summary": "Standard dyadic time-budget schedule \u03b4 * 2^(-1-t)"
@@ -315,13 +315,13 @@
           "summary": "Finite-prefix dyadic shell from one-sided upper and lower pointwise tails"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "empiricalAverageUpperHoeffdingTail",
           "summary": "Named ENNReal upper-tail budget produced by the fixed-hypothesis Hoeffding wrapper"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "empiricalAverageLowerHoeffdingTail",
           "summary": "Named ENNReal lower-tail budget produced by the fixed-hypothesis Hoeffding wrapper"
@@ -345,7 +345,7 @@
           "summary": "Normalizes the upper-tail Hoeffding range expression to the lower-tail expression"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "empiricalAverageTwoSidedHoeffdingTail",
           "summary": "Combined two-sided empirical-average Hoeffding budget"
@@ -357,7 +357,7 @@
           "summary": "Shared-sample finite-prefix wrapper using one combined two-sided Hoeffding budget"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "empiricalAverageUniformRangeTwoSidedHoeffdingTail",
           "summary": "Uniform-range two-sided empirical-average Hoeffding budget with one denominator proxy"
@@ -411,7 +411,7 @@
           "summary": "Shared-sample finite-prefix wrapper with pointwise uniform range width and nondegenerate sample-coordinate certificates"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "empiricalAverageUniformRangeTwoSidedHoeffdingSampleSizeTail",
           "summary": "Displayed two-sided Hoeffding budget 2 * exp(-2 * sampleSize * \u03b5^2 / R^2)"
@@ -573,7 +573,7 @@
           "summary": "Finite-prefix time-varying dyadic-radius theorem for [0,1] losses with the pointwise tails discharged from Hoeffding"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "zeroOneDyadicFiniteClassConfidenceRadius",
           "summary": "Named dyadic confidence radius for [0,1] finite-class empirical-average deviations"
@@ -603,13 +603,13 @@
           "summary": "Existential-event anytime theorem using the named dyadic confidence radius"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "finiteClassConfidenceSequenceFailureEvent",
           "summary": "Named failure event for the [0,1] finite-class dyadic confidence sequence"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "UniformConvergence",
           "name": "FiniteClassConfidenceSequence",
           "summary": "Bundled assumptions for the [0,1] finite-class dyadic confidence sequence"
@@ -830,13 +830,13 @@
         {
           "kind": "theorem",
           "module": "Covering.FiniteSubGaussianChaining",
-          "name": "finite_chaining_expectation_bound",
+          "name": "FormalSLT.Covering.FiniteSubGaussianChaining.finite_chaining_expectation_bound",
           "summary": "Finite multiscale chaining decomposition in expectation"
         },
         {
           "kind": "theorem",
           "module": "Covering.FiniteSubGaussianChaining",
-          "name": "finite_projected_chaining_expectation_bound",
+          "name": "FormalSLT.Covering.FiniteSubGaussianChaining.finite_projected_chaining_expectation_bound",
           "summary": "Finite projected-supremum chaining without an identity terminal projection"
         },
         {
@@ -864,7 +864,7 @@
           "summary": "Projected finite-net chaining bound with covering-number entropy budgets"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.FiniteSubGaussianChaining",
           "name": "FiniteNet.ProjectedIndex",
           "summary": "Finite image of a net projection, used to avoid a finite ambient index assumption"
@@ -876,13 +876,13 @@
           "summary": "Projected finite-net-image chaining bound without [Fintype T]"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.FiniteSubGaussianChaining",
           "name": "FiniteDyadicDudleyInstance",
           "summary": "Packaged reusable finite dyadic Dudley instance: net sequence, coarse budget, variance positivity, and coarse projected-supremum bound"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.FiniteSubGaussianChaining",
           "name": "FiniteDyadicDudleyInstance.SupremumAdapter",
           "summary": "Optional supplied-supremum adapter to a terminal projected finite-net supremum plus explicit terminal error"
@@ -972,7 +972,7 @@
           "summary": "Finite dyadic entropy-integral budget for covering numbers"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.FiniteSubGaussianChaining",
           "name": "finiteDyadicEntropyAtRadiusUpperSum",
           "summary": "Finite dyadic entropy-at-radius upper sum sampled at lower annulus endpoints"
@@ -1104,7 +1104,7 @@
           "summary": "Totally bounded metric spaces admit finite covers at every positive real radius"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedDudley",
           "name": "finiteNetOfTotallyBoundedUniv",
           "summary": "Extracts the repo's bundled finite-net record from total boundedness"
@@ -1116,13 +1116,13 @@
           "summary": "Dyadic total-bounded net schedule satisfies the adjacent-radius budget used by finite chaining"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedDudley",
           "name": "dyadicChainingFiniteNetSequenceOfTotallyBounded",
           "summary": "Packages the total-bounded dyadic net schedule as a FiniteDyadicNetSequence under global projection-pair hypotheses"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedDudley",
           "name": "finiteDyadicDudleyInstanceOfTotallyBounded",
           "summary": "Packages the total-bounded dyadic net schedule as a FiniteDyadicDudleyInstance when global coarse-budget and projection-pair hypotheses are available"
@@ -1164,7 +1164,7 @@
           "summary": "Total-bounded Dudley boundary wrapper using approximate witnesses, finite skeleton selectors, and pathwise modulus"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedDudley",
           "name": "EpsilonizedSupremumBoundaryChoice",
           "summary": "Finite skeleton and terminal-scale certificate for an epsilonized Dudley boundary step"
@@ -1182,7 +1182,7 @@
           "summary": "Finite-cover radius plus pathwise modulus gives the finite-skeleton approximation hypothesis"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedDudley",
           "name": "FiniteCoverSupremumBoundaryChoice",
           "summary": "Finite-cover/pathwise-modulus certificate for the epsilonized Dudley boundary step"
@@ -1206,7 +1206,7 @@
           "summary": "Finite-terminal total-bounded dyadic wrapper composed with the finite Dudley entropy-budget theorem"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedDudleyCovering",
           "name": "totalBoundedCoveringNumberAtRadius",
           "summary": "Half-open real-radius selected-cover-count staircase for the total-bounded dyadic net schedule"
@@ -1242,7 +1242,7 @@
           "summary": "Concrete non-vacuity witness for the generic selected-cover-count surface on the unit interval"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedMinimalCovering",
           "name": "minimalMetricCoveringNumber",
           "summary": "Genuine minimal finite metric covering number for a nonempty totally bounded metric index space"
@@ -1266,7 +1266,7 @@
           "summary": "Nonempty totally bounded spaces have positive genuine minimal covering number at positive radius"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Covering.TotalBoundedMinimalCovering",
           "name": "minimalMetricCoverOfTotallyBoundedUniv",
           "summary": "Chooses a cardinal-minimal finite metric cover from the genuine minimal covering-number witness"
@@ -1427,25 +1427,25 @@
           "summary": "The two-point discrete metric index type"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointDist_nonneg",
           "summary": "The two-point discrete metric is nonnegative"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointDist_symm",
           "summary": "The two-point discrete metric is symmetric"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointDist_triangle",
           "summary": "The two-point discrete metric satisfies the triangle inequality"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPoint_rademacher_mgf_bound",
           "summary": "One-coordinate Rademacher process increments satisfy the sub-Gaussian MGF bound"
@@ -1463,19 +1463,19 @@
           "summary": "Full two-point finite net with dyadic positive radius"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointDyadicNet_radius_geometric",
           "summary": "Adjacent two-point dyadic radii satisfy the geometric chaining budget"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointDyadicNet_pair_card_gt_one",
           "summary": "Adjacent two-point projection-pair families are nontrivial"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointDyadicNet_coverCount_le",
           "summary": "Adjacent two-point covering-number products are bounded by the constant cover-count envelope"
@@ -1493,13 +1493,13 @@
           "summary": "Packaged finite dyadic Dudley instance for the two-point Rademacher process"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointRademacher_projected_dudley_m_bound",
           "summary": "Arbitrary finite-horizon projected Dudley bound routed through the packaged finite dyadic Dudley API"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointRademacherSup_le_projectedSup",
           "summary": "Terminal projected-net adapter for the two-point supplied supremum"
@@ -1511,7 +1511,7 @@
           "summary": "Supplied-supremum adapter for the two-point packaged Dudley instance"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.TwoPointDudley",
           "name": "twoPointRademacherSup_dudley_m_bound",
           "summary": "Supplied-supremum finite Dudley bound routed through the packaged finite dyadic Dudley API"
@@ -1528,19 +1528,19 @@
           "summary": "Discrete metric on Fin n"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteDist_nonneg",
           "summary": "The finite discrete metric is nonnegative"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteDist_symm",
           "summary": "The finite discrete metric is symmetric"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteDist_triangle",
           "summary": "The finite discrete metric satisfies the triangle inequality"
@@ -1552,7 +1552,7 @@
           "summary": "One-coordinate Rademacher process embedded in the finite discrete family"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscrete_rademacher_mgf_bound",
           "summary": "Embedded Rademacher process increments satisfy the sub-Gaussian MGF bound"
@@ -1576,19 +1576,19 @@
           "summary": "Explicit adjacent-scale cover-count envelope n * n"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteDyadicNet_dist",
           "summary": "Finite discrete nets use the process metric"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteDyadicNet_coveringNumber",
           "summary": "The full finite discrete net has covering number n"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteDyadicNet_coverCount_le",
           "summary": "Adjacent finite-discrete covering-number products are bounded by the n * n envelope"
@@ -1606,7 +1606,7 @@
           "summary": "Packaged finite dyadic Dudley instance for the Fin n embedded Rademacher process"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteRademacher_projected_dudley_m_bound",
           "summary": "Arbitrary finite-horizon projected Dudley bound for the embedded Rademacher process routed through the packaged finite dyadic Dudley API"
@@ -1618,13 +1618,13 @@
           "summary": "Supremum functional for the embedded Rademacher process over Fin n"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteRademacherSup_true",
           "summary": "The supplied supremum is nontrivial: it equals 1 on the positive Rademacher outcome"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteRademacherSup_le_projectedSup",
           "summary": "Terminal projected-net adapter for the finite-discrete supplied supremum"
@@ -1636,7 +1636,7 @@
           "summary": "Supplied-supremum adapter for the finite-discrete packaged Dudley instance"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.FiniteDiscreteDudley",
           "name": "finDiscreteRademacherSup_dudley_m_bound",
           "summary": "Supplied-supremum finite Dudley bound for the embedded Rademacher process routed through the packaged finite dyadic Dudley API"
@@ -1653,43 +1653,43 @@
           "summary": "The closed interval [0,1] as a metric index type"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitInterval_totallyBounded_univ",
           "summary": "The unit interval is totally bounded"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalFiniteNet_covers",
           "summary": "Total-bounded finite net covers the unit interval at a supplied radius"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicFiniteNet_covers",
           "summary": "Dyadic total-bounded finite net covers the unit interval at the dyadic chaining radius"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridCenter_leftEndpoint",
           "summary": "The reusable dyadic grid center map contains the left endpoint"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridCenter_rightEndpoint",
           "summary": "The reusable dyadic grid center map contains the right endpoint"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGrid_card",
           "summary": "Level-k dyadic grid has cardinality 2^k + 1"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridPairCoverCount_zero",
           "summary": "The first adjacent dyadic grid pair count is 15"
@@ -1701,37 +1701,37 @@
           "summary": "Floor projection from [0,1] to the level-k dyadic grid"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridFloorProject_dist_le",
           "summary": "Floor-projected dyadic grid covers [0,1] at spacing radius 1 / 2^k"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridNet_covers",
           "summary": "Generic dyadic finite net covers [0,1] at spacing radius 1 / 2^k"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridNet_coveringNumber",
           "summary": "Generic dyadic finite net has 2^k + 1 centers"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridNet_coveringNumber_one",
           "summary": "Level-1 generic dyadic finite net has 3 centers"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridNet_coveringNumber_two",
           "summary": "Level-2 generic dyadic finite net has 5 centers"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridNet_coveringNumberPair_zero",
           "summary": "Level-1 and level-2 generic dyadic finite-net covering-number product is the first dyadic pair count"
@@ -1743,49 +1743,49 @@
           "summary": "Rounded nearest-grid projection from [0,1] to the level-k dyadic grid"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridRoundProject_zero",
           "summary": "Rounded dyadic projection fixes the left endpoint"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridRoundProject_one",
           "summary": "Rounded dyadic projection fixes the right endpoint"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicGridRoundProject_dist_le",
           "summary": "Rounded dyadic grid covers [0,1] at half-spacing radius 1 / 2^(k+1)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicRoundedGridNet_covers",
           "summary": "Rounded generic dyadic finite net covers [0,1] at half-spacing radius 1 / 2^(k+1)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicRoundedGridNet_coveringNumber",
           "summary": "Rounded generic dyadic finite net has 2^k + 1 centers"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicRoundedGridNet_coveringNumber_one",
           "summary": "Level-1 rounded dyadic finite net has 3 centers"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicRoundedGridNet_coveringNumber_two",
           "summary": "Level-2 rounded dyadic finite net has 5 centers"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalDyadicRoundedGridNet_coveringNumberPair_zero",
           "summary": "Level-1 and level-2 rounded dyadic finite-net covering-number product is the first dyadic pair count"
@@ -1809,19 +1809,19 @@
           "summary": "Adjacent-level covering-product envelope for the shifted rounded dyadic sequence"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "monotone_unitIntervalRoundedDyadicGridCoverCount",
           "summary": "Rounded dyadic adjacent-level cover counts are monotone in the scale"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "monotone_unitIntervalRoundedDyadicGridEntropy",
           "summary": "Rounded dyadic entropy-at-scale sequence is monotone"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridEntropy_prefixSup",
           "summary": "Prefix-sup envelope collapses for the rounded dyadic entropy sequence"
@@ -1833,229 +1833,229 @@
           "summary": "Packaged finite dyadic Dudley instance for the rounded unit-interval grid sequence"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_dist",
           "summary": "Shifted rounded dyadic finite nets use the Rademacher process metric"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_radius_pos",
           "summary": "Adjacent rounded dyadic radii have positive sum at every scale"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_radius_geometric",
           "summary": "Adjacent rounded dyadic radii satisfy the geometric chaining radius budget"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_pair_card_gt_one",
           "summary": "Adjacent rounded dyadic projection-pair family is nontrivial at every scale"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_coveringNumber_product",
           "summary": "Adjacent rounded dyadic covering-number product equals the reusable cover-count envelope"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_coverCount_le",
           "summary": "Adjacent rounded dyadic covering-number product is bounded by the cover-count envelope"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_radius_pos_range",
           "summary": "Range wrapper for positive adjacent rounded dyadic radii over any finite horizon"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_radius_geometric_range",
           "summary": "Range wrapper for the geometric radius budget over any finite horizon"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_pair_card_gt_one_range",
           "summary": "Range wrapper for nontrivial adjacent projection-pair families over any finite horizon"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRoundedDyadicGridNet_coverCount_le_range",
           "summary": "Range wrapper for the adjacent rounded-grid covering-product envelope over any finite horizon"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfMeshNet_covers",
           "summary": "Explicit three-point mesh covers [0,1] at radius 1/4"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfMeshNet_coveringNumber",
           "summary": "Explicit half mesh has covering number 3"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalQuarterMeshNet_covers",
           "summary": "Explicit five-point mesh covers [0,1] at radius 1/8"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalQuarterMeshNet_coveringNumber",
           "summary": "Explicit quarter mesh has covering number 5"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfQuarterPair_card_gt_one",
           "summary": "Adjacent half/quarter projection-pair family is nontrivial"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfQuarter_coveringNumber_product",
           "summary": "Half/quarter covering-number product is 15"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalHalfQuarter_coveringNumber_product_eq_dyadicGridPairCoverCount_zero",
           "summary": "The half/quarter product is identified with the first adjacent dyadic grid pair count"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitInterval_rademacherLinear_mgf_bound",
           "summary": "Rademacher linear process increment satisfies the sub-Gaussian MGF bound"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearProcess_increment_mgf",
           "summary": "The packaged finite sub-Gaussian process has the required increment MGF"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_expectation",
           "summary": "The supplied supremum has expectation 1/2"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_upper",
           "summary": "The supplied supremum upper-bounds the full non-finite unit-interval family"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_attained",
           "summary": "The supplied supremum is attained at an endpoint"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_isLeastUpperBound",
           "summary": "The supplied supremum is the least upper bound over the non-finite unit-interval family"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_isLUB_range",
           "summary": "The supplied supremum is the least upper bound of the actual process range"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_sSup_range",
           "summary": "The supplied supremum equals the order supremum of the actual process range"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_halfQuarter_increment_log15_bound",
           "summary": "Half/quarter projection-pair increment pays the concrete log 15 entropy term"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_projectedQuarterMesh_dudley_log15_bound",
           "summary": "Projected quarter-mesh supremum satisfies the finite-net Dudley bound with a sqrt(log 15) prefix envelope"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound",
           "summary": "The nonzero supplied supremum routes through the projected quarter-mesh Dudley bound"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_projectedQuarterMesh_dudley_log15_bound_eval",
           "summary": "The projected quarter-mesh supplied-supremum bound evaluated to 1 + sqrt 2 * sqrt(log 15)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_log15_bound",
           "summary": "Rounded generic dyadic-grid projected supremum satisfies the finite-net Dudley bound with a sqrt(log 15) prefix envelope"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound",
           "summary": "The nonzero supplied supremum routes through the rounded generic dyadic-grid Dudley bound"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_log15_bound_eval",
           "summary": "The rounded-grid supplied-supremum bound evaluated to 1 + sqrt 2 * sqrt(log 15)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m2_bound",
           "summary": "Three-level rounded dyadic-grid projected supremum satisfies the finite-net Dudley bound with reusable adjacent cover counts"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m2_bound",
           "summary": "The nonzero supplied supremum routes through the m = 2 rounded dyadic-grid Dudley bound"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound",
           "summary": "Arbitrary finite-horizon rounded dyadic-grid projected supremum Dudley bound routed through the packaged API"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m_bound_prefixFree",
           "summary": "Arbitrary finite-horizon projected rounded-grid Dudley bound with the prefix-sup envelope removed"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_le_projectedRoundedDyadicGridSup",
           "summary": "Endpoint adapter from the supplied supremum to any rounded dyadic projected finite supremum"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_projectedRoundedDyadicGridSup_eq",
           "summary": "Projected finite supremum over any rounded dyadic grid equals the supplied supremum"
@@ -2067,43 +2067,43 @@
           "summary": "Supplied-supremum adapter for the packaged rounded unit-interval Dudley instance"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound",
           "summary": "Arbitrary finite-horizon rounded dyadic-grid Dudley bound for the supplied supremum routed through the packaged API"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree",
           "summary": "Arbitrary finite-horizon supplied-supremum rounded-grid Dudley bound with the prefix-sup envelope removed"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinear_roundedDyadicGrid_dudley_m3_bound",
           "summary": "Named m = 3 projected rounded dyadic-grid Dudley corollary"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m3_bound",
           "summary": "Named m = 3 supplied-supremum rounded dyadic-grid Dudley corollary"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_dudley_m0_bound",
           "summary": "Coarse finite-horizon m = 0 Dudley bound for the supplied supremum"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_dudley_m1_bound_of_entropy",
           "summary": "First-scale supplied-supremum Dudley bound under an explicit entropy envelope"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.UnitIntervalDudley",
           "name": "unitIntervalRademacherLinearSup_dudley_m1_bound_constEntropy_eval",
           "summary": "Constant-envelope first-scale bound evaluated to a scalar expression"
@@ -2115,25 +2115,25 @@
           "summary": "Real-radius half-open pair-count chaining envelope for [0,1]; not a metric covering number"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.ContinuousDudleyUnitIntervalCovering",
           "name": "unitIntervalPairCountEntropy_eq_pair_count_sample",
           "summary": "The staircase entropy samples the rounded-grid adjacent pair-count product at every dyadic radius"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.ContinuousDudleyUnitIntervalCovering",
           "name": "unitInterval_pairCountEntropy_nonconstant",
           "summary": "The pair-count entropy integrand is nonconstant"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.ContinuousDudleyUnitIntervalCovering",
           "name": "unitInterval_pairCountEntropy_integral_positive",
           "summary": "The pair-count entropy integrand has positive interval mass"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Covering.ContinuousDudleyUnitIntervalCovering",
           "name": "continuous_dudley_oneStep_entropy_integral_iSup_unitInterval_pairCountEnvelope",
           "summary": "Guarded continuous Dudley capstone for [0,1] with the pair-count chaining envelope integrand"
@@ -2156,13 +2156,13 @@
           "summary": "Uniform stability gives bounded differences for the gen gap scaffold"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "AlgorithmicStability",
           "name": "FiniteCoordinateSwapIdentity",
           "summary": "Finite coordinate-swap symmetry predicate for explicit sample weights"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "AlgorithmicStability",
           "name": "finiteProductSampleWeight",
           "summary": "Iid finite product sample weights \u220f k, p (S k)"
@@ -2324,7 +2324,7 @@
           "summary": "Iid product-weight Bernstein tail with the n * eps^2 exponent"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "BernsteinCondition",
           "summary": "Finite Bernstein condition: excess-loss second moment controlled by excess risk"
@@ -2354,7 +2354,7 @@
           "summary": "Bernstein embeds excess-risk localized complexity into second-moment localized complexity"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "FixedPointUpperCertificate",
           "summary": "Deterministic envelope certificate: above rStar, the localized envelope is below the identity"
@@ -2372,73 +2372,73 @@
           "summary": "Bernstein bridge plus fixed-point certificate controls excess-risk localized empirical complexity by c * r"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "LocalizedDeviationCertificate",
           "summary": "Deterministic localized concentration-event interface for population excess risk versus empirical excess risk"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedUpperDeviation",
           "summary": "Finite localized supremum of population-minus-empirical excess-risk gaps"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedUpperDeviationEvent",
           "summary": "Sample event where the localized upper-deviation statistic is bounded"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedSampleDependentUpperDeviationEvent",
           "summary": "Sample-dependent localized upper-deviation event for random-threshold arguments"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedFastRateUpperDeviationEvent",
           "summary": "Named random-threshold event used by the finite fast-rate shell"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedPointwiseUpperDeviationBadEventMass",
           "summary": "Finite weighted mass of one pointwise upper-deviation bad event"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedPointwiseSampleDependentUpperDeviationBadEventMass",
           "summary": "Finite weighted mass of one pointwise upper-deviation bad event with a sample-dependent threshold"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedUpperDeviationBadEventMass",
           "summary": "Finite weighted mass outside the localized upper-deviation event"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedSampleDependentUpperDeviationBadEventMass",
           "summary": "Finite weighted mass outside a sample-dependent localized upper-deviation event"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedFastRateUpperDeviationBadEventMass",
           "summary": "Finite weighted mass outside the named fast-rate random-threshold localized event"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedPointwiseUpperDeviationExpMoment",
           "summary": "Finite weighted exponential moment for one localized upper-deviation gap"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Rademacher.Localized",
           "name": "localizedPointwiseSampleDependentUpperDeviationShiftedExpMoment",
           "summary": "Shifted exponential moment for one localized upper-deviation gap with a sample-dependent threshold"
@@ -2714,7 +2714,7 @@
           "summary": "Deterministic sqrt-form bound under a uniform-in-\u03bb MGF certificate"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayesFiniteProductMGF",
           "name": "finiteEmpiricalRisk",
           "summary": "Finite empirical risk for a real-valued loss"
@@ -2864,7 +2864,7 @@
           "summary": "Prior-averaged normalized indicator Bernstein moment under the finite i.i.d. product law"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayes.IndicatorBernsteinConfidence",
           "name": "indicatorFinitePACBayesBernsteinBadSamples",
           "summary": "Samples on which some finite posterior violates the explicit fixed-tilt indicator Bernstein inequality"
@@ -2918,7 +2918,7 @@
           "summary": "Product-law mass bound for the shared fixed-tilt exceptional set at lambda = 2n/3"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayes.IndicatorBernsteinTiltCatalog",
           "name": "indicatorFinitePACBayesBernsteinWeightedCatalogBadSamples",
           "summary": "Single exceptional set formed by the finite union of fixed indicator-Bernstein tilt events with budgets delta * weight j"
@@ -2966,13 +2966,13 @@
           "summary": "Valid post-sample and posterior-dependent selection from the fixed finite weighted tilt catalog"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayesBernstein",
           "name": "posteriorMarginVarianceProxy",
           "summary": "Posterior average of a supplied per-hypothesis margin-variance proxy"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayesBernstein",
           "name": "priorBernsteinExpMoment",
           "summary": "Normalized Bernstein prior exponential moment with variance and scale terms"
@@ -3211,7 +3211,7 @@
           "summary": "Plain-sum finite weighted union bound stated through an existential membership cover, avoiding decidable-instance reconciliation"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayes.FiniteEmpiricalVarianceTiltCatalog",
           "name": "finiteEmpiricalVarianceWeightedCatalogBadSamples",
           "summary": "Finite union of empirical-variance bad sets with separately weighted variance budgets"
@@ -3259,7 +3259,7 @@
           "summary": "Valid sample- and posterior-dependent selection from the finite variance-tilt catalog"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
           "name": "finiteBoundedLossBernsteinWeightedCatalogBadSamples",
           "summary": "Finite union of population-risk bad sets with separately weighted risk budgets"
@@ -3277,7 +3277,7 @@
           "summary": "A sample is outside the risk catalog exactly when it is outside every fixed-lambda event"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "PACBayes.FiniteEmpiricalBernsteinRiskCatalog",
           "name": "finiteEmpiricalBernsteinRiskWeightedCatalogBadSamples",
           "summary": "One exceptional set joining the variance and risk catalogs"
@@ -4056,7 +4056,7 @@
     {
       "entries": [
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.Bernoulli",
           "name": "bernoulliPMF",
           "summary": "Bernoulli(p) probability mass function on Bool"
@@ -4080,13 +4080,13 @@
           "summary": "Two-sided Bernstein tail specialized to Bernoulli(p)"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.SampleStatistics",
           "name": "sampleMean",
           "summary": "Sample mean (1/n) \u2211 x i of a finite sample"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.SampleStatistics",
           "name": "sampleVariance",
           "summary": "Population-form sample variance (1/n) \u2211 (x i - x\u0304)\u00b2"
@@ -4115,7 +4115,7 @@
     {
       "entries": [
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.ClassicalEstimation",
           "name": "weightedExpectation",
           "summary": "Finite weighted expectation \u2211 w x \u00b7 X x, the population-mean primitive"
@@ -4133,7 +4133,7 @@
           "summary": "Sample mean is unbiased for the finite population mean"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.ClassicalEstimation",
           "name": "sampleVarianceBessel",
           "summary": "Bessel-corrected sample variance (1/(n-1)) \u2211 (x i - x\u0304)\u00b2"
@@ -4180,25 +4180,25 @@
     {
       "entries": [
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.FisherInformation",
           "name": "weightedVariance",
           "summary": "Finite weighted variance of an estimator under a weight vector"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.FisherInformation",
           "name": "weightedCovariance",
           "summary": "Finite weighted covariance of two functions"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.FisherInformation",
           "name": "scoreFunction",
           "summary": "Score \u2202_\u03b8 log p(x; \u03b8) as pmfDeriv / pmf"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.FisherInformation",
           "name": "fisherInformation",
           "summary": "Fisher information as the weighted variance of the score"
@@ -4228,7 +4228,7 @@
           "summary": "Cram\u00e9r-Rao lower bound 1 / I(\u03b8) \u2264 Var(T) for an unbiased estimator"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "Statistics.CramerRao",
           "name": "bernoulliFisherInformation",
           "summary": "Bernoulli Fisher information 1 / (p(1-p))"
@@ -4275,97 +4275,97 @@
           "summary": "Natural-parameter derivative of the finite exponential-family mass"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finitePartition_pos",
           "summary": "Positive base weights give positive finite partition sum"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialPMF_sum_one",
           "summary": "Normalized exponential-family masses sum to one"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialPMF_pos",
           "summary": "Positive base weights give positive normalized masses"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finitePartition_hasDerivAt",
           "summary": "Termwise derivative of the finite partition sum"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialFamily_mean_eq_logPartition_deriv",
           "summary": "Finite exponential-family mean equals the log-partition derivative numerator divided by Z(theta)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteLogPartition_hasDerivAt",
           "summary": "Log-partition derivative identity A'(theta) = E_theta[T]"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteLogPartition_hasDerivAt_of_positiveBase",
           "summary": "Positive-base wrapper for A'(theta) = E_theta[T]"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialPMF_hasDerivAt",
           "summary": "Derivative of the normalized finite exponential-family mass"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteMean_hasDerivAt",
           "summary": "Differentiating the finite mean gives a centered second moment"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteMean_deriv_eq_variance",
           "summary": "Centered second-moment derivative equals finite weighted variance"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteLogPartition_hasSecondDerivAt",
           "summary": "Log-partition curvature identity A''(theta) = Var_theta(T)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteLogPartition_hasSecondDerivAt_of_positiveBase",
           "summary": "Positive-base wrapper for A''(theta) = Var_theta(T)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialFamily_variance_eq_logPartition_secondDeriv",
           "summary": "Finite exponential-family variance equals log-partition second derivative"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialFamily_score_eq_centered",
           "summary": "Natural-parameter score equals the centered sufficient statistic"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialFamily_fisherInformation_eq_variance",
           "summary": "Natural-parameter Fisher information equals finite variance"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "finiteExponentialFamily_logPartition_secondDeriv_eq_fisherInformation",
           "summary": "Direct bridge I(theta) = A''(theta)"
@@ -4383,61 +4383,61 @@
           "summary": "Bernoulli natural sufficient statistic 1{true}"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_partition",
           "summary": "Bernoulli natural partition sum is 1 + exp(theta)"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_logPartition_zero",
           "summary": "Bernoulli natural log-partition at theta = 0 is log 2"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_mean_zero",
           "summary": "Bernoulli natural mean at theta = 0 is 1/2"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_logPartition_deriv_zero",
           "summary": "Bernoulli natural A'(0) = 1/2"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_pmf_zero",
           "summary": "Both Bernoulli natural atoms have mass 1/2 at theta = 0"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_variance_zero",
           "summary": "Bernoulli natural variance at theta = 0 is 1/4"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_logPartition_secondDeriv_zero",
           "summary": "Bernoulli natural A''(0) = 1/4"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_fisher_zero",
           "summary": "Bernoulli natural Fisher information at theta = 0 is 1/4"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_fisher_eq_variance_zero",
           "summary": "Bernoulli natural Fisher information equals variance at theta = 0"
         },
         {
-          "kind": "definition",
+          "kind": "theorem",
           "module": "Statistics.ExponentialFamily",
           "name": "bernoulliNatural_witness",
           "summary": "Concrete Bernoulli witness with mean 1/2, variance 1/4, and Fisher information 1/4"
@@ -4448,31 +4448,31 @@
     {
       "entries": [
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "GlivenkoCantelli",
           "name": "lowerRayIndicator",
           "summary": "Closed lower-ray indicator 1{x \u2264 z} as the empirical-CDF integrand"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "GlivenkoCantelli",
           "name": "strictLowerRayIndicator",
           "summary": "Open lower-ray indicator 1{x < z}, the atom-safe upper bracket"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "GlivenkoCantelli",
           "name": "empiricalCDF",
           "summary": "Empirical CDF as the lower-ray indicator-class empirical average"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "GlivenkoCantelli",
           "name": "empiricalCDFUniformDeviation",
           "summary": "Uniform empirical-CDF deviation sup_x abs(F_n(x) - F(x))"
         },
         {
-          "kind": "theorem",
+          "kind": "definition",
           "module": "GlivenkoCantelli",
           "name": "IsGCClass",
           "summary": "Glivenko-Cantelli class predicate: a.s. uniform-deviation convergence to zero"

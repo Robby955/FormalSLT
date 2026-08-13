@@ -82,17 +82,19 @@ files.
   checked for `[0,1]` losses under the explicit finite IID product law and
   sample size at least two. A normalized prior moment now yields one
   fixed-sample, fixed-tilt bad set of mass at most `delta`; outside it, every
-  finite posterior satisfies the checked comparison between its average of
-  per-hypothesis population variances and the corresponding empirical
-  average. A separate general bounded-loss Bernstein event now combines with
+  posterior on the finite hypothesis type satisfies the checked comparison
+  between its average of per-hypothesis population variances and the
+  corresponding empirical average. A separate general bounded-loss Bernstein event now combines with
   that variance event; their union has mass at most the sum of the two declared
   budgets, and outside it every finite posterior satisfies the observable
   fixed-parameter empirical-Bernstein risk bound. Separate finite weighted
   catalogs for the two tilts now support sample- and posterior-dependent
   selection on one shared event. The variance catalog is independently exposed
   and witnessed with unequal weights and two selected branches; the final risk
-  layer reuses it rather than duplicating its event. The next reviewable step is
-  retained-log Bennett. The current result is not all-real tilt optimization
-  or time-uniform inference.
+  layer reuses it rather than duplicating its event. A retained-Bennett joint
+  mean/Bessel-variance score and one-event finite joint-pair posterior catalog
+  are also checked. The next reviewable step is the exact piecewise residual and
+  zero-residual explicit specialization. The current result is not all-real tilt
+  optimization or time-uniform inference.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

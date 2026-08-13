@@ -12,6 +12,7 @@ import argparse
 import json
 import re
 import sys
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -21,6 +22,23 @@ THEOREM_MAP = ROOT / "docs" / "theorem-map.md"
 OUTPUT = ROOT / "docs" / "proof-frontier-manifest.json"
 
 EXPECTED_PUBLIC_AXIOMS = ["propext", "Classical.choice", "Quot.sound"]
+
+LEAN_DECLARATION_KINDS = {
+    "theorem": "theorem",
+    "lemma": "theorem",
+    "def": "definition",
+    "abbrev": "definition",
+    "structure": "definition",
+    "class": "definition",
+    "instance": "definition",
+    "inductive": "definition",
+}
+LEAN_DECLARATION_PATTERN = re.compile(
+    r"(?m)^[ \t]*(?:@\[[^\]]*\]\s*)*"
+    r"(?:(?:noncomputable|private|protected|nonrec|unsafe)\s+)*"
+    r"(?P<keyword>" + "|".join(LEAN_DECLARATION_KINDS) + r")\s+"
+    r"(?P<name>«[^»]+»|[^\s:({\[]+)"
+)
 
 FRONTIER_LANES: list[dict[str, str]] = [
     {
@@ -113,7 +131,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite per-hypothesis Bessel empirical loss variance, exact "
             "ordered-pair representation, finite-IID unbiasedness, "
             "random-matching source MGF, fixed-tilt posterior-uniform "
-            "variance confidence, a standalone weighted finite variance-tilt "
+            "variance confidence over all posteriors on a finite hypothesis "
+            "type, a standalone weighted finite variance-tilt "
             "catalog, fixed-parameter observable risk, and separately "
             "weighted finite eta/lambda catalogs, plus a fixed-sample "
             "per-hypothesis joint mean/Bessel-variance MGF core and a "
@@ -239,6 +258,171 @@ def strip_lean_comments_and_strings(text: str) -> str:
     return "".join(result)
 
 
+def parse_lean_declarations(text: str) -> list[dict[str, Any]]:
+    """Return named public-source declarations with namespace-qualified names.
+
+    Comment and string contents are blanked before matching, while newlines are
+    preserved so the reported source lines remain exact.
+    """
+    clean = strip_lean_comments_and_strings(text)
+    lines = clean.splitlines()
+    namespace_at_line: list[str] = []
+    scopes: list[tuple[str, str]] = []
+
+    for line in lines:
+        namespace_at_line.append(
+            ".".join(name for scope_kind, name in scopes if scope_kind == "namespace")
+        )
+        stripped = line.strip()
+        namespace_match = re.fullmatch(r"namespace\s+(\S+)", stripped)
+        if namespace_match:
+            scopes.append(("namespace", namespace_match.group(1)))
+            continue
+        section_match = re.fullmatch(r"section(?:\s+(\S+))?", stripped)
+        if section_match:
+            scopes.append(("section", section_match.group(1) or ""))
+            continue
+        if re.fullmatch(r"end(?:\s+\S+)?", stripped) and scopes:
+            scopes.pop()
+
+    declarations: list[dict[str, Any]] = []
+    for match in LEAN_DECLARATION_PATTERN.finditer(clean):
+        keyword = match.group("keyword")
+        raw_name = match.group("name")
+        line = clean.count("\n", 0, match.start("keyword")) + 1
+        namespace = namespace_at_line[line - 1] if line <= len(namespace_at_line) else ""
+        qualified_name = f"{namespace}.{raw_name}" if namespace else raw_name
+        declarations.append(
+            {
+                "keyword": keyword,
+                "kind": LEAN_DECLARATION_KINDS[keyword],
+                "raw_name": raw_name,
+                "qualified_name": qualified_name,
+                "line": line,
+            }
+        )
+    return declarations
+
+
+def resolve_declaration_from_text(
+    text: str, name: str, source: str = "Lean source"
+) -> dict[str, Any]:
+    """Resolve a mapped declaration exactly/full-name first, then by short name.
+
+    Resolution is deliberately fail-closed: missing and ambiguous declarations
+    are errors, never silently treated as theorems or omitted from generated data.
+    """
+    declarations = parse_lean_declarations(text)
+    exact = [
+        decl
+        for decl in declarations
+        if decl["raw_name"] == name
+        or decl["qualified_name"] == name
+        or decl["qualified_name"].endswith(f".{name}")
+    ]
+    if len(exact) == 1:
+        return exact[0]
+    if len(exact) > 1:
+        matches = ", ".join(
+            f"{decl['keyword']} {decl['qualified_name']}:{decl['line']}" for decl in exact
+        )
+        raise ValueError(
+            f"{source}: ambiguous exact/full declaration {name!r}: {matches}"
+        )
+
+    short_name = name.rsplit(".", 1)[-1]
+    short = [
+        decl
+        for decl in declarations
+        if decl["raw_name"].rsplit(".", 1)[-1] == short_name
+    ]
+    if len(short) == 1:
+        return short[0]
+    if len(short) > 1:
+        matches = ", ".join(
+            f"{decl['keyword']} {decl['qualified_name']}:{decl['line']}" for decl in short
+        )
+        raise ValueError(f"{source}: ambiguous short declaration {name!r}: {matches}")
+    raise ValueError(f"{source}: declaration {name!r} was not found")
+
+
+@lru_cache(maxsize=None)
+def _source_declarations(path: Path) -> tuple[dict[str, Any], ...]:
+    if not path.exists():
+        raise ValueError(f"Lean source does not exist: {path.relative_to(ROOT)}")
+    return tuple(parse_lean_declarations(path.read_text(encoding="utf-8")))
+
+
+def resolve_source_declaration(path: Path, name: str) -> dict[str, Any]:
+    """Resolve `name` in `path` without accepting missing/ambiguous matches."""
+    declarations = _source_declarations(path)
+    exact = [
+        decl
+        for decl in declarations
+        if decl["raw_name"] == name
+        or decl["qualified_name"] == name
+        or decl["qualified_name"].endswith(f".{name}")
+    ]
+    source = path.relative_to(ROOT).as_posix()
+    if len(exact) == 1:
+        return exact[0]
+    if len(exact) > 1:
+        matches = ", ".join(
+            f"{decl['keyword']} {decl['qualified_name']}:{decl['line']}" for decl in exact
+        )
+        raise ValueError(
+            f"{source}: ambiguous exact/full declaration {name!r}: {matches}"
+        )
+
+    short_name = name.rsplit(".", 1)[-1]
+    short = [
+        decl
+        for decl in declarations
+        if decl["raw_name"].rsplit(".", 1)[-1] == short_name
+    ]
+    if len(short) == 1:
+        return short[0]
+    if len(short) > 1:
+        matches = ", ".join(
+            f"{decl['keyword']} {decl['qualified_name']}:{decl['line']}" for decl in short
+        )
+        raise ValueError(f"{source}: ambiguous short declaration {name!r}: {matches}")
+    raise ValueError(f"{source}: declaration {name!r} was not found")
+
+
+def source_resolution_self_test() -> None:
+    sample = '''
+namespace Outer
+-- theorem commented : True := by trivial
+theorem same : True := by trivial
+namespace Inner
+/-- def documented : Nat := 0 -/
+def same : Nat := 0
+def quoted : String := "lemma fake : True := by trivial"
+end Inner
+lemma unique : True := by trivial
+end Outer
+'''
+    outer = resolve_declaration_from_text(sample, "Outer.same", "self-test")
+    inner = resolve_declaration_from_text(sample, "Outer.Inner.same", "self-test")
+    unique = resolve_declaration_from_text(sample, "unique", "self-test")
+    assert (outer["kind"], outer["line"]) == ("theorem", 4)
+    assert (inner["kind"], inner["line"]) == ("definition", 7)
+    assert unique["kind"] == "theorem"
+    try:
+        resolve_declaration_from_text(sample, "same", "self-test")
+    except ValueError as error:
+        assert "ambiguous" in str(error)
+    else:
+        raise AssertionError("ambiguous short names must fail closed")
+    try:
+        resolve_declaration_from_text(sample, "missing", "self-test")
+    except ValueError as error:
+        assert "not found" in str(error)
+    else:
+        raise AssertionError("missing declarations must fail closed")
+
+
 def audit_lean_files(files: list[Path]) -> dict[str, list[dict[str, Any]]]:
     proof_debt = re.compile(
         r"^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b"
@@ -301,7 +485,12 @@ def parse_theorem_map() -> list[dict[str, Any]]:
             {
                 "name": name.strip("`"),
                 "module": module.strip("`"),
-                "kind": "definition" if "Declaration" in row else "theorem",
+                "kind": resolve_source_declaration(
+                    ROOT
+                    / "FormalSLT"
+                    / Path(module.strip("`").replace(".", "/") + ".lean"),
+                    name.strip("`"),
+                )["kind"],
                 "summary": statement.replace("`", ""),
             }
         )
@@ -363,7 +552,15 @@ def build_manifest() -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="fail if the manifest is stale")
+    parser.add_argument(
+        "--self-test", action="store_true", help="test fail-closed Lean declaration resolution"
+    )
     args = parser.parse_args()
+
+    if args.self_test:
+        source_resolution_self_test()
+        print("source resolution self-test passed")
+        return 0
 
     encoded = json.dumps(build_manifest(), indent=2, sort_keys=True) + "\n"
     if args.check:

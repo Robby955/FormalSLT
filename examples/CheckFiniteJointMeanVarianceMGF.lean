@@ -90,11 +90,17 @@ example :
 #check finiteBoundedLossTilt_negativeEmpiricalVarianceMGF_le
 #check finiteJointMeanVarianceMGF_le
 #check finiteJointMeanVariance_normalizedMGF_le_one
+#check fairBool_populationVariance_eq_quarter
+#check halfTilt_kappa_eq_half
+#check halfTilt_kappa_pos
 
 #print axioms finiteJointMeanVarianceKappa_nonneg_of_eta_mul_card_le
 #print axioms finiteBoundedLossTilt_negativeEmpiricalVarianceMGF_le
 #print axioms finiteJointMeanVarianceMGF_le
 #print axioms finiteJointMeanVariance_normalizedMGF_le_one
+#print axioms fairBool_populationVariance_eq_quarter
+#print axioms halfTilt_kappa_eq_half
+#print axioms halfTilt_kappa_pos
 
 end
 

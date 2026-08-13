@@ -3,7 +3,8 @@ import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes
 /-!
 # Concrete finite joint mean/variance PAC-Bayes catalog checker
 
-A fair Boolean law, two genuinely distinct indicator hypotheses, a fair
+A fair Boolean law, two complementary indicator loss functions with equal
+population risk `1/2` and population variance `1/4`, a fair
 full-support prior, and a skewed posterior instantiate the one-event joint
 catalog at `n = 2`.  The two catalog entries carry unequal positive weights
 `1/2` and `1/4` with total `3/4`, active tilts `t, eta ∈ {1/2, 1/4}`, and
@@ -35,8 +36,8 @@ theorem dataLaw_isPMF : IsPMF dataLaw := by
     norm_num [dataLaw]
   · norm_num [dataLaw]
 
-/-- Two genuinely distinct hypotheses: hypothesis `h` pays loss one exactly
-when the observation equals `h`. -/
+/-- Complementary indicator losses: hypothesis `h` pays loss one exactly when
+the observation equals `h`. -/
 def matchLoss (h z : Bool) : ℝ := if z = h then 1 else 0
 
 theorem matchLoss_mem_Icc (h z : Bool) :
@@ -256,7 +257,10 @@ theorem sampleSelector_exercises_both :
   rw [sampleSelector_allFalse, sampleSelector_mixed]
   simp
 
-/-! ### Selector endpoints on the good event -/
+/-! ### Selector endpoints on the good event
+
+The skewed posterior exercises the empirical terms; the per-hypothesis
+population risks and variances coincide in this receipt. -/
 
 /-- The selected raw retained-variance certificate at the skewed posterior. -/
 def selectedJointCertificate (S : Fin 2 → Bool) : Prop :=
@@ -344,6 +348,14 @@ theorem jointCatalog_selected_div_witness :
 #check finiteJointMeanVariance_posteriorGap_div_le_of_not_mem
 #check finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem
 #check finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem
+#check catW_sum_eq
+#check kappa_true_eq
+#check kappa_false_eq
+#check matchLoss_populationRisk
+#check matchLoss_populationVariance
+#check score_gap_eq_one
+#check sampleSelector_allFalse
+#check sampleSelector_mixed
 
 #print axioms finiteJointMeanVarianceScore_expectation_le_one
 #print axioms finiteJointMeanVariancePriorMoment_nonneg
@@ -360,6 +372,14 @@ theorem jointCatalog_selected_div_witness :
 #print axioms finiteJointMeanVariance_posteriorGap_div_le_of_not_mem
 #print axioms finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem
 #print axioms finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem
+#print axioms catW_sum_eq
+#print axioms kappa_true_eq
+#print axioms kappa_false_eq
+#print axioms matchLoss_populationRisk
+#print axioms matchLoss_populationVariance
+#print axioms score_gap_eq_one
+#print axioms sampleSelector_allFalse
+#print axioms sampleSelector_mixed
 #print axioms score_nonconstant
 #print axioms jointBadSamples_mass_le_half
 #print axioms goodSample_exists
