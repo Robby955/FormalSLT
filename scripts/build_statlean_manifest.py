@@ -609,10 +609,11 @@ def select_tasks(
     target_lo: int,
     target_hi: int,
     refresh_selection: bool,
+    *,
+    source_tree: str,
+    harvest_input: str,
 ) -> list[dict[str, Any]]:
     """Load the fully input-pinned v0.1 selection or explicitly refresh it."""
-    tree = source_tree_hash()
-    input_fingerprint = harvest_input_fingerprint(tree)
     if refresh_selection:
         selected = curate(records, target_lo, target_hi)
         if len(selected) < min(target_lo, target_hi):
@@ -627,11 +628,11 @@ def select_tasks(
     selection = json.loads(OUT_SELECTION.read_text(encoding="utf-8"))
     if selection.get("schema_version") != SCHEMA_VERSION:
         raise RuntimeError("selection schema version does not match the generator")
-    if selection.get("source_tree") != tree:
+    if selection.get("source_tree") != source_tree:
         raise RuntimeError(
             "the pinned StatLean-v0.1 selection targets a different FormalSLT source tree"
         )
-    if selection.get("harvest_input") != input_fingerprint:
+    if selection.get("harvest_input") != harvest_input:
         raise RuntimeError(
             "the pinned StatLean-v0.1 selection targets different manifest or generator inputs"
         )
@@ -934,6 +935,12 @@ def main() -> int:
 
     print("harvesting from", MANIFEST.relative_to(ROOT))
     pool = harvest()
+    harvested_trees = {record["source"]["tree"] for record in pool}
+    harvested_inputs = {record["source"]["harvest"] for record in pool}
+    if len(harvested_trees) != 1 or len(harvested_inputs) != 1:
+        raise RuntimeError("harvest records do not share one source snapshot")
+    harvested_tree = harvested_trees.pop()
+    harvested_input = harvested_inputs.pop()
     n_def = sum(1 for r in pool if r["kind"] not in ("theorem", "lemma"))
     print(f"  resolved {len(pool)} declarations ({len(pool)-n_def} theorems/lemmas, {n_def} defs)")
 
@@ -941,7 +948,14 @@ def main() -> int:
         r["difficulty"] = difficulty(r)
 
     selected = copy.deepcopy(
-        select_tasks(pool, a.floor, a.limit, a.refresh_selection)
+        select_tasks(
+            pool,
+            a.floor,
+            a.limit,
+            a.refresh_selection,
+            source_tree=harvested_tree,
+            harvest_input=harvested_input,
+        )
     )
     print(f"  curated {len(selected)} tasks across "
           f"{len({c for r in selected for c in r['concept_tags']})} concept tags")
@@ -1022,11 +1036,16 @@ def main() -> int:
         if base != full_by_id[record["id"]]:
             raise RuntimeError(f"selected/full base record mismatch: {record['id']}")
 
+    final_tree = source_tree_hash()
+    final_input = harvest_input_fingerprint(final_tree)
+    if (final_tree, final_input) != (harvested_tree, harvested_input):
+        raise RuntimeError("harvest inputs changed during StatLean generation")
+
     if a.refresh_selection:
         selection = {
             "schema_version": SCHEMA_VERSION,
-            "source_tree": source_tree_hash(),
-            "harvest_input": harvest_input_fingerprint(source_tree_hash()),
+            "source_tree": harvested_tree,
+            "harvest_input": harvested_input,
             "task_ids": [record["id"] for record in selected],
         }
         OUT_SELECTION.write_text(
@@ -1044,8 +1063,8 @@ def main() -> int:
         "release": "StatLean-v0.1",
         "schema_version": SCHEMA_VERSION,
         "source_repo": json.loads(MANIFEST.read_text())["repository"]["name"],
-        "source_tree": source_tree_hash(),
-        "harvest_input": harvest_input_fingerprint(source_tree_hash()),
+        "source_tree": harvested_tree,
+        "harvest_input": harvested_input,
         "harvested_declarations": len(pool),
         "harvested_theorems": len(pool) - n_def,
         "harvested_definitions": n_def,
