@@ -393,10 +393,16 @@ def lexical_declaration_mentions(
 # --------------------------------------------------------------------------- #
 # harvest
 # --------------------------------------------------------------------------- #
-def harvest() -> list[dict[str, Any]]:
+def harvest(*, source_tree: str | None = None) -> list[dict[str, Any]]:
+    """Harvest records, resolving the immutable tree unless explicitly supplied.
+
+    Self-tests pass a sentinel tree so parser regressions remain runnable while
+    a developer is editing Lean sources. Release generation always takes the
+    default path and therefore still requires a clean, resolvable source tree.
+    """
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     families = manifest["theorem_families"]
-    tree_hash = source_tree_hash()
+    tree_hash = source_tree if source_tree is not None else source_tree_hash()
 
     records: list[dict[str, Any]] = []
     for family in families:
@@ -607,6 +613,15 @@ def select_tasks(
 # --------------------------------------------------------------------------- #
 # fidelity + axioms
 # --------------------------------------------------------------------------- #
+def _fidelity_trailer(stdout: str) -> tuple[int, int] | None:
+    matches = []
+    for line in stdout.splitlines():
+        match = re.fullmatch(r"--- checked (\d+) decl\(s\), (\d+) flag\(s\)", line.strip())
+        if match:
+            matches.append((int(match.group(1)), int(match.group(2))))
+    return matches[0] if len(matches) == 1 else None
+
+
 def run_fidelity(rec: dict[str, Any]) -> dict[str, Any]:
     if not FIDELITY.exists():
         return {"checked": False, "flagged": False, "signed_off": False,
@@ -624,9 +639,8 @@ def run_fidelity(rec: dict[str, Any]) -> dict[str, Any]:
             capture_output=True, text=True, timeout=60,
         )
         out = (r.stdout + r.stderr).strip()
-        trailer = re.search(r"--- checked (\d+) decl\(s\), (\d+) flag\(s\)$", out)
-        checked_count = int(trailer.group(1)) if trailer else 0
-        flag_count = int(trailer.group(2)) if trailer else 0
+        trailer = _fidelity_trailer(r.stdout)
+        checked_count, flag_count = trailer if trailer is not None else (0, 0)
         ran = checked_count == 1 and r.returncode == 0
         signed = "ok(signed)" in out
         return {
@@ -845,7 +859,13 @@ def main() -> int:
             "finiteExponentialTilt_changeOfMeasure", "Exact finite change of measure", ""
         )
         assert "exponential tilting" in fqn_tags and "KL divergence" not in fqn_tags
-        test_pool = harvest()
+        assert _fidelity_trailer(
+            "diagnostic\n--- checked 1 decl(s), 0 flag(s)\ntrailing stdout"
+        ) == (1, 0)
+        assert _fidelity_trailer(
+            "--- checked 1 decl(s), 0 flag(s)\n--- checked 1 decl(s), 0 flag(s)"
+        ) is None
+        test_pool = harvest(source_tree="SELF_TEST")
         by_qualified = {record["qualified_name"]: record for record in test_pool}
         assert len(by_qualified) == len(test_pool)
         named_tail_mentions = by_qualified[

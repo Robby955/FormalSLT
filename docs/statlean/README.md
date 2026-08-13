@@ -76,7 +76,7 @@ One JSON object per line:
 
 ## How it is built
 
-```
+```bash
 scripts/build_statlean_manifest.py            # full harvest + curate + fidelity + axioms
 scripts/build_statlean_manifest.py --no-axioms   # skip the live #print axioms pass
 scripts/build_statlean_manifest.py --limit N     # cap the curated task count
