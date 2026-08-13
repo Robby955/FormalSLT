@@ -13,6 +13,7 @@ open Finset Real BigOperators
 open FormalSLT.PACBayesKL
 open FormalSLT.PACBayesFiniteProductMGF
 open FormalSLT.PACBayes.FiniteEmpiricalVariance
+open FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching
 open FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF
 
 noncomputable section
@@ -48,10 +49,26 @@ theorem fairBool_normalizedLowerTailMGF_le_one :
 #check finiteEmpiricalVariance_lowerTailMGF_randomMatching
 #check finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin
 #check finiteEmpiricalVariance_normalizedLowerTailMGF_le_one
+#check average_perm_pair_eq_average_all_pairs
+#check average_perm_pairSquaredDifference_eq_sampleVarianceBessel
+#check average_perm_pairCatalog_eq_sampleVarianceBessel
+#check finitePairBlock_factorization
+#check average_perm_finiteCanonicalPairMean_eq_sampleVarianceBessel
+#check finiteProductSampleWeight_eq_pairRemainder
+#check canonicalPairLeft_ne_right
+#check finiteProductSampleWeight_precompPerm
 
 #print axioms finiteEmpiricalVariance_lowerTailMGF_randomMatching
 #print axioms finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin
 #print axioms finiteEmpiricalVariance_normalizedLowerTailMGF_le_one
+#print axioms average_perm_pair_eq_average_all_pairs
+#print axioms average_perm_pairSquaredDifference_eq_sampleVarianceBessel
+#print axioms average_perm_pairCatalog_eq_sampleVarianceBessel
+#print axioms finitePairBlock_factorization
+#print axioms average_perm_finiteCanonicalPairMean_eq_sampleVarianceBessel
+#print axioms finiteProductSampleWeight_eq_pairRemainder
+#print axioms canonicalPairLeft_ne_right
+#print axioms finiteProductSampleWeight_precompPerm
 #print axioms fairBool_normalizedLowerTailMGF_le_one
 
 end

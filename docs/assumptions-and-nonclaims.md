@@ -228,15 +228,17 @@ finite prior mixture and a finite weighted catalog of joint pairs
 its complement a per-entry Donsker-Varadhan step yields a retained-variance
 inequality with one KL term for every posterior and every entry, so the entry
 may be selected after seeing the sample and the posterior. The mass theorem
-assumes finite data, hypothesis, and catalog types, an iid finite product
-PMF, `n >= 2`, `[0,1]` losses, nonnegative tilts with nonnegative variance
-coefficients, and positive weights of total at most one; the variational side
-additionally assumes a full-support prior. There is one shared confidence
-event and one KL term per selected bound, not one syntactic variational
-invocation across entries. The population-variance log term is stated at the
-posterior-averaged variance via concavity of the logarithm, and both variance
-quantities are posterior averages of per-hypothesis variances. The fixed-time
-normalized score is not an e-process, and no time-uniform, countable-catalog,
+assumes finite data, hypothesis, and catalog types, an iid finite product PMF,
+`n >= 2`, `[0,1]` losses, nonnegative tilts with nonnegative variance
+coefficients, nonnegative weights of total at most one, and `0 < delta`. The
+entrywise posterior bounds require every catalog weight to be strictly
+positive, while the variational side additionally assumes a full-support
+prior. There is one shared
+confidence event and one KL term per selected bound, not one syntactic
+variational invocation across entries. The population-variance log term is
+stated at the posterior-averaged variance via concavity of the logarithm, and
+both variance quantities are posterior averages of per-hypothesis variances.
+The fixed-time normalized score is not an e-process, and no time-uniform, countable-catalog,
 or all-real optimization claim is made; broader time-uniform
 empirical-Bernstein PAC-Bayes results already exist in the literature (Jang,
 Jun, Neu, and Orabona, COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023).
@@ -244,9 +246,10 @@ Jun, Neu, and Orabona, COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023).
 `PACBayes.FiniteEmpiricalVariancePACBayes` lifts the normalized moment to one
 fixed-sample, fixed-tilt exceptional set of finite-product mass at most
 `delta`. The mass theorem assumes finite data and hypothesis types, a
-full-support finite prior, `[0,1]` losses, `n >= 2`, and one declared positive
-tilt `eta`. Outside that one set, the confidence statement holds for every
-finite posterior, including a posterior selected after seeing the sample. It
+full-support finite prior, `[0,1]` losses, `n >= 2`, one declared positive
+tilt `eta`, and `0 < delta`. Outside that one set, the confidence statement
+holds for every posterior on the finite hypothesis type, including a posterior
+selected after seeing the sample. It
 controls the posterior average computed after taking each hypothesis's
 population or empirical variance; it is not the variance of a
 posterior-averaged loss. The rearranged bound additionally requires
@@ -255,10 +258,11 @@ posterior-averaged loss. The rearranged bound additionally requires
 `PACBayes.FiniteEmpiricalVarianceTiltCatalog` allocates a single variance
 failure budget across a finite, predeclared `eta` catalog using positive
 weights whose sum is at most one. Its shared event is simultaneous over every
-catalog entry and finite posterior, so the entry may be selected from the
-observed sample and posterior. The concrete receipt uses unequal weights and
-distinct tilts, exercises two posterior-dependent selector branches on
-positive-mass samples, and proves both resulting certificates below `1/4`.
+catalog entry and every posterior on the finite hypothesis type, so the entry
+may be selected from the observed sample and posterior. The concrete receipt
+uses unequal weights and distinct tilts, exercises two posterior-dependent
+selector branches on positive-mass samples, and proves both resulting
+certificates below `1/4`.
 This is still fixed-sample finite-catalog adaptation, not all-real or
 time-uniform optimization.
 
@@ -280,7 +284,10 @@ failure budgets across finite, predeclared `eta` and `lambda` catalogs using
 positive weights whose sums are at most one. Its combined event still costs
 only `deltaVariance + deltaRisk`, rather than one budget for every Cartesian
 pair. Outside that event, both catalog entries may be selected after observing
-the sample and posterior. Its variance half is the standalone variance catalog,
+the sample and posterior. The receipt separately proves that the two selectors
+are nonconstant on concrete positive-mass samples; its existential good-sample
+certificate does not identify which branches occur outside the bad set. Its
+variance half is the standalone variance catalog,
 and its risk half uses the same reusable plain-sum union-bound lemma. The
 catalogs, weights, and selector rules are fixed in advance; this is not
 optimization over all real tilts.

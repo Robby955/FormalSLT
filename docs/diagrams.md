@@ -188,7 +188,9 @@ a finite Catoni-style bound to a finite-grid McAllester peeling wrapper for
 posterior-dependent penalties. The Bernstein lane adds a finite margin-proxy
 wrapper, then specializes it to exact indicator variance, an observable
 low-risk self-bound, and a finite weighted tilt catalog with post-sample
-selection.
+selection. A second finite-IID branch derives Bessel empirical variance,
+finite exponential tilting, a retained-Bennett joint mean/variance score, and a
+one-event finite joint-pair posterior catalog.
 
 ```mermaid
 flowchart TD
@@ -205,16 +207,22 @@ flowchart TD
     confidence["Fixed-tilt confidence event<br/>all finite posterior PMFs"]
     lowrisk["Observable low-risk self-bound<br/>Vρ ≤ Rρ/n"]
     catalog["<b>Finite weighted tilt catalog</b><br/>sample/posterior-dependent selector"]
+    empvar["Bessel empirical variance<br/>random-matching MGF"]
+    exptilt["Finite exponential tilt<br/>exact product change of measure"]
+    jointmgf["Retained-Bennett joint<br/>mean/variance MGF"]
+    jointcatalog["<b>One-event finite joint-pair catalog</b><br/>one KL term at selected entry"]
     future["Next: countable / all-real-λ<br/>and continuous-posterior extensions (open)"]
 
     kl --> mgf --> catoni --> payoff --> fixed --> peeling --> optimized
     kl --> bernstein --> variance --> moment --> confidence --> lowrisk --> catalog
+    kl --> empvar --> exptilt --> jointmgf --> jointcatalog
     catalog -.-> future
+    jointcatalog -.-> future
     optimized -.-> future
 
     classDef verified fill:#f0fdf4,stroke:#16a34a,color:#14532d;
     classDef future fill:#f8fafc,stroke:#94a3b8,color:#475569,stroke-dasharray: 5 4;
-    class kl,mgf,catoni,payoff,fixed,peeling,optimized,bernstein,variance,moment,confidence,lowrisk,catalog verified;
+    class kl,mgf,catoni,payoff,fixed,peeling,optimized,bernstein,variance,moment,confidence,lowrisk,catalog,empvar,exptilt,jointmgf,jointcatalog verified;
     class future future;
 ```
 

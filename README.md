@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C225-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C237-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-192-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-85%2C144-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-85%2C320-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -221,11 +221,21 @@ declaration and prints its axiom profile.
   fixed sample size; it is not tilt-grid, all-real optimized, or time-uniform;
   [`CheckFiniteEmpiricalVariance.lean`](./examples/CheckFiniteEmpiricalVariance.lean),
   [`CheckFiniteEmpiricalVariancePACBayes.lean`](./examples/CheckFiniteEmpiricalVariancePACBayes.lean),
+  [`CheckFiniteEmpiricalVarianceTiltCatalog.lean`](./examples/CheckFiniteEmpiricalVarianceTiltCatalog.lean),
   [`CheckFiniteEmpiricalBernsteinRisk.lean`](./examples/CheckFiniteEmpiricalBernsteinRisk.lean),
+  [`CheckFiniteEmpiricalBernsteinRiskCatalog.lean`](./examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean),
   [`FiniteEmpiricalVarianceMGF.lean`](./FormalSLT/PACBayes/FiniteEmpiricalVarianceMGF.lean),
   [`FiniteEmpiricalVariancePACBayes.lean`](./FormalSLT/PACBayes/FiniteEmpiricalVariancePACBayes.lean),
   [`FiniteBoundedLossBernstein.lean`](./FormalSLT/PACBayes/FiniteBoundedLossBernstein.lean),
   [`FiniteEmpiricalBernsteinRisk.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinRisk.lean)
+- **Finite exponential tilting and variance transport** —
+  `finiteExponentialTilt_changeOfMeasure` and
+  `finiteProductExponentialTilt_changeOfMeasure` give exact coordinate and
+  product identities. The bounded-loss specialization proves the retained
+  Bennett normalizer and `exp (-t) * V_p <= V_{q_t}` without full support;
+  [`CheckFiniteExponentialTilt.lean`](./examples/CheckFiniteExponentialTilt.lean),
+  [`CheckFiniteExponentialTiltProduct.lean`](./examples/CheckFiniteExponentialTiltProduct.lean),
+  [`CheckFiniteBoundedLossExponentialTilt.lean`](./examples/CheckFiniteBoundedLossExponentialTilt.lean)
 - **Fixed-sample joint mean/Bessel-variance MGF core** —
   `finiteJointMeanVarianceMGF_le` combines the lower-tail mean score and
   Bessel empirical-variance score by an exact finite exponential tilt, while
@@ -233,8 +243,9 @@ declaration and prints its axiom profile.
   transported-variance corrections inside one normalized exponential. The
   fair-Boolean receipt uses the nonconstant loss `0, 1`, `n = 2`, and positive
   tilts `t = eta = 1/2`, for which the joint variance coefficient is `1/2`.
-  This is a per-hypothesis fixed-sample moment, not yet a prior mixture,
-  posterior-uniform confidence theorem, tilt catalog, or time-uniform process;
+  This core theorem is a per-hypothesis fixed-sample moment; the next checked
+  layer lifts it to a prior mixture and posterior-uniform finite catalog, but
+  neither layer is a time-uniform process;
   [`CheckFiniteJointMeanVarianceMGF.lean`](./examples/CheckFiniteJointMeanVarianceMGF.lean),
   [`FiniteJointMeanVarianceMGF.lean`](./FormalSLT/PACBayes/FiniteJointMeanVarianceMGF.lean)
 - **One-event joint mean/variance posterior catalog** —
@@ -414,10 +425,21 @@ release check is in [Audit commands](#audit-commands).
   declared positive tilt should give a fixed-sample event simultaneous over
   every finite posterior. This endpoint averages each hypothesis's variance;
   it does not take the variance of a posterior-averaged loss.
+- Use `FormalSLT.PACBayes.FiniteEmpiricalVarianceTiltCatalog` and
+  `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRiskCatalog` when variance and
+  risk tilts are selected from finite, predeclared weighted catalogs after the
+  sample and posterior are observed.
+- Use `FormalSLT.PACBayes.FiniteExponentialTilt` and
+  `FormalSLT.PACBayes.FiniteExponentialTiltProduct` for exact finite
+  change-of-measure identities. Use
+  `FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt` for the lower-tail
+  bounded-loss normalizer and variance-transport comparison.
 - Use `FormalSLT.PACBayes.FiniteJointMeanVarianceMGF` for the fixed-sample,
   per-hypothesis exponential moment coupling the lower-tail mean score to the
   Bessel empirical variance. The normalized endpoint has expectation at most
   one but does not itself quantify over priors, posteriors, or tilt catalogs.
+- Use `FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes` for the one-event
+  finite joint-pair catalog with one KL term at the selected entry.
 - Use `FormalSLT.PACBayes.FiniteBoundedLossBernstein` for the separate
   fixed-`lambda` population-risk Bernstein event. Use
   `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk` to combine it with the
@@ -476,8 +498,15 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteEmpiricalVarianceMatching`,
   `PACBayes.FiniteEmpiricalVarianceMGF`,
   `PACBayes.FiniteEmpiricalVariancePACBayes`,
+  `PACBayes.FiniteEmpiricalVarianceTiltCatalog`,
+  `PACBayes.FiniteExponentialTilt`,
+  `PACBayes.FiniteExponentialTiltProduct`,
+  `PACBayes.FiniteBoundedLossExponentialTilt`,
   `PACBayes.FiniteBoundedLossBernstein`,
   `PACBayes.FiniteEmpiricalBernsteinRisk`,
+  `PACBayes.FiniteEmpiricalBernsteinRiskCatalog`,
+  `PACBayes.FiniteJointMeanVarianceMGF`,
+  `PACBayes.FiniteJointMeanVariancePACBayes`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformScorePACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
@@ -507,11 +536,15 @@ The main learning-theory results are deliberately finite and explicit.
   proxy and normalized prior-moment certificate; the indicator specialization
   also has a fixed finite weighted tilt catalog with simultaneous validity.
   The empirical-variance specialization assumes a finite IID product law,
-  sample size at least two, `[0,1]` losses, and one fixed positive tilt. Its one
-  bad set is simultaneous over all finite posteriors and bounds the posterior
-  average of per-hypothesis variances. A finite weighted empirical-variance tilt
-  catalog makes a family of such tilts simultaneously valid under one event and
-  supports sample- and posterior-dependent selection.
+  sample size at least two, `[0,1]` losses, one fixed positive tilt, and
+  `0 < delta`. Its one bad set is simultaneous over all posteriors on a finite
+  hypothesis type and bounds the posterior average of per-hypothesis variances.
+  A finite weighted empirical-variance tilt catalog makes a family of such
+  tilts simultaneously valid under one event and supports sample- and
+  posterior-dependent selection. The joint master-mixture mass theorem uses
+  nonnegative catalog weights with total at most one and `0 < delta`; its
+  entrywise posterior bounds require every catalog weight to be strictly
+  positive and the prior to have full support.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
@@ -531,10 +564,10 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- All-real tilt optimization, a retained-log Bennett risk endpoint, and a
-  time-uniform empirical-Bernstein risk theorem. The fixed rational two-event
-  theorem and separately weighted finite `eta`/`lambda` catalogs with
-  post-sample and posterior-dependent selectors are checked.
+- The exact piecewise `xi` residual and zero-residual explicit specialization,
+  all-real tilt optimization, and a time-uniform empirical-Bernstein risk
+  theorem. The fixed rational two-event theorem, separately weighted finite
+  `eta`/`lambda` catalogs, and one-event finite joint-pair catalog are checked.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
@@ -607,10 +640,10 @@ Running it without `--check` updates the JSON files under `docs/badges/`.
 Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 [theorem index](./docs/INDEX.md). The remaining public boundaries are:
 
-- [ ] Continuous Dudley entropy integral over total-bounded classes
-- [ ] Lift the checked fixed-sample joint mean/Bessel-variance exponential
-  moment through a finite prior mixture and one posterior-uniform PAC-Bayes
-  confidence event
+- [ ] Extend the checked Dudley boundary-certificate theorem to arbitrary
+  measurable suprema and non-finite outcome constructions
+- [ ] Formalize the exact piecewise `xi` residual and its zero-residual explicit
+  specialization for the checked one-event joint catalog
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
 - [ ] Extend fixed-sample joint scores to a normalized hypothesis--tilt
   e-process mixture, then study conditional e-variable composition and

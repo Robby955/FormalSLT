@@ -118,6 +118,15 @@ example :
 #check finitePopulationVariance_le_weightedSquaredError
 #check finitePopulationVariance_mul_exp_neg_le_tilted
 #check finiteBoundedLoss_centeredBennettNormalizer_le
+#check tiltNormalizer_eq_three_fourths
+#check tilted_false_eq_two_thirds
+#check tilted_true_eq_one_third
+#check tiltNormalizer_strictly_below_one
+#check pointwise_domination_strict_false
+#check pointwise_domination_strict_true
+#check fairBool_variance_eq_quarter
+#check tilted_variance_eq_two_ninths
+#check variance_comparison_is_strict
 
 #print axioms finiteBoundedLossTiltPMF_isPMF
 #print axioms finiteBoundedLossTilt_changeOfMeasure
@@ -128,6 +137,15 @@ example :
 #print axioms finitePopulationVariance_le_weightedSquaredError
 #print axioms finitePopulationVariance_mul_exp_neg_le_tilted
 #print axioms finiteBoundedLoss_centeredBennettNormalizer_le
+#print axioms tiltNormalizer_eq_three_fourths
+#print axioms tilted_false_eq_two_thirds
+#print axioms tilted_true_eq_one_third
+#print axioms tiltNormalizer_strictly_below_one
+#print axioms pointwise_domination_strict_false
+#print axioms pointwise_domination_strict_true
+#print axioms fairBool_variance_eq_quarter
+#print axioms tilted_variance_eq_two_ninths
+#print axioms variance_comparison_is_strict
 
 end
 

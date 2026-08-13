@@ -85,6 +85,11 @@ budgets `delta * w_j` across fixed Bernstein tilts and is simultaneous over
 both catalog entries and finite posteriors. Its selector may depend on the
 sample and posterior, but neither the catalog nor its weights may be chosen
 after observing the sample.
+For arbitrary finite `[0,1]` losses, the fixed-sample joint mean/Bessel-variance
+score now has a normalized per-hypothesis moment and a one-event finite
+hypothesis--tilt master mixture. Its posterior bound uses one KL term at any
+selected entry from the predeclared finite catalog. This is not a nested
+e-process across sample sizes.
 For dependent data, `StochasticDynamics.MarkovPACBayes` now checks a fixed-tilt
 (`0 < λ < 3`), all-positive-time theorem simultaneous over every posterior on
 a finite predictor catalog under an actual finite Markov path law.
@@ -97,8 +102,8 @@ simultaneous over all continuous posteriors.
 **Dependencies.**
 
 - add a countable or all-`λ` confidence event beyond finite grids;
-- construct a normalized joint hypothesis--tilt process beyond finite union
-  bounds;
+- construct a normalized joint hypothesis--tilt e-process beyond the checked
+  fixed-sample finite master mixture;
 - derive post-sample tilt selection only from a common checked event;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
@@ -113,9 +118,9 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Extend the checked fixed-parameter empirical-Bernstein risk theorem
-to separately weighted finite variance-tilt and risk-tilt catalogs, permitting
-posterior and catalog selection after observing the sample.
+**Target.** Formalize the exact piecewise `xi` residual and its zero-residual
+explicit specialization for the checked one-event joint catalog, then treat
+countable, all-real, and time-uniform adaptation as separate process problems.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -133,17 +138,21 @@ risk theorem substitutes the observable variance certificate with all
 denominators explicit.
 
 **Dependencies.** The separately budgeted finite variance-tilt and risk-tilt
-catalogs are now checked, including posterior- and sample-dependent selection
-without paying separately for every Cartesian pair. The next reviewable step
-is the stronger retained-log Bennett endpoint; all-real or countable adaptation
-requires a distinct normalized-mixture argument.
+catalogs are checked, including posterior- and sample-dependent selection
+without paying separately for every Cartesian pair. The retained Bennett factor
+is also checked inside one normalized fixed-sample joint score, and one finite
+master-mixture event gives the selected posterior bound with one KL term. The
+remaining explicit-bound step is the `xi` residual/zero-residual specialization;
+all-real or countable adaptation requires a distinct normalized-mixture
+argument.
 
 **Boundary.** The current final risk theorem is finite-IID and fixed-sample.
-Its fixed-parameter and finite weighted-catalog forms are posterior-uniform;
-the latter permits selection only from catalogs declared in advance. It does
-not authorize all-real post-hoc optimization and is not anytime-valid. The
-random-matching proof formalizes the source variance inequality; it is not
-presented as a new inequality or an entropy-method proof.
+Its fixed-parameter, separate weighted-catalog, and one-event joint-catalog forms
+are posterior-uniform over finite hypothesis types; selection is only from
+catalogs declared in advance. It does not authorize all-real post-hoc
+optimization and is not anytime-valid. The random-matching proof formalizes the
+source variance inequality; it is not presented as a new inequality or an
+entropy-method proof.
 
 ## Medium-term
 

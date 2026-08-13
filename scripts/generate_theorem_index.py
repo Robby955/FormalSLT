@@ -29,6 +29,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
+if __package__:
+    from .generate_proof_frontier_manifest import (
+        resolve_source_declaration,
+        source_resolution_self_test,
+    )
+else:
+    from generate_proof_frontier_manifest import (  # type: ignore[no-redef]
+        resolve_source_declaration,
+        source_resolution_self_test,
+    )
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
 OUT_HTML = ROOT / "docs" / "INDEX.html"
@@ -52,13 +63,40 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "union bound": ["unionbound", "union bound"],
     "tail bound": ["_tail", "tail ", "tail-", "tail_", "tailbound"],
     "MGF": ["mgf", "moment generating", "moment-generating"],
-    "confidence sequence": ["confidence", "anytime", "ville", "subgammacs", "mixturecs", "eprocess", "e-process", "subgaussiancs", "attopcs"],
+    "confidence sequence": [
+        "confidence sequence",
+        "confidence-sequence",
+        "confidence_sequence",
+        "confidencesequence",
+        "time-uniform",
+        "time uniform",
+        "timeuniform",
+        "anytime",
+        "all-time",
+        "all time",
+        "ville",
+        "subgammacs",
+        "mixturecs",
+        "eprocess",
+        "e-process",
+        "subgaussiancs",
+        "attopcs",
+    ],
     "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
     "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "change of measure", "changeofmeasure"],
     "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
     "VC dimension": ["vc", "sauer", "shelah", "shatter"],
     "covering / chaining": ["covering", "dudley", "chaining", "entropy", "net"],
-    "ERM": ["erm", "empiricalrisk", "excessrisk", "gengap", "generalization"],
+    "ERM": [
+        " iserm",
+        "_erm_",
+        "rademachererm",
+        " erm ",
+        "empiricalrisk",
+        "excessrisk",
+        "gengap",
+        "generalization",
+    ],
     "stability": ["stability", "stable"],
     "sample statistics": ["samplemean", "samplevariance", "empiricalvariance", "sample mean", "sample variance", "empirical variance", "empirical-variance", "estimator"],
     "Glivenko-Cantelli": ["glivenko", "cantelli", "empiricalcdf", "empirical cdf", "lowerray", "lower ray", "lower-ray", "uniformdeviation", "bracketing"],
@@ -92,35 +130,13 @@ DECLARATION_CONCEPTS: dict[str, list[str]] = {
     "indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem": ["Bernoulli"],
 }
 
-KIND_PATTERN = (
-    r"^\s*(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?(?:private\s+)?(?:protected\s+)?"
-    r"(?:theorem|lemma|def|abbrev|structure|class|instance|inductive)\s+"
-)
-
-
 def module_to_file(module: str) -> Path:
     return ROOT / "FormalSLT" / Path(module.replace(".", "/") + ".lean")
 
 
-def resolve_line(module: str, name: str) -> int | None:
-    """Find the 1-based line where `name` is declared in its module file.
-
-    Tries the fully written name first, then the last dotted component (handles
-    declarations written as `def Foo` inside a `namespace Bar`, recorded as
-    `Bar.Foo` in the theorem map)."""
-    path = module_to_file(module)
-    if not path.exists():
-        return None
-    text = path.read_text(encoding="utf-8").splitlines()
-    candidates = [name]
-    if "." in name:
-        candidates.append(name.rsplit(".", 1)[1])
-    for cand in candidates:
-        pat = re.compile(KIND_PATTERN + re.escape(cand) + r"\b")
-        for idx, line in enumerate(text, start=1):
-            if pat.search(line):
-                return idx
-    return None
+def resolve_decl(module: str, name: str) -> dict[str, Any]:
+    """Resolve source line and kind, rejecting missing or ambiguous names."""
+    return resolve_source_declaration(module_to_file(module), name)
 
 
 def concepts_for(name: str, summary: str, family: str) -> list[str]:
@@ -145,17 +161,17 @@ def build_rows() -> list[dict[str, Any]]:
             name = entry["name"]
             module = entry["module"]
             summary = entry.get("summary", "")
-            line = resolve_line(module, name)
+            declaration = resolve_decl(module, name)
             rel = module_to_file(module).relative_to(ROOT).as_posix()
             rows.append(
                 {
                     "name": name,
                     "module": module,
-                    "kind": entry.get("kind", "theorem"),
+                    "kind": declaration["kind"],
                     "summary": summary,
                     "family": fam_name,
                     "file": rel,
-                    "line": line,
+                    "line": declaration["line"],
                     "concepts": concepts_for(name, summary, fam_name),
                 }
             )
@@ -318,7 +334,29 @@ apply();
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="fail if the index is stale")
+    parser.add_argument(
+        "--self-test", action="store_true", help="test declaration resolution and concepts"
+    )
     args = parser.parse_args()
+
+    if args.self_test:
+        source_resolution_self_test()
+        assert "confidence sequence" not in concepts_for(
+            "fixedHighConfidenceBound", "fixed-sample high-confidence theorem", ""
+        )
+        assert "confidence sequence" in concepts_for(
+            "timeUniformBound", "all-time Ville crossing theorem", ""
+        )
+        assert "ERM" not in concepts_for(
+            "finiteJointMeanVarianceMasterMixture", "master mixture", ""
+        )
+        assert "ERM" not in concepts_for(
+            "finiteSupremumBound", "terminal supremum theorem", ""
+        )
+        assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
+        assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        print("theorem-index self-test passed")
+        return 0
 
     rows = build_rows()
     md = render_md(rows)

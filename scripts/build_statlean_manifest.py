@@ -48,6 +48,19 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+if __package__:
+    from .generate_proof_frontier_manifest import (
+        LEAN_DECLARATION_PATTERN,
+        resolve_source_declaration,
+        source_resolution_self_test,
+    )
+else:
+    from generate_proof_frontier_manifest import (  # type: ignore[no-redef]
+        LEAN_DECLARATION_PATTERN,
+        resolve_source_declaration,
+        source_resolution_self_test,
+    )
+
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
 SRC_ROOT = ROOT / "FormalSLT"
@@ -84,13 +97,40 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "union bound": ["unionbound", "union bound"],
     "tail bound": ["_tail", "tail ", "tail-", "tail_", "tailbound"],
     "MGF": ["mgf", "moment generating", "moment-generating"],
-    "confidence sequence": ["confidence", "anytime", "ville", "subgammacs", "mixturecs", "eprocess", "e-process", "subgaussiancs", "attopcs"],
+    "confidence sequence": [
+        "confidence sequence",
+        "confidence-sequence",
+        "confidence_sequence",
+        "confidencesequence",
+        "time-uniform",
+        "time uniform",
+        "timeuniform",
+        "anytime",
+        "all-time",
+        "all time",
+        "ville",
+        "subgammacs",
+        "mixturecs",
+        "eprocess",
+        "e-process",
+        "subgaussiancs",
+        "attopcs",
+    ],
     "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
     "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "change of measure", "changeofmeasure"],
     "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
     "VC dimension": ["vc", "sauer", "shelah", "shatter"],
     "covering / chaining": ["covering", "dudley", "chaining", "entropy", "net"],
-    "ERM": ["erm", "empiricalrisk", "excessrisk", "gengap", "generalization"],
+    "ERM": [
+        " iserm",
+        "_erm_",
+        "rademachererm",
+        " erm ",
+        "empiricalrisk",
+        "excessrisk",
+        "gengap",
+        "generalization",
+    ],
     "stability": ["stability", "stable"],
     "sample statistics": ["samplemean", "samplevariance", "empiricalvariance", "sample mean", "sample variance", "empirical variance", "empirical-variance", "estimator"],
     "Glivenko-Cantelli": ["glivenko", "cantelli", "empiricalcdf", "empirical cdf", "lowerray", "lower ray", "lower-ray", "uniformdeviation", "bracketing"],
@@ -102,12 +142,6 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
 # spread across these so no family is dropped).
 TARGET_CONCEPTS = list(CONCEPT_TRIGGERS.keys())
 
-KIND_PATTERN = (
-    r"^\s*(?:@\[[^\]]*\]\s*)?(?:noncomputable\s+)?(?:private\s+)?(?:protected\s+)?"
-    r"(?:theorem|lemma|def|abbrev|structure|class|instance|inductive)\s+"
-)
-
-
 # --------------------------------------------------------------------------- #
 # source resolution
 # --------------------------------------------------------------------------- #
@@ -115,7 +149,7 @@ def module_to_file(module: str) -> Path:
     return SRC_ROOT / Path(module.replace(".", "/") + ".lean")
 
 
-_FILE_CACHE: dict[str, list[str]] = {}
+_FILE_CACHE: dict[str, list[str] | None] = {}
 
 
 def file_lines(module: str) -> list[str] | None:
@@ -130,20 +164,11 @@ def file_lines(module: str) -> list[str] | None:
     return lines
 
 
-def resolve_decl(module: str, name: str) -> tuple[int, int] | None:
-    """Return (1-based decl line, 0-based index) for `name` in its module."""
-    lines = file_lines(module)
-    if lines is None:
-        return None
-    candidates = [name]
-    if "." in name:
-        candidates.append(name.rsplit(".", 1)[1])
-    for cand in candidates:
-        pat = re.compile(KIND_PATTERN + re.escape(cand) + r"\b")
-        for idx, line in enumerate(lines):
-            if pat.search(line):
-                return idx + 1, idx
-    return None
+def resolve_decl(module: str, name: str) -> tuple[int, int, str]:
+    """Return source line, raw-line index, and source-derived declaration kind."""
+    declaration = resolve_source_declaration(module_to_file(module), name)
+    line = declaration["line"]
+    return line, line - 1, declaration["kind"]
 
 
 def active_namespace(lines: list[str], idx0: int) -> str:
@@ -211,7 +236,7 @@ def proof_body(lines: list[str], idx0: int) -> tuple[str, int]:
     started = False
     for i in range(idx0, len(lines)):
         line = lines[i]
-        if i > idx0 and re.match(KIND_PATTERN, line):
+        if i > idx0 and LEAN_DECLARATION_PATTERN.match(line):
             break
         if not started:
             if ":=" in line:
@@ -273,12 +298,10 @@ def harvest() -> list[dict[str, Any]]:
             name = entry["name"]
             module = entry["module"]
             summary = entry.get("summary", "")
-            kind = entry.get("kind", "theorem")
             res = resolve_decl(module, name)
-            if res is None:
-                continue
-            line1, idx0 = res
+            line1, idx0, kind = res
             lines = file_lines(module)
+            assert lines is not None
             sig = extract_signature(lines, idx0)
             doc = extract_docstring(lines, idx0)
             body, body_lines = proof_body(lines, idx0)
@@ -512,7 +535,29 @@ def main() -> int:
     ap.add_argument("--no-fidelity", action="store_true", help="skip the per-task fidelity lint")
     ap.add_argument("--limit", type=int, default=150, help="max selected tasks (default 150)")
     ap.add_argument("--floor", type=int, default=120, help="target floor for selection")
+    ap.add_argument(
+        "--self-test", action="store_true", help="test declaration resolution and concepts"
+    )
     a = ap.parse_args()
+
+    if a.self_test:
+        source_resolution_self_test()
+        assert "confidence sequence" not in concepts_for(
+            "fixedHighConfidenceBound", "fixed-sample high-confidence theorem", ""
+        )
+        assert "confidence sequence" in concepts_for(
+            "timeUniformBound", "all-time Ville crossing theorem", ""
+        )
+        assert "ERM" not in concepts_for(
+            "finiteJointMeanVarianceMasterMixture", "master mixture", ""
+        )
+        assert "ERM" not in concepts_for(
+            "finiteSupremumBound", "terminal supremum theorem", ""
+        )
+        assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
+        assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        print("StatLean manifest self-test passed")
+        return 0
 
     print("harvesting from", MANIFEST.relative_to(ROOT))
     pool = harvest()

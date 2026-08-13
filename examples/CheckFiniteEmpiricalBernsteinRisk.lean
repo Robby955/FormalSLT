@@ -16,6 +16,7 @@ open FormalSLT.PACBayesKL
 open FormalSLT.PACBayesFiniteProductMGF
 open FormalSLT.PACBayes.FiniteProductBernstein
 open FormalSLT.PACBayes.FiniteEmpiricalVariance
+open FormalSLT.PACBayes.FiniteBoundedLossBernstein
 open FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk
 
 noncomputable section
@@ -103,9 +104,27 @@ theorem fairBool_empiricalBernsteinRisk_witness :
 
 #check finiteEmpiricalBernsteinRisk_badEventMass_le
 #check posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem
+#check boundedLossDeviation_centered
+#check boundedLossDeviation_secondMoment_eq
+#check boundedLoss_oneCoordinateDeviationMGF_le
+#check boundedLoss_product_mgf_le
+#check boundedLoss_product_normalizedMGF_le_one
+#check boundedLossBernsteinMGFBudget_eq_generic
+#check boundedLoss_expectedPriorBernsteinExpMoment_le_one
+#check boundedLoss_posteriorRisk_le_populationVariance_of_not_mem
+#check finiteBoundedLossBernstein_badEventMass_le_delta
 
 #print axioms finiteEmpiricalBernsteinRisk_badEventMass_le
 #print axioms posteriorRisk_le_empiricalRisk_add_empiricalVariance_of_not_mem
+#print axioms boundedLossDeviation_centered
+#print axioms boundedLossDeviation_secondMoment_eq
+#print axioms boundedLoss_oneCoordinateDeviationMGF_le
+#print axioms boundedLoss_product_mgf_le
+#print axioms boundedLoss_product_normalizedMGF_le_one
+#print axioms boundedLossBernsteinMGFBudget_eq_generic
+#print axioms boundedLoss_expectedPriorBernsteinExpMoment_le_one
+#print axioms boundedLoss_posteriorRisk_le_populationVariance_of_not_mem
+#print axioms finiteBoundedLossBernstein_badEventMass_le_delta
 #print axioms fairBool_empiricalBernsteinRisk_witness
 
 end

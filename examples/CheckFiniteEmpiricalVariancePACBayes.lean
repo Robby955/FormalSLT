@@ -392,6 +392,7 @@ theorem allTrue_productWeight_pos :
 #check finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin
 #check finiteEmpiricalVariance_normalizedLowerTailMGF_le_one
 #check finiteEmpiricalVariance_expectedPriorBernsteinExpMoment_le_one
+#check finiteEmpiricalVariance_posteriorGap_le_of_not_mem
 #check finiteEmpiricalVariancePACBayes_badEventMass_le_delta
 #check posteriorPopulationVariance_le_empiricalVariance_of_not_mem
 #check dataLaw_isPMF
@@ -420,12 +421,15 @@ theorem allTrue_productWeight_pos :
 #print axioms finiteEmpiricalVariance_lowerTailMGF_tolstikhinSeldin
 #print axioms finiteEmpiricalVariance_normalizedLowerTailMGF_le_one
 #print axioms finiteEmpiricalVariance_expectedPriorBernsteinExpMoment_le_one
+#print axioms finiteEmpiricalVariance_posteriorGap_le_of_not_mem
 #print axioms finiteEmpiricalVariancePACBayes_badEventMass_le_delta
 #print axioms posteriorPopulationVariance_le_empiricalVariance_of_not_mem
 #print axioms dataLaw_isPMF
 #print axioms prior_isFullSupportPMF
 #print axioms loss_mem_Icc
 #print axioms selector_isPMF
+#print axioms selector_allFalse
+#print axioms selector_allTrue
 #print axioms selector_allFalse_weights
 #print axioms selector_allTrue_weights
 #print axioms selector_takes_two_values
