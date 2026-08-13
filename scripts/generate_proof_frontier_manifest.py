@@ -212,10 +212,12 @@ def strip_lean_comments_and_strings(text: str) -> str:
         if block_depth > 0:
             if ch == "/" and nxt == "-":
                 block_depth += 1
+                result.extend("  ")
                 i += 2
                 continue
             if ch == "-" and nxt == "/":
                 block_depth -= 1
+                result.extend("  ")
                 i += 2
                 continue
             result.append("\n" if ch == "\n" else " ")
@@ -421,6 +423,19 @@ end Outer
         assert "not found" in str(error)
     else:
         raise AssertionError("missing declarations must fail closed")
+
+    offset_sample = """theorem commented /- outer /- nested -/ comment -/ : True := by
+  trivial
+"""
+    stripped = strip_lean_comments_and_strings(offset_sample)
+    assert len(stripped) == len(offset_sample)
+    assert [i for i, ch in enumerate(stripped) if ch == "\n"] == [
+        i for i, ch in enumerate(offset_sample) if ch == "\n"
+    ]
+    commented = resolve_declaration_from_text(
+        offset_sample, "commented", "offset self-test"
+    )
+    assert (commented["line"], commented["kind"]) == (1, "theorem")
 
 
 def audit_lean_files(files: list[Path]) -> dict[str, list[dict[str, Any]]]:
