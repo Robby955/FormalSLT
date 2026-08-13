@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C207-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-191-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-84%2C691-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C225-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-192-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-85%2C144-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -75,10 +75,16 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   `lambda` catalogs now permit both tilts to be selected after seeing the
   sample and posterior. The variance catalog is also exposed as its own API,
   with unequal weights, two selector branches, positive-mass samples, and both
-  concrete certificates below `1/4`. All-real tilt optimization, retained-log
-  Bennett, and time-uniform empirical-Bernstein risk remain open.
+  concrete certificates below `1/4`. A fixed-sample joint mean/variance layer
+  adds the normalized joint MGF with the retained Bennett factor inside the
+  logarithm and a one-event weighted joint-pair posterior catalog with one KL
+  term per selected entry. The exact piecewise residual, all-real tilt
+  optimization, and time-uniform empirical-Bernstein risk remain open.
 
-The Dudley development is finite by design. The general continuous PAC-Bayes
+The Dudley core is finite by design; the continuous entropy-integral
+endpoints exist but carry their topological, finite-outcome, and
+boundary-certificate hypotheses in their signatures, and arbitrary measurable
+suprema remain out of scope. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
 finite-dimensional spherical Gaussian priors and posteriors. The statistics
 interfaces preserve the hypotheses of the Mathlib results they expose. See
@@ -248,6 +254,20 @@ declaration and prints its axiom profile.
 
 ### Dudley and finite chaining
 
+- **Continuous Dudley entropy integral under a supplied boundary certificate** —
+  `continuous_dudley_entropy_integral` bounds the expected supremum of a
+  finite sub-Gaussian process over a totally bounded metric index by
+  `coarseBudget + 4 * sqrt (2 * varianceProxy)` times the full interval
+  integral of the entropy profile on `(0, radiusScale / 2)`. The finite
+  outcome support `[Fintype Ω]`, the antitone nonnegative integrable entropy
+  profile, and the separable-terminal boundary certificate at every positive
+  tolerance are caller-supplied hypotheses stated in the signature; arbitrary
+  measurable suprema remain out of scope;
+  [`CheckContinuousDudley.lean`](./examples/CheckContinuousDudley.lean)
+- **Measure-side continuous Dudley variant** —
+  `continuous_dudley_entropy_integral_of_measure`, the same
+  hypothesis-carrying endpoint stated against an integral expectation;
+  [`CheckMeasureDudley.lean`](./examples/CheckMeasureDudley.lean)
 - **Unit-interval finite-net bridge** —
   `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`;
   [`CheckUnitIntervalDudley.lean`](./examples/CheckUnitIntervalDudley.lean)
@@ -447,6 +467,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteBoundedLossBernstein`,
   `PACBayes.FiniteEmpiricalBernsteinRisk`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
+  `PACBayes.TimeUniformScorePACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,

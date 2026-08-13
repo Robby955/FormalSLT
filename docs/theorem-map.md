@@ -683,11 +683,20 @@ declarations; modules are relative to `FormalSLT`.
 
 ## Time-uniform PAC-Bayes
 
+| Declaration | Module | Role |
+|---|---|---|
+| `scorePriorMixtureProcess` | `PACBayes.TimeUniformScorePACBayes` | Finite prior-weighted mixture of exponentiated hypothesis scores |
+| `timeUniformScorePACBayesAnyPosteriorFailure` | `PACBayes.TimeUniformScorePACBayes` | Common failure event existentially quantifying over every natural time and finite posterior PMF |
+
 | Theorem | Module | Role |
 |---|---|---|
 | `pacBayesPriorMixture_supermartingale` | `PACBayes.TimeUniformPACBayes` | Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale |
 | `timeUniformPACBayes_crossing_bound` | `PACBayes.TimeUniformPACBayes` | Ville crossing bound for the prior-mixture process over all times |
 | `timeUniformPACBayes_bound` | `PACBayes.TimeUniformPACBayes` | Process-level time-uniform PAC-Bayes bound: with probability at least `1 - δ`, the posterior running mean of the abstract martingale-difference process stays under the `cgf`/KL/`log(1/δ)` boundary for every `n ≥ 1` |
+| `scorePriorMixture_eProcess` | `PACBayes.TimeUniformScorePACBayes` | A full-support finite prior mixture of exponentiated score e-processes is an e-process |
+| `timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing` | `PACBayes.TimeUniformScorePACBayes` | Any all-time/all-posterior score failure forces the common prior-mixture e-process to cross `1 / δ` |
+| `timeUniformScorePACBayes_allPosteriors_bound` | `PACBayes.TimeUniformScorePACBayes` | Generic finite-hypothesis compiler: one Ville event controls every time and every posterior through pathwise Donsker--Varadhan |
+| `posteriorTarget_le_of_not_mem_timeUniformScorePACBayesFailure` | `PACBayes.TimeUniformScorePACBayes` | Outside the common failure event, a deterministic pointwise regret term transfers the posterior score bound to a posterior target |
 | `timeUniformIIDPACBayes_allPosteriors_bound` | `PACBayes.TimeUniformIID` | End-to-end finite-class i.i.d. bounded-loss theorem, simultaneous over all posterior PMFs at every positive sample time |
 | `timeUniformIIDPACBayes_grid_allPosteriors_bound` | `PACBayes.TimeUniformIIDGrid` | Finite-class i.i.d. theorem with a fixed finite grid of data-dependent tilt choices, simultaneous over all posterior PMFs |
 | `timeUniformContinuousPACBayes_bound` | `PACBayes.TimeUniformContinuousPACBayes` | Process-level time-uniform PAC-Bayes theorem on an arbitrary measurable hypothesis space for a fixed prior and posterior |

@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 150,
-    "library_and_example_lean_lines": 84691,
-    "library_lean_lines": 72397,
-    "library_modules": 191,
-    "theorem_map_entries": 720
+    "example_lean_files": 151,
+    "library_and_example_lean_lines": 85144,
+    "library_lean_lines": 72601,
+    "library_modules": 192,
+    "theorem_map_entries": 726
   },
   "theorem_families": [
     {
@@ -3747,6 +3747,18 @@
     {
       "entries": [
         {
+          "kind": "definition",
+          "module": "PACBayes.TimeUniformScorePACBayes",
+          "name": "scorePriorMixtureProcess",
+          "summary": "Finite prior-weighted mixture of exponentiated hypothesis scores"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.TimeUniformScorePACBayes",
+          "name": "timeUniformScorePACBayesAnyPosteriorFailure",
+          "summary": "Common failure event existentially quantifying over every natural time and finite posterior PMF"
+        },
+        {
           "kind": "theorem",
           "module": "PACBayes.TimeUniformPACBayes",
           "name": "pacBayesPriorMixture_supermartingale",
@@ -3763,6 +3775,30 @@
           "module": "PACBayes.TimeUniformPACBayes",
           "name": "timeUniformPACBayes_bound",
           "summary": "Process-level time-uniform PAC-Bayes bound: with probability at least 1 - \u03b4, the posterior running mean of the abstract martingale-difference process stays under the cgf/KL/log(1/\u03b4) boundary for every n \u2265 1"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformScorePACBayes",
+          "name": "scorePriorMixture_eProcess",
+          "summary": "A full-support finite prior mixture of exponentiated score e-processes is an e-process"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformScorePACBayes",
+          "name": "timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing",
+          "summary": "Any all-time/all-posterior score failure forces the common prior-mixture e-process to cross 1 / \u03b4"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformScorePACBayes",
+          "name": "timeUniformScorePACBayes_allPosteriors_bound",
+          "summary": "Generic finite-hypothesis compiler: one Ville event controls every time and every posterior through pathwise Donsker--Varadhan"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformScorePACBayes",
+          "name": "posteriorTarget_le_of_not_mem_timeUniformScorePACBayesFailure",
+          "summary": "Outside the common failure event, a deterministic pointwise regret term transfers the posterior score bound to a posterior target"
         },
         {
           "kind": "theorem",
