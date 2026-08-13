@@ -81,9 +81,14 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   term per selected entry. The exact piecewise residual, all-real tilt
   optimization, and time-uniform empirical-Bernstein risk remain open.
 
-The Dudley core is finite by design; the continuous entropy-integral
-endpoints exist but carry their topological, finite-outcome, and
-boundary-certificate hypotheses in their signatures, and arbitrary measurable
+The Dudley core is finite by design. The finite-outcome endpoint
+`continuous_dudley_entropy_integral` assumes a finite sub-Gaussian process on a
+nonempty pseudometric index, a totally bounded universal index set, positive
+`radiusScale` and process variance proxy, agreement of the process and ambient
+distances, an antitone nonnegative interval-integrable entropy profile, and
+supplied separable-terminal boundary certificates. The measure-side endpoint is
+instead an expectation-operator lift from a supplied `MeasureChainingBudget`;
+it does not construct those metric or chaining hypotheses. Arbitrary measurable
 suprema remain out of scope. The general continuous PAC-Bayes
 theorem remains process-level; the i.i.d. specialization currently covers
 finite-dimensional spherical Gaussian priors and posteriors. The statistics
@@ -256,17 +261,24 @@ declaration and prints its axiom profile.
 
 - **Continuous Dudley entropy integral under a supplied boundary certificate** —
   `continuous_dudley_entropy_integral` bounds the expected supremum of a
-  finite sub-Gaussian process over a totally bounded metric index by
-  `coarseBudget + 4 * sqrt (2 * varianceProxy)` times the full interval
-  integral of the entropy profile on `(0, radiusScale / 2)`. The finite
+  finite sub-Gaussian process over a nonempty pseudometric index whose universal
+  set is totally bounded. It assumes positive `radiusScale` and
+  `P.varianceProxy`, with `P.dist` equal to the ambient distance, and bounds by
+  `coarseBudget` plus the product of `4 * sqrt (2 * varianceProxy)` with the
+  full interval integral of the entropy profile on `(0, radiusScale / 2)`;
+  the coarse budget is added, not multiplied. The finite
   outcome support `[Fintype Ω]`, the antitone nonnegative integrable entropy
   profile, and the separable-terminal boundary certificate at every positive
   tolerance are caller-supplied hypotheses stated in the signature; arbitrary
   measurable suprema remain out of scope;
   [`CheckContinuousDudley.lean`](./examples/CheckContinuousDudley.lean)
 - **Measure-side continuous Dudley variant** —
-  `continuous_dudley_entropy_integral_of_measure`, the same
-  hypothesis-carrying endpoint stated against an integral expectation;
+  `continuous_dudley_entropy_integral_of_measure` is an expectation-operator
+  lift on a measurable space with a probability measure. It assumes a positive
+  `radiusScale`, nonnegative `varianceProxy` and entropy profile, interval
+  integrability on `[0, radiusScale / 2]`, and a supplied
+  `MeasureChainingBudget`; it does not inherit the finite-process or
+  topological hypotheses above;
   [`CheckMeasureDudley.lean`](./examples/CheckMeasureDudley.lean)
 - **Unit-interval finite-net bridge** —
   `unitIntervalRademacherLinearSup_roundedDyadicGrid_dudley_m_bound_prefixFree`;
