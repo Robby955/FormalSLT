@@ -54,14 +54,17 @@ if __package__:
         resolve_source_declaration,
         source_resolution_self_test,
     )
-    from .generate_theorem_index import CONCEPT_TRIGGERS
+    from .generate_theorem_index import CONCEPT_TRIGGERS, concepts_for
 else:
     from generate_proof_frontier_manifest import (  # type: ignore[no-redef]
         LEAN_DECLARATION_PATTERN,
         resolve_source_declaration,
         source_resolution_self_test,
     )
-    from generate_theorem_index import CONCEPT_TRIGGERS  # type: ignore[no-redef]
+    from generate_theorem_index import (  # type: ignore[no-redef]
+        CONCEPT_TRIGGERS,
+        concepts_for,
+    )
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
@@ -194,13 +197,8 @@ def proof_body(lines: list[str], idx0: int) -> tuple[str, int]:
 
 
 # --------------------------------------------------------------------------- #
-# tagging + dependency edges
+# dependency edges
 # --------------------------------------------------------------------------- #
-def concepts_for(name: str, summary: str, family: str) -> list[str]:
-    hay = f" {name} {summary} {family} ".lower()
-    return [c for c, trig in CONCEPT_TRIGGERS.items() if any(t in hay for t in trig)]
-
-
 def module_imports(module: str) -> list[str]:
     lines = file_lines(module)
     if lines is None:
@@ -503,6 +501,9 @@ def main() -> int:
         assert "ERM" not in concepts_for("pac_bayes_generalization", "", "")
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        assert {"Bernstein", "MGF", "Bernoulli"}.issubset(
+            concepts_for("indicator_expectedPriorBernsteinExpMoment_le_one", "", "")
+        )
         line1, idx0, kind = resolve_decl(
             "PACBayes.FiniteExponentialTilt", "finiteExponentialTiltNormalizer_pos"
         )
