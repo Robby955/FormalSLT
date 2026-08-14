@@ -625,7 +625,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePopulationVariance_le_weightedSquaredError` | `PACBayes.FiniteBoundedLossExponentialTilt` | Population risk minimizes the finite-PMF weighted squared error |
 | `finitePopulationVariance_mul_exp_neg_le_tilted` | `PACBayes.FiniteBoundedLossExponentialTilt` | Tilted population variance is at least `exp (-t)` times the base population variance |
 | `finiteBoundedLoss_centeredBennettNormalizer_le` | `PACBayes.FiniteBoundedLossExponentialTilt` | Retained-affine-factor Bennett bound for the centered lower-tail loss score |
-| `finiteJointMeanVarianceKappa_nonneg_of_eta_mul_card_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Nonnegativity of the joint variance coefficient on the exact range `eta * n <= 2 * (n - 1)` |
+| `finiteJointMeanVarianceKappa_nonneg_of_eta_mul_card_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Nonnegativity of the joint variance coefficient on the exact range η × n ≤ 2 × (n − 1) |
 | `finiteBoundedLossTilt_negativeEmpiricalVarianceMGF_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Negative Bessel empirical-variance moment bound under the lower-tail tilted finite PMF |
 | `finiteJointMeanVarianceMGF_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Unnormalized fixed-sample joint lower-tail mean and Bessel empirical-variance exponential-moment bound |
 | `finiteJointMeanVariance_normalizedMGF_le_one` | `PACBayes.FiniteJointMeanVarianceMGF` | Normalized fixed-sample joint score has finite-product expectation at most one |

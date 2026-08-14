@@ -3465,7 +3465,7 @@
           "kind": "theorem",
           "module": "PACBayes.FiniteJointMeanVarianceMGF",
           "name": "finiteJointMeanVarianceKappa_nonneg_of_eta_mul_card_le",
-          "summary": "Nonnegativity of the joint variance coefficient on the exact range eta * n <= 2 * (n - 1)"
+          "summary": "Nonnegativity of the joint variance coefficient on the exact range \u03b7 \u00d7 n \u2264 2 \u00d7 (n \u2212 1)"
         },
         {
           "kind": "theorem",

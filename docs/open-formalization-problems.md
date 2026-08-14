@@ -144,10 +144,11 @@ without paying separately for every Cartesian pair. The retained Bennett factor
 is also checked inside one normalized fixed-sample joint score, and one finite
 master-mixture event gives the selected posterior bound with one KL term. When
 the selected entry satisfies the checked coefficient balance, the retained
-logarithm is absorbed and the explicit posterior-risk bound uses empirical
-variance only. The remaining explicit-bound step is the nonzero part of the
-piecewise `xi` residual; all-real or countable adaptation requires a distinct
-normalized-mixture argument.
+logarithm is absorbed and the explicit posterior-risk bound retains empirical
+risk, empirical variance, and one KL-plus-catalog-weight confidence term. The
+remaining explicit-bound step is the nonzero part of the piecewise `xi`
+residual; all-real or countable adaptation requires a distinct normalized
+mixture argument.
 
 **Boundary.** The current final risk theorem is finite-IID and fixed-sample.
 Its fixed-parameter, separate weighted-catalog, and one-event joint-catalog forms
