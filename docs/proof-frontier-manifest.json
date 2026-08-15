@@ -49,7 +49,7 @@
       "boundary": "The one-event joint catalog, zero-residual specialization, and exact piecewise residual endpoint are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The separately budgeted rational risk theorem remains a distinct two-event result. Neither lane gives all-real or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Extend the exact finite-catalog xi residual through a normalized countable mixture; treat all-real and time-uniform adaptation as separate process problems.",
+      "next_step": "Extend the exact finite-catalog xi residual through a normalized countable weighted joint (t, eta) mixture; treat all-real and time-uniform adaptation as separate process problems.",
       "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
@@ -86,7 +86,7 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 152,
-    "library_and_example_lean_lines": 86367,
+    "library_and_example_lean_lines": 86372,
     "library_lean_lines": 73192,
     "library_modules": 193,
     "theorem_map_entries": 745

@@ -126,6 +126,11 @@ theorem receiptXi_isGreatest :
 #check finiteJointMeanVarianceResidualRate
 #check finiteJointMeanVarianceResidual
 #check finiteJointMeanVarianceXi
+#check finiteJointMeanVariancePsi_nonneg
+#check finiteJointMeanVarianceResidualRate_nonneg
+#check finiteJointMeanVarianceXi_eq_zero_of_ge
+#check finiteJointMeanVarianceXi_eq_quarter_of_lt_of_le
+#check finiteJointMeanVarianceXi_eq_interior_of_lt
 #check finiteJointMeanVarianceResidual_le_xi
 #check finiteJointMeanVarianceXi_attained
 #check finiteJointMeanVarianceXi_isGreatest

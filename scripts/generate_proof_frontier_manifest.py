@@ -146,8 +146,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
         "next_step": (
             "Extend the exact finite-catalog xi residual through a normalized "
-            "countable mixture; treat all-real and time-uniform adaptation "
-            "as separate process problems."
+            "countable weighted joint (t, eta) mixture; treat all-real and "
+            "time-uniform adaptation as separate process problems."
         ),
         "boundary": (
             "The one-event joint catalog, zero-residual specialization, and "

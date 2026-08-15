@@ -296,11 +296,12 @@
     selected posterior-risk bound in terms of empirical risk and empirical
     variance. The other residual branches are checked as an exact attained
     three-piece maximum on `[0,1/4]`, and the selected endpoint adds `xi / t`.
-    Countable selectable `lambda` catalogs, exact all-real optimization,
-    time-uniform empirical-Bernstein risk, continuous Bernstein posteriors, and
-    infinite hypothesis classes remain open. The separate bounded-loss
-    continuous lane currently covers a fixed spherical-Gaussian posterior; it
-    does not close these extensions.
+    Countable selectable `lambda` catalogs, a normalized countable weighted
+    joint `(t, eta)` mixture extending the finite-catalog `xi` endpoint, exact
+    all-real optimization, time-uniform empirical-Bernstein risk, continuous
+    Bernstein posteriors, and infinite hypothesis classes remain open. The
+    separate bounded-loss continuous lane currently covers a fixed
+    spherical-Gaussian posterior; it does not close these extensions.
 
 ### Long-term
 
