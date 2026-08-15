@@ -108,11 +108,11 @@ Badge counts are generated from the source tree by
 [`scripts/generate_badge_counts.py`](./scripts/generate_badge_counts.py) and
 checked in CI.
 
-![FormalSLT proof landscape](./docs/theorem-chain.svg)
+[![FormalSLT proof landscape: finite learning, metric entropy, fixed-sample PAC-Bayes, anytime-valid inference, and dependent and composed results](./docs/theorem-chain.svg)](./docs/theorem-chain.svg)
 
 *Conceptual theorem-family map, not a literal import graph. Exact assumptions
 are recorded in theorem signatures and checkers. Detailed lane diagrams are in
-[docs/diagrams.md](./docs/diagrams.md).*
+[docs/diagrams.md](./docs/diagrams.md); select the map to open it full size.*
 
 ## Checked surfaces
 

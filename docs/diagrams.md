@@ -17,6 +17,8 @@ This is a rule for new and refactored code, not a claim that every legacy
 import already follows it; mathematically necessary cross-subject imports are
 narrow and documented in module docstrings.
 
+[Open the static architecture view.](./architecture-flowchart.svg)
+
 ```mermaid
 %%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 46, 'nodeSpacing': 30}}}%%
 flowchart TD
@@ -105,10 +107,17 @@ whole-supremum obligation without discharging it.
 
 ## C. Fixed-sample PAC-Bayes and empirical Bernstein
 
-Three checked routes: the Catoni/McAllester route, the separate-event
-empirical-variance plus risk route, and the one-event joint mean/variance
-route. Everything inside the boundary is fixed-sample, finite-IID, and uses
-finite catalogs declared before the sample is observed.
+The classical change-of-measure branch contains fixed-tilt Catoni bounds and
+fixed-budget or finite-predeclared-grid McAllester bounds. The separate-event
+empirical-variance plus risk route assumes `n ≥ 2`, `0 < η · n < 2(n − 1)`,
+and `0 < λ < 3n`; it uses separate `deltaVariance` and `deltaRisk` budgets,
+supports separately weighted finite `η` and `λ` catalogs, and has two KL
+appearances in the final bound. The joint route instead uses one predeclared
+weighted finite `(t, η)` catalog and one shared event. Its entry may be selected
+after seeing the sample and posterior, with one KL term plus that entry's
+catalog-weighted confidence allocation. All routes shown here are fixed-sample
+and finite-IID; whenever a catalog appears, it is finite and declared before
+the sample is observed.
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 42, 'nodeSpacing': 26}}}%%
@@ -190,7 +199,8 @@ flowchart TD
     otp["Online-to-PAC conversion<br/>explicit regret + deviation hypotheses"]
     stats["Statistics interfaces<br/>estimation, Fisher information,<br/>Cramér–Rao, exponential families"]
     pbc["Fixed-sample PAC-Bayes components<br/>(diagram C)"]
-    ttm["TestTimeMeta compositions<br/>five-component flagship certificate"]
+    prefix["Prefix-kernel deviation<br/>sharp McDiarmid"]
+    ttm["TestTimeMeta five-slot composition<br/>McAllester · online/IID · Bernstein/Gaussian<br/>anytime/Ville · prefix-kernel"]
     markovopen1["Same-trajectory-trained or predictable<br/>Markov learners (open)"]
     markovopen2["Random initial laws, continuous state,<br/>stationary or mixing risk (open)"]
     otpopen["Algorithm-specific online<br/>regret theorem (open)"]
@@ -210,6 +220,7 @@ flowchart TD
     otp --> ttm
     cs --> ttm
     pbc --> ttm
+    prefix --> ttm
     markovpb -.-> markovopen1
     markovpb -.-> markovopen2
     otp -.-> otpopen
@@ -218,7 +229,7 @@ flowchart TD
     classDef sequential fill:#f5f3ff,stroke:#6d28d9,color:#4c1d95;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
-    class condmgf,pathlaw,markovrisk,otp,stats,pbc checked;
+    class condmgf,pathlaw,markovrisk,otp,stats,pbc,prefix checked;
     class supermart,ville,eproc,cs,score,pathwise sequential;
     class tu,markovpb,ttm endpointNode;
     class markovopen1,markovopen2,otpopen open;
@@ -228,6 +239,9 @@ The statistics interfaces preserve the hypotheses of the Mathlib results they
 expose; they are shown without arrows because no theorem family above depends
 on them.
 
+The five TestTimeMeta slots are McAllester, online/IID, Bernstein/Gaussian,
+anytime/Ville, and the sharp-McDiarmid prefix-kernel deviation.
+
 ## Nonclaims
 
 These diagrams do not claim more than the theorem signatures state:
@@ -235,8 +249,8 @@ These diagrams do not claim more than the theorem signatures state:
 - The fixed-time random-matching score is not an e-process.
 - Terminal random matchings at different sample sizes are not projectively
   nested.
-- Finite predeclared catalogs are not countable mixtures and not all-real
-  tilt optimization.
+- Finite predeclared catalogs are neither countable mixtures nor mechanisms
+  for all-real tilt optimization.
 - The time-uniform PAC-Bayes endpoints do not imply a time-uniform
   empirical-Bernstein theorem with exact Bessel variance.
 - The posterior average of per-hypothesis variances is not the variance of
@@ -254,6 +268,7 @@ These diagrams do not claim more than the theorem signatures state:
 
 ## See also
 
+- [`frontier-diagram.svg`](./frontier-diagram.svg) for a static checked-versus-open overview.
 - [`theorem-map.md`](./theorem-map.md) for exact theorem names and statements.
 - [`proof-spine.md`](./proof-spine.md) for a narrative walkthrough.
 - [`assumptions-and-nonclaims.md`](./assumptions-and-nonclaims.md) for the

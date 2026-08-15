@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 900" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="900" viewBox="0 0 1240 900" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT scope frontier</title>
   <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample PAC-Bayes routes, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov prequential risk, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, countable weighted joint tilt mixtures, all-real tilt optimization, time-uniform empirical Bernstein with exact Bessel variance, same-trajectory or predictable Markov learners, random initial laws and continuous state and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
   <defs>

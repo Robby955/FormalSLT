@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 880" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="880" viewBox="0 0 1240 880" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT intended import direction</title>
   <desc id="desc">Layered diagram of the intended dependency direction for FormalSLT modules. Foundations (Probability, LinearAlgebra, core definitions) feed the concentration layer (Concentration, Azuma), which feeds the subject theorem families (Rademacher, VC, Covering, Stability, PACBayes, AnytimeValid), which feed dependent data and interfaces (StochasticDynamics, OnlineToPAC, Statistics), which feed TestTimeMeta application compositions. This is a rule for new and refactored code, not a claim that every legacy import already follows it.</desc>
   <defs>

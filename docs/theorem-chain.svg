@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 790" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="790" viewBox="0 0 1440 790" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT proof landscape</title>
-  <desc id="desc">Theorem-family map of FormalSLT. A shared foundation band (core learning definitions, probability foundations, concentration primitives, martingale infrastructure) feeds five machine-checked lanes: finite learning, metric entropy, fixed-sample PAC-Bayes, anytime-valid inference, and dependent plus compositional results. Each lane ends in checked endpoint surfaces. Conceptual map, not a literal import graph; exact assumptions are recorded in theorem signatures and checkers.</desc>
+  <desc id="desc">Theorem-family map of FormalSLT. A shared foundation band (core learning definitions, probability foundations, concentration primitives, martingale infrastructure) feeds five machine-checked lanes: finite learning, metric entropy, fixed-sample PAC-Bayes, anytime-valid inference, and dependent plus compositional results. The lanes summarize checked theorem families and endpoint surfaces. Conceptual map, not a literal import graph; exact assumptions are recorded in theorem signatures and checkers.</desc>
   <defs>
     <marker id="arrow-slate" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
       <path d="M0,0 L10,4 L0,8 Z" fill="#475569"/>
@@ -145,19 +145,21 @@
   <!-- Lane 5: dependent and compositional -->
   <rect x="1144" y="310" width="246" height="150" rx="10" class="node-teal"/>
   <text x="1267" y="336" text-anchor="middle" class="node-title">Markov path laws</text>
-  <text x="1267" y="360" text-anchor="middle" class="node-line">finite transition kernels,</text>
+  <text x="1267" y="360" text-anchor="middle" class="node-line">finite transition PMFs,</text>
   <text x="1267" y="381" text-anchor="middle" class="node-line">Ionescu-Tulcea path laws,</text>
   <text x="1267" y="402" text-anchor="middle" class="node-line">Markov conditional-risk</text>
   <text x="1267" y="423" text-anchor="middle" class="node-line">identities</text>
 
   <path d="M1267 464 L1267 490" class="edge"/>
 
-  <rect x="1144" y="494" width="246" height="145" rx="10" class="node-amber"/>
-  <text x="1267" y="519" text-anchor="middle" class="node-title">Composition endpoints</text>
-  <text x="1267" y="543" text-anchor="middle" class="node-line">prequential + Markov</text>
-  <text x="1267" y="564" text-anchor="middle" class="node-line">PAC-Bayes certificates;</text>
-  <text x="1267" y="585" text-anchor="middle" class="node-line">online-to-PAC; statistics</text>
-  <text x="1267" y="606" text-anchor="middle" class="node-line">interfaces; TestTimeMeta</text>
+  <rect x="1144" y="494" width="246" height="66" rx="10" class="node-amber"/>
+  <text x="1267" y="519" text-anchor="middle" class="node-title">Markov endpoints</text>
+  <text x="1267" y="543" text-anchor="middle" class="node-line">prequential + PAC-Bayes</text>
+
+  <rect x="1144" y="570" width="246" height="69" rx="10" class="node-teal"/>
+  <text x="1267" y="593" text-anchor="middle" class="node-title">Parallel checked surfaces</text>
+  <text x="1267" y="614" text-anchor="middle" class="node-line">OnlineToPAC · Statistics</text>
+  <text x="1267" y="633" text-anchor="middle" class="node-line">TestTimeMeta compositions</text>
 
   <!-- Legend -->
   <rect x="40" y="690" width="18" height="18" rx="4" class="node-blue"/>
