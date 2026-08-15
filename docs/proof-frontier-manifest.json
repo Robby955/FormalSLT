@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The one-event joint catalog and its zero-residual risk specialization are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The separately budgeted rational risk theorem remains a distinct two-event result. Neither lane gives all-real or time-uniform inference.",
+      "boundary": "The one-event joint catalog, zero-residual specialization, and exact piecewise residual endpoint are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The separately budgeted rational risk theorem remains a distinct two-event result. Neither lane gives all-real or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Formalize the remaining nonzero branches of the exact piecewise xi residual, or package the integrated stack; treat countable, all-real, and time-uniform adaptation separately.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual posterior-risk branch",
+      "next_step": "Extend the exact finite-catalog xi residual through a normalized countable weighted joint (t, eta) mixture; treat all-real and time-uniform adaptation as separate process problems.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 151,
-    "library_and_example_lean_lines": 85774,
-    "library_lean_lines": 72751,
-    "library_modules": 192,
-    "theorem_map_entries": 729
+    "example_lean_files": 152,
+    "library_and_example_lean_lines": 86372,
+    "library_lean_lines": 73192,
+    "library_modules": 193,
+    "theorem_map_entries": 745
   },
   "theorem_families": [
     {
@@ -3372,6 +3372,30 @@
           "summary": "Single catalog bad-sample set thresholding the master mixture at 1 / delta"
         },
         {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVariancePsi",
+          "summary": "Bennett coefficient in the retained population-variance residual"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceResidualRate",
+          "summary": "Transported population-variance coefficient per observation"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceResidual",
+          "summary": "Retained logarithmic population-variance residual per observation"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi",
+          "summary": "Exact three-branch maximum of the retained residual on the bounded-loss variance interval"
+        },
+        {
           "kind": "theorem",
           "module": "PACBayes.FiniteExponentialTilt",
           "name": "finiteExponentialTiltNormalizer_pos",
@@ -3556,6 +3580,78 @@
           "module": "PACBayes.FiniteJointMeanVariancePACBayes",
           "name": "finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem",
           "summary": "Sample- and posterior-dependent selector form of the zero-residual risk bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVariancePsi_nonneg",
+          "summary": "Nonnegativity of the Bennett residual coefficient for every real tilt"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceResidualRate_nonneg",
+          "summary": "Nonnegativity of the transported residual rate under a nonnegative joint MGF coefficient"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi_eq_zero_of_ge",
+          "summary": "Closed form of the zero-maximizer residual branch"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi_eq_quarter_of_lt_of_le",
+          "summary": "Closed form of the endpoint-at-one-quarter residual branch"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi_eq_interior_of_lt",
+          "summary": "Closed form of the interior-stationary-point residual branch"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceResidual_le_xi",
+          "summary": "The piecewise residual formula bounds every variance in [0, 1/4]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi_attained",
+          "summary": "A branchwise maximizer attains the residual envelope on [0, 1/4]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi_isGreatest",
+          "summary": "The piecewise formula is the exact greatest retained residual on [0, 1/4]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVarianceXi_nonneg",
+          "summary": "Nonnegativity of the exact residual maximum"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "posteriorAverage_finitePopulationVariance_mem_Icc",
+          "summary": "Posterior-averaged bounded-loss population variance remains in [0, 1/4]"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem",
+          "summary": "One-event one-KL empirical-Bernstein posterior-risk bound with the exact residual penalty"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteJointMeanVarianceResidual",
+          "name": "finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem",
+          "summary": "Sample- and posterior-dependent selector form of the exact-residual risk bound"
         }
       ],
       "name": "Finite exponential tilting"

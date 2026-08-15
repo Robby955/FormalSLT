@@ -607,6 +607,10 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVariancePriorMoment` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior moment of the joint score at one sample and one catalog pair |
 | `finiteJointMeanVarianceMasterMixture` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior-and-catalog master mixture over the weighted per-entry prior score moments |
 | `finiteJointMeanVarianceCatalogBadSamples` | `PACBayes.FiniteJointMeanVariancePACBayes` | Single catalog bad-sample set thresholding the master mixture at `1 / delta` |
+| `finiteJointMeanVariancePsi` | `PACBayes.FiniteJointMeanVarianceResidual` | Bennett coefficient in the retained population-variance residual |
+| `finiteJointMeanVarianceResidualRate` | `PACBayes.FiniteJointMeanVarianceResidual` | Transported population-variance coefficient per observation |
+| `finiteJointMeanVarianceResidual` | `PACBayes.FiniteJointMeanVarianceResidual` | Retained logarithmic population-variance residual per observation |
+| `finiteJointMeanVarianceXi` | `PACBayes.FiniteJointMeanVarianceResidual` | Exact three-branch maximum of the retained residual on the bounded-loss variance interval |
 
 | Declaration | Module | Role |
 |---|---|---|
@@ -641,6 +645,18 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVariance_logResidual_nonpos_of_balance` | `PACBayes.FiniteJointMeanVariancePACBayes` | Zero-residual coefficient balance absorbs the retained Bennett logarithm at every nonnegative variance |
 | `finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Explicit one-KL empirical-Bernstein posterior-risk bound for one balanced catalog entry |
 | `finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Sample- and posterior-dependent selector form of the zero-residual risk bound |
+| `finiteJointMeanVariancePsi_nonneg` | `PACBayes.FiniteJointMeanVarianceResidual` | Nonnegativity of the Bennett residual coefficient for every real tilt |
+| `finiteJointMeanVarianceResidualRate_nonneg` | `PACBayes.FiniteJointMeanVarianceResidual` | Nonnegativity of the transported residual rate under a nonnegative joint MGF coefficient |
+| `finiteJointMeanVarianceXi_eq_zero_of_ge` | `PACBayes.FiniteJointMeanVarianceResidual` | Closed form of the zero-maximizer residual branch |
+| `finiteJointMeanVarianceXi_eq_quarter_of_lt_of_le` | `PACBayes.FiniteJointMeanVarianceResidual` | Closed form of the endpoint-at-one-quarter residual branch |
+| `finiteJointMeanVarianceXi_eq_interior_of_lt` | `PACBayes.FiniteJointMeanVarianceResidual` | Closed form of the interior-stationary-point residual branch |
+| `finiteJointMeanVarianceResidual_le_xi` | `PACBayes.FiniteJointMeanVarianceResidual` | The piecewise residual formula bounds every variance in `[0, 1/4]` |
+| `finiteJointMeanVarianceXi_attained` | `PACBayes.FiniteJointMeanVarianceResidual` | A branchwise maximizer attains the residual envelope on `[0, 1/4]` |
+| `finiteJointMeanVarianceXi_isGreatest` | `PACBayes.FiniteJointMeanVarianceResidual` | The piecewise formula is the exact greatest retained residual on `[0, 1/4]` |
+| `finiteJointMeanVarianceXi_nonneg` | `PACBayes.FiniteJointMeanVarianceResidual` | Nonnegativity of the exact residual maximum |
+| `posteriorAverage_finitePopulationVariance_mem_Icc` | `PACBayes.FiniteJointMeanVarianceResidual` | Posterior-averaged bounded-loss population variance remains in `[0, 1/4]` |
+| `finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem` | `PACBayes.FiniteJointMeanVarianceResidual` | One-event one-KL empirical-Bernstein posterior-risk bound with the exact residual penalty |
+| `finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem` | `PACBayes.FiniteJointMeanVarianceResidual` | Sample- and posterior-dependent selector form of the exact-residual risk bound |
 
 ## Conditional sub-Gamma extractor
 

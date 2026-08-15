@@ -137,22 +137,23 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "weighted finite eta/lambda catalogs, plus a fixed-sample "
             "per-hypothesis joint mean/Bessel-variance MGF core and a "
             "one-event weighted joint-pair posterior catalog with selector, "
-            "including its explicit zero-residual posterior-risk branch"
+            "including its explicit zero-residual branch and exact attained "
+            "three-piece residual penalty"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Formalize the remaining nonzero branches of the exact piecewise "
-            "xi residual, or package the integrated stack; treat "
-            "countable, all-real, and time-uniform adaptation separately."
+            "Extend the exact finite-catalog xi residual through a normalized "
+            "countable weighted joint (t, eta) mixture; treat all-real and "
+            "time-uniform adaptation as separate process problems."
         ),
         "boundary": (
-            "The one-event joint catalog and its zero-residual risk "
-            "specialization are fixed-sample, finite, and declared in "
-            "advance: one master-mixture confidence event and one KL term "
-            "per selected pair. The separately budgeted rational risk "
+            "The one-event joint catalog, zero-residual specialization, and "
+            "exact piecewise residual endpoint are fixed-sample, finite, and "
+            "declared in advance: one master-mixture confidence event and one "
+            "KL term per selected pair. The separately budgeted rational risk "
             "theorem remains a distinct two-event result. Neither lane gives "
             "all-real or time-uniform inference."
         ),

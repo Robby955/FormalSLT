@@ -94,6 +94,11 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes.finiteJointMeanVariance_logResidual_nonpos_of_balance"
   "FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes.finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem"
   "FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes.finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem"
+  "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVarianceResidual_le_xi"
+  "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVarianceXi_attained"
+  "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVarianceXi_isGreatest"
+  "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem"
+  "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem"
   "FormalSLT.PACBayes.TimeUniformScore.scorePriorMixture_eProcess"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayes_allPosteriors_bound"
@@ -138,6 +143,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes"
+  echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
@@ -172,6 +178,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt \
   FormalSLT.PACBayes.FiniteJointMeanVarianceMGF \
   FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes \
+  FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes >/dev/null
