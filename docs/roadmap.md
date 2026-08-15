@@ -297,11 +297,14 @@
     variance. The other residual branches are checked as an exact attained
     three-piece maximum on `[0,1/4]`, and the selected endpoint adds `xi / t`.
     A support-aware normalized countable weighted joint `(t, eta)` master
-    mixture and per-entry prior-moment extraction are now checked. Lifting
-    that event to the posterior and exact-`xi` selector endpoints, countable
-    selectable `lambda` catalogs, exact all-real optimization, time-uniform
-    empirical-Bernstein risk, continuous Bernstein posteriors, and infinite
-    hypothesis classes remain open. The
+    mixture and per-entry prior-moment extraction are now checked. A normalized
+    finite hypothesis--tilt e-process with one Ville event and a selected-atom
+    weight penalty is checked separately at the generic process level. Lifting
+    the countable fixed-sample event to posterior and exact-`xi` selector
+    endpoints, extending the process-level tilt mixture to a countable catalog,
+    exact all-real optimization, time-uniform empirical-Bernstein risk,
+    continuous Bernstein posteriors, and infinite hypothesis classes remain
+    open. The
     separate bounded-loss continuous lane currently covers a fixed
     spherical-Gaussian posterior; it does not close these extensions.
 

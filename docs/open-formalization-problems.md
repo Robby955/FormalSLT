@@ -60,11 +60,11 @@ interfaces once the theorem assumptions are clean enough to reuse.
 
 ### 3. Joint hypothesis--tilt processes and continuous-posterior extensions
 
-**Target.** Replace finite confidence-budget allocation with a normalized
-hypothesis--tilt e-process mixture, then extend the current fixed
-spherical-Gaussian specialization to broader posterior families. A first
-countable process theorem should use declared positive tilt weights and expose
-the corresponding `log (1 / weight)` cost; it should not claim unrestricted
+**Target.** Extend the checked finite normalized hypothesis--tilt e-process to
+a countable declared tilt mixture, then extend the current fixed
+spherical-Gaussian specialization to broader posterior families. A countable
+theorem should retain positive predeclared tilt weights and expose the
+corresponding `log (1 / weight)` cost; it should not claim unrestricted
 post-sample optimization over all real tilts.
 
 The current repo proves finite PMFs, KL divergence nonnegativity, Gibbs
@@ -90,6 +90,13 @@ score now has a normalized per-hypothesis moment and a one-event finite
 hypothesis--tilt master mixture. Its posterior bound uses one KL term at any
 selected entry from the predeclared finite catalog. This is not a nested
 e-process across sample sizes.
+Separately, `PACBayes.TimeUniformTiltMixture` checks a process-level finite
+hypothesis--tilt master: positive normalized priors over both finite types are
+mixed into one e-process, one Ville event controls all positive times and
+finite posterior PMFs, and one declared tilt atom may be selected from the path
+and posterior with penalty `log (1 / (delta * weight j))`. This generic module
+does not provide an i.i.d. bounded-loss adapter and does not turn the
+fixed-sample Bessel score into a nested process.
 For dependent data, `StochasticDynamics.MarkovPACBayes` now checks a fixed-tilt
 (`0 < λ < 3`), all-positive-time theorem simultaneous over every posterior on
 a finite predictor catalog under an actual finite Markov path law.
@@ -103,14 +110,20 @@ simultaneous over all continuous posteriors.
 
 - lift the checked countable fixed-sample master event to posterior and
   exact-`xi` selection, or add an all-`λ` confidence event beyond finite grids;
-- construct a normalized joint hypothesis--tilt e-process beyond the checked
-  fixed-sample finite and countable master mixtures;
-- derive post-sample tilt selection only from a common checked event;
+- extend the finite normalized hypothesis--tilt e-process to a countable
+  mixture with the required summability and integrability obligations;
+- build separate i.i.d. bounded-loss and predictable-variance adapters without
+  conflating them with the fixed-sample Bessel score;
+- develop a localization penalty for any honest all-`λ` statement;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
 
-**Boundary.** The finite-hypothesis grid theorem remains finite, and the Markov
-posterior-uniform theorem has one fixed declared tilt satisfying `0 < λ < 3`.
+**Boundary.** The normalized process-level tilt master remains finite and
+selects one declared atom rather than an arbitrary joint posterior. Its failure
+set has outer mass at most `delta`; no measurable i.i.d. exceptional-event
+wrapper is included here. The finite-hypothesis grid theorem remains finite,
+and the Markov posterior-uniform theorem has one fixed declared tilt satisfying
+`0 < λ < 3`.
 The base
 continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
 specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt

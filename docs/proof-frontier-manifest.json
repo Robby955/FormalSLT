@@ -37,11 +37,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection, but neither result is simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, but has no i.i.d. adapter and is not countable, all-real, or simultaneous over arbitrary continuous posteriors.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the checked finite weighted indicator-Bernstein catalog toward a countable normalized-moment mixture or all-real lambda statement, then generalize the fixed spherical-Gaussian posterior lane.",
-      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations",
+      "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, then pursue honest all-real localization and generalize the fixed spherical-Gaussian posterior lane.",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 153,
-    "library_and_example_lean_lines": 87010,
-    "library_lean_lines": 73601,
-    "library_modules": 194,
-    "theorem_map_entries": 754
+    "example_lean_files": 154,
+    "library_and_example_lean_lines": 87677,
+    "library_lean_lines": 74034,
+    "library_modules": 195,
+    "theorem_map_entries": 766
   },
   "theorem_families": [
     {
@@ -3943,6 +3943,78 @@
           "module": "PACBayes.TimeUniformPACBayes",
           "name": "timeUniformPACBayes_bound",
           "summary": "Process-level time-uniform PAC-Bayes bound: with probability at least 1 - \u03b4, the posterior running mean of the abstract martingale-difference process stays under the cgf/KL/log(1/\u03b4) boundary for every n \u2265 1"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "pacBayesPriorTiltMixtureProcess",
+          "summary": "Finite normalized outer mixture of fixed-tilt PAC-Bayes prior-mixture processes"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "pacBayesPriorTiltMixtureProcess_nonneg",
+          "summary": "Pointwise nonnegativity of the finite hypothesis--tilt master under PMF priors"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "pacBayesPriorTiltMixtureProcess_zero",
+          "summary": "The normalized finite hypothesis--tilt master starts at one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "pacBayesPriorTiltMixture_supermartingale",
+          "summary": "Finite positive weighted mixture of fixed-tilt prior processes is a nonnegative supermartingale"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "pacBayesPriorTiltMixture_eProcess",
+          "summary": "Packages the normalized finite hypothesis--tilt master as an e-process"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "pacBayesPriorTiltMixture_optionalContinuation",
+          "summary": "Bounded stopping preserves the master process integral bound"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure",
+          "summary": "Common all-time failure set over every finite posterior PMF and declared tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "timeUniformPACBayes_tiltMixture_crossing_bound",
+          "summary": "One Ville crossing bounds the outer mass of the finite master crossing event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_crossing",
+          "summary": "Any posterior/tilt boundary failure forces the weighted master to cross 1 / \u03b4"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "timeUniformPACBayes_tiltMixture_allPosteriors_bound",
+          "summary": "One outer-mass event controls every positive time, posterior PMF, and declared finite tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "timeUniformPACBayes_tiltMixture_allPosteriors_of_not_mem",
+          "summary": "Outside the common event, every posterior and declared atom obeys the selected-weight boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformTiltMixture",
+          "name": "timeUniformPACBayes_tiltMixture_selected_of_not_mem",
+          "summary": "Path- and posterior-dependent selection of one predeclared tilt atom with one hypothesis KL and log(1/(\u03b4 w_j))"
         },
         {
           "kind": "theorem",

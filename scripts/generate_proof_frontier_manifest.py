@@ -106,22 +106,27 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "status": "partially_closed",
         "scope": (
             "finite hypotheses plus spherical-Gaussian continuous-hypothesis "
-            "single-pair and finite fixed-catalog specializations"
+            "single-pair and finite fixed-catalog specializations; a generic "
+            "finite normalized hypothesis--tilt e-process with one Ville "
+            "event and selected-atom weight penalty"
         ),
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
-            "Extend the checked finite weighted indicator-Bernstein catalog toward "
-            "a countable normalized-moment mixture or all-real lambda statement, "
-            "then generalize the fixed spherical-Gaussian posterior lane."
+            "Extend the checked finite normalized hypothesis--tilt e-process "
+            "to a countable mixture with explicit summability obligations, "
+            "then pursue honest all-real localization and generalize the fixed "
+            "spherical-Gaussian posterior lane."
         ),
         "boundary": (
             "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, "
             "fixed-posterior, and spherical-Gaussian. Finite fixed catalogs "
             "of posterior/tilt pairs and a posterior-uniform finite weighted "
-            "indicator-Bernstein tilt catalog support post-sample selection, "
-            "but neither result is simultaneous over all continuous posteriors "
-            "or all real tilts."
+            "indicator-Bernstein tilt catalog support post-sample selection. "
+            "The generic time-uniform master also supports a selected atom "
+            "from one finite normalized tilt prior, but has no i.i.d. adapter "
+            "and is not countable, all-real, or simultaneous over arbitrary "
+            "continuous posteriors."
         ),
     },
     {
