@@ -40,7 +40,8 @@ posterior.
 - The normalized fixed-time score is not an e-process, and no time-uniform or
   anytime-valid claim is made here.  Broader time-uniform empirical-Bernstein
   PAC-Bayes results already exist in the literature, in particular Jang,
-  Jun, Neu, and Orabona (COLT 2023) and Chugg, Wang, and Ramdas (JMLR 2023).
+  Jun, Kuzborskij, and Orabona (COLT 2023) and Chugg, Wang, and Ramdas
+  (JMLR 2023).
   The contribution of this module is checked mechanization and an event-first
   API, not statistical priority.
 - The posterior variance quantities are posterior averages of per-hypothesis

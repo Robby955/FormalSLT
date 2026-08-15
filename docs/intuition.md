@@ -62,32 +62,31 @@ log is what governs the scaling.
 `E[genGap] ≤ 2B·√(2·log|H| / n)` with no further work. The price of
 finiteness is logarithmic; the price of `n` is square-root.
 
-## Azuma generalization-gap tail — `P(genGap − E[genGap] ≥ ε) ≤ exp(−ε²n / 8B²)`
+## Sharp McDiarmid generalization-gap tail — `P(genGap − E[genGap] ≥ ε) ≤ exp(−ε²n / 2B²)`
 
 **What it says.** The generalization gap concentrates around its
 expectation: deviations of size `ε` are exponentially unlikely in the
-sample size. The `8B²` in the denominator is the Azuma constant for a
-sample-exposure martingale where each step changes the gap by at most
-`2B/n` and there are `n` steps.
+sample size. The sample-exposure sensitivity is `2B/n`; the checked sharp
+product-kernel theorem turns the squared-width sum `4B²/n` into the exponent
+`−ε²n/(2B²)`.
 
-**The Azuma constant is loose by 4× compared to the sharp McDiarmid
-constant** (which would give `2ε²n / B²`). This repo currently uses the
-Azuma route because it composes directly with the high-probability layer
-above. The [`assumptions-and-nonclaims.md`](./assumptions-and-nonclaims.md)
-doc records this constant choice explicitly.
+The previous Azuma route had denominator `8B²`. The public Rademacher, VC,
+metric-entropy, and stability wrappers now use the sharp denominator `2B²`.
+The [`assumptions-and-nonclaims.md`](./assumptions-and-nonclaims.md) document
+records the remaining independence and bounded-difference assumptions.
 
 **What you would change to make this useful.** Bigger `n` shrinks the
 tail exponentially. Bigger `B` (looser loss range) loosens the tail
 quadratically. To get a 95% confidence interval on the gap, set the
 right-hand side equal to 0.05 and solve for `ε`.
 
-## High-probability Rademacher — `P(genGap ≥ 2·E[Rad] + ε) ≤ exp(−ε²n / 8B²)`
+## High-probability Rademacher — `P(genGap ≥ 2·E[Rad] + ε) ≤ exp(−ε²n / 2B²)`
 
 **What it says.** Compose Rademacher symmetrization (controls the
-expectation) with the Azuma tail (controls the deviation around the
+expectation) with the sharp McDiarmid tail (controls the deviation around the
 expectation): a learner's worst-case generalization gap stays within
 `2·E[Rad] + ε` of its expectation with probability at least
-`1 − exp(−ε²n / 8B²)`.
+`1 − exp(−ε²n / 2B²)`.
 
 This is the theorem in the chain that turns the earlier expectation work into a finite-sample,
 high-probability statement. Everything before this is either an expectation
@@ -130,12 +129,12 @@ but the bound has no `S`-dependent constant — it holds for every sample
 in a class with VC dimension `d`. That uniformity is what distinguishes
 VC theory from finite-class theory.
 
-## VC ERM excess risk tail — `P(excess risk ≥ 2B√(2d·log(en/d)/n) + ε) ≤ 2·exp(−ε²n / 8B²)`
+## VC ERM excess risk tail — `P(excess risk ≥ 2B√(2d·log(en/d)/n) + ε) ≤ 2·exp(−ε²n / 2B²)`
 
 **The capstone.** Under bounded loss, iid samples, finite VC dimension `d`,
 the ERM learner's excess risk over the best-in-class hypothesis is at
 most `2B√(2d·log(en/d)/n) + ε` with probability at least
-`1 − 2·exp(−ε²n / 8B²)`.
+`1 − 2·exp(−ε²n / 2B²)`.
 
 **Reading off sample complexity.** Set the failure probability to `δ` and
 the excess risk slack to `ε_0`; solve to get `n ≳ (B²/ε_0²) · (d·log(1/ε_0)
@@ -144,11 +143,11 @@ the excess risk slack to `ε_0`; solve to get `n ≳ (B²/ε_0²) · (d·log(1/�
 **Current boundaries.**
 - It is *not* a low-probability bound on a specific learner's true risk; it
   is a bound on excess risk over the in-class optimum.
-- The `2·exp` (not `exp`) reflects that the bound is two-sided in the
-  uniform-deviation sense; the original Azuma gives a one-sided tail.
+- The `2·exp` (not `exp`) reflects the union of the sharp upper and lower
+  product-kernel tails in the two-sided uniform-deviation theorem.
 - Bounded loss is essential: unbounded loss requires moment or
   sub-Gaussian assumptions that this repo does not formalize.
-- iid is essential: the Azuma exposure martingale assumes independent
+- iid is essential: the sharp exposure-martingale route assumes independent
   samples. Generalizing to `β`-mixing or martingale data needs different
   machinery.
 

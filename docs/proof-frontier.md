@@ -66,20 +66,22 @@ files.
   variance proxy `c·r`, a finite union bound, and the fixed-threshold payoff.
   The next deeper theorem target is the whole-supremum bound, not a broader
   claim about the finite Bernstein theorem.
-- `continuous-dudley-entropy-integral`: requires analytic and measurability
-  assumptions beyond the current finite-scale wrappers. The unit-interval
-  example now verifies the total-bounded bridge on a concrete non-finite
-  metric index space, with explicit half/quarter meshes and a supplied
-  supremum bound through the projected quarter-mesh Dudley theorem.
+- `continuous-dudley-entropy-integral`: the finite-outcome continuous integral
+  and `iSup` endpoints are checked under explicit antitonicity, integrability,
+  separable-terminal, modulus, and boundary hypotheses. What remains is the
+  construction of arbitrary measurable suprema and a general measure-side
+  chaining budget rather than supplied interfaces.
 - `pac-bayes-all-real-lambda`: the base fixed-tilt, fixed-posterior
   spherical-Gaussian i.i.d. specialization and finite fixed catalogs with
   sample-dependent selection are checked. The finite indicator-Bernstein lane
   additionally has a posterior-uniform weighted tilt catalog. At process level,
   one normalized finite hypothesis--tilt e-process now gives a common Ville
   event, all-posterior validity, and post-path selection of a declared atom with
-  its exact weight penalty. Countable process-level or all-real lambda
-  optimization, i.i.d. specialization of that master, and posterior-uniform
-  general continuous families remain open.
+  its exact weight penalty. The checked fixed-sample countable joint master
+  stops at prior moments. Countable process-level and fixed-sample
+  posterior-level selection, all-real lambda optimization, i.i.d.
+  specialization of the process master, and posterior-uniform general
+  continuous families remain open.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
   checked for `[0,1]` losses under the explicit finite IID product law and
@@ -102,7 +104,14 @@ files.
   now closed by an exact attained three-piece maximum on `[0,1/4]`, yielding
   the explicit `xi / t` penalty on the same event. A support-aware countable
   normalized master event and per-entry prior-moment extraction are also
-  checked, but their posterior/`xi` selector lift remains open. The current
-  result is not all-real tilt optimization or time-uniform inference.
-- `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
-  conditional-expectation route is available.
+  checked. A predeclared dyadic scale grid through `Nat.clog 2 n` now gives the
+  direct square-root-plus-linear posterior-risk endpoint with constants `5/4`
+  and `5/2`, one KL term, and a 95%-confidence positive-KL/positive-variance
+  positive-sample-mass receipt below `99/100`. The countable event's
+  posterior/`xi` selector lift remains
+  open. The current result is not all-real tilt optimization or time-uniform
+  inference.
+- `sharp-mcdiarmid-product-kernel`: closed for independent finite product
+  coordinates, including heterogeneous marginal laws and sharp downstream
+  Rademacher, VC, metric-entropy, and stability wrappers. Dependent-coordinate
+  extensions remain a separate problem.

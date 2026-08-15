@@ -42,25 +42,26 @@ The proof uses:
 3. Rademacher sign injection (signs are symmetric)
 4. Decoupling (drop S' dependence)
 
-## Stage 3: Concentration (Azuma)
+## Stage 3: Concentration (sharp McDiarmid)
 
-**Azuma.GenGapTail** proves that `genGap` concentrates around its mean:
+**Azuma.GenGapTail** routes the exposure martingale through the checked sharp
+McDiarmid product-kernel theorem and proves:
 
 ```
-P_S(genGap μ ℓ S - E[genGap] ≥ ε) ≤ exp(-ε²·n / (8B²))
+P_S(genGap μ ℓ S - E[genGap] ≥ ε) ≤ exp(-ε²·n / (2B²))
 ```
 
 The proof constructs a Doob exposure martingale:
 1. Define M_k = E[genGap | S₁,...,Sₖ]
 2. Show bounded differences: |M_k - M_{k-1}| ≤ 2B/n (ghost sample replacement)
-3. Apply Azuma-Hoeffding to the martingale
+3. Use the conditional-range MGF and sharp product-kernel tail
 
 ## Stage 4: High-Probability Composition
 
 **Rademacher.HighProbability** combines Stages 2 and 3:
 
 ```
-P_S(genGap μ ℓ S ≥ 2·E_S[Rad(ℓ,S)] + ε) ≤ exp(-ε²·n / (8B²))
+P_S(genGap μ ℓ S ≥ 2·E_S[Rad(ℓ,S)] + ε) ≤ exp(-ε²·n / (2B²))
 ```
 
 This is the structural backbone: any upper bound on E[Rad] becomes a high-probability generalization bound.
@@ -131,7 +132,7 @@ It also proves the bounded-input corollary:
 This is the bridge from the abstract finite-class spine to a recognizable
 finite-dimensional model family.
 
-## Stage 9: Finite sub-Gaussian chaining
+## Stage 9: Sub-Gaussian chaining and scoped entropy integrals
 
 **Covering.FiniteSubGaussianChaining** builds finite stochastic-process
 infrastructure:
@@ -142,8 +143,11 @@ infrastructure:
 4. multiscale chaining decompositions over finite net sequences;
 5. finite Dudley-style entropy sums and dyadic entropy-budget wrappers.
 
-This stage is finite and discrete. It prepares the repo for a later
-Dudley-style entropy theorem without claiming the continuous entropy integral.
+`Covering.ContinuousDudley` then checks continuous entropy-integral and `iSup`
+endpoints for finite outcome spaces under explicit antitonicity, integrability,
+separable-terminal, modulus, and boundary hypotheses. The general construction
+of arbitrary measurable suprema and a measure-side chaining budget remains
+open; those are not consequences of the scoped integral endpoint.
 
 ## What makes this non-trivial
 
@@ -155,6 +159,7 @@ The Rademacher route is more complex than the direct Hoeffding-union approach:
 | Rademacher route | 6 stages, ~20 lemmas | Adapts to effective class, connects to VC, generalizes to continuous losses |
 
 The Rademacher route proves the same finite-class bound but through machinery
-that now supports contraction, linear predictors, and finite chaining. Infinite
-classes still require additional covering, measurability, and separability
-layers.
+that now supports contraction, linear predictors, finite chaining, and scoped
+entropy-integral endpoints. Unrestricted infinite-class empirical-process
+theory still requires additional measurable-supremum and separability
+constructions.

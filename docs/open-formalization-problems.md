@@ -151,6 +151,14 @@ has mass at most `deltaVariance + deltaRisk`, and outside it the checked final
 risk theorem substitutes the observable variance certificate with all
 denominators explicit.
 
+The one-event finite lane now also derives a closed-form bound rather than
+stopping at an abstract balance or grid-coverage interface. Explicit rational
+tilts indexed by the predeclared dyadic grid through `Nat.clog 2 n` give
+`Rhat + (5/4) * sqrt(2 * Vhat * L / n) + (5/2) * L / n`, where
+`L = KL + log((Nat.clog 2 n + 1) / delta)`. The checker combines positive KL,
+positive empirical variance, an explicit positive-mass good sample, and a
+final ceiling below `99/100` at `delta = 1/20`.
+
 **Dependencies.** The separately budgeted finite variance-tilt and risk-tilt
 catalogs are checked, including posterior- and sample-dependent selection
 without paying separately for every Cartesian pair. The retained Bennett factor
@@ -169,8 +177,9 @@ entry's prior moment on one event. Its Donsker--Varadhan posterior and
 exact-`xi` selector lift remains open. All-real adaptation requires a distinct
 argument.
 
-**Boundary.** The current final risk theorem is finite-IID and fixed-sample.
-Its fixed-parameter, separate weighted-catalog, and one-event joint-catalog forms
+**Boundary.** The current final risk theorems are finite-IID and fixed-sample.
+Their fixed-parameter, separate weighted-catalog, one-event joint-catalog, and
+closed-form logarithmic-grid forms
 are posterior-uniform over finite hypothesis types; selection is only from
 catalogs declared in advance. It does not authorize all-real post-hoc
 optimization and is not anytime-valid. The random-matching proof formalizes the
@@ -179,10 +188,11 @@ entropy-method proof.
 
 ## Medium-term
 
-### 4. Downstream sharp McDiarmid propagation
+### 4. Algorithm-specific sharp McDiarmid applications
 
-**Target.** Continue extending downstream wrappers that can consume the checked
-sharp McDiarmid tail.
+**Checked.** The kernel-level sharp bounded-differences theorem and its
+high-probability Rademacher, finite-class, VC, metric-entropy, and stability
+wrappers are now available.
 
 The kernel-level sharp bounded-differences theorem is now available in
 `FormalSLT/Azuma/GenGapTail.lean`:
@@ -190,28 +200,28 @@ The kernel-level sharp bounded-differences theorem is now available in
 - `ExposureMartingale.hasBoundedDifferences_tail_sharp`
 - `ExposureMartingale.genGap_tail_bound_sharp_explicit`
 
-What remains is theorem plumbing: carrying the sharper genGap tail through the
-existing symmetrization, finite-class, VC, and stability wrappers without
-changing their hypotheses.
+**Target.** Prove stability or bounded-difference constants for named learning
+algorithms and feed those certificates into the checked sharp wrappers.
 
 **Dependencies.**
 
-- update high-probability Rademacher wrappers;
-- update finite VC sample-complexity wrappers;
-- update algorithmic-stability wrappers that still cite the Azuma theorem.
+- a named algorithm and explicit replacement-sensitivity proof;
+- the existing sharp product-kernel theorem;
+- the existing high-probability stability or learning wrapper.
 
-### 5. Continuous Dudley-style entropy integral
+### 5. General measurable-supremum Dudley theory
 
-**Target.** Move from finite dyadic entropy sums to a continuous entropy
-integral over covering numbers.
+**Checked.** The finite-outcome endpoint
+`continuous_dudley_entropy_integral` proves the continuous entropy-integral
+comparison under explicit antitonicity, integrability, separable-terminal,
+modulus, and boundary hypotheses.
 
-This requires a separate topological and measure-theoretic layer: total
-boundedness, finite ε-nets at arbitrary scales, monotone entropy functions,
-integral approximation, and measurability/separability assumptions for
-suprema over infinite classes.
+**Target.** Construct the measurable arbitrary supremum and measure-side
+chaining budget on a general probability space rather than receiving those
+interfaces as hypotheses.
 
-**Boundary.** The finite chaining layer is the right foundation, but it does
-not by itself provide continuous/infinite empirical-process theory.
+**Boundary.** The checked integral algebra and finite-outcome endpoints do not
+by themselves provide unrestricted infinite-class empirical-process theory.
 
 ## Longer-term
 

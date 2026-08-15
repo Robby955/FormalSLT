@@ -20,8 +20,8 @@ source.
 | Metric entropy and Dudley chaining | Dudley (1967); Boucheron, Lugosi, and Massart (2013, Section 13); Massart (2007); Talagrand (2014) | Finite chaining, covering-number entropy budgets, and continuous-integral boundary interfaces | Finite-net constructions plus explicitly stated separability, measurability, and boundary certificates where required |
 | Algorithmic stability | Bousquet and Elisseeff (2002); McDiarmid (1989) | Expected-gap and bounded-differences route from uniform stability to generalization | Stability is supplied as a hypothesis; the library does not infer it for every learning algorithm |
 | PAC-Bayes change of measure and finite confidence bounds | Donsker and Varadhan (1975); McAllester (1999, 2003); Seeger (2002); Catoni (2007) | KL change of measure, fixed-tilt bounds, square-root consequences, finite confidence shells, and Bernoulli-KL infrastructure | Finite priors/posteriors for the main finite-sample layer; continuous results have their own explicit measure-theoretic assumptions |
-| PAC-Bayes Bernstein and Gaussian/variational interfaces | Tolstikhin and Seldin (2013); Alquier, Ridgway, and Chopin (2016) | Variance-sensitive penalties, the source-normalized finite empirical-variance MGF, fixed-parameter and finite-catalog observable empirical-Bernstein risk, the retained-Bennett joint mean/variance score, its one-event finite posterior catalog, and continuous-posterior analytic interfaces | The empirical-variance moment, posterior-uniform variance lift, general bounded-loss Bernstein event, two-event rational risk endpoint, separately weighted finite `eta`/`lambda` catalogs, one-event finite joint-pair catalog, zero-residual specialization, and exact attained three-branch residual penalty are checked for finite IID `[0,1]` losses; all-real optimization and time-uniform empirical-Bernstein risk retain their explicit boundaries |
-| Anytime-valid inference and e-processes | Ville (1939); Howard et al. (2020, 2021); Chugg, Wang, and Ramdas (2023); Ramdas et al. (2023); Grünwald, de Heide, and Koolen (2024) | Ville inequalities, confidence sequences, time-uniform PAC-Bayes mixtures, line-crossing bounds, and safe-testing interfaces | Discrete-time processes with the adaptedness, integrability, conditional-MGF, or supermartingale assumptions shown in the signatures |
+| PAC-Bayes Bernstein and Gaussian/variational interfaces | Tolstikhin and Seldin (2013); Alquier, Ridgway, and Chopin (2016) | Variance-sensitive penalties, the source-normalized finite empirical-variance MGF, fixed-parameter and finite-catalog observable empirical-Bernstein risk, the retained-Bennett joint mean/variance score, its one-event finite posterior catalog, a closed-form logarithmic-grid endpoint, and continuous-posterior analytic interfaces | The empirical-variance moment, posterior-uniform variance lift, general bounded-loss Bernstein event, two-event rational risk endpoint, separately weighted finite `eta`/`lambda` catalogs, one-event finite joint-pair catalog, zero-residual specialization, exact attained residual penalty, and direct square-root-plus-linear finite-grid bound are checked for finite IID `[0,1]` losses; all-real optimization and time-uniform exact-Bessel risk retain their explicit boundaries |
+| Anytime-valid inference and e-processes | Ville (1939); Seldin et al. (2012); Howard et al. (2020, 2021); Chugg, Wang, and Ramdas (2023); Jang et al. (2023); Ramdas et al. (2023); Grünwald, de Heide, and Koolen (2024) | Ville inequalities, confidence sequences, time-uniform PAC-Bayes mixtures, line-crossing bounds, and safe-testing interfaces | Discrete-time processes with the adaptedness, integrability, conditional-MGF, or supermartingale assumptions shown in the signatures |
 | Probability and statistics interfaces | Durrett (2019); van der Vaart (1998); the corresponding Mathlib declarations | Background for convergence, moments, estimation, Fisher information, and asymptotic-statistics wrappers | The wrappers preserve the hypotheses and generality of the Mathlib results they expose |
 
 ## Repository routes
@@ -123,8 +123,16 @@ from supplied interfaces and open boundaries.
   [Publisher record](https://doi.org/10.1214/20-AOS1991).
 - Chugg, B., Wang, H., and Ramdas, A. (2023). "A unified recipe for
   deriving (time-uniform) PAC-Bayes bounds." *Journal of Machine Learning
-  Research* 24(372), 1--60.
+  Research* 24(372), 1--61.
   [Open article](https://jmlr.org/papers/v24/23-0401.html).
+- Jang, K., Jun, K.-S., Kuzborskij, I., and Orabona, F. (2023). "Tighter
+  PAC-Bayes bounds through coin-betting." In *Proceedings of COLT 2023*.
+  [Open article](https://proceedings.mlr.press/v195/jang23a.html).
+- Seldin, Y., Cesa-Bianchi, N., Auer, P., Laviolette, F., and Shawe-Taylor,
+  J. (2012). "PAC-Bayes-Bernstein inequality for martingales and its
+  application to multiarmed bandits." In *Proceedings of the Workshop on
+  On-line Trading of Exploration and Exploitation 2*, PMLR 26, 98--111.
+  [Open article](https://proceedings.mlr.press/v26/seldin12a.html).
 - Ramdas, A., Grünwald, P., Vovk, V., and Shafer, G. (2023).
   "Game-theoretic statistics and safe anytime-valid inference."
   *Statistical Science* 38(4), 576--601.
@@ -132,6 +140,10 @@ from supplied interfaces and open boundaries.
 - Grünwald, P., de Heide, R., and Koolen, W. (2024). "Safe testing."
   *Journal of the Royal Statistical Society Series B* 86(5), 1091--1128.
   [Publisher record](https://doi.org/10.1093/jrsssb/qkae011).
+- Karagulyan, V., and Alquier, P. (2026). "Empirical PAC-Bayes bounds for
+  Markov chains." In *Proceedings of the 29th International Conference on
+  Artificial Intelligence and Statistics*, PMLR 300.
+  [OpenReview record](https://openreview.net/forum?id=GlAeeN1Lhp).
 
 ## How this relates to TheoremPath
 

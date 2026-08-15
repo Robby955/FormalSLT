@@ -44,6 +44,7 @@ import FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt
 import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF
 import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes
 import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual
+import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt
 import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
 import FormalSLT.PACBayes.ContinuousPriorPosterior
@@ -70,6 +71,7 @@ Gaussian, Bernstein, empirical-variance concentration, fixed and finite-catalog
 empirical-Bernstein risk, bounded-loss exponential-tilt variance comparison,
 fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,
-support-aware countable master-mixture foundation, score e-process, finite
-weighted tilt e-process, and time-uniform PAC-Bayes surfaces.
+closed-form logarithmic-grid empirical-Bernstein bound, support-aware
+countable master-mixture foundation, score e-process, finite weighted tilt
+e-process, and time-uniform PAC-Bayes surfaces.
 -/

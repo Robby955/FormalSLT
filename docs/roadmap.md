@@ -216,15 +216,18 @@
   - Target a finite fast-rate/oracle-inequality scaffold without claiming
     infinite-class or measurable-supremum generality.
 
-- [ ] **Continuous Dudley entropy-integral lift**
+- [x] **Continuous Dudley entropy-integral endpoint under explicit certificates**
   - The finite-terminal and projected-sup dyadic wrappers are closed.
   - The finite dyadic budget now compares to a supplied entropy-at-radius
     upper sum/integral budget for projected finite nets.
-  - Next, prove an analytic domination theorem from that finite upper sum to
-    an actual Riemann/Lebesgue entropy integral under monotonicity and
-    integrability assumptions.
-  - Do not claim separability, measurable arbitrary suprema, or the continuous
-    entropy integral until those layers are proved.
+  - `continuous_dudley_entropy_integral` and its finite-outcome `iSup`
+    variants check the integral endpoint under explicit antitonicity,
+    integrability, separable-terminal, modulus, and boundary hypotheses.
+- [ ] **General measurable-supremum Dudley lift**
+  - Construct the measure-side chaining budget and measurable arbitrary
+    supremum on a general probability space.
+  - Do not infer those constructions from the checked finite-outcome or
+    supplied-boundary endpoint.
 
 ### Medium-term
 
@@ -296,6 +299,11 @@
     selected posterior-risk bound in terms of empirical risk and empirical
     variance. The other residual branches are checked as an exact attained
     three-piece maximum on `[0,1/4]`, and the selected endpoint adds `xi / t`.
+    A concrete dyadic scale catalog of depth `Nat.clog 2 n` now removes the
+    public optimizer hypothesis and yields the direct one-event endpoint
+    `Rhat + (5/4) * sqrt(2 * Vhat * L / n) + (5/2) * L / n`, with
+    `L = KL + log((Nat.clog 2 n + 1) / delta)` and a positive-KL,
+    positive-variance, positive-sample-mass receipt below `99/100`.
     A support-aware normalized countable weighted joint `(t, eta)` master
     mixture and per-entry prior-moment extraction are now checked. A normalized
     finite hypothesis--tilt e-process with one Ville event and a selected-atom

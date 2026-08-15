@@ -254,7 +254,23 @@ both variance quantities are posterior averages of per-hypothesis variances.
 The fixed-time normalized score is not an e-process, and no time-uniform, countable-catalog,
 or all-real optimization claim is made; broader time-uniform
 empirical-Bernstein PAC-Bayes results already exist in the literature (Jang,
-Jun, Neu, and Orabona, COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023).
+Jun, Kuzborskij, and Orabona, COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023).
+
+`PACBayes.FiniteEmpiricalBernsteinSqrt` derives a direct closed-form endpoint
+from the one-event joint score rather than assuming the balance condition or
+an optimizer certificate at its public boundary. It maps each declared scale
+`0 < s <= 2` to explicit mean and variance tilts, proves the balance condition,
+and fixes the finite dyadic catalog `s_j = 2 / 2^j` through
+`j = Nat.clog 2 n` before observing the sample. For `0 < delta < 1`, the final
+event has product-law mass at most `delta` and the risk bound is simultaneous
+over every finite posterior. The finite hypothesis catalog and full-support
+prior are fixed before the sample. Its complexity is
+`L = KL(rho || prior) + log((Nat.clog 2 n + 1) / delta)` and its displayed
+penalty is `(5/4) * sqrt(2 * Vhat * L / n) + (5/2) * L / n`.
+Here `Vhat` is the posterior average of each hypothesis's Bessel empirical
+variance, not the empirical variance of the posterior-averaged loss. The
+result is finite IID and fixed-sample. It is not an all-real optimizer, a
+countable posterior selector, or a time-uniform empirical-Bernstein theorem.
 
 `PACBayes.CountableJointMeanVariancePACBayes` extends only the fixed-sample
 master-event layer to a predeclared `Nat`-indexed catalog. Its nonnegative
@@ -361,9 +377,12 @@ theorem and its `β = c0 / n` corollary.
 The finite chaining layer proves finite max and finite entropy-budget bounds,
 total-bounded finite-net wrappers, truncated interval-integral comparisons,
 and a supplied-supremum boundary adapter with an explicit terminal
-approximation error. It does not yet prove a continuous entropy integral,
-infinite-class separability theorem, or full empirical-process chaining
-theorem.
+approximation error. The finite-outcome theorem
+`continuous_dudley_entropy_integral` checks the continuous integral endpoint
+under explicit antitonicity, integrability, separable-terminal, modulus, and
+boundary hypotheses. The library does not yet construct arbitrary measurable
+suprema or a general measure-side chaining budget, and it does not prove a
+full unrestricted empirical-process chaining theorem.
 
 ### Stochastic-dynamics extensions
 

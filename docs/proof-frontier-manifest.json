@@ -28,40 +28,40 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The unit-interval example exercises the non-finite metric index route, but it does not claim separability, measurable arbitrary suprema, or a continuous Dudley theorem.",
+      "boundary": "The entropy-integral algebra and finite-outcome endpoint are checked. The library does not yet construct arbitrary measurable suprema or discharge a general measure-side chaining budget.",
       "difficulty": "hard",
       "id": "continuous-dudley-entropy-integral",
-      "next_step": "Package the unit-interval Dudley example and then generalize the endpoint-mesh terminal step beyond the exact half/quarter meshes. The full continuous entropy-integral theorem still needs analytic and measurability assumptions.",
-      "scope": "unit-interval example plus total-bounded bridge; continuous integral remains open",
+      "next_step": "Construct the measurable-supremum and separable-process bridge on a general probability space, beyond the checked finite-outcome and supplied-boundary interfaces.",
+      "scope": "finite-outcome continuous entropy-integral endpoints under explicit total-boundedness, separable-terminal, modulus, and boundary certificates, plus concrete selected-cover capstones",
       "source": "docs/next-lane.md",
       "status": "partially_closed"
     },
     {
-      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, but has no i.i.d. adapter and is not countable, all-real, or simultaneous over arbitrary continuous posteriors.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, but has no i.i.d. adapter and is not countable, all-real, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master controls prior moments but has no posterior selector. No result is simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, then pursue honest all-real localization and generalize the fixed spherical-Gaussian posterior lane.",
+      "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, add its i.i.d. specialization, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument and generalize the fixed spherical-Gaussian posterior lane.",
       "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
     {
-      "boundary": "The posterior and exact-xi endpoints are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The countable foundation is also fixed-sample and stops at per-entry prior moments; its posterior and xi selector lift is open. The separately budgeted rational risk theorem remains a distinct two-event result. No lane gives all-real or time-uniform inference.",
+      "boundary": "The posterior, exact-xi, and closed-form dyadic endpoints are fixed-sample and finite. Their catalogs are declared in advance; one master-mixture confidence event carries one KL term per selected pair. The countable foundation is also fixed-sample and stops at per-entry prior moments; its posterior and xi selector lift is open. The separately budgeted rational risk theorem remains a distinct two-event result. This empirical-Bernstein lane gives neither all-real nor time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
       "next_step": "Lift the checked support-aware countable weighted joint (t, eta) master event to posterior and exact-xi selector endpoints; treat all-real and time-uniform adaptation as separate process problems.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, plus a support-aware Nat-indexed countable master mixture and per-entry prior-moment extraction",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture and per-entry prior-moment extraction",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
     {
-      "boundary": "The current high-probability bounds use the Azuma constant; sharp McDiarmid should wait for the required measure-theoretic layer.",
+      "boundary": "The sharp product-kernel route assumes independent finite product coordinates and explicit bounded differences; it is not a dependent-data concentration theorem.",
       "difficulty": "hard",
       "id": "sharp-mcdiarmid-product-kernel",
-      "next_step": "Identify or build the product-kernel conditional-expectation decomposition needed for a range-based Hoeffding route.",
-      "scope": "bounded-differences concentration",
+      "next_step": "No immediate closure work: reuse the checked sharp kernel in downstream theorems, or separately study dependent-coordinate extensions.",
+      "scope": "sharp one-sided, lower-tail, and two-sided bounded-differences concentration for independent finite product coordinates, including heterogeneous marginal laws and downstream learning wrappers",
       "source": "docs/roadmap.md#near-term",
-      "status": "blocked"
+      "status": "closed"
     }
   ],
   "generation": {
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 154,
-    "library_and_example_lean_lines": 87677,
-    "library_lean_lines": 74034,
-    "library_modules": 195,
-    "theorem_map_entries": 766
+    "example_lean_files": 155,
+    "library_and_example_lean_lines": 88920,
+    "library_lean_lines": 74900,
+    "library_modules": 196,
+    "theorem_map_entries": 780
   },
   "theorem_families": [
     {
@@ -3408,6 +3408,36 @@
           "summary": "Exact three-branch maximum of the retained residual on the bounded-loss variance interval"
         },
         {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinTiltOfScale",
+          "summary": "Mean tilt s / (1 + 2s) attached to a declared empirical-Bernstein scale"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinEtaOfScale",
+          "summary": "Rational variance tilt s\u00b2 / (2(1 + 2s)) satisfying the checked balance condition for 0 < s \u2264 2"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinDyadicScale",
+          "summary": "Predeclared dyadic scale 2 / 2^j used by the finite optimizer catalog"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinGridDepth",
+          "summary": "Canonical catalog depth clog 2 n for the closed-form endpoint"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinSqrtBadSamples",
+          "summary": "One bad-sample set for the canonical logarithmic scale grid"
+        },
+        {
           "kind": "theorem",
           "module": "PACBayes.FiniteExponentialTilt",
           "name": "finiteExponentialTiltNormalizer_pos",
@@ -3664,6 +3694,60 @@
           "module": "PACBayes.FiniteJointMeanVarianceResidual",
           "name": "finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem",
           "summary": "Sample- and posterior-dependent selector form of the exact-residual risk bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteJointMeanVariance_balance_of_tilt",
+          "summary": "The explicit rational variance tilt absorbs the joint Bennett residual for 0 \u2264 t \u2264 2/5"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteJointMeanVariance_balance_of_scale",
+          "summary": "Every declared scale 0 < s \u2264 2 produces an admissible zero-residual joint pair"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinScale_badSamples_mass_le_delta",
+          "summary": "One shared finite-scale event has product-law mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernstein_posteriorRisk_le_scale_selected_of_not_mem",
+          "summary": "Exact scale-form one-event bound Rhat + L/(sn) + 2L/n + (s/2)Vhat with post-sample posterior and scale selection"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "exists_dyadicScale_optimizer_bound",
+          "summary": "A concrete finite dyadic grid approximates the continuous scale optimizer by (5/4) * sqrt(2AV) + A/2"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinDyadic_posteriorRisk_le_sqrt_of_not_mem",
+          "summary": "Direct square-root-plus-linear posterior bound for a finite dyadic grid reaching the optimizer"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinGridDepth_coverage",
+          "summary": "The fixed depth clog 2 n automatically reaches every posterior's empirical-variance optimizer scale"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta",
+          "summary": "The canonical logarithmic-grid exceptional set has product-law mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FiniteEmpiricalBernsteinSqrt",
+          "name": "finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem",
+          "summary": "Closed-form one-KL empirical-Bernstein PAC-Bayes bound with explicit 5/4 square-root and 5/2 linear constants"
         },
         {
           "kind": "theorem",
