@@ -1,291 +1,100 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1180" role="img" aria-labelledby="title desc">
-  <title id="title">FormalSLT architecture flowchart</title>
-  <desc id="desc">Proof-dependency graph from ERM through concentration, capacity, and PAC-Bayes layers.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 880" role="img" aria-labelledby="title desc">
+  <title id="title">FormalSLT intended import direction</title>
+  <desc id="desc">Layered diagram of the intended dependency direction for FormalSLT modules. Foundations (Probability, LinearAlgebra, core definitions) feed the concentration layer (Concentration, Azuma), which feeds the subject theorem families (Rademacher, VC, Covering, Stability, PACBayes, AnytimeValid), which feed dependent data and interfaces (StochasticDynamics, OnlineToPAC, Statistics), which feed TestTimeMeta application compositions. This is a rule for new and refactored code, not a claim that every legacy import already follows it.</desc>
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-      <path d="M0,0 L10,4 L0,8 Z" fill="#334155"/>
-    </marker>
-    <marker id="arrow-strong" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-      <path d="M0,0 L10,4 L0,8 Z" fill="#0f172a"/>
+    <marker id="arrow-slate" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#475569"/>
     </marker>
     <style>
-      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif; }
-      .bg { fill: #fafafa; }
-      .cluster { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.4; rx: 14; }
-      .node-core { fill: #f1f5f9; stroke: #334155; stroke-width: 1.6; rx: 8; }
-      .node-conc { fill: #eef2ff; stroke: #4338ca; stroke-width: 1.6; rx: 8; }
-      .node-symm { fill: #ecfeff; stroke: #0e7490; stroke-width: 1.6; rx: 8; }
-      .node-cap  { fill: #fefce8; stroke: #a16207; stroke-width: 1.6; rx: 8; }
-      .node-pb   { fill: #f5f3ff; stroke: #6d28d9; stroke-width: 1.6; rx: 8; }
-      .node-headline { fill: #1e293b; stroke: #0f172a; stroke-width: 2; rx: 8; }
-      .title-text { fill: #0f172a; font-size: 26px; font-weight: 700; }
-      .subtitle { fill: #334155; font-size: 14px; }
-      .cluster-title { fill: #0f172a; font-size: 15px; font-weight: 700; letter-spacing: 0.02em; }
-      .node-label { fill: #0f172a; font-size: 14px; font-weight: 700; }
-      .node-label-light { fill: #ffffff; font-size: 14px; font-weight: 700; }
-      .node-sub { fill: #1e293b; font-size: 12px; }
-      .node-sub-light { fill: #e2e8f0; font-size: 12px; }
-      .edge { stroke: #334155; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
-      .edge-strong { stroke: #0f172a; stroke-width: 2.2; fill: none; marker-end: url(#arrow-strong); }
-      .footer { fill: #334155; font-size: 13px; }
+      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+      .bg { fill: #f8fafc; }
+      .band { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.2; }
+      .band-label { fill: #334155; font-size: 16px; font-weight: 700; letter-spacing: 0.05em; }
+      .node-blue { fill: #eff6ff; stroke: #1d4ed8; stroke-width: 1.8; }
+      .node-teal { fill: #ecfdf5; stroke: #0f766e; stroke-width: 1.8; }
+      .node-purple { fill: #f5f3ff; stroke: #6d28d9; stroke-width: 1.8; }
+      .node-amber { fill: #fffbeb; stroke: #b45309; stroke-width: 1.8; }
+      .title-text { fill: #0f172a; font-size: 28px; font-weight: 700; }
+      .subtitle { fill: #334155; font-size: 17px; }
+      .node-title { fill: #0f172a; font-size: 17px; font-weight: 700; }
+      .node-line { fill: #1e293b; font-size: 16px; }
+      .footer { fill: #334155; font-size: 16px; }
+      .edge { stroke: #475569; stroke-width: 2; fill: none; marker-end: url(#arrow-slate); }
     </style>
   </defs>
 
-  <rect width="1400" height="1180" class="bg"/>
-  <text x="700" y="42" text-anchor="middle" class="title-text">FormalSLT proof-dependency architecture</text>
-  <text x="700" y="66" text-anchor="middle" class="subtitle">88 modules, ~40,200 Lean lines, axioms: propext, Classical.choice, Quot.sound</text>
+  <rect width="1240" height="880" class="bg"/>
 
-  <!-- ============ ROW 1: four columns ============ -->
+  <text x="620" y="44" text-anchor="middle" class="title-text">FormalSLT intended import direction</text>
+  <text x="620" y="72" text-anchor="middle" class="subtitle">Where new and refactored modules belong, following ARCHITECTURE.md</text>
 
-  <!-- Column 1: Core (x=30, w=300) -->
-  <rect x="30" y="90" width="300" height="420" class="cluster"/>
-  <text x="50" y="118" class="cluster-title">Core definitions</text>
+  <!-- Band 1: foundations -->
+  <rect x="40" y="96" width="1160" height="118" rx="12" class="band"/>
+  <text x="58" y="122" class="band-label">FOUNDATIONS</text>
+  <rect x="90" y="134" width="330" height="64" rx="10" class="node-blue"/>
+  <text x="255" y="160" text-anchor="middle" class="node-title">Probability</text>
+  <text x="255" y="182" text-anchor="middle" class="node-line">expectations, product measures</text>
+  <rect x="452" y="134" width="330" height="64" rx="10" class="node-blue"/>
+  <text x="617" y="160" text-anchor="middle" class="node-title">LinearAlgebra</text>
+  <text x="617" y="182" text-anchor="middle" class="node-line">deterministic inequalities</text>
+  <rect x="814" y="134" width="330" height="64" rx="10" class="node-blue"/>
+  <text x="979" y="160" text-anchor="middle" class="node-title">Core definitions</text>
+  <text x="979" y="182" text-anchor="middle" class="node-line">Risk, ERM, UniformConvergence</text>
 
-  <rect x="60" y="134" width="240" height="54" class="node-core"/>
-  <text x="180" y="156" text-anchor="middle" class="node-label">Risk / ERM</text>
-  <text x="180" y="174" text-anchor="middle" class="node-sub">populationRisk, empiricalRisk, excessRisk</text>
+  <path d="M620 214 L620 244" class="edge"/>
 
-  <rect x="60" y="200" width="240" height="54" class="node-core"/>
-  <text x="180" y="222" text-anchor="middle" class="node-label">UniformConvergence</text>
-  <text x="180" y="240" text-anchor="middle" class="node-sub">uniformDeviation over hypothesis class</text>
+  <!-- Band 2: concentration -->
+  <rect x="40" y="248" width="1160" height="118" rx="12" class="band"/>
+  <text x="58" y="274" class="band-label">CONCENTRATION LAYER</text>
+  <rect x="271" y="286" width="330" height="64" rx="10" class="node-teal"/>
+  <text x="436" y="312" text-anchor="middle" class="node-title">Concentration</text>
+  <text x="436" y="334" text-anchor="middle" class="node-line">sharp McDiarmid, sub-Gamma</text>
+  <rect x="633" y="286" width="330" height="64" rx="10" class="node-teal"/>
+  <text x="798" y="312" text-anchor="middle" class="node-title">Azuma</text>
+  <text x="798" y="334" text-anchor="middle" class="node-line">exposure martingales, genGap tails</text>
 
-  <rect x="60" y="266" width="240" height="54" class="node-core"/>
-  <text x="180" y="288" text-anchor="middle" class="node-label">GhostSample</text>
-  <text x="180" y="306" text-anchor="middle" class="node-sub">genGap, piMeasure (product iid)</text>
+  <path d="M620 366 L620 396" class="edge"/>
 
-  <rect x="60" y="332" width="240" height="54" class="node-core"/>
-  <text x="180" y="354" text-anchor="middle" class="node-label">Probability utilities</text>
-  <text x="180" y="372" text-anchor="middle" class="node-sub">FiniteUnionBound, FiniteExpectation</text>
+  <!-- Band 3: subject families -->
+  <rect x="40" y="400" width="1160" height="118" rx="12" class="band"/>
+  <text x="58" y="426" class="band-label">SUBJECT THEOREM FAMILIES</text>
+  <rect x="64" y="438" width="176" height="64" rx="10" class="node-teal"/>
+  <text x="152" y="475" text-anchor="middle" class="node-title">Rademacher</text>
+  <rect x="252" y="438" width="176" height="64" rx="10" class="node-teal"/>
+  <text x="340" y="475" text-anchor="middle" class="node-title">VC</text>
+  <rect x="440" y="438" width="176" height="64" rx="10" class="node-teal"/>
+  <text x="528" y="475" text-anchor="middle" class="node-title">Covering</text>
+  <rect x="628" y="438" width="176" height="64" rx="10" class="node-teal"/>
+  <text x="716" y="475" text-anchor="middle" class="node-title">Stability</text>
+  <rect x="816" y="438" width="176" height="64" rx="10" class="node-teal"/>
+  <text x="904" y="475" text-anchor="middle" class="node-title">PACBayes</text>
+  <rect x="1004" y="438" width="176" height="64" rx="10" class="node-purple"/>
+  <text x="1092" y="475" text-anchor="middle" class="node-title">AnytimeValid</text>
 
-  <rect x="60" y="398" width="240" height="54" class="node-core"/>
-  <text x="180" y="420" text-anchor="middle" class="node-label">BernsteinMGF</text>
-  <text x="180" y="438" text-anchor="middle" class="node-sub">Bennett-Bernstein finite MGF</text>
+  <path d="M620 518 L620 548" class="edge"/>
 
-  <path d="M180 188 L180 200" class="edge"/>
-  <path d="M180 254 L180 266" class="edge"/>
-  <path d="M180 320 L180 332" class="edge"/>
+  <!-- Band 4: dependent data and interfaces -->
+  <rect x="40" y="552" width="1160" height="118" rx="12" class="band"/>
+  <text x="58" y="578" class="band-label">DEPENDENT DATA + INTERFACES</text>
+  <rect x="90" y="590" width="330" height="64" rx="10" class="node-teal"/>
+  <text x="255" y="616" text-anchor="middle" class="node-title">StochasticDynamics</text>
+  <text x="255" y="638" text-anchor="middle" class="node-line">Markov path laws, prequential risk</text>
+  <rect x="452" y="590" width="330" height="64" rx="10" class="node-teal"/>
+  <text x="617" y="616" text-anchor="middle" class="node-title">OnlineToPAC</text>
+  <text x="617" y="638" text-anchor="middle" class="node-line">regret to statistical risk</text>
+  <rect x="814" y="590" width="330" height="64" rx="10" class="node-teal"/>
+  <text x="979" y="616" text-anchor="middle" class="node-title">Statistics</text>
+  <text x="979" y="638" text-anchor="middle" class="node-line">estimation and model interfaces</text>
 
-  <!-- Column 2: Concentration (x=360, w=340) -->
-  <rect x="360" y="90" width="340" height="540" class="cluster"/>
-  <text x="380" y="118" class="cluster-title">Concentration backbone</text>
+  <path d="M620 670 L620 700" class="edge"/>
 
-  <rect x="390" y="134" width="280" height="54" class="node-conc"/>
-  <text x="530" y="156" text-anchor="middle" class="node-label">Azuma.ExposureMartingale</text>
-  <text x="530" y="174" text-anchor="middle" class="node-sub">Doob exposure, conditional range</text>
+  <!-- Band 5: compositions -->
+  <rect x="40" y="704" width="1160" height="96" rx="12" class="band"/>
+  <text x="58" y="730" class="band-label">APPLICATION COMPOSITIONS</text>
+  <rect x="452" y="722" width="330" height="64" rx="10" class="node-amber"/>
+  <text x="617" y="748" text-anchor="middle" class="node-title">TestTimeMeta</text>
+  <text x="617" y="770" text-anchor="middle" class="node-line">compositions of established bounds</text>
 
-  <rect x="390" y="200" width="280" height="54" class="node-conc"/>
-  <text x="530" y="222" text-anchor="middle" class="node-label">Azuma.HasBoundedDifferences</text>
-  <text x="530" y="240" text-anchor="middle" class="node-sub">|f S - f (update S k z')| &lt;= c_k</text>
-
-  <rect x="390" y="266" width="280" height="54" class="node-conc"/>
-  <text x="530" y="288" text-anchor="middle" class="node-label">Azuma.ExposureIncrementCondMGF</text>
-  <text x="530" y="306" text-anchor="middle" class="node-sub">conditional sub-Gaussian proxy (c_k/2)^2</text>
-
-  <rect x="390" y="332" width="280" height="54" class="node-conc"/>
-  <text x="530" y="354" text-anchor="middle" class="node-label">Mathlib SubGaussian engine</text>
-  <text x="530" y="372" text-anchor="middle" class="node-sub">measure_sum_ge_le_of_hasCondSubgaussianMGF</text>
-
-  <rect x="390" y="404" width="280" height="62" class="node-headline"/>
-  <text x="530" y="428" text-anchor="middle" class="node-label-light">Concentration.SharpMcDiarmid</text>
-  <text x="530" y="448" text-anchor="middle" class="node-sub-light">P(|f - E f| &gt;= e) &lt;= 2 exp(-2 e^2 / sum c_k^2)</text>
-
-  <rect x="390" y="482" width="280" height="54" class="node-conc"/>
-  <text x="530" y="504" text-anchor="middle" class="node-label">Azuma.GenGapTail</text>
-  <text x="530" y="522" text-anchor="middle" class="node-sub">genGap_tail_bound_sharp (Azuma + sharp)</text>
-
-  <rect x="390" y="548" width="280" height="50" class="node-conc"/>
-  <text x="530" y="578" text-anchor="middle" class="node-label">Concentration.SubGamma.*</text>
-
-  <path d="M530 188 L530 200" class="edge"/>
-  <path d="M530 254 L530 266" class="edge"/>
-  <path d="M530 320 L530 332" class="edge"/>
-  <path d="M530 386 L530 404" class="edge-strong"/>
-  <path d="M530 466 L530 482" class="edge"/>
-  <path d="M530 536 L530 548" class="edge"/>
-
-  <!-- Column 3: Symm + Capacity (x=730, w=320) -->
-  <rect x="730" y="90" width="320" height="540" class="cluster"/>
-  <text x="750" y="118" class="cluster-title">Symmetrization + capacity</text>
-
-  <rect x="760" y="134" width="260" height="54" class="node-symm"/>
-  <text x="890" y="156" text-anchor="middle" class="node-label">Rademacher.FiniteSample</text>
-  <text x="890" y="174" text-anchor="middle" class="node-sub">empiricalRademacherComplexity</text>
-
-  <rect x="760" y="200" width="260" height="54" class="node-symm"/>
-  <text x="890" y="222" text-anchor="middle" class="node-label">Rademacher.Symmetrization</text>
-  <text x="890" y="240" text-anchor="middle" class="node-sub">E[genGap] &lt;= 2 E[Rad]</text>
-
-  <rect x="760" y="266" width="260" height="54" class="node-symm"/>
-  <text x="890" y="288" text-anchor="middle" class="node-label">Rademacher.Massart</text>
-  <text x="890" y="306" text-anchor="middle" class="node-sub">B sqrt(2 log card(H) / n)</text>
-
-  <rect x="760" y="332" width="260" height="54" class="node-symm"/>
-  <text x="890" y="354" text-anchor="middle" class="node-label">Rademacher.HighProbability</text>
-  <text x="890" y="372" text-anchor="middle" class="node-sub">expectation + concentration</text>
-
-  <rect x="760" y="404" width="260" height="54" class="node-cap"/>
-  <text x="890" y="426" text-anchor="middle" class="node-label">VC.SauerShelah</text>
-  <text x="890" y="444" text-anchor="middle" class="node-sub">Sum C(n,k) &lt;= (e n / d)^d</text>
-
-  <rect x="760" y="470" width="260" height="54" class="node-cap"/>
-  <text x="890" y="492" text-anchor="middle" class="node-label">VC.BinaryVCBridge</text>
-  <text x="890" y="510" text-anchor="middle" class="node-sub">0-1 traces map to loss patterns</text>
-
-  <rect x="760" y="536" width="260" height="54" class="node-cap"/>
-  <text x="890" y="558" text-anchor="middle" class="node-label">VC.SampleComplexity</text>
-  <text x="890" y="576" text-anchor="middle" class="node-sub">vc_erm_sample_complexity</text>
-
-  <path d="M890 188 L890 200" class="edge"/>
-  <path d="M890 254 L890 266" class="edge"/>
-  <path d="M890 320 L890 332" class="edge"/>
-  <path d="M890 386 L890 404" class="edge"/>
-  <path d="M890 458 L890 470" class="edge"/>
-  <path d="M890 524 L890 536" class="edge"/>
-
-  <!-- Column 4: Contraction + Chaining (x=1080, w=290) -->
-  <rect x="1080" y="90" width="290" height="540" class="cluster"/>
-  <text x="1100" y="118" class="cluster-title">Contraction + chaining</text>
-
-  <rect x="1100" y="134" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="154" text-anchor="middle" class="node-label">Rademacher.Contraction</text>
-  <text x="1225" y="172" text-anchor="middle" class="node-sub">Rad(phi o F) &lt;= L Rad(F)</text>
-
-  <rect x="1100" y="196" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="216" text-anchor="middle" class="node-label">LinearPredictor</text>
-  <text x="1225" y="234" text-anchor="middle" class="node-sub">Rad &lt;= R/n sqrt(sum ||x||^2)</text>
-
-  <rect x="1100" y="258" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="278" text-anchor="middle" class="node-label">Covering.Rademacher</text>
-  <text x="1225" y="296" text-anchor="middle" class="node-sub">eps-net peeling</text>
-
-  <rect x="1100" y="320" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="340" text-anchor="middle" class="node-label">FiniteSubGaussianChaining</text>
-  <text x="1225" y="358" text-anchor="middle" class="node-sub">finite max entropy budget</text>
-
-  <rect x="1100" y="382" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="402" text-anchor="middle" class="node-label">DudleyChaining</text>
-  <text x="1225" y="420" text-anchor="middle" class="node-sub">two-scale finite peeling</text>
-
-  <rect x="1100" y="444" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="464" text-anchor="middle" class="node-label">TotalBoundedDudley</text>
-  <text x="1225" y="482" text-anchor="middle" class="node-sub">dyadic boundary adapters</text>
-
-  <rect x="1100" y="506" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="526" text-anchor="middle" class="node-label">UnitIntervalDudley</text>
-  <text x="1225" y="544" text-anchor="middle" class="node-sub">[0,1] worked instance</text>
-
-  <rect x="1100" y="568" width="250" height="50" class="node-symm"/>
-  <text x="1225" y="588" text-anchor="middle" class="node-label">ContinuousDudley</text>
-  <text x="1225" y="606" text-anchor="middle" class="node-sub">measure-theoretic limit</text>
-
-  <path d="M1225 184 L1225 196" class="edge"/>
-  <path d="M1225 246 L1225 258" class="edge"/>
-  <path d="M1225 308 L1225 320" class="edge"/>
-  <path d="M1225 370 L1225 382" class="edge"/>
-  <path d="M1225 432 L1225 444" class="edge"/>
-  <path d="M1225 494 L1225 506" class="edge"/>
-  <path d="M1225 556 L1225 568" class="edge"/>
-
-  <!-- ============ Cross-cluster edges (clean, only essential ones) ============ -->
-  <!-- Core GhostSample (180, 320) -> Concentration top (530, 134) -->
-  <path d="M300 293 L390 161" class="edge"/>
-  <!-- Core BernsteinMGF (180, 425) -> Concentration MGF (390, 359) -->
-  <path d="M300 425 L390 359" class="edge"/>
-  <!-- Concentration sharp McDiarmid (670, 435) -> Symm HighProb (760, 359) -->
-  <path d="M670 435 L760 359" class="edge"/>
-  <!-- Symm FiniteSample (1020, 161) -> Contraction Contraction (1100, 159) -->
-  <path d="M1020 161 L1100 159" class="edge"/>
-  <!-- Symm Massart (1020, 293) -> Contraction Covering (1100, 283) -->
-  <path d="M1020 293 L1100 283" class="edge"/>
-
-  <!-- ============ ROW 2: PAC-Bayes + Stability + Headlines ============ -->
-
-  <!-- PAC-Bayes (x=360, w=520) -->
-  <rect x="360" y="660" width="520" height="320" class="cluster"/>
-  <text x="380" y="688" class="cluster-title">PAC-Bayes track (tight change-of-measure)</text>
-
-  <rect x="390" y="704" width="230" height="50" class="node-pb"/>
-  <text x="505" y="724" text-anchor="middle" class="node-label">PACBayesKL</text>
-  <text x="505" y="742" text-anchor="middle" class="node-sub">KL, Gibbs, Donsker-Varadhan</text>
-
-  <rect x="640" y="704" width="230" height="50" class="node-pb"/>
-  <text x="755" y="724" text-anchor="middle" class="node-label">PACBayesFiniteProductMGF</text>
-  <text x="755" y="742" text-anchor="middle" class="node-sub">iid product MGF bridge</text>
-
-  <rect x="390" y="768" width="230" height="50" class="node-pb"/>
-  <text x="505" y="788" text-anchor="middle" class="node-label">PACBayesBoundedLoss</text>
-  <text x="505" y="806" text-anchor="middle" class="node-sub">finiteCatoni_badEventMass_le_delta</text>
-
-  <rect x="640" y="768" width="230" height="50" class="node-pb"/>
-  <text x="755" y="788" text-anchor="middle" class="node-label">PACBayesMcAllester</text>
-  <text x="755" y="806" text-anchor="middle" class="node-sub">pacbayes_changeOfMeasure</text>
-
-  <rect x="390" y="832" width="480" height="56" class="node-headline"/>
-  <text x="630" y="856" text-anchor="middle" class="node-label-light">finiteMcAllesterGridPeeling_badEventMass_le_delta</text>
-  <text x="630" y="876" text-anchor="middle" class="node-sub-light">posterior-dependent penalty, finite-grid lambda-peeling</text>
-
-  <rect x="390" y="902" width="480" height="54" class="node-pb"/>
-  <text x="630" y="924" text-anchor="middle" class="node-label">pac_bayes_generalization (closed payoff)</text>
-  <text x="630" y="942" text-anchor="middle" class="node-sub">finite high-confidence good event</text>
-
-  <path d="M505 754 L505 768" class="edge"/>
-  <path d="M755 754 L755 768" class="edge"/>
-  <path d="M630 818 L630 832" class="edge-strong"/>
-  <path d="M630 888 L630 902" class="edge"/>
-
-  <!-- Stability + bridges (x=910, w=460) -->
-  <rect x="910" y="660" width="460" height="320" class="cluster"/>
-  <text x="930" y="688" class="cluster-title">Stability + bridges</text>
-
-  <rect x="940" y="704" width="400" height="54" class="node-conc"/>
-  <text x="1140" y="726" text-anchor="middle" class="node-label">AlgorithmicStability</text>
-  <text x="1140" y="744" text-anchor="middle" class="node-sub">bounded-differences scaffold, expected gap</text>
-
-  <rect x="940" y="772" width="400" height="54" class="node-conc"/>
-  <text x="1140" y="794" text-anchor="middle" class="node-label">Stability.BousquetElisseeff</text>
-  <text x="1140" y="812" text-anchor="middle" class="node-sub">measure-theoretic iid stability + Azuma</text>
-
-  <rect x="940" y="840" width="400" height="54" class="node-symm"/>
-  <text x="1140" y="862" text-anchor="middle" class="node-label">Rademacher.Localized</text>
-  <text x="1140" y="880" text-anchor="middle" class="node-sub">finite Bernstein localization</text>
-
-  <rect x="940" y="908" width="400" height="54" class="node-cap"/>
-  <text x="1140" y="930" text-anchor="middle" class="node-label">VC.PACBridge</text>
-  <text x="1140" y="948" text-anchor="middle" class="node-sub">binary class trace</text>
-
-  <!-- Headline theorems (x=30, w=300) -->
-  <rect x="30" y="660" width="300" height="320" class="cluster"/>
-  <text x="50" y="688" class="cluster-title">Headline theorems (verified)</text>
-
-  <rect x="60" y="704" width="240" height="44" class="node-headline"/>
-  <text x="180" y="731" text-anchor="middle" class="node-label-light">sharp McDiarmid (two-sided)</text>
-
-  <rect x="60" y="756" width="240" height="44" class="node-headline"/>
-  <text x="180" y="783" text-anchor="middle" class="node-label-light">vc_erm_sample_complexity</text>
-
-  <rect x="60" y="808" width="240" height="44" class="node-headline"/>
-  <text x="180" y="835" text-anchor="middle" class="node-label-light">finiteCatoni bad-event mass</text>
-
-  <rect x="60" y="860" width="240" height="44" class="node-headline"/>
-  <text x="180" y="887" text-anchor="middle" class="node-label-light">McAllester grid peeling</text>
-
-  <rect x="60" y="912" width="240" height="44" class="node-headline"/>
-  <text x="180" y="939" text-anchor="middle" class="node-label-light">Massart finite-class</text>
-
-  <!-- Cross-row connectors -->
-  <!-- Concentration GenGapTail (530, 536) -> PAC-Bayes top -->
-  <path d="M530 598 C530 640, 530 660, 530 704" class="edge"/>
-  <!-- Concentration SharpMcDiarmid (670, 435) -> Stability (940, 731) -->
-  <path d="M670 466 C800 600, 850 650, 940 731" class="edge"/>
-  <!-- Symm VC.SampleComplexity (1020, 563) -> Stability VC.PACBridge -->
-  <path d="M1020 563 C1030 700, 1100 850, 1140 908" class="edge"/>
-
-  <!-- ============ Footer ============ -->
-  <text x="30" y="1020" class="cluster-title">Reading the diagram</text>
-  <text x="30" y="1042" class="footer">Dark boxes are the headline theorems whose axiom transcript appears in the README.</text>
-  <text x="30" y="1062" class="footer">Concentration backbone (indigo) feeds genGap tails into Symmetrization+Capacity (cyan/amber) and PAC-Bayes (violet).</text>
-  <text x="30" y="1082" class="footer">Edges show import-or-use dependency on the corresponding Mathlib API or FormalSLT lemma.</text>
-  <text x="30" y="1102" class="footer">Finite/discrete throughout; continuous Dudley integral and continuous-posterior PAC-Bayes remain open targets.</text>
-  <text x="30" y="1130" class="footer">Cluster palette: slate = core, indigo = concentration, cyan = symmetrization/chaining, amber = VC capacity, violet = PAC-Bayes.</text>
-  <text x="30" y="1150" class="footer">Source of truth: theorem-map.md and proof-frontier.md inside /docs.</text>
+  <text x="40" y="836" class="footer">Intended direction for new and refactored code, not a claim that every legacy import already follows it.</text>
+  <text x="40" y="862" class="footer">Mathematically necessary cross-subject imports stay narrow and are documented in module docstrings.</text>
 </svg>

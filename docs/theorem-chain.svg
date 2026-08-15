@@ -1,151 +1,176 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 940" role="img" aria-labelledby="title desc">
-  <title id="title">FormalSLT theorem chain</title>
-  <desc id="desc">A dependency diagram for the finite statistical learning theory spine in Lean.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 790" role="img" aria-labelledby="title desc">
+  <title id="title">FormalSLT proof landscape</title>
+  <desc id="desc">Theorem-family map of FormalSLT. A shared foundation band (core learning definitions, probability foundations, concentration primitives, martingale infrastructure) feeds five machine-checked lanes: finite learning, metric entropy, fixed-sample PAC-Bayes, anytime-valid inference, and dependent plus compositional results. Each lane ends in checked endpoint surfaces. Conceptual map, not a literal import graph; exact assumptions are recorded in theorem signatures and checkers.</desc>
   <defs>
-    <marker id="arrow-blue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-      <path d="M0,0 L10,4 L0,8 Z" fill="#1d4ed8"/>
-    </marker>
-    <marker id="arrow-green" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
-      <path d="M0,0 L10,4 L0,8 Z" fill="#047857"/>
+    <marker id="arrow-slate" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#475569"/>
     </marker>
     <style>
-      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif; }
+      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
       .bg { fill: #f8fafc; }
-      .panel { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1.5; rx: 14; }
-      .node { fill: #eef6ff; stroke: #1d4ed8; stroke-width: 1.6; rx: 10; }
-      .node-green { fill: #ecfdf5; stroke: #047857; stroke-width: 1.6; rx: 10; }
-      .node-gold { fill: #fffbeb; stroke: #b45309; stroke-width: 1.6; rx: 10; }
-      .title { fill: #0f172a; font-size: 24px; font-weight: 700; }
-      .subtitle { fill: #334155; font-size: 14px; }
-      .section { fill: #0f172a; font-size: 15px; font-weight: 700; letter-spacing: 0.02em; }
-      .label { fill: #0f172a; font-size: 14px; font-weight: 700; }
-      .small { fill: #1e293b; font-size: 12px; }
-      .tiny { fill: #334155; font-size: 12px; }
-      .arrow-blue { stroke: #1d4ed8; stroke-width: 2; fill: none; marker-end: url(#arrow-blue); }
-      .arrow-green { stroke: #047857; stroke-width: 2; fill: none; marker-end: url(#arrow-green); }
+      .band { fill: #eff6ff; stroke: #1d4ed8; stroke-width: 1.6; }
+      .lane-panel { fill: #ffffff; stroke: #e2e8f0; stroke-width: 1.2; }
+      .node-blue { fill: #ffffff; stroke: #1d4ed8; stroke-width: 1.8; }
+      .node-teal { fill: #ecfdf5; stroke: #0f766e; stroke-width: 1.8; }
+      .node-purple { fill: #f5f3ff; stroke: #6d28d9; stroke-width: 1.8; }
+      .node-amber { fill: #fffbeb; stroke: #b45309; stroke-width: 1.8; }
+      .title-text { fill: #0f172a; font-size: 30px; font-weight: 700; }
+      .subtitle { fill: #334155; font-size: 17px; }
+      .band-label { fill: #1e3a8a; font-size: 16px; font-weight: 700; letter-spacing: 0.06em; }
+      .lane-head { fill: #334155; font-size: 16px; font-weight: 700; letter-spacing: 0.05em; }
+      .node-title { fill: #0f172a; font-size: 17px; font-weight: 700; }
+      .node-line { fill: #1e293b; font-size: 16px; }
+      .legend-text { fill: #334155; font-size: 16px; }
+      .caption { fill: #334155; font-size: 16px; font-style: italic; }
+      .edge { stroke: #475569; stroke-width: 2; fill: none; marker-end: url(#arrow-slate); }
     </style>
   </defs>
 
-  <rect width="1100" height="940" class="bg"/>
+  <rect width="1440" height="790" class="bg"/>
 
-  <text x="550" y="42" text-anchor="middle" class="title">FormalSLT theorem chain</text>
-  <text x="550" y="68" text-anchor="middle" class="subtitle">88 Lean modules, axioms: propext, Classical.choice, Quot.sound, zero sorry, zero admit</text>
+  <text x="720" y="46" text-anchor="middle" class="title-text">FormalSLT proof landscape</text>
+  <text x="720" y="76" text-anchor="middle" class="subtitle">Machine-checked statistical learning, sequential inference, and statistical interfaces in Lean 4</text>
 
-  <rect x="38" y="96" width="675" height="630" class="panel"/>
-  <text x="70" y="128" class="section">Core finite Rademacher and VC spine</text>
+  <!-- Shared foundation band -->
+  <rect x="40" y="100" width="1360" height="132" rx="14" class="band"/>
+  <text x="58" y="127" class="band-label">SHARED FOUNDATIONS</text>
 
-  <rect x="86" y="156" width="230" height="60" class="node"/>
-  <text x="201" y="181" text-anchor="middle" class="label">Risk / ERM / GenGap</text>
-  <text x="201" y="200" text-anchor="middle" class="small">finite samples and product measures</text>
+  <rect x="55" y="140" width="322" height="76" rx="10" class="node-blue"/>
+  <text x="216" y="166" text-anchor="middle" class="node-title">Core learning definitions</text>
+  <text x="216" y="190" text-anchor="middle" class="node-line">Risk &#183; ERM &#183; GhostSample</text>
 
-  <rect x="430" y="156" width="230" height="60" class="node"/>
-  <text x="545" y="181" text-anchor="middle" class="label">Empirical Rademacher</text>
-  <text x="545" y="200" text-anchor="middle" class="small">Rad(H, S) over finite classes</text>
+  <rect x="391" y="140" width="322" height="76" rx="10" class="node-blue"/>
+  <text x="552" y="166" text-anchor="middle" class="node-title">Probability foundations</text>
+  <text x="552" y="190" text-anchor="middle" class="node-line">finite expectations, product measures</text>
 
-  <path d="M316 186 L430 186" class="arrow-blue"/>
+  <rect x="727" y="140" width="322" height="76" rx="10" class="node-blue"/>
+  <text x="888" y="166" text-anchor="middle" class="node-title">Concentration primitives</text>
+  <text x="888" y="190" text-anchor="middle" class="node-line">linear algebra, Bennett-Bernstein MGFs</text>
 
-  <rect x="258" y="250" width="230" height="60" class="node"/>
-  <text x="373" y="275" text-anchor="middle" class="label">Symmetrization</text>
-  <text x="373" y="294" text-anchor="middle" class="small">E[genGap] &lt;= 2 E[Rad]</text>
+  <rect x="1063" y="140" width="322" height="76" rx="10" class="node-blue"/>
+  <text x="1224" y="166" text-anchor="middle" class="node-title">Martingale infrastructure</text>
+  <text x="1224" y="190" text-anchor="middle" class="node-line">conditional expectation, supermartingales</text>
 
-  <path d="M545 216 C545 234, 488 248, 488 250" class="arrow-blue"/>
-  <path d="M201 216 C201 234, 258 248, 258 250" class="arrow-blue"/>
+  <!-- Arrows from foundations into the five lanes -->
+  <path d="M171 236 L171 262" class="edge"/>
+  <path d="M445 236 L445 262" class="edge"/>
+  <path d="M719 236 L719 262" class="edge"/>
+  <path d="M993 236 L993 262" class="edge"/>
+  <path d="M1267 236 L1267 262" class="edge"/>
 
-  <rect x="86" y="344" width="230" height="60" class="node"/>
-  <text x="201" y="369" text-anchor="middle" class="label">Sharp McDiarmid genGap tail</text>
-  <text x="201" y="388" text-anchor="middle" class="small">2 exp(-2 eps^2 / sum c_k^2)</text>
+  <!-- Lane panels -->
+  <rect x="40" y="268" width="262" height="398" rx="12" class="lane-panel"/>
+  <rect x="314" y="268" width="262" height="398" rx="12" class="lane-panel"/>
+  <rect x="588" y="268" width="262" height="398" rx="12" class="lane-panel"/>
+  <rect x="862" y="268" width="262" height="398" rx="12" class="lane-panel"/>
+  <rect x="1136" y="268" width="262" height="398" rx="12" class="lane-panel"/>
 
-  <rect x="430" y="344" width="230" height="60" class="node"/>
-  <text x="545" y="369" text-anchor="middle" class="label">Massart finite-class</text>
-  <text x="545" y="388" text-anchor="middle" class="small">B sqrt(2 log card(H) / n)</text>
+  <text x="171" y="296" text-anchor="middle" class="lane-head">FINITE LEARNING</text>
+  <text x="445" y="296" text-anchor="middle" class="lane-head">METRIC ENTROPY</text>
+  <text x="719" y="296" text-anchor="middle" class="lane-head">FIXED-SAMPLE PAC-BAYES</text>
+  <text x="993" y="296" text-anchor="middle" class="lane-head">ANYTIME-VALID</text>
+  <text x="1267" y="296" text-anchor="middle" class="lane-head">DEPENDENT + COMPOSED</text>
 
-  <path d="M317 310 C260 322, 226 332, 201 344" class="arrow-blue"/>
-  <path d="M429 310 C485 322, 520 332, 545 344" class="arrow-blue"/>
+  <!-- Lane 1: finite learning -->
+  <rect x="48" y="310" width="246" height="150" rx="10" class="node-teal"/>
+  <text x="171" y="336" text-anchor="middle" class="node-title">Symmetrization + capacity</text>
+  <text x="171" y="360" text-anchor="middle" class="node-line">Rademacher complexity,</text>
+  <text x="171" y="381" text-anchor="middle" class="node-line">ghost-sample symmetrization,</text>
+  <text x="171" y="402" text-anchor="middle" class="node-line">sharp heterogeneous McDiarmid,</text>
+  <text x="171" y="423" text-anchor="middle" class="node-line">finite-class + VC bounds,</text>
+  <text x="171" y="444" text-anchor="middle" class="node-line">algorithmic stability</text>
 
-  <rect x="258" y="438" width="230" height="60" class="node"/>
-  <text x="373" y="463" text-anchor="middle" class="label">High-probability Rademacher</text>
-  <text x="373" y="482" text-anchor="middle" class="small">expectation + concentration</text>
+  <path d="M171 464 L171 490" class="edge"/>
 
-  <path d="M201 404 C224 428, 254 442, 258 464" class="arrow-blue"/>
-  <path d="M545 404 C522 428, 492 442, 488 464" class="arrow-blue"/>
+  <rect x="48" y="494" width="246" height="145" rx="10" class="node-amber"/>
+  <text x="171" y="519" text-anchor="middle" class="node-title">Generalization endpoints</text>
+  <text x="171" y="543" text-anchor="middle" class="node-line">generalization and</text>
+  <text x="171" y="564" text-anchor="middle" class="node-line">excess-risk bounds</text>
+  <text x="171" y="585" text-anchor="middle" class="node-line">with explicit constants</text>
 
-  <rect x="86" y="532" width="230" height="60" class="node-gold"/>
-  <text x="201" y="557" text-anchor="middle" class="label">Sauer-Shelah</text>
-  <text x="201" y="576" text-anchor="middle" class="small">Sum C(n,k) &lt;= (e n / d)^d</text>
+  <!-- Lane 2: metric entropy -->
+  <rect x="322" y="310" width="246" height="150" rx="10" class="node-teal"/>
+  <text x="445" y="336" text-anchor="middle" class="node-title">Nets + finite chaining</text>
+  <text x="445" y="360" text-anchor="middle" class="node-line">finite nets, sub-Gaussian</text>
+  <text x="445" y="381" text-anchor="middle" class="node-line">maxima, multiscale chaining,</text>
+  <text x="445" y="402" text-anchor="middle" class="node-line">entropy sums, total-bounded</text>
+  <text x="445" y="423" text-anchor="middle" class="node-line">and separable-terminal</text>
+  <text x="445" y="444" text-anchor="middle" class="node-line">boundary adapters</text>
 
-  <rect x="430" y="532" width="230" height="60" class="node-gold"/>
-  <text x="545" y="557" text-anchor="middle" class="label">Binary VC bridge</text>
-  <text x="545" y="576" text-anchor="middle" class="small">0-1 traces map to loss patterns</text>
+  <path d="M445 464 L445 490" class="edge"/>
 
-  <rect x="258" y="626" width="230" height="60" class="node-gold"/>
-  <text x="373" y="651" text-anchor="middle" class="label">VC ERM excess-risk tail</text>
-  <text x="373" y="670" text-anchor="middle" class="small">finite VC-style sample complexity</text>
+  <rect x="322" y="494" width="246" height="145" rx="10" class="node-amber"/>
+  <text x="445" y="519" text-anchor="middle" class="node-title">Entropy endpoints</text>
+  <text x="445" y="543" text-anchor="middle" class="node-line">checked entropy-integral</text>
+  <text x="445" y="564" text-anchor="middle" class="node-line">endpoints (stated hypotheses);</text>
+  <text x="445" y="585" text-anchor="middle" class="node-line">metric-entropy generalization,</text>
+  <text x="445" y="606" text-anchor="middle" class="node-line">mean + high probability</text>
 
-  <path d="M373 498 L373 626" class="arrow-blue"/>
-  <path d="M201 592 C232 612, 253 624, 258 650" class="arrow-blue"/>
-  <path d="M545 592 C514 612, 493 624, 488 650" class="arrow-blue"/>
+  <!-- Lane 3: fixed-sample PAC-Bayes -->
+  <rect x="596" y="310" width="246" height="150" rx="10" class="node-teal"/>
+  <text x="719" y="336" text-anchor="middle" class="node-title">Change of measure + MGFs</text>
+  <text x="719" y="360" text-anchor="middle" class="node-line">KL / Donsker-Varadhan,</text>
+  <text x="719" y="381" text-anchor="middle" class="node-line">Catoni, McAllester, Bernstein,</text>
+  <text x="719" y="402" text-anchor="middle" class="node-line">Bessel empirical variance,</text>
+  <text x="719" y="423" text-anchor="middle" class="node-line">finite exponential tilts,</text>
+  <text x="719" y="444" text-anchor="middle" class="node-line">joint mean/variance MGF</text>
 
-  <rect x="745" y="96" width="317" height="750" class="panel"/>
-  <text x="775" y="128" class="section">Verified extensions</text>
+  <path d="M719 464 L719 490" class="edge"/>
 
-  <rect x="785" y="156" width="237" height="60" class="node-green"/>
-  <text x="904" y="181" text-anchor="middle" class="label">Finite scalar contraction</text>
-  <text x="904" y="200" text-anchor="middle" class="small">Rad(phi o F) &lt;= L Rad(F)</text>
+  <rect x="596" y="494" width="246" height="145" rx="10" class="node-amber"/>
+  <text x="719" y="519" text-anchor="middle" class="node-title">Catalog endpoints</text>
+  <text x="719" y="543" text-anchor="middle" class="node-line">one-event weighted finite</text>
+  <text x="719" y="564" text-anchor="middle" class="node-line">(t, &#951;) catalogs, one KL term;</text>
+  <text x="719" y="585" text-anchor="middle" class="node-line">balanced zero-residual and</text>
+  <text x="719" y="606" text-anchor="middle" class="node-line">exact &#958; residual endpoints</text>
 
-  <rect x="785" y="250" width="237" height="60" class="node-green"/>
-  <text x="904" y="275" text-anchor="middle" class="label">Linear predictors</text>
-  <text x="904" y="294" text-anchor="middle" class="small">Rad &lt;= R/n sqrt(sum ||x_i||^2)</text>
+  <!-- Lane 4: anytime-valid inference -->
+  <rect x="870" y="310" width="246" height="150" rx="10" class="node-purple"/>
+  <text x="993" y="336" text-anchor="middle" class="node-title">e-processes + sequences</text>
+  <text x="993" y="360" text-anchor="middle" class="node-line">conditional MGF,</text>
+  <text x="993" y="381" text-anchor="middle" class="node-line">nonnegative supermartingales,</text>
+  <text x="993" y="402" text-anchor="middle" class="node-line">e-processes, Ville, mixture,</text>
+  <text x="993" y="423" text-anchor="middle" class="node-line">betting + empirical-Bernstein</text>
+  <text x="993" y="444" text-anchor="middle" class="node-line">confidence sequences</text>
 
-  <rect x="785" y="344" width="237" height="60" class="node-green"/>
-  <text x="904" y="369" text-anchor="middle" class="label">Finite covering</text>
-  <text x="904" y="388" text-anchor="middle" class="small">eps-net peeling, two-scale chaining</text>
+  <path d="M993 464 L993 490" class="edge"/>
 
-  <rect x="785" y="438" width="237" height="60" class="node-green"/>
-  <text x="904" y="463" text-anchor="middle" class="label">Finite sub-Gaussian max</text>
-  <text x="904" y="482" text-anchor="middle" class="small">MGF control implies E sup bound</text>
+  <rect x="870" y="494" width="246" height="145" rx="10" class="node-amber"/>
+  <text x="993" y="519" text-anchor="middle" class="node-title">Time-uniform endpoints</text>
+  <text x="993" y="543" text-anchor="middle" class="node-line">score-process PAC-Bayes</text>
+  <text x="993" y="564" text-anchor="middle" class="node-line">compiler; finite-class and</text>
+  <text x="993" y="585" text-anchor="middle" class="node-line">Gaussian time-uniform</text>
+  <text x="993" y="606" text-anchor="middle" class="node-line">PAC-Bayes endpoints</text>
 
-  <rect x="785" y="532" width="237" height="60" class="node-green"/>
-  <text x="904" y="557" text-anchor="middle" class="label">Finite chaining</text>
-  <text x="904" y="576" text-anchor="middle" class="small">projection-pair entropy sums</text>
+  <!-- Lane 5: dependent and compositional -->
+  <rect x="1144" y="310" width="246" height="150" rx="10" class="node-teal"/>
+  <text x="1267" y="336" text-anchor="middle" class="node-title">Markov path laws</text>
+  <text x="1267" y="360" text-anchor="middle" class="node-line">finite transition kernels,</text>
+  <text x="1267" y="381" text-anchor="middle" class="node-line">Ionescu-Tulcea path laws,</text>
+  <text x="1267" y="402" text-anchor="middle" class="node-line">Markov conditional-risk</text>
+  <text x="1267" y="423" text-anchor="middle" class="node-line">identities</text>
 
-  <rect x="785" y="626" width="237" height="60" class="node-green"/>
-  <text x="904" y="651" text-anchor="middle" class="label">Finite Dudley budgets</text>
-  <text x="904" y="670" text-anchor="middle" class="small">dyadic finite entropy wrappers</text>
+  <path d="M1267 464 L1267 490" class="edge"/>
 
-  <rect x="785" y="720" width="237" height="60" class="node-green"/>
-  <text x="904" y="745" text-anchor="middle" class="label">PAC-Bayes finite confidence</text>
-  <text x="904" y="764" text-anchor="middle" class="small">Catoni, McAllester, Bernstein</text>
+  <rect x="1144" y="494" width="246" height="145" rx="10" class="node-amber"/>
+  <text x="1267" y="519" text-anchor="middle" class="node-title">Composition endpoints</text>
+  <text x="1267" y="543" text-anchor="middle" class="node-line">prequential + Markov</text>
+  <text x="1267" y="564" text-anchor="middle" class="node-line">PAC-Bayes certificates;</text>
+  <text x="1267" y="585" text-anchor="middle" class="node-line">online-to-PAC; statistics</text>
+  <text x="1267" y="606" text-anchor="middle" class="node-line">interfaces; TestTimeMeta</text>
 
-  <path d="M660 186 L785 186" class="arrow-green"/>
-  <path d="M660 186 C715 210, 745 250, 785 274" class="arrow-green"/>
-  <path d="M660 374 L785 374" class="arrow-green"/>
-  <path d="M904 404 L904 438" class="arrow-green"/>
-  <path d="M904 498 L904 532" class="arrow-green"/>
-  <path d="M904 592 L904 626" class="arrow-green"/>
-  <path d="M904 686 L904 720" class="arrow-green"/>
+  <!-- Legend -->
+  <rect x="40" y="690" width="18" height="18" rx="4" class="node-blue"/>
+  <text x="66" y="705" class="legend-text">shared foundations</text>
+  <rect x="240" y="690" width="18" height="18" rx="4" class="node-teal"/>
+  <text x="266" y="705" class="legend-text">checked theorem families</text>
+  <rect x="490" y="690" width="18" height="18" rx="4" class="node-purple"/>
+  <text x="516" y="705" class="legend-text">anytime-valid / sequential</text>
+  <rect x="750" y="690" width="18" height="18" rx="4" class="node-amber"/>
+  <text x="776" y="705" class="legend-text">checked endpoint surfaces</text>
+  <text x="1030" y="705" class="legend-text">solid borders = machine-checked</text>
 
-  <text x="775" y="812" class="tiny">Finite chaining is a finite entropy-budget layer.</text>
-  <text x="775" y="830" class="tiny">Continuous Dudley is a separate theorem target.</text>
-
-  <rect x="38" y="746" width="675" height="170" class="panel"/>
-  <text x="70" y="776" class="section">Sharp McDiarmid bounded-differences (homogeneous product measure)</text>
-
-  <rect x="58" y="796" width="200" height="72" class="node-green"/>
-  <text x="158" y="820" text-anchor="middle" class="label">One-sided sharp tail</text>
-  <text x="158" y="840" text-anchor="middle" class="small">exp(-2 eps^2 / sum c_k^2)</text>
-  <text x="158" y="858" text-anchor="middle" class="tiny">bounded differences, product mu</text>
-
-  <rect x="278" y="796" width="200" height="72" class="node-green"/>
-  <text x="378" y="820" text-anchor="middle" class="label">Lower-tail wrapper</text>
-  <text x="378" y="840" text-anchor="middle" class="small">apply to -f, same widths</text>
-  <text x="378" y="858" text-anchor="middle" class="tiny">exp(-2 eps^2 / sum c_k^2)</text>
-
-  <rect x="498" y="796" width="196" height="72" class="node-green"/>
-  <text x="596" y="820" text-anchor="middle" class="label">Two-sided wrapper</text>
-  <text x="596" y="840" text-anchor="middle" class="small">2 exp(-2 eps^2 / sum c_k^2)</text>
-  <text x="596" y="858" text-anchor="middle" class="tiny">union of upper and lower</text>
-
-  <path d="M258 832 L278 832" class="arrow-green"/>
-  <path d="M478 832 L498 832" class="arrow-green"/>
-  <text x="58" y="900" class="tiny">PAC-Bayes includes a finite Bernstein margin-proxy shell with a supplied variance proxy.</text>
+  <!-- Caption -->
+  <text x="40" y="740" class="caption">Conceptual theorem-family map, not a literal import graph. Exact assumptions are recorded in theorem signatures and checkers.</text>
+  <text x="40" y="764" class="caption">Open boundaries are cataloged in docs/diagrams.md and the README scope section.</text>
 </svg>
