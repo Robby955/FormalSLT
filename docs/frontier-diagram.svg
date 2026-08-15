@@ -1,124 +1,124 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="900" viewBox="0 0 1240 900" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT scope frontier</title>
-  <desc id="desc">Two-column diagram showing what FormalSLT covers (verified) versus what it does not cover (open targets).</desc>
+  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample PAC-Bayes routes, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov prequential risk, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, countable weighted joint tilt mixtures, all-real tilt optimization, time-uniform empirical Bernstein with exact Bessel variance, same-trajectory or predictable Markov learners, random initial laws and continuous state and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
   <defs>
     <style>
-      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, sans-serif; }
-      .bg { fill: #ffffff; }
-      .title-text { fill: #0f172a; font-size: 24px; font-weight: 700; }
-      .subtitle { fill: #334155; font-size: 14px; }
-      .in-col { fill: #f0fdf4; stroke: #15803d; stroke-width: 1.6; rx: 12; }
-      .out-col { fill: #f8fafc; stroke: #64748b; stroke-width: 1.6; rx: 12; stroke-dasharray: 6 5; }
-      .col-title-in { fill: #14532d; font-size: 18px; font-weight: 700; }
+      text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+      .bg { fill: #f8fafc; }
+      .title-text { fill: #0f172a; font-size: 28px; font-weight: 700; }
+      .subtitle { fill: #334155; font-size: 17px; }
+      .col-in { fill: #ecfdf5; stroke: #0f766e; stroke-width: 1.6; }
+      .col-out { fill: #f8fafc; stroke: #64748b; stroke-width: 1.6; stroke-dasharray: 6 5; }
+      .col-title-in { fill: #134e4a; font-size: 18px; font-weight: 700; }
       .col-title-out { fill: #334155; font-size: 18px; font-weight: 700; }
-      .item-in { fill: #ecfdf5; stroke: #15803d; stroke-width: 1.2; rx: 6; }
-      .item-out { fill: #ffffff; stroke: #64748b; stroke-width: 1.2; rx: 6; stroke-dasharray: 4 4; }
-      .item-label { fill: #0f172a; font-size: 14px; font-weight: 700; }
-      .item-sub { fill: #1e293b; font-size: 12px; }
-      .badge-in-bg { fill: #15803d; }
-      .badge-out-bg { fill: #64748b; }
-      .badge-text { fill: #ffffff; font-size: 14px; font-weight: 700; }
-      .footer { fill: #334155; font-size: 12px; }
+      .item-in { fill: #ffffff; stroke: #0f766e; stroke-width: 1.4; }
+      .item-out { fill: #ffffff; stroke: #64748b; stroke-width: 1.4; stroke-dasharray: 4 4; }
+      .item-label { fill: #0f172a; font-size: 17px; font-weight: 700; }
+      .item-sub { fill: #1e293b; font-size: 16px; }
+      .badge-in { fill: #0f766e; }
+      .footer { fill: #334155; font-size: 16px; }
     </style>
   </defs>
 
-  <rect width="1100" height="720" class="bg"/>
+  <rect width="1240" height="900" class="bg"/>
 
-  <text x="550" y="38" text-anchor="middle" class="title-text">FormalSLT scope frontier</text>
-  <text x="550" y="62" text-anchor="middle" class="subtitle">Verified Lean 4 theorems versus open targets, as of the public release</text>
+  <text x="620" y="44" text-anchor="middle" class="title-text">FormalSLT scope frontier</text>
+  <text x="620" y="72" text-anchor="middle" class="subtitle">Machine-checked surfaces versus open formalization targets</text>
 
-  <rect x="40" y="84" width="510" height="572" class="in-col"/>
-  <text x="60" y="116" class="col-title-in">In scope (verified, axiom-clean)</text>
+  <rect x="40" y="96" width="565" height="716" rx="12" class="col-in"/>
+  <text x="60" y="128" class="col-title-in">Checked (axiom-clean Lean theorems)</text>
 
-  <rect x="60" y="134" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="163" r="11" class="badge-in-bg"/>
-  <path d="M78 163 L83 168 L91 159" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="158" class="item-label">Finite-class ERM + symmetrization</text>
-  <text x="104" y="178" class="item-sub">E[genGap] &lt;= 2 E[Rad]; Massart B sqrt(2 log card(H) / n)</text>
+  <rect x="60" y="146" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="179" r="11" class="badge-in"/>
+  <path d="M78 179 L83 184 L91 175" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="174" class="item-label">Finite-class learning spine</text>
+  <text x="104" y="196" class="item-sub">symmetrization, Massart, high-probability wrappers</text>
 
-  <rect x="60" y="200" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="229" r="11" class="badge-in-bg"/>
-  <path d="M78 229 L83 234 L91 225" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="224" class="item-label">Sharp McDiarmid via conditional sub-Gaussian engine</text>
-  <text x="104" y="244" class="item-sub">2 exp(-2 eps^2 / sum c_k^2); upper, lower, two-sided; iid product</text>
+  <rect x="60" y="228" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="261" r="11" class="badge-in"/>
+  <path d="M78 261 L83 266 L91 257" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="256" class="item-label">Sharp McDiarmid, two-sided, heterogeneous laws</text>
+  <text x="104" y="278" class="item-sub">2 exp(&#8722;2 &#949;&#178; / &#931; c&#8342;&#178;) over independent product coordinates</text>
 
-  <rect x="60" y="266" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="295" r="11" class="badge-in-bg"/>
-  <path d="M78 295 L83 300 L91 291" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="290" class="item-label">VC + Sauer-Shelah binary route</text>
-  <text x="104" y="310" class="item-sub">(e n / d)^d growth; binary VC bridge; closed sample-complexity</text>
+  <rect x="60" y="310" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="343" r="11" class="badge-in"/>
+  <path d="M78 343 L83 348 L91 339" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="338" class="item-label">VC and Sauer-Shelah binary route</text>
+  <text x="104" y="360" class="item-sub">growth bounds, binary trace bridge, ERM sample complexity</text>
 
-  <rect x="60" y="332" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="361" r="11" class="badge-in-bg"/>
-  <path d="M78 361 L83 366 L91 357" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="356" class="item-label">Tight PAC-Bayes change of measure</text>
-  <text x="104" y="376" class="item-sub">Donsker-Varadhan, Catoni, McAllester grid peeling on bounded loss</text>
+  <rect x="60" y="392" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="425" r="11" class="badge-in"/>
+  <path d="M78 425 L83 430 L91 421" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="420" class="item-label">Metric entropy and Dudley boundary adapters</text>
+  <text x="104" y="442" class="item-sub">checked entropy-integral endpoints under stated hypotheses</text>
 
-  <rect x="60" y="398" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="427" r="11" class="badge-in-bg"/>
-  <path d="M78 427 L83 432 L91 423" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="422" class="item-label">Finite contraction + linear predictors</text>
-  <text x="104" y="442" class="item-sub">Rad(phi o F) &lt;= L Rad(F); Rad &lt;= R/n sqrt(sum ||x_i||^2)</text>
+  <rect x="60" y="474" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="507" r="11" class="badge-in"/>
+  <path d="M78 507 L83 512 L91 503" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="502" class="item-label">Fixed-sample PAC-Bayes routes</text>
+  <text x="104" y="524" class="item-sub">Catoni, McAllester, Bernstein, joint (t, &#951;) catalogs, exact &#958;</text>
 
-  <rect x="60" y="464" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="493" r="11" class="badge-in-bg"/>
-  <path d="M78 493 L83 498 L91 489" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="488" class="item-label">Finite Dudley + total-bounded boundary adapters</text>
-  <text x="104" y="508" class="item-sub">Finite chains, dyadic schedules, separable-terminal Dudley boundary</text>
+  <rect x="60" y="556" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="589" r="11" class="badge-in"/>
+  <path d="M78 589 L83 594 L91 585" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="584" class="item-label">Anytime-valid inference</text>
+  <text x="104" y="606" class="item-sub">Ville, e-processes, betting; time-uniform PAC-Bayes endpoints</text>
 
-  <rect x="60" y="530" width="470" height="58" class="item-in"/>
-  <circle cx="84" cy="559" r="11" class="badge-in-bg"/>
-  <path d="M78 559 L83 564 L91 555" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="554" class="item-label">Algorithmic stability + Bousquet-Elisseeff</text>
-  <text x="104" y="574" class="item-sub">Bounded-differences scaffold, iid product, Azuma-constant high prob</text>
+  <rect x="60" y="638" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="671" r="11" class="badge-in"/>
+  <path d="M78 671 L83 676 L91 667" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="666" class="item-label">Finite Markov prequential risk</text>
+  <text x="104" y="688" class="item-sub">path laws, conditional-risk certificates, fixed-tilt PAC-Bayes</text>
 
-  <rect x="60" y="596" width="470" height="48" class="item-in"/>
-  <circle cx="84" cy="620" r="11" class="badge-in-bg"/>
-  <path d="M78 620 L83 625 L91 616" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="625" class="item-label">Localized Bernstein finite scaffold (variance localization)</text>
+  <rect x="60" y="720" width="525" height="66" rx="8" class="item-in"/>
+  <circle cx="84" cy="753" r="11" class="badge-in"/>
+  <path d="M78 753 L83 758 L91 749" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="748" class="item-label">Stability, statistics, compositions</text>
+  <text x="104" y="770" class="item-sub">algorithmic stability, statistics interfaces, TestTimeMeta</text>
 
-  <rect x="550" y="84" width="510" height="572" class="out-col"/>
-  <text x="570" y="116" class="col-title-out">Out of scope (open targets)</text>
+  <rect x="635" y="96" width="565" height="716" rx="12" class="col-out"/>
+  <text x="655" y="128" class="col-title-out">Open targets (not yet proved)</text>
 
-  <rect x="570" y="134" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="163" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="158" class="item-label">Continuous Dudley entropy integral</text>
-  <text x="614" y="178" class="item-sub">Library proves discrete chaining and boundary adapters; the integral is open</text>
+  <rect x="655" y="146" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="179" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="174" class="item-label">Arbitrary measurable-supremum Dudley theory</text>
+  <text x="699" y="196" class="item-sub">non-finite-outcome constructions beyond boundary adapters</text>
 
-  <rect x="570" y="200" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="229" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="224" class="item-label">Continuous-posterior PAC-Bayes (all-real-lambda)</text>
-  <text x="614" y="244" class="item-sub">Finite-grid peeling proved; uncountable-family change of measure is open</text>
+  <rect x="655" y="228" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="261" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="256" class="item-label">Countable weighted joint (t, &#951;) mixtures</text>
+  <text x="699" y="278" class="item-sub">normalized master mixtures beyond finite catalogs</text>
 
-  <rect x="570" y="266" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="295" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="290" class="item-label">Anytime-valid sequential PAC-Bayes</text>
-  <text x="614" y="310" class="item-sub">Sub-gamma confidence sequences are out of the static finite-sample track</text>
+  <rect x="655" y="310" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="343" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="338" class="item-label">All-real tilt optimization</text>
+  <text x="699" y="360" class="item-sub">post-hoc selection over every real tilt, not a finite catalog</text>
 
-  <rect x="570" y="332" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="361" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="356" class="item-label">Mathlib MGF unification</text>
-  <text x="614" y="376" class="item-sub">Sub-Gaussian and Bernstein MGF currently sit in separate FormalSLT modules</text>
+  <rect x="655" y="392" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="425" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="420" class="item-label">Time-uniform empirical Bernstein, exact Bessel variance</text>
+  <text x="699" y="442" class="item-sub">joint process version of the fixed-sample theorem</text>
 
-  <rect x="570" y="398" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="427" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="422" class="item-label">General VC bridge for real-valued loss classes</text>
-  <text x="614" y="442" class="item-sub">Binary trace is proved; arbitrary real-valued VC needs an effective-class step</text>
+  <rect x="655" y="474" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="507" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="502" class="item-label">Same-trajectory or predictable Markov learners</text>
+  <text x="699" y="524" class="item-sub">catalogs trained on the path they are evaluated on</text>
 
-  <rect x="570" y="464" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="493" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="488" class="item-label">Heterogeneous-product sharp McDiarmid</text>
-  <text x="614" y="508" class="item-sub">General theorem is over homogeneous iid product; per-coordinate distinct laws is a target</text>
+  <rect x="655" y="556" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="589" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="584" class="item-label">Random initial laws, continuous state, mixing risk</text>
+  <text x="699" y="606" class="item-sub">beyond deterministic-start finite-state path laws</text>
 
-  <rect x="570" y="530" width="470" height="58" class="item-out"/>
-  <circle cx="594" cy="559" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="554" class="item-label">Neural-network parameter-space generalization</text>
-  <text x="614" y="574" class="item-sub">Requires norm-controlled function classes, compression, or margin; not yet in</text>
+  <rect x="655" y="638" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="671" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="666" class="item-label">Algorithm-specific online regret theorem</text>
+  <text x="699" y="688" class="item-sub">regret rates proved for a named online algorithm</text>
 
-  <rect x="570" y="596" width="470" height="48" class="item-out"/>
-  <circle cx="594" cy="620" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="614" y="625" class="item-label">VC-to-PAC full equivalence (lower bounds)</text>
+  <rect x="655" y="720" width="525" height="66" rx="8" class="item-out"/>
+  <circle cx="679" cy="753" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
+  <text x="699" y="748" class="item-label">Neural-network generalization theorem</text>
+  <text x="699" y="770" class="item-sub">norm-controlled, compression, or margin routes</text>
 
-  <text x="40" y="684" class="footer">Verification standard: all in-scope items have at least one named axiom-clean Lean theorem with #print axioms checked.</text>
-  <text x="40" y="702" class="footer">Out-of-scope items are signposted in the README and in docs/assumptions-and-nonclaims.md; not vapor work.</text>
+  <text x="40" y="846" class="footer">Checked items name at least one axiom-clean Lean theorem with a #print axioms transcript; exact hypotheses live in the signatures.</text>
+  <text x="40" y="872" class="footer">Open targets are tracked in docs/open-formalization-problems.md and the generated proof-frontier manifest.</text>
 </svg>
