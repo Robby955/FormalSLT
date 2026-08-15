@@ -138,23 +138,25 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "per-hypothesis joint mean/Bessel-variance MGF core and a "
             "one-event weighted joint-pair posterior catalog with selector, "
             "including its explicit zero-residual branch and exact attained "
-            "three-piece residual penalty"
+            "three-piece residual penalty, plus a support-aware Nat-indexed "
+            "countable master mixture and per-entry prior-moment extraction"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Extend the exact finite-catalog xi residual through a normalized "
-            "countable weighted joint (t, eta) mixture; treat all-real and "
-            "time-uniform adaptation as separate process problems."
+            "Lift the checked support-aware countable weighted joint (t, eta) "
+            "master event to posterior and exact-xi selector endpoints; treat "
+            "all-real and time-uniform adaptation as separate process problems."
         ),
         "boundary": (
-            "The one-event joint catalog, zero-residual specialization, and "
-            "exact piecewise residual endpoint are fixed-sample, finite, and "
-            "declared in advance: one master-mixture confidence event and one "
-            "KL term per selected pair. The separately budgeted rational risk "
-            "theorem remains a distinct two-event result. Neither lane gives "
+            "The posterior and exact-xi endpoints are fixed-sample, finite, "
+            "and declared in advance: one master-mixture confidence event and "
+            "one KL term per selected pair. The countable foundation is also "
+            "fixed-sample and stops at per-entry prior moments; its posterior "
+            "and xi selector lift is open. The separately budgeted rational "
+            "risk theorem remains a distinct two-event result. No lane gives "
             "all-real or time-uniform inference."
         ),
     },

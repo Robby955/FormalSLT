@@ -116,8 +116,8 @@ appearances in the final bound. The joint route instead uses one predeclared
 weighted finite `(t, η)` catalog and one shared event. Its entry may be selected
 after seeing the sample and posterior, with one KL term plus that entry's
 catalog-weighted confidence allocation. All routes shown here are fixed-sample
-and finite-IID; whenever a catalog appears, it is finite and declared before
-the sample is observed.
+and finite-IID. The finite catalogs and the checked `Nat`-indexed countable
+master are declared before the sample is observed.
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 42, 'nodeSpacing': 26}}}%%
@@ -139,7 +139,8 @@ flowchart TD
         zerores["Balanced zero-residual endpoint"]
         xires["Exact attained ξ residual endpoint<br/>zero, v = 1/4, and interior branches"]
     end
-    countable["Normalized countable weighted<br/>joint (t, η) mixtures (open)"]
+    countablemaster["Support-aware countable weighted master<br/>Nat-indexed (t, η), positive-weight prior moments"]
+    countableposterior["Countable posterior / exact-ξ<br/>selector lift (open)"]
     allreal["All-real tilt optimization (open)"]
     tueb["Time-uniform joint empirical-Bernstein<br/>with exact Bessel variance (open)"]
 
@@ -159,22 +160,26 @@ flowchart TD
     jointmgf --> jointcat
     jointcat --> zerores
     zerores --> xires
-    xires -.-> countable
+    jointmgf --> countablemaster
+    countablemaster -.-> countableposterior
     jointcat -.-> allreal
     ebrisk -.-> tueb
 
     classDef checked fill:#ecfdf5,stroke:#0f766e,color:#134e4a;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
-    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat checked;
+    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster checked;
     class mcallester,ebrisk,zerores,xires endpointNode;
-    class countable,allreal,tueb open;
+    class countableposterior,allreal,tueb open;
 ```
 
-The joint route thresholds one prior-and-catalog master mixture, so the
+The finite joint route thresholds one prior-and-catalog master mixture, so the
 selected entry may depend on the sample and the posterior while paying one KL
-term. The variance events bound the posterior average of per-hypothesis
-variances; they do not bound the variance of the posterior-averaged loss.
+term. The checked countable foundation instead controls every positive-weight
+prior moment through one support-aware master event. It does not yet supply the
+posterior/Donsker–Varadhan or exact-ξ selector endpoint. The variance events
+bound the posterior average of per-hypothesis variances; they do not bound the
+variance of the posterior-averaged loss.
 
 ## D. Anytime-valid, Markov, and composition
 
@@ -249,8 +254,9 @@ These diagrams do not claim more than the theorem signatures state:
 - The fixed-time random-matching score is not an e-process.
 - Terminal random matchings at different sample sizes are not projectively
   nested.
-- Finite predeclared catalogs are neither countable mixtures nor mechanisms
-  for all-real tilt optimization.
+- The checked countable master controls positive-weight prior moments; it is
+  not yet a countable posterior/exact-ξ selector theorem, an all-real tilt
+  optimizer, or a time-uniform process.
 - The time-uniform PAC-Bayes endpoints do not imply a time-uniform
   empirical-Bernstein theorem with exact Bessel variance.
 - The posterior average of per-hypothesis variances is not the variance of

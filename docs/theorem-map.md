@@ -607,6 +607,8 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVariancePriorMoment` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior moment of the joint score at one sample and one catalog pair |
 | `finiteJointMeanVarianceMasterMixture` | `PACBayes.FiniteJointMeanVariancePACBayes` | Prior-and-catalog master mixture over the weighted per-entry prior score moments |
 | `finiteJointMeanVarianceCatalogBadSamples` | `PACBayes.FiniteJointMeanVariancePACBayes` | Single catalog bad-sample set thresholding the master mixture at `1 / delta` |
+| `countableJointMeanVarianceMasterMixture` | `PACBayes.CountableJointMeanVariancePACBayes` | `Nat`-indexed weighted mixture of the fixed-sample prior score moments |
+| `countableJointMeanVarianceCatalogBadSamples` | `PACBayes.CountableJointMeanVariancePACBayes` | Support-aware countable-catalog bad-sample set containing every product-law null sample |
 | `finiteJointMeanVariancePsi` | `PACBayes.FiniteJointMeanVarianceResidual` | Bennett coefficient in the retained population-variance residual |
 | `finiteJointMeanVarianceResidualRate` | `PACBayes.FiniteJointMeanVarianceResidual` | Transported population-variance coefficient per observation |
 | `finiteJointMeanVarianceResidual` | `PACBayes.FiniteJointMeanVarianceResidual` | Retained logarithmic population-variance residual per observation |
@@ -657,6 +659,13 @@ declarations; modules are relative to `FormalSLT`.
 | `posteriorAverage_finitePopulationVariance_mem_Icc` | `PACBayes.FiniteJointMeanVarianceResidual` | Posterior-averaged bounded-loss population variance remains in `[0, 1/4]` |
 | `finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem` | `PACBayes.FiniteJointMeanVarianceResidual` | One-event one-KL empirical-Bernstein posterior-risk bound with the exact residual penalty |
 | `finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem` | `PACBayes.FiniteJointMeanVarianceResidual` | Sample- and posterior-dependent selector form of the exact-residual risk bound |
+| `countableJointMeanVarianceMasterMixture_nonneg` | `PACBayes.CountableJointMeanVariancePACBayes` | Nonnegativity of the countable master mixture under nonnegative weights |
+| `countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos` | `PACBayes.CountableJointMeanVariancePACBayes` | Summability of the weighted prior-moment series on every positive-product-mass sample |
+| `countableJointMeanVariance_masterMixture_expectation_le_weightTsum` | `PACBayes.CountableJointMeanVariancePACBayes` | Expected countable master mixture is at most the total `tsum` of catalog weights |
+| `countableJointMeanVariance_masterMixture_expectation_le_one` | `PACBayes.CountableJointMeanVariancePACBayes` | A normalized countable catalog has master-mixture expectation at most one |
+| `countableJointMeanVariance_not_mem_catalogBadSamples_iff` | `PACBayes.CountableJointMeanVariancePACBayes` | A good sample has positive product mass and master mixture below `1 / delta` |
+| `countableJointMeanVariance_catalogBadSamples_mass_le_delta` | `PACBayes.CountableJointMeanVariancePACBayes` | The support-aware countable-catalog bad set has product-law mass at most `delta` |
+| `countableJointMeanVariance_priorMoment_le_of_not_mem` | `PACBayes.CountableJointMeanVariancePACBayes` | Outside one countable event, every entry keeps its prior moment within its positive weight share |
 
 ## Conditional sub-Gamma extractor
 

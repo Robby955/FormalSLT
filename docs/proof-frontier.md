@@ -97,7 +97,9 @@ files.
   selected posterior-risk bound using empirical risk, empirical variance, and
   one KL-plus-catalog-weight confidence term. The other residual branches are
   now closed by an exact attained three-piece maximum on `[0,1/4]`, yielding
-  the explicit `xi / t` penalty on the same event. The current result is not
-  all-real tilt optimization or time-uniform inference.
+  the explicit `xi / t` penalty on the same event. A support-aware countable
+  normalized master event and per-entry prior-moment extraction are also
+  checked, but their posterior/`xi` selector lift remains open. The current
+  result is not all-real tilt optimization or time-uniform inference.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

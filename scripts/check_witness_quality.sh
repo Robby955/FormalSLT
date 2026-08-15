@@ -106,6 +106,10 @@ classify_witness() {
 #      below 1/20 at n = 1024, delta = 1/20, lambda = 1/8)
 #   markovPACBayes_prequentialRisk_certificate
 #     (asymmetric two-state catalog with a path-selected point posterior)
+#   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
+#     countableJointMeanVariance_priorMoment_le_of_not_mem
+#     (infinite geometric joint-pair catalog, one good sample controlling every
+#     entry, explicit first-two confidence shares, and an exercised null guard)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -128,6 +132,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
   "examples/CheckFiniteJointMeanVariancePACBayes.lean"
   "examples/CheckFiniteJointMeanVarianceResidual.lean"
+  "examples/CheckCountableJointMeanVariancePACBayes.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"

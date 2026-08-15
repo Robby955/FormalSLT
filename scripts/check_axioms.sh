@@ -99,6 +99,13 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVarianceXi_isGreatest"
   "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem"
   "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVarianceMasterMixture_nonneg"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_masterMixture_expectation_le_weightTsum"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_masterMixture_expectation_le_one"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_not_mem_catalogBadSamples_iff"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_catalogBadSamples_mass_le_delta"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_priorMoment_le_of_not_mem"
   "FormalSLT.PACBayes.TimeUniformScore.scorePriorMixture_eProcess"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayes_allPosteriors_bound"
@@ -144,6 +151,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
+  echo "import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
@@ -179,6 +187,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteJointMeanVarianceMGF \
   FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes \
   FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
+  FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes >/dev/null

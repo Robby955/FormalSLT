@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The one-event joint catalog, zero-residual specialization, and exact piecewise residual endpoint are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The separately budgeted rational risk theorem remains a distinct two-event result. Neither lane gives all-real or time-uniform inference.",
+      "boundary": "The posterior and exact-xi endpoints are fixed-sample, finite, and declared in advance: one master-mixture confidence event and one KL term per selected pair. The countable foundation is also fixed-sample and stops at per-entry prior moments; its posterior and xi selector lift is open. The separately budgeted rational risk theorem remains a distinct two-event result. No lane gives all-real or time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Extend the exact finite-catalog xi residual through a normalized countable weighted joint (t, eta) mixture; treat all-real and time-uniform adaptation as separate process problems.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty",
+      "next_step": "Lift the checked support-aware countable weighted joint (t, eta) master event to posterior and exact-xi selector endpoints; treat all-real and time-uniform adaptation as separate process problems.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, plus a support-aware Nat-indexed countable master mixture and per-entry prior-moment extraction",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 152,
-    "library_and_example_lean_lines": 86372,
-    "library_lean_lines": 73192,
-    "library_modules": 193,
-    "theorem_map_entries": 745
+    "example_lean_files": 153,
+    "library_and_example_lean_lines": 87010,
+    "library_lean_lines": 73601,
+    "library_modules": 194,
+    "theorem_map_entries": 754
   },
   "theorem_families": [
     {
@@ -3373,6 +3373,18 @@
         },
         {
           "kind": "definition",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVarianceMasterMixture",
+          "summary": "Nat-indexed weighted mixture of the fixed-sample prior score moments"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVarianceCatalogBadSamples",
+          "summary": "Support-aware countable-catalog bad-sample set containing every product-law null sample"
+        },
+        {
+          "kind": "definition",
           "module": "PACBayes.FiniteJointMeanVarianceResidual",
           "name": "finiteJointMeanVariancePsi",
           "summary": "Bennett coefficient in the retained population-variance residual"
@@ -3652,6 +3664,48 @@
           "module": "PACBayes.FiniteJointMeanVarianceResidual",
           "name": "finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem",
           "summary": "Sample- and posterior-dependent selector form of the exact-residual risk bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVarianceMasterMixture_nonneg",
+          "summary": "Nonnegativity of the countable master mixture under nonnegative weights"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos",
+          "summary": "Summability of the weighted prior-moment series on every positive-product-mass sample"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVariance_masterMixture_expectation_le_weightTsum",
+          "summary": "Expected countable master mixture is at most the total tsum of catalog weights"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVariance_masterMixture_expectation_le_one",
+          "summary": "A normalized countable catalog has master-mixture expectation at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVariance_not_mem_catalogBadSamples_iff",
+          "summary": "A good sample has positive product mass and master mixture below 1 / delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVariance_catalogBadSamples_mass_le_delta",
+          "summary": "The support-aware countable-catalog bad set has product-law mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePACBayes",
+          "name": "countableJointMeanVariance_priorMoment_le_of_not_mem",
+          "summary": "Outside one countable event, every entry keeps its prior moment within its positive weight share"
         }
       ],
       "name": "Finite exponential tilting"
