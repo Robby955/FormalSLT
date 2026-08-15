@@ -47,8 +47,9 @@ posterior.
   variances.  They are not variances of the posterior-averaged loss.
 - When `n * (exp t - 1 - t) <= exp (-t) * kappa`, the retained logarithm is
   absorbed pathwise and the module exposes an explicit empirical-Bernstein
-  posterior-risk bound using only empirical variance and one KL term.  The
-  other branches of the exact piecewise residual are not formalized here.
+  posterior-risk bound using empirical risk, empirical variance, and one
+  KL/confidence term.  This module stops at that zero-residual specialization;
+  `FiniteJointMeanVarianceResidual` checks the exact remaining branches.
 - The two-event empirical-Bernstein risk pipeline in
   `FiniteEmpiricalBernsteinRiskCatalog` is a distinct result with separate
   variance and risk events and two KL appearances; this module neither

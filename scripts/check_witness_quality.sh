@@ -127,6 +127,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalBernsteinRisk.lean"
   "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
   "examples/CheckFiniteJointMeanVariancePACBayes.lean"
+  "examples/CheckFiniteJointMeanVarianceResidual.lean"
   "examples/CheckVCHybridWitness.lean"
   "examples/CheckEmpiricalBernsteinNonVacuityWitness.lean"
   "examples/CheckNamedTails.lean"

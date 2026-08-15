@@ -294,12 +294,13 @@
     joint-pair posterior catalog are also checked, with one KL term at the
     selected entry. Its zero-residual coefficient branch now gives the explicit
     selected posterior-risk bound in terms of empirical risk and empirical
-    variance. The remaining nonzero branches of the exact piecewise `xi`
-    residual, countable selectable `lambda` catalogs, exact all-real
-    optimization, time-uniform empirical-Bernstein risk, continuous Bernstein
-    posteriors, and infinite hypothesis classes remain open. The separate
-    bounded-loss continuous lane currently covers a fixed spherical-Gaussian
-    posterior; it does not close these extensions.
+    variance. The other residual branches are checked as an exact attained
+    three-piece maximum on `[0,1/4]`, and the selected endpoint adds `xi / t`.
+    Countable selectable `lambda` catalogs, exact all-real optimization,
+    time-uniform empirical-Bernstein risk, continuous Bernstein posteriors, and
+    infinite hypothesis classes remain open. The separate bounded-loss
+    continuous lane currently covers a fixed spherical-Gaussian posterior; it
+    does not close these extensions.
 
 ### Long-term
 

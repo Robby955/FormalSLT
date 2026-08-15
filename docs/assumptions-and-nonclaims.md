@@ -311,10 +311,11 @@ The separate-event empirical-Bernstein risk result does not yet use the
 fixed-sample joint moment; the one-event joint catalog is a distinct endpoint
 and does not replace it. The zero-residual coefficient branch of the one-event
 catalog now removes the unknown population variance and gives the explicit
-empirical-Bernstein posterior-risk bound. The remaining nonzero branches of
-the exact piecewise `xi` residual, all-real optimization, and a time-uniform
-joint process are still open. A countable indicator-Bernstein catalog and exact
-all-real `lambda` optimization are also open.
+empirical-Bernstein posterior-risk bound. The remaining branches are checked by
+the exact attained piecewise `xi` maximum on `[0,1/4]` and add `xi / t` to that
+same one-event bound. All-real or countable tilt optimization and a
+time-uniform joint process are still open. A countable indicator-Bernstein
+catalog and exact all-real `lambda` optimization are also open.
 
 ### Algorithmic stability expected bound
 
