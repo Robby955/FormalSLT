@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C237-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C260-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-192-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-85%2C320-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-85%2C774-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -78,8 +78,11 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   concrete certificates below `1/4`. A fixed-sample joint mean/variance layer
   adds the normalized joint MGF with the retained Bennett factor inside the
   logarithm and a one-event weighted joint-pair posterior catalog with one KL
-  term per selected entry. The exact piecewise residual, all-real tilt
-  optimization, and time-uniform empirical-Bernstein risk remain open.
+  term per selected entry. On the checked zero-residual coefficient branch,
+  the retained logarithm is absorbed and the selected posterior risk is bounded
+  explicitly by empirical risk, empirical variance, and that one KL term. The
+  remaining piecewise residual branches, all-real tilt optimization, and
+  time-uniform empirical-Bernstein risk remain open.
 
 The Dudley core is finite by design. The finite-outcome endpoint
 `continuous_dudley_entropy_integral` assumes a finite sub-Gaussian process on a
@@ -254,12 +257,17 @@ declaration and prints its axiom profile.
   set of mass at most `delta`, and
   `finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem` gives every
   posterior a retained-variance inequality with one KL term at a catalog
-  entry selected after seeing the sample and the posterior. The Bennett log
-  is stated at the posterior-averaged variance via concavity. Fixed-sample,
-  finite, and declared in advance: the score is not an e-process, and
+  entry selected after seeing the sample and the posterior. Under the explicit
+  coefficient balance, the zero-residual selector endpoint removes the unknown
+  population variance and leaves empirical risk plus empirical variance and
+  one KL/confidence term. The Bennett log in the parent theorem is stated at
+  the posterior-averaged variance via concavity. Fixed-sample, finite, and
+  declared in advance: the score is not an e-process, and
   time-uniform empirical-Bernstein PAC-Bayes results exist in prior work
   (Jang et al., COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023). The receipt
-  drives two unequal-weight entries with a selector attaining both;
+  drives two unequal-weight entries with a selector attaining both and,
+  separately, checks a balanced `n = 6` good sample whose zero-residual
+  ceiling is `7/10 + log 2 / 3 < 1`;
   [`CheckFiniteJointMeanVariancePACBayes.lean`](./examples/CheckFiniteJointMeanVariancePACBayes.lean),
   [`FiniteJointMeanVariancePACBayes.lean`](./FormalSLT/PACBayes/FiniteJointMeanVariancePACBayes.lean)
 - **Mean and high-probability metric-entropy generalization** —
@@ -439,7 +447,9 @@ release check is in [Audit commands](#audit-commands).
   Bessel empirical variance. The normalized endpoint has expectation at most
   one but does not itself quantify over priors, posteriors, or tilt catalogs.
 - Use `FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes` for the one-event
-  finite joint-pair catalog with one KL term at the selected entry.
+  finite joint-pair catalog with one KL term at the selected entry. Its
+  zero-residual selector theorem gives an explicit empirical-Bernstein risk
+  bound when every selectable entry satisfies the stated coefficient balance.
 - Use `FormalSLT.PACBayes.FiniteBoundedLossBernstein` for the separate
   fixed-`lambda` population-risk Bernstein event. Use
   `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk` to combine it with the
@@ -564,10 +574,11 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- The exact piecewise `xi` residual and zero-residual explicit specialization,
-  all-real tilt optimization, and a time-uniform empirical-Bernstein risk
-  theorem. The fixed rational two-event theorem, separately weighted finite
-  `eta`/`lambda` catalogs, and one-event finite joint-pair catalog are checked.
+- The nonzero branches of the exact piecewise `xi` residual, all-real tilt
+  optimization, and a time-uniform empirical-Bernstein risk theorem. The fixed
+  rational two-event theorem, separately weighted finite `eta`/`lambda`
+  catalogs, one-event finite joint-pair catalog, and its zero-residual explicit
+  specialization are checked.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
@@ -642,8 +653,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 
 - [ ] Extend the checked Dudley boundary-certificate theorem to arbitrary
   measurable suprema and non-finite outcome constructions
-- [ ] Formalize the exact piecewise `xi` residual and its zero-residual explicit
-  specialization for the checked one-event joint catalog
+- [ ] Formalize the remaining nonzero branches of the exact piecewise `xi`
+  residual for the checked one-event joint catalog
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
 - [ ] Extend fixed-sample joint scores to a normalized hypothesis--tilt
   e-process mixture, then study conditional e-variable composition and

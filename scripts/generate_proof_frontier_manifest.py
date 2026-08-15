@@ -136,24 +136,25 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "catalog, fixed-parameter observable risk, and separately "
             "weighted finite eta/lambda catalogs, plus a fixed-sample "
             "per-hypothesis joint mean/Bessel-variance MGF core and a "
-            "one-event weighted joint-pair posterior catalog with selector"
+            "one-event weighted joint-pair posterior catalog with selector, "
+            "including its explicit zero-residual posterior-risk branch"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Formalize the exact piecewise xi residual and its zero-residual "
-            "specialization, or package the integrated stack; treat "
+            "Formalize the remaining nonzero branches of the exact piecewise "
+            "xi residual, or package the integrated stack; treat "
             "countable, all-real, and time-uniform adaptation separately."
         ),
         "boundary": (
-            "The one-event joint catalog is fixed-sample, finite, and "
-            "declared in advance: one master-mixture confidence event and "
-            "one KL term per selected pair, with the Bennett log stated at "
-            "the posterior-averaged variance. The checked risk result still "
-            "uses separate events, and neither lane gives all-real or "
-            "time-uniform inference."
+            "The one-event joint catalog and its zero-residual risk "
+            "specialization are fixed-sample, finite, and declared in "
+            "advance: one master-mixture confidence event and one KL term "
+            "per selected pair. The separately budgeted rational risk "
+            "theorem remains a distinct two-event result. Neither lane gives "
+            "all-real or time-uniform inference."
         ),
     },
     {

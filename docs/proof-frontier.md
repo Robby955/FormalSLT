@@ -93,8 +93,10 @@ files.
   and witnessed with unequal weights and two selected branches; the final risk
   layer reuses it rather than duplicating its event. A retained-Bennett joint
   mean/Bessel-variance score and one-event finite joint-pair posterior catalog
-  are also checked. The next reviewable step is the exact piecewise residual and
-  zero-residual explicit specialization. The current result is not all-real tilt
-  optimization or time-uniform inference.
+  are also checked. The zero-residual coefficient branch now gives an explicit
+  selected posterior-risk bound using empirical risk, empirical variance, and
+  one KL-plus-catalog-weight confidence term. The next reviewable step is the
+  remaining nonzero part of the exact piecewise residual. The current result
+  is not all-real tilt optimization or time-uniform inference.
 - `sharp-mcdiarmid-product-kernel`: blocked until the product-kernel
   conditional-expectation route is available.

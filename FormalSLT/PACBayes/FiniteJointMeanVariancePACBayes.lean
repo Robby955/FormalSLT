@@ -45,6 +45,10 @@ posterior.
   API, not statistical priority.
 - The posterior variance quantities are posterior averages of per-hypothesis
   variances.  They are not variances of the posterior-averaged loss.
+- When `n * (exp t - 1 - t) <= exp (-t) * kappa`, the retained logarithm is
+  absorbed pathwise and the module exposes an explicit empirical-Bernstein
+  posterior-risk bound using only empirical variance and one KL term.  The
+  other branches of the exact piecewise residual are not formalized here.
 - The two-event empirical-Bernstein risk pipeline in
   `FiniteEmpiricalBernsteinRiskCatalog` is a distinct result with separate
   variance and risk events and two KL appearances; this module neither
@@ -65,6 +69,44 @@ open FormalSLT.PACBayes.FiniteProductBernstein
 noncomputable section
 
 variable {κ ι Z : Type*}
+
+/-- Under the zero-residual coefficient condition, the retained Bennett
+logarithm minus the transported variance correction is nonpositive at every
+nonnegative variance value. -/
+theorem finiteJointMeanVariance_logResidual_nonpos_of_balance
+    {n : ℕ} {t eta V : ℝ} (hV : 0 ≤ V)
+    (hbalance :
+      (n : ℝ) * (Real.exp t - 1 - t) ≤
+        Real.exp (-t) * finiteJointMeanVarianceKappa n eta) :
+    (n : ℝ) * Real.log (1 + (Real.exp t - 1 - t) * V) -
+        Real.exp (-t) * finiteJointMeanVarianceKappa n eta * V ≤ 0 := by
+  have hpsi : 0 ≤ Real.exp t - 1 - t := by
+    have h := Real.add_one_le_exp t
+    linarith
+  have harg : 0 < 1 + (Real.exp t - 1 - t) * V := by
+    nlinarith [mul_nonneg hpsi hV]
+  have hlog :
+      Real.log (1 + (Real.exp t - 1 - t) * V) ≤
+        (Real.exp t - 1 - t) * V := by
+    have h := Real.log_le_sub_one_of_pos harg
+    linarith
+  have hlog_scaled :
+      (n : ℝ) * Real.log (1 + (Real.exp t - 1 - t) * V) ≤
+        (n : ℝ) * ((Real.exp t - 1 - t) * V) :=
+    mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg n)
+  have hcondition_scaled :
+      (n : ℝ) * (Real.exp t - 1 - t) * V ≤
+        (Real.exp (-t) * finiteJointMeanVarianceKappa n eta) * V :=
+    mul_le_mul_of_nonneg_right hbalance hV
+  calc
+    (n : ℝ) * Real.log (1 + (Real.exp t - 1 - t) * V) -
+          Real.exp (-t) * finiteJointMeanVarianceKappa n eta * V
+        ≤ (n : ℝ) * ((Real.exp t - 1 - t) * V) -
+            Real.exp (-t) * finiteJointMeanVarianceKappa n eta * V := by
+          linarith
+    _ ≤ 0 := by
+      rw [mul_assoc (n : ℝ) (Real.exp t - 1 - t) V] at hcondition_scaled
+      linarith
 
 /-- Per-hypothesis normalized fixed-n joint mean/empirical-variance score.
 This is exactly the exponent of `finiteJointMeanVariance_normalizedMGF_le_one`:
@@ -574,6 +616,114 @@ theorem finiteJointMeanVariance_posteriorGap_le_of_not_mem
     mul_le_mul_of_nonneg_left hjensen (Nat.cast_nonneg n)
   rw [hexpand] at hscore
   linarith
+
+/-- Explicit one-event empirical-Bernstein posterior-risk bound when the
+transported variance correction absorbs the retained Bennett logarithm.
+
+The balance hypothesis is the zero-residual branch of the joint score.  This
+endpoint keeps the fixed-sample, finite-catalog scope of the parent theorem:
+the catalog entry is predeclared, while the posterior may be selected after
+observing the sample. -/
+theorem finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem
+    [Fintype κ] [Fintype Z] [Fintype ι] [Nonempty ι]
+    {n : ℕ} (hn : 2 ≤ n)
+    (p : Z → ℝ) (hp : IsPMF p)
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    (ell : ι → Z → ℝ) {t eta w : κ → ℝ}
+    (hw : ∀ c, 0 < w c) {delta : ℝ}
+    (S : Fin n → Z)
+    (hS : S ∉ finiteJointMeanVarianceCatalogBadSamples n p prior ell t eta w delta)
+    (c : κ) (htc : 0 < t c)
+    (hbalance :
+      (n : ℝ) * (Real.exp (t c) - 1 - t c) ≤
+        Real.exp (-t c) * finiteJointMeanVarianceKappa n (eta c))
+    {rho : ι → ℝ} (hrho : IsPMF rho) :
+    posteriorAverage rho (finitePopulationRisk p ell) ≤
+      posteriorAverage rho (fun i => finiteEmpiricalRisk ell i S) +
+        (klDiv rho prior + Real.log (1 / (delta * w c))) /
+          (t c * (n : ℝ)) +
+        (eta c / t c) *
+          posteriorAverage rho (fun i => finiteEmpiricalVariance ell i S) := by
+  have hV :
+      0 ≤ posteriorAverage rho (finitePopulationVariance p ell) := by
+    apply Finset.sum_nonneg
+    intro i _
+    exact mul_nonneg (hrho.nonneg i)
+      (finitePopulationVariance_nonneg p hp ell i)
+  have hresidual :=
+    finiteJointMeanVariance_logResidual_nonpos_of_balance hV hbalance
+  have hraw :=
+    finiteJointMeanVariance_posteriorGap_le_of_not_mem
+      n p hp hprior ell hw S hS c hrho
+  have hcollapsed :
+      t c * (n : ℝ) *
+          (posteriorAverage rho (finitePopulationRisk p ell) -
+            posteriorAverage rho (fun i => finiteEmpiricalRisk ell i S)) ≤
+        klDiv rho prior + Real.log (1 / (delta * w c)) +
+          eta c * (n : ℝ) *
+            posteriorAverage rho (fun i => finiteEmpiricalVariance ell i S) := by
+    linarith
+  have hnR : (0 : ℝ) < (n : ℝ) := by
+    exact_mod_cast (lt_of_lt_of_le (by norm_num : 0 < 2) hn)
+  have hdenom : 0 < t c * (n : ℝ) := mul_pos htc hnR
+  have hdiv :
+      posteriorAverage rho (finitePopulationRisk p ell) -
+          posteriorAverage rho (fun i => finiteEmpiricalRisk ell i S) ≤
+        (klDiv rho prior + Real.log (1 / (delta * w c)) +
+            eta c * (n : ℝ) *
+              posteriorAverage rho (fun i => finiteEmpiricalVariance ell i S)) /
+          (t c * (n : ℝ)) := by
+    rw [le_div_iff₀ hdenom]
+    calc
+      (posteriorAverage rho (finitePopulationRisk p ell) -
+            posteriorAverage rho (fun i => finiteEmpiricalRisk ell i S)) *
+          (t c * (n : ℝ)) =
+        t c * (n : ℝ) *
+          (posteriorAverage rho (finitePopulationRisk p ell) -
+            posteriorAverage rho (fun i => finiteEmpiricalRisk ell i S)) := by
+          ring
+      _ ≤ _ := hcollapsed
+  have hsplit :
+      (klDiv rho prior + Real.log (1 / (delta * w c)) +
+            eta c * (n : ℝ) *
+              posteriorAverage rho (fun i => finiteEmpiricalVariance ell i S)) /
+          (t c * (n : ℝ)) =
+        (klDiv rho prior + Real.log (1 / (delta * w c))) /
+            (t c * (n : ℝ)) +
+          (eta c / t c) *
+            posteriorAverage rho (fun i => finiteEmpiricalVariance ell i S) := by
+    field_simp [ne_of_gt htc, ne_of_gt hnR]
+  rw [hsplit] at hdiv
+  linarith
+
+/-- Selector form of the zero-residual empirical-Bernstein posterior-risk
+bound.  The entry may depend on the observed sample and posterior because the
+single good event is simultaneous over the finite catalog. -/
+theorem finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem
+    [Fintype κ] [Fintype Z] [Fintype ι] [Nonempty ι]
+    {n : ℕ} (hn : 2 ≤ n)
+    (p : Z → ℝ) (hp : IsPMF p)
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    (ell : ι → Z → ℝ) {t eta w : κ → ℝ}
+    (hw : ∀ c, 0 < w c) {delta : ℝ}
+    (ht_pos : ∀ c, 0 < t c)
+    (hbalance : ∀ c,
+      (n : ℝ) * (Real.exp (t c) - 1 - t c) ≤
+        Real.exp (-t c) * finiteJointMeanVarianceKappa n (eta c))
+    (select : (Fin n → Z) → (ι → ℝ) → κ)
+    (S : Fin n → Z)
+    (hS : S ∉ finiteJointMeanVarianceCatalogBadSamples n p prior ell t eta w delta)
+    {rho : ι → ℝ} (hrho : IsPMF rho) :
+    posteriorAverage rho (finitePopulationRisk p ell) ≤
+      posteriorAverage rho (fun i => finiteEmpiricalRisk ell i S) +
+        (klDiv rho prior +
+            Real.log (1 / (delta * w (select S rho)))) /
+          (t (select S rho) * (n : ℝ)) +
+        (eta (select S rho) / t (select S rho)) *
+          posteriorAverage rho (fun i => finiteEmpiricalVariance ell i S) :=
+  finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem
+    hn p hp hprior ell hw S hS (select S rho) (ht_pos (select S rho))
+      (hbalance (select S rho)) hrho
 
 /-- Division form of the retained-variance posterior inequality for a strictly
 positive mean tilt. -/

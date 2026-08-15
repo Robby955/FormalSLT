@@ -118,9 +118,10 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Formalize the exact piecewise `xi` residual and its zero-residual
-explicit specialization for the checked one-event joint catalog, then treat
-countable, all-real, and time-uniform adaptation as separate process problems.
+**Target.** Formalize the remaining nonzero branches of the exact piecewise
+`xi` residual for the checked one-event joint catalog, then treat countable,
+all-real, and time-uniform adaptation as separate process problems. The
+zero-residual branch is checked.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -141,10 +142,13 @@ denominators explicit.
 catalogs are checked, including posterior- and sample-dependent selection
 without paying separately for every Cartesian pair. The retained Bennett factor
 is also checked inside one normalized fixed-sample joint score, and one finite
-master-mixture event gives the selected posterior bound with one KL term. The
-remaining explicit-bound step is the `xi` residual/zero-residual specialization;
-all-real or countable adaptation requires a distinct normalized-mixture
-argument.
+master-mixture event gives the selected posterior bound with one KL term. When
+the selected entry satisfies the checked coefficient balance, the retained
+logarithm is absorbed and the explicit posterior-risk bound retains empirical
+risk, empirical variance, and one KL-plus-catalog-weight confidence term. The
+remaining explicit-bound step is the nonzero part of the piecewise `xi`
+residual; all-real or countable adaptation requires a distinct normalized
+mixture argument.
 
 **Boundary.** The current final risk theorem is finite-IID and fixed-sample.
 Its fixed-parameter, separate weighted-catalog, and one-event joint-catalog forms

@@ -625,7 +625,7 @@ declarations; modules are relative to `FormalSLT`.
 | `finitePopulationVariance_le_weightedSquaredError` | `PACBayes.FiniteBoundedLossExponentialTilt` | Population risk minimizes the finite-PMF weighted squared error |
 | `finitePopulationVariance_mul_exp_neg_le_tilted` | `PACBayes.FiniteBoundedLossExponentialTilt` | Tilted population variance is at least `exp (-t)` times the base population variance |
 | `finiteBoundedLoss_centeredBennettNormalizer_le` | `PACBayes.FiniteBoundedLossExponentialTilt` | Retained-affine-factor Bennett bound for the centered lower-tail loss score |
-| `finiteJointMeanVarianceKappa_nonneg_of_eta_mul_card_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Nonnegativity of the joint variance coefficient on the exact range `eta * n <= 2 * (n - 1)` |
+| `finiteJointMeanVarianceKappa_nonneg_of_eta_mul_card_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Nonnegativity of the joint variance coefficient on the exact range η × n ≤ 2 × (n − 1) |
 | `finiteBoundedLossTilt_negativeEmpiricalVarianceMGF_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Negative Bessel empirical-variance moment bound under the lower-tail tilted finite PMF |
 | `finiteJointMeanVarianceMGF_le` | `PACBayes.FiniteJointMeanVarianceMGF` | Unnormalized fixed-sample joint lower-tail mean and Bessel empirical-variance exponential-moment bound |
 | `finiteJointMeanVariance_normalizedMGF_le_one` | `PACBayes.FiniteJointMeanVarianceMGF` | Normalized fixed-sample joint score has finite-product expectation at most one |
@@ -638,6 +638,9 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVariance_posteriorGap_div_le_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Division form of the retained-variance inequality for a strictly positive mean tilt |
 | `finiteJointMeanVariance_posteriorGap_le_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Selector endpoint: the catalog entry may depend on the sample and the posterior |
 | `finiteJointMeanVariance_posteriorGap_div_le_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Division form of the selector endpoint for all-positive mean tilts |
+| `finiteJointMeanVariance_logResidual_nonpos_of_balance` | `PACBayes.FiniteJointMeanVariancePACBayes` | Zero-residual coefficient balance absorbs the retained Bennett logarithm at every nonnegative variance |
+| `finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Explicit one-KL empirical-Bernstein posterior-risk bound for one balanced catalog entry |
+| `finiteJointMeanVariance_posteriorRisk_le_empiricalRisk_add_empiricalVariance_zeroResidual_selected_of_not_mem` | `PACBayes.FiniteJointMeanVariancePACBayes` | Sample- and posterior-dependent selector form of the zero-residual risk bound |
 
 ## Conditional sub-Gamma extractor
 

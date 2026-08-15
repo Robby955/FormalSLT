@@ -292,8 +292,10 @@
     unequal-weight, two-branch receipt, and the final risk layer imports it. A
     retained-Bennett joint mean/Bessel-variance score and one-event finite
     joint-pair posterior catalog are also checked, with one KL term at the
-    selected entry. The exact piecewise `xi` residual and zero-residual explicit
-    specialization, countable selectable `lambda` catalogs, exact all-real
+    selected entry. Its zero-residual coefficient branch now gives the explicit
+    selected posterior-risk bound in terms of empirical risk and empirical
+    variance. The remaining nonzero branches of the exact piecewise `xi`
+    residual, countable selectable `lambda` catalogs, exact all-real
     optimization, time-uniform empirical-Bernstein risk, continuous Bernstein
     posteriors, and infinite hypothesis classes remain open. The separate
     bounded-loss continuous lane currently covers a fixed spherical-Gaussian
