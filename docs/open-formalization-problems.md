@@ -63,8 +63,8 @@ interfaces once the theorem assumptions are clean enough to reuse.
 **Target.** Replace finite confidence-budget allocation with a normalized
 hypothesis--tilt e-process mixture, then extend the current fixed
 spherical-Gaussian specialization to broader posterior families. A first
-countable theorem should use declared positive tilt weights and expose the
-corresponding `log (1 / weight)` cost; it should not claim unrestricted
+countable process theorem should use declared positive tilt weights and expose
+the corresponding `log (1 / weight)` cost; it should not claim unrestricted
 post-sample optimization over all real tilts.
 
 The current repo proves finite PMFs, KL divergence nonnegativity, Gibbs
@@ -101,9 +101,10 @@ simultaneous over all continuous posteriors.
 
 **Dependencies.**
 
-- add a countable or all-`λ` confidence event beyond finite grids;
+- lift the checked countable fixed-sample master event to posterior and
+  exact-`xi` selection, or add an all-`λ` confidence event beyond finite grids;
 - construct a normalized joint hypothesis--tilt e-process beyond the checked
-  fixed-sample finite master mixture;
+  fixed-sample finite and countable master mixtures;
 - derive post-sample tilt selection only from a common checked event;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
@@ -118,9 +119,9 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Extend the checked exact piecewise `xi` residual beyond finite,
-predeclared catalogs: first to a countable normalized mixture, then to any
-all-real or time-uniform formulation supported by a genuine process argument.
+**Target.** Lift the checked support-aware countable normalized master event to
+posterior and exact piecewise-`xi` selection, then pursue any all-real or
+time-uniform formulation only through a genuine process argument.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -147,8 +148,13 @@ logarithm is absorbed and the explicit posterior-risk bound retains empirical
 risk, empirical variance, and one KL-plus-catalog-weight confidence term. The
 exact three-branch `xi` formula is checked as the attained maximum of the
 retained residual on `[0,1/4]`, and the selected posterior-risk endpoint adds
-`xi / t` on the same event. All-real or countable adaptation requires a
-distinct normalized mixture argument.
+`xi / t` on the same event. A `Nat`-indexed normalized master mixture is now
+checked: it includes product-law null samples in the bad set, proves the
+weighted moment series summable on every good sample, requires all catalog
+weights to be strictly positive for component extraction, and controls every
+entry's prior moment on one event. Its Donsker--Varadhan posterior and
+exact-`xi` selector lift remains open. All-real adaptation requires a distinct
+argument.
 
 **Boundary.** The current final risk theorem is finite-IID and fixed-sample.
 Its fixed-parameter, separate weighted-catalog, and one-event joint-catalog forms

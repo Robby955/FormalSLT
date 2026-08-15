@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C279-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-193-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-86%2C372-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C306-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-194-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-87%2C010-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -83,9 +83,9 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   explicitly by empirical risk, empirical variance, and that one KL term. For
   every admissible entry with `t > 0`, nonnegative `kappa`, and failed balance,
   the exact maximum of the retained residual on `[0,1/4]` is checked and
-  contributes the explicit penalty `xi / t`. All-real or
-  countable tilt optimization and time-uniform empirical-Bernstein risk remain
-  open.
+  contributes the explicit penalty `xi / t`. A support-aware countable master
+  event is checked separately, but its posterior/`xi` selector lift, all-real
+  optimization, and time-uniform empirical-Bernstein risk remain open.
 
 The Dudley core is finite by design. The finite-outcome endpoint
 `continuous_dudley_entropy_integral` assumes a finite sub-Gaussian process on a
@@ -288,6 +288,19 @@ declaration and prints its axiom profile.
   fixed-sample and finite-catalog;
   [`CheckFiniteJointMeanVarianceResidual.lean`](./examples/CheckFiniteJointMeanVarianceResidual.lean),
   [`FiniteJointMeanVarianceResidual.lean`](./FormalSLT/PACBayes/FiniteJointMeanVarianceResidual.lean)
+- **Countable fixed-sample joint master mixture** —
+  `countableJointMeanVariance_catalogBadSamples_mass_le_delta` extends the
+  prior-moment master event to a predeclared `Nat`-indexed catalog with
+  nonnegative summable weights of total mass at most one. The event includes
+  product-law null samples, which cost zero probability and make the real
+  `tsum` component extraction sound on every good sample. A geometric-weight
+  Boolean receipt proves one event controls all countably many entries,
+  evaluates the first two confidence shares as `4` and `8`, and separately
+  exercises the null-sample guard. This foundation is fixed-sample and does
+  not yet provide the countable posterior/`xi` selector endpoint, all-real
+  optimization, or a time-uniform process;
+  [`CheckCountableJointMeanVariancePACBayes.lean`](./examples/CheckCountableJointMeanVariancePACBayes.lean),
+  [`CountableJointMeanVariancePACBayes.lean`](./FormalSLT/PACBayes/CountableJointMeanVariancePACBayes.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -473,6 +486,10 @@ release check is in [Audit commands](#audit-commands).
   proves the exact piecewise residual maximum on `[0,1/4]` and adds the explicit
   `xi / t` penalty without changing the shared event or finite-catalog selector
   semantics.
+- Use `FormalSLT.PACBayes.CountableJointMeanVariancePACBayes` for the
+  support-aware fixed-sample `Nat`-indexed master event and per-entry prior
+  moment extraction. Its public surface stops before the Donsker--Varadhan,
+  posterior-risk, and exact-`xi` selector layers.
 - Use `FormalSLT.PACBayes.FiniteBoundedLossBernstein` for the separate
   fixed-`lambda` population-risk Bernstein event. Use
   `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk` to combine it with the
@@ -541,6 +558,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteJointMeanVarianceMGF`,
   `PACBayes.FiniteJointMeanVariancePACBayes`,
   `PACBayes.FiniteJointMeanVarianceResidual`,
+  `PACBayes.CountableJointMeanVariancePACBayes`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformScorePACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
@@ -575,10 +593,13 @@ The main learning-theory results are deliberately finite and explicit.
   hypothesis type and bounds the posterior average of per-hypothesis variances.
   A finite weighted empirical-variance tilt catalog makes a family of such
   tilts simultaneously valid under one event and supports sample- and
-  posterior-dependent selection. The joint master-mixture mass theorem uses
+  posterior-dependent selection. The finite joint master-mixture mass theorem uses
   nonnegative catalog weights with total at most one and `0 < delta`; its
   entrywise posterior bounds require every catalog weight to be strictly
-  positive and the prior to have full support.
+  positive and the prior to have full support. The countable master-mixture
+  foundation instead requires nonnegative summable weights with `tsum` at most
+  one; its component theorem requires positive weights and stops at prior
+  moments rather than posterior bounds.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space
@@ -598,11 +619,13 @@ The main learning-theory results are deliberately finite and explicit.
 - A general measurable-supremum or separability construction for non-finite
   classes
 - An infinite-class confidence sequence
-- All-real or countable tilt optimization and a time-uniform
-  empirical-Bernstein risk theorem. The fixed rational two-event theorem,
+- All-real tilt optimization, a countable posterior/`xi` selector, and a
+  time-uniform empirical-Bernstein risk theorem. The fixed rational two-event theorem,
   separately weighted finite `eta`/`lambda` catalogs, one-event finite
   joint-pair catalog, zero-residual specialization, and all three branches of
-  the exact finite-catalog `xi` residual are checked.
+  the exact finite-catalog `xi` residual are checked. A support-aware
+  countable master event and per-entry prior-moment extraction are also
+  checked, but they are not yet lifted to posterior-risk selection.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
@@ -677,8 +700,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 
 - [ ] Extend the checked Dudley boundary-certificate theorem to arbitrary
   measurable suprema and non-finite outcome constructions
-- [ ] Extend the checked exact piecewise `xi` residual from finite catalogs to
-  countable weighted tilt mixtures
+- [ ] Lift the checked countable master event to the posterior and exact
+  piecewise-`xi` selector endpoints
 - [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
 - [ ] Extend fixed-sample joint scores to a normalized hypothesis--tilt
   e-process mixture, then study conditional e-variable composition and

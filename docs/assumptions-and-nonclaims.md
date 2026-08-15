@@ -243,6 +243,16 @@ or all-real optimization claim is made; broader time-uniform
 empirical-Bernstein PAC-Bayes results already exist in the literature (Jang,
 Jun, Neu, and Orabona, COLT 2023; Chugg, Wang, and Ramdas, JMLR 2023).
 
+`PACBayes.CountableJointMeanVariancePACBayes` extends only the fixed-sample
+master-event layer to a predeclared `Nat`-indexed catalog. Its nonnegative
+weights are summable with total `tsum` at most one. Because a nonsummable real
+series has `tsum = 0`, the bad set explicitly includes every product-law null
+sample; these samples cost zero mass, while positive-mass samples admit the
+summability proof needed for component extraction. The checked result gives
+one event and a prior-moment bound for every positive-weight entry. It does not
+yet apply Donsker--Varadhan, state a countable posterior-risk or exact-`xi`
+selector theorem, optimize over all real tilts, or construct an e-process.
+
 `PACBayes.FiniteEmpiricalVariancePACBayes` lifts the normalized moment to one
 fixed-sample, fixed-tilt exceptional set of finite-product mass at most
 `delta`. The mass theorem assumes finite data and hypothesis types, a
@@ -313,7 +323,8 @@ and does not replace it. The zero-residual coefficient branch of the one-event
 catalog now removes the unknown population variance and gives the explicit
 empirical-Bernstein posterior-risk bound. The remaining branches are checked by
 the exact attained piecewise `xi` maximum on `[0,1/4]` and add `xi / t` to that
-same one-event bound. All-real or countable tilt optimization and a
+same one-event bound. The countable master-event foundation described above
+does not yet lift these posterior endpoints; all-real optimization and a
 time-uniform joint process are still open. A countable indicator-Bernstein
 catalog and exact all-real `lambda` optimization are also open.
 
