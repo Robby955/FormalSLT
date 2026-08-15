@@ -94,6 +94,9 @@ classify_witness() {
 #   optimized_lambda_confidence_sequence_subGamma / subGammaLogLogWidth_loglog_rate
 #   betting_confidence_sequence_of_condMean (concrete Rademacher witness, bet 1/4)
 #   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
+#   timeUniformPACBayes_tiltMixture_allPosteriors_bound
+#     (one finite weighted hypothesis--tilt e-process, two distinct tilts,
+#      a nonconstant Rademacher path, and one all-posterior Ville event)
 #   timeUniformIIDGaussianPACBayes_bound (fair-Bernoulli product stream with
 #     explicit KL, evaluated penalty, and a positive-mass failure cylinder)
 #   timeUniformIIDGaussianPACBayes_grid_bound / selected_bound (two fixed
@@ -141,6 +144,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckBettingCSNonVacuityWitness.lean"
   "examples/CheckTimeUniformPACBayes.lean"
   "examples/CheckTimeUniformScorePACBayes.lean"
+  "examples/CheckTimeUniformTiltMixture.lean"
   "examples/CheckIIDContinuousGaussianPACBayes.lean"
   "examples/CheckIIDContinuousGaussianGridPACBayes.lean"
   "examples/CheckDyadicEpochCS.lean"

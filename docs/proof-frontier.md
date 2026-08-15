@@ -74,9 +74,12 @@ files.
 - `pac-bayes-all-real-lambda`: the base fixed-tilt, fixed-posterior
   spherical-Gaussian i.i.d. specialization and finite fixed catalogs with
   sample-dependent selection are checked. The finite indicator-Bernstein lane
-  additionally has a posterior-uniform weighted tilt catalog; countable or
-  all-real lambda optimization and posterior-uniform general continuous
-  families remain open.
+  additionally has a posterior-uniform weighted tilt catalog. At process level,
+  one normalized finite hypothesis--tilt e-process now gives a common Ville
+  event, all-posterior validity, and post-path selection of a declared atom with
+  its exact weight penalty. Countable process-level or all-real lambda
+  optimization, i.i.d. specialization of that master, and posterior-uniform
+  general continuous families remain open.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
   checked for `[0,1]` losses under the explicit finite IID product law and

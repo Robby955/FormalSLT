@@ -195,6 +195,19 @@ sample and posterior. The finite catalog and positive weights satisfying
 `∑ j, w_j ≤ 1` must be declared in advance; this is not unrestricted
 optimization over real `λ`.
 
+`PACBayes.TimeUniformTiltMixture` is a separate generic process-level layer.
+It assumes finite nonempty hypothesis and tilt types, full-support normalized
+priors on both, adapted centered bounded increments with a common conditional
+second-moment proxy, and predeclared tilts satisfying `0 < lambda_j` and
+`b * lambda_j < 3`. The finite outer mixture is one e-process, so one Ville
+crossing controls every positive time, posterior PMF, and declared tilt atom.
+The selected boundary contains one hypothesis-posterior KL term and
+`log (1 / (delta * weight j))`; there is no second tilt KL or finite union
+bound. The selector chooses one atom after observing the path and posterior.
+This module does not provide an i.i.d. bounded-loss adapter, a measurable
+exceptional-event wrapper, a countable or all-real mixture, an arbitrary joint
+hypothesis--tilt posterior, or an exact-Bessel empirical-Bernstein process.
+
 `PACBayes.FiniteEmpiricalVariance` supplies the finite empirical-variance
 foundation for arbitrary real-valued per-hypothesis losses: population
 variance, Bessel-corrected empirical variance, its exact ordered-pair
@@ -324,8 +337,10 @@ catalog now removes the unknown population variance and gives the explicit
 empirical-Bernstein posterior-risk bound. The remaining branches are checked by
 the exact attained piecewise `xi` maximum on `[0,1/4]` and add `xi / t` to that
 same one-event bound. The countable master-event foundation described above
-does not yet lift these posterior endpoints; all-real optimization and a
-time-uniform joint process are still open. A countable indicator-Bernstein
+does not yet lift these posterior endpoints. All-real optimization and a
+time-uniform process for that fixed-sample Bessel score are still open; the
+generic finite tilt-master e-process above does not supply that nesting. A
+countable indicator-Bernstein
 catalog and exact all-real `lambda` optimization are also open.
 
 ### Algorithmic stability expected bound

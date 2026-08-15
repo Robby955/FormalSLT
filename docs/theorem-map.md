@@ -721,6 +721,18 @@ declarations; modules are relative to `FormalSLT`.
 | `pacBayesPriorMixture_supermartingale` | `PACBayes.TimeUniformPACBayes` | Prior mixture of per-hypothesis fixed-tilt exponential processes is a nonnegative supermartingale |
 | `timeUniformPACBayes_crossing_bound` | `PACBayes.TimeUniformPACBayes` | Ville crossing bound for the prior-mixture process over all times |
 | `timeUniformPACBayes_bound` | `PACBayes.TimeUniformPACBayes` | Process-level time-uniform PAC-Bayes bound: with probability at least `1 - δ`, the posterior running mean of the abstract martingale-difference process stays under the `cgf`/KL/`log(1/δ)` boundary for every `n ≥ 1` |
+| `pacBayesPriorTiltMixtureProcess` | `PACBayes.TimeUniformTiltMixture` | Finite normalized outer mixture of fixed-tilt PAC-Bayes prior-mixture processes |
+| `pacBayesPriorTiltMixtureProcess_nonneg` | `PACBayes.TimeUniformTiltMixture` | Pointwise nonnegativity of the finite hypothesis--tilt master under PMF priors |
+| `pacBayesPriorTiltMixtureProcess_zero` | `PACBayes.TimeUniformTiltMixture` | The normalized finite hypothesis--tilt master starts at one |
+| `pacBayesPriorTiltMixture_supermartingale` | `PACBayes.TimeUniformTiltMixture` | Finite positive weighted mixture of fixed-tilt prior processes is a nonnegative supermartingale |
+| `pacBayesPriorTiltMixture_eProcess` | `PACBayes.TimeUniformTiltMixture` | Packages the normalized finite hypothesis--tilt master as an e-process |
+| `pacBayesPriorTiltMixture_optionalContinuation` | `PACBayes.TimeUniformTiltMixture` | Bounded stopping preserves the master process integral bound |
+| `timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure` | `PACBayes.TimeUniformTiltMixture` | Common all-time failure set over every finite posterior PMF and declared tilt atom |
+| `timeUniformPACBayes_tiltMixture_crossing_bound` | `PACBayes.TimeUniformTiltMixture` | One Ville crossing bounds the outer mass of the finite master crossing event |
+| `timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_crossing` | `PACBayes.TimeUniformTiltMixture` | Any posterior/tilt boundary failure forces the weighted master to cross `1 / δ` |
+| `timeUniformPACBayes_tiltMixture_allPosteriors_bound` | `PACBayes.TimeUniformTiltMixture` | One outer-mass event controls every positive time, posterior PMF, and declared finite tilt atom |
+| `timeUniformPACBayes_tiltMixture_allPosteriors_of_not_mem` | `PACBayes.TimeUniformTiltMixture` | Outside the common event, every posterior and declared atom obeys the selected-weight boundary |
+| `timeUniformPACBayes_tiltMixture_selected_of_not_mem` | `PACBayes.TimeUniformTiltMixture` | Path- and posterior-dependent selection of one predeclared tilt atom with one hypothesis KL and `log(1/(δ w_j))` |
 | `scorePriorMixture_eProcess` | `PACBayes.TimeUniformScorePACBayes` | A full-support finite prior mixture of exponentiated score e-processes is an e-process |
 | `timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing` | `PACBayes.TimeUniformScorePACBayes` | Any all-time/all-posterior score failure forces the common prior-mixture e-process to cross `1 / δ` |
 | `timeUniformScorePACBayes_allPosteriors_bound` | `PACBayes.TimeUniformScorePACBayes` | Generic finite-hypothesis compiler: one Ville event controls every time and every posterior through pathwise Donsker--Varadhan |

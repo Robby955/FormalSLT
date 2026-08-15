@@ -14,6 +14,7 @@ import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
 import FormalSLT.PACBayes.TimeUniformPACBayes
+import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes

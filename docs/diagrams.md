@@ -196,8 +196,9 @@ flowchart TD
     eproc["e-processes<br/>Type-I control, optional continuation"]
     cs["Confidence sequences<br/>mixture, optimized-λ, dyadic-epoch, betting,<br/>empirical-Bernstein (predictable proxy)"]
     score["Score e-process + prior mixture"]
+    tiltmix["Finite weighted hypothesis--tilt master<br/>one Ville event, selected atom"]
     pathwise["Pathwise PAC-Bayes compiler<br/>one event, all posteriors, all times"]
-    tu["Time-uniform PAC-Bayes endpoints<br/>finite-class IID + spherical Gaussian"]
+    tu["Time-uniform PAC-Bayes endpoints<br/>process-level finite tilt + finite-class IID<br/>+ spherical Gaussian"]
     pathlaw["Finite transition PMFs<br/>Ionescu–Tulcea path laws"]
     markovrisk["Markov conditional-risk certificates<br/>prequential risk, sharp 1/4 variance proxy"]
     markovpb["Markov prequential PAC-Bayes<br/>fixed tilt 0 &lt; λ &lt; 3, finite catalog"]
@@ -215,7 +216,9 @@ flowchart TD
     ville --> eproc
     ville --> cs
     eproc --> score
+    eproc --> tiltmix
     score --> pathwise
+    tiltmix --> pathwise
     ville --> pathwise
     pathwise --> tu
     pathlaw --> markovrisk
@@ -235,7 +238,7 @@ flowchart TD
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
     class condmgf,pathlaw,markovrisk,otp,stats,pbc,prefix checked;
-    class supermart,ville,eproc,cs,score,pathwise sequential;
+    class supermart,ville,eproc,cs,score,tiltmix,pathwise sequential;
     class tu,markovpb,ttm endpointNode;
     class markovopen1,markovopen2,otpopen open;
 ```
@@ -257,6 +260,9 @@ These diagrams do not claim more than the theorem signatures state:
 - The checked countable master controls positive-weight prior moments; it is
   not yet a countable posterior/exact-ξ selector theorem, an all-real tilt
   optimizer, or a time-uniform process.
+- The finite time-uniform tilt master selects one declared atom; it is not an
+  countable mixture, an arbitrary joint hypothesis--tilt posterior, an all-real
+  tilt optimizer, or an i.i.d. loss specialization.
 - The time-uniform PAC-Bayes endpoints do not imply a time-uniform
   empirical-Bernstein theorem with exact Bessel variance.
 - The posterior average of per-hypothesis variances is not the variance of

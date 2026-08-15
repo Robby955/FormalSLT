@@ -110,6 +110,11 @@ THEOREMS=(
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayes_allPosteriors_bound"
   "FormalSLT.PACBayes.TimeUniformScore.posteriorTarget_le_of_not_mem_timeUniformScorePACBayesFailure"
+  "FormalSLT.PACBayes.TimeUniform.pacBayesPriorTiltMixture_eProcess"
+  "FormalSLT.PACBayes.TimeUniform.pacBayesPriorTiltMixture_optionalContinuation"
+  "FormalSLT.PACBayes.TimeUniform.timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_crossing"
+  "FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_allPosteriors_bound"
+  "FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_selected_of_not_mem"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -153,6 +158,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
+  echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   for t in "${THEOREMS[@]}"; do
@@ -189,6 +195,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
+  FormalSLT.PACBayes.TimeUniformTiltMixture \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes >/dev/null
 
