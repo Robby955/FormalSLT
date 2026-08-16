@@ -613,6 +613,11 @@ declarations; modules are relative to `FormalSLT`.
 | `finiteJointMeanVarianceResidualRate` | `PACBayes.FiniteJointMeanVarianceResidual` | Transported population-variance coefficient per observation |
 | `finiteJointMeanVarianceResidual` | `PACBayes.FiniteJointMeanVarianceResidual` | Retained logarithmic population-variance residual per observation |
 | `finiteJointMeanVarianceXi` | `PACBayes.FiniteJointMeanVarianceResidual` | Exact three-branch maximum of the retained residual on the bounded-loss variance interval |
+| `finiteEmpiricalBernsteinTiltOfScale` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Mean tilt `s / (1 + 2s)` attached to a declared empirical-Bernstein scale |
+| `finiteEmpiricalBernsteinEtaOfScale` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Rational variance tilt `s² / (2(1 + 2s))` satisfying the checked balance condition for `0 < s ≤ 2` |
+| `finiteEmpiricalBernsteinDyadicScale` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Predeclared dyadic scale `2 / 2^j` used by the finite optimizer catalog |
+| `finiteEmpiricalBernsteinGridDepth` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Canonical catalog depth `clog 2 n` for the closed-form endpoint |
+| `finiteEmpiricalBernsteinSqrtBadSamples` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | One bad-sample set for the canonical logarithmic scale grid |
 
 | Declaration | Module | Role |
 |---|---|---|
@@ -659,6 +664,15 @@ declarations; modules are relative to `FormalSLT`.
 | `posteriorAverage_finitePopulationVariance_mem_Icc` | `PACBayes.FiniteJointMeanVarianceResidual` | Posterior-averaged bounded-loss population variance remains in `[0, 1/4]` |
 | `finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem` | `PACBayes.FiniteJointMeanVarianceResidual` | One-event one-KL empirical-Bernstein posterior-risk bound with the exact residual penalty |
 | `finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem` | `PACBayes.FiniteJointMeanVarianceResidual` | Sample- and posterior-dependent selector form of the exact-residual risk bound |
+| `finiteJointMeanVariance_balance_of_tilt` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | The explicit rational variance tilt absorbs the joint Bennett residual for `0 ≤ t ≤ 2/5` |
+| `finiteJointMeanVariance_balance_of_scale` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Every declared scale `0 < s ≤ 2` produces an admissible zero-residual joint pair |
+| `finiteEmpiricalBernsteinScale_badSamples_mass_le_delta` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | One shared finite-scale event has product-law mass at most `delta` |
+| `finiteEmpiricalBernstein_posteriorRisk_le_scale_selected_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Exact scale-form one-event bound `Rhat + L/(sn) + 2L/n + (s/2)Vhat` with post-sample posterior and scale selection |
+| `exists_dyadicScale_optimizer_bound` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | A concrete finite dyadic grid approximates the continuous scale optimizer by `(5/4) * sqrt(2AV) + A/2` |
+| `finiteEmpiricalBernsteinDyadic_posteriorRisk_le_sqrt_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Direct square-root-plus-linear posterior bound for a finite dyadic grid reaching the optimizer |
+| `finiteEmpiricalBernsteinGridDepth_coverage` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | The fixed depth `clog 2 n` automatically reaches every posterior's empirical-variance optimizer scale |
+| `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | The canonical logarithmic-grid exceptional set has product-law mass at most `delta` |
+| `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinSqrt` | Closed-form one-KL empirical-Bernstein PAC-Bayes bound with explicit `5/4` square-root and `5/2` linear constants |
 | `countableJointMeanVarianceMasterMixture_nonneg` | `PACBayes.CountableJointMeanVariancePACBayes` | Nonnegativity of the countable master mixture under nonnegative weights |
 | `countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos` | `PACBayes.CountableJointMeanVariancePACBayes` | Summability of the weighted prior-moment series on every positive-product-mass sample |
 | `countableJointMeanVariance_masterMixture_expectation_le_weightTsum` | `PACBayes.CountableJointMeanVariancePACBayes` | Expected countable master mixture is at most the total `tsum` of catalog weights |

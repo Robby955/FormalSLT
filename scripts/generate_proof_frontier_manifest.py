@@ -86,19 +86,22 @@ FRONTIER_LANES: list[dict[str, str]] = [
     {
         "id": "continuous-dudley-entropy-integral",
         "status": "partially_closed",
-        "scope": "unit-interval example plus total-bounded bridge; continuous integral remains open",
+        "scope": (
+            "finite-outcome continuous entropy-integral endpoints under explicit "
+            "total-boundedness, separable-terminal, modulus, and boundary "
+            "certificates, plus concrete selected-cover capstones"
+        ),
         "difficulty": "hard",
         "source": "docs/next-lane.md",
         "next_step": (
-            "Package the unit-interval Dudley example and then generalize the "
-            "endpoint-mesh terminal step beyond the exact half/quarter meshes. "
-            "The full continuous entropy-integral theorem still needs analytic "
-            "and measurability assumptions."
+            "Construct the measurable-supremum and separable-process bridge on "
+            "a general probability space, beyond the checked finite-outcome "
+            "and supplied-boundary interfaces."
         ),
         "boundary": (
-            "The unit-interval example exercises the non-finite metric index "
-            "route, but it does not claim separability, measurable arbitrary "
-            "suprema, or a continuous Dudley theorem."
+            "The entropy-integral algebra and finite-outcome endpoint are "
+            "checked. The library does not yet construct arbitrary measurable "
+            "suprema or discharge a general measure-side chaining budget."
         ),
     },
     {
@@ -115,8 +118,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "next_step": (
             "Extend the checked finite normalized hypothesis--tilt e-process "
             "to a countable mixture with explicit summability obligations, "
-            "then pursue honest all-real localization and generalize the fixed "
-            "spherical-Gaussian posterior lane."
+            "add its i.i.d. specialization, then pursue honest all-real "
+            "localization using continuous score control or a "
+            "supremum-to-integral argument and generalize "
+            "the fixed spherical-Gaussian posterior lane."
         ),
         "boundary": (
             "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, "
@@ -126,7 +131,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "The generic time-uniform master also supports a selected atom "
             "from one finite normalized tilt prior, but has no i.i.d. adapter "
             "and is not countable, all-real, or simultaneous over arbitrary "
-            "continuous posteriors."
+            "continuous posteriors. A separate fixed-sample countable joint "
+            "master controls prior moments but has no posterior selector. No "
+            "result is simultaneous over all continuous posteriors or all real "
+            "tilts."
         ),
     },
     {
@@ -143,7 +151,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "per-hypothesis joint mean/Bessel-variance MGF core and a "
             "one-event weighted joint-pair posterior catalog with selector, "
             "including its explicit zero-residual branch and exact attained "
-            "three-piece residual penalty, plus a support-aware Nat-indexed "
+            "three-piece residual penalty, a closed-form clog-depth dyadic "
+            "square-root-plus-linear endpoint, plus a support-aware Nat-indexed "
             "countable master mixture and per-entry prior-moment extraction"
         ),
         "difficulty": "hard",
@@ -156,28 +165,36 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "all-real and time-uniform adaptation as separate process problems."
         ),
         "boundary": (
-            "The posterior and exact-xi endpoints are fixed-sample, finite, "
-            "and declared in advance: one master-mixture confidence event and "
-            "one KL term per selected pair. The countable foundation is also "
+            "The posterior, exact-xi, and closed-form dyadic endpoints are "
+            "fixed-sample and finite. Their catalogs are declared in advance; "
+            "one master-mixture confidence event carries one KL term per "
+            "selected pair. The countable foundation is also "
             "fixed-sample and stops at per-entry prior moments; its posterior "
             "and xi selector lift is open. The separately budgeted rational "
-            "risk theorem remains a distinct two-event result. No lane gives "
-            "all-real or time-uniform inference."
+            "risk theorem remains a distinct two-event result. This "
+            "empirical-Bernstein lane gives neither all-real nor time-uniform "
+            "inference."
         ),
     },
     {
         "id": "sharp-mcdiarmid-product-kernel",
-        "status": "blocked",
-        "scope": "bounded-differences concentration",
+        "status": "closed",
+        "scope": (
+            "sharp one-sided, lower-tail, and two-sided bounded-differences "
+            "concentration for independent finite product coordinates, including "
+            "heterogeneous marginal laws and downstream learning wrappers"
+        ),
         "difficulty": "hard",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Identify or build the product-kernel conditional-expectation "
-            "decomposition needed for a range-based Hoeffding route."
+            "No immediate closure work: reuse the checked sharp kernel in "
+            "downstream theorems, or separately study dependent-coordinate "
+            "extensions."
         ),
         "boundary": (
-            "The current high-probability bounds use the Azuma constant; sharp "
-            "McDiarmid should wait for the required measure-theoretic layer."
+            "The sharp product-kernel route assumes independent finite product "
+            "coordinates and explicit bounded differences; it is not a dependent-"
+            "data concentration theorem."
         ),
     },
 ]

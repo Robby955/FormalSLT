@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C330-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-195-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-87%2C677-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C387-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-196-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-88%2C920-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -28,6 +28,23 @@ publicly released on May 8, 2026. A verifier-gated formalization route built on
 the library was accepted at the ICML 2026 AI for Math workshop; see
 [*From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical
 Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
+
+## Flagship results
+
+FormalSLT's main research surface is organized around three end-to-end results.
+The statistical ingredients are established in the literature; the repository
+claim is the checked Lean specialization or derived finite-sample endpoint, not
+a broad priority claim.
+
+| Result | Checked endpoint | Scope | Numerical or theorem-facing receipt |
+|---|---|---|---|
+| **Closed-form empirical-Bernstein PAC-Bayes** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
+| **Time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_allPosteriors_bound` | One common event over every positive time and finite posterior PMF for IID `[0,1]` losses and a fixed declared tilt | [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean) discharges the IID process obligations; a dedicated positive-KL subunit numerical receipt remains planned |
+| **Finite Markov prequential PAC-Bayes** | `markovPACBayes_prequentialRisk_certificate` | Finite transition PMFs, deterministic initial state, fixed finite predictor catalog, fixed tilt, and encountered one-step conditional risk rather than stationary risk | [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean): asymmetric two-state chain, path-selected point posterior, exact `KL = log 2`, and an `n = 1024` numerical receipt derived from the simultaneous all-time theorem |
+
+The source theorem, exact agreement, material differences, and external-review
+questions for each result are tracked in
+[`docs/LITERATURE.md`](./docs/LITERATURE.md).
 
 ## Current results
 
@@ -86,8 +103,14 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
   every admissible entry with `t > 0`, nonnegative `kappa`, and failed balance,
   the exact maximum of the retained residual on `[0,1/4]` is checked and
   contributes the explicit penalty `xi / t`. A support-aware countable master
-  event is checked separately, but its posterior/`xi` selector lift, all-real
-  optimization, and time-uniform empirical-Bernstein risk remain open.
+  event is checked separately. The closed-form flagship now fixes a dyadic
+  scale grid of depth `clog 2 n` before observing the data and proves, on one
+  event of failure mass at most `delta`,
+  `R(rho) <= Rhat(rho) + (5/4) sqrt(2 Vhat(rho) L(rho) / n)
+  + (5/2) L(rho) / n`, where
+  `L(rho) = KL(rho || prior) + log((clog 2 n + 1) / delta)`.
+  The countable posterior/`xi` selector lift, all-real optimization, and
+  time-uniform exact-Bessel empirical-Bernstein risk remain open.
 
 The Dudley core is finite by design. The finite-outcome endpoint
 `continuous_dudley_entropy_integral` assumes a finite sub-Gaussian process on a
@@ -290,6 +313,21 @@ declaration and prints its axiom profile.
   fixed-sample and finite-catalog;
   [`CheckFiniteJointMeanVarianceResidual.lean`](./examples/CheckFiniteJointMeanVarianceResidual.lean),
   [`FiniteJointMeanVarianceResidual.lean`](./FormalSLT/PACBayes/FiniteJointMeanVarianceResidual.lean)
+- **Closed-form empirical-Bernstein PAC-Bayes bound** —
+  `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and
+  `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` turn the
+  one-event joint score into the literature-shaped square-root-plus-linear
+  endpoint. The catalog is fixed at dyadic scales `2 / 2^j` for
+  `j <= clog 2 n`; the sample and posterior may then select the useful atom on
+  the already-simultaneous event. The final constants are `5/4` on
+  `sqrt(2 Vhat L / n)` and `5/2` on `L/n`, with one KL term and logarithmic
+  grid cost. The `n = 64`, `delta = 1/20` receipt has positive KL, positive
+  empirical variance, an explicit positive-mass good sample, and a ceiling
+  below `99/100`. The hypothesis catalog and full-support prior are fixed
+  before the sample. This is fixed-sample and finite-hypothesis; it is neither
+  all-real optimized nor time-uniform;
+  [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean),
+  [`FiniteEmpiricalBernsteinSqrt.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinSqrt.lean)
 - **Countable fixed-sample joint master mixture** —
   `countableJointMeanVariance_catalogBadSamples_mass_le_delta` extends the
   prior-moment master event to a predeclared `Nat`-indexed catalog with
@@ -506,6 +544,10 @@ release check is in [Audit commands](#audit-commands).
   proves the exact piecewise residual maximum on `[0,1/4]` and adds the explicit
   `xi / t` penalty without changing the shared event or finite-catalog selector
   semantics.
+- Use `FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt` for the direct
+  square-root-plus-linear one-event theorem. Its `clog 2 n` dyadic catalog is
+  predeclared; the posterior is data-dependent, and the variance is the
+  posterior average of per-hypothesis Bessel empirical variances.
 - Use `FormalSLT.PACBayes.CountableJointMeanVariancePACBayes` for the
   support-aware fixed-sample `Nat`-indexed master event and per-entry prior
   moment extraction. Its public surface stops before the Donsker--Varadhan,
@@ -578,6 +620,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteJointMeanVarianceMGF`,
   `PACBayes.FiniteJointMeanVariancePACBayes`,
   `PACBayes.FiniteJointMeanVarianceResidual`,
+  `PACBayes.FiniteEmpiricalBernsteinSqrt`,
   `PACBayes.CountableJointMeanVariancePACBayes`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformScorePACBayes`,
@@ -620,7 +663,9 @@ The main learning-theory results are deliberately finite and explicit.
   positive and the prior to have full support. The countable master-mixture
   foundation instead requires nonnegative summable weights with `tsum` at most
   one; its component theorem requires positive weights and stops at prior
-  moments rather than posterior bounds.
+  moments rather than posterior bounds. The closed-form dyadic endpoint assumes
+  `0 < delta < 1`, fixes the finite hypothesis catalog and full-support prior
+  before the sample, and uses the predeclared depth `Nat.clog 2 n`.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space. The finite
@@ -639,10 +684,8 @@ The main learning-theory results are deliberately finite and explicit.
 
 ### Not yet proved
 
-- A general continuous Dudley entropy-integral theorem with arbitrary
-  measurable suprema
-- A general measurable-supremum or separability construction for non-finite
-  classes
+- A general probability-space Dudley theorem that constructs arbitrary
+  measurable suprema and the required separability/chaining interface
 - An infinite-class confidence sequence
 - All-real tilt optimization, a countable posterior/`xi` selector, a countable
   process-level tilt mixture, and a time-uniform empirical-Bernstein risk
@@ -650,9 +693,10 @@ The main learning-theory results are deliberately finite and explicit.
   rational two-event theorem,
   separately weighted finite `eta`/`lambda` catalogs, one-event finite
   joint-pair catalog, zero-residual specialization, and all three branches of
-  the exact finite-catalog `xi` residual are checked. A support-aware
-  countable master event and per-entry prior-moment extraction are also
-  checked, but they are not yet lifted to posterior-risk selection.
+  the exact finite-catalog `xi` residual are checked. The closed-form dyadic
+  square-root-plus-linear endpoint is also checked. A support-aware countable
+  master event and per-entry prior-moment extraction are checked, but they are
+  not yet lifted to posterior-risk selection.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,

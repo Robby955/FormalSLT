@@ -138,6 +138,7 @@ flowchart TD
         jointcat["One-event weighted finite joint (t, η) catalog<br/>one KL term at the selected entry"]
         zerores["Balanced zero-residual endpoint"]
         xires["Exact attained ξ residual endpoint<br/>zero, v = 1/4, and interior branches"]
+        sqrtbound["Closed-form logarithmic-grid endpoint<br/>5/4 square-root + 5/2 linear constants"]
     end
     countablemaster["Support-aware countable weighted master<br/>Nat-indexed (t, η), positive-weight prior moments"]
     countableposterior["Countable posterior / exact-ξ<br/>selector lift (open)"]
@@ -160,6 +161,7 @@ flowchart TD
     jointmgf --> jointcat
     jointcat --> zerores
     zerores --> xires
+    zerores --> sqrtbound
     jointmgf --> countablemaster
     countablemaster -.-> countableposterior
     jointcat -.-> allreal
@@ -169,13 +171,16 @@ flowchart TD
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
     class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster checked;
-    class mcallester,ebrisk,zerores,xires endpointNode;
+    class mcallester,ebrisk,zerores,xires,sqrtbound endpointNode;
     class countableposterior,allreal,tueb open;
 ```
 
 The finite joint route thresholds one prior-and-catalog master mixture, so the
 selected entry may depend on the sample and the posterior while paying one KL
-term. The checked countable foundation instead controls every positive-weight
+term. Its closed-form endpoint fixes the dyadic grid in advance through
+`Nat.clog 2 n` and proves the optimizer coverage inside Lean; it does not assume
+a sample- or posterior-dependent grid choice. The checked countable foundation
+instead controls every positive-weight
 prior moment through one support-aware master event. It does not yet supply the
 posterior/Donsker–Varadhan or exact-ξ selector endpoint. The variance events
 bound the posterior average of per-hypothesis variances; they do not bound the
@@ -260,7 +265,7 @@ These diagrams do not claim more than the theorem signatures state:
 - The checked countable master controls positive-weight prior moments; it is
   not yet a countable posterior/exact-ξ selector theorem, an all-real tilt
   optimizer, or a time-uniform process.
-- The finite time-uniform tilt master selects one declared atom; it is not an
+- The finite time-uniform tilt master selects one declared atom; it is not a
   countable mixture, an arbitrary joint hypothesis--tilt posterior, an all-real
   tilt optimizer, or an i.i.d. loss specialization.
 - The time-uniform PAC-Bayes endpoints do not imply a time-uniform

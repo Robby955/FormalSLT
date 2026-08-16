@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1440" height="790" viewBox="0 0 1440 790" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT proof landscape</title>
-  <desc id="desc">Theorem-family map of FormalSLT. A shared foundation band (core learning definitions, probability foundations, concentration primitives, martingale infrastructure) feeds five machine-checked lanes: finite learning, metric entropy, fixed-sample PAC-Bayes, anytime-valid inference, and dependent plus compositional results. The lanes summarize checked theorem families and endpoint surfaces. Conceptual map, not a literal import graph; exact assumptions are recorded in theorem signatures and checkers.</desc>
+  <desc id="desc">Theorem-family map of FormalSLT. A shared foundation band (core learning definitions, probability foundations, concentration primitives, martingale infrastructure) feeds five machine-checked lanes: finite learning, metric entropy, fixed-sample PAC-Bayes including a closed-form empirical-Bernstein endpoint, anytime-valid inference, and dependent plus compositional results. The lanes summarize checked theorem families and endpoint surfaces. Conceptual map, not a literal import graph; exact assumptions are recorded in theorem signatures and checkers.</desc>
   <defs>
     <marker id="arrow-slate" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
       <path d="M0,0 L10,4 L0,8 Z" fill="#475569"/>
@@ -119,10 +119,10 @@
 
   <rect x="596" y="494" width="246" height="145" rx="10" class="node-amber"/>
   <text x="719" y="519" text-anchor="middle" class="node-title">Catalog endpoints</text>
-  <text x="719" y="543" text-anchor="middle" class="node-line">one-event weighted finite</text>
-  <text x="719" y="564" text-anchor="middle" class="node-line">(t, &#951;) catalogs, one KL term;</text>
-  <text x="719" y="585" text-anchor="middle" class="node-line">balanced zero-residual and</text>
-  <text x="719" y="606" text-anchor="middle" class="node-line">exact &#958; residual endpoints</text>
+  <text x="719" y="543" text-anchor="middle" class="node-line">one-event finite catalogs,</text>
+  <text x="719" y="564" text-anchor="middle" class="node-line">one KL term + exact &#958;;</text>
+  <text x="719" y="585" text-anchor="middle" class="node-line">closed-form empirical-Bernstein</text>
+  <text x="719" y="606" text-anchor="middle" class="node-line">dyadic square-root endpoint</text>
 
   <!-- Lane 4: anytime-valid inference -->
   <rect x="870" y="310" width="246" height="150" rx="10" class="node-purple"/>

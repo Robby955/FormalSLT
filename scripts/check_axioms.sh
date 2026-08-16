@@ -99,6 +99,15 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVarianceXi_isGreatest"
   "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem"
   "FormalSLT.PACBayes.FiniteJointMeanVarianceResidual.finiteJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteJointMeanVariance_balance_of_tilt"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteJointMeanVariance_balance_of_scale"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinScale_badSamples_mass_le_delta"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernstein_posteriorRisk_le_scale_selected_of_not_mem"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.exists_dyadicScale_optimizer_bound"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinDyadic_posteriorRisk_le_sqrt_of_not_mem"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinGridDepth_coverage"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta"
+  "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVarianceMasterMixture_nonneg"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_masterMixture_expectation_le_weightTsum"
@@ -156,6 +165,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
+  echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
@@ -193,6 +203,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteJointMeanVarianceMGF \
   FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes \
   FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
+  FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.PACBayes.TimeUniformTiltMixture \

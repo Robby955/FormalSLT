@@ -86,6 +86,9 @@ classify_witness() {
 #     posteriorRisk_le_empiricalRisk_add_empiricalVariance_weightedCatalog_selected_of_not_mem
 #     (two eta entries, two lambda entries, positive half-weights, separate
 #     budgets, and genuinely sample-dependent variance/risk selectors)
+#   finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem
+#     (95% confidence, point-posterior KL = log 2, Bessel variance 16/63,
+#     explicit good sample, and final theorem-produced ceiling below one)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -133,6 +136,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalVarianceTiltCatalog.lean"
   "examples/CheckFiniteEmpiricalBernsteinRisk.lean"
   "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
+  "examples/CheckFiniteEmpiricalBernsteinSqrt.lean"
   "examples/CheckFiniteJointMeanVariancePACBayes.lean"
   "examples/CheckFiniteJointMeanVarianceResidual.lean"
   "examples/CheckCountableJointMeanVariancePACBayes.lean"
