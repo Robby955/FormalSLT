@@ -129,3 +129,29 @@ FormalSLT's source at regeneration time.
 Generated benchmark outputs are local artifacts unless they are explicitly
 reviewed and committed. Do not describe a smoke-test run as a formal proof or a
 scientific validation study.
+
+## Empirical-Bernstein flagship constants
+
+`empirical_bernstein_flagship.py` evaluates the all-sample-size stitched
+empirical-Bernstein theorem and fixed-sample comparators on identical balanced
+Bernoulli inputs. It includes:
+
+- the sharper dyadic-epoch and simpler sample-size forms of the stitched bound;
+- FormalSLT's fixed-sample logarithmic-grid empirical-Bernstein bound;
+- a fixed-budget McAllester/Hoeffding square-root comparator; and
+- numerical upper inversion of the formalized Maurer/Seeger PAC-Bayes-kl
+  inequality.
+
+The generated report records every formula, the differing coverage regimes,
+and a deterministic raw-ceiling nonvacuity scan. The PAC-Bayes-kl inversion is
+floating-point bisection and is not itself Lean-checked.
+
+```bash
+python3 benchmark/empirical_bernstein_flagship.py --self-test
+python3 benchmark/empirical_bernstein_flagship.py
+```
+
+The default run writes:
+
+- `benchmark/output/empirical_bernstein_flagship.csv`
+- `benchmark/output/empirical_bernstein_flagship.md`
