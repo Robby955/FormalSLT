@@ -31,15 +31,18 @@ files.
 
 - `finite-markov-prequential-risk`: the finite-state, deterministic-start
   path-law bridge, sharp universal `1/4` variance proxy, fixed-predictor
-  finite-grid certificate, and fixed-tilt finite-catalog PAC-Bayes certificate
-  for `0 < λ < 3` are checked. The PAC-Bayes event is measurable and
-  simultaneous over every positive time and posterior PMF, so the posterior
-  may be selected after the path is observed. The next reviewable extensions
-  are a supplied initial law, predictable or independently trained catalogs,
-  and declared finite or normalized countable tilt selection. The result is
-  not a same-trajectory fitting theorem, an arbitrary real-tilt optimization
-  theorem, a stationarity or mixing theorem, or a continuous-state
-  stochastic-dynamics result.
+  finite-grid certificate, and finite weighted-tilt PAC-Bayes certificate are
+  checked. One measurable exceptional event has mass at most `delta`; on its
+  complement the bound is simultaneous over every positive time, posterior
+  PMF, and predeclared finite tilt atom, so the posterior and one atom may be
+  selected after the path is observed. The pointwise selector need not be
+  measurable or adapted and adds no optional-stopping result. The next
+  reviewable extensions are a supplied initial law, predictable or
+  independently trained catalogs, and normalized countable or predictable
+  tilt selection. The result is not a same-trajectory fitting theorem, an
+  arbitrary real-tilt optimization theorem, an arbitrary joint
+  predictor--tilt posterior theorem, a stationarity or mixing theorem, or a
+  continuous-state stochastic-dynamics result.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

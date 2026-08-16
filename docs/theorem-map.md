@@ -811,6 +811,16 @@ declarations; modules are relative to `FormalSLT`.
 | `markovPosteriorAverageConditionalRisk_lt_of_not_mem` | `StochasticDynamics.MarkovPACBayes` | Outside the common event, controls every posterior and every positive time by empirical prequential risk plus KL and the sub-Gamma boundary |
 | `subGammaCgf_oneFourth_one_div` | `StochasticDynamics.MarkovPACBayes` | Rewrites the `1/4`-variance sub-Gamma contribution as `lambda / (8 * (1 - lambda / 3))` |
 | `markovPACBayes_prequentialRisk_certificate` | `StochasticDynamics.MarkovPACBayes` | Publication-facing finite-catalog theorem with a measurable common event, all-time and all-posterior validity, and explicit KL penalty |
+| `markovPACBayesTiltMixtureAnyPosteriorUpperFailure` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Risk-facing event in which some declared tilt, posterior, and positive time violates its exact prior-weight boundary |
+| `markovPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Embeds the Markov risk-facing event into the finite hypothesis--tilt master-process failure event |
+| `markovPACBayes_tiltMixture_allPosteriors_bound` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Controls the raw all-time, all-posterior, finite-tilt Markov failure set in outer probability through one master e-process |
+| `markovPACBayesTiltMixtureExceptionalEvent` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Measurable hull of the Markov posterior/time/tilt failure event |
+| `markovPACBayesTiltMixtureExceptionalEvent_measurable` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Proves measurability of the shared finite-tilt Markov exceptional event |
+| `markovPACBayesTiltMixtureRawFailure_subset_exceptionalEvent` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Shows that the measurable hull contains every raw posterior/tilt violation |
+| `markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Gives one measurable exceptional event containing every all-time/all-posterior/all-tilt violation, with ordinary probability at most `delta` |
+| `markovPosteriorAverageConditionalRisk_lt_tiltMixture_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Outside the shared event, every declared tilt and posterior obeys the weighted Markov prequential-risk boundary |
+| `markovPosteriorAverageConditionalRisk_lt_tiltMixture_selected_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Pointwise post-path selection of one predeclared tilt atom on the common event; no measurable or adapted selector and no added optional-stopping result |
+| `markovPACBayes_tiltMixture_prequentialRisk_certificate` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Publication-facing measurable certificate simultaneous over all positive times, posteriors, and declared finite tilt atoms |
 
 ## Named tail-probability corollaries
 

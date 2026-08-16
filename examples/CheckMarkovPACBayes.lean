@@ -3,7 +3,7 @@ Copyright (c) 2026 Robby Sneiderman. All rights reserved.
 Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
-import FormalSLT.StochasticDynamics.MarkovPACBayes
+import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 
 open MeasureTheory ProbabilityTheory
 open FormalSLT.PACBayesKL
@@ -225,6 +225,142 @@ theorem asymmetricBool_adaptiveMarkovPACBayes_certificate :
   refine ⟨hposterior, hkl, hemp, ?_⟩
   linarith
 
+/-! A finite weighted-tilt master-process certificate on the same Markov model. -/
+
+/-- Uniform prior on two declared tilt atoms. -/
+def uniformMarkovTiltWeight (_j : Bool) : ℝ := 1 / 2
+
+theorem uniformMarkovTiltWeight_isFullSupportPMF :
+    IsFullSupportPMF uniformMarkovTiltWeight := by
+  refine ⟨⟨?_, ?_⟩, ?_⟩
+  · intro j
+    fin_cases j <;> norm_num [uniformMarkovTiltWeight]
+  · norm_num [uniformMarkovTiltWeight, Fintype.sum_bool]
+  · intro j
+    fin_cases j <;> norm_num [uniformMarkovTiltWeight]
+
+/-- Two positive tilts, both strictly below the sub-Gamma scale cutoff `3`. -/
+def markovTwoTilts (j : Bool) : ℝ := if j then 1 / 5 else 1 / 6
+
+theorem markovTwoTilts_pos (j : Bool) : 0 < markovTwoTilts j := by
+  fin_cases j <;> norm_num [markovTwoTilts]
+
+theorem markovTwoTilts_lt_three (j : Bool) : markovTwoTilts j < 3 := by
+  fin_cases j <;> norm_num [markovTwoTilts]
+
+/--
+Select one predeclared tilt atom from the first observed transition. This
+receipt witnesses path dependence only: the posterior argument is ignored.
+The pointwise selector is not required to be measurable or adapted and adds no
+selected-process or optional-stopping guarantee.
+-/
+def firstTransitionTiltSelector
+    (x : ℕ → Bool) (_posterior : Bool → ℝ) : Bool :=
+  x 1
+
+def stayFalsePath : ℕ → Bool := fun _ ↦ false
+
+def jumpThenStayTruePath : ℕ → Bool := fun k ↦ decide (0 < k)
+
+/-!
+These explicit paths exercise both selector outputs. Neither theorem below
+proves that its path is outside the exceptional event or that either branch
+has positive probability under the Markov path law.
+-/
+
+theorem firstTransitionTiltSelector_stayFalse :
+    firstTransitionTiltSelector stayFalsePath
+      (lowerEmpiricalRiskPosterior 1024 stayFalsePath) = false := by
+  rfl
+
+theorem firstTransitionTiltSelector_jumpThenStayTrue :
+    firstTransitionTiltSelector jumpThenStayTruePath
+      (lowerEmpiricalRiskPosterior 1024 jumpThenStayTruePath) = true := by
+  norm_num [firstTransitionTiltSelector, jumpThenStayTruePath]
+
+/-- Both selected weighted-tilt boundaries are below `1/20`. -/
+theorem selectedMarkovTiltBoundary_lt_one_twentieth
+    (x : ℕ → Bool) (j : Bool) :
+    markovTwoTilts j / (8 * (1 - markovTwoTilts j / 3)) +
+        (klDiv (lowerEmpiricalRiskPosterior 1024 x) uniformBoolPrior +
+          Real.log
+            (1 / ((1 / 20 : ℝ) * uniformMarkovTiltWeight j))) /
+          ((1024 : ℝ) * markovTwoTilts j) <
+      (1 : ℝ) / 20 := by
+  have hlog80 : Real.log (80 : ℝ) < (9 : ℝ) / 2 := by
+    rw [← Real.exp_lt_exp,
+      Real.exp_log (by norm_num : (0 : ℝ) < 80)]
+    have h := Real.sum_le_exp_of_nonneg
+      (x := ((9 : ℝ) / 2)) (by norm_num) 8
+    norm_num [Finset.sum_range_succ] at h ⊢
+    linarith
+  rw [lowerEmpiricalRiskPosterior_kl_uniform]
+  have hcombine :
+      Real.log 2 +
+          Real.log (1 / ((1 / 20 : ℝ) * uniformMarkovTiltWeight j)) =
+        Real.log 80 := by
+    norm_num [uniformMarkovTiltWeight]
+    rw [← Real.log_mul (by norm_num : (2 : ℝ) ≠ 0)
+      (by norm_num : (40 : ℝ) ≠ 0)]
+    norm_num
+  rw [hcombine]
+  fin_cases j <;> norm_num [markovTwoTilts] at * <;> linarith
+
+/--
+End-to-end path-selected posterior and post-path selected-tilt receipt. The two
+base predictors remain fixed. One measurable event has probability at most
+`1/20`; outside it, the selected point posterior has gap below `1/20` and
+encountered conditional risk below `11/20`. The receipt's selector depends on
+the trajectory but ignores its posterior argument. The explicit branch paths
+above are not proved to be good paths or positive-probability branches.
+-/
+theorem asymmetricBool_adaptivePosteriorTiltMarkovPACBayes_certificate :
+    ∃ E : Set (ℕ → Bool),
+      MeasurableSet E ∧
+      (markovPathMeasure asymmetricBoolTransition false).real E ≤ 1 / 20 ∧
+      ∀ x ∉ E,
+        let posterior := lowerEmpiricalRiskPosterior 1024 x
+        let selectedTilt := firstTransitionTiltSelector x posterior
+        IsPMF posterior ∧
+        klDiv posterior uniformBoolPrior = Real.log 2 ∧
+        markovPosteriorEmpiricalPrequentialRisk boolObservable constantPredictor
+            posterior 1024 x ≤ 1 / 2 ∧
+        markovTwoTilts selectedTilt /
+              (8 * (1 - markovTwoTilts selectedTilt / 3)) +
+            (klDiv posterior uniformBoolPrior +
+              Real.log
+                (1 / ((1 / 20 : ℝ) *
+                  uniformMarkovTiltWeight selectedTilt))) /
+              ((1024 : ℝ) * markovTwoTilts selectedTilt) < 1 / 20 ∧
+        markovPosteriorAverageConditionalRisk asymmetricBoolTransition
+              boolObservable constantPredictor posterior 1024 x -
+            markovPosteriorEmpiricalPrequentialRisk boolObservable
+              constantPredictor posterior 1024 x < 1 / 20 ∧
+        markovPosteriorAverageConditionalRisk asymmetricBoolTransition
+            boolObservable constantPredictor posterior 1024 x < 11 / 20 := by
+  have hbase := markovPACBayes_tiltMixture_prequentialRisk_certificate
+    (ι := Bool) (κ := Bool) asymmetricBoolTransition false
+    (f := boolObservable) (q := constantPredictor)
+    boolObservable_mem_Icc (fun i z ↦ constantPredictor_mem_Icc i z)
+    uniformBoolPrior_isFullSupportPMF uniformMarkovTiltWeight_isFullSupportPMF
+    (lam := markovTwoTilts) (delta := (1 / 20 : ℝ))
+    (by norm_num) markovTwoTilts_pos markovTwoTilts_lt_three
+  rcases hbase with ⟨E, hE, hmass, houtside⟩
+  refine ⟨E, hE, hmass, ?_⟩
+  intro x hx
+  let posterior := lowerEmpiricalRiskPosterior 1024 x
+  let selectedTilt := firstTransitionTiltSelector x posterior
+  have hposterior : IsPMF posterior := lowerEmpiricalRiskPosterior_isPMF 1024 x
+  have hkl : klDiv posterior uniformBoolPrior = Real.log 2 :=
+    lowerEmpiricalRiskPosterior_kl_uniform 1024 x
+  have hemp :
+      markovPosteriorEmpiricalPrequentialRisk boolObservable constantPredictor
+          posterior 1024 x ≤ 1 / 2 :=
+    lowerEmpiricalRiskPosterior_empiricalRisk_le_half 1024 (by norm_num) x
+  have hrisk := houtside x hx selectedTilt posterior hposterior 1024 (by norm_num)
+  have hboundary := selectedMarkovTiltBoundary_lt_one_twentieth x selectedTilt
+  refine ⟨hposterior, hkl, hemp, hboundary, ?_, ?_⟩ <;> linarith
+
 /-! Complete audit of the public theorem surface introduced by `MarkovPACBayes`. -/
 
 #check StochasticDynamics.markovRiskShortfall
@@ -266,6 +402,28 @@ theorem asymmetricBool_adaptiveMarkovPACBayes_certificate :
 #print axioms StochasticDynamics.subGammaCgf_oneFourth_one_div
 #print axioms StochasticDynamics.markovPACBayes_prequentialRisk_certificate
 
+/-! Complete audit of the public surface introduced by `MarkovPACBayesTiltMixture`. -/
+
+#check StochasticDynamics.markovPACBayesTiltMixtureAnyPosteriorUpperFailure
+#check StochasticDynamics.markovPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure
+#check StochasticDynamics.markovPACBayes_tiltMixture_allPosteriors_bound
+#check StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent
+#check StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_measurable
+#check StochasticDynamics.markovPACBayesTiltMixtureRawFailure_subset_exceptionalEvent
+#check StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta
+#check StochasticDynamics.markovPosteriorAverageConditionalRisk_lt_tiltMixture_of_not_mem
+#check StochasticDynamics.markovPosteriorAverageConditionalRisk_lt_tiltMixture_selected_of_not_mem
+#check StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate
+
+#print axioms StochasticDynamics.markovPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure
+#print axioms StochasticDynamics.markovPACBayes_tiltMixture_allPosteriors_bound
+#print axioms StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_measurable
+#print axioms StochasticDynamics.markovPACBayesTiltMixtureRawFailure_subset_exceptionalEvent
+#print axioms StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta
+#print axioms StochasticDynamics.markovPosteriorAverageConditionalRisk_lt_tiltMixture_of_not_mem
+#print axioms StochasticDynamics.markovPosteriorAverageConditionalRisk_lt_tiltMixture_selected_of_not_mem
+#print axioms StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate
+
 /-! Complete audit of the named checker receipts. -/
 
 #check uniformBoolPrior_isFullSupportPMF
@@ -285,6 +443,13 @@ theorem asymmetricBool_adaptiveMarkovPACBayes_certificate :
 #check lowerEmpiricalRiskPosterior_empiricalRisk_le_half
 #check selectedMarkovPACBayesBoundary_lt_one_twentieth
 #check asymmetricBool_adaptiveMarkovPACBayes_certificate
+#check uniformMarkovTiltWeight_isFullSupportPMF
+#check markovTwoTilts_pos
+#check markovTwoTilts_lt_three
+#check firstTransitionTiltSelector_stayFalse
+#check firstTransitionTiltSelector_jumpThenStayTrue
+#check selectedMarkovTiltBoundary_lt_one_twentieth
+#check asymmetricBool_adaptivePosteriorTiltMarkovPACBayes_certificate
 
 #print axioms uniformBoolPrior_isFullSupportPMF
 #print axioms boolPointPosterior_isPMF
@@ -303,6 +468,13 @@ theorem asymmetricBool_adaptiveMarkovPACBayes_certificate :
 #print axioms lowerEmpiricalRiskPosterior_empiricalRisk_le_half
 #print axioms selectedMarkovPACBayesBoundary_lt_one_twentieth
 #print axioms asymmetricBool_adaptiveMarkovPACBayes_certificate
+#print axioms uniformMarkovTiltWeight_isFullSupportPMF
+#print axioms markovTwoTilts_pos
+#print axioms markovTwoTilts_lt_three
+#print axioms firstTransitionTiltSelector_stayFalse
+#print axioms firstTransitionTiltSelector_jumpThenStayTrue
+#print axioms selectedMarkovTiltBoundary_lt_one_twentieth
+#print axioms asymmetricBool_adaptivePosteriorTiltMarkovPACBayes_certificate
 
 end
 

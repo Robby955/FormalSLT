@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C440-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-199-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-90%2C356-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C455-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-200-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-90%2C816-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -41,7 +41,7 @@ a broad priority claim.
 | **Closed-form empirical-Bernstein PAC-Bayes** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
 | **Time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_allPosteriors_bound` | One common event over every positive time and finite posterior PMF for IID `[0,1]` losses and a fixed declared tilt | [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean) discharges the IID process obligations; a dedicated positive-KL subunit numerical receipt remains planned |
 | **Finite-tilt time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` and `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent` | Finite hypotheses and tilts, full-support priors, measurable IID `[0,1]` losses, and one event shared by all positive times, finite posterior PMFs, and predeclared tilt atoms | [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean): `delta = 1/16`, exact point-posterior `KL = log 2`, both tilt boundaries at most `3/8`, and an existential good path with selected risk `< 7/8`; its explicit selector-branch exercises are not proved good |
-| **Finite Markov prequential PAC-Bayes** | `markovPACBayes_prequentialRisk_certificate` | Finite transition PMFs, deterministic initial state, fixed finite predictor catalog, fixed tilt, and encountered one-step conditional risk rather than stationary risk | [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean): asymmetric two-state chain, path-selected point posterior, exact `KL = log 2`, and an `n = 1024` numerical receipt derived from the simultaneous all-time theorem |
+| **Finite Markov prequential PAC-Bayes** | `markovPACBayes_tiltMixture_prequentialRisk_certificate` | Finite transition PMFs, deterministic initial state, fixed finite predictor catalog, and a predeclared full-support finite tilt prior; one atom may be selected after the trajectory, and the target is encountered one-step conditional risk rather than stationary risk | [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean): asymmetric two-state chain, path-selected point posterior and tilt atom, exact `KL = log 2`, both selected boundaries `< 1/20`, and conditional risk `< 11/20`; the explicit selector-branch paths are not proved good or positive-probability |
 
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
@@ -76,9 +76,12 @@ questions for each result are tracked in
 - **Finite Markov prequential risk:** an actual Ionescu--Tulcea path law for a
   finite transition PMF, a derived next-step conditional-risk identity, the
   sharp universal `1/4` conditional-variance proxy for `[0,1]` losses, an
-  anytime two-sided fixed-predictor certificate, and a fixed-tilt PAC-Bayes
-  certificate for `0 < λ < 3` simultaneous over all positive times and all
-  posteriors on a finite predictor catalog.
+  anytime two-sided fixed-predictor certificate, and a PAC-Bayes certificate
+  simultaneous over all positive times and posteriors on a finite predictor
+  catalog. A normalized finite tilt prior whose atoms satisfy `0 < λ_j < 3`
+  gives one measurable exceptional event; on its complement, the posterior
+  and one predeclared tilt atom may be selected after the trajectory, with the
+  atom's exact weight penalty.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -190,6 +193,19 @@ declaration and prints its axiom profile.
   posterior from the first `1024` transitions, has exact KL cost `log 2`,
   empirical risk at most `1/2`, and posterior-average conditional risk below
   `11/20` at confidence `19/20`;
+  [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean)
+- **Finite weighted-tilt Markov PAC-Bayes certificate** —
+  `markovPACBayes_tiltMixture_prequentialRisk_certificate` gives one measurable
+  exceptional event of probability at most `delta`; on its complement the
+  bound is simultaneous over all positive times, posterior PMFs, and atoms
+  `0 < λ_j < 3` of a full-support finite tilt prior. A pointwise selector may
+  choose one predeclared atom after the trajectory and pays
+  `log (1 / (delta * weight j))`. The selector need not be measurable or
+  adapted: this uses the common all-atom event and adds no optional-stopping
+  claim. In the asymmetric two-state receipt, the path-selected posterior has
+  exact KL `log 2`, both selected boundaries are below `1/20`, and conditional
+  risk is below `11/20` at confidence `19/20`. The two explicit paths only
+  exercise selector branches; they are not proved good or positive-probability;
   [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean)
 
 ### Concentration and metric entropy
@@ -665,9 +681,10 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
-- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk` and
-  `StochasticDynamics.MarkovPACBayes`, re-exported by the stable topic import
-  `FormalSLT.StochasticDynamics`
+- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk`,
+  `StochasticDynamics.MarkovPACBayes`, and
+  `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
+  topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -718,9 +735,12 @@ The main learning-theory results are deliberately finite and explicit.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
-  PAC-Bayes endpoint is simultaneous over every positive time and posterior at
-  one fixed declared tilt satisfying `0 < λ < 3`, and targets
-  posterior-average one-step conditional squared risk along the realized path
+  PAC-Bayes endpoint is simultaneous over every positive time, posterior, and
+  atom `0 < λ_j < 3` of a full-support finite tilt prior declared before the
+  trajectory. A pointwise post-path selector may choose one atom but need not
+  be measurable or adapted and adds no optional-stopping guarantee. The target
+  is posterior-average one-step conditional squared risk along the realized
+  path
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -829,8 +849,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 - [ ] Extend the finite Markov PAC-Bayes certificate to random initial laws,
-  predictable or independently trained predictor catalogs, and declared
-  selectable tilt families
+  predictable or independently trained predictor catalogs, and normalized
+  countable or predictable tilt families
 
 ## Dependencies
 
