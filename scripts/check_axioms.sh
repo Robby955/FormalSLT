@@ -19,6 +19,8 @@ LAKE="${LAKE:-$HOME/.elan/bin/lake}"
 
 # Flagship public theorems to audit (fully qualified).
 THEOREMS=(
+  "FormalSLT.PACBayesKL.informationTheory_klDiv_toPMF_eq_of_support"
+  "FormalSLT.PACBayesKL.toReal_informationTheory_klDiv_toPMF_eq_of_support"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_four_slots_positive"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_scalarBounds_from_incrementModel"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_population_le_bound_from_incrementModel"
@@ -140,6 +142,7 @@ trap 'rm -rf "$WORK"' EXIT
 CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
+  echo "import FormalSLT.PACBayes.FinitePMFBridge"
   echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
   echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
   echo "import FormalSLT.PACBayes.IIDContinuousGaussian"
@@ -178,6 +181,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 echo "== building flagship modules =="
 "$LAKE" build \
+  FormalSLT.PACBayes.FinitePMFBridge \
   FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \
   FormalSLT.TestTimeMeta.FlagshipAnytimeValid \
   FormalSLT.PACBayes.IIDContinuousGaussian \

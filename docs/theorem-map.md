@@ -477,6 +477,13 @@ declarations; modules are relative to `FormalSLT`.
 | `localizedFastRateHighConfidence_bernstein_fixedPoint_of_shiftedExpMoment` | `Rademacher.Localized` | Assumption-facing high-confidence finite fast-rate wrapper from shifted exponential-moment budgets |
 | `localizedFastRateHighConfidence_bernstein_fixedPoint_of_centeredShiftedExpMoment` | `Rademacher.Localized` | Assumption-facing high-confidence wrapper from supplied centered shifted-moment budgets. Interface only — the budgets it consumes are conservative-only per hypothesis |
 | `localizedFastRateHighConfidence_bernstein_fixedPoint_boundedExcess` | `Rademacher.Localized` | Conservative finite fast-rate high-confidence wrapper pairing the bounded-excess bad-event mass with the Bernstein/fixed-point payoff |
+| `IsPMF.toPMF` | `PACBayes.FinitePMFBridge` | Convert a FormalSLT finite nonnegative real PMF into Mathlib's `PMF` type |
+| `IsPMF.integral_toPMF_eq_sum` | `PACBayes.FinitePMFBridge` | Integration against the Mathlib `PMF` induced by a FormalSLT finite PMF equals the corresponding finite weighted sum |
+| `integral_toPMF_eq_posteriorAverage` | `PACBayes.FinitePMFBridge` | FormalSLT's finite posterior average is the Bochner integral against the associated Mathlib probability measure |
+| `toPMF_toMeasure_absolutelyContinuous_of_support` | `PACBayes.FinitePMFBridge` | Posterior-support inclusion in the prior induces absolute continuity between the associated Mathlib probability measures |
+| `informationTheory_klDiv_toPMF_eq_of_support` | `PACBayes.FinitePMFBridge` | Under posterior-support inclusion in the prior, Mathlib's extended-real KL divergence equals `ENNReal.ofReal` of FormalSLT's finite KL sum |
+| `toReal_informationTheory_klDiv_toPMF_eq_of_support` | `PACBayes.FinitePMFBridge` | Real-valued form of the support-aware finite/Mathlib KL identity |
+| `klDiv_nonneg_of_support` | `PACBayes.FinitePMFBridge` | FormalSLT's finite KL sum is nonnegative under posterior-support inclusion in the prior |
 | `klDiv_nonneg` | `PACBayesKL` | Finite KL divergence is nonnegative under full support |
 | `donsker_varadhan` | `PACBayesKL` | `sum ρ_i f_i <= KL(ρ||π) + log(sum π_i exp(f_i))` |
 | `continuous_donsker_varadhan` | `PACBayes.ContinuousChangeOfMeasure` | Measure-theoretic Donsker-Varadhan bound from Radon-Nikodym tilting |

@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import FormalSLT.PACBayesFiniteProductMGF
+import FormalSLT.PACBayes.FinitePMFBridge
 import FormalSLT.Probability.Concentration
 import FormalSLT.Probability.FiniteUnionBound
 import Mathlib.Probability.ProbabilityMassFunction.Integrals
@@ -43,22 +44,6 @@ noncomputable section
 local instance (p : Prop) : Decidable p := Classical.propDecidable p
 
 variable {ι Z Ω : Type*}
-
-/-! ### PMF bridge for finite real mass functions -/
-
-/-- Convert a finite real-valued PMF into mathlib's `PMF` type. -/
-private noncomputable def pmfOfReal [Fintype Z]
-    (p : Z → ℝ) (hp : IsPMF p) : PMF Z :=
-  PMF.ofFintype (fun z => ENNReal.ofReal (p z)) (by
-    rw [← ENNReal.ofReal_one, ← hp.sum_one]
-    exact Eq.symm (ENNReal.ofReal_sum_of_nonneg
-      (s := Finset.univ) (f := p) (fun z _hz => hp.nonneg z)))
-
-private lemma integral_pmfOfReal_eq_sum [Fintype Z] [MeasurableSpace Z]
-    [MeasurableSingletonClass Z] (p : Z → ℝ) (hp : IsPMF p) (f : Z → ℝ) :
-    (∫ z, f z ∂(pmfOfReal p hp).toMeasure) = ∑ z, p z * f z := by
-  rw [PMF.integral_eq_sum]
-  simp [pmfOfReal, hp.nonneg, smul_eq_mul]
 
 private lemma finiteProductSampleWeight_nonneg {n : ℕ} [Fintype Z]
     {p : Z → ℝ} (hp : IsPMF p) :
@@ -141,10 +126,10 @@ theorem oneCoordinate_boundedLoss_mgf
     oneCoordinateDeviationMGF (n := n) p ℓ i lam ≤
       Real.exp (lam ^ 2 / (8 * (n : ℝ) ^ 2)) := by
   classical
-  let μ := (pmfOfReal p hp).toMeasure
+  let μ := hp.toPMF.toMeasure
   let R := finitePopulationRisk p ℓ i
   let X : Z → ℝ := fun z => R - ℓ i z
-  haveI : IsProbabilityMeasure μ := PMF.toMeasure.isProbabilityMeasure (pmfOfReal p hp)
+  haveI : IsProbabilityMeasure μ := PMF.toMeasure.isProbabilityMeasure hp.toPMF
   have hmeas : AEMeasurable X μ :=
     (measurable_of_countable X).aemeasurable
   have hbound : ∀ᵐ z ∂μ, X z ∈ Set.Icc (R - 1) R := by
@@ -155,7 +140,7 @@ theorem oneCoordinate_boundedLoss_mgf
       · linarith [(hℓ z).1])
   have hmean : (∫ z, X z ∂μ) = 0 := by
     dsimp [μ, X, R]
-    rw [integral_pmfOfReal_eq_sum p hp]
+    rw [hp.integral_toPMF_eq_sum]
     unfold finitePopulationRisk
     calc
       (∑ z : Z, p z * ((∑ x : Z, p x * ℓ i x) - ℓ i z))
@@ -187,7 +172,7 @@ theorem oneCoordinate_boundedLoss_mgf
       ProbabilityTheory.mgf X μ (lam * (n : ℝ)⁻¹) =
         oneCoordinateDeviationMGF (n := n) p ℓ i lam := by
     dsimp [ProbabilityTheory.mgf, oneCoordinateDeviationMGF, μ, X, R]
-    rw [integral_pmfOfReal_eq_sum p hp]
+    rw [hp.integral_toPMF_eq_sum]
   have hn_ne : (n : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hn)
   have hmgf' :
       oneCoordinateDeviationMGF (n := n) p ℓ i lam ≤

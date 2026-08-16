@@ -15,6 +15,7 @@ without carrying duplicate proof bodies.
 -/
 
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
+#check FormalSLT.PACBayesKL.informationTheory_klDiv_toPMF_eq_of_support
 #check FormalSLT.PACBayes.TimeUniformIID.timeUniformIIDPACBayes_allPosteriors_bound
 #check FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayes_allPosteriors_bound
 #check FormalSLT.PACBayes.TimeUniformScore.posteriorTarget_le_of_not_mem_timeUniformScorePACBayesFailure

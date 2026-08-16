@@ -258,6 +258,9 @@ lake env lean examples/CheckShowcaseTheorems.lean
 #check FormalSLT.PACBayesKL.klDiv_nonneg
 #print axioms FormalSLT.PACBayesKL.klDiv_nonneg
 
+#check FormalSLT.PACBayesKL.informationTheory_klDiv_toPMF_eq_of_support
+#print axioms FormalSLT.PACBayesKL.informationTheory_klDiv_toPMF_eq_of_support
+
 #check FormalSLT.PACBayesKL.donsker_varadhan
 #print axioms FormalSLT.PACBayesKL.donsker_varadhan
 
