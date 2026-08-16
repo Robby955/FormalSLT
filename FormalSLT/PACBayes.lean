@@ -51,6 +51,8 @@ import FormalSLT.PACBayes.FiniteJointMeanVarianceReversePACBayes
 import FormalSLT.PACBayes.FiniteJointMeanVarianceReverseCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinReverseSqrt
+import FormalSLT.PACBayes.InfiniteProductMeasureBridge
+import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch
 import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes
 import FormalSLT.PACBayes.CountableJointMeanVariancePosterior
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
@@ -81,7 +83,8 @@ empirical-Bernstein risk, bounded-loss exponential-tilt variance comparison,
 fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,
 finite-horizon reverse Bessel and joint mean/variance PAC-Bayes epochs,
-closed-form logarithmic-grid empirical-Bernstein bound, support-aware
+closed-form logarithmic-grid empirical-Bernstein bound, dyadically stitched
+all-sample-size iid empirical-Bernstein event, support-aware
 countable master-mixture foundation and finite-posterior catalog-selector
 layer, score e-process, finite weighted tilt e-process and its finite-IID
 bounded-loss adapter, and time-uniform PAC-Bayes surfaces.
