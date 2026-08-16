@@ -5,6 +5,7 @@ Authors: Robby Sneiderman
 -/
 
 import FormalSLT.PACBayesKL
+import FormalSLT.PACBayes.FinitePMFBridge
 import FormalSLT.PACBayesFiniteProductMGF
 import FormalSLT.PACBayesBoundedLoss
 import FormalSLT.PACBayesMcAllester
@@ -67,7 +68,8 @@ import FormalSLT.PACBayes.IIDContinuousGaussianGrid
 # Stable PAC-Bayes imports
 
 This declaration-free umbrella re-exports the supported finite, continuous,
-Gaussian, Bernstein, empirical-variance concentration, fixed and finite-catalog
+Gaussian, finite-PMF/Mathlib KL interoperability, Bernstein,
+empirical-variance concentration, fixed and finite-catalog
 empirical-Bernstein risk, bounded-loss exponential-tilt variance comparison,
 fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,

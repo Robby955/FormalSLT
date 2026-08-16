@@ -139,6 +139,10 @@
   identity, yielding the finite iid expected-gap specialization
 - [x] PAC-Bayes KL divergence and Donsker-Varadhan variational inequality:
   KL(ρ‖π) ≥ 0 (Gibbs inequality), ∑ ρ_i·f_i ≤ KL(ρ‖π) + log(∑ π_i·exp(f_i))
+- [x] Finite PMF, measure, and KL interoperability with Mathlib:
+  real-valued finite PMFs convert to `PMF`, weighted sums agree with Bochner
+  integrals, and the finite KL sum agrees with Mathlib's extended-real KL under
+  posterior-support inclusion in the prior
 - [x] PAC-Bayes finite iid product MGF bridge:
   exact finite product factorization for `E_S exp(lam * (R_i - Rhat_i(S)))`
   and prior-averaged MGF bound from per-hypothesis one-coordinate MGF budgets

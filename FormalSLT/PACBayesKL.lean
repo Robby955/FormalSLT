@@ -57,7 +57,10 @@ structure IsFullSupportPMF (π : ι → ℝ) : Prop extends IsPMF π where
 /-- KL divergence (relative entropy) for finite distributions.
 `klDiv ρ π = ∑ i, ρ i * log(ρ i / π i)`.
 With Lean's `x / 0 = 0` and `log 0 = 0` conventions, terms with
-`ρ i = 0` contribute zero. -/
+`ρ i = 0` contribute zero. Under posterior-support inclusion in the prior,
+`PACBayes.FinitePMFBridge` identifies this finite sum with mathlib's
+`InformationTheory.klDiv`. Without that condition, this totalized real sum is
+not the standard extended-real KL divergence. -/
 noncomputable def klDiv (ρ π : ι → ℝ) : ℝ :=
   ∑ i, ρ i * Real.log (ρ i / π i)
 

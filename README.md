@@ -2,13 +2,13 @@
 
 [![CI](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml)
 [![Docs](https://github.com/Robby955/FormalSLT/actions/workflows/docs.yml/badge.svg?branch=main)](https://robby955.github.io/FormalSLT/)
-[![Lean 4](https://img.shields.io/badge/Lean-4.32.0-blue.svg)](https://lean-lang.org/)
-[![Mathlib](https://img.shields.io/badge/Mathlib-81a5d25-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
+[![Lean 4](https://img.shields.io/badge/Lean-4.32.2-blue.svg)](https://lean-lang.org/)
+[![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C387-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-196-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-88%2C920-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C403-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-197-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-89%2C257-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -160,6 +160,14 @@ declaration and prints its axiom profile.
 - **Finite fixed-`λ` Catoni change-of-measure posterior-risk bound** —
   `catoni_changeOfMeasure_bound`;
   [`CheckPACBayesChangeOfMeasure.lean`](./examples/CheckPACBayesChangeOfMeasure.lean)
+- **Finite PMF and KL interoperability with Mathlib** —
+  `IsPMF.toPMF` and `IsPMF.integral_toPMF_eq_sum` expose finite real PMFs and
+  their weighted sums through Mathlib's `PMF` and measure-integral APIs;
+  `informationTheory_klDiv_toPMF_eq_of_support` identifies FormalSLT's finite
+  real KL sum with Mathlib's extended-real KL divergence under posterior-support
+  inclusion in the prior. The disjoint-support checker shows this condition
+  cannot be omitted in general;
+  [`CheckFinitePMFBridge.lean`](./examples/CheckFinitePMFBridge.lean)
 - **Finite Markov trajectory prequential-risk certificate** —
   `markovPrequentialRiskExceptionalEvent_mass_le_delta` and
   `averageConditionalRisk_lt_empiricalPrequentialRisk_add_boundary_of_not_mem`,
@@ -602,7 +610,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `Covering.TwoPointDudleyIntegral`
 - **Stability:** `AlgorithmicStability`, `Stability.BousquetElisseeff`,
   `Stability.RKHSRegularisedERM`
-- **PAC-Bayes:** `PACBayesKL`, `PACBayesMcAllester`,
+- **PAC-Bayes:** `PACBayesKL`, `PACBayes.FinitePMFBridge`, `PACBayesMcAllester`,
   `PACBayesBoundedLoss`, `PACBayesBernstein`, `PACBayes.ChangeOfMeasure`,
   `PACBayes.IndicatorBernsteinLowRisk`,
   `PACBayes.IndicatorBernsteinTiltCatalog`,
@@ -787,8 +795,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 
 ## Dependencies
 
-- [Lean 4](https://lean-lang.org/) v4.32.0
-- [Mathlib4](https://github.com/leanprover-community/mathlib4) @ `81a5d257`
+- [Lean 4](https://lean-lang.org/) v4.32.2
+- [Mathlib4](https://github.com/leanprover-community/mathlib4) @ `905b9581`
 
 ## Contributing
 

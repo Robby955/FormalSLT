@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 155,
-    "library_and_example_lean_lines": 88920,
-    "library_lean_lines": 74900,
-    "library_modules": 196,
-    "theorem_map_entries": 780
+    "example_lean_files": 156,
+    "library_and_example_lean_lines": 89257,
+    "library_lean_lines": 75113,
+    "library_modules": 197,
+    "theorem_map_entries": 787
   },
   "theorem_families": [
     {
@@ -2664,6 +2664,48 @@
           "module": "Rademacher.Localized",
           "name": "localizedFastRateHighConfidence_bernstein_fixedPoint_boundedExcess",
           "summary": "Conservative finite fast-rate high-confidence wrapper pairing the bounded-excess bad-event mass with the Bernstein/fixed-point payoff"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "IsPMF.toPMF",
+          "summary": "Convert a FormalSLT finite nonnegative real PMF into Mathlib's PMF type"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "IsPMF.integral_toPMF_eq_sum",
+          "summary": "Integration against the Mathlib PMF induced by a FormalSLT finite PMF equals the corresponding finite weighted sum"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "integral_toPMF_eq_posteriorAverage",
+          "summary": "FormalSLT's finite posterior average is the Bochner integral against the associated Mathlib probability measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "toPMF_toMeasure_absolutelyContinuous_of_support",
+          "summary": "Posterior-support inclusion in the prior induces absolute continuity between the associated Mathlib probability measures"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "informationTheory_klDiv_toPMF_eq_of_support",
+          "summary": "Under posterior-support inclusion in the prior, Mathlib's extended-real KL divergence equals ENNReal.ofReal of FormalSLT's finite KL sum"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "toReal_informationTheory_klDiv_toPMF_eq_of_support",
+          "summary": "Real-valued form of the support-aware finite/Mathlib KL identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.FinitePMFBridge",
+          "name": "klDiv_nonneg_of_support",
+          "summary": "FormalSLT's finite KL sum is nonnegative under posterior-support inclusion in the prior"
         },
         {
           "kind": "theorem",
