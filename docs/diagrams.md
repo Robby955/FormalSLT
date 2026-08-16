@@ -141,7 +141,7 @@ flowchart TD
         sqrtbound["Closed-form logarithmic-grid endpoint<br/>5/4 square-root + 5/2 linear constants"]
     end
     countablemaster["Support-aware countable weighted master<br/>Nat-indexed (t, η), positive-weight prior moments"]
-    countableposterior["Countable posterior / exact-ξ<br/>selector lift (open)"]
+    countableposterior["Finite-posterior exact-ξ selector<br/>Nat-indexed tilt-pair catalog"]
     allreal["All-real tilt optimization (open)"]
     tueb["Time-uniform joint empirical-Bernstein<br/>with exact Bessel variance (open)"]
 
@@ -163,16 +163,16 @@ flowchart TD
     zerores --> xires
     zerores --> sqrtbound
     jointmgf --> countablemaster
-    countablemaster -.-> countableposterior
+    countablemaster --> countableposterior
     jointcat -.-> allreal
     ebrisk -.-> tueb
 
     classDef checked fill:#ecfdf5,stroke:#0f766e,color:#134e4a;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
-    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster checked;
+    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster,countableposterior checked;
     class mcallester,ebrisk,zerores,xires,sqrtbound endpointNode;
-    class countableposterior,allreal,tueb open;
+    class allreal,tueb open;
 ```
 
 The finite joint route thresholds one prior-and-catalog master mixture, so the
@@ -180,9 +180,10 @@ selected entry may depend on the sample and the posterior while paying one KL
 term. Its closed-form endpoint fixes the dyadic grid in advance through
 `Nat.clog 2 n` and proves the optimizer coverage inside Lean; it does not assume
 a sample- or posterior-dependent grid choice. The checked countable foundation
-instead controls every positive-weight
-prior moment through one support-aware master event. It does not yet supply the
-posterior/Donsker–Varadhan or exact-ξ selector endpoint. The variance events
+controls every positive-weight prior moment through one support-aware master
+event. Its downstream layer applies the finite Donsker–Varadhan and residual
+theorems to a sample- and finite-posterior-selected natural-number entry on
+that same event. The variance events
 bound the posterior average of per-hypothesis variances; they do not bound the
 variance of the posterior-averaged loss.
 
@@ -262,9 +263,10 @@ These diagrams do not claim more than the theorem signatures state:
 - The fixed-time random-matching score is not an e-process.
 - Terminal random matchings at different sample sizes are not projectively
   nested.
-- The checked countable master controls positive-weight prior moments; it is
-  not yet a countable posterior/exact-ξ selector theorem, an all-real tilt
-  optimizer, or a time-uniform process.
+- The checked countable master and selector use a finite hypothesis type and
+  finite posterior over a predeclared natural-number catalog; they are not a
+  countable-hypothesis posterior, all-real tilt optimizer, or time-uniform
+  process.
 - The finite time-uniform tilt master selects one declared atom; it is not a
   countable mixture, an arbitrary joint hypothesis--tilt posterior, an all-real
   tilt optimizer, or an i.i.d. loss specialization.

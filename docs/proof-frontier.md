@@ -77,11 +77,11 @@ files.
   additionally has a posterior-uniform weighted tilt catalog. At process level,
   one normalized finite hypothesis--tilt e-process now gives a common Ville
   event, all-posterior validity, and post-path selection of a declared atom with
-  its exact weight penalty. The checked fixed-sample countable joint master
-  stops at prior moments. Countable process-level and fixed-sample
-  posterior-level selection, all-real lambda optimization, i.i.d.
-  specialization of the process master, and posterior-uniform general
-  continuous families remain open.
+  its exact weight penalty. The checked fixed-sample countable joint master now
+  has a downstream finite-posterior exact-`xi` selector over its predeclared
+  `Nat`-indexed tilt-pair catalog. Countable process-level selection, all-real
+  lambda optimization, i.i.d. specialization of the process master, and
+  posterior-uniform general continuous families remain open.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
   checked for `[0,1]` losses under the explicit finite IID product law and
@@ -103,13 +103,15 @@ files.
   one KL-plus-catalog-weight confidence term. The other residual branches are
   now closed by an exact attained three-piece maximum on `[0,1/4]`, yielding
   the explicit `xi / t` penalty on the same event. A support-aware countable
-  normalized master event and per-entry prior-moment extraction are also
-  checked. A predeclared dyadic scale grid through `Nat.clog 2 n` now gives the
+  normalized master event, per-entry prior-moment extraction, finite-posterior
+  bound, and sample/posterior-dependent natural-index `xi` selector are also
+  checked on that one fixed-sample event with one KL term per selected bound.
+  The selector receipt is structural and existential in the good sample. A
+  predeclared dyadic scale grid through `Nat.clog 2 n` now gives the
   direct square-root-plus-linear posterior-risk endpoint with constants `5/4`
   and `5/2`, one KL term, and a 95%-confidence positive-KL/positive-variance
-  positive-sample-mass receipt below `99/100`. The countable event's
-  posterior/`xi` selector lift remains
-  open. The current result is not all-real tilt optimization or time-uniform
+  positive-sample-mass receipt below `99/100`. The current result is not a
+  countable-hypothesis posterior, all-real tilt optimization, or time-uniform
   inference.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream

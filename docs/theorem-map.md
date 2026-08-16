@@ -687,6 +687,10 @@ declarations; modules are relative to `FormalSLT`.
 | `countableJointMeanVariance_not_mem_catalogBadSamples_iff` | `PACBayes.CountableJointMeanVariancePACBayes` | A good sample has positive product mass and master mixture below `1 / delta` |
 | `countableJointMeanVariance_catalogBadSamples_mass_le_delta` | `PACBayes.CountableJointMeanVariancePACBayes` | The support-aware countable-catalog bad set has product-law mass at most `delta` |
 | `countableJointMeanVariance_priorMoment_le_of_not_mem` | `PACBayes.CountableJointMeanVariancePACBayes` | Outside one countable event, every entry keeps its prior moment within its positive weight share |
+| `countableJointMeanVariance_posteriorScore_le_of_not_mem` | `PACBayes.CountableJointMeanVariancePosterior` | Every finite-hypothesis posterior and `Nat`-indexed catalog entry obey the Donsker--Varadhan score bound on the shared event |
+| `countableJointMeanVariance_posteriorGap_le_of_not_mem` | `PACBayes.CountableJointMeanVariancePosterior` | Raw retained-variance posterior-gap inequality for every entry of the predeclared countable tilt-pair catalog |
+| `countableJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem` | `PACBayes.CountableJointMeanVariancePosterior` | Exact-residual posterior-risk bound for a positive-tilt entry on the same fixed-sample event |
+| `countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem` | `PACBayes.CountableJointMeanVariancePosterior` | Sample- and finite-posterior-dependent natural-index selector with one shared event and one KL term |
 
 ## Conditional sub-Gamma extractor
 

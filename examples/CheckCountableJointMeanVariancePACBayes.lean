@@ -1,17 +1,24 @@
-import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes
+import FormalSLT.PACBayes.CountableJointMeanVariancePosterior
 import Mathlib.Analysis.SpecificLimits.Basic
 
 /-!
 # Concrete countable joint mean/variance mixture receipt
 
-This checker uses a fair Boolean data law and prior, a genuinely infinite
-geometric catalog with weights `1 / 2 / 2^c`, distinct mean tilts
-`1 / (c + 1)`, and variance tilt `1 / 2`.  The weights are positive and sum
+This checker uses a fair Boolean data law and prior, a predeclared `Nat`-indexed
+geometric catalog with weights `1 / 2 / 2^c`, mean tilt `1 / (c + 1)`, and
+variance tilt `1 / 2`.  The weights are positive and sum
 to one.  At `n = 2`, every variance coefficient is `1 / 2`.
 
 The receipt instantiates the one-event mass theorem at `delta = 1 / 2`, proves
 that a good sample exists, and on that same sample extracts the prior-moment
-bound for every natural-number catalog entry.
+bound for every natural-number catalog entry. A selector that reads the sample
+and finite-hypothesis posterior then instantiates the
+exact-`xi` posterior-risk bound without another event or KL term.
+
+The selector receipt is structural and the selected-risk conclusion is
+existential in the good sample. It does not name that sample, evaluate the
+selected `xi` or right-hand side below one, or package a separate numerical
+high-probability selected-risk corollary.
 -/
 
 namespace FormalSLT.Examples.CheckCountableJointMeanVariancePACBayes
@@ -20,9 +27,12 @@ open Finset BigOperators Real
 open FormalSLT.PACBayesKL
 open FormalSLT.PACBayesFiniteProductMGF
 open FormalSLT.PACBayes.FiniteProductBernstein
+open FormalSLT.PACBayes.FiniteEmpiricalVariance
 open FormalSLT.PACBayes.FiniteJointMeanVarianceMGF
 open FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes
+open FormalSLT.PACBayes.FiniteJointMeanVarianceResidual
 open FormalSLT.PACBayes.CountableJointMeanVariancePACBayes
+open FormalSLT.PACBayes.CountableJointMeanVariancePosterior
 
 noncomputable section
 
@@ -199,6 +209,75 @@ theorem allTrueSample_mem_countableSupportGuard :
   exact Finset.mem_filter.mpr
     ⟨Finset.mem_univ _, Or.inl allTrueSample_weight_eq_zero⟩
 
+/-! The posterior layer uses the same good sample. The selector reads both
+the observed sample and the finite-hypothesis posterior and can return
+distinct entries of the `Nat`-indexed tilt-pair catalog. -/
+
+def samplePosteriorSelector (S : Fin 2 → Bool) (rho : Bool → ℝ) : ℕ :=
+  if rho true ≤ rho false then
+    0
+  else if S 0 then
+    1
+  else
+    2
+
+def allFalseSample : Fin 2 → Bool := fun _ => false
+
+def skewPosterior : Bool → ℝ := fun h => if h then 3 / 4 else 1 / 4
+
+theorem skewPosterior_isPMF : IsPMF skewPosterior := by
+  constructor
+  · intro h
+    cases h <;> norm_num [skewPosterior]
+  · norm_num [skewPosterior]
+
+theorem samplePosteriorSelector_exercises_three_entries :
+    samplePosteriorSelector allFalseSample fairPrior = 0 ∧
+      samplePosteriorSelector allTrueSample fairPrior = 0 ∧
+      samplePosteriorSelector allTrueSample skewPosterior = 1 ∧
+      samplePosteriorSelector allFalseSample skewPosterior = 2 := by
+  norm_num [samplePosteriorSelector, allFalseSample, allTrueSample,
+    fairPrior, skewPosterior]
+
+/-- The exact selected posterior-risk conclusion on a particular sample and
+finite-hypothesis posterior. -/
+def selectedPosteriorRiskCertificate
+    (S : Fin 2 → Bool) (rho : Bool → ℝ) : Prop :=
+  posteriorAverage rho (finitePopulationRisk dataLaw matchLoss) ≤
+    posteriorAverage rho (fun h => finiteEmpiricalRisk matchLoss h S) +
+      (klDiv rho fairPrior +
+          Real.log
+            (1 / (((1 : ℝ) / 2) *
+              countableW (samplePosteriorSelector S rho)))) /
+        (countableT (samplePosteriorSelector S rho) * (2 : ℝ)) +
+      (countableEta (samplePosteriorSelector S rho) /
+          countableT (samplePosteriorSelector S rho)) *
+        posteriorAverage rho
+          (fun h => finiteEmpiricalVariance matchLoss h S) +
+      finiteJointMeanVarianceXi 2
+          (countableT (samplePosteriorSelector S rho))
+          (countableEta (samplePosteriorSelector S rho)) /
+        countableT (samplePosteriorSelector S rho)
+
+/-- One sample outside the single countable event supports the selected
+exact-residual risk bound for every finite-hypothesis posterior. -/
+theorem countableGoodSample_allPosteriors_selectedRisk :
+    ∃ S : Fin 2 → Bool,
+      S ∉ countableBadSamples ∧
+        ∀ rho : Bool → ℝ, IsPMF rho → selectedPosteriorRiskCertificate S rho := by
+  rcases countableGoodSample_exists with ⟨S, hS⟩
+  refine ⟨S, hS, ?_⟩
+  intro rho hrho
+  unfold selectedPosteriorRiskCertificate
+  exact
+    countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem
+      (n := 2) (t := countableT) (eta := countableEta) (w := countableW)
+      (delta := (1 : ℝ) / 2) (by norm_num)
+      dataLaw dataLaw_isPMF fairPrior_isFullSupportPMF matchLoss
+      matchLoss_mem_Icc countableT_pos countableEta_nonneg
+      countableKappa_nonneg countableW_pos countableW_summable
+      samplePosteriorSelector S (by simpa [countableBadSamples] using hS) hrho
+
 #check countableJointMeanVarianceMasterMixture
 #check countableJointMeanVarianceMasterMixture_nonneg
 #check countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos
@@ -208,10 +287,17 @@ theorem allTrueSample_mem_countableSupportGuard :
 #check countableJointMeanVariance_not_mem_catalogBadSamples_iff
 #check countableJointMeanVariance_catalogBadSamples_mass_le_delta
 #check countableJointMeanVariance_priorMoment_le_of_not_mem
+#check countableJointMeanVariance_posteriorScore_le_of_not_mem
+#check countableJointMeanVariance_posteriorGap_le_of_not_mem
+#check countableJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem
+#check countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem
 #check countableW_tsum_eq_one
 #check countableGoodSample_all_entries_controlled
 #check countableGoodSample_firstTwoEntries_controlled
 #check allTrueSample_mem_countableSupportGuard
+#check samplePosteriorSelector_exercises_three_entries
+#check skewPosterior_isPMF
+#check countableGoodSample_allPosteriors_selectedRisk
 
 #print axioms countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos
 #print axioms countableJointMeanVarianceMasterMixture_nonneg
@@ -220,9 +306,16 @@ theorem allTrueSample_mem_countableSupportGuard :
 #print axioms countableJointMeanVariance_not_mem_catalogBadSamples_iff
 #print axioms countableJointMeanVariance_catalogBadSamples_mass_le_delta
 #print axioms countableJointMeanVariance_priorMoment_le_of_not_mem
+#print axioms countableJointMeanVariance_posteriorScore_le_of_not_mem
+#print axioms countableJointMeanVariance_posteriorGap_le_of_not_mem
+#print axioms countableJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem
+#print axioms countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem
 #print axioms countableGoodSample_all_entries_controlled
 #print axioms countableGoodSample_firstTwoEntries_controlled
 #print axioms allTrueSample_mem_countableSupportGuard
+#print axioms samplePosteriorSelector_exercises_three_entries
+#print axioms skewPosterior_isPMF
+#print axioms countableGoodSample_allPosteriors_selectedRisk
 
 end
 
