@@ -108,8 +108,8 @@ simultaneous over all continuous posteriors.
 
 **Dependencies.**
 
-- lift the checked countable fixed-sample master event to posterior and
-  exact-`xi` selection, or add an all-`λ` confidence event beyond finite grids;
+- add an all-`λ` confidence event beyond the checked fixed-sample
+  natural-index selector for a countable tilt-pair catalog;
 - extend the finite normalized hypothesis--tilt e-process to a countable
   mixture with the required summability and integrability obligations;
 - build separate i.i.d. bounded-loss and predictable-variance adapters without
@@ -132,9 +132,10 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Lift the checked support-aware countable normalized master event to
-posterior and exact piecewise-`xi` selection, then pursue any all-real or
-time-uniform formulation only through a genuine process argument.
+**Target.** Extend the checked support-aware finite-posterior and exact
+piecewise-`xi` selector for a `Nat`-indexed tilt-pair catalog to all-real
+optimization or time-uniform inference only through a genuine process
+argument.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -173,9 +174,12 @@ retained residual on `[0,1/4]`, and the selected posterior-risk endpoint adds
 checked: it includes product-law null samples in the bad set, proves the
 weighted moment series summable on every good sample, requires all catalog
 weights to be strictly positive for component extraction, and controls every
-entry's prior moment on one event. Its Donsker--Varadhan posterior and
-exact-`xi` selector lift remains open. All-real adaptation requires a distinct
-argument.
+entry's prior moment on one event. Its downstream layer applies the checked
+finite Donsker--Varadhan and residual theorems to each selected entry, giving
+raw-gap, exact-`xi` risk, and sample/posterior-dependent natural-index selector
+bounds on that same event with one KL term. The posterior remains finite, the
+selector receipt is structural rather than numerical, and all-real adaptation
+requires a distinct argument.
 
 **Boundary.** The current final risk theorems are finite-IID and fixed-sample.
 Their fixed-parameter, separate weighted-catalog, one-event joint-catalog, and

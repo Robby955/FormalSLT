@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C403-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-197-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-89%2C257-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C410-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-198-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-89%2C591-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -103,13 +103,16 @@ questions for each result are tracked in
   every admissible entry with `t > 0`, nonnegative `kappa`, and failed balance,
   the exact maximum of the retained residual on `[0,1/4]` is checked and
   contributes the explicit penalty `xi / t`. A support-aware countable master
-  event is checked separately. The closed-form flagship now fixes a dyadic
+  event and downstream finite-posterior selector over a predeclared
+  `Nat`-indexed tilt-pair catalog are checked separately. The selected bound
+  uses that same fixed-sample event and one KL term. The closed-form flagship
+  now fixes a dyadic
   scale grid of depth `clog 2 n` before observing the data and proves, on one
   event of failure mass at most `delta`,
   `R(rho) <= Rhat(rho) + (5/4) sqrt(2 Vhat(rho) L(rho) / n)
   + (5/2) L(rho) / n`, where
   `L(rho) = KL(rho || prior) + log((clog 2 n + 1) / delta)`.
-  The countable posterior/`xi` selector lift, all-real optimization, and
+  Countable process-level tilt mixtures, all-real optimization, and
   time-uniform exact-Bessel empirical-Bernstein risk remain open.
 
 The Dudley core is finite by design. The finite-outcome endpoint
@@ -336,19 +339,25 @@ declaration and prints its axiom profile.
   all-real optimized nor time-uniform;
   [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean),
   [`FiniteEmpiricalBernsteinSqrt.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinSqrt.lean)
-- **Countable fixed-sample joint master mixture** —
+- **Countable fixed-sample joint master and finite-posterior selector** —
   `countableJointMeanVariance_catalogBadSamples_mass_le_delta` extends the
   prior-moment master event to a predeclared `Nat`-indexed catalog with
   nonnegative summable weights of total mass at most one. The event includes
   product-law null samples, which cost zero probability and make the real
   `tsum` component extraction sound on every good sample. A geometric-weight
-  Boolean receipt proves one event controls all countably many entries,
+  Boolean receipt proves one event controls every natural-number entry,
   evaluates the first two confidence shares as `4` and `8`, and separately
-  exercises the null-sample guard. This foundation is fixed-sample and does
-  not yet provide the countable posterior/`xi` selector endpoint, all-real
-  optimization, or a time-uniform process;
+  exercises the null-sample guard. The downstream
+  `countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem`
+  theorem permits a `Nat` entry selected from the sample and a posterior on the
+  finite hypothesis space, with the exact `xi / t` residual and one KL term.
+  Its receipt is structural and existential in the good sample; it does not
+  evaluate a selected numerical right-hand side below one. This layer remains
+  fixed-sample and does not provide all-real optimization or a time-uniform
+  process;
   [`CheckCountableJointMeanVariancePACBayes.lean`](./examples/CheckCountableJointMeanVariancePACBayes.lean),
-  [`CountableJointMeanVariancePACBayes.lean`](./FormalSLT/PACBayes/CountableJointMeanVariancePACBayes.lean)
+  [`CountableJointMeanVariancePACBayes.lean`](./FormalSLT/PACBayes/CountableJointMeanVariancePACBayes.lean),
+  [`CountableJointMeanVariancePosterior.lean`](./FormalSLT/PACBayes/CountableJointMeanVariancePosterior.lean)
 - **Mean and high-probability metric-entropy generalization** —
   `metricEntropy_generalization_mean` and
   `metricEntropy_generalization_highProb`;
@@ -558,8 +567,11 @@ release check is in [Audit commands](#audit-commands).
   posterior average of per-hypothesis Bessel empirical variances.
 - Use `FormalSLT.PACBayes.CountableJointMeanVariancePACBayes` for the
   support-aware fixed-sample `Nat`-indexed master event and per-entry prior
-  moment extraction. Its public surface stops before the Donsker--Varadhan,
-  posterior-risk, and exact-`xi` selector layers.
+  moment extraction. Use
+  `FormalSLT.PACBayes.CountableJointMeanVariancePosterior` for the downstream
+  Donsker--Varadhan score, raw gap, exact-`xi` risk, and sample/posterior-
+  dependent natural-index selector endpoints. The posterior remains a PMF on
+  the finite hypothesis type.
 - Use `FormalSLT.PACBayes.FiniteBoundedLossBernstein` for the separate
   fixed-`lambda` population-risk Bernstein event. Use
   `FormalSLT.PACBayes.FiniteEmpiricalBernsteinRisk` to combine it with the
@@ -630,6 +642,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteJointMeanVarianceResidual`,
   `PACBayes.FiniteEmpiricalBernsteinSqrt`,
   `PACBayes.CountableJointMeanVariancePACBayes`,
+  `PACBayes.CountableJointMeanVariancePosterior`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformScorePACBayes`,
   `PACBayes.TimeUniformTiltMixture`,
@@ -670,10 +683,14 @@ The main learning-theory results are deliberately finite and explicit.
   entrywise posterior bounds require every catalog weight to be strictly
   positive and the prior to have full support. The countable master-mixture
   foundation instead requires nonnegative summable weights with `tsum` at most
-  one; its component theorem requires positive weights and stops at prior
-  moments rather than posterior bounds. The closed-form dyadic endpoint assumes
-  `0 < delta < 1`, fixes the finite hypothesis catalog and full-support prior
-  before the sample, and uses the predeclared depth `Nat.clog 2 n`.
+  one for its mass theorem, together with `0 < delta`; its component theorem
+  requires positive weights. The downstream conditional posterior endpoints
+  assume a full-support finite prior, a finite posterior PMF, and a supplied
+  sample outside the shared event. The single-entry exact-`xi` theorem requires
+  the selected tilt to be positive, while the arbitrary selector theorem
+  requires every catalog tilt to be positive. The closed-form dyadic endpoint
+  assumes `0 < delta < 1`, fixes the finite hypothesis catalog and full-support
+  prior before the sample, and uses the predeclared depth `Nat.clog 2 n`.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space. The finite
@@ -695,16 +712,17 @@ The main learning-theory results are deliberately finite and explicit.
 - A general probability-space Dudley theorem that constructs arbitrary
   measurable suprema and the required separability/chaining interface
 - An infinite-class confidence sequence
-- All-real tilt optimization, a countable posterior/`xi` selector, a countable
-  process-level tilt mixture, and a time-uniform empirical-Bernstein risk
+- All-real tilt optimization, a countable process-level tilt mixture, and a
+  time-uniform empirical-Bernstein risk
   theorem. The generic finite weighted hypothesis--tilt e-process, fixed
   rational two-event theorem,
   separately weighted finite `eta`/`lambda` catalogs, one-event finite
   joint-pair catalog, zero-residual specialization, and all three branches of
   the exact finite-catalog `xi` residual are checked. The closed-form dyadic
-  square-root-plus-linear endpoint is also checked. A support-aware countable
-  master event and per-entry prior-moment extraction are checked, but they are
-  not yet lifted to posterior-risk selection.
+  square-root-plus-linear endpoint is also checked. A support-aware
+  `Nat`-indexed fixed-sample master event, per-entry prior-moment extraction,
+  finite-posterior bound, and exact-`xi` selector are also checked; this is not
+  a countable-hypothesis posterior or a time-uniform process.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
   finite-dimensional spherical Gaussian family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
@@ -779,9 +797,10 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 
 - [ ] Extend the checked Dudley boundary-certificate theorem to arbitrary
   measurable suprema and non-finite outcome constructions
-- [ ] Lift the checked countable master event to the posterior and exact
-  piecewise-`xi` selector endpoints
-- [ ] Countable weighted `λ` catalogs beyond the checked finite selector layer
+- [x] Lift the checked countable fixed-sample master event to finite-posterior
+  and exact piecewise-`xi` natural-index selector endpoints
+- [ ] Countable weighted `λ` catalogs for process-level selection beyond the
+  checked fixed-sample selector layer
 - [x] Mix a finite, normalized hypothesis--tilt catalog into one generic
   sub-Gamma e-process with post-path atom selection
 - [ ] Extend the fixed-sample joint mean/Bessel-variance score through a

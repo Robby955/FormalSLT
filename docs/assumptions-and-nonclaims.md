@@ -270,17 +270,27 @@ penalty is `(5/4) * sqrt(2 * Vhat * L / n) + (5/2) * L / n`.
 Here `Vhat` is the posterior average of each hypothesis's Bessel empirical
 variance, not the empirical variance of the posterior-averaged loss. The
 result is finite IID and fixed-sample. It is not an all-real optimizer, a
-countable posterior selector, or a time-uniform empirical-Bernstein theorem.
+countable-catalog selector, or a time-uniform empirical-Bernstein theorem.
 
 `PACBayes.CountableJointMeanVariancePACBayes` extends only the fixed-sample
 master-event layer to a predeclared `Nat`-indexed catalog. Its nonnegative
 weights are summable with total `tsum` at most one. Because a nonsummable real
 series has `tsum = 0`, the bad set explicitly includes every product-law null
 sample; these samples cost zero mass, while positive-mass samples admit the
-summability proof needed for component extraction. The checked result gives
-one event and a prior-moment bound for every positive-weight entry. It does not
-yet apply Donsker--Varadhan, state a countable posterior-risk or exact-`xi`
-selector theorem, optimize over all real tilts, or construct an e-process.
+summability proof needed for component extraction. Its mass theorem requires
+`0 < delta`, nonnegative summable weights, and `tsum w <= 1`; it gives one
+event and a prior-moment bound for every positive-weight entry.
+
+The downstream `PACBayes.CountableJointMeanVariancePosterior` layer reduces
+each selected entry to a singleton finite catalog and applies the already
+checked finite Donsker--Varadhan and residual theorems. Conditional on a sample
+outside that same event, it gives raw-gap, exact-`xi` risk, and sample/posterior-
+dependent natural-index selector bounds with one KL term. These endpoints
+assume a full-support prior and a posterior PMF on the finite hypothesis type,
+strictly positive summable weights, and positive selected tilts. The receipt is
+structural and existential in the good sample; it does not evaluate a selected
+numerical bound below one. This is not a posterior on a countable hypothesis
+space, all-real optimization, or an e-process.
 
 `PACBayes.FiniteEmpiricalVariancePACBayes` lifts the normalized moment to one
 fixed-sample, fixed-tilt exceptional set of finite-product mass at most
@@ -352,9 +362,9 @@ and does not replace it. The zero-residual coefficient branch of the one-event
 catalog now removes the unknown population variance and gives the explicit
 empirical-Bernstein posterior-risk bound. The remaining branches are checked by
 the exact attained piecewise `xi` maximum on `[0,1/4]` and add `xi / t` to that
-same one-event bound. The countable master-event foundation described above
-does not yet lift these posterior endpoints. All-real optimization and a
-time-uniform process for that fixed-sample Bessel score are still open; the
+same one-event bound. The countable master-event and finite-posterior layer
+described above lift these endpoints to a predeclared `Nat`-indexed tilt-pair
+catalog. All-real optimization and a time-uniform process for that fixed-sample Bessel score are still open; the
 generic finite tilt-master e-process above does not supply that nesting. A
 countable indicator-Bernstein
 catalog and exact all-real `lambda` optimization are also open.

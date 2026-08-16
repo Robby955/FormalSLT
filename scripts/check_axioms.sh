@@ -117,6 +117,10 @@ THEOREMS=(
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_not_mem_catalogBadSamples_iff"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_catalogBadSamples_mass_le_delta"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_priorMoment_le_of_not_mem"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePosterior.countableJointMeanVariance_posteriorScore_le_of_not_mem"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePosterior.countableJointMeanVariance_posteriorGap_le_of_not_mem"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePosterior.countableJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem"
+  "FormalSLT.PACBayes.CountableJointMeanVariancePosterior.countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem"
   "FormalSLT.PACBayes.TimeUniformScore.scorePriorMixture_eProcess"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing"
   "FormalSLT.PACBayes.TimeUniformScore.timeUniformScorePACBayes_allPosteriors_bound"
@@ -170,6 +174,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes"
+  echo "import FormalSLT.PACBayes.CountableJointMeanVariancePosterior"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
@@ -209,6 +214,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
+  FormalSLT.PACBayes.CountableJointMeanVariancePosterior \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.PACBayes.TimeUniformTiltMixture \
   FormalSLT.StochasticDynamics.MarkovRisk \

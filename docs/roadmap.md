@@ -309,12 +309,14 @@
     `L = KL + log((Nat.clog 2 n + 1) / delta)` and a positive-KL,
     positive-variance, positive-sample-mass receipt below `99/100`.
     A support-aware normalized countable weighted joint `(t, eta)` master
-    mixture and per-entry prior-moment extraction are now checked. A normalized
-    finite hypothesis--tilt e-process with one Ville event and a selected-atom
-    weight penalty is checked separately at the generic process level. Lifting
-    the countable fixed-sample event to posterior and exact-`xi` selector
-    endpoints, extending the process-level tilt mixture to a countable catalog,
-    exact all-real optimization, time-uniform empirical-Bernstein risk,
+    mixture, per-entry prior-moment extraction, finite-posterior bound, and
+    sample/posterior-dependent exact-`xi` natural-index selector are now
+    checked on one fixed-sample event with one KL term per selected bound. A
+    normalized finite hypothesis--tilt e-process with one Ville event and a
+    selected-atom weight penalty is checked separately at the generic process
+    level.
+    Extending the process-level tilt mixture to a countable catalog, exact
+    all-real optimization, time-uniform empirical-Bernstein risk,
     continuous Bernstein posteriors, and infinite hypothesis classes remain
     open. The
     separate bounded-loss continuous lane currently covers a fixed

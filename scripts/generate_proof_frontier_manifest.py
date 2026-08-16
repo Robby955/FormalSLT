@@ -132,7 +132,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "from one finite normalized tilt prior, but has no i.i.d. adapter "
             "and is not countable, all-real, or simultaneous over arbitrary "
             "continuous posteriors. A separate fixed-sample countable joint "
-            "master controls prior moments but has no posterior selector. No "
+            "master has a finite-posterior selector over its predeclared "
+            "natural-index catalog, but it is not a process-level or all-real "
+            "result. No "
             "result is simultaneous over all continuous posteriors or all real "
             "tilts."
         ),
@@ -153,24 +155,24 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "including its explicit zero-residual branch and exact attained "
             "three-piece residual penalty, a closed-form clog-depth dyadic "
             "square-root-plus-linear endpoint, plus a support-aware Nat-indexed "
-            "countable master mixture and per-entry prior-moment extraction"
+            "countable master mixture, per-entry prior-moment extraction, "
+            "finite-posterior bound, and exact-xi selector"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Lift the checked support-aware countable weighted joint (t, eta) "
-            "master event to posterior and exact-xi selector endpoints; treat "
-            "all-real and time-uniform adaptation as separate process problems."
+            "Extend the checked fixed-sample natural-index selector to all-real "
+            "optimization or a genuine time-uniform joint process."
         ),
         "boundary": (
             "The posterior, exact-xi, and closed-form dyadic endpoints are "
-            "fixed-sample and finite. Their catalogs are declared in advance; "
-            "one master-mixture confidence event carries one KL term per "
-            "selected pair. The countable foundation is also "
-            "fixed-sample and stops at per-entry prior moments; its posterior "
-            "and xi selector lift is open. The separately budgeted rational "
+            "fixed-sample. The natural-index catalog is declared in advance, "
+            "the hypothesis type and posterior are finite, and one shared "
+            "master-mixture event carries one KL term per selected bound. The "
+            "selector receipt is structural rather than numerical. The "
+            "separately budgeted rational "
             "risk theorem remains a distinct two-event result. This "
             "empirical-Bernstein lane gives neither all-real nor time-uniform "
             "inference."

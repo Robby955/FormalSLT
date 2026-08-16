@@ -37,7 +37,7 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, but has no i.i.d. adapter and is not countable, all-real, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master controls prior moments but has no posterior selector. No result is simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, but has no i.i.d. adapter and is not countable, all-real, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No result is simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
       "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, add its i.i.d. specialization, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument and generalize the fixed spherical-Gaussian posterior lane.",
@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The posterior, exact-xi, and closed-form dyadic endpoints are fixed-sample and finite. Their catalogs are declared in advance; one master-mixture confidence event carries one KL term per selected pair. The countable foundation is also fixed-sample and stops at per-entry prior moments; its posterior and xi selector lift is open. The separately budgeted rational risk theorem remains a distinct two-event result. This empirical-Bernstein lane gives neither all-real nor time-uniform inference.",
+      "boundary": "The posterior, exact-xi, and closed-form dyadic endpoints are fixed-sample. The natural-index catalog is declared in advance, the hypothesis type and posterior are finite, and one shared master-mixture event carries one KL term per selected bound. The selector receipt is structural rather than numerical. The separately budgeted rational risk theorem remains a distinct two-event result. This empirical-Bernstein lane gives neither all-real nor time-uniform inference.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Lift the checked support-aware countable weighted joint (t, eta) master event to posterior and exact-xi selector endpoints; treat all-real and time-uniform adaptation as separate process problems.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture and per-entry prior-moment extraction",
+      "next_step": "Extend the checked fixed-sample natural-index selector to all-real optimization or a genuine time-uniform joint process.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -86,10 +86,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 156,
-    "library_and_example_lean_lines": 89257,
-    "library_lean_lines": 75113,
-    "library_modules": 197,
-    "theorem_map_entries": 787
+    "library_and_example_lean_lines": 89591,
+    "library_lean_lines": 75354,
+    "library_modules": 198,
+    "theorem_map_entries": 791
   },
   "theorem_families": [
     {
@@ -3832,6 +3832,30 @@
           "module": "PACBayes.CountableJointMeanVariancePACBayes",
           "name": "countableJointMeanVariance_priorMoment_le_of_not_mem",
           "summary": "Outside one countable event, every entry keeps its prior moment within its positive weight share"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePosterior",
+          "name": "countableJointMeanVariance_posteriorScore_le_of_not_mem",
+          "summary": "Every finite-hypothesis posterior and Nat-indexed catalog entry obey the Donsker--Varadhan score bound on the shared event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePosterior",
+          "name": "countableJointMeanVariance_posteriorGap_le_of_not_mem",
+          "summary": "Raw retained-variance posterior-gap inequality for every entry of the predeclared countable tilt-pair catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePosterior",
+          "name": "countableJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem",
+          "summary": "Exact-residual posterior-risk bound for a positive-tilt entry on the same fixed-sample event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.CountableJointMeanVariancePosterior",
+          "name": "countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem",
+          "summary": "Sample- and finite-posterior-dependent natural-index selector with one shared event and one KL term"
         }
       ],
       "name": "Finite exponential tilting"

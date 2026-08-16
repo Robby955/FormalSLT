@@ -114,8 +114,10 @@ classify_witness() {
 #     (asymmetric two-state catalog with a path-selected point posterior)
 #   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
 #     countableJointMeanVariance_priorMoment_le_of_not_mem
-#     (infinite geometric joint-pair catalog, one good sample controlling every
-#     entry, explicit first-two confidence shares, and an exercised null guard)
+#     (predeclared Nat-indexed geometric joint-pair catalog, one existential good
+#     sample controlling every entry, explicit first-two confidence shares, and
+#     an exercised null guard; the posterior-selector receipt is structural,
+#     not a numerical nonvacuity witness)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
