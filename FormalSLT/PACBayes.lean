@@ -32,6 +32,7 @@ import FormalSLT.PACBayes.IndicatorBernsteinConfidence
 import FormalSLT.PACBayes.IndicatorBernsteinLowRisk
 import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalVariance
+import FormalSLT.PACBayes.FiniteEmpiricalVarianceReverse
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF
 import FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes
