@@ -33,6 +33,7 @@ import FormalSLT.PACBayes.IndicatorBernsteinLowRisk
 import FormalSLT.PACBayes.IndicatorBernsteinTiltCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalVariance
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceReverse
+import FormalSLT.PACBayes.FiniteEmpiricalVarianceReversePACBayes
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceMatching
 import FormalSLT.PACBayes.FiniteEmpiricalVarianceMGF
 import FormalSLT.PACBayes.FiniteEmpiricalVariancePACBayes
@@ -46,6 +47,7 @@ import FormalSLT.PACBayes.FiniteBoundedLossExponentialTilt
 import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF
 import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes
 import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual
+import FormalSLT.PACBayes.FiniteJointMeanVarianceReversePACBayes
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt
 import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes
 import FormalSLT.PACBayes.CountableJointMeanVariancePosterior
@@ -76,6 +78,7 @@ empirical-variance concentration, fixed and finite-catalog
 empirical-Bernstein risk, bounded-loss exponential-tilt variance comparison,
 fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,
+finite-horizon reverse Bessel and joint mean/variance PAC-Bayes epochs,
 closed-form logarithmic-grid empirical-Bernstein bound, support-aware
 countable master-mixture foundation and finite-posterior catalog-selector
 layer, score e-process, finite weighted tilt e-process and its finite-IID
