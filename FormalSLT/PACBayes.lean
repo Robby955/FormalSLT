@@ -60,6 +60,7 @@ import FormalSLT.PACBayes.TimeUniformScorePACBayes
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.TimeUniformIIDGrid
+import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
 import FormalSLT.PACBayes.TimeUniformGaussianPACBayes
 import FormalSLT.PACBayes.IIDContinuousGaussian
@@ -76,6 +77,6 @@ fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,
 closed-form logarithmic-grid empirical-Bernstein bound, support-aware
 countable master-mixture foundation and finite-posterior catalog-selector
-layer, score e-process, finite weighted tilt e-process, and time-uniform
-PAC-Bayes surfaces.
+layer, score e-process, finite weighted tilt e-process and its finite-IID
+bounded-loss adapter, and time-uniform PAC-Bayes surfaces.
 -/

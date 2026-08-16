@@ -100,6 +100,12 @@ classify_witness() {
 #   timeUniformPACBayes_tiltMixture_allPosteriors_bound
 #     (one finite weighted hypothesis--tilt e-process, two distinct tilts,
 #      a nonconstant Rademacher path, and one all-posterior Ville event)
+#   timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec /
+#     selected_of_not_mem_measurableExceptionalEvent
+#     (finite IID/full-support two-tilt catalog, path-selected posterior and
+#     atom, evaluated boundary at most 3/8, and an existential good path with
+#     selected risk below 7/8; explicit selector-branch exercises are not
+#     proved to lie on the good set)
 #   timeUniformIIDGaussianPACBayes_bound (fair-Bernoulli product stream with
 #     explicit KL, evaluated penalty, and a positive-mass failure cylinder)
 #   timeUniformIIDGaussianPACBayes_grid_bound / selected_bound (two fixed
@@ -151,6 +157,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckTimeUniformPACBayes.lean"
   "examples/CheckTimeUniformScorePACBayes.lean"
   "examples/CheckTimeUniformTiltMixture.lean"
+  "examples/CheckTimeUniformIIDTiltMixture.lean"
   "examples/CheckIIDContinuousGaussianPACBayes.lean"
   "examples/CheckIIDContinuousGaussianGridPACBayes.lean"
   "examples/CheckDyadicEpochCS.lean"

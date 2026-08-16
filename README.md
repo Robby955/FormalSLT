@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C410-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-198-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-89%2C591-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C440-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-199-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-90%2C356-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -40,6 +40,7 @@ a broad priority claim.
 |---|---|---|---|
 | **Closed-form empirical-Bernstein PAC-Bayes** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
 | **Time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_allPosteriors_bound` | One common event over every positive time and finite posterior PMF for IID `[0,1]` losses and a fixed declared tilt | [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean) discharges the IID process obligations; a dedicated positive-KL subunit numerical receipt remains planned |
+| **Finite-tilt time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` and `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent` | Finite hypotheses and tilts, full-support priors, measurable IID `[0,1]` losses, and one event shared by all positive times, finite posterior PMFs, and predeclared tilt atoms | [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean): `delta = 1/16`, exact point-posterior `KL = log 2`, both tilt boundaries at most `3/8`, and an existential good path with selected risk `< 7/8`; its explicit selector-branch exercises are not proved good |
 | **Finite Markov prequential PAC-Bayes** | `markovPACBayes_prequentialRisk_certificate` | Finite transition PMFs, deterministic initial state, fixed finite predictor catalog, fixed tilt, and encountered one-step conditional risk rather than stationary risk | [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean): asymmetric two-state chain, path-selected point posterior, exact `KL = log 2`, and an `n = 1024` numerical receipt derived from the simultaneous all-time theorem |
 
 The source theorem, exact agreement, material differences, and external-review
@@ -65,8 +66,10 @@ questions for each result are tracked in
 - **Time-uniform PAC-Bayes:** finite-class i.i.d. bounds simultaneous over all
   posteriors, finite-grid data-dependent tilt selection, and a finite normalized
   hypothesis--tilt master e-process whose one Ville event permits path- and
-  posterior-dependent selection of a declared tilt atom. The library also has
-  a process-level theorem over arbitrary measurable hypothesis spaces and an
+  posterior-dependent selection of a declared tilt atom. A finite-IID adapter
+  discharges the measurable bounded-loss process assumptions and packages the
+  result as one measurable exceptional event. The library also has a
+  process-level theorem over arbitrary measurable hypothesis spaces and an
   end-to-end i.i.d. bounded-loss theorem over finite-dimensional
   spherical-Gaussian hypotheses with a checked closed-form KL penalty and a
   stochastic fair-Bernoulli product-stream certificate.
@@ -415,12 +418,22 @@ declaration and prints its axiom profile.
   selected-atom endpoint permits a path- and posterior-dependent tilt choice
   and displays one hypothesis-posterior KL term plus
   `log (1 / (delta * weight j))`; it does not use a finite union bound or a
-  second tilt KL. The generic theorem states an outer-mass bound and is not an
-  i.i.d. bounded-loss specialization, countable mixture, or all-real optimizer.
+  second tilt KL. The generic theorem states an outer-mass bound and is not by
+  itself an i.i.d. bounded-loss specialization, countable mixture, or all-real
+  optimizer.
   The Boolean receipt uses distinct zero and Rademacher hypothesis processes,
   tilts `1/4` and `1/2`, and proves that the master exceeds one on the positive
   outcome;
   [`CheckTimeUniformTiltMixture.lean`](./examples/CheckTimeUniformTiltMixture.lean)
+- **Finite-IID weighted-tilt specialization** —
+  `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` supplies
+  one measurable event of mass at most `delta` for measurable IID `[0,1]`
+  losses, finite full-support hypothesis and tilt priors, and positive tilts
+  below three. Outside it, every positive time, posterior PMF, and declared
+  atom is valid; the selector corollary allows both posterior and atom to depend
+  on the path. The Boolean receipt evaluates both possible boundaries at most
+  `3/8` and proves existential, rather than named, good-path risk `< 7/8`;
+  [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean)
 - **Gaussian KL identification** — `diagonalGaussianMeasure_klDiv_toReal_eq`
   and `sphericalGaussianMeasure_klDiv_toReal_eq`;
   [`CheckGaussianMeasureKL.lean`](./examples/CheckGaussianMeasureKL.lean)
@@ -519,7 +532,8 @@ release check is in [Audit commands](#audit-commands).
 - Use `FormalSLT.PACBayes.TimeUniformTiltMixture` when a finite, normalized,
   positive tilt prior should be mixed into one process before applying Ville.
   Its selector chooses one predeclared atom after observing the path and
-  posterior; it is process-level and does not provide an i.i.d. loss adapter.
+  posterior. Use `FormalSLT.PACBayes.TimeUniformIIDTiltMixture` for the checked
+  measurable-event adapter to finite-IID `[0,1]` losses.
 - Use `FormalSLT.PACBayes.IndicatorBernsteinLowRisk` for a posterior-uniform
   finite indicator-loss bound with an observable empirical-risk right-hand
   side. It self-bounds population Bernoulli variance by risk; it is not an
@@ -646,6 +660,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
   `PACBayes.TimeUniformScorePACBayes`,
   `PACBayes.TimeUniformTiltMixture`,
+  `PACBayes.TimeUniformIIDTiltMixture`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
@@ -697,7 +712,9 @@ The main learning-theory results are deliberately finite and explicit.
   weighted tilt-master theorem instead assumes finite nonempty hypothesis and
   tilt types, full-support normalized priors, adapted centered bounded
   increments with a common conditional second-moment proxy, and declared
-  tilts satisfying `0 < lambda_j` and `b * lambda_j < 3`.
+  tilts satisfying `0 < lambda_j` and `b * lambda_j < 3`. Its finite-IID
+  adapter assumes measurable `[0,1]` losses, measurable IID sample coordinates,
+  and specializes that tilt condition to `lambda_j < 3`.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
@@ -723,8 +740,9 @@ The main learning-theory results are deliberately finite and explicit.
   `Nat`-indexed fixed-sample master event, per-entry prior-moment extraction,
   finite-posterior bound, and exact-`xi` selector are also checked; this is not
   a countable-hypothesis posterior or a time-uniform process.
-- An end-to-end i.i.d. bounded-loss PAC-Bayes specialization beyond the current
-  finite-dimensional spherical Gaussian family
+- An end-to-end i.i.d. bounded-loss PAC-Bayes specialization over continuous
+  hypothesis spaces beyond the current finite-dimensional spherical Gaussian
+  family
 - Same-trajectory-trained or online-updated predictors, random initial laws,
   continuous-state dynamics, and stationary or mixing-based long-run risk
   guarantees
@@ -803,6 +821,8 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   checked fixed-sample selector layer
 - [x] Mix a finite, normalized hypothesis--tilt catalog into one generic
   sub-Gamma e-process with post-path atom selection
+- [x] Specialize the finite hypothesis--tilt master to measurable IID `[0,1]`
+  losses with one measurable exceptional event and a selected-atom endpoint
 - [ ] Extend the fixed-sample joint mean/Bessel-variance score through a
   genuinely nested time-uniform process, then study conditional e-variable
   composition and composite nulls

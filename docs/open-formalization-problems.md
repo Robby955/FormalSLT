@@ -95,8 +95,11 @@ hypothesis--tilt master: positive normalized priors over both finite types are
 mixed into one e-process, one Ville event controls all positive times and
 finite posterior PMFs, and one declared tilt atom may be selected from the path
 and posterior with penalty `log (1 / (delta * weight j))`. This generic module
-does not provide an i.i.d. bounded-loss adapter and does not turn the
-fixed-sample Bessel score into a nested process.
+does not itself turn the fixed-sample Bessel score into a nested process.
+`PACBayes.TimeUniformIIDTiltMixture` now supplies its finite-IID bounded-loss
+adapter and one measurable exceptional event. It retains finite hypotheses,
+finite predeclared tilts, full-support priors, and measurable `[0,1]` losses; it
+does not establish empirical-variance or all-real control.
 For dependent data, `StochasticDynamics.MarkovPACBayes` now checks a fixed-tilt
 (`0 < λ < 3`), all-positive-time theorem simultaneous over every posterior on
 a finite predictor catalog under an actual finite Markov path law.
@@ -112,17 +115,18 @@ simultaneous over all continuous posteriors.
   natural-index selector for a countable tilt-pair catalog;
 - extend the finite normalized hypothesis--tilt e-process to a countable
   mixture with the required summability and integrability obligations;
-- build separate i.i.d. bounded-loss and predictable-variance adapters without
-  conflating them with the fixed-sample Bessel score;
+- build a predictable-variance or exact-Bessel process adapter without
+  conflating it with the checked bounded-loss IID adapter;
 - develop a localization penalty for any honest all-`λ` statement;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
 
 **Boundary.** The normalized process-level tilt master remains finite and
 selects one declared atom rather than an arbitrary joint posterior. Its failure
-set has outer mass at most `delta`; no measurable i.i.d. exceptional-event
-wrapper is included here. The finite-hypothesis grid theorem remains finite,
-and the Markov posterior-uniform theorem has one fixed declared tilt satisfying
+set has outer mass at most `delta`; its finite-IID adapter wraps the concrete
+risk failure set in a measurable event of mass at most `delta`. The
+finite-hypothesis grid theorem remains finite, and the Markov posterior-uniform
+theorem has one fixed declared tilt satisfying
 `0 < λ < 3`.
 The base
 continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is

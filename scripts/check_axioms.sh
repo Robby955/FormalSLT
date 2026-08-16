@@ -130,6 +130,13 @@ THEOREMS=(
   "FormalSLT.PACBayes.TimeUniform.timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_crossing"
   "FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_allPosteriors_bound"
   "FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_selected_of_not_mem"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayesTiltMixtureMeasurableExceptionalEvent_measurable"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_measurableExceptionalEvent"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_allPosteriors_bound"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_allPosteriors_of_not_mem_measurableExceptionalEvent"
+  "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -177,6 +184,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePosterior"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
+  echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   for t in "${THEOREMS[@]}"; do
@@ -217,6 +225,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.CountableJointMeanVariancePosterior \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.PACBayes.TimeUniformTiltMixture \
+  FormalSLT.PACBayes.TimeUniformIIDTiltMixture \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes >/dev/null
 

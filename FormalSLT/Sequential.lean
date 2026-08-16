@@ -17,6 +17,7 @@ import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.TimeUniformIIDGrid
+import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
 import FormalSLT.PACBayes.TimeUniformGaussianPACBayes
 import FormalSLT.PACBayes.IIDContinuousGaussian

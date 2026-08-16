@@ -118,9 +118,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "next_step": (
             "Extend the checked finite normalized hypothesis--tilt e-process "
             "to a countable mixture with explicit summability obligations, "
-            "add its i.i.d. specialization, then pursue honest all-real "
-            "localization using continuous score control or a "
-            "supremum-to-integral argument and generalize "
+            "then pursue honest all-real localization using continuous score "
+            "control or a supremum-to-integral argument and generalize "
             "the fixed spherical-Gaussian posterior lane."
         ),
         "boundary": (
@@ -129,9 +128,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "of posterior/tilt pairs and a posterior-uniform finite weighted "
             "indicator-Bernstein tilt catalog support post-sample selection. "
             "The generic time-uniform master also supports a selected atom "
-            "from one finite normalized tilt prior, but has no i.i.d. adapter "
-            "and is not countable, all-real, or simultaneous over arbitrary "
-            "continuous posteriors. A separate fixed-sample countable joint "
+            "from one finite normalized tilt prior, and its finite-IID "
+            "bounded-loss adapter packages one measurable exceptional event. "
+            "Neither is countable, all-real, an exact-Bessel process, or "
+            "simultaneous over arbitrary continuous posteriors. A separate "
+            "fixed-sample countable joint "
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
             "result. No "
