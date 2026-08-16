@@ -37,10 +37,10 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, but has no i.i.d. adapter and is not countable, all-real, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No result is simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, and its finite-IID bounded-loss adapter packages one measurable exceptional event. Neither is countable, all-real, an exact-Bessel process, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No result is simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, add its i.i.d. specialization, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument and generalize the fixed spherical-Gaussian posterior lane.",
+      "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument and generalize the fixed spherical-Gaussian posterior lane.",
       "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 156,
-    "library_and_example_lean_lines": 89591,
-    "library_lean_lines": 75354,
-    "library_modules": 198,
-    "theorem_map_entries": 791
+    "example_lean_files": 157,
+    "library_and_example_lean_lines": 90356,
+    "library_lean_lines": 75639,
+    "library_modules": 199,
+    "theorem_map_entries": 800
   },
   "theorem_families": [
     {
@@ -4165,6 +4165,60 @@
           "module": "PACBayes.TimeUniformTiltMixture",
           "name": "timeUniformPACBayes_tiltMixture_selected_of_not_mem",
           "summary": "Path- and posterior-dependent selection of one predeclared tilt atom with one hypothesis KL and log(1/(\u03b4 w_j))"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure",
+          "summary": "Finite-IID risk-facing failure set existentially quantifying over declared tilts, finite posterior PMFs, and positive times"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayesTiltMixtureMeasurableExceptionalEvent",
+          "summary": "Measurable hull of the finite-IID weighted-tilt failure set"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayesTiltMixtureMeasurableExceptionalEvent_measurable",
+          "summary": "Measurability of the canonical finite-IID exceptional event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_measurableExceptionalEvent",
+          "summary": "Every raw finite-IID weighted-tilt failure lies in the measurable exceptional event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure",
+          "summary": "Embeds the IID risk-facing failure set into the generic weighted master-process failure set"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayes_tiltMixture_allPosteriors_bound",
+          "summary": "Finite-IID outer-mass bound simultaneous over all positive times, finite posterior PMFs, and declared tilt atoms"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec",
+          "summary": "One measurable finite-IID exceptional event contains every failure and has mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayes_tiltMixture_allPosteriors_of_not_mem_measurableExceptionalEvent",
+          "summary": "Outside the measurable event, all positive times, finite posterior PMFs, and declared tilts obey the weighted boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformIIDTiltMixture",
+          "name": "timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent",
+          "summary": "Path- and posterior-dependent selection of one predeclared tilt atom on the same finite-IID measurable event"
         },
         {
           "kind": "theorem",

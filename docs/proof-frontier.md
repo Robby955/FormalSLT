@@ -80,8 +80,9 @@ files.
   its exact weight penalty. The checked fixed-sample countable joint master now
   has a downstream finite-posterior exact-`xi` selector over its predeclared
   `Nat`-indexed tilt-pair catalog. Countable process-level selection, all-real
-  lambda optimization, i.i.d. specialization of the process master, and
-  posterior-uniform general continuous families remain open.
+  lambda optimization, predictable-variance or exact-Bessel process adapters,
+  and posterior-uniform general continuous families remain open. A finite-IID
+  measurable bounded-loss adapter for the finite process master is checked.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
   checked for `[0,1]` losses under the explicit finite IID product law and

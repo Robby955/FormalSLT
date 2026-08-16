@@ -314,7 +314,7 @@
     checked on one fixed-sample event with one KL term per selected bound. A
     normalized finite hypothesis--tilt e-process with one Ville event and a
     selected-atom weight penalty is checked separately at the generic process
-    level.
+    level, together with a measurable-event finite-IID `[0,1]` loss adapter.
     Extending the process-level tilt mixture to a countable catalog, exact
     all-real optimization, time-uniform empirical-Bernstein risk,
     continuous Bernstein posteriors, and infinite hypothesis classes remain

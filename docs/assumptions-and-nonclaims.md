@@ -204,9 +204,14 @@ crossing controls every positive time, posterior PMF, and declared tilt atom.
 The selected boundary contains one hypothesis-posterior KL term and
 `log (1 / (delta * weight j))`; there is no second tilt KL or finite union
 bound. The selector chooses one atom after observing the path and posterior.
-This module does not provide an i.i.d. bounded-loss adapter, a measurable
-exceptional-event wrapper, a countable or all-real mixture, an arbitrary joint
-hypothesis--tilt posterior, or an exact-Bessel empirical-Bernstein process.
+`PACBayes.TimeUniformIIDTiltMixture` separately discharges these process
+assumptions for finite-class measurable IID `[0,1]` losses. It assumes
+measurable IID coordinates with a common probability law, full-support finite
+hypothesis and tilt priors, positive declared tilts below three, and positive
+`delta`. It provides one measurable exceptional event and the same
+path/posterior-dependent selected-atom endpoint. Neither module provides a
+countable or all-real mixture, an arbitrary joint hypothesis--tilt posterior,
+or an exact-Bessel empirical-Bernstein process.
 
 `PACBayes.FiniteEmpiricalVariance` supplies the finite empirical-variance
 foundation for arbitrary real-valued per-hypothesis losses: population

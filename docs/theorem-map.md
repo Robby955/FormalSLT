@@ -758,6 +758,15 @@ declarations; modules are relative to `FormalSLT`.
 | `timeUniformPACBayes_tiltMixture_allPosteriors_bound` | `PACBayes.TimeUniformTiltMixture` | One outer-mass event controls every positive time, posterior PMF, and declared finite tilt atom |
 | `timeUniformPACBayes_tiltMixture_allPosteriors_of_not_mem` | `PACBayes.TimeUniformTiltMixture` | Outside the common event, every posterior and declared atom obeys the selected-weight boundary |
 | `timeUniformPACBayes_tiltMixture_selected_of_not_mem` | `PACBayes.TimeUniformTiltMixture` | Path- and posterior-dependent selection of one predeclared tilt atom with one hypothesis KL and `log(1/(δ w_j))` |
+| `timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure` | `PACBayes.TimeUniformIIDTiltMixture` | Finite-IID risk-facing failure set existentially quantifying over declared tilts, finite posterior PMFs, and positive times |
+| `timeUniformIIDPACBayesTiltMixtureMeasurableExceptionalEvent` | `PACBayes.TimeUniformIIDTiltMixture` | Measurable hull of the finite-IID weighted-tilt failure set |
+| `timeUniformIIDPACBayesTiltMixtureMeasurableExceptionalEvent_measurable` | `PACBayes.TimeUniformIIDTiltMixture` | Measurability of the canonical finite-IID exceptional event |
+| `timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_measurableExceptionalEvent` | `PACBayes.TimeUniformIIDTiltMixture` | Every raw finite-IID weighted-tilt failure lies in the measurable exceptional event |
+| `timeUniformIIDPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure` | `PACBayes.TimeUniformIIDTiltMixture` | Embeds the IID risk-facing failure set into the generic weighted master-process failure set |
+| `timeUniformIIDPACBayes_tiltMixture_allPosteriors_bound` | `PACBayes.TimeUniformIIDTiltMixture` | Finite-IID outer-mass bound simultaneous over all positive times, finite posterior PMFs, and declared tilt atoms |
+| `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` | `PACBayes.TimeUniformIIDTiltMixture` | One measurable finite-IID exceptional event contains every failure and has mass at most `delta` |
+| `timeUniformIIDPACBayes_tiltMixture_allPosteriors_of_not_mem_measurableExceptionalEvent` | `PACBayes.TimeUniformIIDTiltMixture` | Outside the measurable event, all positive times, finite posterior PMFs, and declared tilts obey the weighted boundary |
+| `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent` | `PACBayes.TimeUniformIIDTiltMixture` | Path- and posterior-dependent selection of one predeclared tilt atom on the same finite-IID measurable event |
 | `scorePriorMixture_eProcess` | `PACBayes.TimeUniformScorePACBayes` | A full-support finite prior mixture of exponentiated score e-processes is an e-process |
 | `timeUniformScorePACBayesAnyPosteriorFailure_subset_crossing` | `PACBayes.TimeUniformScorePACBayes` | Any all-time/all-posterior score failure forces the common prior-mixture e-process to cross `1 / δ` |
 | `timeUniformScorePACBayes_allPosteriors_bound` | `PACBayes.TimeUniformScorePACBayes` | Generic finite-hypothesis compiler: one Ville event controls every time and every posterior through pathwise Donsker--Varadhan |
