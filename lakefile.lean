@@ -7,11 +7,11 @@ package «formal-slt» where
   -- Sauer-Shelah, VC-style sample complexity, ERM generalization.
 
 require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.32.0"
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.32.2"
 
 meta if get_config? env == some "dev" then
   require «doc-gen4» from git
-    "https://github.com/leanprover/doc-gen4" @ "v4.32.0"
+    "https://github.com/leanprover/doc-gen4" @ "v4.32.2"
 
 @[default_target]
 lean_lib FormalSLT where

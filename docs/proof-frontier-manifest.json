@@ -4800,7 +4800,7 @@
     }
   ],
   "toolchain": {
-    "lean": "leanprover/lean4:v4.32.0",
-    "mathlib_revision": "v4.32.0"
+    "lean": "leanprover/lean4:v4.32.2",
+    "mathlib_revision": "v4.32.2"
   }
 }
