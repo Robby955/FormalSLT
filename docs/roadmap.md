@@ -183,10 +183,30 @@
   checker gives an asymmetric path-selected posterior/tilt receipt; its two
   explicit selector paths exercise branches but are not proved good or
   positive-probability
+- [x] All-sample-size empirical-Bernstein PAC-Bayes certificate:
+  the leave-one-coordinate Bessel identity, reverse Bessel martingale, reverse
+  joint mean/variance exponential submartingale, epoch-level posterior/catalog
+  maximal event, reverse square-root endpoint, finite-prefix product-law
+  bridge, and telescoping dyadic stitch now yield one measurable infinite-IID
+  event of mass at most `delta`. Its complement controls every `n >= 2` and
+  every posterior PMF on a fixed finite hypothesis type with one KL term and
+  posterior-averaged per-hypothesis Bessel variance. This is an offline
+  reverse-epoch theorem, not a forward e-process or optional-stopping result.
 
 ## Planned
 
 ### Near-term
+
+- [ ] **All-sample-size empirical-Bernstein evidence and extension**
+  - Freeze the exact theorem commit and archive the full build, example,
+    axiom, statement-fidelity, witness, documentation, and metadata gates.
+  - Compare the stitched constants and all-sample-size nonvacuity region against
+    PAC-Bayes-kl, Hoeffding/Catoni, Tolstikhin--Seldin, and existing anytime
+    PAC-Bayes boundaries on identical inputs.
+  - Obtain independent PAC-Bayes/constants and Lean probability reviews.
+  - In a separate theorem branch, extend the all-sample-size endpoint from
+    finite hypotheses to a general measurable hypothesis space without
+    assuming the hard integrated MGF or measurability conclusion.
 
 - [ ] **Finite stochastic-dynamics extensions**
   - Generalize the deterministic initial state to a supplied initial law.
@@ -323,10 +343,12 @@
     normalized finite hypothesis--tilt e-process with one Ville event and a
     selected-atom weight penalty is checked separately at the generic process
     level, together with a measurable-event finite-IID `[0,1]` loss adapter.
-    Extending the process-level tilt mixture to a countable catalog, exact
-    all-real optimization, time-uniform empirical-Bernstein risk,
-    continuous Bernstein posteriors, and infinite hypothesis classes remain
-    open. The
+    The reverse-exchangeability lane now separately gives one all-sample-size
+    empirical-Bernstein event for finite IID data and finite hypotheses, with
+    constants `5/2` and `5`. Extending the process-level tilt mixture to a
+    countable catalog, exact all-real optimization, a forward exact-Bessel
+    e-process, continuous Bernstein posteriors, and infinite hypothesis classes
+    remain open. The
     separate bounded-loss continuous lane currently covers a fixed
     spherical-Gaussian posterior; it does not close these extensions.
 

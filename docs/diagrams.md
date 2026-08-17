@@ -105,7 +105,7 @@ The localized wrappers consume finite Bernstein tails and finite union bounds
 over the localized class; the algebraic centered-moment interfaces name the
 whole-supremum obligation without discharging it.
 
-## C. Fixed-sample PAC-Bayes and empirical Bernstein
+## C. PAC-Bayes and empirical Bernstein
 
 The classical change-of-measure branch contains fixed-tilt Catoni bounds and
 fixed-budget or finite-predeclared-grid McAllester bounds. The separate-event
@@ -115,9 +115,11 @@ supports separately weighted finite `η` and `λ` catalogs, and has two KL
 appearances in the final bound. The joint route instead uses one predeclared
 weighted finite `(t, η)` catalog and one shared event. Its entry may be selected
 after seeing the sample and posterior, with one KL term plus that entry's
-catalog-weighted confidence allocation. All routes shown here are fixed-sample
-and finite-IID. The finite catalogs and the checked `Nat`-indexed countable
-master are declared before the sample is observed.
+catalog-weighted confidence allocation. Those routes are fixed-sample and
+finite-IID. The separate reverse-exchangeability route turns prefix means and
+Bessel variances into reverse martingales, controls every prefix in each
+dyadic epoch, and stitches the epochs into one infinite-IID event valid for
+every `n >= 2`. All catalogs are declared before the sample is observed.
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 42, 'nodeSpacing': 26}}}%%
@@ -142,8 +144,13 @@ flowchart TD
     end
     countablemaster["Support-aware countable weighted master<br/>Nat-indexed (t, η), positive-weight prior moments"]
     countableposterior["Finite-posterior exact-ξ selector<br/>Nat-indexed tilt-pair catalog"]
+    reversebessel["Reverse Bessel martingale<br/>leave-one-coordinate conditional identity"]
+    reversejoint["Reverse joint mean/variance<br/>exponential submartingale + maximal bound"]
+    reversegrid["Reverse dyadic-scale epoch endpoint<br/>all prefixes, all finite posteriors"]
+    stitched["All-sample-size empirical-Bernstein event<br/>5/2 square-root + 5 linear constants"]
     allreal["All-real tilt optimization (open)"]
-    tueb["Time-uniform joint empirical-Bernstein<br/>with exact Bessel variance (open)"]
+    continuousEB["Measurable/continuous-hypothesis<br/>all-sample-size extension (open)"]
+    forwardEB["Forward exact-Bessel e-process +<br/>optional-stopping API (open)"]
 
     kl --> pmgf
     pmgf --> catoni
@@ -164,15 +171,21 @@ flowchart TD
     zerores --> sqrtbound
     jointmgf --> countablemaster
     countablemaster --> countableposterior
+    bessel --> reversebessel
+    matching --> reversejoint
+    reversebessel --> reversejoint
+    reversejoint --> reversegrid
+    reversegrid --> stitched
     jointcat -.-> allreal
-    ebrisk -.-> tueb
+    stitched -.-> continuousEB
+    stitched -.-> forwardEB
 
     classDef checked fill:#ecfdf5,stroke:#0f766e,color:#134e4a;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
-    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster,countableposterior checked;
-    class mcallester,ebrisk,zerores,xires,sqrtbound endpointNode;
-    class allreal,tueb open;
+    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster,countableposterior,reversebessel,reversejoint checked;
+    class mcallester,ebrisk,zerores,xires,sqrtbound,reversegrid,stitched endpointNode;
+    class allreal,continuousEB,forwardEB open;
 ```
 
 The finite joint route thresholds one prior-and-catalog master mixture, so the
@@ -183,7 +196,10 @@ a sample- or posterior-dependent grid choice. The checked countable foundation
 controls every positive-weight prior moment through one support-aware master
 event. Its downstream layer applies the finite Donsker–Varadhan and residual
 theorems to a sample- and finite-posterior-selected natural-number entry on
-that same event. The variance events
+that same event. The stitched endpoint instead uses a telescoping confidence
+allocation across reverse dyadic epochs and one finite-prefix/infinite-product
+measure bridge. It is an offline all-sample-size theorem, not a forward
+e-process or optional-stopping result. The variance events
 bound the posterior average of per-hypothesis variances; they do not bound the
 variance of the posterior-averaged loss.
 
@@ -270,8 +286,9 @@ These diagrams do not claim more than the theorem signatures state:
 - The finite time-uniform tilt master selects one declared atom; it is not a
   countable mixture, an arbitrary joint hypothesis--tilt posterior, an all-real
   tilt optimizer, or an i.i.d. loss specialization.
-- The time-uniform PAC-Bayes endpoints do not imply a time-uniform
-  empirical-Bernstein theorem with exact Bessel variance.
+- The generic forward time-uniform PAC-Bayes endpoints do not imply the
+  exact-Bessel result. The checked exact-Bessel all-sample-size theorem instead
+  uses offline reverse epochs and does not provide optional-stopping semantics.
 - The posterior average of per-hypothesis variances is not the variance of
   the posterior-averaged loss.
 - The checked Dudley boundary adapters are not an unrestricted

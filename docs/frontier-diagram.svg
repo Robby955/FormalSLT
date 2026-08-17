@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1240" height="900" viewBox="0 0 1240 900" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT scope frontier</title>
-  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample PAC-Bayes routes including an explicit closed-form empirical-Bernstein endpoint and a support-aware countable joint master with a finite-posterior exact-xi selector, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov prequential risk, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, a countable process-level tilt mixture, all-real tilt optimization, time-uniform empirical Bernstein with exact Bessel variance, same-trajectory or predictable Markov learners, random initial laws and continuous state and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
+  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample and all-sample-size finite-IID empirical-Bernstein PAC-Bayes routes with exact Bessel variance, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov prequential risk, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, a countable process-level tilt mixture, all-real tilt optimization, a measurable or continuous-hypothesis all-sample-size empirical-Bernstein extension, same-trajectory or predictable Markov learners, random initial laws and continuous state and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
   <defs>
     <style>
       text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
@@ -55,8 +55,8 @@
   <rect x="60" y="474" width="525" height="66" rx="8" class="item-in"/>
   <circle cx="84" cy="507" r="11" class="badge-in"/>
   <path d="M78 507 L83 512 L91 503" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="502" class="item-label">Fixed-sample PAC-Bayes routes</text>
-  <text x="104" y="524" class="item-sub">exact &#958;, empirical Bernstein, countable master + selector</text>
+  <text x="104" y="502" class="item-label">Empirical-Bernstein PAC-Bayes</text>
+  <text x="104" y="524" class="item-sub">fixed sample + all sample sizes, exact Bessel variance</text>
 
   <rect x="60" y="556" width="525" height="66" rx="8" class="item-in"/>
   <circle cx="84" cy="589" r="11" class="badge-in"/>
@@ -96,8 +96,8 @@
 
   <rect x="655" y="392" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="425" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="699" y="420" class="item-label">Time-uniform empirical Bernstein, exact Bessel variance</text>
-  <text x="699" y="442" class="item-sub">joint process version of the fixed-sample theorem</text>
+  <text x="699" y="420" class="item-label">Continuous-hypothesis all-sample-size EB</text>
+  <text x="699" y="442" class="item-sub">measurable posterior families beyond the finite catalog</text>
 
   <rect x="655" y="474" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="507" r="11" fill="none" stroke="#64748b" stroke-width="2"/>

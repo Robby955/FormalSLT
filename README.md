@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C455-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-200-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-90%2C816-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C698-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-213-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-96%2C882-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -31,14 +31,15 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
 
 ## Flagship results
 
-FormalSLT's main research surface is organized around three end-to-end results.
+FormalSLT's main research surface is organized around a small set of end-to-end results.
 The statistical ingredients are established in the literature; the repository
 claim is the checked Lean specialization or derived finite-sample endpoint, not
 a broad priority claim.
 
 | Result | Checked endpoint | Scope | Numerical or theorem-facing receipt |
 |---|---|---|---|
-| **Closed-form empirical-Bernstein PAC-Bayes** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
+| **All-sample-size empirical-Bernstein PAC-Bayes** | `exists_infiniteEmpiricalBernstein_event` | One measurable event of infinite-IID mass at most `delta` works for every `n >= 2` and every posterior PMF on a fixed finite hypothesis type. The bound is `Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`, with one KL term and posterior-averaged per-hypothesis Bessel variance | [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean) instantiates one all-`n` event for a fair-Boolean stream and a posterior selected from the first observation. The fixed-`n` balanced-64 receipt below separately checks positive KL, positive variance, positive sample mass, and a bound below one |
+| **Fixed-sample empirical-Bernstein foundation** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
 | **Time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_allPosteriors_bound` | One common event over every positive time and finite posterior PMF for IID `[0,1]` losses and a fixed declared tilt | [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean) discharges the IID process obligations; a dedicated positive-KL subunit numerical receipt remains planned |
 | **Finite-tilt time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` and `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent` | Finite hypotheses and tilts, full-support priors, measurable IID `[0,1]` losses, and one event shared by all positive times, finite posterior PMFs, and predeclared tilt atoms | [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean): `delta = 1/16`, exact point-posterior `KL = log 2`, both tilt boundaries at most `3/8`, and an existential good path with selected risk `< 7/8`; its explicit selector-branch exercises are not proved good |
 | **Finite Markov prequential PAC-Bayes** | `markovPACBayes_tiltMixture_prequentialRisk_certificate` | Finite transition PMFs, deterministic initial state, fixed finite predictor catalog, and a predeclared full-support finite tilt prior; one atom may be selected after the trajectory, and the target is encountered one-step conditional risk rather than stationary risk | [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean): asymmetric two-state chain, path-selected point posterior and tilt atom, exact `KL = log 2`, both selected boundaries `< 1/20`, and conditional risk `< 11/20`; the explicit selector-branch paths are not proved good or positive-probability |
@@ -118,8 +119,18 @@ questions for each result are tracked in
   `R(rho) <= Rhat(rho) + (5/4) sqrt(2 Vhat(rho) L(rho) / n)
   + (5/2) L(rho) / n`, where
   `L(rho) = KL(rho || prior) + log((clog 2 n + 1) / delta)`.
-  Countable process-level tilt mixtures, all-real optimization, and
-  time-uniform exact-Bessel empirical-Bernstein risk remain open.
+  A reverse-exchangeability layer now proves the Bessel conditional-expectation
+  identity, reverse Bessel martingale, reverse joint mean/variance exponential
+  submartingale, one-event posterior catalog on each dyadic epoch, and the
+  reverse closed-form bound. Countable stitching on the infinite IID product
+  space then gives one measurable event of mass at most `delta` on whose
+  complement every `n >= 2` and every finite posterior obey
+  `R(rho) < Rhat_n(rho) + (5/2) sqrt(Vhat_n(rho) L_n(rho) / n)
+  + 5 L_n(rho) / n`, where
+  `L_n(rho) = KL(rho || prior) + log(r(r+1)^2 / delta)` and
+  `r = Nat.log 2 n`. This is an offline reverse-epoch theorem, not a forward
+  e-process, optional-stopping result, all-real optimizer, or continuous-
+  hypothesis theorem.
 
 The Dudley core is finite by design. The finite-outcome endpoint
 `continuous_dudley_entropy_integral` assumes a finite sub-Gaussian process on a
@@ -142,7 +153,7 @@ Badge counts are generated from the source tree by
 [`scripts/generate_badge_counts.py`](./scripts/generate_badge_counts.py) and
 checked in CI.
 
-[![FormalSLT proof landscape: finite learning, metric entropy, fixed-sample PAC-Bayes, anytime-valid inference, and dependent and composed results](./docs/theorem-chain.svg)](./docs/theorem-chain.svg)
+[![FormalSLT proof landscape: finite learning, metric entropy, PAC-Bayes including all-sample-size empirical Bernstein, anytime-valid inference, and dependent and composed results](./docs/theorem-chain.svg)](./docs/theorem-chain.svg)
 
 *Conceptual theorem-family map, not a literal import graph. Exact assumptions
 are recorded in theorem signatures and checkers. Detailed lane diagrams are in
@@ -358,6 +369,23 @@ declaration and prints its axiom profile.
   all-real optimized nor time-uniform;
   [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean),
   [`FiniteEmpiricalBernsteinSqrt.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinSqrt.lean)
+- **All-sample-size empirical-Bernstein PAC-Bayes bound** —
+  `exists_infiniteEmpiricalBernstein_event` constructs one measurable
+  exceptional set of infinite IID paths with mass at most `delta`. Outside it,
+  every prefix size `n >= 2` and every posterior PMF on the fixed finite
+  hypothesis type satisfy
+  `Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`,
+  with `Lrho,n = KL(rho || prior) + log(r(r+1)^2 / delta)` and
+  `r = Nat.log 2 n`. The posterior may be selected from the path because the
+  same event is pointwise uniform over all finite posteriors. The receipt uses
+  a fair-Boolean IID stream and a point posterior selected from the first
+  coordinate. Numerical nonvacuity of the underlying closed-form boundary is
+  supplied by the balanced-64 fixed-sample receipt above; the stitched checker
+  does not yet publish an all-`n` comparison against competing boundaries.
+  The proof uses reverse-epoch martingales and countable stitching, not a
+  forward e-process or optional-stopping API;
+  [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean),
+  [`InfiniteEmpiricalBernsteinStitch.lean`](./FormalSLT/PACBayes/InfiniteEmpiricalBernsteinStitch.lean)
 - **Countable fixed-sample joint master and finite-posterior selector** —
   `countableJointMeanVariance_catalogBadSamples_mass_le_delta` extends the
   prior-moment master event to a predeclared `Nat`-indexed catalog with
@@ -595,6 +623,11 @@ release check is in [Audit commands](#audit-commands).
   square-root-plus-linear one-event theorem. Its `clog 2 n` dyadic catalog is
   predeclared; the posterior is data-dependent, and the variance is the
   posterior average of per-hypothesis Bessel empirical variances.
+- Use `FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch` for one
+  infinite-IID event shared by every sample size `n >= 2` and every posterior
+  on a fixed finite hypothesis type. This is the researcher-facing
+  all-sample-size endpoint; use the reverse modules directly only when working
+  with the finite-horizon exchangeable filtration or epoch-level proof chain.
 - Use `FormalSLT.PACBayes.CountableJointMeanVariancePACBayes` for the
   support-aware fixed-sample `Nat`-indexed master event and per-entry prior
   moment extraction. Use
@@ -671,6 +704,19 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.FiniteJointMeanVariancePACBayes`,
   `PACBayes.FiniteJointMeanVarianceResidual`,
   `PACBayes.FiniteEmpiricalBernsteinSqrt`,
+  `PACBayes.FiniteEmpiricalVarianceReverse`,
+  `PACBayes.FiniteEmpiricalVarianceReverseEpoch`,
+  `PACBayes.FiniteEmpiricalVarianceReverseExponential`,
+  `PACBayes.FiniteEmpiricalVarianceReverseMartingale`,
+  `PACBayes.FiniteEmpiricalVarianceReverseMaximal`,
+  `PACBayes.FiniteEmpiricalVarianceReversePACBayes`,
+  `PACBayes.FiniteJointMeanVarianceReverse`,
+  `PACBayes.FiniteJointMeanVarianceReversePACBayes`,
+  `PACBayes.FiniteJointMeanVarianceReverseCatalog`,
+  `PACBayes.FiniteEmpiricalBernsteinReverseSqrt`,
+  `PACBayes.FiniteProductMeasureBridge`,
+  `PACBayes.InfiniteProductMeasureBridge`,
+  `PACBayes.InfiniteEmpiricalBernsteinStitch`,
   `PACBayes.CountableJointMeanVariancePACBayes`,
   `PACBayes.CountableJointMeanVariancePosterior`,
   `PACBayes.GaussianMeasureKL`, `PACBayes.TimeUniformPACBayes`,
@@ -722,7 +768,11 @@ The main learning-theory results are deliberately finite and explicit.
   the selected tilt to be positive, while the arbitrary selector theorem
   requires every catalog tilt to be positive. The closed-form dyadic endpoint
   assumes `0 < delta < 1`, fixes the finite hypothesis catalog and full-support
-  prior before the sample, and uses the predeclared depth `Nat.clog 2 n`.
+  prior before the sample, and uses the predeclared depth `Nat.clog 2 n`. The
+  all-sample-size endpoint additionally places the samples on the infinite IID
+  product space, requires a finite measurable-singleton outcome type, and uses
+  the same fixed finite hypothesis type and full-support prior for every
+  `n >= 2`.
 - **Time-uniform PAC-Bayes:** finite-class and finite-dimensional
   spherical-Gaussian i.i.d. bounded-loss theorems at discrete sample times;
   process-level for a fully arbitrary measurable hypothesis space. The finite
@@ -750,16 +800,18 @@ The main learning-theory results are deliberately finite and explicit.
   measurable suprema and the required separability/chaining interface
 - An infinite-class confidence sequence
 - All-real tilt optimization, a countable process-level tilt mixture, and a
-  time-uniform empirical-Bernstein risk
-  theorem. The generic finite weighted hypothesis--tilt e-process, fixed
+  forward exact-Bessel e-process with optional-stopping semantics. The generic
+  finite weighted hypothesis--tilt e-process, fixed
   rational two-event theorem,
   separately weighted finite `eta`/`lambda` catalogs, one-event finite
   joint-pair catalog, zero-residual specialization, and all three branches of
   the exact finite-catalog `xi` residual are checked. The closed-form dyadic
   square-root-plus-linear endpoint is also checked. A support-aware
   `Nat`-indexed fixed-sample master event, per-entry prior-moment extraction,
-  finite-posterior bound, and exact-`xi` selector are also checked; this is not
-  a countable-hypothesis posterior or a time-uniform process.
+  finite-posterior bound, and exact-`xi` selector are also checked. The separate
+  reverse-epoch stitch gives an all-sample-size event for finite hypotheses;
+  it is not a countable-hypothesis posterior, continuous-hypothesis theorem,
+  all-real optimizer, or forward e-process.
 - An end-to-end i.i.d. bounded-loss PAC-Bayes specialization over continuous
   hypothesis spaces beyond the current finite-dimensional spherical Gaussian
   family
@@ -843,9 +895,11 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   sub-Gamma e-process with post-path atom selection
 - [x] Specialize the finite hypothesis--tilt master to measurable IID `[0,1]`
   losses with one measurable exceptional event and a selected-atom endpoint
-- [ ] Extend the fixed-sample joint mean/Bessel-variance score through a
-  genuinely nested time-uniform process, then study conditional e-variable
-  composition and composite nulls
+- [x] Extend the fixed-sample joint mean/Bessel-variance score through reverse
+  dyadic epochs and countable stitching to one all-sample-size finite-IID event
+- [ ] Extend the all-sample-size empirical-Bernstein result to general
+  measurable hypothesis spaces, and separately study a forward e-process,
+  optional stopping, conditional e-variable composition, and composite nulls
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 - [ ] Extend the finite Markov PAC-Bayes certificate to random initial laws,

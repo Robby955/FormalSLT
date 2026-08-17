@@ -161,26 +161,36 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "three-piece residual penalty, a closed-form clog-depth dyadic "
             "square-root-plus-linear endpoint, plus a support-aware Nat-indexed "
             "countable master mixture, per-entry prior-moment extraction, "
-            "finite-posterior bound, and exact-xi selector"
+            "finite-posterior bound, and exact-xi selector; plus a proved "
+            "reverse Bessel martingale, reverse joint mean/variance epoch "
+            "process, reverse finite catalog, closed-form epoch endpoint, "
+            "finite-prefix infinite-product bridge, and one stitched "
+            "all-sample-size finite-IID event"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Extend the checked fixed-sample natural-index selector to all-real "
-            "optimization or a genuine time-uniform joint process."
+            "Publish comparative all-sample-size numerical evidence and external "
+            "review, then extend the checked all-sample-size endpoint to a "
+            "general measurable hypothesis space. Treat all-real "
+            "optimization and a forward exact-Bessel e-process as separate "
+            "research targets."
         ),
         "boundary": (
-            "The posterior, exact-xi, and closed-form dyadic endpoints are "
-            "fixed-sample. The natural-index catalog is declared in advance, "
-            "the hypothesis type and posterior are finite, and one shared "
-            "master-mixture event carries one KL term per selected bound. The "
-            "selector receipt is structural rather than numerical. The "
-            "separately budgeted rational "
-            "risk theorem remains a distinct two-event result. This "
-            "empirical-Bernstein lane gives neither all-real nor time-uniform "
-            "inference."
+            "The stitched reverse-epoch endpoint gives one measurable "
+            "infinite-IID event shared by every n >= 2 and every posterior on "
+            "a fixed finite hypothesis type. It is an offline "
+            "reverse-exchangeability theorem, not a forward e-process or "
+            "optional-stopping API. The fixed and natural-index catalogs are "
+            "declared in advance; the theorem does not give all-real tilt "
+            "optimization, countable or continuous hypotheses, or uniformity "
+            "over arbitrary posterior measures. The all-sample-size checker is "
+            "structural; numerical nonvacuity currently comes from the "
+            "separate balanced-64 fixed-sample receipt. The separately "
+            "budgeted rational risk theorem remains a distinct two-event "
+            "result."
         ),
     },
     {

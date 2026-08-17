@@ -284,7 +284,36 @@ penalty is `(5/4) * sqrt(2 * Vhat * L / n) + (5/2) * L / n`.
 Here `Vhat` is the posterior average of each hypothesis's Bessel empirical
 variance, not the empirical variance of the posterior-averaged loss. The
 result is finite IID and fixed-sample. It is not an all-real optimizer, a
-countable-catalog selector, or a time-uniform empirical-Bernstein theorem.
+countable-catalog selector, or by itself an all-sample-size theorem.
+
+`PACBayes.FiniteEmpiricalVarianceReverse` proves the leave-one-coordinate
+identity that makes prefix Bessel variance a reverse martingale under the
+exchangeable-prefix filtration. The downstream reverse modules combine this
+with the prefix sample-mean martingale, exponentiate the joint score, apply the
+finite maximal inequality, mix over the finite prior and a predeclared finite
+tilt catalog, and recover the reverse closed-form empirical-Bernstein bound on
+one dyadic epoch. These are proved probability arguments; the public endpoint
+does not assume a reverse MGF, maximal bound, posterior event, or grid-coverage
+certificate.
+
+`PACBayes.InfiniteEmpiricalBernsteinStitch` pulls every finite reverse-epoch
+event onto the infinite IID product space and allocates confidence with the
+telescoping weights `1 / ((q+1)(q+2))`. For finite data and hypothesis types,
+a fixed full-support prior, measurable-singleton data, `[0,1]` losses, and
+`0 < delta < 1`, `exists_infiniteEmpiricalBernstein_event` produces one
+measurable exceptional event of mass at most `delta`. Outside it, every
+`n >= 2` and every posterior PMF satisfy
+`Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`,
+where `Lrho,n = KL(rho || prior) + log(r(r+1)^2/delta)` and
+`r = Nat.log 2 n`. Because the event is pointwise uniform over all posteriors,
+a path-dependent posterior can be substituted without another union bound.
+The result remains finite-hypothesis and finite-outcome. It is an offline
+reverse-epoch stitch, not a forward e-process, predictable betting strategy,
+optional-stopping theorem, all-real tilt optimizer, or continuous-hypothesis
+PAC-Bayes theorem. Its checker supplies an explicit all-`n` event and
+path-selected posterior; numerical nonvacuity is inherited only from the
+separate balanced-64 fixed-sample receipt until an all-time comparison study is
+published.
 
 `PACBayes.CountableJointMeanVariancePACBayes` extends only the fixed-sample
 master-event layer to a predeclared `Nat`-indexed catalog. Its nonnegative
@@ -378,8 +407,11 @@ empirical-Bernstein posterior-risk bound. The remaining branches are checked by
 the exact attained piecewise `xi` maximum on `[0,1/4]` and add `xi / t` to that
 same one-event bound. The countable master-event and finite-posterior layer
 described above lift these endpoints to a predeclared `Nat`-indexed tilt-pair
-catalog. All-real optimization and a time-uniform process for that fixed-sample Bessel score are still open; the
-generic finite tilt-master e-process above does not supply that nesting. A
+catalog. A separate reverse-exchangeability construction now supplies one
+all-sample-size finite-IID Bessel-variance event with a closed-form risk bound.
+All-real optimization, continuous-hypothesis uniformity, and a forward
+exact-Bessel e-process with optional-stopping semantics remain open; the
+generic finite tilt-master e-process above does not supply those extensions. A
 countable indicator-Bernstein
 catalog and exact all-real `lambda` optimization are also open.
 

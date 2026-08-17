@@ -151,7 +151,7 @@ theorem reverseBesselProcess_ae_eq_condExp_succ [Fintype Z]
 
 /-- **Finite-horizon reverse Bessel martingale.**  Under a finite iid product
 law, the Bessel variances at prefix sizes `N, N - 1, ..., 2`, followed by a
-constant tail at size two, form a martingale in reverse sample-size time. -/
+tail held constant at size two, form a martingale in reverse sample-size time. -/
 theorem reverseBesselProcess_martingale [Fintype Z]
     [MeasurableSingletonClass Z] (mu : Measure Z) [IsProbabilityMeasure mu]
     (N : ℕ) (hN : 2 ≤ N) (ell : Z → ℝ) :

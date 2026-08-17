@@ -110,6 +110,9 @@ THEOREMS=(
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinGridDepth_coverage"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta"
   "FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt.finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem"
+  "FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta"
+  "FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem"
+  "FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.exists_infiniteEmpiricalBernstein_event"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVarianceMasterMixture_nonneg"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_masterMixture_expectation_le_weightTsum"
@@ -182,6 +185,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
+  echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePosterior"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
@@ -224,6 +228,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes \
   FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
+  FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
   FormalSLT.PACBayes.CountableJointMeanVariancePosterior \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \

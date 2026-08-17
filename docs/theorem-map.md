@@ -692,6 +692,26 @@ declarations; modules are relative to `FormalSLT`.
 | `countableJointMeanVariance_posteriorRisk_le_with_xi_of_not_mem` | `PACBayes.CountableJointMeanVariancePosterior` | Exact-residual posterior-risk bound for a positive-tilt entry on the same fixed-sample event |
 | `countableJointMeanVariance_posteriorRisk_le_with_xi_selected_of_not_mem` | `PACBayes.CountableJointMeanVariancePosterior` | Sample- and finite-posterior-dependent natural-index selector with one shared event and one KL term |
 
+## Reverse-epoch and all-sample-size empirical-Bernstein PAC-Bayes
+
+| Declaration | Module | Role |
+|---|---|---|
+| `prefixBesselVariance_ae_eq_condExp` | `PACBayes.FiniteEmpiricalVarianceReverse` | Identifies the shorter-prefix Bessel variance with the conditional expectation of the next-prefix variance under the reverse exchangeable filtration |
+| `reverseBesselProcess_martingale` | `PACBayes.FiniteEmpiricalVarianceReverseMartingale` | Packages prefix Bessel variances as a finite reverse martingale |
+| `reverseJointMeanVarianceEpochExponentialProcess_submartingale` | `PACBayes.FiniteJointMeanVarianceReverse` | Exponentiates the reverse joint mean/Bessel-variance score into the nonnegative submartingale used by the epoch maximal argument |
+| `reverseJointMeanVarianceEpochAnyPosteriorFailure_mass_le_delta` | `PACBayes.FiniteJointMeanVarianceReversePACBayes` | Bounds one finite reverse-epoch event that is simultaneous over every prefix in the epoch and every finite posterior |
+| `reverseJointMeanVarianceEpoch_posteriorRisk_prefix_lt_of_not_mem` | `PACBayes.FiniteJointMeanVarianceReversePACBayes` | Gives the retained-variance posterior-risk inequality at every prefix outside the reverse-epoch event |
+| `reverseJointMeanVarianceEpochCatalogAnyPosteriorFailure_mass_le_delta` | `PACBayes.FiniteJointMeanVarianceReverseCatalog` | Mixes a predeclared finite tilt catalog inside one reverse-epoch maximal event of mass at most `delta` |
+| `reverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_selected_of_not_mem` | `PACBayes.FiniteJointMeanVarianceReverseCatalog` | Permits prefix-, sample-, and posterior-dependent selection from the fixed reverse-epoch tilt catalog |
+| `finiteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta` | `PACBayes.FiniteEmpiricalBernsteinReverseSqrt` | Bounds the canonical dyadic-scale reverse-epoch exceptional event by `delta` |
+| `finiteEmpiricalBernsteinReverseSqrt_posteriorRisk_prefix_lt_of_not_mem` | `PACBayes.FiniteEmpiricalBernsteinReverseSqrt` | Closed-form empirical-Bernstein posterior-risk bound at every prefix in one finite reverse epoch |
+| `measurePreserving_natSamplePrefix` | `PACBayes.InfiniteProductMeasureBridge` | Shows that a finite prefix of the infinite IID product stream has the corresponding finite product law |
+| `natPrefix_iUnion_mass_le` | `PACBayes.InfiniteProductMeasureBridge` | Pulls countably many finite-prefix failure sets to the infinite product space and sums their mass budgets |
+| `infiniteEmpiricalBernsteinComplexity` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | One-KL complexity with the telescoping dyadic-epoch confidence penalty at sample size `n` |
+| `infiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | The single stitched infinite-path exceptional event has mass at most `delta` |
+| `infiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | Outside the stitched event, the displayed `5/2` square-root plus `5` linear bound holds at each `n >= 2` for every finite posterior |
+| `exists_infiniteEmpiricalBernstein_event` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | Researcher-facing one-event theorem simultaneous over all sample sizes `n >= 2` and all posterior PMFs on the fixed finite hypothesis type |
+
 ## Conditional sub-Gamma extractor
 
 | Declaration | Module | Role |
