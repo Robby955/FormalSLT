@@ -1223,16 +1223,17 @@ theorem forwardEmpiricalBernsteinLowerProcess_atTop_crossing_mass_le_delta
     _ ≤ delta * 1 := mul_le_mul_of_nonneg_left hville hδ.le
     _ = delta := by ring
 
-/-- Exact-Bessel lower envelope of `forwardPlugInExponentialProcess`. -/
+/-- Hybrid-Bessel lower envelope of `forwardPlugInExponentialProcess`.  The
+penalty is the minimum of the affine and harmonic deterministic envelopes; it
+is not itself asserted to be a supermartingale penalty. -/
 def forwardBesselExponentialEnvelope {Ω : Type*}
     (X : ℕ → Ω → ℝ) (mean lam psi : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   Real.exp
     (lam * (∑ k ∈ Finset.range n, (X k ω - mean)) -
-      psi * ((1 : ℝ) / 2 + (3 : ℝ) / 2 *
-        forwardBesselQ (fun k ↦ X k ω) n))
+      psi * forwardHybridBesselPenalty (fun k ↦ X k ω) n)
 
 /-- Under `[0,1]` observations and a nonnegative cumulant multiplier, the
-exact-Bessel expression is a pointwise lower envelope of the predictable
+hybrid-Bessel expression is a pointwise lower envelope of the predictable
 plug-in process. -/
 theorem forwardBesselExponentialEnvelope_le_forwardPlugIn
     {Ω : Type*} (X : ℕ → Ω → ℝ) (mean lam psi : ℝ)
@@ -1242,34 +1243,33 @@ theorem forwardBesselExponentialEnvelope_le_forwardPlugIn
       forwardPlugInExponentialProcess X mean lam psi n ω := by
   apply Real.exp_le_exp.mpr
   have hq :=
-    forwardPredictableQuadratic_le_half_add_three_halves_besselQ
+    forwardPredictableQuadratic_le_hybrid_bessel
       (fun k ↦ X k ω) hn hX
   have hpen := mul_le_mul_of_nonneg_left hq hpsi
   linarith
 
-/-- Lower-tail exact-Bessel expression.  It has the desired deviation
-`sum (mean - X)` and the observable Bessel statistic, but is only a pointwise
-lower envelope of the actual e-process. -/
+/-- Lower-tail hybrid-Bessel expression.  It has the desired deviation
+`sum (mean - X)` and the observable hybrid Bessel penalty, but is only a
+pointwise lower envelope of the actual e-process. -/
 def forwardEmpiricalBernsteinLowerBesselEnvelope {Ω : Type*}
     (X : ℕ → Ω → ℝ) (mean lam : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   Real.exp
     (lam * (∑ k ∈ Finset.range n, (mean - X k ω)) -
       forwardEmpiricalBernsteinPsi lam *
-        ((1 : ℝ) / 2 + (3 : ℝ) / 2 *
-          forwardBesselQ (fun k ↦ X k ω) n))
+        forwardHybridBesselPenalty (fun k ↦ X k ω) n)
 
 /-- Explicit fixed-tilt Bessel boundary.  For `n >= 2`, leaving the associated
 failure event means
 
 `mean < forwardPrefixMean X n + forwardEmpiricalBernsteinBesselBoundary X lam delta n`.
 
-The width is anytime-valid for fixed `lam`; optimizing `lam` after observing
-the path requires a mixture or stitch and is not asserted here. -/
+The width uses the minimum of the affine and harmonic Bessel penalties.  It is
+anytime-valid for fixed `lam`; optimizing `lam` after observing the path
+requires a mixture or stitch and is not asserted here. -/
 def forwardEmpiricalBernsteinBesselBoundary {Ω : Type*}
     (X : ℕ → Ω → ℝ) (lam delta : ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   (forwardEmpiricalBernsteinPsi lam *
-      ((1 : ℝ) / 2 + (3 : ℝ) / 2 *
-        forwardBesselQ (fun k ↦ X k ω) n) +
+      forwardHybridBesselPenalty (fun k ↦ X k ω) n +
     Real.log (1 / delta)) / ((n : ℝ) * lam)
 
 /-- A lower-tail boundary failure at some time `n >= 2`. -/
@@ -1292,7 +1292,7 @@ theorem forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
   rw [forwardEmpiricalBernsteinLowerProcess_eq]
   unfold forwardEmpiricalBernsteinLowerBesselEnvelope
   apply Real.exp_le_exp.mpr
-  have hq := forwardPredictableQuadratic_le_half_add_three_halves_besselQ
+  have hq := forwardPredictableQuadratic_le_hybrid_bessel
     (fun k ↦ X k ω) hn hX
   have hpen := mul_le_mul_of_nonneg_left hq
     (forwardEmpiricalBernsteinPsi_nonneg hlam0 hlam1)
@@ -1320,8 +1320,7 @@ theorem forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
       Real.log (1 / delta) ≤
         lam * (∑ k ∈ Finset.range n, (mean - X k ω)) -
           forwardEmpiricalBernsteinPsi lam *
-            ((1 : ℝ) / 2 + (3 : ℝ) / 2 *
-              forwardBesselQ (fun k ↦ X k ω) n) := by
+            forwardHybridBesselPenalty (fun k ↦ X k ω) n := by
     rw [hsum]
     nlinarith
   have hthreshold :
@@ -1333,8 +1332,8 @@ theorem forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
     (forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
       hlam.le hlam1 hn ω (fun i hi ↦ hX_unit i ω))
 
-/-- **Fixed-tilt, all-time lower empirical-Bernstein bound with exact Bessel
-variance.**  Under the standard bounded conditional-mean model, the probability
+/-- **Fixed-tilt, all-time lower empirical-Bernstein bound with hybrid Bessel
+penalty.**  Under the standard bounded conditional-mean model, the probability
 that the explicit boundary fails at any `n >= 2` is at most `delta`. -/
 theorem forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
     {Ω : Type*} [mΩ : MeasurableSpace Ω]
@@ -1355,9 +1354,9 @@ theorem forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
       hδ hlam.le hlam1 hX_adapted hX_unit hmean)
 
 /-- One event of mass at least `1 - delta` carries the explicit fixed-tilt
-Bessel bound simultaneously for every `n >= 2`.  This endpoint records the
-event and its `Measure.real` outer-mass bound; it does not separately package a
-`MeasurableSet` certificate. -/
+hybrid-Bessel bound simultaneously for every `n >= 2`.  This endpoint records
+the event and its `Measure.real` outer-mass bound; it does not separately
+package a `MeasurableSet` certificate. -/
 theorem exists_forwardEmpiricalBernsteinLowerBessel_event
     {Ω : Type*} [mΩ : MeasurableSpace Ω]
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -1471,14 +1470,13 @@ theorem forwardEmpiricalBernsteinLowerTiltMixtureProcess_atTop_crossing_mass_le_
     _ = delta := by ring
 
 /-- Boundary for catalog atom `j`.  The master mixture charges the selected
-atom the exact prior-weight penalty `log (1 / (delta * weight j))`.  The
-Bessel coefficient remains the proved `3/2`. -/
+atom the exact prior-weight penalty `log (1 / (delta * weight j))` and uses the
+hybrid minimum of the affine and harmonic Bessel penalties. -/
 def forwardEmpiricalBernsteinTiltCatalogBoundary
     {κ Ω : Type*} (weight : κ → ℝ) (lam : κ → ℝ)
     (X : ℕ → Ω → ℝ) (delta : ℝ) (j : κ) (n : ℕ) (ω : Ω) : ℝ :=
   (forwardEmpiricalBernsteinPsi (lam j) *
-      ((1 : ℝ) / 2 + (3 : ℝ) / 2 *
-        forwardBesselQ (fun k ↦ X k ω) n) +
+      forwardHybridBesselPenalty (fun k ↦ X k ω) n +
     Real.log (1 / (delta * weight j))) / ((n : ℝ) * lam j)
 
 /-- The catalog boundary is the fixed-tilt boundary at the atom-specific
@@ -1686,9 +1684,9 @@ theorem exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
   exact ⟨goodEvent, hmass, fun ω hω n hn ↦
     hall ω hω (select ω n) n hn⟩
 
-/-- End-to-end certificate for the repaired forward exact-Bessel construction:
+/-- End-to-end certificate for the repaired forward hybrid-Bessel construction:
 the predictable-residual process is an e-process, and from time two onward
-the explicit Bessel-variance expression is its pointwise lower envelope. -/
+the hybrid Bessel expression is its pointwise lower envelope. -/
 theorem forwardEmpiricalBernsteinBesselEnvelope_certified
     {Ω : Type*} [mΩ : MeasurableSpace Ω]
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -1750,7 +1748,7 @@ theorem forwardPlugIn_eProcess_of_condExp_step
   supermartingale := MeasureTheory.supermartingale_nat hadapted hintegrable hstep
 
 /-- A single checked certificate packages both the stochastic e-process and
-its exact-Bessel lower envelope.  Notice that the conclusion intentionally
+its hybrid-Bessel lower envelope.  Notice that the conclusion intentionally
 does not assert that the lower envelope itself is a supermartingale. -/
 theorem forwardBesselEnvelope_certified_by_eProcess
     {Ω : Type*} [mΩ : MeasurableSpace Ω]

@@ -1,7 +1,7 @@
 import FormalSLT.AnytimeValid.ForwardBesselProcess
 
 /-!
-# Forward exact-Bessel process checks
+# Forward hybrid-Bessel process checks
 
 This focused receipt checks the deterministic Welford bridge, the honest
 e-process interface, and the sharp two-observation Boolean witness.  The path
@@ -49,6 +49,27 @@ theorem falseTrue_hybrid_exact :
     forwardHybridBesselPenalty falseTrueSample 2 = (5 : ℝ) / 4 := by
   norm_num [forwardHybridBesselPenalty, falseTrue_besselQ, harmonic]
 
+/-- The public fixed-tilt boundary uses the hybrid penalty literally. -/
+theorem fixedTilt_hybridBoundary_definition_receipt
+    {Ω : Type*} (X : ℕ → Ω → ℝ) (lam delta : ℝ) (n : ℕ) (ω : Ω) :
+    forwardEmpiricalBernsteinBesselBoundary X lam delta n ω =
+      (forwardEmpiricalBernsteinPsi lam *
+          forwardHybridBesselPenalty (fun k ↦ X k ω) n +
+        Real.log (1 / delta)) / ((n : ℝ) * lam) := by
+  rfl
+
+/-- The catalog boundary keeps the exact atom-weight penalty while using the
+same hybrid deterministic envelope. -/
+theorem catalog_hybridBoundary_definition_receipt
+    {κ Ω : Type*} (weight : κ → ℝ) (lam : κ → ℝ)
+    (X : ℕ → Ω → ℝ) (delta : ℝ) (j : κ) (n : ℕ) (ω : Ω) :
+    forwardEmpiricalBernsteinTiltCatalogBoundary
+        weight lam X delta j n ω =
+      (forwardEmpiricalBernsteinPsi (lam j) *
+          forwardHybridBesselPenalty (fun k ↦ X k ω) n +
+        Real.log (1 / (delta * weight j))) / ((n : ℝ) * lam j) := by
+  rfl
+
 /-- A concrete endpoint of the scalar one-step inequality. -/
 theorem half_tilt_minus_one_scalar_check :
     Real.exp
@@ -89,7 +110,8 @@ theorem boundedModel_lowerTail_eProcess_receipt
   forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
     hlam0 hlam1 hX_adapted hX_unit hmean
 
-/-- Focused all-time receipt for the explicit fixed-tilt Bessel boundary. -/
+/-- Focused all-time receipt for the explicit fixed-tilt hybrid-Bessel
+boundary. -/
 theorem boundedModel_allTimeLowerBessel_receipt
     {Ω : Type*} [mΩ : MeasurableSpace Ω]
     {μ : Measure Ω} [IsProbabilityMeasure μ]
@@ -107,9 +129,9 @@ theorem boundedModel_allTimeLowerBessel_receipt
   exists_forwardEmpiricalBernsteinLowerBessel_event
     hδ hlam hlam1 hX_adapted hX_unit hmean
 
-/-- Focused receipt for one full-support finite tilt catalog.  The selector may
-use both the realized path and the current time, while the catalog and weights
-remain predeclared. -/
+/-- Focused receipt for one full-support finite tilt catalog with hybrid-Bessel
+penalties.  The selector may use both the realized path and the current time,
+while the catalog and weights remain predeclared. -/
 theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
     {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
     [mΩ : MeasurableSpace Ω]
@@ -143,6 +165,8 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #check forwardPredictableQuadratic_le_harmonic_bessel
 #check forwardHybridBesselPenalty
 #check forwardPredictableQuadratic_le_hybrid_bessel
+#check fixedTilt_hybridBoundary_definition_receipt
+#check catalog_hybridBoundary_definition_receipt
 #check forwardBessel_coefficient_one_bool_obstruction
 #check exp_forwardEmpiricalBernstein_le_one_add
 #check forwardEmpiricalBernsteinFactor_condExp_le_one
@@ -186,6 +210,8 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #print axioms forwardBesselQ_le_quarter_card
 #print axioms forwardPredictableQuadratic_le_harmonic_bessel
 #print axioms forwardPredictableQuadratic_le_hybrid_bessel
+#print axioms fixedTilt_hybridBoundary_definition_receipt
+#print axioms catalog_hybridBoundary_definition_receipt
 #print axioms forwardBessel_coefficient_one_bool_obstruction
 #print axioms exp_forwardEmpiricalBernstein_le_one_add
 #print axioms forwardEmpiricalBernsteinFactor_condExp_le_one
