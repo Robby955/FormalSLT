@@ -204,6 +204,8 @@ theorem fairBoolForwardBessel_selected_goodPath_exists :
 #check fairBoolForwardBesselEvent_mass_le_half
 #check lastLabelPosterior_kl_eq_log_two
 #check posteriorAwareTiltSelector_lastLabel_eq_observed
+#check fairBoolForwardBessel_goodPath_exists
+#check fairBoolForwardBessel_selected_of_not_mem
 #check fairBoolForwardBessel_selected_goodPath_exists
 
 #print axioms forwardPrefixMean_iidObservedLoss
@@ -218,6 +220,8 @@ theorem fairBoolForwardBessel_selected_goodPath_exists :
 #print axioms fairBoolForwardBesselEvent_mass_le_half
 #print axioms lastLabelPosterior_kl_eq_log_two
 #print axioms posteriorAwareTiltSelector_lastLabel_eq_observed
+#print axioms fairBoolForwardBessel_goodPath_exists
+#print axioms fairBoolForwardBessel_selected_of_not_mem
 #print axioms fairBoolForwardBessel_selected_goodPath_exists
 
 end

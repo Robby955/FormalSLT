@@ -202,6 +202,12 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #check forwardPlugIn_eProcess_of_condExp_step
 #check forwardBesselExponentialEnvelope_le_forwardPlugIn
 #check forwardBesselEnvelope_certified_by_eProcess
+#check forwardPredictorProcess_one_sub
+#check incrementAdapted_one_sub
+#check forwardPredictorProcess_mem_Icc_of_mem_Icc
+#check sum_mean_sub_eq_mul_sub_forwardPrefixMean
+#check forwardEmpiricalBernsteinProcess_le_of_mem_Icc
+#check forwardEmpiricalBernsteinFactor_le_of_mem_Icc
 
 #print axioms forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #print axioms forwardBesselQ_succ
@@ -239,6 +245,12 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #print axioms forwardEmpiricalBernsteinBesselEnvelope_certified
 #print axioms forwardPlugIn_eProcess_of_condExp_step
 #print axioms forwardBesselEnvelope_certified_by_eProcess
+#print axioms forwardPredictorProcess_one_sub
+#print axioms incrementAdapted_one_sub
+#print axioms forwardPredictorProcess_mem_Icc_of_mem_Icc
+#print axioms sum_mean_sub_eq_mul_sub_forwardPrefixMean
+#print axioms forwardEmpiricalBernsteinProcess_le_of_mem_Icc
+#print axioms forwardEmpiricalBernsteinFactor_le_of_mem_Icc
 #print axioms falseTrue_coefficient_one_fails
 #print axioms falseTrue_three_halves_exact
 #print axioms falseTrue_hybrid_exact

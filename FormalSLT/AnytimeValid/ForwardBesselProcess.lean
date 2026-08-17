@@ -38,6 +38,15 @@ asymptotically sharper envelope
 `n/(n-1) * forwardBesselQ x n + (1/4) * (1 + H_(n-2))`.
 
 The checked hybrid penalty is the minimum of these two valid envelopes.
+
+The stochastic layer packages the standard predictable-residual
+`forwardEmpiricalBernsteinProcess` as an e-process for adapted `[0,1]`
+increments with a fixed conditional mean. Ville then controls its all-time
+crossing event. The hybrid Bessel exponential is only a pointwise lower
+envelope of that actual e-process, not itself an e-process. A finite
+full-support tilt catalog mixes the actual processes and supplies one
+outer-mass event for every `n >= 2` and every declared positive tilt below one,
+including path-and-time-selected atoms.
 -/
 
 open MeasureTheory ProbabilityTheory

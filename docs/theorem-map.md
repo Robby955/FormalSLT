@@ -779,6 +779,7 @@ declarations; modules are relative to `FormalSLT`.
 | `exists_forwardBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayes` | One-event capstone simultaneous over every `n >= 2`, posterior PMF, and declared finite tilt atom |
 | `iidObservedLoss_condExp_eq_populationRisk` | `PACBayes.ForwardBesselPACBayesIID` | Derives the per-hypothesis conditional mean from the natural-filtration IID bounded-loss model |
 | `exists_forwardIIDBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayesIID` | IID risk-facing capstone with the same all-time, all-posterior, all-atom common event |
+
 ## Time-uniform PAC-Bayes
 
 | Declaration | Module | Role |
