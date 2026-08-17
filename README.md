@@ -31,18 +31,106 @@ Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
 
 ## Flagship results
 
-FormalSLT's main research surface is organized around a small set of end-to-end results.
-The statistical ingredients are established in the literature; the repository
-claim is the checked Lean specialization or derived finite-sample endpoint, not
-a broad priority claim.
+These are the results to start with. For each one, the README first says what
+it proves in statistical terms, then links the exact Lean theorem and a concrete
+checker. The underlying statistical ideas come from the literature; FormalSLT's
+contribution is the machine-checked specialization or derived endpoint.
 
-| Result | Checked endpoint | Scope | Numerical or theorem-facing receipt |
-|---|---|---|---|
-| **All-sample-size empirical-Bernstein PAC-Bayes** | `exists_infiniteEmpiricalBernstein_event` | One measurable event of infinite-IID mass at most `delta` works for every `n >= 2` and every posterior PMF on a fixed finite hypothesis type. The bound is `Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`, with one KL term and posterior-averaged per-hypothesis Bessel variance | [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean) instantiates one all-`n` event for a fair-Boolean stream and a posterior selected from the first observation. The [numerical comparison](./benchmark/output/empirical_bernstein_flagship.md) evaluates identical inputs against fixed-sample baselines; the exact stitched ceiling first falls below one at even `n = 128` in that scan |
-| **Fixed-sample empirical-Bernstein foundation** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
-| **Time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_allPosteriors_bound` | One common event over every positive time and finite posterior PMF for IID `[0,1]` losses and a fixed declared tilt | [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean) discharges the IID process obligations; a dedicated positive-KL subunit numerical receipt remains planned |
-| **Finite-tilt time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` and `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent` | Finite hypotheses and tilts, full-support priors, measurable IID `[0,1]` losses, and one event shared by all positive times, finite posterior PMFs, and predeclared tilt atoms | [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean): `delta = 1/16`, exact point-posterior `KL = log 2`, both tilt boundaries at most `3/8`, and an existential good path with selected risk `< 7/8`; its explicit selector-branch exercises are not proved good |
-| **Finite Markov prequential PAC-Bayes** | `markovPACBayes_tiltMixture_prequentialRisk_certificate` | Finite transition PMFs, deterministic initial state, fixed finite predictor catalog, and a predeclared full-support finite tilt prior; one atom may be selected after the trajectory, and the target is encountered one-step conditional risk rather than stationary risk | [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean): asymmetric two-state chain, path-selected point posterior and tilt atom, exact `KL = log 2`, both selected boundaries `< 1/20`, and conditional risk `< 11/20`; the explicit selector-branch paths are not proved good or positive-probability |
+### All-sample-size empirical-Bernstein PAC-Bayes
+
+For IID `[0,1]` losses and a full-support prior fixed before seeing the data,
+one event has probability at most `delta`. Outside that event, the following
+bound holds simultaneously for **every** sample size `n >= 2` and **every**
+posterior distribution on the fixed finite hypothesis class:
+
+```text
+R(rho) < Rhat_n(rho)
+       + (5/2) sqrt(Vhat_n(rho) L_n(rho) / n)
+       + 5 L_n(rho) / n
+```
+
+Here `R` is population risk, `Rhat_n` is empirical risk, and `rho` is the
+posterior. `Vhat_n(rho)` is the posterior average of the per-hypothesis Bessel
+sample variance, and
+`L_n(rho) = KL(rho || prior) + log(r(r+1)^2 / delta)` with
+`r = floor(log_2 n)` (written `Nat.log 2 n` in Lean). The result uses one KL
+term and permits the posterior to be chosen after observing the data.
+
+- **Lean theorem:**
+  `exists_infiniteEmpiricalBernstein_event` in
+  [`InfiniteEmpiricalBernsteinStitch.lean`](./FormalSLT/PACBayes/InfiniteEmpiricalBernsteinStitch.lean)
+- **Checked example:**
+  [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean)
+  instantiates one all-`n` event for a fair-Boolean stream and a posterior
+  selected from the first observation.
+- **Numerical comparison:**
+  [identical-input benchmark](./benchmark/output/empirical_bernstein_flagship.md),
+  where the exact stitched ceiling first falls below one at even `n = 128` in
+  the reported scan.
+
+### Fixed-sample empirical-Bernstein foundation
+
+For finite IID data, `[0,1]` losses, `n >= 2`, and `0 < delta < 1`, one event
+controls every data-selected posterior over a fixed finite hypothesis catalog.
+The theorem uses a fixed full-support prior, one KL term, the posterior average
+of per-hypothesis Bessel variances, and a predeclared dyadic scale grid of depth
+`ceil(log_2 n)` (written `Nat.clog 2 n` in Lean).
+
+- **Lean theorems:**
+  `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and
+  `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` in
+  [`FiniteEmpiricalBernsteinSqrt.lean`](./FormalSLT/PACBayes/FiniteEmpiricalBernsteinSqrt.lean)
+- **Checked example:**
+  [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean)
+  checks `delta = 1/20`, `KL = log 2 > 0`, empirical variance
+  `16/63 > 0`, an explicit positive-mass good sample, and a final ceiling below
+  `99/100`.
+
+### Time-uniform PAC-Bayes
+
+One common event controls every positive time and every finite posterior PMF
+for IID `[0,1]` losses and one fixed declared tilt.
+
+- **Lean theorem:** `timeUniformIIDPACBayes_allPosteriors_bound` in
+  [`TimeUniformIID.lean`](./FormalSLT/PACBayes/TimeUniformIID.lean)
+- **Verification:**
+  [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean)
+  discharges the IID process obligations. A dedicated positive-KL subunit
+  numerical receipt remains planned.
+
+### Finite-tilt time-uniform PAC-Bayes
+
+For finite hypothesis and tilt types, full-support priors, and measurable IID
+`[0,1]` losses, one event is shared by every positive time, every finite
+posterior PMF, and every predeclared tilt atom.
+
+- **Lean theorems:**
+  `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` and
+  `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent`
+  in
+  [`TimeUniformIIDTiltMixture.lean`](./FormalSLT/PACBayes/TimeUniformIIDTiltMixture.lean)
+- **Checked example:**
+  [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean)
+  checks `delta = 1/16`, point-posterior `KL = log 2`, both tilt boundaries at
+  most `3/8`, and an existential good path with selected risk below `7/8`.
+  Its explicit selector-branch exercises are not proved good.
+
+### Finite Markov prequential PAC-Bayes
+
+For a finite-state Markov transition kernel, deterministic initial state, fixed
+finite predictor catalog, and predeclared full-support finite tilt prior, one
+tilt atom may be selected after the trajectory. The target is encountered
+one-step conditional risk, not stationary risk.
+
+- **Lean theorem:**
+  `markovPACBayes_tiltMixture_prequentialRisk_certificate` in
+  [`MarkovPACBayesTiltMixture.lean`](./FormalSLT/StochasticDynamics/MarkovPACBayesTiltMixture.lean)
+- **Checked example:**
+  [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean) uses an
+  asymmetric two-state chain, a path-selected point posterior and tilt atom,
+  exact `KL = log 2`, two selected boundaries below `1/20`, and conditional
+  risk below `11/20`. The explicit selector-branch paths are not proved good or
+  positive-probability.
 
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
