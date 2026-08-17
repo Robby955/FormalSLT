@@ -4,6 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 import FormalSLT.AnytimeValid.EProcess
+import FormalSLT.AnytimeValid.MixtureCS
 import FormalSLT.Concentration.SubGamma.CondExpProduct
 import FormalSLT.Statistics.ClassicalEstimation
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
@@ -212,6 +213,56 @@ theorem forwardBessel_coefficient_one_bool_obstruction :
   dsimp
   norm_num [forwardPredictableQuadratic_two, forwardBesselQ_two]
 
+/-! ### Complement invariance and the lower-tail orientation -/
+
+/-- For a nonempty prefix, complementing `[0,1]` observations complements
+their prefix mean. -/
+lemma forwardPrefixMean_one_sub (x : ℕ → ℝ) {n : ℕ} (hn : 0 < n) :
+    forwardPrefixMean (fun k ↦ 1 - x k) n = 1 - forwardPrefixMean x n := by
+  have hn0 : (n : ℝ) ≠ 0 := by exact_mod_cast hn.ne'
+  unfold forwardPrefixMean
+  have hsum :
+      (∑ k ∈ Finset.range n, (1 - x k)) =
+        (n : ℝ) - ∑ k ∈ Finset.range n, x k := by
+    simp [Finset.sum_sub_distrib]
+  rw [hsum]
+  field_simp [hn0]
+
+/-- The seed `1/2` and every later empirical predictor commute with
+complementation. -/
+theorem forwardPredictor_one_sub (x : ℕ → ℝ) (k : ℕ) :
+    forwardPredictor (fun i ↦ 1 - x i) k = 1 - forwardPredictor x k := by
+  by_cases hk : k = 0
+  · subst k
+    norm_num [forwardPredictor]
+  · have hkpos : 0 < k := Nat.pos_of_ne_zero hk
+    simp only [forwardPredictor, hk, if_false]
+    exact forwardPrefixMean_one_sub x hkpos
+
+/-- Complementing the observations negates each predictable residual and
+therefore leaves the accumulated squared residual penalty unchanged. -/
+theorem forwardPredictableQuadratic_one_sub (x : ℕ → ℝ) (n : ℕ) :
+    forwardPredictableQuadratic (fun k ↦ 1 - x k) n =
+      forwardPredictableQuadratic x n := by
+  unfold forwardPredictableQuadratic
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [forwardPredictor_one_sub]
+  ring
+
+/-- Exact Bessel variance is invariant under complementation. -/
+theorem forwardBesselQ_one_sub (x : ℕ → ℝ) (n : ℕ) :
+    forwardBesselQ (fun k ↦ 1 - x k) n = forwardBesselQ x n := by
+  by_cases hn : n = 0
+  · subst n
+    simp [forwardBesselQ]
+  · have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+    unfold forwardBesselQ
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [forwardPrefixMean_one_sub x hnpos]
+    ring
+
 /-! ### Honest stochastic interface
 
 The deterministic Bessel envelope below does not by itself preserve the
@@ -326,6 +377,68 @@ lemma forwardEmpiricalBernsteinPsi_nonneg
 def forwardPredictorProcess {Ω : Type*}
     (X : ℕ → Ω → ℝ) (k : ℕ) (ω : Ω) : ℝ :=
   forwardPredictor (fun i ↦ X i ω) k
+
+/-- Process-valued form of `forwardPredictor_one_sub`. -/
+theorem forwardPredictorProcess_one_sub {Ω : Type*}
+    (X : ℕ → Ω → ℝ) (k : ℕ) (ω : Ω) :
+    forwardPredictorProcess (fun i ω ↦ 1 - X i ω) k ω =
+      1 - forwardPredictorProcess X k ω := by
+  exact forwardPredictor_one_sub (fun i ↦ X i ω) k
+
+/-- The empirical prefix predictor is predictable when observations are
+revealed one step after the past filtration. -/
+theorem stronglyAdapted_forwardPredictorProcess_of_incrementAdapted
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {ℱ : Filtration ℕ mΩ} {X : ℕ → Ω → ℝ}
+    (hX_adapted : IncrementAdapted ℱ X) :
+    StronglyAdapted ℱ (forwardPredictorProcess X) := by
+  intro k
+  unfold forwardPredictorProcess forwardPredictor
+  split_ifs
+  · exact stronglyMeasurable_const
+  · unfold forwardPrefixMean
+    have hsum : StronglyMeasurable[ℱ k]
+        (∑ i ∈ Finset.range k, X i) := by
+      apply Finset.stronglyMeasurable_sum
+      intro i hi
+      rw [Finset.mem_range] at hi
+      exact (hX_adapted i).mono (ℱ.mono (Nat.succ_le_of_lt hi))
+    simpa only [Finset.sum_apply, div_eq_mul_inv] using
+      hsum.mul_const ((k : ℝ)⁻¹)
+
+/-- A prefix-average predictor stays in `[0,1]` when every observation does. -/
+theorem forwardPredictorProcess_mem_Icc_of_mem_Icc
+    {Ω : Type*} {X : ℕ → Ω → ℝ}
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1) (k : ℕ) (ω : Ω) :
+    0 ≤ forwardPredictorProcess X k ω ∧
+      forwardPredictorProcess X k ω ≤ 1 := by
+  by_cases hk : k = 0
+  · subst k
+    norm_num [forwardPredictorProcess, forwardPredictor]
+  · have hkpos : 0 < k := Nat.pos_of_ne_zero hk
+    have hkR : 0 < (k : ℝ) := by exact_mod_cast hkpos
+    have hsum_nonneg : 0 ≤ ∑ i ∈ Finset.range k, X i ω :=
+      Finset.sum_nonneg fun i _ ↦ (hX_unit i ω).1
+    have hsum_le : (∑ i ∈ Finset.range k, X i ω) ≤ (k : ℝ) := by
+      calc
+        (∑ i ∈ Finset.range k, X i ω) ≤
+            ∑ _i ∈ Finset.range k, (1 : ℝ) :=
+          Finset.sum_le_sum fun i _ ↦ (hX_unit i ω).2
+        _ = (k : ℝ) := by simp
+    simp only [forwardPredictorProcess, forwardPredictor, hk, if_false,
+      forwardPrefixMean]
+    constructor
+    · exact div_nonneg hsum_nonneg hkR.le
+    · exact (div_le_one hkR).2 hsum_le
+
+/-- Complementation preserves predictable-increment adaptedness. -/
+theorem incrementAdapted_one_sub
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {ℱ : Filtration ℕ mΩ} {X : ℕ → Ω → ℝ}
+    (hX_adapted : IncrementAdapted ℱ X) :
+    IncrementAdapted ℱ (fun k ω ↦ 1 - X k ω) := by
+  intro k
+  exact stronglyMeasurable_const.sub (hX_adapted k)
 
 /-- One empirical-Bernstein plug-in factor. -/
 def forwardEmpiricalBernsteinFactor {Ω : Type*}
@@ -487,6 +600,33 @@ def forwardEmpiricalBernsteinProcess {Ω : Type*}
     (X : ℕ → Ω → ℝ) (mean lam : ℝ) : ℕ → Ω → ℝ :=
   forwardPlugInExponentialProcess X mean lam (forwardEmpiricalBernsteinPsi lam)
 
+/-- Positive-tilt lower-tail process, implemented by complementing `[0,1]`
+observations.  If `X` has conditional mean `mean`, then `1 - X` has
+conditional mean `1 - mean`. -/
+def forwardEmpiricalBernsteinLowerProcess {Ω : Type*}
+    (X : ℕ → Ω → ℝ) (mean lam : ℝ) : ℕ → Ω → ℝ :=
+  forwardEmpiricalBernsteinProcess (fun k ω ↦ 1 - X k ω) (1 - mean) lam
+
+/-- Explicit lower-tail orientation of the complemented process.  Its
+predictable quadratic penalty is exactly the original one. -/
+theorem forwardEmpiricalBernsteinLowerProcess_eq {Ω : Type*}
+    (X : ℕ → Ω → ℝ) (mean lam : ℝ) (n : ℕ) (ω : Ω) :
+    forwardEmpiricalBernsteinLowerProcess X mean lam n ω =
+      Real.exp
+        (lam * (∑ k ∈ Finset.range n, (mean - X k ω)) -
+          forwardEmpiricalBernsteinPsi lam *
+            forwardPredictableQuadratic (fun k ↦ X k ω) n) := by
+  unfold forwardEmpiricalBernsteinLowerProcess
+  unfold forwardEmpiricalBernsteinProcess forwardPlugInExponentialProcess
+  rw [forwardPredictableQuadratic_one_sub]
+  congr 1
+  apply congrArg (fun s : ℝ ↦ lam * s -
+    forwardEmpiricalBernsteinPsi lam *
+      forwardPredictableQuadratic (fun k ↦ X k ω) n)
+  apply Finset.sum_congr rfl
+  intro k _
+  ring
+
 /-- Exact multiplicative update of the generic plug-in exponential process. -/
 lemma forwardPlugInExponentialProcess_succ {Ω : Type*}
     (X : ℕ → Ω → ℝ) (mean lam psi : ℝ) (n : ℕ) (ω : Ω) :
@@ -508,6 +648,169 @@ lemma forwardEmpiricalBernsteinProcess_succ {Ω : Type*}
         forwardEmpiricalBernsteinFactor X mean lam n ω := by
   exact forwardPlugInExponentialProcess_succ
     X mean lam (forwardEmpiricalBernsteinPsi lam) n ω
+
+/-- The forward empirical-Bernstein process is adapted under the standard
+increment convention: `X k` is revealed at time `k + 1`. -/
+theorem stronglyAdapted_forwardEmpiricalBernsteinProcess_of_incrementAdapted
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {ℱ : Filtration ℕ mΩ} {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hX_adapted : IncrementAdapted ℱ X) :
+    StronglyAdapted ℱ (forwardEmpiricalBernsteinProcess X mean lam) := by
+  have hP_adapted : StronglyAdapted ℱ (forwardPredictorProcess X) :=
+    stronglyAdapted_forwardPredictorProcess_of_incrementAdapted hX_adapted
+  intro n
+  have hcentered : StronglyMeasurable[ℱ n]
+      (fun ω ↦ ∑ k ∈ Finset.range n, (X k ω - mean)) := by
+    have hrw : (fun ω ↦ ∑ k ∈ Finset.range n, (X k ω - mean)) =
+        ∑ k ∈ Finset.range n, (fun ω ↦ X k ω - mean) := by
+      funext ω
+      simp only [Finset.sum_apply]
+    rw [hrw]
+    apply Finset.stronglyMeasurable_sum
+    intro k hk
+    rw [Finset.mem_range] at hk
+    exact ((hX_adapted k).mono
+      (ℱ.mono (Nat.succ_le_of_lt hk))).sub stronglyMeasurable_const
+  have hquadratic : StronglyMeasurable[ℱ n]
+      (fun ω ↦ forwardPredictableQuadratic (fun k ↦ X k ω) n) := by
+    have hrw :
+        (fun ω ↦ forwardPredictableQuadratic (fun k ↦ X k ω) n) =
+          ∑ k ∈ Finset.range n,
+            (fun ω ↦ (X k ω - forwardPredictorProcess X k ω) ^ 2) := by
+      funext ω
+      simp only [forwardPredictableQuadratic, forwardPredictorProcess,
+        Finset.sum_apply]
+    rw [hrw]
+    apply Finset.stronglyMeasurable_sum
+    intro k hk
+    rw [Finset.mem_range] at hk
+    have hXk : StronglyMeasurable[ℱ n] (X k) :=
+      (hX_adapted k).mono (ℱ.mono (Nat.succ_le_of_lt hk))
+    have hPk : StronglyMeasurable[ℱ n] (forwardPredictorProcess X k) :=
+      (hP_adapted k).mono (ℱ.mono (le_of_lt hk))
+    exact (hXk.sub hPk).pow 2
+  change StronglyMeasurable[ℱ n]
+    (fun ω ↦ Real.exp
+      (lam * (∑ k ∈ Finset.range n, (X k ω - mean)) -
+        forwardEmpiricalBernsteinPsi lam *
+          forwardPredictableQuadratic (fun k ↦ X k ω) n))
+  exact Real.continuous_exp.comp_stronglyMeasurable
+    ((hcentered.const_mul lam).sub
+      (hquadratic.const_mul (forwardEmpiricalBernsteinPsi lam)))
+
+/-- A uniform pointwise bound for the forward empirical-Bernstein process
+under `[0,1]` observations.  The nonnegative quadratic penalty can only
+decrease the exponent. -/
+theorem forwardEmpiricalBernsteinProcess_le_of_mem_Icc
+    {Ω : Type*} {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (n : ℕ) (ω : Ω) :
+    forwardEmpiricalBernsteinProcess X mean lam n ω ≤
+      Real.exp (lam * (n : ℝ) * (1 + |mean|)) := by
+  unfold forwardEmpiricalBernsteinProcess forwardPlugInExponentialProcess
+  apply Real.exp_le_exp.mpr
+  have hsum_le :
+      (∑ k ∈ Finset.range n, (X k ω - mean)) ≤
+        (n : ℝ) * (1 + |mean|) := by
+    calc
+      (∑ k ∈ Finset.range n, (X k ω - mean)) ≤
+          ∑ _k ∈ Finset.range n, (1 + |mean|) :=
+        Finset.sum_le_sum fun k _ ↦ by
+          have hmean : -mean ≤ |mean| := neg_le_abs mean
+          linarith [(hX_unit k ω).2]
+      _ = (n : ℝ) * (1 + |mean|) := by
+        rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  have htilt :
+      lam * (∑ k ∈ Finset.range n, (X k ω - mean)) ≤
+        lam * ((n : ℝ) * (1 + |mean|)) :=
+    mul_le_mul_of_nonneg_left hsum_le hlam0
+  have hpenalty : 0 ≤
+      forwardEmpiricalBernsteinPsi lam *
+        forwardPredictableQuadratic (fun k ↦ X k ω) n :=
+    mul_nonneg (forwardEmpiricalBernsteinPsi_nonneg hlam0 hlam1)
+      (Finset.sum_nonneg fun _ _ ↦ sq_nonneg _)
+  nlinarith
+
+/-- A uniform pointwise bound for one plug-in factor under `[0,1]`
+observations.  The squared predictor residual appears with a nonpositive
+coefficient, so its range is not needed for this bound. -/
+theorem forwardEmpiricalBernsteinFactor_le_of_mem_Icc
+    {Ω : Type*} {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (k : ℕ) (ω : Ω) :
+    forwardEmpiricalBernsteinFactor X mean lam k ω ≤
+      Real.exp (lam * (1 + |mean|)) := by
+  unfold forwardEmpiricalBernsteinFactor
+  apply Real.exp_le_exp.mpr
+  have hmean_abs : -mean ≤ |mean| := neg_le_abs mean
+  have hlinear : X k ω - mean ≤ 1 + |mean| := by
+    linarith [(hX_unit k ω).2]
+  have htilt : lam * (X k ω - mean) ≤ lam * (1 + |mean|) :=
+    mul_le_mul_of_nonneg_left hlinear hlam0
+  have hpenalty : 0 ≤
+      forwardEmpiricalBernsteinPsi lam *
+        (X k ω - forwardPredictorProcess X k ω) ^ 2 :=
+    mul_nonneg (forwardEmpiricalBernsteinPsi_nonneg hlam0 hlam1) (sq_nonneg _)
+  nlinarith
+
+/-- Bounded adapted observations make every forward empirical-Bernstein
+process value integrable. -/
+theorem integrable_forwardEmpiricalBernsteinProcess_of_bounded
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsFiniteMeasure μ]
+    {ℱ : Filtration ℕ mΩ} {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (n : ℕ) :
+    Integrable (forwardEmpiricalBernsteinProcess X mean lam n) μ := by
+  let C : ℝ := Real.exp (lam * (n : ℝ) * (1 + |mean|))
+  have hadapted :=
+    stronglyAdapted_forwardEmpiricalBernsteinProcess_of_incrementAdapted
+      (mean := mean) (lam := lam) hX_adapted
+  refine Integrable.of_bound
+    ((hadapted n).mono (ℱ.le n)).aestronglyMeasurable C ?_
+  exact Filter.Eventually.of_forall fun ω ↦ by
+    rw [Real.norm_eq_abs, abs_of_pos (by
+      unfold forwardEmpiricalBernsteinProcess forwardPlugInExponentialProcess
+      exact Real.exp_pos _)]
+    exact forwardEmpiricalBernsteinProcess_le_of_mem_Icc
+      hlam0 hlam1 hX_unit n ω
+
+/-- Bounded adapted observations make every one-step plug-in factor
+integrable. -/
+theorem integrable_forwardEmpiricalBernsteinFactor_of_bounded
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsFiniteMeasure μ]
+    {ℱ : Filtration ℕ mΩ} {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (k : ℕ) :
+    Integrable (forwardEmpiricalBernsteinFactor X mean lam k) μ := by
+  have hP_adapted : StronglyAdapted ℱ (forwardPredictorProcess X) :=
+    stronglyAdapted_forwardPredictorProcess_of_incrementAdapted hX_adapted
+  have hX_global : StronglyMeasurable (X k) :=
+    (hX_adapted k).mono (ℱ.le (k + 1))
+  have hP_global : StronglyMeasurable (forwardPredictorProcess X k) :=
+    (hP_adapted k).mono (ℱ.le k)
+  have hfactor_meas : StronglyMeasurable
+      (forwardEmpiricalBernsteinFactor X mean lam k) := by
+    unfold forwardEmpiricalBernsteinFactor
+    exact Real.continuous_exp.comp_stronglyMeasurable
+      (((hX_global.sub stronglyMeasurable_const).const_mul lam).sub
+        (((hX_global.sub hP_global).pow 2).const_mul
+          (forwardEmpiricalBernsteinPsi lam)))
+  refine Integrable.of_bound hfactor_meas.aestronglyMeasurable
+    (Real.exp (lam * (1 + |mean|))) ?_
+  exact Filter.Eventually.of_forall fun ω ↦ by
+    rw [Real.norm_eq_abs, abs_of_pos (by
+      unfold forwardEmpiricalBernsteinFactor
+      exact Real.exp_pos _)]
+    exact forwardEmpiricalBernsteinFactor_le_of_mem_Icc
+      hlam0 hlam1 hX_unit k ω
 
 /-- The concrete forward plug-in empirical-Bernstein process is a
 supermartingale.  Adaptedness, integrability, and the bounded-current-process
@@ -599,6 +902,111 @@ theorem forwardEmpiricalBernsteinProcess_eProcess
   supermartingale := forwardEmpiricalBernsteinProcess_supermartingale
     hlam0 hlam1 hX_meas hX_int hP_adapted hX_unit hP_unit hmean
     hprocess_adapted hprocess_int hfactor_int hprocess_bdd
+
+/-- **Bounded-model forward empirical-Bernstein e-process.**
+
+Under the standard stochastic interface—`X k` is revealed at time `k + 1`,
+every observation lies in `[0,1]`, and its conditional mean given `ℱ k` is
+`mean`—all measurability, predictor, integrability, and finite-time boundedness
+obligations of `forwardEmpiricalBernsteinProcess_eProcess` are automatic. -/
+theorem forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    EProcess μ ℱ (forwardEmpiricalBernsteinProcess X mean lam) := by
+  have hX_meas : ∀ k, Measurable (X k) := by
+    intro k
+    exact ((hX_adapted k).mono (ℱ.le (k + 1))).measurable
+  have hX_int : ∀ k, Integrable (X k) μ := by
+    intro k
+    refine Integrable.of_bound (hX_meas k).aestronglyMeasurable 1 ?_
+    exact Filter.Eventually.of_forall fun ω ↦ by
+      rw [Real.norm_eq_abs, abs_of_nonneg (hX_unit k ω).1]
+      exact (hX_unit k ω).2
+  have hP_adapted : StronglyAdapted ℱ (forwardPredictorProcess X) :=
+    stronglyAdapted_forwardPredictorProcess_of_incrementAdapted hX_adapted
+  have hX_unit_ae : ∀ k, ∀ᵐ ω ∂μ, 0 ≤ X k ω ∧ X k ω ≤ 1 :=
+    fun k ↦ Filter.Eventually.of_forall (hX_unit k)
+  have hP_unit_ae : ∀ k, ∀ᵐ ω ∂μ,
+      0 ≤ forwardPredictorProcess X k ω ∧
+        forwardPredictorProcess X k ω ≤ 1 :=
+    fun k ↦ Filter.Eventually.of_forall
+      (forwardPredictorProcess_mem_Icc_of_mem_Icc hX_unit k)
+  have hprocess_adapted : StronglyAdapted ℱ
+      (forwardEmpiricalBernsteinProcess X mean lam) :=
+    stronglyAdapted_forwardEmpiricalBernsteinProcess_of_incrementAdapted
+      hX_adapted
+  have hprocess_int : ∀ n,
+      Integrable (forwardEmpiricalBernsteinProcess X mean lam n) μ :=
+    fun n ↦ integrable_forwardEmpiricalBernsteinProcess_of_bounded
+      hlam0 hlam1 hX_adapted hX_unit n
+  have hfactor_int : ∀ n,
+      Integrable (forwardEmpiricalBernsteinFactor X mean lam n) μ :=
+    fun n ↦ integrable_forwardEmpiricalBernsteinFactor_of_bounded
+      hlam0 hlam1 hX_adapted hX_unit n
+  have hprocess_bdd : ∀ n, ∃ C : ℝ, ∀ᵐ ω ∂μ,
+      |forwardEmpiricalBernsteinProcess X mean lam n ω| ≤ C := by
+    intro n
+    refine ⟨Real.exp (lam * (n : ℝ) * (1 + |mean|)),
+      Filter.Eventually.of_forall fun ω ↦ ?_⟩
+    rw [abs_of_pos (by
+      unfold forwardEmpiricalBernsteinProcess forwardPlugInExponentialProcess
+      exact Real.exp_pos _)]
+    exact forwardEmpiricalBernsteinProcess_le_of_mem_Icc
+      hlam0 hlam1 hX_unit n ω
+  exact forwardEmpiricalBernsteinProcess_eProcess
+    hlam0 hlam1 hX_meas hX_int hP_adapted hX_unit_ae hP_unit_ae hmean
+    hprocess_adapted hprocess_int hfactor_int hprocess_bdd
+
+/-- **Bounded-model lower-tail e-process.**
+
+Positive tilts of `forwardEmpiricalBernsteinProcess` control upward deviations
+of `X - mean`.  The process below applies the same checked theorem to `1 - X`,
+thereby controlling the lower tail `mean - X`.  Complementation preserves both
+the predictable squared-residual penalty and the exact Bessel variance; no
+claim is made that the later Bessel lower envelope is itself an e-process. -/
+theorem forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    EProcess μ ℱ (forwardEmpiricalBernsteinLowerProcess X mean lam) := by
+  let Y : ℕ → Ω → ℝ := fun k ω ↦ 1 - X k ω
+  have hY_adapted : IncrementAdapted ℱ Y :=
+    incrementAdapted_one_sub hX_adapted
+  have hY_unit : ∀ k ω, 0 ≤ Y k ω ∧ Y k ω ≤ 1 := by
+    intro k ω
+    dsimp [Y]
+    constructor <;> linarith [((hX_unit k ω).1), ((hX_unit k ω).2)]
+  have hX_int : ∀ k, Integrable (X k) μ := by
+    intro k
+    have hX_meas : Measurable (X k) :=
+      ((hX_adapted k).mono (ℱ.le (k + 1))).measurable
+    refine Integrable.of_bound hX_meas.aestronglyMeasurable 1 ?_
+    exact Filter.Eventually.of_forall fun ω ↦ by
+      rw [Real.norm_eq_abs, abs_of_nonneg (hX_unit k ω).1]
+      exact (hX_unit k ω).2
+  have hY_mean : ∀ k, μ[Y k | ℱ k] =ᵐ[μ] fun _ ↦ 1 - mean := by
+    intro k
+    have hsub := condExp_sub (integrable_const (1 : ℝ)) (hX_int k) (ℱ k)
+    have hone : μ[(fun _ : Ω ↦ (1 : ℝ)) | ℱ k] = fun _ ↦ (1 : ℝ) :=
+      condExp_const (ℱ.le k) 1
+    filter_upwards [hsub, hmean k] with ω hsubω hmeanω
+    change μ[(fun _ : Ω ↦ (1 : ℝ)) - X k | ℱ k] ω = 1 - mean
+    rw [hsubω, hone]
+    simp only [Pi.sub_apply]
+    rw [hmeanω]
+  exact forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+    (X := Y) (mean := 1 - mean) hlam0 hlam1 hY_adapted hY_unit hY_mean
 
 /-- Exact-Bessel lower envelope of `forwardPlugInExponentialProcess`. -/
 def forwardBesselExponentialEnvelope {Ω : Type*}

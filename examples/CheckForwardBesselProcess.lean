@@ -11,6 +11,7 @@ exactly.
 -/
 
 open FormalSLT.AnytimeValid
+open MeasureTheory ProbabilityTheory
 
 noncomputable section
 
@@ -49,6 +50,38 @@ theorem half_tilt_minus_one_scalar_check :
       1 + (1 : ℝ) / 2 * (-1) := by
   exact exp_forwardEmpiricalBernstein_le_one_add (by norm_num) (by norm_num) (by norm_num)
 
+/-- Focused receipt for the reduced bounded-model interface: the caller only
+supplies increment adaptedness, the `[0,1]` observation range, and the
+conditional mean. -/
+theorem boundedModel_eProcess_receipt
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    EProcess μ ℱ (forwardEmpiricalBernsteinProcess X mean lam) :=
+  forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+    hlam0 hlam1 hX_adapted hX_unit hmean
+
+/-- The complementary process is the checked positive-tilt route for the
+lower tail `mean - X`; this does not assert that its Bessel envelope is an
+e-process. -/
+theorem boundedModel_lowerTail_eProcess_receipt
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam : ℝ}
+    (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    EProcess μ ℱ (forwardEmpiricalBernsteinLowerProcess X mean lam) :=
+  forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+    hlam0 hlam1 hX_adapted hX_unit hmean
+
 #check forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #check forwardBesselQ_succ
 #check forwardPredictableQuadratic_le_half_add_three_halves_besselQ
@@ -57,6 +90,16 @@ theorem half_tilt_minus_one_scalar_check :
 #check forwardEmpiricalBernsteinFactor_condExp_le_one
 #check forwardEmpiricalBernsteinProcess_supermartingale
 #check forwardEmpiricalBernsteinProcess_eProcess
+#check stronglyAdapted_forwardPredictorProcess_of_incrementAdapted
+#check stronglyAdapted_forwardEmpiricalBernsteinProcess_of_incrementAdapted
+#check integrable_forwardEmpiricalBernsteinProcess_of_bounded
+#check integrable_forwardEmpiricalBernsteinFactor_of_bounded
+#check forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+#check forwardPredictor_one_sub
+#check forwardPredictableQuadratic_one_sub
+#check forwardBesselQ_one_sub
+#check forwardEmpiricalBernsteinLowerProcess_eq
+#check forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
 #check forwardEmpiricalBernsteinBesselEnvelope_certified
 #check forwardPlugIn_eProcess_of_condExp_step
 #check forwardBesselExponentialEnvelope_le_forwardPlugIn
@@ -70,11 +113,17 @@ theorem half_tilt_minus_one_scalar_check :
 #print axioms forwardEmpiricalBernsteinFactor_condExp_le_one
 #print axioms forwardEmpiricalBernsteinProcess_supermartingale
 #print axioms forwardEmpiricalBernsteinProcess_eProcess
+#print axioms forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+#print axioms forwardPredictableQuadratic_one_sub
+#print axioms forwardBesselQ_one_sub
+#print axioms forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
 #print axioms forwardEmpiricalBernsteinBesselEnvelope_certified
 #print axioms forwardPlugIn_eProcess_of_condExp_step
 #print axioms forwardBesselEnvelope_certified_by_eProcess
 #print axioms falseTrue_coefficient_one_fails
 #print axioms falseTrue_three_halves_exact
 #print axioms half_tilt_minus_one_scalar_check
+#print axioms boundedModel_eProcess_receipt
+#print axioms boundedModel_lowerTail_eProcess_receipt
 
 end FormalSLT.Examples.CheckForwardBesselProcess
