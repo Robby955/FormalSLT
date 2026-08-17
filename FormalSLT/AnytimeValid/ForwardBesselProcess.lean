@@ -9,6 +9,7 @@ import FormalSLT.Concentration.SubGamma.CondExpProduct
 import FormalSLT.Statistics.ClassicalEstimation
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.SpecialFunctions.Log.Deriv
+import Mathlib.NumberTheory.Harmonic.Defs
 
 /-!
 # Forward Bessel variance bridge
@@ -31,7 +32,12 @@ corresponding Welford increment.  Consequently
 `forwardPredictableQuadratic x n <= 1/2 + (3/2) * forwardBesselQ x n`
 
 for every `n >= 2`.  The coefficient `1` is false already on the two-point
-Boolean sample `(0,1)`.
+Boolean sample `(0,1)`.  An exact Abel/Welford decomposition also gives the
+asymptotically sharper envelope
+
+`n/(n-1) * forwardBesselQ x n + (1/4) * (1 + H_(n-2))`.
+
+The checked hybrid penalty is the minimum of these two valid envelopes.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -204,6 +210,168 @@ theorem forwardPredictableQuadratic_le_half_add_three_halves_besselQ
               (x n - forwardPrefixMean x n) ^ 2 :=
         by simpa only [one_mul] using mul_le_mul_of_nonneg_right hcoef hsq
       nlinarith
+
+/-- Exact Abel/Welford decomposition of the predictable squared-residual
+penalty.  The correction beyond `Q_n` consists of an endpoint term and a
+positive weighted history of the earlier centered sums of squares. -/
+theorem forwardPredictableQuadratic_abel_welford
+    (x : ℕ → ℝ) {n : ℕ} (hn : 2 ≤ n) :
+    forwardPredictableQuadratic x n =
+      (x 0 - (1 : ℝ) / 2) ^ 2 + forwardBesselQ x n +
+        forwardBesselQ x n / ((n : ℝ) - 1) +
+        ∑ j ∈ Finset.Ico 2 n,
+          forwardBesselQ x j / ((j : ℝ) * ((j : ℝ) - 1)) := by
+  induction n, hn using Nat.le_induction with
+  | base =>
+      norm_num [forwardPredictableQuadratic_two, forwardBesselQ_two]
+      ring
+  | succ n hn ih =>
+      have hnpos : 0 < n := by omega
+      have hnR : (n : ℝ) ≠ 0 := by positivity
+      have hn1R : (n : ℝ) - 1 ≠ 0 := by
+        have hnRtwo : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+        linarith
+      rw [forwardPredictableQuadratic_succ,
+        forwardPredictor_eq_prefixMean x hnpos,
+        Finset.sum_Ico_succ_top hn, ih]
+      rw [forwardBesselQ_succ x hnpos]
+      push_cast
+      field_simp [hnR, hn1R]
+      ring
+
+/-- The centered sum of squares of a `[0,1]` prefix is at most one quarter
+of its length. -/
+theorem forwardBesselQ_le_quarter_card
+    (x : ℕ → ℝ) {n : ℕ} (hn : 0 < n)
+    (hx : ∀ i < n, 0 ≤ x i ∧ x i ≤ 1) :
+    forwardBesselQ x n ≤ (n : ℝ) / 4 := by
+  let m : ℝ := forwardPrefixMean x n
+  have hsq_le :
+      (∑ i ∈ Finset.range n, (x i) ^ 2) ≤
+        ∑ i ∈ Finset.range n, x i := by
+    apply Finset.sum_le_sum
+    intro i hi
+    have hxi := hx i (Finset.mem_range.mp hi)
+    nlinarith [mul_nonneg hxi.1 (sub_nonneg.mpr hxi.2)]
+  have hdecomp :
+      (∑ i ∈ Finset.range n, (x i) ^ 2) =
+        forwardBesselQ x n + (n : ℝ) * m ^ 2 := by
+    have h :=
+      FormalSLT.Statistics.ClassicalEstimation.sum_sq_sub_eq_sum_sq_sub_mean_add_card
+        hn (fun i : Fin n ↦ x i) 0
+    have hsum (f : ℕ → ℝ) :
+        (∑ i : Fin n, f i) = ∑ i ∈ Finset.range n, f i :=
+      Fin.sum_univ_eq_sum_range f n
+    rw [hsum (fun i ↦ (x i - 0) ^ 2),
+      hsum (fun i ↦ (x i - FormalSLT.Statistics.sampleMean
+        (fun j : Fin n ↦ x j)) ^ 2)] at h
+    rw [← forwardPrefixMean_eq_sampleMean x n] at h
+    simpa [m, forwardBesselQ] using h
+  have hsum_mean :
+      (∑ i ∈ Finset.range n, x i) = (n : ℝ) * m := by
+    have hn0 : (n : ℝ) ≠ 0 := by exact_mod_cast hn.ne'
+    unfold m forwardPrefixMean
+    field_simp [hn0]
+  have hquad : m - m ^ 2 ≤ (1 : ℝ) / 4 := by
+    nlinarith [sq_nonneg (m - (1 : ℝ) / 2)]
+  have hscale := mul_le_mul_of_nonneg_left hquad (Nat.cast_nonneg n)
+  nlinarith
+
+private lemma sum_Ico_two_inv_pred_eq_harmonic (n : ℕ) :
+    (∑ j ∈ Finset.Ico 2 n, (1 : ℝ) / ((j : ℝ) - 1)) =
+      ((harmonic (n - 2) : ℚ) : ℝ) := by
+  rw [Finset.sum_Ico_eq_sum_range]
+  unfold harmonic
+  rw [Rat.cast_sum]
+  apply Finset.sum_congr rfl
+  intro k _hk
+  rw [Rat.cast_inv, Rat.cast_natCast]
+  push_cast
+  ring
+
+/-- Alternative Bessel envelope obtained from the exact Abel/Welford identity.
+Its variance coefficient tends to one; the price is the additive harmonic
+history term, so this branch is not uniformly smaller at every sample. -/
+theorem forwardPredictableQuadratic_le_harmonic_bessel
+    (x : ℕ → ℝ) {n : ℕ} (hn : 2 ≤ n)
+    (hx : ∀ i < n, 0 ≤ x i ∧ x i ≤ 1) :
+    forwardPredictableQuadratic x n ≤
+      (n : ℝ) / ((n : ℝ) - 1) * forwardBesselQ x n +
+        (1 : ℝ) / 4 * (1 + ((harmonic (n - 2) : ℚ) : ℝ)) := by
+  have hseed : (x 0 - (1 : ℝ) / 2) ^ 2 ≤ (1 : ℝ) / 4 := by
+    have hx0 := hx 0 (by omega)
+    nlinarith [mul_nonneg hx0.1 (sub_nonneg.mpr hx0.2)]
+  have hterm : ∀ j ∈ Finset.Ico 2 n,
+      forwardBesselQ x j / ((j : ℝ) * ((j : ℝ) - 1)) ≤
+        (1 : ℝ) / 4 * (1 / ((j : ℝ) - 1)) := by
+    intro j hj
+    have hjbounds := Finset.mem_Ico.mp hj
+    have hjpos : 0 < j := by omega
+    have hjminus : 0 < (j : ℝ) - 1 := by
+      have : (2 : ℝ) ≤ (j : ℝ) := by exact_mod_cast hjbounds.1
+      linarith
+    have hjcast : (j : ℝ) ≠ 0 := by positivity
+    have hjminus_ne : (j : ℝ) - 1 ≠ 0 := hjminus.ne'
+    have hdenpos : 0 < (j : ℝ) * ((j : ℝ) - 1) :=
+      mul_pos (Nat.cast_pos.mpr hjpos) hjminus
+    have hq := forwardBesselQ_le_quarter_card x hjpos
+      (fun i hi ↦ hx i (hi.trans hjbounds.2))
+    calc
+      forwardBesselQ x j / ((j : ℝ) * ((j : ℝ) - 1)) ≤
+          ((j : ℝ) / 4) / ((j : ℝ) * ((j : ℝ) - 1)) :=
+        div_le_div_of_nonneg_right hq hdenpos.le
+      _ = (1 : ℝ) / 4 * (1 / ((j : ℝ) - 1)) := by
+        field_simp [hjcast, hjminus_ne]
+  have hsum :
+      (∑ j ∈ Finset.Ico 2 n,
+          forwardBesselQ x j / ((j : ℝ) * ((j : ℝ) - 1))) ≤
+        (1 : ℝ) / 4 * ((harmonic (n - 2) : ℚ) : ℝ) := by
+    calc
+      (∑ j ∈ Finset.Ico 2 n,
+          forwardBesselQ x j / ((j : ℝ) * ((j : ℝ) - 1))) ≤
+          ∑ j ∈ Finset.Ico 2 n,
+            (1 : ℝ) / 4 * (1 / ((j : ℝ) - 1)) :=
+        Finset.sum_le_sum hterm
+      _ = (1 : ℝ) / 4 *
+          (∑ j ∈ Finset.Ico 2 n, (1 : ℝ) / ((j : ℝ) - 1)) := by
+        rw [Finset.mul_sum]
+      _ = (1 : ℝ) / 4 * ((harmonic (n - 2) : ℚ) : ℝ) := by
+        rw [sum_Ico_two_inv_pred_eq_harmonic]
+  rw [forwardPredictableQuadratic_abel_welford x hn]
+  have hnminus : (n : ℝ) - 1 ≠ 0 := by
+    have hnR : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  calc
+    (x 0 - (1 : ℝ) / 2) ^ 2 + forwardBesselQ x n +
+          forwardBesselQ x n / ((n : ℝ) - 1) +
+        ∑ j ∈ Finset.Ico 2 n,
+          forwardBesselQ x j / ((j : ℝ) * ((j : ℝ) - 1)) ≤
+        (1 : ℝ) / 4 + forwardBesselQ x n +
+          forwardBesselQ x n / ((n : ℝ) - 1) +
+            (1 : ℝ) / 4 * ((harmonic (n - 2) : ℚ) : ℝ) := by
+      linarith
+    _ = (n : ℝ) / ((n : ℝ) - 1) * forwardBesselQ x n +
+          (1 : ℝ) / 4 * (1 + ((harmonic (n - 2) : ℚ) : ℝ)) := by
+      field_simp [hnminus]
+      ring
+
+/-- The smaller of the sharp two-step affine envelope and the harmonic
+Abel/Welford envelope. -/
+def forwardHybridBesselPenalty (x : ℕ → ℝ) (n : ℕ) : ℝ :=
+  min
+    ((1 : ℝ) / 2 + (3 : ℝ) / 2 * forwardBesselQ x n)
+    ((n : ℝ) / ((n : ℝ) - 1) * forwardBesselQ x n +
+      (1 : ℝ) / 4 * (1 + ((harmonic (n - 2) : ℚ) : ℝ)))
+
+/-- The predictable squared-residual penalty is bounded by the hybrid minimum
+of the two valid Bessel envelopes. -/
+theorem forwardPredictableQuadratic_le_hybrid_bessel
+    (x : ℕ → ℝ) {n : ℕ} (hn : 2 ≤ n)
+    (hx : ∀ i < n, 0 ≤ x i ∧ x i ≤ 1) :
+    forwardPredictableQuadratic x n ≤ forwardHybridBesselPenalty x n := by
+  apply le_min
+  · exact forwardPredictableQuadratic_le_half_add_three_halves_besselQ x hn hx
+  · exact forwardPredictableQuadratic_le_harmonic_bessel x hn hx
 
 /-- Pointwise obstruction to replacing `3/2` by `1`: the Boolean sample
 `(false,true)`, encoded as `(0,1)`, violates the proposed bound at `n = 2`. -/

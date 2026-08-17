@@ -43,6 +43,12 @@ theorem falseTrue_three_halves_exact :
   rw [falseTrue_predictableQuadratic, falseTrue_besselQ]
   norm_num
 
+/-- At the sharp two-step witness, both branches of the hybrid envelope agree
+with the predictable penalty. -/
+theorem falseTrue_hybrid_exact :
+    forwardHybridBesselPenalty falseTrueSample 2 = (5 : ℝ) / 4 := by
+  norm_num [forwardHybridBesselPenalty, falseTrue_besselQ, harmonic]
+
 /-- A concrete endpoint of the scalar one-step inequality. -/
 theorem half_tilt_minus_one_scalar_check :
     Real.exp
@@ -132,6 +138,11 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #check forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #check forwardBesselQ_succ
 #check forwardPredictableQuadratic_le_half_add_three_halves_besselQ
+#check forwardPredictableQuadratic_abel_welford
+#check forwardBesselQ_le_quarter_card
+#check forwardPredictableQuadratic_le_harmonic_bessel
+#check forwardHybridBesselPenalty
+#check forwardPredictableQuadratic_le_hybrid_bessel
 #check forwardBessel_coefficient_one_bool_obstruction
 #check exp_forwardEmpiricalBernstein_le_one_add
 #check forwardEmpiricalBernsteinFactor_condExp_le_one
@@ -171,6 +182,10 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #print axioms forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #print axioms forwardBesselQ_succ
 #print axioms forwardPredictableQuadratic_le_half_add_three_halves_besselQ
+#print axioms forwardPredictableQuadratic_abel_welford
+#print axioms forwardBesselQ_le_quarter_card
+#print axioms forwardPredictableQuadratic_le_harmonic_bessel
+#print axioms forwardPredictableQuadratic_le_hybrid_bessel
 #print axioms forwardBessel_coefficient_one_bool_obstruction
 #print axioms exp_forwardEmpiricalBernstein_le_one_add
 #print axioms forwardEmpiricalBernsteinFactor_condExp_le_one
@@ -200,6 +215,7 @@ theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 #print axioms forwardBesselEnvelope_certified_by_eProcess
 #print axioms falseTrue_coefficient_one_fails
 #print axioms falseTrue_three_halves_exact
+#print axioms falseTrue_hybrid_exact
 #print axioms half_tilt_minus_one_scalar_check
 #print axioms boundedModel_eProcess_receipt
 #print axioms boundedModel_lowerTail_eProcess_receipt
