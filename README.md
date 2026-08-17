@@ -204,12 +204,7 @@ questions for each result are tracked in
   now fixes a dyadic
   scale grid of depth `clog 2 n` before observing the data and proves, on one
   event of failure mass at most `delta`,
-  $$
-  R(\rho) \le \widehat R(\rho)
-  + \frac{5}{4} \sqrt{\frac{2 \widehat V(\rho) L(\rho)}{n}}
-  + \frac{5}{2} \frac{L(\rho)}{n},
-  $$
-  where
+  $R(\rho) \le \widehat R(\rho) + \frac{5}{4} \sqrt{\frac{2 \widehat V(\rho) L(\rho)}{n}} + \frac{5}{2} \frac{L(\rho)}{n}$, where
   $L(\rho) = \mathrm{KL}(\rho \| \mathrm{prior}) + \log((\mathrm{clog}_2 n + 1) / \delta)$.
   A reverse-exchangeability layer now proves the Bessel conditional-expectation
   identity, reverse Bessel martingale, reverse joint mean/variance exponential
@@ -217,12 +212,7 @@ questions for each result are tracked in
   reverse closed-form bound. Countable stitching on the infinite IID product
   space then gives one measurable event of mass at most `delta` on whose
   complement every `n >= 2` and every finite posterior obey
-  $$
-  R(\rho) < \widehat R_n(\rho)
-  + \frac{5}{2} \sqrt{\frac{\widehat V_n(\rho) L_n(\rho)}{n}}
-  + \frac{5 L_n(\rho)}{n},
-  $$
-  where
+  $R(\rho) < \widehat R_n(\rho) + \frac{5}{2} \sqrt{\frac{\widehat V_n(\rho) L_n(\rho)}{n}} + \frac{5 L_n(\rho)}{n}$, where
   $L_n(\rho) = \mathrm{KL}(\rho \| \mathrm{prior}) + \log(r(r+1)^2 / \delta)$ and
   `r = Nat.log 2 n`. This is an offline reverse-epoch theorem, not a forward
   e-process, optional-stopping result, all-real optimizer, or continuous-
