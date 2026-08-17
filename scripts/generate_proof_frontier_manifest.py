@@ -140,8 +140,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
             "result. No "
-            "result is simultaneous over all continuous posteriors or all real "
-            "tilts."
+            "time-uniform result is simultaneous over all continuous "
+            "posteriors or all real tilts."
         ),
     },
     {
@@ -165,32 +165,42 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "reverse Bessel martingale, reverse joint mean/variance epoch "
             "process, reverse finite catalog, closed-form epoch endpoint, "
             "finite-prefix infinite-product bridge, and one stitched "
-            "all-sample-size finite-IID event"
+            "all-sample-size finite-IID event; plus a continuous-prior "
+            "reverse mixture, finite tilt catalog, closed-form epoch bound, "
+            "and stitched all-sample-size endpoint over arbitrary measurable "
+            "hypothesis spaces"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Publish comparative all-sample-size numerical evidence and external "
-            "review, then extend the checked all-sample-size endpoint to a "
-            "general measurable hypothesis space. Treat all-real "
-            "optimization and a forward exact-Bessel e-process as separate "
-            "research targets."
+            "Publish comparative all-sample-size numerical evidence and "
+            "external review. Treat all-real optimization and a forward "
+            "exact-Bessel e-process as separate research targets."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
-            "infinite-IID event shared by every n >= 2 and every posterior on "
-            "a fixed finite hypothesis type. It is an offline "
-            "reverse-exchangeability theorem, not a forward e-process or "
-            "optional-stopping API. The fixed and natural-index catalogs are "
-            "declared in advance; the theorem does not give all-real tilt "
-            "optimization, countable or continuous hypotheses, or uniformity "
-            "over arbitrary posterior measures. The all-sample-size checker is "
-            "structural; numerical nonvacuity currently comes from the "
-            "separate balanced-64 fixed-sample receipt. The separately "
-            "budgeted rational risk theorem remains a distinct two-event "
-            "result."
+            "infinite-IID event shared by every n >= 2. The continuous-prior "
+            "version is uniform over every posterior probability measure on "
+            "an arbitrary measurable hypothesis space that is absolutely "
+            "continuous with respect to the fixed prior and has an integrable "
+            "log-likelihood ratio. It retains finite-valued observations and "
+            "is an offline reverse-exchangeability theorem, not a forward "
+            "e-process or optional-stopping API. The tilt catalogs are "
+            "declared in advance, so there is no all-real optimization. The "
+            "continuous product-Gaussian/fair-Boolean receipt gives every "
+            "finite set posterior mass zero, has KL = 1/32, and uses an "
+            "unscaled zero-one sign-flip mismatch loss that depends on both "
+            "hypothesis coordinates and attains both endpoints. Every "
+            "nonempty-sample posterior empirical risk is 1/2; at n = 2^20 "
+            "and delta = 1/2, the correction is below 1/2 and the theorem-"
+            "produced right-hand side is below 1. A checked corollary gives "
+            "a path outside the exceptional event. The receipt fixes the "
+            "posterior and does not exercise data-dependent continuous-"
+            "posterior selection. "
+            "The separately budgeted rational risk theorem remains a distinct "
+            "two-event result."
         ),
     },
     {

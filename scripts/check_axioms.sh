@@ -113,6 +113,22 @@ THEOREMS=(
   "FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta"
   "FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem"
   "FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.exists_infiniteEmpiricalBernstein_event"
+  "FormalSLT.PACBayes.TimeUniformContinuous.continuousPriorMixture_submartingale"
+  "FormalSLT.PACBayes.FiniteJointMeanVarianceReverse.reverseJointMeanVarianceEpochExponentialProcess_samplePermutation"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochPriorMixture_submartingale_of_integrable"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.reverseJointMeanVarianceEpochExponentialProcess_integrable_prod"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochPriorMixture_submartingale_of_measurable_bounded"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochPriorMixture_endpoint_integral_le_one"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochPriorMixture_maximal_le_one"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochBadPaths_mass_le_delta_of_measurable_bounded"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochCatalogBadPaths_mass_le_delta"
+  "FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse.continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_selected_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousEmpiricalBernsteinReverseSqrt.continuousEmpiricalBernsteinReverseSqrtFailure_mass_le_delta"
+  "FormalSLT.PACBayes.ContinuousEmpiricalBernsteinReverseSqrt.continuousEmpiricalBernsteinReverseSqrt_posteriorRisk_prefix_lt_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.continuousInfiniteEmpiricalBernsteinReverseSqrtFailure_measurable"
+  "FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.continuousInfiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta"
+  "FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.continuousInfiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVarianceMasterMixture_nonneg"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_weightedPriorMoments_summable_of_sampleWeight_pos"
   "FormalSLT.PACBayes.CountableJointMeanVariancePACBayes.countableJointMeanVariance_masterMixture_expectation_le_weightTsum"
@@ -186,6 +202,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
+  echo "import FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes"
   echo "import FormalSLT.PACBayes.CountableJointMeanVariancePosterior"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
@@ -229,6 +246,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteJointMeanVarianceResidual \
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
+  FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
   FormalSLT.PACBayes.CountableJointMeanVariancePosterior \
   FormalSLT.PACBayes.TimeUniformScorePACBayes \

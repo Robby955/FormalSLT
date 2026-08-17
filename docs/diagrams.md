@@ -149,7 +149,7 @@ flowchart TD
     reversegrid["Reverse dyadic-scale epoch endpoint<br/>all prefixes, all finite posteriors"]
     stitched["All-sample-size empirical-Bernstein event<br/>5/2 square-root + 5 linear constants"]
     allreal["All-real tilt optimization (open)"]
-    continuousEB["Measurable/continuous-hypothesis<br/>all-sample-size extension (open)"]
+    continuousEB["Measurable-hypothesis all-sample-size EB<br/>finite-valued observations"]
     forwardEB["Forward exact-Bessel e-process +<br/>optional-stopping API (open)"]
 
     kl --> pmgf
@@ -177,15 +177,15 @@ flowchart TD
     reversejoint --> reversegrid
     reversegrid --> stitched
     jointcat -.-> allreal
-    stitched -.-> continuousEB
+    stitched --> continuousEB
     stitched -.-> forwardEB
 
     classDef checked fill:#ecfdf5,stroke:#0f766e,color:#134e4a;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
     class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster,countableposterior,reversebessel,reversejoint checked;
-    class mcallester,ebrisk,zerores,xires,sqrtbound,reversegrid,stitched endpointNode;
-    class allreal,continuousEB,forwardEB open;
+    class mcallester,ebrisk,zerores,xires,sqrtbound,reversegrid,stitched,continuousEB endpointNode;
+    class allreal,forwardEB open;
 ```
 
 The finite joint route thresholds one prior-and-catalog master mixture, so the
@@ -199,7 +199,9 @@ theorems to a sample- and finite-posterior-selected natural-number entry on
 that same event. The stitched endpoint instead uses a telescoping confidence
 allocation across reverse dyadic epochs and one finite-prefix/infinite-product
 measure bridge. It is an offline all-sample-size theorem, not a forward
-e-process or optional-stopping result. The variance events
+e-process or optional-stopping result. A continuous-prior mixture and the same
+stitch extend that endpoint to arbitrary measurable hypothesis spaces while
+retaining finite-valued observations. The variance events
 bound the posterior average of per-hypothesis variances; they do not bound the
 variance of the posterior-averaged loss.
 
@@ -288,7 +290,9 @@ These diagrams do not claim more than the theorem signatures state:
   tilt optimizer, or an i.i.d. loss specialization.
 - The generic forward time-uniform PAC-Bayes endpoints do not imply the
   exact-Bessel result. The checked exact-Bessel all-sample-size theorem instead
-  uses offline reverse epochs and does not provide optional-stopping semantics.
+  uses offline reverse epochs, is posterior-uniform over arbitrary measurable
+  hypothesis spaces under its explicit finite-observation assumptions, and does
+  not provide optional-stopping semantics.
 - The posterior average of per-hypothesis variances is not the variance of
   the posterior-averaged loss.
 - The checked Dudley boundary adapters are not an unrestricted

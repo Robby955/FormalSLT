@@ -162,6 +162,117 @@ theorem continuousPriorMixture_supermartingale
   exact integral_nonneg fun θ => hnonneg θ n ω
 
 /--
+One reverse conditional-expectation step for an arbitrary continuous prior
+mixture.
+
+This is the submartingale analogue of
+`continuousPriorMixture_condExp_step_of_fixed_hypothesis_steps`.  The product
+integrability hypotheses expose the Fubini obligations rather than assuming
+that conditional expectation commutes with the prior integral.
+-/
+theorem continuousPriorMixture_condExp_step_ge_of_fixed_hypothesis_steps
+    {μ : @Measure Ω mΩ} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {prior : Measure Θ} [IsProbabilityMeasure prior]
+    {M : Θ → ℕ → Ω → ℝ}
+    (h_adapted_mix : StronglyAdapted ℱ (continuousPriorMixtureProcess prior M))
+    (h_integrable_mix :
+      ∀ n, Integrable (continuousPriorMixtureProcess prior M n) μ)
+    (hM_int_next :
+      ∀ n, Integrable (fun p : Θ × Ω => M p.1 (n + 1) p.2) (prior.prod μ))
+    (hM_int_next_restrict :
+      ∀ n, ∀ {s : Set Ω}, MeasurableSet s → μ s < ⊤ →
+        Integrable (fun p : Ω × Θ => M p.2 (n + 1) p.1)
+          ((μ.restrict s).prod prior))
+    (hM_int_current :
+      ∀ n, Integrable (fun p : Ω × Θ => M p.2 n p.1) (μ.prod prior))
+    (hM_int_current_restrict :
+      ∀ n, ∀ {s : Set Ω}, MeasurableSet s → μ s < ⊤ →
+        Integrable (fun p : Ω × Θ => M p.2 n p.1)
+          ((μ.restrict s).prod prior))
+    (hfixed_step :
+      ∀ n, ∀ᵐ θ ∂prior,
+        (fun ω => M θ n ω) ≤ᵐ[μ] μ[fun ω => M θ (n + 1) ω | ℱ n]) :
+    ∀ n,
+      continuousPriorMixtureProcess prior M n
+        ≤ᵐ[μ] μ[continuousPriorMixtureProcess prior M (n + 1) | ℱ n] := by
+  intro n
+  refine ae_le_of_forall_subalgebra_setIntegral_le (ℱ.le n)
+    (h_integrable_mix n) integrable_condExp
+    (h_adapted_mix n) stronglyMeasurable_condExp ?_
+  intro s hs hμs
+  have hs₀ : MeasurableSet s := ℱ.le n s hs
+  have hnext_restrict := hM_int_next_restrict n hs₀ hμs
+  have hcurrent_restrict := hM_int_current_restrict n hs₀ hμs
+  have hnext_fiber : ∀ᵐ θ ∂prior, Integrable (fun ω => M θ (n + 1) ω) μ := by
+    simpa using (hM_int_next n).prod_right_ae
+  have hcurrent_fiber : ∀ᵐ θ ∂prior, Integrable (fun ω => M θ n ω) μ := by
+    simpa using (hM_int_current n).prod_left_ae
+  calc
+    ∫ ω in s, continuousPriorMixtureProcess prior M n ω ∂μ
+        = ∫ θ, ∫ ω in s, M θ n ω ∂μ ∂prior := by
+          simpa [continuousPriorMixtureProcess, Function.uncurry] using
+            (integral_integral_swap (μ := μ.restrict s) (ν := prior)
+              (f := fun ω θ => M θ n ω) hcurrent_restrict)
+    _ ≤ ∫ θ, ∫ ω in s, M θ (n + 1) ω ∂μ ∂prior := by
+          refine integral_mono_ae hcurrent_restrict.integral_prod_right
+            hnext_restrict.integral_prod_right ?_
+          filter_upwards [hfixed_step n, hcurrent_fiber, hnext_fiber] with
+            θ hstep hcurrent_int hnext_int
+          calc
+            ∫ ω in s, M θ n ω ∂μ
+                ≤ ∫ ω in s, (μ[fun ω => M θ (n + 1) ω | ℱ n]) ω ∂μ := by
+                    exact setIntegral_mono_ae hcurrent_int.integrableOn
+                      integrable_condExp.integrableOn hstep
+            _ = ∫ ω in s, M θ (n + 1) ω ∂μ := by
+                    exact setIntegral_condExp (ℱ.le n) hnext_int hs
+    _ = ∫ ω in s, continuousPriorMixtureProcess prior M (n + 1) ω ∂μ := by
+          simpa [continuousPriorMixtureProcess, Function.uncurry] using
+            (integral_integral_swap (μ := μ.restrict s) (ν := prior)
+              (f := fun ω θ => M θ (n + 1) ω) hnext_restrict).symm
+    _ = ∫ ω in s,
+          (μ[continuousPriorMixtureProcess prior M (n + 1) | ℱ n]) ω ∂μ := by
+            exact (setIntegral_condExp (ℱ.le n) (h_integrable_mix (n + 1)) hs).symm
+
+/--
+A probability-prior integral of a prior-almost-everywhere submartingale
+family is a submartingale, under the explicit product-integrability
+obligations needed by Fubini.
+-/
+theorem continuousPriorMixture_submartingale
+    {μ : @Measure Ω mΩ} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {prior : Measure Θ} [IsProbabilityMeasure prior]
+    {M : Θ → ℕ → Ω → ℝ}
+    (h_adapted_mix : StronglyAdapted ℱ (continuousPriorMixtureProcess prior M))
+    (h_integrable_mix :
+      ∀ n, Integrable (continuousPriorMixtureProcess prior M n) μ)
+    (hM_int_next :
+      ∀ n, Integrable (fun p : Θ × Ω => M p.1 (n + 1) p.2) (prior.prod μ))
+    (hM_int_next_restrict :
+      ∀ n, ∀ {s : Set Ω}, MeasurableSet s → μ s < ⊤ →
+        Integrable (fun p : Ω × Θ => M p.2 (n + 1) p.1)
+          ((μ.restrict s).prod prior))
+    (hM_int_current :
+      ∀ n, Integrable (fun p : Ω × Θ => M p.2 n p.1) (μ.prod prior))
+    (hM_int_current_restrict :
+      ∀ n, ∀ {s : Set Ω}, MeasurableSet s → μ s < ⊤ →
+        Integrable (fun p : Ω × Θ => M p.2 n p.1)
+          ((μ.restrict s).prod prior))
+    (hfixed : ∀ᵐ θ ∂prior, Submartingale (M θ) ℱ μ) :
+    Submartingale (continuousPriorMixtureProcess prior M) ℱ μ := by
+  have hfixed_step :
+      ∀ n, ∀ᵐ θ ∂prior,
+        (fun ω => M θ n ω) ≤ᵐ[μ] μ[fun ω => M θ (n + 1) ω | ℱ n] := by
+    intro n
+    filter_upwards [hfixed] with θ hθ
+    exact hθ.2.1 n (n + 1) (Nat.le_succ n)
+  exact submartingale_nat h_adapted_mix h_integrable_mix
+    (continuousPriorMixture_condExp_step_ge_of_fixed_hypothesis_steps
+      h_adapted_mix h_integrable_mix hM_int_next hM_int_next_restrict
+      hM_int_current hM_int_current_restrict hfixed_step)
+
+/--
 Countable-time Ville control for a continuous prior mixture that starts at one.
 -/
 theorem continuousPriorMixture_crossing_bound

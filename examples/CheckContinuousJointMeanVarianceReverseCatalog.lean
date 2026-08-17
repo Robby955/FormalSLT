@@ -1,0 +1,20 @@
+import FormalSLT.PACBayes.ContinuousJointMeanVarianceReverseCatalog
+
+/-!
+# Continuous-posterior reverse catalog audit
+
+This checker records the finite weighted catalog master event, its mass bound,
+and the selected-atom posterior-risk endpoint with one measure-theoretic KL.
+-/
+
+open FormalSLT.PACBayes.ContinuousJointMeanVarianceReverse
+
+#check continuousReverseJointMeanVarianceEpochCatalogBadPaths_mass_le_delta
+#check continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_of_not_mem
+#check continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_selected_of_not_mem
+#check exists_continuousReverseJointMeanVarianceEpochCatalog_goodEvent
+
+#print axioms continuousReverseJointMeanVarianceEpochCatalogBadPaths_mass_le_delta
+#print axioms continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_of_not_mem
+#print axioms continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_selected_of_not_mem
+#print axioms exists_continuousReverseJointMeanVarianceEpochCatalog_goodEvent

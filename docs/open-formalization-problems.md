@@ -110,8 +110,11 @@ optional-stopping guarantee beyond the common all-atom event.
 For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and
-posterior, with an explicit KL formula. This does not make the result
-simultaneous over all continuous posteriors.
+posterior, with an explicit KL formula. This does not make the time-uniform
+result simultaneous over all continuous posteriors. The separate offline
+all-sample-size empirical-Bernstein endpoint is posterior-uniform on an
+arbitrary measurable hypothesis space under its finite-observation and
+log-likelihood-ratio assumptions.
 
 **Dependencies.**
 
@@ -136,14 +139,17 @@ arbitrary joint predictor--tilt posterior theorem. The base
 continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
 specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt
 pairs support simultaneous validity and sample-dependent selection, but this is
-not an all-posterior or all-`λ` confidence statement.
+not an all-posterior or all-`λ` time-uniform confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Extend the checked all-sample-size finite-hypothesis theorem to a
-general measurable hypothesis space. Treat all-real tilt optimization and a
-forward exact-Bessel e-process with optional-stopping semantics as separate
-targets rather than consequences of the offline reverse-epoch stitch.
+**Checked.** The all-sample-size reverse-epoch theorem now extends from finite
+hypotheses to an arbitrary measurable hypothesis space. A continuous-prior
+mixture submartingale, posterior-uniform finite tilt catalog, closed-form epoch
+endpoint, and infinite-product stitch are derived from the bounded-loss model
+rather than supplied as assumptions. All-real tilt optimization and a forward
+exact-Bessel e-process with optional-stopping semantics remain separate targets
+rather than consequences of the offline reverse-epoch stitch.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -199,23 +205,28 @@ finite Donsker--Varadhan and residual theorems to each selected entry, giving
 raw-gap, exact-`xi` risk, and sample/posterior-dependent natural-index selector
 bounds on that same event with one KL term. The posterior remains finite, the
 selector receipt is structural rather than numerical, and all-real adaptation
-requires a distinct argument. For the continuous-hypothesis extension, the
-remaining load-bearing work is joint measurability of the path/hypothesis
-score, integration under an arbitrary fixed prior, a measure-theoretic
-change-of-measure step for every absolutely continuous posterior, and a common
-measurable stitched event. Those obligations must be proved rather than hidden
-inside a supplied prior-MGF or exceptional-event hypothesis.
+requires a distinct argument. The continuous-hypothesis extension now proves
+the joint measurability, arbitrary-prior integration, measure-theoretic
+change-of-measure, and common stitched-event obligations. A concrete
+product-Gaussian/fair-Boolean receipt checks posterior finite-set mass zero,
+`KL = 1/32`, and a genuine zero-one loss attaining both endpoints. At
+`n = 2^20` and `delta = 1/2`, its correction is below `1/2` and its
+theorem-produced right-hand side is below the trivial ceiling `1`; a checked
+corollary gives a path outside the exceptional event. The receipt fixes the
+posterior and does not exercise data-dependent continuous-posterior selection.
+Remaining evidence work is matched literature comparison and external review.
 
-**Boundary.** The fixed-parameter, separately weighted, joint-catalog,
-fixed-sample square-root, and all-sample-size reverse-epoch endpoints remain
-finite-IID and posterior-uniform only over a finite hypothesis type with a fixed
-full-support prior. The all-sample-size result uses one event shared by every
-`n >= 2`, but it is an offline reverse-exchangeability theorem: it does not
-construct a forward e-process, predictable betting strategy, or optional-
-stopping API. It does not authorize all-real post-hoc optimization or a
-continuous-hypothesis posterior. The random-matching proof formalizes the
-source variance inequality; neither the inequality nor the stitched endpoint
-is presented with a novelty or priority claim.
+**Boundary.** The all-sample-size reverse-epoch endpoint is now uniform over
+every admissible posterior probability measure on an arbitrary measurable
+hypothesis space. It retains a finite-valued IID observation law, strongly
+measurable `[0,1]` loss sections, a fixed probability prior, posterior absolute
+continuity, and log-likelihood-ratio integrability. It uses one event shared by
+every `n >= 2`, but is an offline reverse-exchangeability theorem: it does not
+construct a forward e-process, predictable betting strategy, optional-stopping
+API, continuous-observation result, or all-real post-hoc optimizer. The
+random-matching proof formalizes the source variance inequality; neither the
+inequality nor the stitched endpoint is presented with a novelty or priority
+claim.
 
 ## Medium-term
 

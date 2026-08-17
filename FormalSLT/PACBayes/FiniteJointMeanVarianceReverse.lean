@@ -243,6 +243,35 @@ theorem reverseMeanProcess_stronglyAdapted [Fintype Z]
     (reverseBesselPrefixSize_le hN k) ell).stronglyMeasurable
 
 omit [MeasurableSpace Z] in
+/-- A reverse prefix mean of `[0,1]` observations remains in `[0,1]` at
+every reverse time. -/
+theorem reverseMeanProcess_mem_Icc_of_bounded
+    (N : ℕ) (hN : 2 ≤ N) (ell : Z → ℝ)
+    (hell : ∀ z, ell z ∈ Set.Icc (0 : ℝ) 1)
+    (k : ℕ) (x : Fin N → Z) :
+    reverseMeanProcess N hN ell k x ∈ Set.Icc (0 : ℝ) 1 := by
+  have hu_pos : 0 < reverseBesselPrefixSize N k :=
+    lt_of_lt_of_le (by norm_num) (reverseBesselPrefixSize_two_le N k)
+  have huR_pos : (0 : ℝ) < (reverseBesselPrefixSize N k : ℝ) := by
+    exact_mod_cast hu_pos
+  constructor
+  · unfold reverseMeanProcess prefixSampleMean sampleMean
+    exact div_nonneg
+      (Finset.sum_nonneg fun j _ ↦
+        (hell (samplePrefix (reverseBesselPrefixSize_le hN k) x j)).1)
+      huR_pos.le
+  · unfold reverseMeanProcess prefixSampleMean sampleMean
+    rw [div_le_iff₀ huR_pos]
+    calc
+      (∑ j : Fin (reverseBesselPrefixSize N k),
+          ell (samplePrefix (reverseBesselPrefixSize_le hN k) x j)) ≤
+          ∑ _j : Fin (reverseBesselPrefixSize N k), (1 : ℝ) := by
+            exact Finset.sum_le_sum fun j _ ↦
+              (hell (samplePrefix (reverseBesselPrefixSize_le hN k) x j)).2
+      _ = (reverseBesselPrefixSize N k : ℝ) := by simp
+      _ = 1 * (reverseBesselPrefixSize N k : ℝ) := by ring
+
+omit [MeasurableSpace Z] in
 private theorem prefixSampleMean_eq_of_size_eq {N t u : ℕ}
     (ht : t ≤ N) (hu : u ≤ N) (ell : Z → ℝ) (htu : t = u) :
     prefixSampleMean ht ell = prefixSampleMean hu ell := by
@@ -340,6 +369,23 @@ def reverseJointMeanVarianceEpochScore [Fintype Z]
       Real.exp (-t) * finiteJointMeanVarianceKappa m eta *
         finitePopulationVariance p ell i
 
+/-- The reverse joint score is unchanged by every horizon permutation
+supported on the prefix visible at the current reverse time. -/
+theorem reverseJointMeanVarianceEpochScore_samplePermutation [Fintype Z]
+    (N : ℕ) (hN : 2 ≤ N) (m : ℕ)
+    (p : Z → ℝ) (ell : ι → Z → ℝ) (t eta : ℝ) (i : ι)
+    (k : ℕ) (x : Fin N → Z) (σ : Equiv.Perm (Fin N))
+    (hσ : ∀ j : Fin N, reverseBesselPrefixSize N k ≤ j.1 → σ j = j) :
+    reverseJointMeanVarianceEpochScore N hN m p ell t eta i k
+        (samplePermutation σ x) =
+      reverseJointMeanVarianceEpochScore N hN m p ell t eta i k x := by
+  unfold reverseJointMeanVarianceEpochScore reverseMeanProcess
+    reverseBesselProcess
+  rw [prefixSampleMean_samplePermutation
+      (reverseBesselPrefixSize_le hN k) (ell i) x σ hσ,
+    prefixBesselVariance_samplePermutation
+      (reverseBesselPrefixSize_le hN k) (ell i) x σ hσ]
+
 /-- The joint reverse score is a martingale because its two moving
 coordinates, prefix mean and Bessel variance, are martingales on the same
 exchangeable filtration. -/
@@ -386,6 +432,21 @@ def reverseJointMeanVarianceEpochExponentialProcess [Fintype Z]
     ℕ → (Fin N → Z) → ℝ :=
   fun k x ↦ Real.exp
     (reverseJointMeanVarianceEpochScore N hN m p ell t eta i k x)
+
+/-- The exponential reverse score inherits prefix-permutation invariance. -/
+theorem reverseJointMeanVarianceEpochExponentialProcess_samplePermutation
+    [Fintype Z]
+    (N : ℕ) (hN : 2 ≤ N) (m : ℕ)
+    (p : Z → ℝ) (ell : ι → Z → ℝ) (t eta : ℝ) (i : ι)
+    (k : ℕ) (x : Fin N → Z) (σ : Equiv.Perm (Fin N))
+    (hσ : ∀ j : Fin N, reverseBesselPrefixSize N k ≤ j.1 → σ j = j) :
+    reverseJointMeanVarianceEpochExponentialProcess
+        N hN m p ell t eta i k (samplePermutation σ x) =
+      reverseJointMeanVarianceEpochExponentialProcess
+        N hN m p ell t eta i k x := by
+  unfold reverseJointMeanVarianceEpochExponentialProcess
+  rw [reverseJointMeanVarianceEpochScore_samplePermutation
+    N hN m p ell t eta i k x σ hσ]
 
 /-- Conditional Jensen turns the exponential of the joint score martingale
 into a nonnegative submartingale. -/

@@ -48,11 +48,15 @@ import FormalSLT.PACBayes.FiniteJointMeanVarianceMGF
 import FormalSLT.PACBayes.FiniteJointMeanVariancePACBayes
 import FormalSLT.PACBayes.FiniteJointMeanVarianceResidual
 import FormalSLT.PACBayes.FiniteJointMeanVarianceReversePACBayes
+import FormalSLT.PACBayes.ContinuousJointMeanVarianceReversePACBayes
+import FormalSLT.PACBayes.ContinuousJointMeanVarianceReverseCatalog
 import FormalSLT.PACBayes.FiniteJointMeanVarianceReverseCatalog
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt
 import FormalSLT.PACBayes.FiniteEmpiricalBernsteinReverseSqrt
+import FormalSLT.PACBayes.ContinuousEmpiricalBernsteinReverseSqrt
 import FormalSLT.PACBayes.InfiniteProductMeasureBridge
 import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch
+import FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch
 import FormalSLT.PACBayes.CountableJointMeanVariancePACBayes
 import FormalSLT.PACBayes.CountableJointMeanVariancePosterior
 import FormalSLT.PACBayes.ContinuousChangeOfMeasure
@@ -84,7 +88,8 @@ fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,
 finite-horizon reverse Bessel and joint mean/variance PAC-Bayes epochs,
 closed-form logarithmic-grid empirical-Bernstein bound, dyadically stitched
-all-sample-size iid empirical-Bernstein event, support-aware
+all-sample-size iid empirical-Bernstein events for finite and arbitrary
+measurable hypothesis spaces, support-aware
 countable master-mixture foundation and finite-posterior catalog-selector
 layer, score e-process, finite weighted tilt e-process and its finite-IID
 bounded-loss adapter, and time-uniform PAC-Bayes surfaces.

@@ -84,7 +84,8 @@ files.
   has a downstream finite-posterior exact-`xi` selector over its predeclared
   `Nat`-indexed tilt-pair catalog. Countable process-level selection, all-real
   lambda optimization, predictable-variance or exact-Bessel process adapters,
-  and posterior-uniform general continuous families remain open. A finite-IID
+  and time-uniform posterior control for general continuous families remain
+  open. A finite-IID
   measurable bounded-loss adapter for the finite process master is checked.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
@@ -114,9 +115,25 @@ files.
   predeclared dyadic scale grid through `Nat.clog 2 n` now gives the
   direct square-root-plus-linear posterior-risk endpoint with constants `5/4`
   and `5/2`, one KL term, and a 95%-confidence positive-KL/positive-variance
-  positive-sample-mass receipt below `99/100`. The current result is not a
-  countable-hypothesis posterior, all-real tilt optimization, or time-uniform
-  inference.
+  positive-sample-mass receipt below `99/100`. Reverse exchangeability and
+  telescoping dyadic stitching then give one infinite-IID event shared by every
+  `n >= 2`. The finite-hypothesis endpoint has a structural path-selected
+  posterior receipt. A separate continuous-prior integration layer derives the
+  reverse mixture submartingale and extends the all-sample-size endpoint to
+  every posterior probability measure on an arbitrary measurable hypothesis
+  space that is absolutely continuous with respect to the prior and has an
+  integrable log-likelihood ratio. A product-Gaussian/fair-Boolean receipt
+  checks posterior finite-set mass zero, `KL = 1/32`, and an unscaled zero-one
+  sign-flip mismatch loss that depends on both hypothesis coordinates and
+  attains both endpoints. Every nonempty-sample posterior empirical risk is
+  `1/2`; at `n = 2^20` and `delta = 1/2`, the correction is below `1/2` and
+  the theorem-produced right-hand side is below `1`. A checked corollary gives
+  a path outside the exceptional event. The receipt fixes the posterior and
+  does not exercise data-dependent continuous-posterior
+  selection.
+  Observations remain finite-valued. This is not all-real tilt optimization, a
+  forward exact-Bessel e-process, optional-stopping inference, or a
+  continuous-observation theorem.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream
   Rademacher, VC, metric-entropy, and stability wrappers. Dependent-coordinate

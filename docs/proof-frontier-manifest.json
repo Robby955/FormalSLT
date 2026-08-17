@@ -37,7 +37,7 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, and its finite-IID bounded-loss adapter packages one measurable exceptional event. Neither is countable, all-real, an exact-Bessel process, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No result is simultaneous over all continuous posteriors or all real tilts.",
+      "boundary": "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. Finite fixed catalogs of posterior/tilt pairs and a posterior-uniform finite weighted indicator-Bernstein tilt catalog support post-sample selection. The generic time-uniform master also supports a selected atom from one finite normalized tilt prior, and its finite-IID bounded-loss adapter packages one measurable exceptional event. Neither is countable, all-real, an exact-Bessel process, or simultaneous over arbitrary continuous posteriors. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No time-uniform result is simultaneous over all continuous posteriors or all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
       "next_step": "Extend the checked finite normalized hypothesis--tilt e-process to a countable mixture with explicit summability obligations, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument and generalize the fixed spherical-Gaussian posterior lane.",
@@ -46,11 +46,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The stitched reverse-epoch endpoint gives one measurable infinite-IID event shared by every n >= 2 and every posterior on a fixed finite hypothesis type. It is an offline reverse-exchangeability theorem, not a forward e-process or optional-stopping API. The fixed and natural-index catalogs are declared in advance; the theorem does not give all-real tilt optimization, countable or continuous hypotheses, or uniformity over arbitrary posterior measures. The all-sample-size checker is structural; numerical nonvacuity currently comes from the separate balanced-64 fixed-sample receipt. The separately budgeted rational risk theorem remains a distinct two-event result.",
+      "boundary": "The stitched reverse-epoch endpoint gives one measurable infinite-IID event shared by every n >= 2. The continuous-prior version is uniform over every posterior probability measure on an arbitrary measurable hypothesis space that is absolutely continuous with respect to the fixed prior and has an integrable log-likelihood ratio. It retains finite-valued observations and is an offline reverse-exchangeability theorem, not a forward e-process or optional-stopping API. The tilt catalogs are declared in advance, so there is no all-real optimization. The continuous product-Gaussian/fair-Boolean receipt gives every finite set posterior mass zero, has KL = 1/32, and uses an unscaled zero-one sign-flip mismatch loss that depends on both hypothesis coordinates and attains both endpoints. Every nonempty-sample posterior empirical risk is 1/2; at n = 2^20 and delta = 1/2, the correction is below 1/2 and the theorem-produced right-hand side is below 1. A checked corollary gives a path outside the exceptional event. The receipt fixes the posterior and does not exercise data-dependent continuous-posterior selection. The separately budgeted rational risk theorem remains a distinct two-event result.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Publish comparative all-sample-size numerical evidence and external review, then extend the checked all-sample-size endpoint to a general measurable hypothesis space. Treat all-real optimization and a forward exact-Bessel e-process as separate research targets.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector; plus a proved reverse Bessel martingale, reverse joint mean/variance epoch process, reverse finite catalog, closed-form epoch endpoint, finite-prefix infinite-product bridge, and one stitched all-sample-size finite-IID event",
+      "next_step": "Publish comparative all-sample-size numerical evidence and external review. Treat all-real optimization and a forward exact-Bessel e-process as separate research targets.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector; plus a proved reverse Bessel martingale, reverse joint mean/variance epoch process, reverse finite catalog, closed-form epoch endpoint, finite-prefix infinite-product bridge, and one stitched all-sample-size finite-IID event; plus a continuous-prior reverse mixture, finite tilt catalog, closed-form epoch bound, and stitched all-sample-size endpoint over arbitrary measurable hypothesis spaces",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 166,
-    "library_and_example_lean_lines": 96882,
-    "library_lean_lines": 80366,
-    "library_modules": 213,
-    "theorem_map_entries": 825
+    "example_lean_files": 171,
+    "library_and_example_lean_lines": 99972,
+    "library_lean_lines": 82961,
+    "library_modules": 217,
+    "theorem_map_entries": 836
   },
   "theorem_families": [
     {
@@ -3951,6 +3951,72 @@
           "module": "PACBayes.InfiniteEmpiricalBernsteinStitch",
           "name": "exists_infiniteEmpiricalBernstein_event",
           "summary": "Researcher-facing one-event theorem simultaneous over all sample sizes n >= 2 and all posterior PMFs on the fixed finite hypothesis type"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.TimeUniformContinuousPACBayes",
+          "name": "continuousPriorMixture_submartingale",
+          "summary": "Integrates a prior-a.e. family of submartingales over an arbitrary probability prior under explicit product-integrability obligations"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousJointMeanVarianceReversePACBayes",
+          "name": "continuousReverseJointMeanVarianceEpochPriorMixture_submartingale_of_measurable_bounded",
+          "summary": "Derives the continuous-prior reverse joint mean/Bessel-variance mixture submartingale from measurable bounded losses"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousJointMeanVarianceReversePACBayes",
+          "name": "continuousReverseJointMeanVarianceEpochBadPaths_mass_le_delta_of_measurable_bounded",
+          "summary": "Bounds the continuous-prior reverse-epoch maximal event without assuming an integrated MGF or crossing bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousJointMeanVarianceReverseCatalog",
+          "name": "continuousReverseJointMeanVarianceEpochCatalogBadPaths_mass_le_delta",
+          "summary": "Places a predeclared finite tilt catalog inside one continuous-prior reverse-epoch event of mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousJointMeanVarianceReverseCatalog",
+          "name": "continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_selected_of_not_mem",
+          "summary": "Permits prefix-, path-, and posterior-dependent selection from the fixed tilt catalog for every admissible posterior measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousEmpiricalBernsteinReverseSqrt",
+          "name": "continuousEmpiricalBernsteinReverseSqrtFailure_mass_le_delta",
+          "summary": "Bounds the canonical continuous-prior dyadic-scale reverse-epoch event by delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousEmpiricalBernsteinReverseSqrt",
+          "name": "continuousEmpiricalBernsteinReverseSqrt_posteriorRisk_prefix_lt_of_not_mem",
+          "summary": "Gives the closed-form 5/4, 5/2 empirical-Bernstein bound at every prefix for every absolutely continuous posterior with integrable log-likelihood ratio"
+        },
+        {
+          "kind": "definition",
+          "module": "PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch",
+          "name": "continuousInfiniteEmpiricalBernsteinComplexity",
+          "summary": "Measure-KL complexity with the telescoping dyadic-epoch confidence penalty at sample size n"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch",
+          "name": "continuousInfiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta",
+          "summary": "The posterior-independent continuous-prior event on the infinite IID path space has mass at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch",
+          "name": "continuousInfiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem",
+          "summary": "Outside the stitched event, the 5/2 square-root plus 5 linear bound holds at each n >= 2 for every admissible posterior measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch",
+          "name": "exists_continuousInfiniteEmpiricalBernstein_event",
+          "summary": "Researcher-facing one-event theorem simultaneous over all n >= 2 and all admissible posterior measures on an arbitrary measurable hypothesis space"
         }
       ],
       "name": "Reverse-epoch and all-sample-size empirical-Bernstein PAC-Bayes"
