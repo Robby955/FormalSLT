@@ -765,6 +765,20 @@ declarations; modules are relative to `FormalSLT`.
 | `dyadic_epoch_confidence_sequence_subGamma` | `AnytimeValid.DyadicEpochCS` | One-sided all-`n` dyadic-epoch sub-Gamma confidence sequence with the explicit grid budget |
 | `dyadic_epoch_two_sided_confidence_sequence` | `AnytimeValid.DyadicEpochCS` | Two-sided all-`n` dyadic-epoch confidence sequence via the `X`/`-X` transfer and the explicit stitching penalty |
 
+## Forward empirical-Bernstein and PAC-Bayes
+
+| Declaration | Module | Role |
+|---|---|---|
+| `forwardPredictableQuadratic_le_hybrid_bessel` | `AnytimeValid.ForwardBesselProcess` | Bounds the predictable squared-residual penalty by the smaller of two checked Bessel envelopes for every bounded path and `n >= 2` |
+| `forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded` | `AnytimeValid.ForwardBesselProcess` | Packages the actual lower-tail predictable-residual exponential process as an e-process under boundedness, adaptedness, and the conditional-mean model |
+| `forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess` | `AnytimeValid.ForwardBesselProcess` | Makes the stochastic distinction explicit: the hybrid Bessel exponential expression is a pointwise lower envelope of the actual e-process |
+| `exists_forwardEmpiricalBernsteinLowerTiltCatalog_event` | `AnytimeValid.ForwardBesselProcess` | One atTop event controls every `n >= 2` and every atom of a predeclared finite positive tilt catalog |
+| `forwardBesselPACBayesMasterProcess_eProcess_of_bounded` | `PACBayes.ForwardBesselPACBayes` | Mixes the actual predictable-residual processes over finite full-support hypothesis and tilt priors into one e-process |
+| `forwardBesselPACBayesExceptionalEvent_mass_le_delta` | `PACBayes.ForwardBesselPACBayes` | Bounds the outer mass of the single master crossing event by `delta` |
+| `forwardBesselPACBayes_selected_of_not_mem` | `PACBayes.ForwardBesselPACBayes` | Allows path-, time-, and posterior-dependent selection of a declared tilt atom, with one hypothesis KL and the atom log-weight penalty |
+| `exists_forwardBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayes` | One-event capstone simultaneous over every `n >= 2`, posterior PMF, and declared finite tilt atom |
+| `iidObservedLoss_condExp_eq_populationRisk` | `PACBayes.ForwardBesselPACBayesIID` | Derives the per-hypothesis conditional mean from the natural-filtration IID bounded-loss model |
+| `exists_forwardIIDBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayesIID` | IID risk-facing capstone with the same all-time, all-posterior, all-atom common event |
 ## Time-uniform PAC-Bayes
 
 | Declaration | Module | Role |

@@ -100,6 +100,15 @@ does not itself turn the fixed-sample Bessel score into a nested process.
 adapter and one measurable exceptional event. It retains finite hypotheses,
 finite predeclared tilts, full-support priors, and measurable `[0,1]` losses; it
 does not establish empirical-variance or all-real control.
+The separate `PACBayes.ForwardBesselPACBayes` lane starts from the actual
+predictable-residual empirical-Bernstein e-process and derives a hybrid Bessel
+lower envelope for its quadratic penalty. A finite hypothesis--tilt master has
+one outer-mass event valid for every `n >= 2`, posterior PMF, and declared atom,
+and its IID adapter derives the conditional means from measurable IID `[0,1]`
+losses. The posterior and atom may be selected from the path and time, and the
+atom may inspect the posterior. The boundary pays one hypothesis KL and the
+selected atom's log-weight cost. The hybrid expression is not itself proved to
+be an e-process.
 For dependent data, `StochasticDynamics.MarkovPACBayesTiltMixture` checks an
 all-positive-time theorem simultaneous over every posterior and every atom of
 a predeclared full-support finite tilt prior under an actual finite Markov path
@@ -122,8 +131,8 @@ log-likelihood-ratio assumptions.
   natural-index selector for a countable tilt-pair catalog;
 - extend the finite normalized hypothesis--tilt e-process to a countable
   mixture with the required summability and integrability obligations;
-- build a predictable-variance or exact-Bessel process adapter without
-  conflating it with the checked bounded-loss IID adapter;
+- derive a vanishing optimized all-time boundary from the checked forward
+  hybrid-Bessel lane without treating the hybrid expression as an e-process;
 - develop a localization penalty for any honest all-`λ` statement;
 - extend beyond the fixed spherical-Gaussian posterior family while retaining
   explicit measurable-space and integrability assumptions.
@@ -147,9 +156,10 @@ not an all-posterior or all-`λ` time-uniform confidence statement.
 hypotheses to an arbitrary measurable hypothesis space. A continuous-prior
 mixture submartingale, posterior-uniform finite tilt catalog, closed-form epoch
 endpoint, and infinite-product stitch are derived from the bounded-loss model
-rather than supplied as assumptions. All-real tilt optimization and a forward
-exact-Bessel e-process with optional-stopping semantics remain separate targets
-rather than consequences of the offline reverse-epoch stitch.
+rather than supplied as assumptions. Separately, the forward lane checks the
+predictable-residual e-process, its hybrid Bessel lower envelope, a finite
+hypothesis--tilt PAC-Bayes master, and an IID bounded-loss adapter. All-real
+tilt optimization remains open in both routes.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -222,11 +232,13 @@ hypothesis space. It retains a finite-valued IID observation law, strongly
 measurable `[0,1]` loss sections, a fixed probability prior, posterior absolute
 continuity, and log-likelihood-ratio integrability. It uses one event shared by
 every `n >= 2`, but is an offline reverse-exchangeability theorem: it does not
-construct a forward e-process, predictable betting strategy, optional-stopping
-API, continuous-observation result, or all-real post-hoc optimizer. The
-random-matching proof formalizes the source variance inequality; neither the
-inequality nor the stitched endpoint is presented with a novelty or priority
-claim.
+itself construct a forward e-process, predictable betting strategy,
+optional-stopping API, continuous-observation result, or all-real post-hoc
+optimizer. The separate forward result remains finite-hypothesis and
+finite-tilt; its hybrid expression is only a lower envelope, its receipt has no
+informative numerical width, and it has no continuous-hypothesis endpoint. The
+random-matching proof formalizes the source variance inequality; neither route
+is presented with a novelty or priority claim.
 
 ## Medium-term
 

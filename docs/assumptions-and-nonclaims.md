@@ -222,6 +222,30 @@ path/posterior-dependent selected-atom endpoint. Neither module provides a
 countable or all-real mixture, an arbitrary joint hypothesis--tilt posterior,
 or an exact-Bessel empirical-Bernstein process.
 
+`AnytimeValid.ForwardBesselProcess` supplies a distinct forward
+empirical-Bernstein route. Under `[0,1]` increments with a fixed conditional
+mean, its stochastic object is the known predictable-residual e-process. The
+module proves two deterministic Bessel upper envelopes for the accumulated
+predictable squared residuals and uses their pointwise minimum.
+`PACBayes.ForwardBesselPACBayes` mixes those actual processes over finite
+full-support hypothesis and tilt priors, with `0 < lambda_j < 1`. One atTop
+crossing event has outer mass at most `delta`; outside it, every `n >= 2`,
+posterior PMF, and declared atom obeys the bound. The posterior and selected
+atom may depend on the path and time, and the atom may additionally inspect the
+posterior. The boundary has one hypothesis KL term,
+`log (1 / (delta * weight j))`, and the posterior average of the
+per-hypothesis hybrid Bessel penalties. The minimum is taken before posterior
+averaging.
+
+`PACBayes.ForwardBesselPACBayesIID` derives adaptedness, integrability, and the
+conditional-mean identity from strongly measurable IID `[0,1]` losses. The
+forward lane remains finite-hypothesis and finite-tilt. The hybrid Bessel
+expression is a lower envelope of the actual e-process, not itself a proved
+e-process. The checked Boolean receipt proves the common-event and selector
+semantics but no informative numerical width. There is no countable or
+all-real tilt optimizer, vanishing optimized all-time boundary,
+continuous-hypothesis extension, or novelty/priority claim.
+
 `PACBayes.FiniteEmpiricalVariance` supplies the finite empirical-variance
 foundation for arbitrary real-valued per-hypothesis losses: population
 variance, Bessel-corrected empirical variance, its exact ordered-pair
@@ -456,11 +480,13 @@ described above lift these endpoints to a predeclared `Nat`-indexed tilt-pair
 catalog. A separate reverse-exchangeability construction now supplies one
 all-sample-size finite-observation IID Bessel-variance event with a closed-form
 risk bound, including uniformity over admissible posterior measures on an
-arbitrary measurable hypothesis space. All-real optimization and a forward
-exact-Bessel e-process with optional-stopping semantics remain open; the generic
-finite tilt-master e-process above does not supply those extensions. A
-countable indicator-Bernstein
-catalog and exact all-real `lambda` optimization are also open.
+arbitrary measurable hypothesis space. The separate forward construction now
+supplies an actual predictable-residual e-process, a hybrid Bessel
+lower-envelope conversion, and a finite-hypothesis/finite-tilt PAC-Bayes
+master with an IID adapter. It does not make the hybrid expression itself an
+e-process, produce an informative-width receipt or a vanishing optimized
+all-time boundary, or extend the forward lane to continuous hypotheses.
+Countable and exact all-real `lambda` optimization also remain open.
 
 ### Algorithmic stability expected bound
 

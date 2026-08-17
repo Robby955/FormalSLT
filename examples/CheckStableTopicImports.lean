@@ -10,8 +10,11 @@ import FormalSLT.StochasticDynamics
 # Stable topic-import smoke test
 
 The three supported topic umbrellas expose representative finite, continuous,
-Gaussian, VC, and sequential endpoints. Compatibility aliases remain usable
-without carrying duplicate proof bodies.
+Gaussian, VC, sequential, and forward-Bessel endpoints.  The forward master
+is an actual predictable-residual e-process; its hybrid-Bessel term is only a
+lower envelope.  Its finite-hypothesis, finite-declared-tilt and IID wrappers
+control every eligible time `n >= 2` through one outer-mass event.
+Compatibility aliases remain usable without carrying duplicate proof bodies.
 -/
 
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
@@ -54,6 +57,15 @@ without carrying duplicate proof bodies.
 #check FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta
 #check FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem
 #check FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.exists_infiniteEmpiricalBernstein_event
+#check FormalSLT.AnytimeValid.forwardPredictableQuadratic_le_hybrid_bessel
+#check FormalSLT.AnytimeValid.forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+#check FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
+#check FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
+#check FormalSLT.PACBayes.ForwardBesselPACBayes.forwardBesselPACBayesMasterProcess_eProcess_of_bounded
+#check FormalSLT.PACBayes.ForwardBesselPACBayes.exists_forwardBesselPACBayes_event
+#check FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayesExceptionalEvent_mass_le_delta
+#check FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayes_selected_of_not_mem
+#check FormalSLT.PACBayes.ForwardBesselPACBayesIID.exists_forwardIIDBesselPACBayes_event
 #check FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #check FormalSLT.AnytimeValid.eProcess_typeI_control
 #check FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
@@ -102,6 +114,15 @@ without carrying duplicate proof bodies.
 #print axioms FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta
 #print axioms FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.infiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem
 #print axioms FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.exists_infiniteEmpiricalBernstein_event
+#print axioms FormalSLT.AnytimeValid.forwardPredictableQuadratic_le_hybrid_bessel
+#print axioms FormalSLT.AnytimeValid.forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+#print axioms FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
+#print axioms FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayes.forwardBesselPACBayesMasterProcess_eProcess_of_bounded
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayes.exists_forwardBesselPACBayes_event
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayesExceptionalEvent_mass_le_delta
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayes_selected_of_not_mem
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.exists_forwardIIDBesselPACBayes_event
 #print axioms FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #print axioms FormalSLT.AnytimeValid.eProcess_typeI_control
 #print axioms FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
