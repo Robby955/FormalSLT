@@ -436,10 +436,14 @@ witness, not a tightness claim. A finite-catalog wrapper additionally supports
 sample-dependent selection among finitely many fixed spherical-Gaussian
 posterior/tilt pairs by summing their entrywise confidence budgets. It does not
 give uniformity over every Gaussian posterior or every real-valued tilt. That
-time-uniform i.i.d. learning theorem still does not cover arbitrary
-prior/posterior families on an unrestricted measurable hypothesis space; the
-separate offline empirical-Bernstein theorem does, under its finite-observation
-and log-likelihood-ratio hypotheses.
+time-uniform i.i.d. learning theorem does not provide uniformity over arbitrary
+continuous posterior families or all real-valued tilts on an unrestricted
+measurable hypothesis space. The separate offline empirical-Bernstein theorem
+covers an arbitrary measurable hypothesis space for one probability prior
+fixed before the data and posterior probability measures absolutely continuous
+with respect to that prior with an integrable log-likelihood ratio, under finite
+measurable-singleton observations and strongly measurable `[0,1]` loss
+sections.
 
 The separate-event empirical-Bernstein risk result does not yet use the
 fixed-sample joint moment; the one-event joint catalog is a distinct endpoint
