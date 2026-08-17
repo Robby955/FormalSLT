@@ -38,22 +38,22 @@ contribution is the machine-checked specialization or derived endpoint.
 
 ### All-sample-size empirical-Bernstein PAC-Bayes
 
-For IID `[0,1]` losses and a full-support prior fixed before seeing the data,
-one event has probability at most `delta`. Outside that event, the following
-bound holds simultaneously for **every** sample size `n >= 2` and **every**
+For IID $[0,1]$ losses and a full-support prior fixed before seeing the data,
+one event has probability at most $\delta$. Outside that event, the following
+bound holds simultaneously for **every** sample size $n \ge 2$ and **every**
 posterior distribution on the fixed finite hypothesis class:
 
-```text
-R(rho) < Rhat_n(rho)
-       + (5/2) sqrt(Vhat_n(rho) L_n(rho) / n)
-       + 5 L_n(rho) / n
-```
+$$
+R(\rho) < \widehat R_n(\rho)
+       + \frac{5}{2} \sqrt{\frac{\widehat V_n(\rho) L_n(\rho)}{n}}
+       + \frac{5 L_n(\rho)}{n}
+$$
 
-Here `R` is population risk, `Rhat_n` is empirical risk, and `rho` is the
-posterior. `Vhat_n(rho)` is the posterior average of the per-hypothesis Bessel
+Here $R$ is population risk, $\widehat R_n$ is empirical risk, and $\rho$ is the
+posterior. $\widehat V_n(\rho)$ is the posterior average of the per-hypothesis Bessel
 sample variance, and
-`L_n(rho) = KL(rho || prior) + log(r(r+1)^2 / delta)` with
-`r = floor(log_2 n)` (written `Nat.log 2 n` in Lean). The result uses one KL
+$L_n(\rho) = \mathrm{KL}(\rho \| \mathrm{prior}) + \log(r(r+1)^2 / \delta)$ with
+$r = \lfloor \log_2 n \rfloor$ (written `Nat.log 2 n` in Lean). The result uses one KL
 term and permits the posterior to be chosen after observing the data.
 
 - **Lean theorem:**
@@ -70,7 +70,7 @@ term and permits the posterior to be chosen after observing the data.
 
 ### Fixed-sample empirical-Bernstein foundation
 
-For finite IID data, `[0,1]` losses, `n >= 2`, and `0 < delta < 1`, one event
+For finite IID data, $[0,1]$ losses, $n \ge 2$, and $0 < \delta < 1$, one event
 controls every data-selected posterior over a fixed finite hypothesis catalog.
 The theorem uses a fixed full-support prior, one KL term, the posterior average
 of per-hypothesis Bessel variances, and a predeclared dyadic scale grid of depth
@@ -89,7 +89,7 @@ of per-hypothesis Bessel variances, and a predeclared dyadic scale grid of depth
 ### Time-uniform PAC-Bayes
 
 One common event controls every positive time and every finite posterior PMF
-for IID `[0,1]` losses and one fixed declared tilt.
+for IID $[0,1]$ losses and one fixed declared tilt.
 
 - **Lean theorem:** `timeUniformIIDPACBayes_allPosteriors_bound` in
   [`TimeUniformIID.lean`](./FormalSLT/PACBayes/TimeUniformIID.lean)
@@ -101,7 +101,7 @@ for IID `[0,1]` losses and one fixed declared tilt.
 ### Finite-tilt time-uniform PAC-Bayes
 
 For finite hypothesis and tilt types, full-support priors, and measurable IID
-`[0,1]` losses, one event is shared by every positive time, every finite
+$[0,1]$ losses, one event is shared by every positive time, every finite
 posterior PMF, and every predeclared tilt atom.
 
 - **Lean theorems:**
@@ -204,18 +204,26 @@ questions for each result are tracked in
   now fixes a dyadic
   scale grid of depth `clog 2 n` before observing the data and proves, on one
   event of failure mass at most `delta`,
-  `R(rho) <= Rhat(rho) + (5/4) sqrt(2 Vhat(rho) L(rho) / n)
-  + (5/2) L(rho) / n`, where
-  `L(rho) = KL(rho || prior) + log((clog 2 n + 1) / delta)`.
+  $$
+  R(\rho) \le \widehat R(\rho)
+  + \frac{5}{4} \sqrt{\frac{2 \widehat V(\rho) L(\rho)}{n}}
+  + \frac{5}{2} \frac{L(\rho)}{n},
+  $$
+  where
+  $L(\rho) = \mathrm{KL}(\rho \| \mathrm{prior}) + \log((\mathrm{clog}_2 n + 1) / \delta)$.
   A reverse-exchangeability layer now proves the Bessel conditional-expectation
   identity, reverse Bessel martingale, reverse joint mean/variance exponential
   submartingale, one-event posterior catalog on each dyadic epoch, and the
   reverse closed-form bound. Countable stitching on the infinite IID product
   space then gives one measurable event of mass at most `delta` on whose
   complement every `n >= 2` and every finite posterior obey
-  `R(rho) < Rhat_n(rho) + (5/2) sqrt(Vhat_n(rho) L_n(rho) / n)
-  + 5 L_n(rho) / n`, where
-  `L_n(rho) = KL(rho || prior) + log(r(r+1)^2 / delta)` and
+  $$
+  R(\rho) < \widehat R_n(\rho)
+  + \frac{5}{2} \sqrt{\frac{\widehat V_n(\rho) L_n(\rho)}{n}}
+  + \frac{5 L_n(\rho)}{n},
+  $$
+  where
+  $L_n(\rho) = \mathrm{KL}(\rho \| \mathrm{prior}) + \log(r(r+1)^2 / \delta)$ and
   `r = Nat.log 2 n`. This is an offline reverse-epoch theorem, not a forward
   e-process, optional-stopping result, all-real optimizer, or continuous-
   hypothesis theorem.
@@ -344,10 +352,10 @@ declaration and prints its axiom profile.
 - **Observable low-risk indicator PAC-Bayes--Bernstein corollary** —
   `indicator_posteriorRisk_le_twoThirds_of_not_mem`, at the fixed sample-level
   tilt `lambda = 2n/3`, gives
-  `R(rho) <= (7/4) Rhat(rho) + (21/(8n))(KL(rho||pi) + log(1/delta))`;
+  $R(\rho) \le (7/4) \widehat R(\rho) + (21/(8n))(\mathrm{KL}(\rho\|\pi) + \log(1/\delta))$;
   `indicator_posteriorRisk_le_min_one_twoThirds_of_not_mem` truncates this at
   one. The concrete balanced sample of size `40` discharges the good-event
-  premise and yields the checked certificate `R(rho) <= 301/320 < 1`;
+  premise and yields the checked certificate $R(\rho) \le 301/320 < 1$;
   [`CheckIndicatorBernsteinLowRisk.lean`](./examples/CheckIndicatorBernsteinLowRisk.lean)
 - **Finite weighted indicator-Bernstein tilt catalog** —
   `indicator_finitePACBayesBernstein_weightedCatalog_badEventMass_le_delta`
@@ -356,7 +364,7 @@ declaration and prints its axiom profile.
   `indicator_posteriorRisk_le_weightedLowRiskCatalog_selected_of_not_mem`
   permits the selected entry to depend on both the observed sample and
   posterior. The four-entry unequal-weight receipt proves catalog mass at most
-  `1/2` and an empirical-risk-selected certificate `R(rho) <= 13/14 < 1`.
+  $1/2$ and an empirical-risk-selected certificate $R(\rho) \le 13/14 < 1$.
   This remains finite, fixed-sample, and population-variance self-bounding; it
   is not empirical sample variance or all-real tilt optimization;
   [`CheckIndicatorBernsteinTiltCatalog.lean`](./examples/CheckIndicatorBernsteinTiltCatalog.lean)
@@ -462,8 +470,8 @@ declaration and prints its axiom profile.
   exceptional set of infinite IID paths with mass at most `delta`. Outside it,
   every prefix size `n >= 2` and every posterior PMF on the fixed finite
   hypothesis type satisfy
-  `Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`,
-  with `Lrho,n = KL(rho || prior) + log(r(r+1)^2 / delta)` and
+  $R_{\rho} < \widehat R_{\rho,n} + (5/2) \sqrt{\widehat V_{\rho,n} L_{\rho,n} / n} + 5 L_{\rho,n} / n$,
+  with $L_{\rho,n} = \mathrm{KL}(\rho \| \mathrm{prior}) + \log(r(r+1)^2 / \delta)$ and
   `r = Nat.log 2 n`. The posterior may be selected from the path because the
   same event is pointwise uniform over all finite posteriors. The receipt uses
   a fair-Boolean IID stream and a point posterior selected from the first
