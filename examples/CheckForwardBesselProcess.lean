@@ -41,10 +41,23 @@ theorem falseTrue_three_halves_exact :
   rw [falseTrue_predictableQuadratic, falseTrue_besselQ]
   norm_num
 
+/-- A concrete endpoint of the scalar one-step inequality. -/
+theorem half_tilt_minus_one_scalar_check :
+    Real.exp
+        ((1 : ℝ) / 2 * (-1) -
+          forwardEmpiricalBernsteinPsi ((1 : ℝ) / 2) * (-1) ^ 2) ≤
+      1 + (1 : ℝ) / 2 * (-1) := by
+  exact exp_forwardEmpiricalBernstein_le_one_add (by norm_num) (by norm_num) (by norm_num)
+
 #check forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #check forwardBesselQ_succ
 #check forwardPredictableQuadratic_le_half_add_three_halves_besselQ
 #check forwardBessel_coefficient_one_bool_obstruction
+#check exp_forwardEmpiricalBernstein_le_one_add
+#check forwardEmpiricalBernsteinFactor_condExp_le_one
+#check forwardEmpiricalBernsteinProcess_supermartingale
+#check forwardEmpiricalBernsteinProcess_eProcess
+#check forwardEmpiricalBernsteinBesselEnvelope_certified
 #check forwardPlugIn_eProcess_of_condExp_step
 #check forwardBesselExponentialEnvelope_le_forwardPlugIn
 #check forwardBesselEnvelope_certified_by_eProcess
@@ -53,9 +66,15 @@ theorem falseTrue_three_halves_exact :
 #print axioms forwardBesselQ_succ
 #print axioms forwardPredictableQuadratic_le_half_add_three_halves_besselQ
 #print axioms forwardBessel_coefficient_one_bool_obstruction
+#print axioms exp_forwardEmpiricalBernstein_le_one_add
+#print axioms forwardEmpiricalBernsteinFactor_condExp_le_one
+#print axioms forwardEmpiricalBernsteinProcess_supermartingale
+#print axioms forwardEmpiricalBernsteinProcess_eProcess
+#print axioms forwardEmpiricalBernsteinBesselEnvelope_certified
 #print axioms forwardPlugIn_eProcess_of_condExp_step
 #print axioms forwardBesselEnvelope_certified_by_eProcess
 #print axioms falseTrue_coefficient_one_fails
 #print axioms falseTrue_three_halves_exact
+#print axioms half_tilt_minus_one_scalar_check
 
 end FormalSLT.Examples.CheckForwardBesselProcess
