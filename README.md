@@ -38,7 +38,7 @@ a broad priority claim.
 
 | Result | Checked endpoint | Scope | Numerical or theorem-facing receipt |
 |---|---|---|---|
-| **All-sample-size empirical-Bernstein PAC-Bayes** | `exists_infiniteEmpiricalBernstein_event` | One measurable event of infinite-IID mass at most `delta` works for every `n >= 2` and every posterior PMF on a fixed finite hypothesis type. The bound is `Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`, with one KL term and posterior-averaged per-hypothesis Bessel variance | [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean) instantiates one all-`n` event for a fair-Boolean stream and a posterior selected from the first observation. The fixed-`n` balanced-64 receipt below separately checks positive KL, positive variance, positive sample mass, and a bound below one |
+| **All-sample-size empirical-Bernstein PAC-Bayes** | `exists_infiniteEmpiricalBernstein_event` | One measurable event of infinite-IID mass at most `delta` works for every `n >= 2` and every posterior PMF on a fixed finite hypothesis type. The bound is `Rrho < Rhatrho,n + (5/2) sqrt(Vhatrho,n Lrho,n / n) + 5 Lrho,n / n`, with one KL term and posterior-averaged per-hypothesis Bessel variance | [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean) instantiates one all-`n` event for a fair-Boolean stream and a posterior selected from the first observation. The [numerical comparison](./benchmark/output/empirical_bernstein_flagship.md) evaluates identical inputs against fixed-sample baselines; the exact stitched ceiling first falls below one at even `n = 128` in that scan |
 | **Fixed-sample empirical-Bernstein foundation** | `finiteEmpiricalBernsteinSqrt_badSamples_mass_le_delta` and `finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem` | Finite IID data and a fixed finite hypothesis catalog, `[0,1]` losses, `n >= 2`, `0 < delta < 1`, a fixed full-support prior, data-selected posterior, one KL term, posterior average of per-hypothesis Bessel variances, and a predeclared `clog 2 n` dyadic scale grid | [`CheckFiniteEmpiricalBernsteinSqrt.lean`](./examples/CheckFiniteEmpiricalBernsteinSqrt.lean): `delta = 1/20`, `KL = log 2 > 0`, empirical variance `16/63 > 0`, explicit positive-mass good sample, final ceiling `< 99/100` |
 | **Time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_allPosteriors_bound` | One common event over every positive time and finite posterior PMF for IID `[0,1]` losses and a fixed declared tilt | [`CheckTimeUniformIIDPACBayes.lean`](./examples/CheckTimeUniformIIDPACBayes.lean) discharges the IID process obligations; a dedicated positive-KL subunit numerical receipt remains planned |
 | **Finite-tilt time-uniform PAC-Bayes** | `timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec` and `timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent` | Finite hypotheses and tilts, full-support priors, measurable IID `[0,1]` losses, and one event shared by all positive times, finite posterior PMFs, and predeclared tilt atoms | [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean): `delta = 1/16`, exact point-posterior `KL = log 2`, both tilt boundaries at most `3/8`, and an existential good path with selected risk `< 7/8`; its explicit selector-branch exercises are not proved good |
@@ -380,8 +380,11 @@ declaration and prints its axiom profile.
   same event is pointwise uniform over all finite posteriors. The receipt uses
   a fair-Boolean IID stream and a point posterior selected from the first
   coordinate. Numerical nonvacuity of the underlying closed-form boundary is
-  supplied by the balanced-64 fixed-sample receipt above; the stitched checker
-  does not yet publish an all-`n` comparison against competing boundaries.
+  supplied by the balanced-64 fixed-sample receipt above. The deterministic
+  [benchmark report](./benchmark/output/empirical_bernstein_flagship.md)
+  compares the stitched formulas with fixed empirical-Bernstein,
+  McAllester/Hoeffding, and PAC-Bayes-kl on identical summary statistics; it
+  evaluates constants and does not certify a particular infinite path as good.
   The proof uses reverse-epoch martingales and countable stitching, not a
   forward e-process or optional-stopping API;
   [`CheckInfiniteEmpiricalBernsteinStitch.lean`](./examples/CheckInfiniteEmpiricalBernsteinStitch.lean),
