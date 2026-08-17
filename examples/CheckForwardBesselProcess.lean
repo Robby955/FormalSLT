@@ -12,6 +12,7 @@ exactly.
 
 open FormalSLT.AnytimeValid
 open MeasureTheory ProbabilityTheory
+open scoped BigOperators
 
 noncomputable section
 
@@ -100,6 +101,34 @@ theorem boundedModel_allTimeLowerBessel_receipt
   exists_forwardEmpiricalBernsteinLowerBessel_event
     hδ hlam hlam1 hX_adapted hX_unit hmean
 
+/-- Focused receipt for one full-support finite tilt catalog.  The selector may
+use both the realized path and the current time, while the catalog and weights
+remain predeclared. -/
+theorem boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ}
+    (hδ : 0 < delta)
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean)
+    (select : Ω → ℕ → κ) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          mean < forwardPrefixMean (fun k ↦ X k ω) n +
+            forwardEmpiricalBernsteinTiltCatalogBoundary
+              weight lam X delta (select ω n) n ω :=
+  exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
+    hδ hweight_pos hweight_sum_one hlam hlam1
+    hX_adapted hX_unit hmean select
+
 #check forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #check forwardBesselQ_succ
 #check forwardPredictableQuadratic_le_half_add_three_halves_besselQ
@@ -123,6 +152,16 @@ theorem boundedModel_allTimeLowerBessel_receipt
 #check forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
 #check forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
 #check exists_forwardEmpiricalBernsteinLowerBessel_event
+#check finiteWeightedProcess_eProcess
+#check forwardEmpiricalBernsteinLowerTiltMixtureProcess_eProcess_of_bounded
+#check forwardEmpiricalBernsteinLowerTiltMixtureProcess_atTop_crossing_mass_le_delta
+#check forwardEmpiricalBernsteinTiltCatalogBoundary
+#check forwardEmpiricalBernsteinLowerTiltCatalogFailure_subset_mixture_crossing
+#check forwardEmpiricalBernsteinLowerTiltCatalogFailure_mass_le_delta
+#check forwardEmpiricalBernsteinLowerTiltCatalog_all_of_not_mem
+#check forwardEmpiricalBernsteinLowerTiltCatalog_selected_of_not_mem
+#check exists_forwardEmpiricalBernsteinLowerTiltCatalog_event
+#check exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
 #check forwardEmpiricalBernsteinBesselEnvelope_certified
 #check forwardPlugIn_eProcess_of_condExp_step
 #check forwardBesselExponentialEnvelope_le_forwardPlugIn
@@ -145,6 +184,15 @@ theorem boundedModel_allTimeLowerBessel_receipt
 #print axioms forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
 #print axioms forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
 #print axioms exists_forwardEmpiricalBernsteinLowerBessel_event
+#print axioms finiteWeightedProcess_eProcess
+#print axioms forwardEmpiricalBernsteinLowerTiltMixtureProcess_eProcess_of_bounded
+#print axioms forwardEmpiricalBernsteinLowerTiltMixtureProcess_atTop_crossing_mass_le_delta
+#print axioms forwardEmpiricalBernsteinLowerTiltCatalogFailure_subset_mixture_crossing
+#print axioms forwardEmpiricalBernsteinLowerTiltCatalogFailure_mass_le_delta
+#print axioms forwardEmpiricalBernsteinLowerTiltCatalog_all_of_not_mem
+#print axioms forwardEmpiricalBernsteinLowerTiltCatalog_selected_of_not_mem
+#print axioms exists_forwardEmpiricalBernsteinLowerTiltCatalog_event
+#print axioms exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
 #print axioms forwardEmpiricalBernsteinBesselEnvelope_certified
 #print axioms forwardPlugIn_eProcess_of_condExp_step
 #print axioms forwardBesselEnvelope_certified_by_eProcess
@@ -154,5 +202,6 @@ theorem boundedModel_allTimeLowerBessel_receipt
 #print axioms boundedModel_eProcess_receipt
 #print axioms boundedModel_lowerTail_eProcess_receipt
 #print axioms boundedModel_allTimeLowerBessel_receipt
+#print axioms boundedModel_allTimeLowerBesselTiltCatalog_selected_receipt
 
 end FormalSLT.Examples.CheckForwardBesselProcess

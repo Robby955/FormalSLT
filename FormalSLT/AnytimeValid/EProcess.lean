@@ -108,6 +108,55 @@ structure EProcess (μ : Measure Ω) (𝒢 : Filtration ℕ m0) (E : ℕ → Ω 
   /-- The process is a `𝒢`-supermartingale under `μ`. -/
   supermartingale : Supermartingale E 𝒢 μ
 
+/-- A finite weighted sum of real-valued processes.  The weights and the
+component processes are fixed before the path is observed. -/
+def finiteWeightedProcess {κ : Type*} [Fintype κ]
+    (weight : κ → ℝ) (E : κ → ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) : ℝ :=
+  ∑ j : κ, weight j * E j n ω
+
+/-- A normalized finite mixture of e-processes is an e-process.  Strict
+positivity of the weights is not needed for this closure theorem; catalog
+selection results add it when dividing by the selected atom's weight. -/
+theorem finiteWeightedProcess_eProcess
+    {κ : Type*} [Fintype κ] [DecidableEq κ] [IsFiniteMeasure μ]
+    {weight : κ → ℝ} {E : κ → ℕ → Ω → ℝ}
+    (hweight_nonneg : ∀ j, 0 ≤ weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hE : ∀ j, EProcess μ 𝒢 (E j)) :
+    EProcess μ 𝒢 (finiteWeightedProcess weight E) := by
+  classical
+  have hfixed : ∀ j, Supermartingale
+      (fun n ω => weight j * E j n ω) 𝒢 μ := by
+    intro j
+    have hscaled := (hE j).supermartingale.smul_nonneg
+      (c := weight j) (hweight_nonneg j)
+    change Supermartingale (weight j • E j) 𝒢 μ
+    exact hscaled
+  have hsum : ∀ s : Finset κ, Supermartingale
+      (fun n ω => ∑ j ∈ s, weight j * E j n ω) 𝒢 μ := by
+    intro s
+    induction s using Finset.induction with
+    | empty =>
+        simp only [Finset.sum_empty]
+        exact (MeasureTheory.martingale_zero ℝ 𝒢 μ).supermartingale
+    | @insert j s hj ih =>
+        simp only [Finset.sum_insert hj]
+        exact (hfixed j).add ih
+  refine
+    { nonneg := ?_
+      start_one := ?_
+      supermartingale := ?_ }
+  · intro n ω
+    exact Finset.sum_nonneg fun j _ =>
+      mul_nonneg (hweight_nonneg j) ((hE j).nonneg n ω)
+  · intro ω
+    unfold finiteWeightedProcess
+    simp_rw [(hE _).start_one]
+    simpa using hweight_sum_one
+  · change Supermartingale
+      (fun n ω => ∑ j : κ, weight j * E j n ω) 𝒢 μ
+    simpa using hsum (Finset.univ : Finset κ)
+
 /-- For an e-process under a probability measure, `∫ E 0 = 1`. -/
 theorem EProcess.integral_start_eq_one [IsProbabilityMeasure μ]
     {E : ℕ → Ω → ℝ} (hE : EProcess μ 𝒢 E) :

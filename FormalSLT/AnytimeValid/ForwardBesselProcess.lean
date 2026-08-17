@@ -1221,6 +1221,303 @@ theorem exists_forwardEmpiricalBernsteinLowerBessel_event
       lt_of_not_ge hnot
     linarith
 
+/-! ### Finite predeclared tilt catalog -/
+
+/-- One master process obtained by mixing a finite catalog of positive-tilt
+lower-tail e-processes.  Both the tilt catalog and its weights are fixed before
+the path is observed. -/
+def forwardEmpiricalBernsteinLowerTiltMixtureProcess
+    {κ Ω : Type*} [Fintype κ]
+    (weight : κ → ℝ) (lam : κ → ℝ)
+    (X : ℕ → Ω → ℝ) (mean : ℝ) : ℕ → Ω → ℝ :=
+  finiteWeightedProcess weight
+    (fun j ↦ forwardEmpiricalBernsteinLowerProcess X mean (lam j))
+
+/-- A normalized finite mixture of the bounded-model lower-tail processes is
+one e-process.  Strict positivity is stated because these are full-support
+catalog weights; the generic mixture closure itself only needs nonnegativity. -/
+theorem forwardEmpiricalBernsteinLowerTiltMixtureProcess_eProcess_of_bounded
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean : ℝ}
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    EProcess μ ℱ
+      (forwardEmpiricalBernsteinLowerTiltMixtureProcess
+        weight lam X mean) := by
+  unfold forwardEmpiricalBernsteinLowerTiltMixtureProcess
+  exact finiteWeightedProcess_eProcess
+    (fun j ↦ (hweight_pos j).le) hweight_sum_one
+    (fun j ↦ forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+      (hlam j).le (hlam1 j) hX_adapted hX_unit hmean)
+
+/-- Countable-time Ville bound for the single finite-catalog master process. -/
+theorem forwardEmpiricalBernsteinLowerTiltMixtureProcess_atTop_crossing_mass_le_delta
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ}
+    (hδ : 0 < delta)
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    μ.real
+        (atTopCrossingEvent
+          (forwardEmpiricalBernsteinLowerTiltMixtureProcess
+            weight lam X mean) (1 / delta)) ≤
+      delta := by
+  have hE :=
+    forwardEmpiricalBernsteinLowerTiltMixtureProcess_eProcess_of_bounded
+      hweight_pos hweight_sum_one hlam hlam1 hX_adapted hX_unit hmean
+  have hville := ville_atTop_maximal_ineq
+    (μ := μ) (𝒢 := ℱ)
+    (M := forwardEmpiricalBernsteinLowerTiltMixtureProcess
+      weight lam X mean)
+    hE.supermartingale hE.nonneg (one_div_pos.mpr hδ)
+  rw [hE.integral_start_eq_one] at hville
+  calc
+    μ.real
+        (atTopCrossingEvent
+          (forwardEmpiricalBernsteinLowerTiltMixtureProcess
+            weight lam X mean) (1 / delta)) =
+        delta *
+          ((1 / delta) *
+            μ.real
+              (atTopCrossingEvent
+                (forwardEmpiricalBernsteinLowerTiltMixtureProcess
+                  weight lam X mean) (1 / delta))) := by
+      field_simp [hδ.ne']
+    _ ≤ delta * 1 := mul_le_mul_of_nonneg_left hville hδ.le
+    _ = delta := by ring
+
+/-- Boundary for catalog atom `j`.  The master mixture charges the selected
+atom the exact prior-weight penalty `log (1 / (delta * weight j))`.  The
+Bessel coefficient remains the proved `3/2`. -/
+def forwardEmpiricalBernsteinTiltCatalogBoundary
+    {κ Ω : Type*} (weight : κ → ℝ) (lam : κ → ℝ)
+    (X : ℕ → Ω → ℝ) (delta : ℝ) (j : κ) (n : ℕ) (ω : Ω) : ℝ :=
+  (forwardEmpiricalBernsteinPsi (lam j) *
+      ((1 : ℝ) / 2 + (3 : ℝ) / 2 *
+        forwardBesselQ (fun k ↦ X k ω) n) +
+    Real.log (1 / (delta * weight j))) / ((n : ℝ) * lam j)
+
+/-- The catalog boundary is the fixed-tilt boundary at the atom-specific
+budget `delta * weight j`. -/
+lemma forwardEmpiricalBernsteinTiltCatalogBoundary_eq
+    {κ Ω : Type*} (weight : κ → ℝ) (lam : κ → ℝ)
+    (X : ℕ → Ω → ℝ) (delta : ℝ) (j : κ) (n : ℕ) (ω : Ω) :
+    forwardEmpiricalBernsteinTiltCatalogBoundary
+        weight lam X delta j n ω =
+      forwardEmpiricalBernsteinBesselBoundary
+        X (lam j) (delta * weight j) n ω := by
+  rfl
+
+/-- Failure of at least one declared tilt boundary at at least one time
+`n >= 2`.  This is the complement of the common catalog event. -/
+def forwardEmpiricalBernsteinLowerTiltCatalogFailure
+    {κ Ω : Type*} (weight : κ → ℝ) (lam : κ → ℝ)
+    (X : ℕ → Ω → ℝ) (mean delta : ℝ) : Set Ω :=
+  {ω | ∃ j : κ, ∃ n : ℕ, 2 ≤ n ∧
+    forwardEmpiricalBernsteinTiltCatalogBoundary
+        weight lam X delta j n ω ≤
+      mean - forwardPrefixMean (fun k ↦ X k ω) n}
+
+/-- Any catalog-boundary failure makes its weighted atom force the single
+master process across `1 / delta`.  This is a process-mixture argument, not a
+union bound over the catalog. -/
+theorem forwardEmpiricalBernsteinLowerTiltCatalogFailure_subset_mixture_crossing
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ}
+    (hδ : 0 < delta)
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1) :
+    forwardEmpiricalBernsteinLowerTiltCatalogFailure
+        weight lam X mean delta ⊆
+      atTopCrossingEvent
+        (forwardEmpiricalBernsteinLowerTiltMixtureProcess
+          weight lam X mean) (1 / delta) := by
+  classical
+  intro ω hω
+  rcases hω with ⟨j, n, hn, hboundary⟩
+  have hatom_failure :
+      ω ∈ forwardEmpiricalBernsteinLowerBesselFailure
+        X mean (lam j) (delta * weight j) := by
+    exact ⟨n, hn, by
+      simpa [forwardEmpiricalBernsteinTiltCatalogBoundary_eq] using hboundary⟩
+  have hatom_crossing :=
+    forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
+      (mul_pos hδ (hweight_pos j)) (hlam j) (hlam1 j) hX_unit
+      hatom_failure
+  rcases hatom_crossing with ⟨m, hcross⟩
+  refine ⟨m, ?_⟩
+  have hweighted :
+      weight j * (1 / (delta * weight j)) ≤
+        weight j *
+          forwardEmpiricalBernsteinLowerProcess X mean (lam j) m ω :=
+    mul_le_mul_of_nonneg_left hcross (hweight_pos j).le
+  have hsingle :
+      weight j *
+          forwardEmpiricalBernsteinLowerProcess X mean (lam j) m ω ≤
+        forwardEmpiricalBernsteinLowerTiltMixtureProcess
+          weight lam X mean m ω := by
+    unfold forwardEmpiricalBernsteinLowerTiltMixtureProcess
+    unfold finiteWeightedProcess
+    exact Finset.single_le_sum
+      (f := fun k ↦ weight k *
+        forwardEmpiricalBernsteinLowerProcess X mean (lam k) m ω)
+      (fun k _ ↦ mul_nonneg (hweight_pos k).le
+        (by
+          rw [forwardEmpiricalBernsteinLowerProcess_eq]
+          exact (Real.exp_pos _).le))
+      (Finset.mem_univ j)
+  rw [show weight j * (1 / (delta * weight j)) = 1 / delta by
+    field_simp [hδ.ne', (hweight_pos j).ne']] at hweighted
+  exact hweighted.trans hsingle
+
+/-- One master e-process controls every declared tilt boundary at every time. -/
+theorem forwardEmpiricalBernsteinLowerTiltCatalogFailure_mass_le_delta
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ}
+    (hδ : 0 < delta)
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    μ.real
+        (forwardEmpiricalBernsteinLowerTiltCatalogFailure
+          weight lam X mean delta) ≤
+      delta := by
+  exact (measureReal_mono
+    (forwardEmpiricalBernsteinLowerTiltCatalogFailure_subset_mixture_crossing
+      hδ hweight_pos hlam hlam1 hX_unit)).trans
+    (forwardEmpiricalBernsteinLowerTiltMixtureProcess_atTop_crossing_mass_le_delta
+      hδ hweight_pos hweight_sum_one hlam hlam1
+      hX_adapted hX_unit hmean)
+
+/-- Outside the common failure event, every declared atom satisfies its
+explicit Bessel boundary at every `n >= 2`. -/
+theorem forwardEmpiricalBernsteinLowerTiltCatalog_all_of_not_mem
+    {κ Ω : Type*}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ} {ω : Ω}
+    (hω : ω ∉ forwardEmpiricalBernsteinLowerTiltCatalogFailure
+      weight lam X mean delta) :
+    ∀ j : κ, ∀ n : ℕ, 2 ≤ n →
+      mean < forwardPrefixMean (fun k ↦ X k ω) n +
+        forwardEmpiricalBernsteinTiltCatalogBoundary
+          weight lam X delta j n ω := by
+  intro j n hn
+  have hnot :
+      ¬forwardEmpiricalBernsteinTiltCatalogBoundary
+          weight lam X delta j n ω ≤
+        mean - forwardPrefixMean (fun k ↦ X k ω) n := by
+    intro hfailure
+    exact hω ⟨j, n, hn, hfailure⟩
+  have hgap :
+      mean - forwardPrefixMean (fun k ↦ X k ω) n <
+        forwardEmpiricalBernsteinTiltCatalogBoundary
+          weight lam X delta j n ω :=
+    lt_of_not_ge hnot
+  linarith
+
+/-- A tilt selector may inspect the realized path and the current time because
+the common event is already uniform over every declared atom and every time. -/
+theorem forwardEmpiricalBernsteinLowerTiltCatalog_selected_of_not_mem
+    {κ Ω : Type*}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ} {ω : Ω}
+    (hω : ω ∉ forwardEmpiricalBernsteinLowerTiltCatalogFailure
+      weight lam X mean delta)
+    (select : Ω → ℕ → κ) (n : ℕ) (hn : 2 ≤ n) :
+    mean < forwardPrefixMean (fun k ↦ X k ω) n +
+      forwardEmpiricalBernsteinTiltCatalogBoundary
+        weight lam X delta (select ω n) n ω :=
+  forwardEmpiricalBernsteinLowerTiltCatalog_all_of_not_mem
+    hω (select ω n) n hn
+
+/-- One outer-probability event carries every predeclared tilt boundary
+simultaneously.  As in the fixed-tilt endpoint, no separate measurability
+certificate for the good event is asserted. -/
+theorem exists_forwardEmpiricalBernsteinLowerTiltCatalog_event
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ}
+    (hδ : 0 < delta)
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent, ∀ j : κ, ∀ n : ℕ, 2 ≤ n →
+          mean < forwardPrefixMean (fun k ↦ X k ω) n +
+            forwardEmpiricalBernsteinTiltCatalogBoundary
+              weight lam X delta j n ω := by
+  let badEvent :=
+    forwardEmpiricalBernsteinLowerTiltCatalogFailure
+      weight lam X mean delta
+  refine ⟨badEventᶜ, ?_, ?_⟩
+  · simpa [badEvent] using
+      (forwardEmpiricalBernsteinLowerTiltCatalogFailure_mass_le_delta
+        hδ hweight_pos hweight_sum_one hlam hlam1
+        hX_adapted hX_unit hmean)
+  · intro ω hω
+    exact forwardEmpiricalBernsteinLowerTiltCatalog_all_of_not_mem hω
+
+/-- Explicit path-and-time-dependent selector form of the common catalog
+event. -/
+theorem exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
+    {κ Ω : Type*} [Fintype κ] [DecidableEq κ]
+    [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {weight : κ → ℝ} {lam : κ → ℝ}
+    {X : ℕ → Ω → ℝ} {mean delta : ℝ}
+    (hδ : 0 < delta)
+    (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : ∑ j : κ, weight j = 1)
+    (hlam : ∀ j, 0 < lam j) (hlam1 : ∀ j, lam j < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean)
+    (select : Ω → ℕ → κ) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          mean < forwardPrefixMean (fun k ↦ X k ω) n +
+            forwardEmpiricalBernsteinTiltCatalogBoundary
+              weight lam X delta (select ω n) n ω := by
+  rcases exists_forwardEmpiricalBernsteinLowerTiltCatalog_event
+    hδ hweight_pos hweight_sum_one hlam hlam1
+    hX_adapted hX_unit hmean with ⟨goodEvent, hmass, hall⟩
+  exact ⟨goodEvent, hmass, fun ω hω n hn ↦
+    hall ω hω (select ω n) n hn⟩
+
 /-- End-to-end certificate for the repaired forward exact-Bessel construction:
 the predictable-residual process is an e-process, and from time two onward
 the explicit Bessel-variance expression is its pointwise lower envelope. -/
