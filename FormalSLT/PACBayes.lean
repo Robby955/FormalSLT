@@ -88,7 +88,8 @@ fixed-n joint mean/empirical-variance exponential moments, the one-event
 joint mean/variance finite posterior catalog, exact residual envelope,
 finite-horizon reverse Bessel and joint mean/variance PAC-Bayes epochs,
 closed-form logarithmic-grid empirical-Bernstein bound, dyadically stitched
-all-sample-size iid empirical-Bernstein event, support-aware
+all-sample-size iid empirical-Bernstein events for finite and arbitrary
+measurable hypothesis spaces, support-aware
 countable master-mixture foundation and finite-posterior catalog-selector
 layer, score e-process, finite weighted tilt e-process and its finite-IID
 bounded-loss adapter, and time-uniform PAC-Bayes surfaces.

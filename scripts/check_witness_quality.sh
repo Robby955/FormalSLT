@@ -94,6 +94,15 @@ classify_witness() {
 #     posterior selected from the first path coordinate; this is the structural
 #     all-sample-size receipt, while numerical nonvacuity is supplied by the
 #     separate balanced-64 fixed-sample witness)
+#   exists_continuousInfiniteEmpiricalBernstein_event /
+#     gaussianPosterior_nonVacuous_receipt
+#     (Theta = (Fin 1 -> Real) x Bool, N(0,1) product fair-Boolean prior,
+#      fixed N(1/4,1) product fair-Boolean posterior, posterior finite-set mass
+#      zero, KL = 1/32, genuine unscaled zero-one sign-flip mismatch loss,
+#      every nonempty-sample posterior empirical risk = 1/2, n = 2^20,
+#      delta = 1/2, correction below 1/2, and theorem-produced RHS below 1;
+#      gaussianPosterior_goodPath_exists gives a path outside the event;
+#      no data-dependent continuous-posterior selection claim)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -156,6 +165,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
   "examples/CheckFiniteEmpiricalBernsteinSqrt.lean"
   "examples/CheckInfiniteEmpiricalBernsteinStitch.lean"
+  "examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean"
   "examples/CheckFiniteJointMeanVariancePACBayes.lean"
   "examples/CheckFiniteJointMeanVarianceResidual.lean"
   "examples/CheckCountableJointMeanVariancePACBayes.lean"

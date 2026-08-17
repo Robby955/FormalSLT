@@ -318,6 +318,43 @@ the constants, not a proof that a particular infinite path is outside the
 exceptional event. The separate balanced-64 fixed-sample receipt remains the
 Lean-checked positive-mass numerical witness.
 
+`PACBayes.ContinuousJointMeanVarianceReversePACBayes` replaces the finite prior
+sum in the reverse-epoch argument by integration over an arbitrary measurable
+hypothesis space. It derives the prior-mixture submartingale, endpoint moment,
+and bounded-loss integrability obligations from the fixed-hypothesis reverse
+process and explicit Fubini arguments; it does not assume the integrated MGF or
+posterior confidence event. `ContinuousJointMeanVarianceReverseCatalog` and
+`ContinuousEmpiricalBernsteinReverseSqrt` add the same predeclared finite
+dyadic tilt catalog and closed-form epoch endpoint for posterior probability
+measures.
+
+`PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` then gives the
+all-sample-size endpoint over arbitrary measurable hypotheses. It assumes a
+finite observation type with measurable singletons, a finite-valued IID PMF,
+a probability prior fixed before the data, strongly measurable `[0,1]` loss
+sections in the hypothesis parameter, and `0 < delta < 1`. Its one measurable
+exceptional event depends on the law, prior, and loss but not on the posterior.
+Outside it, every `n >= 2` and every posterior probability measure absolutely
+continuous with respect to the prior with an integrable log-likelihood ratio
+satisfy the same `5/2` square-root plus `5` linear bound with one
+measure-theoretic KL term. The variance is the posterior integral of each
+hypothesis's Bessel empirical variance, not the empirical variance of a
+posterior-averaged loss. Pointwise uniformity permits substitution of an
+admissible path-dependent posterior, but does not prove that such a selector is
+measurable or adapted. The Gaussian receipt uses `Theta = (Fin 1 -> Real) x
+Bool`, an `N(0,1)` product fair-Boolean prior, and a fixed `N(1/4,1)` product
+fair-Boolean posterior. It proves posterior finite-set mass zero, checks `KL =
+1/32`, and uses an unscaled zero-one sign-flip mismatch loss that depends on
+both coordinates and attains both endpoints. Every nonempty-sample posterior
+empirical risk is `1/2`; at `n = 2^20` and `delta = 1/2`, the correction is
+below `1/2` and the theorem-produced right-hand side is below the trivial
+ceiling `1`. A checked corollary also proves that a path exists outside the
+exceptional event. This receipt fixes the posterior and does not exercise
+data-dependent continuous-posterior selection.
+The theorem still has finite-valued observations and is an offline reverse-
+epoch result, not a forward e-process, optional-stopping theorem, all-real tilt
+optimizer, or continuous-observation theorem.
+
 `PACBayes.CountableJointMeanVariancePACBayes` extends only the fixed-sample
 master-event layer to a predeclared `Nat`-indexed catalog. Its nonnegative
 weights are summable with total `tsum` at most one. Because a nonsummable real
@@ -398,9 +435,11 @@ cylinder of probability `2⁻¹⁰⁰`. This positive lower bound is a non-vacui
 witness, not a tightness claim. A finite-catalog wrapper additionally supports
 sample-dependent selection among finitely many fixed spherical-Gaussian
 posterior/tilt pairs by summing their entrywise confidence budgets. It does not
-give uniformity over every Gaussian posterior or every real-valued tilt. The
-i.i.d. learning theorem still does not cover arbitrary prior/posterior families
-on an unrestricted measurable hypothesis space.
+give uniformity over every Gaussian posterior or every real-valued tilt. That
+time-uniform i.i.d. learning theorem still does not cover arbitrary
+prior/posterior families on an unrestricted measurable hypothesis space; the
+separate offline empirical-Bernstein theorem does, under its finite-observation
+and log-likelihood-ratio hypotheses.
 
 The separate-event empirical-Bernstein risk result does not yet use the
 fixed-sample joint moment; the one-event joint catalog is a distinct endpoint
@@ -411,10 +450,11 @@ the exact attained piecewise `xi` maximum on `[0,1/4]` and add `xi / t` to that
 same one-event bound. The countable master-event and finite-posterior layer
 described above lift these endpoints to a predeclared `Nat`-indexed tilt-pair
 catalog. A separate reverse-exchangeability construction now supplies one
-all-sample-size finite-IID Bessel-variance event with a closed-form risk bound.
-All-real optimization, continuous-hypothesis uniformity, and a forward
-exact-Bessel e-process with optional-stopping semantics remain open; the
-generic finite tilt-master e-process above does not supply those extensions. A
+all-sample-size finite-observation IID Bessel-variance event with a closed-form
+risk bound, including uniformity over admissible posterior measures on an
+arbitrary measurable hypothesis space. All-real optimization and a forward
+exact-Bessel e-process with optional-stopping semantics remain open; the generic
+finite tilt-master e-process above does not supply those extensions. A
 countable indicator-Bernstein
 catalog and exact all-real `lambda` optimization are also open.
 

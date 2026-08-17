@@ -192,21 +192,34 @@
   every posterior PMF on a fixed finite hypothesis type with one KL term and
   posterior-averaged per-hypothesis Bessel variance. This is an offline
   reverse-epoch theorem, not a forward e-process or optional-stopping result.
+- [x] General-measurable-hypothesis all-sample-size extension:
+  continuous-prior integration, the reverse joint mean/variance epoch,
+  predeclared dyadic tilt catalog, closed-form prefix endpoint, and infinite
+  stitch now give the same all-`n` event for every posterior probability
+  measure absolutely continuous with respect to a fixed prior and having an
+  integrable log-likelihood ratio. The observation space remains finite. A
+  product-Gaussian/fair-Boolean receipt checks posterior finite-set mass zero,
+  `KL = 1/32`, and an unscaled zero-one sign-flip mismatch loss that depends on
+  both coordinates and attains both endpoints. Every nonempty-sample posterior
+  empirical risk is `1/2`; at `n = 2^20` and `delta = 1/2`, the correction is
+  below `1/2` and the theorem-produced right-hand side is below the trivial
+  ceiling `1`; a checked corollary gives a path outside the exceptional event.
+  The receipt fixes the posterior and does not exercise data-dependent
+  continuous-posterior selection.
 
 ## Planned
 
 ### Near-term
 
-- [ ] **All-sample-size empirical-Bernstein evidence and extension**
+- [ ] **All-sample-size empirical-Bernstein evidence and forward extension**
   - Freeze the exact theorem commit and archive the full build, example,
     axiom, statement-fidelity, witness, documentation, and metadata gates.
   - Compare the stitched constants and all-sample-size nonvacuity region against
     PAC-Bayes-kl, Hoeffding/Catoni, Tolstikhin--Seldin, and existing anytime
     PAC-Bayes boundaries on identical inputs.
   - Obtain independent PAC-Bayes/constants and Lean probability reviews.
-  - In a separate theorem branch, extend the all-sample-size endpoint from
-    finite hypotheses to a general measurable hypothesis space without
-    assuming the hard integrated MGF or measurability conclusion.
+  - Pursue the forward exact-Bessel e-process and any optional-stopping API as a
+    separate theorem family; do not infer them from the offline reverse stitch.
 
 - [ ] **Finite stochastic-dynamics extensions**
   - Generalize the deterministic initial state to a supplied initial law.

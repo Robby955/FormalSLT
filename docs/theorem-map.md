@@ -711,6 +711,17 @@ declarations; modules are relative to `FormalSLT`.
 | `infiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | The single stitched infinite-path exceptional event has mass at most `delta` |
 | `infiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | Outside the stitched event, the displayed `5/2` square-root plus `5` linear bound holds at each `n >= 2` for every finite posterior |
 | `exists_infiniteEmpiricalBernstein_event` | `PACBayes.InfiniteEmpiricalBernsteinStitch` | Researcher-facing one-event theorem simultaneous over all sample sizes `n >= 2` and all posterior PMFs on the fixed finite hypothesis type |
+| `continuousPriorMixture_submartingale` | `PACBayes.TimeUniformContinuousPACBayes` | Integrates a prior-a.e. family of submartingales over an arbitrary probability prior under explicit product-integrability obligations |
+| `continuousReverseJointMeanVarianceEpochPriorMixture_submartingale_of_measurable_bounded` | `PACBayes.ContinuousJointMeanVarianceReversePACBayes` | Derives the continuous-prior reverse joint mean/Bessel-variance mixture submartingale from measurable bounded losses |
+| `continuousReverseJointMeanVarianceEpochBadPaths_mass_le_delta_of_measurable_bounded` | `PACBayes.ContinuousJointMeanVarianceReversePACBayes` | Bounds the continuous-prior reverse-epoch maximal event without assuming an integrated MGF or crossing bound |
+| `continuousReverseJointMeanVarianceEpochCatalogBadPaths_mass_le_delta` | `PACBayes.ContinuousJointMeanVarianceReverseCatalog` | Places a predeclared finite tilt catalog inside one continuous-prior reverse-epoch event of mass at most `delta` |
+| `continuousReverseJointMeanVarianceEpochCatalog_posteriorRisk_prefix_lt_selected_of_not_mem` | `PACBayes.ContinuousJointMeanVarianceReverseCatalog` | Permits prefix-, path-, and posterior-dependent selection from the fixed tilt catalog for every admissible posterior measure |
+| `continuousEmpiricalBernsteinReverseSqrtFailure_mass_le_delta` | `PACBayes.ContinuousEmpiricalBernsteinReverseSqrt` | Bounds the canonical continuous-prior dyadic-scale reverse-epoch event by `delta` |
+| `continuousEmpiricalBernsteinReverseSqrt_posteriorRisk_prefix_lt_of_not_mem` | `PACBayes.ContinuousEmpiricalBernsteinReverseSqrt` | Gives the closed-form `5/4`, `5/2` empirical-Bernstein bound at every prefix for every absolutely continuous posterior with integrable log-likelihood ratio |
+| `continuousInfiniteEmpiricalBernsteinComplexity` | `PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` | Measure-KL complexity with the telescoping dyadic-epoch confidence penalty at sample size `n` |
+| `continuousInfiniteEmpiricalBernsteinReverseSqrtFailure_mass_le_delta` | `PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` | The posterior-independent continuous-prior event on the infinite IID path space has mass at most `delta` |
+| `continuousInfiniteEmpiricalBernstein_posteriorRisk_lt_n_of_not_mem` | `PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` | Outside the stitched event, the `5/2` square-root plus `5` linear bound holds at each `n >= 2` for every admissible posterior measure |
+| `exists_continuousInfiniteEmpiricalBernstein_event` | `PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` | Researcher-facing one-event theorem simultaneous over all `n >= 2` and all admissible posterior measures on an arbitrary measurable hypothesis space |
 
 ## Conditional sub-Gamma extractor
 
