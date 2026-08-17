@@ -311,9 +311,12 @@ The result remains finite-hypothesis and finite-outcome. It is an offline
 reverse-epoch stitch, not a forward e-process, predictable betting strategy,
 optional-stopping theorem, all-real tilt optimizer, or continuous-hypothesis
 PAC-Bayes theorem. Its checker supplies an explicit all-`n` event and
-path-selected posterior; numerical nonvacuity is inherited only from the
-separate balanced-64 fixed-sample receipt until an all-time comparison study is
-published.
+path-selected posterior. The deterministic flagship comparison evaluates the
+stitched boundary on the balanced-Bernoulli statistics and finds its exact
+epoch form below one from even `n = 128`; this is floating-point evidence about
+the constants, not a proof that a particular infinite path is outside the
+exceptional event. The separate balanced-64 fixed-sample receipt remains the
+Lean-checked positive-mass numerical witness.
 
 `PACBayes.CountableJointMeanVariancePACBayes` extends only the fixed-sample
 master-event layer to a predeclared `Nat`-indexed catalog. Its nonnegative
