@@ -48,21 +48,25 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite-state Markov paths with deterministic start, a fixed "
             "bounded observable, and a finite catalog of fixed predictors; "
             "the checked surface includes a sharp one-quarter variance proxy "
-            "and fixed-tilt all-time posterior-uniform PAC-Bayes control"
+            "and finite full-support weighted-tilt, all-time, all-posterior, "
+            "all-atom PAC-Bayes control from one master e-process"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
             "Generalize the path law to a supplied initial distribution, "
-            "support predictable or independently trained catalogs, and add "
-            "declared finite or normalized countable tilt selection."
+            "support predictable or independently trained predictor catalogs, "
+            "and add normalized countable or predictable tilt families."
         ),
         "boundary": (
             "The checked certificate targets posterior-average one-step "
-            "conditional risk at a fixed declared tilt. It does not cover "
-            "same-trajectory fitting, arbitrary post-sample real-tilt "
-            "optimization, stationarity, mixing, continuous state spaces, "
-            "multistep prediction, or long-run risk."
+            "conditional risk at one post-path-selected atom of a fixed finite "
+            "tilt catalog. The pointwise selector need not be measurable or "
+            "adapted and adds no optional-stopping result. The certificate "
+            "does not cover same-trajectory fitting, an arbitrary joint "
+            "predictor--tilt posterior, countable or all-real tilt control, "
+            "empirical variance, stationarity, mixing, continuous state "
+            "spaces, multistep prediction, or long-run risk."
         ),
     },
     {

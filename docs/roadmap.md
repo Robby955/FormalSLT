@@ -176,6 +176,13 @@
   a fixed-tilt (`0 < λ < 3`), all-positive-time, all-posterior theorem under the
   actual finite Markov path law, with a measurable exceptional event and an
   asymmetric data-selected-posterior receipt
+- [x] Finite weighted-tilt Markov PAC-Bayes certificate:
+  one full-support finite tilt prior and one measurable exceptional event of
+  mass at most `delta`; its complement supports all-time, all-posterior,
+  all-atom validity and post-path selection of one predeclared tilt atom. The
+  checker gives an asymmetric path-selected posterior/tilt receipt; its two
+  explicit selector paths exercise branches but are not proved good or
+  positive-probability
 
 ## Planned
 
@@ -185,8 +192,9 @@
   - Generalize the deterministic initial state to a supplied initial law.
   - Support predictable or independently trained predictor catalogs without
     claiming validity for arbitrary same-trajectory fitting.
-  - Add declared finite or normalized countable tilt selection without
-    optimizing an uncontrolled real parameter after observing the path.
+  - Extend the checked finite weighted-tilt selection to normalized countable
+    or predictable tilt families without optimizing an uncontrolled real
+    parameter after observing the path.
   - Keep stationary, mixing, continuous-state, and multistep conclusions as
     separate later theorem families.
 

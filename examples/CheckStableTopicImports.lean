@@ -50,6 +50,8 @@ without carrying duplicate proof bodies.
 #check FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #check FormalSLT.AnytimeValid.eProcess_typeI_control
 #check FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
+#check FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta
+#check FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate
 
 #check FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
 #check FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
@@ -89,3 +91,5 @@ without carrying duplicate proof bodies.
 #print axioms FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #print axioms FormalSLT.AnytimeValid.eProcess_typeI_control
 #print axioms FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
+#print axioms FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta
+#print axioms FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate

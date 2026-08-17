@@ -100,9 +100,13 @@ does not itself turn the fixed-sample Bessel score into a nested process.
 adapter and one measurable exceptional event. It retains finite hypotheses,
 finite predeclared tilts, full-support priors, and measurable `[0,1]` losses; it
 does not establish empirical-variance or all-real control.
-For dependent data, `StochasticDynamics.MarkovPACBayes` now checks a fixed-tilt
-(`0 < λ < 3`), all-positive-time theorem simultaneous over every posterior on
-a finite predictor catalog under an actual finite Markov path law.
+For dependent data, `StochasticDynamics.MarkovPACBayesTiltMixture` checks an
+all-positive-time theorem simultaneous over every posterior and every atom of
+a predeclared full-support finite tilt prior under an actual finite Markov path
+law, with `0 < λ_j < 3` for each atom. The posterior and one atom may be
+selected after observing the trajectory. The selector endpoint is pointwise:
+it needs no measurability or adaptedness assumption and adds no
+optional-stopping guarantee beyond the common all-atom event.
 For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and
@@ -126,9 +130,9 @@ selects one declared atom rather than an arbitrary joint posterior. Its failure
 set has outer mass at most `delta`; its finite-IID adapter wraps the concrete
 risk failure set in a measurable event of mass at most `delta`. The
 finite-hypothesis grid theorem remains finite, and the Markov posterior-uniform
-theorem has one fixed declared tilt satisfying
-`0 < λ < 3`.
-The base
+theorem likewise selects one atom from a predeclared finite prior. It is not
+countable, an all-real optimizer, a predictable time-varying tilt, or an
+arbitrary joint predictor--tilt posterior theorem. The base
 continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
 specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt
 pairs support simultaneous validity and sample-dependent selection, but this is

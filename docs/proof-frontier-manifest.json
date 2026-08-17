@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "The checked certificate targets posterior-average one-step conditional risk at a fixed declared tilt. It does not cover same-trajectory fitting, arbitrary post-sample real-tilt optimization, stationarity, mixing, continuous state spaces, multistep prediction, or long-run risk.",
+      "boundary": "The checked certificate targets posterior-average one-step conditional risk at one post-path-selected atom of a fixed finite tilt catalog. The pointwise selector need not be measurable or adapted and adds no optional-stopping result. The certificate does not cover same-trajectory fitting, an arbitrary joint predictor--tilt posterior, countable or all-real tilt control, empirical variance, stationarity, mixing, continuous state spaces, multistep prediction, or long-run risk.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Generalize the path law to a supplied initial distribution, support predictable or independently trained catalogs, and add declared finite or normalized countable tilt selection.",
-      "scope": "finite-state Markov paths with deterministic start, a fixed bounded observable, and a finite catalog of fixed predictors; the checked surface includes a sharp one-quarter variance proxy and fixed-tilt all-time posterior-uniform PAC-Bayes control",
+      "next_step": "Generalize the path law to a supplied initial distribution, support predictable or independently trained predictor catalogs, and add normalized countable or predictable tilt families.",
+      "scope": "finite-state Markov paths with deterministic start, a fixed bounded observable, and a finite catalog of fixed predictors; the checked surface includes a sharp one-quarter variance proxy and finite full-support weighted-tilt, all-time, all-posterior, all-atom PAC-Bayes control from one master e-process",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -86,10 +86,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 157,
-    "library_and_example_lean_lines": 90356,
-    "library_lean_lines": 75639,
-    "library_modules": 199,
-    "theorem_map_entries": 800
+    "library_and_example_lean_lines": 90816,
+    "library_lean_lines": 75923,
+    "library_modules": 200,
+    "theorem_map_entries": 810
   },
   "theorem_families": [
     {
@@ -4458,6 +4458,66 @@
           "module": "StochasticDynamics.MarkovPACBayes",
           "name": "markovPACBayes_prequentialRisk_certificate",
           "summary": "Publication-facing finite-catalog theorem with a measurable common event, all-time and all-posterior validity, and explicit KL penalty"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayesTiltMixtureAnyPosteriorUpperFailure",
+          "summary": "Risk-facing event in which some declared tilt, posterior, and positive time violates its exact prior-weight boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayesTiltMixtureAnyPosteriorUpperFailure_subset_processFailure",
+          "summary": "Embeds the Markov risk-facing event into the finite hypothesis--tilt master-process failure event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayes_tiltMixture_allPosteriors_bound",
+          "summary": "Controls the raw all-time, all-posterior, finite-tilt Markov failure set in outer probability through one master e-process"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayesTiltMixtureExceptionalEvent",
+          "summary": "Measurable hull of the Markov posterior/time/tilt failure event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayesTiltMixtureExceptionalEvent_measurable",
+          "summary": "Proves measurability of the shared finite-tilt Markov exceptional event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayesTiltMixtureRawFailure_subset_exceptionalEvent",
+          "summary": "Shows that the measurable hull contains every raw posterior/tilt violation"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta",
+          "summary": "Gives one measurable exceptional event containing every all-time/all-posterior/all-tilt violation, with ordinary probability at most delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPosteriorAverageConditionalRisk_lt_tiltMixture_of_not_mem",
+          "summary": "Outside the shared event, every declared tilt and posterior obeys the weighted Markov prequential-risk boundary"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPosteriorAverageConditionalRisk_lt_tiltMixture_selected_of_not_mem",
+          "summary": "Pointwise post-path selection of one predeclared tilt atom on the common event; no measurable or adapted selector and no added optional-stopping result"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
+          "name": "markovPACBayes_tiltMixture_prequentialRisk_certificate",
+          "summary": "Publication-facing measurable certificate simultaneous over all positive times, posteriors, and declared finite tilt atoms"
         }
       ],
       "name": "Finite Markov prequential risk"

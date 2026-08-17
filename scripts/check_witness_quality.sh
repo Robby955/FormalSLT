@@ -118,6 +118,11 @@ classify_witness() {
 #      below 1/20 at n = 1024, delta = 1/20, lambda = 1/8)
 #   markovPACBayes_prequentialRisk_certificate
 #     (asymmetric two-state catalog with a path-selected point posterior)
+#   markovPACBayes_tiltMixture_prequentialRisk_certificate
+#     (asymmetric finite-state chain with fixed predictors, a full-support
+#      two-tilt prior, a path-selected posterior and post-path tilt atom, both
+#      selected boundaries below 1/20, and risk below 11/20; the two explicit
+#      selector-branch paths are not proved good or positive-probability)
 #   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
 #     countableJointMeanVariance_priorMoment_le_of_not_mem
 #     (predeclared Nat-indexed geometric joint-pair catalog, one existential good
