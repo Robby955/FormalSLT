@@ -82,6 +82,24 @@ theorem boundedModel_lowerTail_eProcess_receipt
   forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
     hlam0 hlam1 hX_adapted hX_unit hmean
 
+/-- Focused all-time receipt for the explicit fixed-tilt Bessel boundary. -/
+theorem boundedModel_allTimeLowerBessel_receipt
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam delta : ℝ}
+    (hδ : 0 < delta) (hlam : 0 < lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          mean < forwardPrefixMean (fun k ↦ X k ω) n +
+            forwardEmpiricalBernsteinBesselBoundary X lam delta n ω :=
+  exists_forwardEmpiricalBernsteinLowerBessel_event
+    hδ hlam hlam1 hX_adapted hX_unit hmean
+
 #check forwardBesselQ_eq_card_sub_one_mul_sampleVarianceBessel
 #check forwardBesselQ_succ
 #check forwardPredictableQuadratic_le_half_add_three_halves_besselQ
@@ -100,6 +118,11 @@ theorem boundedModel_lowerTail_eProcess_receipt
 #check forwardBesselQ_one_sub
 #check forwardEmpiricalBernsteinLowerProcess_eq
 #check forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+#check forwardEmpiricalBernsteinLowerProcess_atTop_crossing_mass_le_delta
+#check forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
+#check forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
+#check forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
+#check exists_forwardEmpiricalBernsteinLowerBessel_event
 #check forwardEmpiricalBernsteinBesselEnvelope_certified
 #check forwardPlugIn_eProcess_of_condExp_step
 #check forwardBesselExponentialEnvelope_le_forwardPlugIn
@@ -117,6 +140,11 @@ theorem boundedModel_lowerTail_eProcess_receipt
 #print axioms forwardPredictableQuadratic_one_sub
 #print axioms forwardBesselQ_one_sub
 #print axioms forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+#print axioms forwardEmpiricalBernsteinLowerProcess_atTop_crossing_mass_le_delta
+#print axioms forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
+#print axioms forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
+#print axioms forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
+#print axioms exists_forwardEmpiricalBernsteinLowerBessel_event
 #print axioms forwardEmpiricalBernsteinBesselEnvelope_certified
 #print axioms forwardPlugIn_eProcess_of_condExp_step
 #print axioms forwardBesselEnvelope_certified_by_eProcess
@@ -125,5 +153,6 @@ theorem boundedModel_lowerTail_eProcess_receipt
 #print axioms half_tilt_minus_one_scalar_check
 #print axioms boundedModel_eProcess_receipt
 #print axioms boundedModel_lowerTail_eProcess_receipt
+#print axioms boundedModel_allTimeLowerBessel_receipt
 
 end FormalSLT.Examples.CheckForwardBesselProcess
