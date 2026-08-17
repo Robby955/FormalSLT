@@ -21,6 +21,7 @@ echo "== focused builds =="
 "$LAKE" build FormalSLT.Concentration.SubGamma.CondVarianceFromSquare
 "$LAKE" build FormalSLT.Concentration.SubGamma.Extractor
 "$LAKE" build FormalSLT.TestTimeMeta.FlagshipComposition
+"$LAKE" build FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch
 
 echo "== public axiom audits =="
 "$LAKE" env lean examples/CheckFlagship.lean
@@ -28,6 +29,7 @@ echo "== public axiom audits =="
 "$LAKE" env lean examples/CheckOnlineToPACIID.lean
 "$LAKE" env lean examples/CheckSubGammaExtractor.lean
 "$LAKE" env lean examples/CheckFlagshipComposition.lean
+"$LAKE" env lean examples/CheckInfiniteEmpiricalBernsteinStitch.lean
 
 echo "== repository hygiene =="
 python3 scripts/generate_proof_frontier_manifest.py --check

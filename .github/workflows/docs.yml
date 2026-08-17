@@ -12,7 +12,8 @@ permissions:
 
 concurrency:
   group: docs-${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'pages' }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  # Only the newest PR or main SHA should consume the full doc-gen4/Pages build.
+  cancel-in-progress: true
 
 jobs:
   build-docs:

@@ -140,10 +140,10 @@ not an all-posterior or all-`λ` confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
-**Target.** Extend the checked support-aware finite-posterior and exact
-piecewise-`xi` selector for a `Nat`-indexed tilt-pair catalog to all-real
-optimization or time-uniform inference only through a genuine process
-argument.
+**Target.** Extend the checked all-sample-size finite-hypothesis theorem to a
+general measurable hypothesis space. Treat all-real tilt optimization and a
+forward exact-Bessel e-process with optional-stopping semantics as separate
+targets rather than consequences of the offline reverse-epoch stitch.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -168,6 +168,18 @@ tilts indexed by the predeclared dyadic grid through `Nat.clog 2 n` give
 positive empirical variance, an explicit positive-mass good sample, and a
 final ceiling below `99/100` at `delta = 1/20`.
 
+The all-sample-size finite lane is now checked end to end. A
+leave-one-coordinate identity makes prefix Bessel variance a reverse martingale
+under the exchangeable-prefix filtration. The prefix sample mean and variance
+are combined into a reverse joint exponential submartingale, mixed over the
+finite prior and a predeclared finite tilt grid, and controlled on every prefix
+of one dyadic epoch. A finite-prefix/infinite-product bridge and telescoping
+epoch weights then produce one measurable event of mass at most `delta` whose
+complement controls every `n >= 2` and every finite posterior. The displayed
+bound is
+`Rhat_n + (5/2) * sqrt(Vhat_n * L_n / n) + 5 * L_n / n`, with
+`L_n = KL + log(r(r+1)^2/delta)` and `r = Nat.log 2 n`.
+
 **Dependencies.** The separately budgeted finite variance-tilt and risk-tilt
 catalogs are checked, including posterior- and sample-dependent selection
 without paying separately for every Cartesian pair. The retained Bennett factor
@@ -187,16 +199,23 @@ finite Donsker--Varadhan and residual theorems to each selected entry, giving
 raw-gap, exact-`xi` risk, and sample/posterior-dependent natural-index selector
 bounds on that same event with one KL term. The posterior remains finite, the
 selector receipt is structural rather than numerical, and all-real adaptation
-requires a distinct argument.
+requires a distinct argument. For the continuous-hypothesis extension, the
+remaining load-bearing work is joint measurability of the path/hypothesis
+score, integration under an arbitrary fixed prior, a measure-theoretic
+change-of-measure step for every absolutely continuous posterior, and a common
+measurable stitched event. Those obligations must be proved rather than hidden
+inside a supplied prior-MGF or exceptional-event hypothesis.
 
-**Boundary.** The current final risk theorems are finite-IID and fixed-sample.
-Their fixed-parameter, separate weighted-catalog, one-event joint-catalog, and
-closed-form logarithmic-grid forms
-are posterior-uniform over finite hypothesis types; selection is only from
-catalogs declared in advance. It does not authorize all-real post-hoc
-optimization and is not anytime-valid. The random-matching proof formalizes the
-source variance inequality; it is not presented as a new inequality or an
-entropy-method proof.
+**Boundary.** The fixed-parameter, separately weighted, joint-catalog,
+fixed-sample square-root, and all-sample-size reverse-epoch endpoints remain
+finite-IID and posterior-uniform only over a finite hypothesis type with a fixed
+full-support prior. The all-sample-size result uses one event shared by every
+`n >= 2`, but it is an offline reverse-exchangeability theorem: it does not
+construct a forward e-process, predictable betting strategy, or optional-
+stopping API. It does not authorize all-real post-hoc optimization or a
+continuous-hypothesis posterior. The random-matching proof formalizes the
+source variance inequality; neither the inequality nor the stitched endpoint
+is presented with a novelty or priority claim.
 
 ## Medium-term
 

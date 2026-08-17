@@ -58,6 +58,18 @@ appropriate example file and confirm the public axiom set remains:
 [propext, Classical.choice, Quot.sound]
 ```
 
+## Staged verification: keep proof iteration fast
+
+- During theorem research, build only the affected module, checker, and stable
+  umbrella, plus the focused axiom, fidelity, and diff gates.
+- Run the full library build and all examples exactly once for the final PR
+  candidate. Do not repeat them for prose, generated-documentation,
+  comment-only, or ancestry-identical changes.
+- For an ancestry replay with identical content, compare the exact trees; a
+  matching tree is sufficient local evidence. Hosted CI on the exact PR head
+  is the final confirmation.
+- Do not spend rebuild cycles on redundant style-only CodeRabbit suggestions.
+
 ## Public claims
 
 - Do not call the Dudley lane a full continuous Dudley theorem until a theorem

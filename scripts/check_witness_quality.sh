@@ -89,6 +89,11 @@ classify_witness() {
 #   finiteEmpiricalBernsteinSqrt_posteriorRisk_le_of_not_mem
 #     (95% confidence, point-posterior KL = log 2, Bessel variance 16/63,
 #     explicit good sample, and final theorem-produced ceiling below one)
+#   exists_infiniteEmpiricalBernstein_event
+#     (fair-Boolean infinite IID law, one event for every n >= 2, and a point
+#     posterior selected from the first path coordinate; this is the structural
+#     all-sample-size receipt, while numerical nonvacuity is supplied by the
+#     separate balanced-64 fixed-sample witness)
 #   vcPacBayesBernsteinPosteriorRisk_bound
 #   empiricalBernstein_confidence_sequence_uniformPrior
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
@@ -150,6 +155,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckFiniteEmpiricalBernsteinRisk.lean"
   "examples/CheckFiniteEmpiricalBernsteinRiskCatalog.lean"
   "examples/CheckFiniteEmpiricalBernsteinSqrt.lean"
+  "examples/CheckInfiniteEmpiricalBernsteinStitch.lean"
   "examples/CheckFiniteJointMeanVariancePACBayes.lean"
   "examples/CheckFiniteJointMeanVarianceResidual.lean"
   "examples/CheckCountableJointMeanVariancePACBayes.lean"
