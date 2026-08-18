@@ -1,4 +1,5 @@
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
+import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 
 /-!
 # Finite-depth Poisson contraction receipt
@@ -8,11 +9,14 @@ The receipt uses the asymmetric Boolean chain
 Its Markov operator contracts finite oscillation by exactly `alpha=1/4`.
 For the next-state indicator score, the centered row risk has oscillation
 `D=1/4`.  At depth `m=2`, the constructed potential has exact span `5/16`
-and its exact Poisson residual is bounded by `1/64`.
+and its exact Poisson residual is bounded by `1/64`.  The depth-selection
+receipt evaluates depths one and two on the same explicit prefix, checks the
+finite argmin against both, and instantiates the logarithmic all-time theorem.
 -/
 
 open Finset MeasureTheory ProbabilityTheory
 open FormalSLT.AnytimeValid FormalSLT.PACBayesKL
+open FormalSLT.PACBayes.ForwardBesselPACBayesCountable
 open scoped BigOperators ENNReal NNReal
 
 namespace FormalSLT.Examples.CheckStationaryPoissonContraction
@@ -262,7 +266,128 @@ theorem contractionBool_depthTwo_residual_le (z : Bool) :
   rw [contractionBool_depthTwo_residual_values]
   fin_cases z <;> norm_num
 
+theorem contractionBool_depthOne_potential (z : Bool) :
+    finiteDepthPoissonPotential contractionBoolPMF contractionBoolStationary
+      contractionBoolScore 1 z = if z then (1 / 6 : ℝ) else -(1 / 12) := by
+  fin_cases z <;>
+    norm_num [finiteDepthPoissonPotential, iteratedMarkovPotentialMean,
+      Finset.sum_range_succ, Function.iterate_zero_apply,
+      contractionBool_centeredRowRisk]
+
+/-- The constructed depth-two potential is genuinely state dependent. -/
+theorem contractionBool_depthTwo_potential_nonconstant :
+    finiteDepthPoissonPotential contractionBoolPMF contractionBoolStationary
+        contractionBoolScore 2 false ≠
+      finiteDepthPoissonPotential contractionBoolPMF contractionBoolStationary
+        contractionBoolScore 2 true := by
+  rw [contractionBool_depthTwo_potential,
+    contractionBool_depthTwo_potential]
+  norm_num
+
+/-- At `n = 4`, increasing the depth from one to two raises the endpoint
+correction from `1/16` to `5/64`, while lowering the geometric residual from
+`1/16` to `1/64`. -/
+theorem contractionBool_depth_tradeoff_at_four :
+    finiteDepthPoissonSpanBound (1 / 4) (1 / 4) 1 / 4 = (1 / 16 : ℝ) ∧
+    finiteDepthPoissonSpanBound (1 / 4) (1 / 4) 2 / 4 = (5 / 64 : ℝ) ∧
+    finiteDepthPoissonResidualBound (1 / 4) (1 / 4) 1 = (1 / 16 : ℝ) ∧
+    finiteDepthPoissonResidualBound (1 / 4) (1 / 4) 2 = (1 / 64 : ℝ) := by
+  norm_num [finiteDepthPoissonSpanBound, finiteDepthPoissonResidualBound]
+
+def contractionBoolScoreCatalog (_i : Bool) : MarkovTransitionScore Bool :=
+  contractionBoolScore
+
+/-- The finite receipt prefix is `false,true,false,true,false`; values after
+coordinate four are irrelevant to the evaluated `n = 4` boundary.  This is a
+deterministic arithmetic receipt, not a claim that this path lies in the
+common good event. -/
+def contractionBoolAlternatingPrefix (n : ℕ) : Bool :=
+  decide (n = 1 ∨ n = 3)
+
 def contractionBoolUniformPrior (_i : Bool) : ℝ := 1 / 2
+
+def contractionBoolCorrectedPrefixObservation (m k : ℕ) : ℝ :=
+  observedTrajectoryScore
+    (finiteDepthPoissonCorrectedTrajectoryScoreCatalog
+      contractionBoolPMF contractionBoolStationary
+      contractionBoolScoreCatalog (1 / 4) (1 / 4) m false)
+    k contractionBoolAlternatingPrefix
+
+/-- Both constructed potentials turn the four alternating transitions into
+the exact observed score sequence `1,0,1,0`. -/
+theorem contractionBool_corrected_prefix_values :
+    contractionBoolCorrectedPrefixObservation 1 0 = 1 ∧
+    contractionBoolCorrectedPrefixObservation 1 1 = 0 ∧
+    contractionBoolCorrectedPrefixObservation 1 2 = 1 ∧
+    contractionBoolCorrectedPrefixObservation 1 3 = 0 ∧
+    contractionBoolCorrectedPrefixObservation 2 0 = 1 ∧
+    contractionBoolCorrectedPrefixObservation 2 1 = 0 ∧
+    contractionBoolCorrectedPrefixObservation 2 2 = 1 ∧
+    contractionBoolCorrectedPrefixObservation 2 3 = 0 := by
+  norm_num [contractionBoolCorrectedPrefixObservation,
+    observedTrajectoryScore,
+    finiteDepthPoissonCorrectedTrajectoryScoreCatalog,
+    poissonCorrectedTrajectoryScore, markovTransitionTrajectoryScore,
+    poissonCorrectedTransitionScore, contractionBoolScoreCatalog,
+    contractionBoolAlternatingPrefix, contractionBoolScore,
+    contractionBool_depthOne_potential, contractionBool_depthTwo_potential,
+    finiteDepthPoissonSpanBound]
+
+theorem contractionBool_depthOne_hybridPenalty_at_four (i : Bool) :
+    forwardHybridBesselPenalty
+        (fun k ↦ observedTrajectoryScore
+          (finiteDepthPoissonCorrectedTrajectoryScoreCatalog
+            contractionBoolPMF contractionBoolStationary
+            contractionBoolScoreCatalog (1 / 4) (1 / 4) 1 i)
+          k contractionBoolAlternatingPrefix)
+        4 = (47 / 24 : ℝ) := by
+  norm_num [forwardHybridBesselPenalty, forwardBesselQ, forwardPrefixMean,
+    harmonic, Finset.sum_range_succ, observedTrajectoryScore,
+    finiteDepthPoissonCorrectedTrajectoryScoreCatalog,
+    poissonCorrectedTrajectoryScore, markovTransitionTrajectoryScore,
+    poissonCorrectedTransitionScore, contractionBoolScoreCatalog,
+    contractionBoolAlternatingPrefix, contractionBoolScore,
+    contractionBool_depthOne_potential, finiteDepthPoissonSpanBound]
+
+theorem contractionBool_depthTwo_hybridPenalty_at_four (i : Bool) :
+    forwardHybridBesselPenalty
+        (fun k ↦ observedTrajectoryScore
+          (finiteDepthPoissonCorrectedTrajectoryScoreCatalog
+            contractionBoolPMF contractionBoolStationary
+            contractionBoolScoreCatalog (1 / 4) (1 / 4) 2 i)
+          k contractionBoolAlternatingPrefix)
+        4 = (47 / 24 : ℝ) := by
+  norm_num [forwardHybridBesselPenalty, forwardBesselQ, forwardPrefixMean,
+    harmonic, Finset.sum_range_succ, observedTrajectoryScore,
+    finiteDepthPoissonCorrectedTrajectoryScoreCatalog,
+    poissonCorrectedTrajectoryScore, markovTransitionTrajectoryScore,
+    poissonCorrectedTransitionScore, contractionBoolScoreCatalog,
+    contractionBoolAlternatingPrefix, contractionBoolScore,
+    contractionBool_depthTwo_potential, finiteDepthPoissonSpanBound]
+
+theorem contractionBool_depthOne_posteriorPenalty_at_four :
+    trajectoryPosteriorHybridBesselPenalty contractionBoolUniformPrior
+        (finiteDepthPoissonCorrectedTrajectoryScoreCatalog
+          contractionBoolPMF contractionBoolStationary
+          contractionBoolScoreCatalog (1 / 4) (1 / 4) 1)
+        4 contractionBoolAlternatingPrefix = (47 / 24 : ℝ) := by
+  unfold trajectoryPosteriorHybridBesselPenalty posteriorAverage
+  simp only [Fintype.sum_bool,
+    contractionBool_depthOne_hybridPenalty_at_four,
+    contractionBool_depthOne_hybridPenalty_at_four]
+  norm_num [contractionBoolUniformPrior]
+
+theorem contractionBool_depthTwo_posteriorPenalty_at_four :
+    trajectoryPosteriorHybridBesselPenalty contractionBoolUniformPrior
+        (finiteDepthPoissonCorrectedTrajectoryScoreCatalog
+          contractionBoolPMF contractionBoolStationary
+          contractionBoolScoreCatalog (1 / 4) (1 / 4) 2)
+        4 contractionBoolAlternatingPrefix = (47 / 24 : ℝ) := by
+  unfold trajectoryPosteriorHybridBesselPenalty posteriorAverage
+  simp only [Fintype.sum_bool,
+    contractionBool_depthTwo_hybridPenalty_at_four,
+    contractionBool_depthTwo_hybridPenalty_at_four]
+  norm_num [contractionBoolUniformPrior]
 
 theorem contractionBoolUniformPrior_isFullSupportPMF :
     IsFullSupportPMF contractionBoolUniformPrior := by
@@ -272,6 +397,144 @@ theorem contractionBoolUniformPrior_isFullSupportPMF :
   · norm_num [contractionBoolUniformPrior, Fintype.sum_bool]
   · intro i
     fin_cases i <;> norm_num [contractionBoolUniformPrior]
+
+/-- Exact depth-one boundary on the explicit alternating prefix.  The
+corrected observations alternate between one and zero, the hybrid-Bessel
+penalty is `47/24`, and the joint depth--tilt confidence price is `log 240`. -/
+theorem contractionBool_depthOne_boundary_at_four :
+    stationaryPoissonDepthSelectionBoundary
+        contractionBoolPMF contractionBoolStationary
+        contractionBoolScoreCatalog (1 / 4) (1 / 4)
+        contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+        1 0 4 contractionBoolAlternatingPrefix =
+      (3 / 2 : ℝ) *
+          ((Real.log 240 +
+            (-Real.log (1 / 2) - 1 / 2) * (47 / 24)) / 2) +
+        1 / 8 := by
+  rw [stationaryPoissonDepthSelectionBoundary_eq_explicit
+    (hdelta := (by norm_num : (1 / 20 : ℝ) ≠ 0))]
+  rw [contractionBool_depthOne_posteriorPenalty_at_four]
+  norm_num [finiteDepthPoissonScaleBound, finiteDepthPoissonSpanBound,
+    finiteDepthPoissonResidualBound, geometricForwardTilt,
+    forwardEmpiricalBernsteinPsi, contractionBoolUniformPrior, klDiv,
+    Fintype.sum_bool]
+  ring
+
+/-- Exact depth-two boundary on the same prefix.  Its confidence price is
+`log 480`; its endpoint-plus-residual correction is `3/32`. -/
+theorem contractionBool_depthTwo_boundary_at_four :
+    stationaryPoissonDepthSelectionBoundary
+        contractionBoolPMF contractionBoolStationary
+        contractionBoolScoreCatalog (1 / 4) (1 / 4)
+        contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+        2 0 4 contractionBoolAlternatingPrefix =
+      (13 / 8 : ℝ) *
+          ((Real.log 480 +
+            (-Real.log (1 / 2) - 1 / 2) * (47 / 24)) / 2) +
+        3 / 32 := by
+  rw [stationaryPoissonDepthSelectionBoundary_eq_explicit
+    (hdelta := (by norm_num : (1 / 20 : ℝ) ≠ 0))]
+  rw [contractionBool_depthTwo_posteriorPenalty_at_four]
+  norm_num [finiteDepthPoissonScaleBound, finiteDepthPoissonSpanBound,
+    finiteDepthPoissonResidualBound, geometricForwardTilt,
+    forwardEmpiricalBernsteinPsi, contractionBoolUniformPrior, klDiv,
+    Fintype.sum_bool]
+  ring
+
+/-- Finite post-path depth selection over depths `0`, `1`, and `2` on the
+explicit prefix. -/
+def contractionBoolDepthArgminAtFour : ℕ :=
+  stationaryPoissonFiniteDepthArgmin
+    contractionBoolPMF contractionBoolStationary
+    contractionBoolScoreCatalog (1 / 4) (1 / 4)
+    contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+    2 0 4 contractionBoolAlternatingPrefix
+
+def contractionBoolSelectedBoundaryAtFour : ℝ :=
+  stationaryPoissonDepthSelectionBoundary
+    contractionBoolPMF contractionBoolStationary
+    contractionBoolScoreCatalog (1 / 4) (1 / 4)
+    contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+    contractionBoolDepthArgminAtFour 0 4 contractionBoolAlternatingPrefix
+
+/-- The finite argmin is a declared depth below three and is no worse than
+both explicitly evaluated depths on the same path, posterior, tilt, and time. -/
+theorem contractionBool_argmin_no_worse_than_depths_one_two :
+    contractionBoolDepthArgminAtFour < 3 ∧
+    contractionBoolSelectedBoundaryAtFour ≤
+      (3 / 2 : ℝ) *
+          ((Real.log 240 +
+            (-Real.log (1 / 2) - 1 / 2) * (47 / 24)) / 2) +
+        1 / 8 ∧
+    contractionBoolSelectedBoundaryAtFour ≤
+      (13 / 8 : ℝ) *
+          ((Real.log 480 +
+            (-Real.log (1 / 2) - 1 / 2) * (47 / 24)) / 2) +
+        3 / 32 := by
+  refine ⟨?_, ?_, ?_⟩
+  · exact stationaryPoissonFiniteDepthArgmin_lt_succ
+      contractionBoolPMF contractionBoolStationary
+      contractionBoolScoreCatalog (1 / 4) (1 / 4)
+      contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+      2 0 4 contractionBoolAlternatingPrefix
+  · rw [← contractionBool_depthOne_boundary_at_four]
+    exact stationaryPoissonFiniteDepthArgmin_le
+      contractionBoolPMF contractionBoolStationary
+      contractionBoolScoreCatalog (1 / 4) (1 / 4)
+      contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+      2 0 4 contractionBoolAlternatingPrefix (m := 1) (by norm_num)
+  · rw [← contractionBool_depthTwo_boundary_at_four]
+    exact stationaryPoissonFiniteDepthArgmin_le
+      contractionBoolPMF contractionBoolStationary
+      contractionBoolScoreCatalog (1 / 4) (1 / 4)
+      contractionBoolUniformPrior contractionBoolUniformPrior (1 / 20)
+      2 0 4 contractionBoolAlternatingPrefix (m := 2) (by norm_num)
+
+/-- The all-time logarithmic-depth theorem instantiated on the asymmetric
+Boolean chain.  The exact selected width tends to zero on every path in the
+common event. -/
+theorem contractionBool_allTime_vanishing_certificate :
+    ∃ goodEvent : Set (ℕ → Bool),
+      (markovPathMeasure contractionBoolPMF false).real goodEventᶜ ≤ 1 / 20 ∧
+        (∀ x ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          stationaryPosteriorMarkovRisk
+              contractionBoolPMF contractionBoolStationary
+              contractionBoolScoreCatalog contractionBoolUniformPrior <
+            empiricalTransitionPosteriorRisk
+                contractionBoolScoreCatalog contractionBoolUniformPrior n x +
+              stationaryPoissonDepthSelectionBoundary
+                contractionBoolPMF contractionBoolStationary
+                contractionBoolScoreCatalog (1 / 4) (1 / 4)
+                contractionBoolUniformPrior contractionBoolUniformPrior
+                (1 / 20) (logarithmicPoissonDepth n)
+                (geometricForwardTiltIndex n) n x) ∧
+        (∀ x ∈ goodEvent,
+          Filter.Tendsto
+            (fun n ↦ stationaryPoissonDepthSelectionBoundary
+              contractionBoolPMF contractionBoolStationary
+              contractionBoolScoreCatalog (1 / 4) (1 / 4)
+              contractionBoolUniformPrior contractionBoolUniformPrior
+              (1 / 20) (logarithmicPoissonDepth n)
+              (geometricForwardTiltIndex n) n x)
+            Filter.atTop (nhds 0)) := by
+  apply exists_stationaryPoissonDepthSelection_allTime_vanishing_event
+    contractionBoolPMF contractionBoolStationary
+    contractionBoolStationary_invariant false
+    (score := contractionBoolScoreCatalog)
+    (fun _i ↦ contractionBoolScore_mem_Icc)
+    (alpha := (1 / 4 : ℝ)) (D := (1 / 4 : ℝ))
+    (by norm_num) (by norm_num) (by norm_num)
+    contractionBool_oscillation_contraction
+  · intro _i
+    change finiteOscillation
+      (centeredMarkovRowRisk contractionBoolPMF
+        contractionBoolStationary contractionBoolScore) ≤ 1 / 4
+    rw [contractionBool_finiteOscillation_centered]
+  · exact contractionBoolUniformPrior_isFullSupportPMF
+  · norm_num
+  · norm_num
+  · intro _x _n
+    exact contractionBoolUniformPrior_isFullSupportPMF.toIsPMF
 
 def contractionBoolTiltWeight (_j : Bool) : ℝ := 1 / 2
 
@@ -365,6 +628,13 @@ theorem contractionBool_depthTwo_stationary_certificate :
 #check contractionBool_depthTwo_potential
 #check contractionBool_depthTwo_residual_values
 #check contractionBool_depthTwo_stationary_certificate
+#check contractionBool_depthTwo_potential_nonconstant
+#check contractionBool_depth_tradeoff_at_four
+#check contractionBool_corrected_prefix_values
+#check contractionBool_depthOne_boundary_at_four
+#check contractionBool_depthTwo_boundary_at_four
+#check contractionBool_argmin_no_worse_than_depths_one_two
+#check contractionBool_allTime_vanishing_certificate
 
 #print axioms contractionBoolStationary_invariant
 #print axioms contractionBool_oscillation_contraction
@@ -373,6 +643,13 @@ theorem contractionBool_depthTwo_stationary_certificate :
 #print axioms contractionBool_depthTwo_potential
 #print axioms contractionBool_depthTwo_residual_values
 #print axioms contractionBool_depthTwo_stationary_certificate
+#print axioms contractionBool_depthTwo_potential_nonconstant
+#print axioms contractionBool_depth_tradeoff_at_four
+#print axioms contractionBool_corrected_prefix_values
+#print axioms contractionBool_depthOne_boundary_at_four
+#print axioms contractionBool_depthTwo_boundary_at_four
+#print axioms contractionBool_argmin_no_worse_than_depths_one_two
+#print axioms contractionBool_allTime_vanishing_certificate
 
 end
 

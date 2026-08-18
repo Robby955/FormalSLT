@@ -1,12 +1,15 @@
 import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 
 /-!
-# Confidence-allocated Poisson-depth selection receipt
+# Confidence-allocated Poisson-depth structural smoke test
 
 The concrete one-state chain uses the strictly sharper oscillation envelope
 `D = 1/4` (rather than the generic unit-range bound `D = 1`).  Its depth and
 tilt selectors depend on the reported sample size, while the theorem remains
-one common outer event.
+one common outer event.  The chain's actual centered oscillation and Poisson
+potential are zero, so this file is only an instantiation smoke test.  The
+substantive asymmetric-chain receipt, with nonconstant potentials and an
+evaluated finite-depth argmin, is in `CheckStationaryPoissonContraction.lean`.
 -/
 
 open Finset MeasureTheory ProbabilityTheory
