@@ -11,6 +11,7 @@ import FormalSLT.AnytimeValid.MixtureCS
 import FormalSLT.AnytimeValid.OptimizedLambdaCS
 import FormalSLT.AnytimeValid.DyadicEpochCS
 import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
+import FormalSLT.AnytimeValid.ForwardBesselProcess
 import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
 import FormalSLT.PACBayes.TimeUniformPACBayes
@@ -26,5 +27,7 @@ import FormalSLT.PACBayes.IIDContinuousGaussian
 # Stable sequential-inference imports
 
 This declaration-free umbrella re-exports Ville bounds, e-processes, betting
-processes, confidence sequences, mixtures, and time-uniform PAC-Bayes results.
+processes, confidence sequences, mixtures, the predictable-residual forward
+process and its hybrid-Bessel lower envelope, and time-uniform PAC-Bayes
+results.
 -/

@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C761-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-217-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-99%2C972-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C863-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-220-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-103%2C148-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -134,6 +134,36 @@ posterior PMF, and every predeclared tilt atom.
   checks `delta = 1/16`, point-posterior `KL = log 2`, both tilt boundaries at
   most `3/8`, and an existential good path with selected risk below `7/8`.
   Its explicit selector-branch exercises are not proved good.
+
+### Forward-Bessel time-uniform PAC-Bayes
+
+For bounded observations with a fixed conditional mean, FormalSLT starts from
+the standard predictable-residual empirical-Bernstein e-process. It proves two
+Bessel-variance upper envelopes for that process's quadratic penalty and uses
+their smaller value separately for each hypothesis. The finite-hypothesis,
+finite-tilt PAC-Bayes layer mixes the actual e-processes into one master
+process. One outer-mass event then works for every time `n >= 2`, every
+post-data posterior PMF, and every declared tilt atom. The selected atom may
+depend on the path, time, and posterior. Its boundary pays one hypothesis KL
+term and the selected atom's `log (1 / (delta * weight))` cost.
+
+- **Lean theorems:** `exists_forwardBesselPACBayes_event` and the IID endpoint
+  `exists_forwardIIDBesselPACBayes_event` in
+  [`ForwardBesselPACBayes.lean`](./FormalSLT/PACBayes/ForwardBesselPACBayes.lean)
+  and
+  [`ForwardBesselPACBayesIID.lean`](./FormalSLT/PACBayes/ForwardBesselPACBayesIID.lean)
+- **Checked example:**
+  [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean)
+  uses a fair-Boolean IID stream, a posterior selected from the observed label,
+  and a path/time/posterior-dependent tilt selector. It checks event mass at
+  most `1/2`, `KL = log 2`, and existence of a good path.
+
+The displayed hybrid Bessel expression is only a checked lower envelope of the
+actual predictable-residual e-process; it is not itself proved to be an
+e-process. The receipt does not establish an informative numerical width, and
+the finite tilt catalog does not yet give a vanishing optimized all-time
+boundary. This forward lane remains finite-hypothesis and makes no novelty or
+priority claim.
 
 ### Finite Markov prequential PAC-Bayes
 
@@ -604,6 +634,17 @@ declaration and prints its axiom profile.
   on the path. The Boolean receipt evaluates both possible boundaries at most
   `3/8` and proves existential, rather than named, good-path risk `< 7/8`;
   [`CheckTimeUniformIIDTiltMixture.lean`](./examples/CheckTimeUniformIIDTiltMixture.lean)
+- **Forward hybrid-Bessel finite master** —
+  `forwardBesselPACBayesMasterProcess_eProcess_of_bounded` mixes the actual
+  predictable-residual e-process over finite hypothesis and tilt priors.
+  `exists_forwardIIDBesselPACBayes_event` supplies the IID bounded-loss
+  adapter and one outer-mass event valid for every `n >= 2`, posterior PMF, and
+  declared atom. A selector may depend on the path, time, and posterior. The
+  boundary contains one hypothesis KL term, the selected atom's log-weight
+  penalty, and the posterior average of per-hypothesis hybrid Bessel penalties.
+  The hybrid expression is a lower envelope, not an e-process, and the Boolean
+  receipt is structural rather than a numerical-width certificate;
+  [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean)
 - **Gaussian KL identification** — `diagonalGaussianMeasure_klDiv_toReal_eq`
   and `sphericalGaussianMeasure_klDiv_toReal_eq`;
   [`CheckGaussianMeasureKL.lean`](./examples/CheckGaussianMeasureKL.lean)
@@ -920,6 +961,12 @@ The main learning-theory results are deliberately finite and explicit.
   tilts satisfying `0 < lambda_j` and `b * lambda_j < 3`. Its finite-IID
   adapter assumes measurable `[0,1]` losses, measurable IID sample coordinates,
   and specializes that tilt condition to `lambda_j < 3`.
+- **Forward-Bessel PAC-Bayes:** finite nonempty hypothesis and tilt types,
+  full-support normalized priors, adapted `[0,1]` increments with fixed
+  conditional means, and predeclared atoms `0 < lambda_j < 1`. The IID adapter
+  derives these obligations from strongly measurable `[0,1]` losses and an IID
+  sample stream. The hybrid Bessel minimum is taken per hypothesis before
+  posterior averaging.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
@@ -937,23 +984,13 @@ The main learning-theory results are deliberately finite and explicit.
 - A general probability-space Dudley theorem that constructs arbitrary
   measurable suprema and the required separability/chaining interface
 - An infinite-class confidence sequence
-- All-real tilt optimization, a countable process-level tilt mixture, and a
-  forward exact-Bessel e-process with optional-stopping semantics. The generic
-  finite weighted hypothesis--tilt e-process, fixed
-  rational two-event theorem,
-  separately weighted finite `eta`/`lambda` catalogs, one-event finite
-  joint-pair catalog, zero-residual specialization, and all three branches of
-  the exact finite-catalog `xi` residual are checked. The closed-form dyadic
-  square-root-plus-linear endpoint is also checked. A support-aware
-  `Nat`-indexed fixed-sample master event, per-entry prior-moment extraction,
-  finite-posterior bound, and exact-`xi` selector are also checked. The separate
-  reverse-epoch stitch gives an all-sample-size event over arbitrary measurable
-  hypothesis spaces with finite-valued observations; it is not an all-real
-  optimizer, forward e-process, optional-stopping API, or continuous-observation
-  theorem.
-- A time-uniform end-to-end i.i.d. bounded-loss PAC-Bayes specialization over
-  continuous hypothesis spaces beyond the current finite-dimensional spherical
-  Gaussian family
+- A countable or all-real forward tilt mixture, a vanishing optimized all-time
+  hybrid-Bessel boundary, or a continuous-hypothesis version of the forward
+  lane. The checked stochastic object is the predictable-residual e-process;
+  the hybrid Bessel expression is only its lower envelope, not a separately
+  proved e-process. The offline reverse-epoch theorem remains a distinct
+  all-sample-size result over arbitrary measurable hypothesis spaces with
+  finite-valued observations.
 - Same-trajectory-trained or online-updated predictors, random initial laws,
   continuous-state dynamics, and stationary or mixing-based long-run risk
   guarantees
@@ -1038,8 +1075,11 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   dyadic epochs and countable stitching to one all-sample-size finite-IID event
 - [x] Extend the all-sample-size empirical-Bernstein result to general
   measurable hypothesis spaces with finite-valued observations
-- [ ] Separately study a forward exact-Bessel e-process,
-  optional stopping, conditional e-variable composition, and composite nulls
+- [x] Convert the predictable-residual empirical-Bernstein e-process to a
+  checked hybrid Bessel lower envelope, mix finite hypothesis and tilt priors,
+  and supply the finite-IID all-posterior selected-atom adapter
+- [ ] Extend the forward lane to a vanishing optimized all-time boundary,
+  countable or all-real tilt control, and continuous hypothesis spaces
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 - [ ] Extend the finite Markov PAC-Bayes certificate to random initial laws,

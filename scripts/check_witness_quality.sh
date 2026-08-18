@@ -143,6 +143,12 @@ classify_witness() {
 #     sample controlling every entry, explicit first-two confidence shares, and
 #     an exercised null guard; the posterior-selector receipt is structural,
 #     not a numerical nonvacuity witness)
+#   exists_forwardIIDBesselPACBayes_event /
+#     fairBoolForwardBessel_selected_goodPath_exists
+#     (fair-Bool IID stream, two constant hypotheses, two positive declared
+#     tilts, point-posterior KL = log 2, and path/time/posterior-dependent
+#     selection; an outer-mass bound below one yields one good path carrying
+#     every n >= 2 bound; the hybrid-Bessel width remains symbolic)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -187,6 +193,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckExponentialFamily.lean"
   "examples/CheckMarkovRisk.lean"
   "examples/CheckMarkovPACBayes.lean"
+  "examples/CheckForwardBesselPACBayesIID.lean"
 )
 
 fail=0

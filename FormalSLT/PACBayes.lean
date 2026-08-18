@@ -70,6 +70,8 @@ import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformScorePACBayes
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
+import FormalSLT.PACBayes.ForwardBesselPACBayes
+import FormalSLT.PACBayes.ForwardBesselPACBayesIID
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
@@ -92,5 +94,8 @@ all-sample-size iid empirical-Bernstein events for finite and arbitrary
 measurable hypothesis spaces, support-aware
 countable master-mixture foundation and finite-posterior catalog-selector
 layer, score e-process, finite weighted tilt e-process and its finite-IID
-bounded-loss adapter, and time-uniform PAC-Bayes surfaces.
+bounded-loss adapter, the finite-hypothesis/finite-declared-tilt
+predictable-residual master e-process with a hybrid-Bessel lower-envelope
+boundary for `n >= 2`, its IID bounded-loss outer-mass wrapper, and
+time-uniform PAC-Bayes surfaces.
 -/

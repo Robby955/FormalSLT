@@ -115,33 +115,38 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite hypotheses plus spherical-Gaussian continuous-hypothesis "
             "single-pair and finite fixed-catalog specializations; a generic "
             "finite normalized hypothesis--tilt e-process with one Ville "
-            "event and selected-atom weight penalty"
+            "event and selected-atom weight penalty; a forward finite-"
+            "hypothesis predictable-residual e-process with a hybrid Bessel "
+            "lower envelope and finite weighted PAC-Bayes tilt catalog; and "
+            "an offline reverse all-sample-size empirical-Bernstein endpoint "
+            "over arbitrary measurable hypothesis spaces"
         ),
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
-            "Extend the checked finite normalized hypothesis--tilt e-process "
-            "to a countable mixture with explicit summability obligations, "
-            "then pursue honest all-real localization using continuous score "
-            "control or a supremum-to-integral argument and generalize "
-            "the fixed spherical-Gaussian posterior lane."
+            "Extend the forward finite normalized hypothesis--tilt master to "
+            "a countable vanishing-width mixture and measurable hypothesis "
+            "priors, then pursue honest all-real localization using continuous "
+            "score control or a supremum-to-integral argument. Keep that "
+            "forward-process target distinct from the checked offline reverse "
+            "continuous-posterior endpoint."
         ),
         "boundary": (
-            "The base continuous-hypothesis i.i.d. theorem is fixed-tilt, "
-            "fixed-posterior, and spherical-Gaussian. Finite fixed catalogs "
-            "of posterior/tilt pairs and a posterior-uniform finite weighted "
-            "indicator-Bernstein tilt catalog support post-sample selection. "
-            "The generic time-uniform master also supports a selected atom "
-            "from one finite normalized tilt prior, and its finite-IID "
-            "bounded-loss adapter packages one measurable exceptional event. "
-            "Neither is countable, all-real, an exact-Bessel process, or "
-            "simultaneous over arbitrary continuous posteriors. A separate "
-            "fixed-sample countable joint "
+            "The process-level continuous-hypothesis i.i.d. theorem is fixed-"
+            "tilt, fixed-posterior, and spherical-Gaussian. The reverse "
+            "stitched theorem is instead uniform over finite-KL posteriors on "
+            "an arbitrary measurable hypothesis space, but it is an offline "
+            "reverse-exchangeability result with declared finite tilts, not a "
+            "forward e-process. The new forward hybrid-Bessel PAC-Bayes master "
+            "is a genuine finite hypothesis--tilt mixture of predictable-"
+            "residual e-processes; its hybrid Bessel expression is only a "
+            "pointwise lower envelope, its catalog is finite, and its Boolean "
+            "receipt is structural rather than an informative-width result. "
+            "A separate fixed-sample countable joint "
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
-            "result. No "
-            "time-uniform result is simultaneous over all continuous "
-            "posteriors or all real tilts."
+            "result. No forward result is simultaneous over arbitrary "
+            "continuous posteriors or all real tilts."
         ),
     },
     {
@@ -168,16 +173,21 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "all-sample-size finite-IID event; plus a continuous-prior "
             "reverse mixture, finite tilt catalog, closed-form epoch bound, "
             "and stitched all-sample-size endpoint over arbitrary measurable "
-            "hypothesis spaces"
+            "hypothesis spaces; plus a known predictable-residual forward "
+            "empirical-Bernstein e-process, exact Welford/Abel identities, a "
+            "hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes "
+            "master, and its finite-IID adapter"
         ),
         "difficulty": "hard",
         "source": (
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Publish comparative all-sample-size numerical evidence and "
-            "external review. Treat all-real optimization and a forward "
-            "exact-Bessel e-process as separate research targets."
+            "Add an informative numerical-width receipt for the forward "
+            "hybrid-Bessel endpoint, then derive a countable or stitched "
+            "vanishing-width forward tilt mixture and extend its PAC-Bayes "
+            "master to measurable hypothesis priors. Continue comparative "
+            "evidence and external review."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
@@ -199,6 +209,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "a path outside the exceptional event. The receipt fixes the "
             "posterior and does not exercise data-dependent continuous-"
             "posterior selection. "
+            "Separately, the forward lane packages the actual predictable-"
+            "residual process as an e-process and bounds it below by a hybrid "
+            "per-hypothesis Bessel penalty. The hybrid expression is not "
+            "itself an e-process. Its PAC-Bayes master currently has finite "
+            "hypotheses and a declared finite tilt catalog, and its Boolean "
+            "good-path receipt leaves the numerical width symbolic. "
             "The separately budgeted rational risk theorem remains a distinct "
             "two-event result."
         ),

@@ -82,11 +82,16 @@ files.
   event, all-posterior validity, and post-path selection of a declared atom with
   its exact weight penalty. The checked fixed-sample countable joint master now
   has a downstream finite-posterior exact-`xi` selector over its predeclared
-  `Nat`-indexed tilt-pair catalog. Countable process-level selection, all-real
-  lambda optimization, predictable-variance or exact-Bessel process adapters,
-  and time-uniform posterior control for general continuous families remain
-  open. A finite-IID
-  measurable bounded-loss adapter for the finite process master is checked.
+  `Nat`-indexed tilt-pair catalog. A separate forward lane now checks the
+  predictable-residual empirical-Bernstein e-process, two Bessel envelopes and
+  their per-hypothesis hybrid minimum, a finite hypothesis--tilt PAC-Bayes
+  master, and its IID bounded-loss adapter. One outer-mass event supports every
+  `n >= 2`, posterior PMF, and declared atom, including
+  path/time/posterior-dependent atom selection. Countable process-level
+  selection, all-real lambda optimization, a vanishing optimized all-time
+  boundary, and forward-process posterior control for general continuous
+  families remain open. The hybrid Bessel expression is a lower envelope of
+  the actual e-process, not itself a proved e-process.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
   checked for `[0,1]` losses under the explicit finite IID product law and
@@ -131,9 +136,15 @@ files.
   a path outside the exceptional event. The receipt fixes the posterior and
   does not exercise data-dependent continuous-posterior
   selection.
-  Observations remain finite-valued. This is not all-real tilt optimization, a
-  forward exact-Bessel e-process, optional-stopping inference, or a
-  continuous-observation theorem.
+  Observations remain finite-valued. Separately, the checked forward lane mixes
+  the actual predictable-residual e-process over finite hypothesis and tilt
+  priors and converts its quadratic penalty to a hybrid Bessel lower envelope.
+  Its common event supports every `n >= 2`, posterior PMF, and declared atom,
+  with one hypothesis KL and the selected atom's log-weight penalty. The
+  forward receipt has no informative numerical width, the hybrid expression is
+  not itself an e-process, and vanishing optimized, countable/all-real, and
+  continuous-hypothesis forward endpoints remain open. Neither forward nor
+  reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream
   Rademacher, VC, metric-entropy, and stability wrappers. Dependent-coordinate

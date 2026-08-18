@@ -192,6 +192,14 @@
   every posterior PMF on a fixed finite hypothesis type with one KL term and
   posterior-averaged per-hypothesis Bessel variance. This is an offline
   reverse-epoch theorem, not a forward e-process or optional-stopping result.
+- [x] Forward hybrid-Bessel PAC-Bayes certificate:
+  the predictable-residual empirical-Bernstein process is checked as the
+  stochastic e-process, while two Bessel envelopes and their hybrid minimum
+  give the observable lower-envelope conversion. A finite full-support
+  hypothesis--tilt master has one outer-mass event for every `n >= 2`, posterior
+  PMF, and declared atom, with path/time/posterior-dependent selection, one
+  hypothesis KL, and one selected-atom log penalty. The IID bounded-loss adapter
+  and a structural fair-Boolean good-path receipt are checked separately.
 - [x] General-measurable-hypothesis all-sample-size extension:
   continuous-prior integration, the reverse joint mean/variance epoch,
   predeclared dyadic tilt catalog, closed-form prefix endpoint, and infinite
@@ -211,15 +219,17 @@
 
 ### Near-term
 
-- [ ] **All-sample-size empirical-Bernstein evidence and forward extension**
+- [ ] **All-sample-size and forward empirical-Bernstein evidence**
   - Freeze the exact theorem commit and archive the full build, example,
     axiom, statement-fidelity, witness, documentation, and metadata gates.
   - Compare the stitched constants and all-sample-size nonvacuity region against
     PAC-Bayes-kl, Hoeffding/Catoni, Tolstikhin--Seldin, and existing anytime
     PAC-Bayes boundaries on identical inputs.
   - Obtain independent PAC-Bayes/constants and Lean probability reviews.
-  - Pursue the forward exact-Bessel e-process and any optional-stopping API as a
-    separate theorem family; do not infer them from the offline reverse stitch.
+  - Add a positive-KL, positive-variance forward receipt with an informative
+    numerical width, then study vanishing optimized all-time boundaries,
+    countable or all-real tilts, and continuous hypotheses. Do not treat the
+    hybrid Bessel lower envelope as an e-process.
 
 - [ ] **Finite stochastic-dynamics extensions**
   - Generalize the deterministic initial state to a supplied initial law.
@@ -356,14 +366,19 @@
     normalized finite hypothesis--tilt e-process with one Ville event and a
     selected-atom weight penalty is checked separately at the generic process
     level, together with a measurable-event finite-IID `[0,1]` loss adapter.
+    A second forward lane now checks the predictable-residual
+    empirical-Bernstein e-process, its hybrid Bessel lower envelope, and a
+    finite hypothesis--tilt PAC-Bayes master with an IID adapter and
+    path/time/posterior-dependent atom selection. Its receipt is structural and
+    does not prove an informative numerical width.
     The reverse-exchangeability lane now separately gives one all-sample-size
     empirical-Bernstein event for finite IID data and finite hypotheses, with
-    constants `5/2` and `5`. Extending the process-level tilt mixture to a
-    countable catalog, exact all-real optimization, a forward exact-Bessel
-    e-process, continuous Bernstein posteriors, and infinite hypothesis classes
-    remain open. The
-    separate bounded-loss continuous lane currently covers a fixed
-    spherical-Gaussian posterior; it does not close these extensions.
+    constants `5/2` and `5`. Extending the forward process lane to a vanishing
+    optimized boundary, a countable or all-real tilt catalog, continuous
+    Bernstein posteriors, and infinite hypothesis classes remains open. The
+    separate reverse continuous lane covers arbitrary measurable hypotheses
+    for finite-valued observations; it does not close these forward
+    extensions.
 
 ### Long-term
 
