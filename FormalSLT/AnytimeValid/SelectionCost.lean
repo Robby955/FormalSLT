@@ -365,6 +365,98 @@ theorem diagonalSpike_selected_expectation_eq_card
       rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
       simp
 
+/-- For the diagonal witness, arbitrary coordinate corrections have selected
+expectation exactly equal to their total coefficient mass.  This is the
+necessity half behind the Kraft condition: no upper-bound argument is used. -/
+theorem diagonalSpike_selectedCoefficient_expectation_eq_sum
+    [Fintype Omega] [DecidableEq Omega]
+    (p : Omega -> Real) (hp : IsFullSupportPMF p)
+    (coefficient : Omega -> Real) :
+    finiteExpectation p
+        (fun omega => coefficient omega * diagonalSpike p omega omega) =
+      ∑ omega : Omega, coefficient omega := by
+  unfold finiteExpectation diagonalSpike
+  refine Finset.sum_congr rfl (fun omega _ => ?_)
+  simp only [if_true]
+  field_simp [(hp.pos omega).ne']
+
+/-- On the diagonal witness, nonnegative coefficient normalization is
+expectation-safe if and only if the coefficients sum to at most one. -/
+theorem diagonalSpike_selectedCoefficient_safe_iff
+    [Fintype Omega] [DecidableEq Omega]
+    (p : Omega -> Real) (hp : IsFullSupportPMF p)
+    (coefficient : Omega -> Real)
+    (_hcoefficient_nonneg : forall omega, 0 <= coefficient omega) :
+    finiteExpectation p
+        (fun omega => coefficient omega * diagonalSpike p omega omega) <= 1 <->
+      (∑ omega : Omega, coefficient omega) <= 1 := by
+  rw [diagonalSpike_selectedCoefficient_expectation_eq_sum p hp coefficient]
+
+/-- Exact Kraft necessity on the diagonal witness.  Correcting coordinate `i`
+by reciprocal cost `1 / cost i` is safe exactly when those reciprocal costs
+sum to at most one. -/
+theorem diagonalSpike_kraftCorrection_safe_iff
+    [Fintype Omega] [DecidableEq Omega]
+    (p : Omega -> Real) (hp : IsFullSupportPMF p)
+    (cost : Omega -> Real) (hcost_pos : forall omega, 0 < cost omega) :
+    finiteExpectation p
+        (fun omega => (1 / cost omega) * diagonalSpike p omega omega) <= 1 <->
+      (∑ omega : Omega, 1 / cost omega) <= 1 :=
+  diagonalSpike_selectedCoefficient_safe_iff p hp (fun omega => 1 / cost omega)
+    (fun omega => (one_div_pos.mpr (hcost_pos omega)).le)
+
+/-- A common scalar correction divides the diagonal selected expectation by
+that scalar, so its exact value is `|Omega| / correction`. -/
+theorem diagonalSpike_scalarCorrection_expectation_eq_card_div
+    [Fintype Omega] [DecidableEq Omega]
+    (p : Omega -> Real) (hp : IsFullSupportPMF p)
+    (correction : Real) :
+    finiteExpectation p
+        (fun omega => diagonalSpike p omega omega / correction) =
+      (Fintype.card Omega : Real) / correction := by
+  calc
+    finiteExpectation p (fun omega => diagonalSpike p omega omega / correction) =
+        finiteExpectation p
+          (fun omega => (1 / correction) * diagonalSpike p omega omega) := by
+      congr 1
+      funext omega
+      ring
+    _ = ∑ _omega : Omega, (1 / correction : Real) :=
+      diagonalSpike_selectedCoefficient_expectation_eq_sum
+        p hp (fun _omega => 1 / correction)
+    _ = (Fintype.card Omega : Real) / correction := by
+      rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+      ring
+
+/-- **Exact symmetric necessity.** A positive common correction makes the
+diagonal selected score an e-value if and only if it is at least the catalog
+cardinality. -/
+theorem diagonalSpike_scalarCorrection_safe_iff_card_le
+    [Fintype Omega] [DecidableEq Omega]
+    (p : Omega -> Real) (hp : IsFullSupportPMF p)
+    {correction : Real} (hcorrection : 0 < correction) :
+    finiteExpectation p
+        (fun omega => diagonalSpike p omega omega / correction) <= 1 <->
+      (Fintype.card Omega : Real) <= correction := by
+  rw [diagonalSpike_scalarCorrection_expectation_eq_card_div p hp correction]
+  exact div_le_one hcorrection
+
+/-- On the logarithmic scale, every positive safe symmetric correction for the
+diagonal witness pays at least `log |Omega|`. -/
+theorem diagonalSpike_logCorrection_ge_logCard
+    [Fintype Omega] [Nonempty Omega] [DecidableEq Omega]
+    (p : Omega -> Real) (hp : IsFullSupportPMF p)
+    {correction : Real} (hcorrection : 0 < correction)
+    (hsafe : finiteExpectation p
+      (fun omega => diagonalSpike p omega omega / correction) <= 1) :
+    Real.log (Fintype.card Omega : Real) <= Real.log correction := by
+  have hcard_pos : (0 : Real) < Fintype.card Omega := by
+    exact_mod_cast Fintype.card_pos
+  have hcard_le : (Fintype.card Omega : Real) <= correction :=
+    (diagonalSpike_scalarCorrection_safe_iff_card_le
+      p hp hcorrection).mp hsafe
+  exact Real.log_le_log hcard_pos hcard_le
+
 /-- The diagonal spike makes the reciprocal-cost union bound exact: every
 observation crosses its own cost `1 / p i`, and the reciprocal costs sum to one. -/
 theorem diagonalSpike_reciprocal_union_sharp

@@ -37,6 +37,22 @@ theorem bool_diagonal_selected_weighted_mean_one :
         (selectedWeightedScore fairBool (diagonalSpike fairBool) id) = 1 :=
   diagonalSpike_selectedWeightedScore_expectation_eq_one fairBool fairBool_fullSupport
 
+theorem bool_diagonal_scalarCorrection_safe_iff_two_le
+    {correction : Real} (hcorrection : 0 < correction) :
+    finiteExpectation fairBool
+        (fun omega => diagonalSpike fairBool omega omega / correction) <= 1 <->
+      2 <= correction := by
+  simpa using diagonalSpike_scalarCorrection_safe_iff_card_le
+    fairBool fairBool_fullSupport hcorrection
+
+theorem bool_diagonal_logCorrection_ge_log_two
+    {correction : Real} (hcorrection : 0 < correction)
+    (hsafe : finiteExpectation fairBool
+      (fun omega => diagonalSpike fairBool omega omega / correction) <= 1) :
+    Real.log 2 <= Real.log correction := by
+  simpa using diagonalSpike_logCorrection_ge_logCard
+    fairBool fairBool_fullSupport hcorrection hsafe
+
 theorem bool_diagonal_reciprocal_union_exact :
     finiteEventMass fairBool
         (fun omega => exists i, (1 / fairBool i) <= diagonalSpike fairBool i omega) = 1 /\
@@ -58,6 +74,12 @@ example : Real.log ((Fintype.card Bool : Real) / (1 / 20 : Real)) =
 #check diagonalSpike_expectation_eq_one
 #check diagonalSpike_selectedWeightedScore_expectation_eq_one
 #check diagonalSpike_selected_expectation_eq_card
+#check diagonalSpike_selectedCoefficient_expectation_eq_sum
+#check diagonalSpike_selectedCoefficient_safe_iff
+#check diagonalSpike_kraftCorrection_safe_iff
+#check diagonalSpike_scalarCorrection_expectation_eq_card_div
+#check diagonalSpike_scalarCorrection_safe_iff_card_le
+#check diagonalSpike_logCorrection_ge_logCard
 #check diagonalSpike_reciprocal_union_sharp
 #check symmetric_simultaneous_upperTail_mass_le_alpha
 #check symmetric_selected_upperTail_mass_le_alpha
@@ -73,6 +95,12 @@ example : Real.log ((Fintype.card Bool : Real) / (1 / 20 : Real)) =
 #print axioms diagonalSpike_expectation_eq_one
 #print axioms diagonalSpike_selectedWeightedScore_expectation_eq_one
 #print axioms diagonalSpike_selected_expectation_eq_card
+#print axioms diagonalSpike_selectedCoefficient_expectation_eq_sum
+#print axioms diagonalSpike_selectedCoefficient_safe_iff
+#print axioms diagonalSpike_kraftCorrection_safe_iff
+#print axioms diagonalSpike_scalarCorrection_expectation_eq_card_div
+#print axioms diagonalSpike_scalarCorrection_safe_iff_card_le
+#print axioms diagonalSpike_logCorrection_ge_logCard
 #print axioms diagonalSpike_reciprocal_union_sharp
 #print axioms symmetric_simultaneous_upperTail_mass_le_alpha
 #print axioms symmetric_selected_upperTail_mass_le_alpha
@@ -81,6 +109,8 @@ example : Real.log ((Fintype.card Bool : Real) / (1 / 20 : Real)) =
 #print axioms bool_diagonal_each_mean_one
 #print axioms bool_diagonal_selected_uncorrected_mean_two
 #print axioms bool_diagonal_selected_weighted_mean_one
+#print axioms bool_diagonal_scalarCorrection_safe_iff_two_le
+#print axioms bool_diagonal_logCorrection_ge_log_two
 #print axioms bool_diagonal_reciprocal_union_exact
 
 end
