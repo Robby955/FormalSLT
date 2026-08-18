@@ -11,6 +11,7 @@ import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
+import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 
 /-!
 # Stable stochastic-dynamics imports
@@ -20,5 +21,6 @@ including arbitrary prefix-dependent probability kernels and bounded
 prefix/next-state scores with deterministic start.  It also re-exports the
 separate Markov anytime-valid and posterior-uniform PAC-Bayes certificates for
 finite predictor catalogs, including the empirical-Bernstein trajectory
-endpoint and its supplied-Poisson stationary-risk specialization.
+endpoint, its supplied-Poisson stationary-risk specialization, and the
+finite-depth automatic Poisson construction under oscillation contraction.
 -/
