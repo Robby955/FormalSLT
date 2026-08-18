@@ -13,6 +13,8 @@ import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE
+import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator
+import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator
 
 /-!
 # Stable stochastic-dynamics imports
@@ -28,6 +30,9 @@ normalized one-step importance-weighting interfaces.  For finite state-based
 Markov target policies, it exports a stationary target-policy OPE endpoint
 under a known environment and behavior policy, supplied invariant target
 laws and exact Poisson potentials, and declared overlap and span bounds.  It
-does not estimate an unknown kernel or invariant law, or provide a
-full-trajectory importance-sampling theorem.
+also exports encountered-prefix dynamic comparators for finite catalogs of
+history-dependent target policies, including a known prefix/time-dependent
+environment kernel.  These do not estimate an unknown kernel or invariant
+law, identify target-law occupancy value, or provide a full-trajectory
+importance-sampling theorem.
 -/
