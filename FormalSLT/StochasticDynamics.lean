@@ -15,6 +15,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
+import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
 
 /-!
 # Stable stochastic-dynamics imports
@@ -29,4 +30,6 @@ finite-depth automatic Poisson construction under oscillation contraction.
 It also exposes the robust fixed-candidate Poisson bridge under an explicit
 row-wise total-variation misspecification budget, together with the induced
 Dobrushin perturbation certificate and uniqueness of supplied invariant laws.
+It additionally exposes time-uniform empirical transition-coordinate and
+row-total-variation confidence certificates for unknown finite kernels.
 -/
