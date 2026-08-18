@@ -18,6 +18,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
 import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
 import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog
+import FormalSLT.StochasticDynamics.FiniteInvariantExistence
 
 /-!
 # Stable stochastic-dynamics imports
@@ -34,4 +35,7 @@ row-wise total-variation misspecification budget, together with the induced
 Dobrushin perturbation certificate and uniqueness of supplied invariant laws.
 It additionally exposes time-uniform empirical transition-coordinate and
 row-total-variation confidence certificates for unknown finite kernels.
+Finally, finite-simplex Cesaro compactness
+constructs an invariant PMF for every nonempty finite kernel; strict Dobrushin
+or candidate row-TV certificates upgrade existence to uniqueness.
 -/
