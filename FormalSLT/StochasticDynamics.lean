@@ -14,6 +14,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
+import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
 
 /-!
 # Stable stochastic-dynamics imports
@@ -26,5 +27,6 @@ finite predictor catalogs, including the empirical-Bernstein trajectory
 endpoint, its supplied-Poisson stationary-risk specialization, and the
 finite-depth automatic Poisson construction under oscillation contraction.
 It also exposes the robust fixed-candidate Poisson bridge under an explicit
-row-wise total-variation misspecification budget.
+row-wise total-variation misspecification budget, together with the induced
+Dobrushin perturbation certificate and uniqueness of supplied invariant laws.
 -/

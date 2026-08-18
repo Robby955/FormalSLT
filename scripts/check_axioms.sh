@@ -238,6 +238,14 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_path_event"
   "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event"
+  "FormalSLT.StochasticDynamics.finitePMFTotalVariation_triangle"
+  "FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_le_candidate_add_two_mul_rowTV"
+  "FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_lt_one_of_candidate_rowTV"
+  "FormalSLT.StochasticDynamics.candidateDobrushin_add_two_mul_rowTV_isOscillationContraction"
+  "FormalSLT.StochasticDynamics.invariantPMF_unique_of_finiteDobrushinCoefficient_lt_one"
+  "FormalSLT.StochasticDynamics.invariantPMF_unique_of_candidate_rowTV"
+  "FormalSLT.StochasticDynamics.stationaryMarkovRisk_eq_of_candidate_rowTV"
+  "FormalSLT.StochasticDynamics.stationaryPosteriorMarkovRisk_eq_of_candidate_rowTV"
 )
 
 # Axioms permitted in a clean proof.
@@ -295,6 +303,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonContraction"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate"
+  echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -348,7 +357,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonPACBayes \
   FormalSLT.StochasticDynamics.StationaryPoissonContraction \
   FormalSLT.StochasticDynamics.StationaryPoissonDobrushin \
-  FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate >/dev/null
+  FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate \
+  FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"
