@@ -209,6 +209,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.measurableTrajectoryRiskShortfall_condSecondMoment_le_one_fourth_of_joint"
   "FormalSLT.StochasticDynamics.clippedRealTrajectoryScore_condExp"
   "FormalSLT.StochasticDynamics.clippedRealTrajectoryRisk_zero_prefix"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousMeasurableTrajectoryLowerProcess_filtered"
+  "FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -301,6 +303,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
   echo "import FormalSLT.StochasticDynamics.TrajectoryRisk"
   echo "import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk"
+  echo "import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
@@ -353,6 +356,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.TimeUniformIIDTiltMixture \
   FormalSLT.StochasticDynamics.TrajectoryRisk \
   FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk \
+  FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
