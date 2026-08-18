@@ -830,6 +830,25 @@ declarations; modules are relative to `FormalSLT`.
 | `fairBoolThreshold_twoGaussianGrid_certificate` | `PACBayes.IIDContinuousGaussianGrid` | Stochastic two-entry certificate for `N(0,1)` at tilt `1/2` and `N(1,1)` at tilt `1/4`, with total failure budget `exp(-1)` |
 | `fairBoolThreshold_twoGaussianSelected_certificate` | `PACBayes.IIDContinuousGaussianGrid` | The worked two-entry fair-Bernoulli catalog remains valid for every sample-dependent Boolean selector |
 
+## Finite prefix-dependent trajectory semantics
+
+| Declaration | Module | Role |
+|---|---|---|
+| `map_trajectory_next` | `StochasticDynamics.TrajectoryRisk` | Identifies the next-coordinate law of a trajectory continuation with the probability kernel selected by its complete finite prefix |
+| `observedTrajectoryScore_condExp` | `StochasticDynamics.TrajectoryRisk` | Derives the exact prefix-conditional expectation of an arbitrary fixed `[0,1]` prefix/next-state score under the generated finite-state path law |
+| `trajectoryRiskInnovation_incrementAdapted` | `StochasticDynamics.TrajectoryRisk` | Shows that observed score minus prefix-conditional risk is measurable at the next filtration level |
+| `abs_trajectoryRiskInnovation_le_one` | `StochasticDynamics.TrajectoryRisk` | Bounds the centered innovation in absolute value by one for `[0,1]` scores |
+| `trajectoryRiskInnovation_condExp_eq_zero` | `StochasticDynamics.TrajectoryRisk` | Proves conditional centering from the trajectory law rather than assuming a martingale-difference property |
+| `trajectoryRiskInnovation_condSecondMoment_le_one_fourth` | `StochasticDynamics.TrajectoryRisk` | Gives the universal `1/4` conditional second-moment bound for the centered `[0,1]` score |
+| `trajectoryMeasure_prefixKernel_eq_markovPathMeasure` | `StochasticDynamics.TrajectoryRisk` | Identifies the existing finite Markov path measure as a definitional specialization of the prefix-dependent trajectory measure |
+| `trajectoryRiskInnovation_markovSquaredTrajectoryScore` | `StochasticDynamics.TrajectoryRisk` | Identifies the existing Markov squared-loss innovation as a definitional specialization of the general trajectory innovation |
+| `pathSquaredLoss_condExp_via_trajectory` | `StochasticDynamics.TrajectoryRisk` | Recovers the existing homogeneous-Markov squared-loss conditional-expectation statement from the prefix-dependent semantic theorem |
+
+This section is a path-semantics and conditional-expectation bridge. It does
+not itself provide a confidence event, concentration inequality, PAC-Bayes
+bound, controlled-process theorem, policy-optimization theorem, or
+optional-stopping result.
+
 ## Finite Markov prequential risk
 
 | Declaration | Module | Role |

@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "The checked certificate targets posterior-average one-step conditional risk at one post-path-selected atom of a fixed finite tilt catalog. The pointwise selector need not be measurable or adapted and adds no optional-stopping result. The certificate does not cover same-trajectory fitting, an arbitrary joint predictor--tilt posterior, countable or all-real tilt control, empirical variance, stationarity, mixing, continuous state spaces, multistep prediction, or long-run risk.",
+      "boundary": "The general prefix-dependent result is a path-semantics and conditional-expectation bridge only; it is not a confidence event, concentration theorem, PAC-Bayes theorem, controlled kernel, or policy result. The separate Markov certificate targets posterior-average one-step conditional risk at one post-path-selected atom of a fixed finite tilt catalog. It does not cover posterior-uniform certification of online-updated catalogs, random initial laws, arbitrary joint predictor--tilt posteriors, countable or all-real tilt control, empirical variance, continuous state spaces, multistep prediction, optional stopping, or stationary long-run risk.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Generalize the path law to a supplied initial distribution, support predictable or independently trained predictor catalogs, and add normalized countable or predictable tilt families.",
-      "scope": "finite-state Markov paths with deterministic start, a fixed bounded observable, and a finite catalog of fixed predictors; the checked surface includes a sharp one-quarter variance proxy and finite full-support weighted-tilt, all-time, all-posterior, all-atom PAC-Bayes control from one master e-process",
+      "next_step": "Add a supplied initial distribution and, separately, determine the assumptions needed to lift the prefix-dependent semantic layer to predictable or independently trained score catalogs. Continue normalized countable or predictable tilt work only in the concentration layer.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A separate Markov squared-loss specialization adds finite full-support weighted-tilt, all-time, all-posterior, all-atom PAC-Bayes control from one master e-process",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -4544,6 +4544,65 @@
         }
       ],
       "name": "Time-uniform PAC-Bayes"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "map_trajectory_next",
+          "summary": "Identifies the next-coordinate law of a trajectory continuation with the probability kernel selected by its complete finite prefix"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "observedTrajectoryScore_condExp",
+          "summary": "Derives the exact prefix-conditional expectation of an arbitrary fixed [0,1] prefix/next-state score under the generated finite-state path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "trajectoryRiskInnovation_incrementAdapted",
+          "summary": "Shows that observed score minus prefix-conditional risk is measurable at the next filtration level"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "abs_trajectoryRiskInnovation_le_one",
+          "summary": "Bounds the centered innovation in absolute value by one for [0,1] scores"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "trajectoryRiskInnovation_condExp_eq_zero",
+          "summary": "Proves conditional centering from the trajectory law rather than assuming a martingale-difference property"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "trajectoryRiskInnovation_condSecondMoment_le_one_fourth",
+          "summary": "Gives the universal 1/4 conditional second-moment bound for the centered [0,1] score"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "trajectoryMeasure_prefixKernel_eq_markovPathMeasure",
+          "summary": "Identifies the existing finite Markov path measure as a definitional specialization of the prefix-dependent trajectory measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "trajectoryRiskInnovation_markovSquaredTrajectoryScore",
+          "summary": "Identifies the existing Markov squared-loss innovation as a definitional specialization of the general trajectory innovation"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryRisk",
+          "name": "pathSquaredLoss_condExp_via_trajectory",
+          "summary": "Recovers the existing homogeneous-Markov squared-loss conditional-expectation statement from the prefix-dependent semantic theorem"
+        }
+      ],
+      "name": "Finite prefix-dependent trajectory semantics"
     },
     {
       "entries": [

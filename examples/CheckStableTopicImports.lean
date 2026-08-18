@@ -68,6 +68,8 @@ Compatibility aliases remain usable without carrying duplicate proof bodies.
 #check FormalSLT.PACBayes.ForwardBesselPACBayesIID.exists_forwardIIDBesselPACBayes_event
 #check FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #check FormalSLT.AnytimeValid.eProcess_typeI_control
+#check FormalSLT.StochasticDynamics.observedTrajectoryScore_condExp
+#check FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condSecondMoment_le_one_fourth
 #check FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
 #check FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta
 #check FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate
@@ -125,6 +127,8 @@ Compatibility aliases remain usable without carrying duplicate proof bodies.
 #print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.exists_forwardIIDBesselPACBayes_event
 #print axioms FormalSLT.VC.SampleComplexity.vc_erm_sample_complexity
 #print axioms FormalSLT.AnytimeValid.eProcess_typeI_control
+#print axioms FormalSLT.StochasticDynamics.observedTrajectoryScore_condExp
+#print axioms FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condSecondMoment_le_one_fourth
 #print axioms FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate
 #print axioms FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta
 #print axioms FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate

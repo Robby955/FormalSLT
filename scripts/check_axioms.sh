@@ -198,6 +198,11 @@ THEOREMS=(
   "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec"
   "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_allPosteriors_of_not_mem_measurableExceptionalEvent"
   "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_condExp"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_incrementAdapted"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condExp_eq_zero"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condSecondMoment_le_one_fourth"
+  "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp_via_trajectory"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -253,6 +258,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
   echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
@@ -300,6 +306,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.PACBayes.TimeUniformTiltMixture \
   FormalSLT.PACBayes.TimeUniformIIDTiltMixture \
+  FormalSLT.StochasticDynamics.TrajectoryRisk \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture >/dev/null

@@ -45,28 +45,37 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "id": "finite-markov-prequential-risk",
         "status": "partially_closed",
         "scope": (
-            "finite-state Markov paths with deterministic start, a fixed "
-            "bounded observable, and a finite catalog of fixed predictors; "
-            "the checked surface includes a sharp one-quarter variance proxy "
-            "and finite full-support weighted-tilt, all-time, all-posterior, "
-            "all-atom PAC-Bayes control from one master e-process"
+            "finite-state trajectories with deterministic start and arbitrary "
+            "fixed prefix-dependent probability kernels and bounded prefix/"
+            "next-state scores; the semantic layer derives exact conditional "
+            "risk, centering, and a sharp one-quarter variance proxy. A fixed "
+            "score functional may encode an online update rule whose current "
+            "prediction is chosen before the next state arrives. A "
+            "separate Markov squared-loss specialization adds finite full-"
+            "support weighted-tilt, all-time, all-posterior, all-atom "
+            "PAC-Bayes control from one master e-process"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Generalize the path law to a supplied initial distribution, "
-            "support predictable or independently trained predictor catalogs, "
-            "and add normalized countable or predictable tilt families."
+            "Add a supplied initial distribution and, separately, determine "
+            "the assumptions needed to lift the prefix-dependent semantic "
+            "layer to predictable or independently trained score catalogs. "
+            "Continue normalized countable or predictable tilt work only in "
+            "the concentration layer."
         ),
         "boundary": (
-            "The checked certificate targets posterior-average one-step "
-            "conditional risk at one post-path-selected atom of a fixed finite "
-            "tilt catalog. The pointwise selector need not be measurable or "
-            "adapted and adds no optional-stopping result. The certificate "
-            "does not cover same-trajectory fitting, an arbitrary joint "
-            "predictor--tilt posterior, countable or all-real tilt control, "
-            "empirical variance, stationarity, mixing, continuous state "
-            "spaces, multistep prediction, or long-run risk."
+            "The general prefix-dependent result is a path-semantics and "
+            "conditional-expectation bridge only; it is not a confidence "
+            "event, concentration theorem, PAC-Bayes theorem, controlled "
+            "kernel, or policy result. The separate Markov certificate targets "
+            "posterior-average one-step conditional risk at one post-path-"
+            "selected atom of a fixed finite tilt catalog. It does not cover "
+            "posterior-uniform certification of online-updated catalogs, "
+            "random initial laws, arbitrary joint "
+            "predictor--tilt posteriors, countable or all-real tilt control, "
+            "empirical variance, continuous state spaces, multistep prediction, "
+            "optional stopping, or stationary long-run risk."
         ),
     },
     {

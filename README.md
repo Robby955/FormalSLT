@@ -910,8 +910,8 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
-- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk`,
-  `StochasticDynamics.MarkovPACBayes`, and
+- **Stochastic dynamics:** `StochasticDynamics.TrajectoryRisk`,
+  `StochasticDynamics.MarkovRisk`, `StochasticDynamics.MarkovPACBayes`, and
   `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
   topic import `FormalSLT.StochasticDynamics`
 

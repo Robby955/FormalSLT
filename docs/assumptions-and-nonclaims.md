@@ -46,6 +46,34 @@ These product-sample results do not cover time series, active learning, or
 dependent data without additional assumptions. The repository's separate
 online-to-PAC and anytime-valid modules state their own sequential assumptions.
 
+### Finite prefix-dependent trajectory semantics
+
+`StochasticDynamics.TrajectoryRisk` constructs an Ionescu--Tulcea path law on
+a finite state type from a deterministic initial state and a supplied family
+of probability kernels. At step `n`, the kernel may depend on the complete
+prefix indexed by `Finset.Iic n`. A supplied real-valued score may likewise
+depend on that prefix and the next state, and is assumed pointwise to lie in
+`[0,1]`.
+
+Under those assumptions, the module identifies the exact prefix-conditional
+expectation of the observed score. Observed score minus conditional risk is
+next-step adapted, bounded in absolute value by one, conditionally centered,
+and has conditional second moment at most `1/4`. The existing finite Markov
+squared-loss definitions are recovered by definitional bridge lemmas.
+
+Because the score may inspect the whole available prefix, it can encode the
+prediction emitted by an online update rule fixed in advance. The theorem
+requires only that this time-`n` score be determined before coordinate `n+1`
+is observed. It does not yet package such rules into a hypothesis catalog or
+provide posterior-uniform PAC-Bayes control for them.
+
+This is a semantic and conditional-expectation layer only. It does not provide
+a confidence event, concentration inequality, PAC-Bayes bound, controlled
+kernel or policy interface, action-dependent dynamics, same-trajectory
+model-selection guarantee, random initial law, continuous-state theorem,
+multistep forecast, optional-stopping theorem, or stationary long-run
+conclusion.
+
 ### Finite Markov prequential risk
 
 `StochasticDynamics.MarkovRisk` constructs a dependent path law from an actual
@@ -515,12 +543,17 @@ full unrestricted empirical-process chaining theorem.
 
 ### Stochastic-dynamics extensions
 
-The current finite Markov results freeze the observable and finite predictor
-catalog before the trajectory is generated. A posterior over that fixed
-catalog and one atom of a predeclared finite tilt prior may be selected from
-the trajectory, but this does not validate fitting new predictors on the same
-observations. Natural next layers are a random initial law, predictable or
-independently trained catalogs, and normalized countable or predictable tilt
-families. Same-trajectory training, continuous-state kernels, and
-stationary-risk conclusions require separate formal interfaces and are not
-consequences of the current certificate.
+The prefix-dependent semantic layer lets a fixed-in-advance kernel family and
+score functional inspect the observed finite prefix. Thus it can represent an
+online update rule whose time-`n` prediction is fixed before the next state is
+revealed. It does not yet supply a posterior-uniform catalog adapter or a
+controlled-policy interface. The separate finite Markov confidence results
+still freeze the observable and finite predictor catalog before the trajectory
+is generated. A posterior over that fixed catalog and one atom of a
+predeclared finite tilt prior may be selected from the trajectory, but this
+does not validate fitting new catalog members after seeing their scored
+outcomes. Natural next layers are a random initial law, a trajectory PAC-Bayes
+adapter for fixed online algorithms, controlled/action-dependent kernels, and
+normalized countable or predictable tilt families. Continuous-state kernels
+and stationary-risk conclusions require separate formal interfaces and are
+not consequences of the current results.
