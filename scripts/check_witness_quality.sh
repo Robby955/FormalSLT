@@ -178,6 +178,10 @@ classify_witness() {
 #     the theorem-produced risk ceiling is below 343/1000 and the checked
 #     forward-Bessel boundary is strictly below the fixed-proxy sub-Gamma
 #     boundary evaluated on the same prefix)
+#   exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event
+#     (true identity Bool kernel versus a fixed fair-row candidate, exact
+#     row-TV distance 1/2, and a sharp obstruction showing that the doubled
+#     misspecification price is necessary rather than a proof artifact)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -228,6 +232,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
+  "examples/CheckStationaryPoissonRobustCandidate.lean"
 )
 
 fail=0

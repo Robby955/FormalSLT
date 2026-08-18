@@ -13,6 +13,7 @@ import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
+import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
 
 /-!
 # Stable stochastic-dynamics imports
@@ -24,4 +25,6 @@ separate Markov anytime-valid and posterior-uniform PAC-Bayes certificates for
 finite predictor catalogs, including the empirical-Bernstein trajectory
 endpoint, its supplied-Poisson stationary-risk specialization, and the
 finite-depth automatic Poisson construction under oscillation contraction.
+It also exposes the robust fixed-candidate Poisson bridge under an explicit
+row-wise total-variation misspecification budget.
 -/
