@@ -195,6 +195,10 @@ classify_witness() {
 #     TV budget below 1/4, and strict candidate perturbation contraction. The
 #     arithmetic witness is conditional on good-event membership and does not
 #     prove that the named path is good or a positive-probability intersection.)
+#   exists_selectedEmpiricalStationaryCatalog_event
+#     (two predeclared Boolean candidate kernels, exact depth-two span/residual
+#     pairs, separate risk/transition budgets summing to 1/2, and two covered
+#     paths exercising both selector branches without claiming either is good)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -247,6 +251,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
   "examples/CheckStationaryPoissonRobustCandidate.lean"
   "examples/CheckEmpiricalTransitionConfidence.lean"
+  "examples/CheckEmpiricalStationaryCatalog.lean"
 )
 
 fail=0
