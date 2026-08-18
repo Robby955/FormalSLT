@@ -1,0 +1,46 @@
+import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
+
+/-!
+# Continuous-hypothesis trajectory empirical-Bernstein checks
+
+This audit checks the arbitrary measurable-hypothesis, finite-state trajectory
+endpoint.  The public theorem has no `Fintype` assumption on the hypothesis
+space: in particular, the final `#check` fixes the hypothesis type to `Real`
+while leaving the prior and posterior as arbitrary probability measures.
+
+The endpoint mixes the actual forward predictable-mean e-process over the
+prior.  Its explicit analytic interface is joint strong measurability of that
+parameterized process in the ambient product sigma algebra and in the product
+of the time-`n` path filtration with the hypothesis sigma algebra.
+-/
+
+open MeasureTheory ProbabilityTheory
+open FormalSLT.AnytimeValid
+open FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes
+open FormalSLT.StochasticDynamics
+
+#check continuousForwardPredictableMeanBesselPriorProcess_eProcess
+#check continuousForwardPredictableMeanBesselMasterProcess_eProcess
+#check continuousForwardPredictableMeanBesselExceptionalEvent_mass_le_delta
+#check continuousForwardPredictableMeanBessel_boundaryFailure_mem_exceptionalEvent
+#check continuousForwardPredictableMeanBessel_allPosteriors_of_not_mem
+#check exists_continuousForwardPredictableMeanBesselPACBayes_event
+
+#check stronglyMeasurable_conditionalTrajectoryRisk_parameter
+#check continuousTrajectoryPosteriorAverageConditionalRisk
+#check continuousTrajectoryPosteriorEmpiricalPrequentialRisk
+#check continuousTrajectoryPosteriorHybridBesselPenalty
+#check continuousTrajectoryEmpiricalBernsteinPACBayesBoundary
+#check exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event
+
+#check (exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event
+  (Theta := Real))
+
+#print axioms continuousForwardPredictableMeanBesselPriorProcess_eProcess
+#print axioms continuousForwardPredictableMeanBesselMasterProcess_eProcess
+#print axioms continuousForwardPredictableMeanBesselExceptionalEvent_mass_le_delta
+#print axioms continuousForwardPredictableMeanBessel_boundaryFailure_mem_exceptionalEvent
+#print axioms continuousForwardPredictableMeanBessel_allPosteriors_of_not_mem
+#print axioms exists_continuousForwardPredictableMeanBesselPACBayes_event
+#print axioms stronglyMeasurable_conditionalTrajectoryRisk_parameter
+#print axioms exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event

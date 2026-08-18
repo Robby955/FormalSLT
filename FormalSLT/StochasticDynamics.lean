@@ -9,6 +9,7 @@ import FormalSLT.StochasticDynamics.TrajectoryRisk
 import FormalSLT.StochasticDynamics.MarkovPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
+import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 
 /-!
 # Stable stochastic-dynamics imports
