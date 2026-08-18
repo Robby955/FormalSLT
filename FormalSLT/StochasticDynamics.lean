@@ -15,6 +15,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE
 import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator
+import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure
 
 /-!
 # Stable stochastic-dynamics imports
@@ -32,7 +33,9 @@ under a known environment and behavior policy, supplied invariant target
 laws and exact Poisson potentials, and declared overlap and span bounds.  It
 also exports encountered-prefix dynamic comparators for finite catalogs of
 history-dependent target policies, including a known prefix/time-dependent
-environment kernel.  These do not estimate an unknown kernel or invariant
-law, identify target-law occupancy value, or provide a full-trajectory
-importance-sampling theorem.
+environment kernel.  For a supplied target policy, it also exports an exact
+finite-horizon target-path change-of-measure identity, target state occupancy
+identity, and the explicit `C ^ n` likelihood-weight range inflation.  These
+do not estimate an unknown kernel or invariant law or provide an anytime
+full-trajectory importance-sampling guarantee.
 -/
