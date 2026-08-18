@@ -1,4 +1,4 @@
-import FormalSLT.StochasticDynamics.StationaryPoissonContraction
+import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
 
 /-!
 # Finite-depth Poisson contraction receipt
@@ -127,42 +127,74 @@ theorem contractionBool_finiteOscillation_centered :
     norm_num at h ⊢
     exact h
 
+theorem contractionBool_totalVariation_false_true :
+    finitePMFTotalVariation (contractionBoolPMF false)
+      (contractionBoolPMF true) = 1 / 4 := by
+  norm_num [finitePMFTotalVariation, contractionBoolPMF,
+    PMF.ofFintype_apply, Fintype.sum_bool]
+
+/-- The computable Dobrushin coefficient recovers the sharp contraction
+factor used by the original receipt. -/
+theorem contractionBool_dobrushinCoefficient :
+    finiteDobrushinCoefficient contractionBoolPMF = 1 / 4 := by
+  apply le_antisymm
+  · unfold finiteDobrushinCoefficient
+    refine Finset.sup'_le Finset.univ_nonempty _ ?_
+    intro x _hx
+    refine Finset.sup'_le Finset.univ_nonempty _ ?_
+    intro y _hy
+    fin_cases x <;> fin_cases y <;>
+      norm_num [finitePMFTotalVariation, contractionBoolPMF,
+        PMF.ofFintype_apply, Fintype.sum_bool]
+  · rw [← contractionBool_totalVariation_false_true]
+    exact finitePMFTotalVariation_le_finiteDobrushinCoefficient
+      contractionBoolPMF false true
+
 theorem contractionBool_oscillation_contraction :
     IsOscillationContraction contractionBoolPMF (1 / 4) := by
-  intro f
-  apply finiteOscillation_le
-  intro x y
-  fin_cases x <;> fin_cases y
-  · simpa using finiteOscillation_nonneg f
-  · have h := abs_sub_le_finiteOscillation f false true
-    norm_num [markovPotentialMean, contractionBoolPMF, PMF.integral_eq_sum,
-      PMF.ofFintype_apply, Fintype.sum_bool]
-    have heq :
-        |1 / 4 * f true + 3 / 4 * f false -
-            (1 / 2 * f true + 1 / 2 * f false)| =
-          (1 / 4 : ℝ) * |f true - f false| := by
-      rw [show
-        1 / 4 * f true + 3 / 4 * f false -
-            (1 / 2 * f true + 1 / 2 * f false) =
-          -(1 / 4 : ℝ) * (f true - f false) by ring]
-      rw [abs_mul, abs_neg, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 4)]
-    rw [heq]
-    exact mul_le_mul_of_nonneg_left h (by norm_num)
-  · have h := abs_sub_le_finiteOscillation f false true
-    norm_num [markovPotentialMean, contractionBoolPMF, PMF.integral_eq_sum,
-      PMF.ofFintype_apply, Fintype.sum_bool]
-    have heq :
-        |1 / 2 * f true + 1 / 2 * f false -
-            (1 / 4 * f true + 3 / 4 * f false)| =
-          (1 / 4 : ℝ) * |f true - f false| := by
-      rw [show
-        1 / 2 * f true + 1 / 2 * f false -
-            (1 / 4 * f true + 3 / 4 * f false) =
-          (1 / 4 : ℝ) * (f true - f false) by ring]
-      rw [abs_mul, abs_of_nonneg (by norm_num : (0 : ℝ) ≤ 1 / 4)]
-    rw [heq]
-    exact mul_le_mul_of_nonneg_left h (by norm_num)
-  · simpa using finiteOscillation_nonneg f
+  rw [← contractionBool_dobrushinCoefficient]
+  exact finiteDobrushinCoefficient_isOscillationContraction contractionBoolPMF
+
+theorem contractionBool_indicator_finiteOscillation :
+    finiteOscillation (fun z : Bool ↦ if z then (1 : ℝ) else 0) = 1 := by
+  apply le_antisymm
+  · apply finiteOscillation_le
+    intro x y
+    fin_cases x <;> fin_cases y <;> norm_num
+  · have h := abs_sub_le_finiteOscillation
+      (fun z : Bool ↦ if z then (1 : ℝ) else 0) false true
+    norm_num at h ⊢
+    exact h
+
+theorem contractionBool_indicator_mean_finiteOscillation :
+    finiteOscillation
+      (markovPotentialMean contractionBoolPMF
+        (fun z : Bool ↦ if z then (1 : ℝ) else 0)) = 1 / 4 := by
+  apply le_antisymm
+  · apply finiteOscillation_le
+    intro x y
+    fin_cases x <;> fin_cases y <;>
+      norm_num [markovPotentialMean, contractionBoolPMF,
+        PMF.integral_eq_sum, PMF.ofFintype_apply, Fintype.sum_bool]
+  · have h := abs_sub_le_finiteOscillation
+      (markovPotentialMean contractionBoolPMF
+        (fun z : Bool ↦ if z then (1 : ℝ) else 0)) false true
+    norm_num [markovPotentialMean, contractionBoolPMF,
+      PMF.integral_eq_sum, PMF.ofFintype_apply, Fintype.sum_bool] at h ⊢
+    exact h
+
+/-- The Boolean indicator attains equality in Dobrushin oscillation
+contraction, so the coefficient `1/4` is sharp for this kernel. -/
+theorem contractionBool_indicator_oscillation_equality :
+    finiteOscillation
+        (markovPotentialMean contractionBoolPMF
+          (fun z : Bool ↦ if z then (1 : ℝ) else 0)) =
+      finiteDobrushinCoefficient contractionBoolPMF *
+        finiteOscillation (fun z : Bool ↦ if z then (1 : ℝ) else 0) := by
+  rw [contractionBool_indicator_mean_finiteOscillation,
+    contractionBool_dobrushinCoefficient,
+    contractionBool_indicator_finiteOscillation]
+  norm_num
 
 theorem contractionBool_T_centered (z : Bool) :
     markovPotentialMean contractionBoolPMF
@@ -287,22 +319,19 @@ theorem contractionBool_depthTwo_stationary_certificate :
                   finiteDepthPoissonClosedSpanBound (1 / 4) (1 / 4) 2 /
                       (n : ℝ) +
                     finiteDepthPoissonResidualBound (1 / 4) (1 / 4) 2 := by
-  apply exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event
-    (I := Bool) (T := Bool)
-    contractionBoolPMF contractionBoolStationary
-    contractionBoolStationary_invariant false
-    (score := fun _i ↦ contractionBoolScore)
-    (fun _i ↦ contractionBoolScore_mem_Icc)
-    (alpha := (1 / 4 : ℝ)) (D := (1 / 4 : ℝ))
-    (by norm_num) (by norm_num) (by norm_num)
-    contractionBool_oscillation_contraction
-  · intro _i
-    rw [contractionBool_finiteOscillation_centered]
-  · exact contractionBoolUniformPrior_isFullSupportPMF
-  · exact contractionBoolTiltWeight_isFullSupportPMF
-  · norm_num
-  · exact contractionBoolTilts_pos
-  · exact contractionBoolTilts_lt_one
+  simpa only [contractionBool_dobrushinCoefficient] using
+    (exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_closed_event
+      (I := Bool) (T := Bool)
+      contractionBoolPMF contractionBoolStationary
+      contractionBoolStationary_invariant false
+      (score := fun _i ↦ contractionBoolScore)
+      (fun _i ↦ contractionBoolScore_mem_Icc)
+      (D := (1 / 4 : ℝ)) (by rw [contractionBool_dobrushinCoefficient]; norm_num)
+      (by norm_num)
+      (fun _i ↦ by rw [contractionBool_finiteOscillation_centered]) 2
+      contractionBoolUniformPrior_isFullSupportPMF
+      contractionBoolTiltWeight_isFullSupportPMF
+      (by norm_num) contractionBoolTilts_pos contractionBoolTilts_lt_one)
 
 #check finiteOscillation
 #check finiteDepthPoissonPotential
@@ -314,21 +343,33 @@ theorem contractionBool_depthTwo_stationary_certificate :
 #check exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_event
 #check exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event
 #check exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_unit_event
+#check finitePMFTotalVariation
+#check finiteDobrushinCoefficient
+#check finiteDobrushinCoefficient_isOscillationContraction
+#check exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_closed_event
+#check exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event
 
 #print axioms finiteDepthPoisson_residual_identity
 #print axioms iteratedMarkovPotentialMean_oscillation_le
 #print axioms finiteDepthPoissonPotential_span
 #print axioms finiteDepthPoissonResidual_le
 #print axioms exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event
+#print axioms abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation
+#print axioms finiteDobrushinCoefficient_isOscillationContraction
+#print axioms exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_closed_event
 
 #check contractionBoolStationary_invariant
 #check contractionBool_oscillation_contraction
+#check contractionBool_dobrushinCoefficient
+#check contractionBool_indicator_oscillation_equality
 #check contractionBool_depthTwo_potential
 #check contractionBool_depthTwo_residual_values
 #check contractionBool_depthTwo_stationary_certificate
 
 #print axioms contractionBoolStationary_invariant
 #print axioms contractionBool_oscillation_contraction
+#print axioms contractionBool_dobrushinCoefficient
+#print axioms contractionBool_indicator_oscillation_equality
 #print axioms contractionBool_depthTwo_potential
 #print axioms contractionBool_depthTwo_residual_values
 #print axioms contractionBool_depthTwo_stationary_certificate
