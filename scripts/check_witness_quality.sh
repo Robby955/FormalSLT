@@ -149,6 +149,13 @@ classify_witness() {
 #     tilts, point-posterior KL = log 2, and path/time/posterior-dependent
 #     selection; an outer-mass bound below one yields one good path carrying
 #     every n >= 2 bound; the hybrid-Bessel width remains symbolic)
+#   informative_nonvacuous_receipt
+#     (biased-Bool IID stream, path-selected ERM posterior, unequal positive
+#     tilt weights, KL = log 2, Bessel variance = 1/32, and a positive-mass
+#     prefix cylinder that must contain a common-event good path; on that path
+#     the theorem-produced risk ceiling is below 343/1000 and the checked
+#     forward-Bessel boundary is strictly below the fixed-proxy sub-Gamma
+#     boundary evaluated on the same prefix)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -194,6 +201,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckMarkovRisk.lean"
   "examples/CheckMarkovPACBayes.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
+  "examples/CheckForwardBesselPACBayesIIDInformative.lean"
 )
 
 fail=0
