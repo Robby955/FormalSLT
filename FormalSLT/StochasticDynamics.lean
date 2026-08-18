@@ -24,6 +24,10 @@ separate Markov anytime-valid and posterior-uniform PAC-Bayes certificates for
 finite predictor catalogs, including the empirical-Bernstein trajectory
 endpoint and its supplied-Poisson stationary-risk specialization.
 It additionally exports finite state--action behavior-law semantics and
-normalized one-step importance-weighting interfaces; these do not assert a
-stationary target-policy value or target-law occupancy correction.
+normalized one-step importance-weighting interfaces.  For finite state-based
+Markov target policies, it exports a stationary target-policy OPE endpoint
+under a known environment and behavior policy, supplied invariant target
+laws and exact Poisson potentials, and declared overlap and span bounds.  It
+does not estimate an unknown kernel or invariant law, or provide a
+full-trajectory importance-sampling theorem.
 -/

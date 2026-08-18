@@ -16,8 +16,12 @@ lower envelope.  Its finite-hypothesis, finite-declared-tilt and IID wrappers
 control every eligible time `n >= 2` through one outer-mass event.
 Compatibility aliases remain usable without carrying duplicate proof bodies.
 The stochastic-dynamics umbrella also exposes the finite controlled-trajectory
-importance-weighting semantic bridge, separately from any stationary
-target-policy value claim.
+importance-weighting semantic bridge and its stationary target-policy OPE
+specialization.  That specialization assumes finite state-based Markov target
+policies, a known environment and behavior propensities, supplied invariant
+target laws and exact Poisson potentials, and declared overlap and span bounds;
+it does not cover unknown-kernel estimation or full-trajectory importance
+sampling.
 -/
 
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
@@ -90,6 +94,9 @@ target-policy value claim.
 #check FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event
 #check FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp
 #check FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces
+#check FormalSLT.StochasticDynamics.stationaryTargetPolicyObservedScore_condExp
+#check FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event
+#check FormalSLT.StochasticDynamics.stationaryTargetPolicyOPE_selected_of_simultaneous
 
 #check FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
 #check FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
@@ -163,3 +170,6 @@ target-policy value claim.
 #print axioms FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event
 #print axioms FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp
 #print axioms FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces
+#print axioms FormalSLT.StochasticDynamics.stationaryTargetPolicyObservedScore_condExp
+#print axioms FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event
+#print axioms FormalSLT.StochasticDynamics.stationaryTargetPolicyOPE_selected_of_simultaneous
