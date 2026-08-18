@@ -183,20 +183,77 @@ theorem pathWeightedBehavior_true_occupancy :
       pathFairBehavior_overlap 1 true]
   exact pathTarget_true_occupancy
 
+/-- The same target occupancy receipt on the actual infinite trajectory law. -/
+theorem pathActualTarget_true_occupancy :
+    prefixControlledTargetTrajectoryStateOccupancy
+        pathCopyEnvironment pathBiasedTarget pathInitial 1 true = 3 / 4 := by
+  rw [prefixControlledTargetTrajectoryStateOccupancy_eq_finite]
+  exact pathTarget_true_occupancy
+
+/-- The cumulative likelihood ratio is also normalized when integrated over
+the actual infinite behavior trajectory law. -/
+theorem pathActualLikelihoodRatio_behaviorExpectation_eq_one :
+    (∫ x,
+        controlledFinitePrefixLikelihoodRatio
+          pathFairBehavior pathBiasedTarget 1
+            (Preorder.frestrictLe 1 x)
+      ∂prefixControlledTrajectoryMeasure
+        pathCopyEnvironment pathFairBehavior pathInitial) = 1 := by
+  change
+    (∫ x,
+        controlledFinitePrefixLikelihoodRatio
+          pathFairBehavior pathBiasedTarget 1
+            (Preorder.frestrictLe 1 x)
+      ∂prefixControlledTargetTrajectoryMeasure
+        pathCopyEnvironment pathFairBehavior pathInitial) = 1
+  rw [← controlledFinitePrefixExpectation_eq_trajectoryIntegral
+    pathCopyEnvironment pathFairBehavior pathInitial 1]
+  exact pathLikelihoodRatio_behaviorExpectation_eq_one
+
+/-- Actual behavior-path likelihood weighting recovers target occupancy
+`3/4`. -/
+theorem pathActualWeightedBehavior_true_occupancy :
+    (∫ x,
+        controlledFinitePrefixLikelihoodRatio
+            pathFairBehavior pathBiasedTarget 1
+            (Preorder.frestrictLe 1 x) *
+          Set.indicator
+            {u | (u ⟨1, Finset.mem_Iic.mpr le_rfl⟩).2 = true}
+            (fun _u ↦ 1) (Preorder.frestrictLe 1 x)
+      ∂prefixControlledTrajectoryMeasure
+        pathCopyEnvironment pathFairBehavior pathInitial) = 3 / 4 := by
+  rw [← prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure
+    pathCopyEnvironment pathFairBehavior pathBiasedTarget pathInitial
+      pathFairBehavior_overlap 1 true]
+  exact pathActualTarget_true_occupancy
+
 #check prefixControlledTargetTrajectoryMeasure
+#check controlledFinitePrefixExpectation_eq_partialTrajIntegral
+#check controlledFinitePrefixExpectation_eq_trajectoryIntegral
 #check controlledFinitePrefixExpectation_changeOfMeasure
+#check prefixControlledTargetTrajectory_integral_changeOfMeasure
+#check prefixControlledTargetTrajectory_cylinder_changeOfMeasure
 #check controlledFiniteHorizonRisk_changeOfMeasure
 #check controlledFinitePrefixEventProbability_changeOfMeasure
+#check controlledFinitePrefixEventProbability_eq_trajectoryCylinderProbability
 #check controlledFiniteHorizonStateOccupancy_changeOfMeasure
+#check prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure
 #check controlledFinitePrefixLikelihoodRatio_le_pow
 #check controlledWeightedPrefixPayoff_mem_Icc
 
+#print axioms controlledFinitePrefixExpectation_eq_partialTrajIntegral
+#print axioms controlledFinitePrefixExpectation_eq_trajectoryIntegral
 #print axioms controlledFinitePrefixExpectation_one_eq_trajectoryIntegral
 #print axioms controlledFinitePrefixExpectation_changeOfMeasure
+#print axioms prefixControlledTargetTrajectory_integral_changeOfMeasure
+#print axioms prefixControlledTargetTrajectory_cylinder_changeOfMeasure
 #print axioms controlledFiniteHorizonStateOccupancy_changeOfMeasure
+#print axioms prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure
 #print axioms controlledFinitePrefixLikelihoodRatio_le_pow
 #print axioms pathLikelihoodRatio_behaviorExpectation_eq_one
 #print axioms pathWeightedBehavior_true_occupancy
+#print axioms pathActualLikelihoodRatio_behaviorExpectation_eq_one
+#print axioms pathActualWeightedBehavior_true_occupancy
 
 end
 

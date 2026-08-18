@@ -200,6 +200,91 @@ private theorem integral_prefix_succ_traj_eq_sum
           (prefixControlledContinuationPMF Q policy n u)
           (fun next ↦ f (controlledPrefixSnoc u next)))
 
+/-- Restricting the one-step trajectory continuation to its completed prefix
+turns the preceding infinite-trajectory integral into the corresponding
+`partialTraj` integral. -/
+private theorem integral_prefix_succ_partialTraj_eq_sum
+    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
+    (n : ℕ) (u : (i : Finset.Iic n) → ControlledObservation Z A)
+    (f : ((i : Finset.Iic (n + 1)) → ControlledObservation Z A) → ℝ) :
+    (∫ v, f v
+      ∂Kernel.partialTraj
+        (X := fun _ : ℕ ↦ ControlledObservation Z A)
+        (prefixControlledPrefixKernel Q policy) n (n + 1) u) =
+      ∑ next : ControlledObservation Z A,
+        (prefixControlledContinuationPMF Q policy n u next).toReal *
+          f (controlledPrefixSnoc u next) := by
+  rw [← Kernel.traj_map_frestrictLe_apply
+    (X := fun _ : ℕ ↦ ControlledObservation Z A)
+    (κ := prefixControlledPrefixKernel Q policy) n (n + 1) u]
+  have hf : Integrable f
+      ((Kernel.traj
+        (X := fun _ : ℕ ↦ ControlledObservation Z A)
+        (prefixControlledPrefixKernel Q policy) n u).map
+          (Preorder.frestrictLe (n + 1))) :=
+    Integrable.of_finite
+  rw [MeasureTheory.integral_map
+    (Preorder.measurable_frestrictLe (X := fun _ : ℕ ↦ ControlledObservation Z A)
+      (n + 1)).aemeasurable hf.aestronglyMeasurable]
+  exact integral_prefix_succ_traj_eq_sum Q policy n u f
+
+/-- The recursive finite-prefix expectation is exactly integration against
+mathlib's finite Ionescu--Tulcea marginal `Kernel.partialTraj`. -/
+theorem controlledFinitePrefixExpectation_eq_partialTrajIntegral
+    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
+    (initial : ControlledObservation Z A) (n : ℕ)
+    (f : ((i : Finset.Iic n) → ControlledObservation Z A) → ℝ) :
+    controlledFinitePrefixExpectation Q policy initial n f =
+      ∫ u, f u
+        ∂Kernel.partialTraj
+          (X := fun _ : ℕ ↦ ControlledObservation Z A)
+          (prefixControlledPrefixKernel Q policy) 0 n
+          (fun _ ↦ initial) := by
+  induction n with
+  | zero =>
+      simp [controlledFinitePrefixExpectation, Kernel.id]
+  | succ n ih =>
+      unfold controlledFinitePrefixExpectation
+      rw [ih]
+      rw [Kernel.partialTraj_succ_eq_comp (Nat.zero_le n)]
+      rw [Kernel.integral_comp (Integrable.of_finite :
+        Integrable f
+          ((Kernel.partialTraj
+              (X := fun _ : ℕ ↦ ControlledObservation Z A)
+              (prefixControlledPrefixKernel Q policy) n (n + 1) ∘ₖ
+            Kernel.partialTraj
+              (X := fun _ : ℕ ↦ ControlledObservation Z A)
+              (prefixControlledPrefixKernel Q policy) 0 n)
+            (fun _ ↦ initial)))]
+      apply integral_congr_ae
+      exact Filter.Eventually.of_forall fun u ↦
+        (integral_prefix_succ_partialTraj_eq_sum Q policy n u f).symm
+
+/-- Every finite-prefix expectation is the corresponding cylinder-function
+integral under the actual infinite Ionescu--Tulcea target law. -/
+theorem controlledFinitePrefixExpectation_eq_trajectoryIntegral
+    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
+    (initial : ControlledObservation Z A) (n : ℕ)
+    (f : ((i : Finset.Iic n) → ControlledObservation Z A) → ℝ) :
+    controlledFinitePrefixExpectation Q policy initial n f =
+      ∫ x, f (Preorder.frestrictLe n x)
+        ∂prefixControlledTargetTrajectoryMeasure Q policy initial := by
+  rw [controlledFinitePrefixExpectation_eq_partialTrajIntegral]
+  unfold prefixControlledTargetTrajectoryMeasure
+    prefixControlledTrajectoryMeasure trajectoryMeasure
+  rw [← Kernel.traj_map_frestrictLe_apply
+    (X := fun _ : ℕ ↦ ControlledObservation Z A)
+    (κ := prefixControlledPrefixKernel Q policy) 0 n (fun _ ↦ initial)]
+  have hf : Integrable f
+      ((Kernel.traj
+        (X := fun _ : ℕ ↦ ControlledObservation Z A)
+        (prefixControlledPrefixKernel Q policy) 0 (fun _ ↦ initial)).map
+          (Preorder.frestrictLe n)) :=
+    Integrable.of_finite
+  exact MeasureTheory.integral_map
+    (Preorder.measurable_frestrictLe (X := fun _ : ℕ ↦ ControlledObservation Z A)
+      n).aemeasurable hf.aestronglyMeasurable
+
 /-- At the first decision, the recursive finite-prefix expectation is exactly
 the corresponding prefix integral under the Ionescu--Tulcea target law.  The
 general finite-prefix law below is defined by iterating this same continuation
@@ -211,17 +296,8 @@ theorem controlledFinitePrefixExpectation_one_eq_trajectoryIntegral
     controlledFinitePrefixExpectation Q policy initial 1 f =
       ∫ x, f (Preorder.frestrictLe 1 x)
         ∂prefixControlledTargetTrajectoryMeasure Q policy initial := by
-  let u0 : (i : Finset.Iic 0) → ControlledObservation Z A :=
-    fun _ ↦ initial
-  change
-    (∑ next : ControlledObservation Z A,
-      (prefixControlledContinuationPMF Q policy 0 u0 next).toReal *
-        f (controlledPrefixSnoc u0 next)) =
-      ∫ x, f (Preorder.frestrictLe 1 x)
-        ∂Kernel.traj
-          (X := fun _ : ℕ ↦ ControlledObservation Z A)
-          (prefixControlledPrefixKernel Q policy) 0 u0
-  exact (integral_prefix_succ_traj_eq_sum Q policy 0 u0 f).symm
+  exact controlledFinitePrefixExpectation_eq_trajectoryIntegral
+    Q policy initial 1 f
 
 private theorem sum_pmf_toReal_eq_one
     {Omega : Type*} [Fintype Omega] (p : PMF Omega) :
@@ -390,6 +466,111 @@ theorem controlledFinitePrefixExpectation_changeOfMeasure
       rw [controlledFinitePrefixLikelihoodRatio_snoc]
       ring
 
+/-- Actual infinite-trajectory form of finite-horizon change of measure.  The
+integrands inspect only coordinates through `n`, but both sides integrate
+against the infinite Ionescu--Tulcea path laws. -/
+theorem prefixControlledTargetTrajectory_integral_changeOfMeasure
+    (Q : PrefixControlledEnvironment Z A)
+    (beta : BehaviorPolicy Z A) (pi : TargetPolicy Z A)
+    (initial : ControlledObservation Z A)
+    (hoverlap : ControlledPolicyOverlap beta pi)
+    (n : ℕ)
+    (f : ((i : Finset.Iic n) → ControlledObservation Z A) → ℝ) :
+    (∫ x, f (Preorder.frestrictLe n x)
+      ∂prefixControlledTargetTrajectoryMeasure Q pi initial) =
+      ∫ x,
+        controlledFinitePrefixLikelihoodRatio beta pi n
+            (Preorder.frestrictLe n x) *
+          f (Preorder.frestrictLe n x)
+        ∂prefixControlledTrajectoryMeasure Q beta initial := by
+  calc
+    (∫ x, f (Preorder.frestrictLe n x)
+      ∂prefixControlledTargetTrajectoryMeasure Q pi initial) =
+        controlledFinitePrefixExpectation Q pi initial n f :=
+      (controlledFinitePrefixExpectation_eq_trajectoryIntegral
+        Q pi initial n f).symm
+    _ = controlledFinitePrefixExpectation Q beta initial n fun u ↦
+          controlledFinitePrefixLikelihoodRatio beta pi n u * f u :=
+      controlledFinitePrefixExpectation_changeOfMeasure
+        Q beta pi initial hoverlap n f
+    _ = ∫ x,
+          controlledFinitePrefixLikelihoodRatio beta pi n
+              (Preorder.frestrictLe n x) *
+            f (Preorder.frestrictLe n x)
+          ∂prefixControlledTargetTrajectoryMeasure Q beta initial :=
+      controlledFinitePrefixExpectation_eq_trajectoryIntegral
+        Q beta initial n (fun u ↦
+          controlledFinitePrefixLikelihoodRatio beta pi n u * f u)
+    _ = ∫ x,
+          controlledFinitePrefixLikelihoodRatio beta pi n
+              (Preorder.frestrictLe n x) *
+            f (Preorder.frestrictLe n x)
+          ∂prefixControlledTrajectoryMeasure Q beta initial := rfl
+
+/-- The cylinder in the infinite controlled path space determined by a set of
+completed prefixes through time `n`. -/
+def controlledTrajectoryCylinder
+    (n : ℕ)
+    (event : Set ((i : Finset.Iic n) → ControlledObservation Z A)) :
+    Set (ℕ → ControlledObservation Z A) :=
+  {x | Preorder.frestrictLe n x ∈ event}
+
+theorem measurableSet_controlledTrajectoryCylinder
+    (n : ℕ)
+    (event : Set ((i : Finset.Iic n) → ControlledObservation Z A)) :
+    MeasurableSet (controlledTrajectoryCylinder n event) := by
+  exact (Set.toFinite event).measurableSet.preimage
+    (Preorder.measurable_frestrictLe
+      (X := fun _ : ℕ ↦ ControlledObservation Z A) n)
+
+/-- Cylinder-event version of the actual infinite-trajectory change of
+measure theorem. -/
+theorem prefixControlledTargetTrajectory_cylinder_changeOfMeasure
+    (Q : PrefixControlledEnvironment Z A)
+    (beta : BehaviorPolicy Z A) (pi : TargetPolicy Z A)
+    (initial : ControlledObservation Z A)
+    (hoverlap : ControlledPolicyOverlap beta pi)
+    (n : ℕ)
+    (event : Set ((i : Finset.Iic n) → ControlledObservation Z A)) :
+    (prefixControlledTargetTrajectoryMeasure Q pi initial).real
+        (controlledTrajectoryCylinder n event) =
+      ∫ x,
+        controlledFinitePrefixLikelihoodRatio beta pi n
+            (Preorder.frestrictLe n x) *
+          Set.indicator event (fun _u ↦ 1)
+            (Preorder.frestrictLe n x)
+        ∂prefixControlledTrajectoryMeasure Q beta initial := by
+  calc
+    (prefixControlledTargetTrajectoryMeasure Q pi initial).real
+        (controlledTrajectoryCylinder n event) =
+        ∫ x,
+          Set.indicator (controlledTrajectoryCylinder n event)
+            (fun _x ↦ (1 : ℝ)) x
+          ∂prefixControlledTargetTrajectoryMeasure Q pi initial := by
+            symm
+            rw [show (fun _x : ℕ → ControlledObservation Z A ↦
+                (1 : ℝ)) = (1 : (ℕ → ControlledObservation Z A) → ℝ) by
+              funext _x
+              rfl]
+            exact integral_indicator_one
+              (measurableSet_controlledTrajectoryCylinder n event)
+    _ = ∫ x,
+          Set.indicator event (fun _u ↦ (1 : ℝ))
+            (Preorder.frestrictLe n x)
+          ∂prefixControlledTargetTrajectoryMeasure Q pi initial := by
+            apply integral_congr_ae
+            exact Filter.Eventually.of_forall fun x ↦ by
+              simp [controlledTrajectoryCylinder, Set.indicator]
+    _ = ∫ x,
+          controlledFinitePrefixLikelihoodRatio beta pi n
+              (Preorder.frestrictLe n x) *
+            Set.indicator event (fun _u ↦ 1)
+              (Preorder.frestrictLe n x)
+          ∂prefixControlledTrajectoryMeasure Q beta initial :=
+      prefixControlledTargetTrajectory_integral_changeOfMeasure
+        Q beta pi initial hoverlap n
+          (Set.indicator event fun _u ↦ 1)
+
 /-- Finite-horizon path risk for an arbitrary real terminal-prefix loss. -/
 def controlledFiniteHorizonRisk
     (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
@@ -438,6 +619,38 @@ theorem controlledFinitePrefixEventProbability_changeOfMeasure
   exact controlledFinitePrefixExpectation_changeOfMeasure
     Q beta pi initial hoverlap n _
 
+/-- The recursively defined finite-prefix event probability is the actual
+probability of its cylinder under the infinite target trajectory law. -/
+theorem controlledFinitePrefixEventProbability_eq_trajectoryCylinderProbability
+    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
+    (initial : ControlledObservation Z A) (n : ℕ)
+    (event : Set ((i : Finset.Iic n) → ControlledObservation Z A)) :
+    controlledFinitePrefixEventProbability Q policy initial n event =
+      (prefixControlledTargetTrajectoryMeasure Q policy initial).real
+        (controlledTrajectoryCylinder n event) := by
+  unfold controlledFinitePrefixEventProbability
+  rw [controlledFinitePrefixExpectation_eq_trajectoryIntegral]
+  calc
+    (∫ x,
+        Set.indicator event (fun _u ↦ (1 : ℝ))
+          (Preorder.frestrictLe n x)
+      ∂prefixControlledTargetTrajectoryMeasure Q policy initial) =
+        ∫ x,
+          Set.indicator (controlledTrajectoryCylinder n event)
+            (fun _x ↦ (1 : ℝ)) x
+          ∂prefixControlledTargetTrajectoryMeasure Q policy initial := by
+            apply integral_congr_ae
+            exact Filter.Eventually.of_forall fun x ↦ by
+              simp [controlledTrajectoryCylinder, Set.indicator]
+    _ = (prefixControlledTargetTrajectoryMeasure Q policy initial).real
+        (controlledTrajectoryCylinder n event) := by
+          rw [show (fun _x : ℕ → ControlledObservation Z A ↦
+              (1 : ℝ)) = (1 : (ℕ → ControlledObservation Z A) → ℝ) by
+            funext _x
+            rfl]
+          exact integral_indicator_one
+            (measurableSet_controlledTrajectoryCylinder n event)
+
 /-- Probability that the state component at time `n` equals `z`. -/
 def controlledFiniteHorizonStateOccupancy
     (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
@@ -461,6 +674,50 @@ theorem controlledFiniteHorizonStateOccupancy_changeOfMeasure
             {u | (u ⟨n, Finset.mem_Iic.mpr le_rfl⟩).2 = z}
             (fun _u ↦ 1) u := by
   exact controlledFinitePrefixEventProbability_changeOfMeasure
+    Q beta pi initial hoverlap n _
+
+/-- Actual infinite-trajectory probability that the state component at time
+`n` equals `z`.  The event is written as a finite-prefix cylinder so its
+measurability is explicit. -/
+def prefixControlledTargetTrajectoryStateOccupancy
+    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
+    (initial : ControlledObservation Z A) (n : ℕ) (z : Z) : ℝ :=
+  (prefixControlledTargetTrajectoryMeasure Q policy initial).real
+    (controlledTrajectoryCylinder n
+      {u | (u ⟨n, Finset.mem_Iic.mpr le_rfl⟩).2 = z})
+
+/-- The actual infinite-trajectory occupancy agrees with the recursively
+generated finite-horizon occupancy. -/
+theorem prefixControlledTargetTrajectoryStateOccupancy_eq_finite
+    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
+    (initial : ControlledObservation Z A) (n : ℕ) (z : Z) :
+    prefixControlledTargetTrajectoryStateOccupancy
+        Q policy initial n z =
+      controlledFiniteHorizonStateOccupancy
+        Q policy initial n z := by
+  unfold prefixControlledTargetTrajectoryStateOccupancy
+    controlledFiniteHorizonStateOccupancy
+  exact (controlledFinitePrefixEventProbability_eq_trajectoryCylinderProbability
+    Q policy initial n _).symm
+
+/-- Exact target state-occupancy identity on the actual infinite path law,
+expressed as a likelihood-weighted behavior-path integral. -/
+theorem prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure
+    (Q : PrefixControlledEnvironment Z A)
+    (beta : BehaviorPolicy Z A) (pi : TargetPolicy Z A)
+    (initial : ControlledObservation Z A)
+    (hoverlap : ControlledPolicyOverlap beta pi)
+    (n : ℕ) (z : Z) :
+    prefixControlledTargetTrajectoryStateOccupancy Q pi initial n z =
+      ∫ x,
+        controlledFinitePrefixLikelihoodRatio beta pi n
+            (Preorder.frestrictLe n x) *
+          Set.indicator
+            {u | (u ⟨n, Finset.mem_Iic.mpr le_rfl⟩).2 = z}
+            (fun _u ↦ 1) (Preorder.frestrictLe n x)
+        ∂prefixControlledTrajectoryMeasure Q beta initial := by
+  unfold prefixControlledTargetTrajectoryStateOccupancy
+  exact prefixControlledTargetTrajectory_cylinder_changeOfMeasure
     Q beta pi initial hoverlap n _
 
 omit [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z]
