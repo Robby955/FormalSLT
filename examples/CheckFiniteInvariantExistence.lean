@@ -1,4 +1,4 @@
-import FormalSLT.StochasticDynamics.FiniteInvariantExistence
+import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness
 
 /-!
 Executable asymmetric two-state receipt for finite invariant-law existence.
@@ -17,6 +17,29 @@ open scoped BigOperators ENNReal NNReal
 namespace FormalSLT.StochasticDynamics
 
 noncomputable section
+
+section MeasureFreeAPI
+
+variable {Z : Type*} [Fintype Z] [Nonempty Z]
+
+example (P : Z → PMF Z) :
+    ∃ stationary : PMF Z, IsInvariantPMF P stationary :=
+  exists_invariantPMF P
+
+example (P : Z → PMF Z)
+    (hcoefficient : finiteDobrushinCoefficient P < 1) :
+    ∃! stationary : PMF Z, IsInvariantPMF P stationary :=
+  existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one
+    P hcoefficient
+
+example (P Q : Z → PMF Z) {eta : ℝ}
+    (hrowTV : ∀ z, finitePMFTotalVariation (P z) (Q z) ≤ eta)
+    (hcertificate : finiteDobrushinCoefficient Q + 2 * eta < 1) :
+    ∃! stationary : PMF Z, IsInvariantPMF P stationary :=
+  existsUnique_invariantPMF_of_candidate_rowTV
+    P Q hrowTV hcertificate
+
+end MeasureFreeAPI
 
 /-- Asymmetric two-state kernel. -/
 def invariantExistenceBoolKernel (x : Bool) : PMF Bool :=

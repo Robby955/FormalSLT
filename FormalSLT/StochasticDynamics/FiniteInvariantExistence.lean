@@ -4,7 +4,8 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 
-import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
+import FormalSLT.PACBayes.FinitePMFBridge
+import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import Mathlib.Analysis.Convex.StdSimplex
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Topology.Sequences
@@ -18,8 +19,8 @@ argument specialized to a finite simplex: take Cesaro averages of the iterated
 laws, extract a convergent subsequence by compactness, and use the telescoping
 identity to show that its limit is fixed by the kernel push-forward.
 
-Combined with the finite Dobrushin uniqueness theorem, this supplies the
-previously missing existence half of the stationary target.
+`FiniteInvariantUniqueness` combines this construction with the finite
+Dobrushin uniqueness theorem to supply the complete stationary target.
 -/
 
 open Finset MeasureTheory ProbabilityTheory Set Filter Function Topology
@@ -31,7 +32,14 @@ namespace FormalSLT.StochasticDynamics
 noncomputable section
 
 variable {Z : Type*} [Fintype Z]
-  [MeasurableSpace Z] [MeasurableSingletonClass Z]
+
+private lemma finitePMFRealMassSum (p : PMF Z) :
+    ∑ z : Z, (p z).toReal = 1 := by
+  rw [← ENNReal.toReal_sum (fun z _hz ↦ p.apply_ne_top z)]
+  have hsum : ∑ z : Z, p z = 1 := by
+    simpa only [tsum_fintype] using p.tsum_coe
+  rw [hsum]
+  norm_num
 
 /-- The ambient real-linear push-forward induced by a finite Markov kernel. -/
 def finiteKernelPushLinear (P : Z → PMF Z) :
@@ -44,7 +52,6 @@ def finiteKernelPushLinear (P : Z → PMF Z) :
     ext y
     simp [Pi.smul_apply, smul_eq_mul, mul_assoc, Finset.mul_sum]
 
-omit [MeasurableSpace Z] [MeasurableSingletonClass Z] in
 @[simp]
 lemma finiteKernelPushLinear_apply (P : Z → PMF Z) (μ : Z → ℝ) (y : Z) :
     finiteKernelPushLinear P μ y = ∑ x : Z, μ x * (P x y).toReal :=
@@ -69,7 +76,7 @@ lemma finiteKernelPushLinear_mem_stdSimplex (P : Z → PMF Z)
       _ = ∑ x : Z, μ x := by
             apply Finset.sum_congr rfl
             intro x _hx
-            rw [finitePMF_real_mass_sum, mul_one]
+            rw [finitePMFRealMassSum, mul_one]
       _ = 1 := hμ.2
 
 /-- Kernel push-forward as a self-map of the finite probability simplex. -/
@@ -292,7 +299,7 @@ theorem exists_finiteKernelPushSimplex_fixedPoint (P : Z → PMF Z) :
   refine ⟨stationary, Subtype.ext ?_⟩
   exact sub_eq_zero.mp hzero
 
-omit [Nonempty Z] [MeasurableSpace Z] [MeasurableSingletonClass Z] in
+omit [Nonempty Z] in
 /-- The real-mass push-forward is the real mass of PMF bind. -/
 lemma finiteKernelPushLinear_realMass_eq_bind
     (P : Z → PMF Z) (p : PMF Z) (y : Z) :
@@ -342,31 +349,6 @@ noncomputable def finiteInvariantPMF (P : Z → PMF Z) : PMF Z :=
 theorem finiteInvariantPMF_isInvariant (P : Z → PMF Z) :
     IsInvariantPMF P (finiteInvariantPMF P) :=
   Classical.choose_spec (exists_invariantPMF P)
-
-/-- Dobrushin contraction below one supplies a unique invariant PMF, not only
-uniqueness conditional on a supplied invariant witness. -/
-theorem existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one
-    (P : Z → PMF Z)
-    (hcoefficient : finiteDobrushinCoefficient P < 1) :
-    ∃! stationary : PMF Z, IsInvariantPMF P stationary := by
-  refine ⟨finiteInvariantPMF P, finiteInvariantPMF_isInvariant P, ?_⟩
-  intro stationary hstationary
-  exact invariantPMF_unique_of_finiteDobrushinCoefficient_lt_one P
-    hcoefficient stationary (finiteInvariantPMF P) hstationary
-      (finiteInvariantPMF_isInvariant P)
-
-/-- A candidate-kernel row-TV certificate supplies a unique invariant PMF for
-the true finite kernel. -/
-theorem existsUnique_invariantPMF_of_candidate_rowTV
-    (P Q : Z → PMF Z) {eta : ℝ}
-    (hrowTV : ∀ z, finitePMFTotalVariation (P z) (Q z) ≤ eta)
-    (hcertificate : finiteDobrushinCoefficient Q + 2 * eta < 1) :
-    ∃! stationary : PMF Z, IsInvariantPMF P stationary := by
-  refine ⟨finiteInvariantPMF P, finiteInvariantPMF_isInvariant P, ?_⟩
-  intro stationary hstationary
-  exact invariantPMF_unique_of_candidate_rowTV P Q hrowTV hcertificate
-    stationary (finiteInvariantPMF P) hstationary
-      (finiteInvariantPMF_isInvariant P)
 
 end
 

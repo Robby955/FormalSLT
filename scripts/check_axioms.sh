@@ -373,7 +373,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection"
   echo "import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog"
-  echo "import FormalSLT.StochasticDynamics.FiniteInvariantExistence"
+  echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -432,7 +432,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence \
   FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection \
   FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog \
-  FormalSLT.StochasticDynamics.FiniteInvariantExistence >/dev/null
+  FormalSLT.StochasticDynamics.FiniteInvariantExistence \
+  FormalSLT.StochasticDynamics.FiniteInvariantUniqueness >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"
