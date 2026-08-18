@@ -211,6 +211,10 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate"
   "FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
   "FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate"
+  "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condExp_eq_zero"
+  "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condSecondMoment_le_one_fourth"
+  "FormalSLT.StochasticDynamics.trajectoryPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
+  "FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate"
 )
 
 # Axioms permitted in a clean proof.
@@ -262,6 +266,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -309,7 +314,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.TrajectoryRisk \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
-  FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture >/dev/null
+  FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
+  FormalSLT.StochasticDynamics.TrajectoryPACBayes >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

@@ -15,16 +15,20 @@ open StochasticDynamics
 
 noncomputable section
 
-/-- A prefix summary that reads both the initial and current coordinates. -/
-def prefixAgreement (n : ℕ) (u : (i : Finset.Iic n) → Bool) : Bool :=
-  decide (u ⟨0, Finset.mem_Iic.mpr (Nat.zero_le n)⟩ =
-    u ⟨n, Finset.mem_Iic.mpr le_rfl⟩)
+/-- A total prefix summary which reads the interior coordinate `u 1` whenever
+it exists, with the deterministic initial coordinate as the `n = 0` fallback.
+At times `n ≥ 2`, this cannot be reconstructed from the current state alone. -/
+def interiorState (n : ℕ) (u : (i : Finset.Iic n) → Bool) : Bool :=
+  if h : 1 ≤ n then
+    u ⟨1, Finset.mem_Iic.mpr h⟩
+  else
+    u ⟨0, Finset.mem_Iic.mpr (Nat.zero_le n)⟩
 
 /-- A nondegenerate next-state law selected by the whole prefix summary. -/
 def historyDependentBoolPMF (n : ℕ)
     (u : (i : Finset.Iic n) → Bool) : PMF Bool :=
   PMF.ofFintype
-    (fun y ↦ if y = prefixAgreement n u
+    (fun y ↦ if y = interiorState n u
       then ((3 / 4 : NNReal) : ENNReal)
       else ((1 / 4 : NNReal) : ENNReal))
     (by
@@ -33,7 +37,7 @@ def historyDependentBoolPMF (n : ℕ)
           ((1 / 4 : NNReal) : ENNReal) = 1 := by
         rw [← ENNReal.coe_add, hsumNN]
         rfl
-      cases h : prefixAgreement n u <;>
+      cases h : interiorState n u <;>
         simpa [Fintype.sum_bool, h, add_comm] using hsum)
 
 /-- A genuinely history-dependent trajectory kernel. -/
@@ -47,50 +51,74 @@ instance historyDependentBoolKernel.instIsMarkovKernel (n : ℕ) :
     change IsProbabilityMeasure (historyDependentBoolPMF n u).toMeasure
     infer_instance⟩
 
-/-- Two bounded online scoring rules.  The `false` atom uses both ends of the
-prefix; the `true` atom uses its initial coordinate. -/
+/-- Every transition row gives strictly positive mass to both Boolean states. -/
+theorem historyDependentBoolPMF_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → Bool) (y : Bool) :
+    0 < historyDependentBoolPMF n u y := by
+  simp only [historyDependentBoolPMF, PMF.ofFintype_apply]
+  split_ifs <;> norm_num
+
+/-- Kernel-level full support receipt for every prefix and next state. -/
+theorem historyDependentBoolKernel_singleton_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → Bool) (y : Bool) :
+    0 < historyDependentBoolKernel n u {y} := by
+  change 0 < (historyDependentBoolPMF n u).toMeasure {y}
+  rw [(historyDependentBoolPMF n u).toMeasure_apply_singleton y
+    (MeasurableSet.singleton y)]
+  exact historyDependentBoolPMF_pos n u y
+
+/-- Two bounded online scoring rules.  The `false` atom reads the interior
+coordinate `u 1`, while the `true` atom is the current-state comparator. -/
 def historyDependentBoolScore (i : Bool) : TrajectoryScore Bool :=
   fun n u y ↦
     if i then
-      if y = u ⟨0, Finset.mem_Iic.mpr (Nat.zero_le n)⟩ then 1 else 0
+      if y = u ⟨n, Finset.mem_Iic.mpr le_rfl⟩ then 1 else 0
     else
-      if y = prefixAgreement n u then 1 else 0
+      if y = interiorState n u then 1 else 0
 
 theorem historyDependentBoolScore_mem_Icc :
     ∀ i n u y, historyDependentBoolScore i n u y ∈ Set.Icc (0 : ℝ) 1 := by
   intro i n u y
   fin_cases i <;> simp [historyDependentBoolScore] <;> split_ifs <;> norm_num
 
-def trueThenFalsePath (n : ℕ) : Bool :=
-  if n = 0 then true else false
+def falseTrueFalsePath (n : ℕ) : Bool :=
+  decide (n = 1)
 
 def allFalsePath (_n : ℕ) : Bool := false
 
-/-- The witness paths agree at the current state at time one. -/
-theorem historyWitness_same_current :
-    trueThenFalsePath 1 = allFalsePath 1 := by
-  simp [trueThenFalsePath, allFalsePath]
+/-- Both witness paths start at the certified deterministic initial state and
+agree at the current state at time two. -/
+theorem historyWitness_same_initial_and_current :
+    falseTrueFalsePath 0 = false ∧
+      allFalsePath 0 = false ∧
+      falseTrueFalsePath 2 = allFalsePath 2 := by
+  simp [falseTrueFalsePath, allFalsePath]
+
+/-- The supported prefixes differ at the interior coordinate. -/
+theorem historyWitness_different_interior :
+    falseTrueFalsePath 1 ≠ allFalsePath 1 := by
+  simp [falseTrueFalsePath, allFalsePath]
 
 /-- Nevertheless, the kernel assigns different next-state probabilities. -/
 theorem historyDependentBool_kernel_witness :
-    historyDependentBoolPMF 1
-        (Preorder.frestrictLe 1 trueThenFalsePath) true = 1 / 4 ∧
-      historyDependentBoolPMF 1
-        (Preorder.frestrictLe 1 allFalsePath) true = 3 / 4 := by
+    historyDependentBoolPMF 2
+        (Preorder.frestrictLe 2 falseTrueFalsePath) true = 3 / 4 ∧
+      historyDependentBoolPMF 2
+        (Preorder.frestrictLe 2 allFalsePath) true = 1 / 4 := by
   constructor <;>
-    norm_num [historyDependentBoolPMF, prefixAgreement, PMF.ofFintype_apply,
-      Preorder.frestrictLe_apply, trueThenFalsePath, allFalsePath]
+    norm_num [historyDependentBoolPMF, interiorState, PMF.ofFintype_apply,
+      Preorder.frestrictLe_apply, falseTrueFalsePath, allFalsePath]
 
 /-- The `false` score atom also distinguishes the two histories even though
 their current states agree. -/
 theorem historyDependentBool_score_witness :
-    historyDependentBoolScore false 1
-        (Preorder.frestrictLe 1 trueThenFalsePath) true = 0 ∧
-      historyDependentBoolScore false 1
-        (Preorder.frestrictLe 1 allFalsePath) true = 1 := by
+    historyDependentBoolScore false 2
+        (Preorder.frestrictLe 2 falseTrueFalsePath) true = 1 ∧
+      historyDependentBoolScore false 2
+        (Preorder.frestrictLe 2 allFalsePath) true = 0 := by
   constructor <;>
-    norm_num [historyDependentBoolScore, prefixAgreement,
-      Preorder.frestrictLe_apply, trueThenFalsePath, allFalsePath]
+    norm_num [historyDependentBoolScore, interiorState,
+      Preorder.frestrictLe_apply, falseTrueFalsePath, allFalsePath]
 
 def uniformBoolPrior (_i : Bool) : ℝ := 1 / 2
 
@@ -240,11 +268,19 @@ theorem historyDependentBool_selectedPosteriorTilt_certificate :
 #print axioms StochasticDynamics.trajectoryPosteriorAverageConditionalRisk_lt_tiltMixture_of_not_mem
 #print axioms StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate
 
+#check historyDependentBoolPMF_pos
+#check historyDependentBoolKernel_singleton_pos
+#check historyWitness_same_initial_and_current
+#check historyWitness_different_interior
 #check historyDependentBool_kernel_witness
 #check historyDependentBool_score_witness
 #check historyDependentBool_trajectoryPACBayes_certificate
 #check historyDependentBool_selectedPosteriorTilt_certificate
 
+#print axioms historyDependentBoolPMF_pos
+#print axioms historyDependentBoolKernel_singleton_pos
+#print axioms historyWitness_same_initial_and_current
+#print axioms historyWitness_different_interior
 #print axioms historyDependentBool_kernel_witness
 #print axioms historyDependentBool_score_witness
 #print axioms historyDependentBool_trajectoryPACBayes_certificate

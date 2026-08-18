@@ -137,6 +137,11 @@ classify_witness() {
 #      two-tilt prior, a path-selected posterior and post-path tilt atom, both
 #      selected boundaries below 1/20, and risk below 11/20; the two explicit
 #      selector-branch paths are not proved good or positive-probability)
+#   trajectoryPACBayes_tiltMixture_prequentialRisk_certificate
+#     (prefix-dependent Bool kernel and score with full-support rows; at time
+#      two, two prefixes share the fixed initial and current states but differ
+#      at the interior state, producing distinct kernel rows and score values;
+#      the exact length-three cylinder masses are not evaluated)
 #   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
 #     countableJointMeanVariance_priorMoment_le_of_not_mem
 #     (predeclared Nat-indexed geometric joint-pair catalog, one existential good
@@ -200,6 +205,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckExponentialFamily.lean"
   "examples/CheckMarkovRisk.lean"
   "examples/CheckMarkovPACBayes.lean"
+  "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
 )
