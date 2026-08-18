@@ -307,6 +307,7 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.empiricalStationaryCatalogExceptionalEvent_mass_le"
   "FormalSLT.StochasticDynamics.empiricalStationaryCatalog_allPosteriors_of_not_mem"
   "FormalSLT.StochasticDynamics.exists_selectedEmpiricalStationaryCatalog_event"
+  "FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event"
   "FormalSLT.StochasticDynamics.exists_finiteKernelPushSimplex_fixedPoint"
   "FormalSLT.StochasticDynamics.exists_invariantPMF"
   "FormalSLT.StochasticDynamics.finiteInvariantPMF_isInvariant"

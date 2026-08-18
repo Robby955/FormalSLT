@@ -129,6 +129,16 @@ theorem catalogTrue_dobrushin :
       PMF.ofFintype_apply, Fintype.sum_bool] at h ⊢
     exact h
 
+/-- For this strict-contraction receipt, the canonical invariant law is the
+displayed `(2/3, 1/3)` PMF rather than merely an opaque choice. -/
+theorem catalogCanonicalStationary_eq_displayed :
+    finiteInvariantPMF catalogTrueKernel = catalogStationary :=
+  invariantPMF_unique_of_finiteDobrushinCoefficient_lt_one
+    catalogTrueKernel (by rw [catalogTrue_dobrushin]; norm_num)
+    (finiteInvariantPMF catalogTrueKernel) catalogStationary
+    (finiteInvariantPMF_isInvariant catalogTrueKernel)
+    catalogStationary_invariant
+
 theorem catalogFair_dobrushin :
     finiteDobrushinCoefficient catalogFairKernel = 0 := by
   apply le_antisymm
@@ -271,8 +281,8 @@ def catalogRiskTiltSelector (_x : ℕ → Bool) (_n : ℕ) : ℕ := 0
 
 def catalogTransitionTiltSelector (_x : ℕ → Bool) (_n : ℕ) : Unit := ()
 
-/-- The selected same-data theorem specialized to the two-candidate receipt.
-The all-row-visit premise is retained exactly. -/
+/-- The canonical-invariant selected theorem specialized to the two-candidate
+receipt.  The all-row-visit premise is retained exactly. -/
 theorem boolCatalog_sameData_certificate :
     ∃ goodEvent : Set (ℕ → Bool),
       (markovPathMeasure catalogTrueKernel false).real goodEventᶜ ≤ 1 / 2 ∧
@@ -283,7 +293,8 @@ theorem boolCatalog_sameData_certificate :
               (catalogCandidate c) catalogTransitionPrior
               catalogTransitionWeight catalogTransitionTilt
               (1 / 4) (catalogTransitionTiltSelector x n) n x
-            stationaryPosteriorMarkovRisk catalogTrueKernel catalogStationary
+            stationaryPosteriorMarkovRisk catalogTrueKernel
+                (finiteInvariantPMF catalogTrueKernel)
                 catalogScore (catalogPosterior x n) <
               empiricalTransitionPosteriorRisk
                   catalogScore (catalogPosterior x n) n x +
@@ -301,9 +312,8 @@ theorem boolCatalog_sameData_certificate :
                 IsInvariantPMF catalogTrueKernel stationaryOne →
                 IsInvariantPMF catalogTrueKernel stationaryTwo →
                 stationaryOne = stationaryTwo) := by
-  have h := exists_selectedEmpiricalStationaryCatalog_event
-    catalogTrueKernel catalogStationary catalogStationary_invariant false
-    catalogCandidate catalogReference
+  have h := exists_selectedCanonicalEmpiricalStationaryCatalog_event
+    catalogTrueKernel false catalogCandidate catalogReference
     (fun i x y ↦ by
       simpa [catalogScore] using catalogTransitionScore_mem_Icc x y)
     catalogD_nonneg catalogCandidate_coefficient_lt_one catalogD_bounds
@@ -411,11 +421,14 @@ theorem catalogFair_depthTwo_quarterEta_remainder :
 #check empiricalStationaryCatalog_allPosteriors_of_not_mem
 #check exists_empiricalStationaryCatalog_event
 #check exists_selectedEmpiricalStationaryCatalog_event
+#check exists_selectedCanonicalEmpiricalStationaryCatalog_event
 
 #print axioms empiricalStationaryCatalogExceptionalEvent_mass_le
 #print axioms empiricalStationaryCatalog_allPosteriors_of_not_mem
 #print axioms exists_empiricalStationaryCatalog_event
 #print axioms exists_selectedEmpiricalStationaryCatalog_event
+#print axioms exists_selectedCanonicalEmpiricalStationaryCatalog_event
+#print axioms catalogCanonicalStationary_eq_displayed
 #print axioms boolCatalog_sameData_certificate
 #print axioms catalogTrue_depthTwo_zeroEta_remainder
 #print axioms catalogFair_depthTwo_quarterEta_remainder

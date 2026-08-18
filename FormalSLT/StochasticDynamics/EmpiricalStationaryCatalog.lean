@@ -8,6 +8,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
 import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
+import FormalSLT.StochasticDynamics.FiniteInvariantExistence
 
 /-!
 # Same-trajectory empirical stationary certificates from a declared catalog
@@ -29,7 +30,10 @@ The candidate kernels, reference PMFs, and their finite-depth potentials are
 fixed before the risk event.  The theorem permits selection only by
 substitution into this common catalog event.  It does not authorize an
 arbitrary path-generated kernel or assert that the selected score is an
-e-process.  The true invariant PMF remains a supplied assumption.
+e-process.  The base theorem accepts any supplied invariant PMF.  Its canonical
+finite-state corollary constructs `finiteInvariantPMF P`; absent a strict
+contraction certificate this is only a chosen invariant law, while a strict
+certificate makes every invariant law equal to it.
 -/
 
 open Finset MeasureTheory ProbabilityTheory
@@ -668,6 +672,75 @@ theorem exists_selectedEmpiricalStationaryCatalog_event
     (selectTransitionTilt x n) (selectPosterior x n)
     (hselectPosterior x n)
   exact h
+
+omit [DecidableEq C] [Nonempty C] in
+/-- Canonical finite-state specialization of the selected catalog theorem.
+Finite-state existence removes the caller-supplied invariant-law premise by
+targeting `finiteInvariantPMF P`.  Without the selected strict-contraction
+branch this PMF is only the canonical chosen invariant; the final implication
+states exactly when it is the unique invariant law. -/
+theorem exists_selectedCanonicalEmpiricalStationaryCatalog_event
+    (P : Z → PMF Z) (x0 : Z)
+    (Q : C → Z → PMF Z) (reference : C → PMF Z)
+    {score : I → MarkovTransitionScore Z}
+    (hscore : ∀ i x y, score i x y ∈ Set.Icc (0 : ℝ) 1)
+    {D : C → ℝ} (hDnonneg : ∀ c, 0 ≤ D c)
+    (hcoefficient : ∀ c, finiteDobrushinCoefficient (Q c) < 1)
+    (hD : ∀ c i, finiteOscillation
+      (centeredMarkovRowRisk (Q c) (reference c) (score i)) ≤ D c)
+    {candidateWeight : C → ℝ}
+    (hcandidateWeight : IsFullSupportPMF candidateWeight)
+    {prior : I → ℝ} (hprior : IsFullSupportPMF prior)
+    {transitionPrior : TransitionCoordinate Z → ℝ}
+    (htransitionPrior : IsFullSupportPMF transitionPrior)
+    {transitionWeight : Tau → ℝ}
+    (htransitionWeight : IsFullSupportPMF transitionWeight)
+    {transitionLam : Tau → ℝ}
+    (htransitionLam : ∀ k, 0 < transitionLam k)
+    (htransitionLam_one : ∀ k, transitionLam k < 1)
+    {deltaRisk deltaTransition : ℝ}
+    (hdeltaRisk : 0 < deltaRisk)
+    (hdeltaTransition : 0 < deltaTransition)
+    (selectCandidate : (ℕ → Z) → ℕ → C)
+    (selectDepth selectRiskTilt : (ℕ → Z) → ℕ → ℕ)
+    (selectTransitionTilt : (ℕ → Z) → ℕ → Tau)
+    (selectPosterior : (ℕ → Z) → ℕ → I → ℝ)
+    (hselectPosterior : ∀ x n, IsPMF (selectPosterior x n)) :
+    ∃ goodEvent : Set (ℕ → Z),
+      (markovPathMeasure P x0).real goodEventᶜ ≤
+          deltaRisk + deltaTransition ∧
+        ∀ x ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          (∀ z : Z, 0 < transitionVisitMass z n x) →
+            let c := selectCandidate x n
+            let m := selectDepth x n
+            let j := selectRiskTilt x n
+            let k := selectTransitionTilt x n
+            let posterior := selectPosterior x n
+            let eta := empiricalCandidateKernelTVBudget
+              (Q c) transitionPrior transitionWeight transitionLam
+              deltaTransition k n x
+            stationaryPosteriorMarkovRisk
+                P (finiteInvariantPMF P) score posterior <
+                empiricalTransitionPosteriorRisk score posterior n x +
+                  empiricalStationaryCatalogBoundary
+                    Q reference score D candidateWeight prior posterior
+                    deltaRisk eta c m j n x ∧
+              finiteDobrushinCoefficient P ≤
+                finiteDobrushinCoefficient (Q c) + 2 * eta ∧
+              IsOscillationContraction P
+                (finiteDobrushinCoefficient (Q c) + 2 * eta) ∧
+              (finiteDobrushinCoefficient (Q c) + 2 * eta < 1 →
+                ∀ stationaryOne stationaryTwo : PMF Z,
+                  IsInvariantPMF P stationaryOne →
+                  IsInvariantPMF P stationaryTwo →
+                  stationaryOne = stationaryTwo) := by
+  exact exists_selectedEmpiricalStationaryCatalog_event
+    P (finiteInvariantPMF P) (finiteInvariantPMF_isInvariant P) x0
+    Q reference hscore hDnonneg hcoefficient hD
+    hcandidateWeight hprior htransitionPrior htransitionWeight
+    htransitionLam htransitionLam_one hdeltaRisk hdeltaTransition
+    selectCandidate selectDepth selectRiskTilt selectTransitionTilt
+    selectPosterior hselectPosterior
 
 end
 
