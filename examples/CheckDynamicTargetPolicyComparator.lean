@@ -74,6 +74,30 @@ def prefixDynamicBoolEnvironment : PrefixControlledEnvironment Bool Bool :=
 def dynamicHistoryBehavior : BehaviorPolicy Bool Bool :=
   fun n u ↦ dynamicBiasedBoolPMF (dynamicInteriorAction n u)
 
+theorem dynamicHistoryBehavior_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → ControlledObservation Bool Bool) (a : Bool) :
+    0 < dynamicHistoryBehavior n u a :=
+  dynamicBiasedBoolPMF_pos _ _
+
+theorem prefixDynamicBoolEnvironment_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → ControlledObservation Bool Bool)
+    (a y : Bool) :
+    0 < prefixDynamicBoolEnvironment n u a y :=
+  dynamicBiasedBoolPMF_pos _ _
+
+/-- Every finite continuation atom used by the variance receipt is possible;
+the displayed path is not an off-support arithmetic construction. -/
+theorem prefixDynamicContinuationPMF_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → ControlledObservation Bool Bool)
+    (next : ControlledObservation Bool Bool) :
+    0 < prefixControlledContinuationPMF prefixDynamicBoolEnvironment
+      dynamicHistoryBehavior n u next := by
+  rw [show next = (next.1, next.2) by exact Prod.eta next,
+    prefixControlledContinuationPMF_apply]
+  exact ENNReal.mul_pos_iff.2
+    ⟨dynamicHistoryBehavior_pos n u next.1,
+      prefixDynamicBoolEnvironment_pos n u next.1 next.2⟩
+
 /-- Target `false` favors the recorded interior action; target `true` favors
 its complement.  Thus both catalog atoms inspect the full prefix interface. -/
 def dynamicTargetCatalog (i : Bool) : TargetPolicy Bool Bool :=
@@ -329,6 +353,7 @@ theorem prefixDynamicBoolComparator_certificate :
 #check dynamicVariancePath_positive
 #check dynamicBoolComparator_certificate
 #check prefixDynamicEnvironment_history_witness
+#check prefixDynamicContinuationPMF_pos
 #check prefixDynamicTargetFalse_history_changes_risk
 #check prefixDynamicBoolComparator_certificate
 
@@ -337,6 +362,7 @@ theorem prefixDynamicBoolComparator_certificate :
 #print axioms dynamicVariancePath_positive
 #print axioms dynamicBoolComparator_certificate
 #print axioms prefixDynamicEnvironment_history_witness
+#print axioms prefixDynamicContinuationPMF_pos
 #print axioms prefixDynamicTargetFalse_history_changes_risk
 #print axioms prefixDynamicBoolComparator_certificate
 
