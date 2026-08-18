@@ -7,6 +7,7 @@ Authors: Robby Sneiderman
 import FormalSLT.StochasticDynamics.MarkovRisk
 import FormalSLT.StochasticDynamics.TrajectoryRisk
 import FormalSLT.StochasticDynamics.MarkovPACBayes
+import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 
 /-!
