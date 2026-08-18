@@ -9,9 +9,10 @@ space: in particular, the final `#check` fixes the hypothesis type to `Real`
 while leaving the prior and posterior as arbitrary probability measures.
 
 The endpoint mixes the actual forward predictable-mean e-process over the
-prior.  Its explicit analytic interface is joint strong measurability of that
-parameterized process in the ambient product sigma algebra and in the product
-of the time-`n` path filtration with the hypothesis sigma algebra.
+prior.  For finite state, coordinatewise hypothesis measurability of the score
+now derives joint strong measurability of that parameterized process in both
+the time-`n` filtration product and the ambient product sigma algebra.  The
+capstone therefore exposes no separate process-measurability assumption.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -27,6 +28,11 @@ open FormalSLT.StochasticDynamics
 #check exists_continuousForwardPredictableMeanBesselPACBayes_event
 
 #check stronglyMeasurable_conditionalTrajectoryRisk_parameter
+#check measurableSpace_prod_piLE_le_ambient
+#check stronglyMeasurable_observedTrajectoryScore_parameter_prod
+#check stronglyMeasurable_conditionalTrajectoryRisk_parameter_prod
+#check stronglyMeasurable_continuousTrajectoryLowerProcess_filtered
+#check stronglyMeasurable_continuousTrajectoryLowerProcess_ambient
 #check continuousTrajectoryPosteriorAverageConditionalRisk
 #check continuousTrajectoryPosteriorEmpiricalPrequentialRisk
 #check continuousTrajectoryPosteriorHybridBesselPenalty
@@ -43,4 +49,8 @@ open FormalSLT.StochasticDynamics
 #print axioms continuousForwardPredictableMeanBessel_allPosteriors_of_not_mem
 #print axioms exists_continuousForwardPredictableMeanBesselPACBayes_event
 #print axioms stronglyMeasurable_conditionalTrajectoryRisk_parameter
+#print axioms stronglyMeasurable_observedTrajectoryScore_parameter_prod
+#print axioms stronglyMeasurable_conditionalTrajectoryRisk_parameter_prod
+#print axioms stronglyMeasurable_continuousTrajectoryLowerProcess_filtered
+#print axioms stronglyMeasurable_continuousTrajectoryLowerProcess_ambient
 #print axioms exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event
