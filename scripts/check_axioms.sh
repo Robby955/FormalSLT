@@ -282,6 +282,11 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_selectedEmpiricalCandidateRowTotalVariation_event"
   "FormalSLT.StochasticDynamics.exists_empiricalCandidateKernelTV_event"
   "FormalSLT.StochasticDynamics.exists_selectedEmpiricalKernelContraction_event"
+  "FormalSLT.StochasticDynamics.depthTiltPolynomial_log_cost"
+  "FormalSLT.StochasticDynamics.stationaryPoissonDepthSelectionExceptionalEvent_mass_le"
+  "FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_selected_event"
+  "FormalSLT.StochasticDynamics.stationaryPoissonDepthSelectionBoundary_logarithmic_tendsto_zero"
+  "FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event"
 )
 
 # Axioms permitted in a clean proof.
@@ -341,6 +346,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant"
   echo "import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence"
+  echo "import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -396,7 +402,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonDobrushin \
   FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate \
   FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant \
-  FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence >/dev/null
+  FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence \
+  FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

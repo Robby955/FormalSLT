@@ -16,6 +16,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
 import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
+import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 
 /-!
 # Stable stochastic-dynamics imports

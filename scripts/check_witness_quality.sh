@@ -159,6 +159,9 @@ classify_witness() {
 #      costs at n = 512 and 2048, checked boundary enclosures 0.2738--0.2744
 #      and 0.1432--0.1434, and strict same-path shrinkage; the catalog is fixed
 #      before data and the countable endpoint is not a master selected e-process)
+#   exists_stationaryPoissonDepthSelection_allTime_vanishing_event
+#     (one-state stationary chain, D = 1/4, logarithmic depth and geometric
+#      tilt selectors, one common outer event, and exact width tending to zero)
 #   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
 #     countableJointMeanVariance_priorMoment_le_of_not_mem
 #     (predeclared Nat-indexed geometric joint-pair catalog, one existential good
@@ -238,6 +241,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckStationaryPoissonPACBayes.lean"
   "examples/CheckStationaryPoissonContraction.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
+  "examples/CheckStationaryPoissonDepthSelection.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
   "examples/CheckStationaryPoissonRobustCandidate.lean"
