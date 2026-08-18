@@ -15,6 +15,9 @@ is an actual predictable-residual e-process; its hybrid-Bessel term is only a
 lower envelope.  Its finite-hypothesis, finite-declared-tilt and IID wrappers
 control every eligible time `n >= 2` through one outer-mass event.
 Compatibility aliases remain usable without carrying duplicate proof bodies.
+The stochastic-dynamics umbrella also exposes the finite controlled-trajectory
+importance-weighting semantic bridge, separately from any stationary
+target-policy value claim.
 -/
 
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
@@ -85,6 +88,8 @@ Compatibility aliases remain usable without carrying duplicate proof bodies.
 #check FormalSLT.StochasticDynamics.exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event
 #check FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event
 #check FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event
+#check FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp
+#check FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces
 
 #check FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
 #check FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
@@ -156,3 +161,5 @@ Compatibility aliases remain usable without carrying duplicate proof bodies.
 #print axioms FormalSLT.StochasticDynamics.exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event
 #print axioms FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event
 #print axioms FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event
+#print axioms FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp
+#print axioms FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces

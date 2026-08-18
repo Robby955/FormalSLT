@@ -224,6 +224,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event"
   "FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event"
+  "FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp"
+  "FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces"
 )
 
 # Axioms permitted in a clean proof.
@@ -278,6 +280,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
   echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes"
+  echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -328,7 +331,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
   FormalSLT.StochasticDynamics.TrajectoryPACBayes \
   FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes \
-  FormalSLT.StochasticDynamics.StationaryPoissonPACBayes >/dev/null
+  FormalSLT.StochasticDynamics.StationaryPoissonPACBayes \
+  FormalSLT.StochasticDynamics.ControlledTrajectory >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

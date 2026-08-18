@@ -9,8 +9,9 @@ import FormalSLT.StochasticDynamics.ControlledTrajectory
 /-!
 # Controlled-trajectory semantic receipt
 
-The Boolean receipt uses a behavior policy which reads the action at time zero
-even when the current decision--outcome coordinate is identical.  At a
+The Boolean receipt uses a behavior policy which reads the interior action at
+coordinate one even when the deterministic initial and current coordinates
+are identical.  At a
 displayed prefix, the behavior probabilities are `3/4` and `1/4`, while the
 first target policy is uniform, so the two checked importance ratios are
 exactly `2/3` and `2`.
@@ -41,6 +42,12 @@ def biasedBoolPMF (favored : Bool) : PMF Bool :=
       cases favored <;>
         simpa [Fintype.sum_bool, add_comm] using hsum)
 
+/-- Both atoms have positive mass in every biased Boolean row. -/
+theorem biasedBoolPMF_pos (favored b : Bool) :
+    0 < biasedBoolPMF favored b := by
+  simp only [biasedBoolPMF, PMF.ofFintype_apply]
+  split_ifs <;> norm_num
+
 /-- Uniform Boolean PMF. -/
 def fairBoolPMF : PMF Bool :=
   PMF.ofFintype
@@ -58,15 +65,42 @@ and current action. -/
 def boolControlledEnvironment (s a : Bool) : PMF Bool :=
   biasedBoolPMF (s == a)
 
-/-- The initial action is a genuine historical feature at every later time. -/
-def initialAction (n : ℕ)
+/-- Read the action at coordinate one when it exists, with coordinate zero as
+the total fallback.  At time two this is a genuinely interior feature. -/
+def interiorAction (n : ℕ)
     (u : (i : Finset.Iic n) → ControlledObservation Bool Bool) : Bool :=
-  (u ⟨0, Finset.mem_Iic.mpr (Nat.zero_le n)⟩).1
+  if h : 1 ≤ n then
+    (u ⟨1, Finset.mem_Iic.mpr h⟩).1
+  else
+    (u ⟨0, Finset.mem_Iic.mpr (Nat.zero_le n)⟩).1
 
-/-- History-dependent behavior: after the next state is revealed, favor the
-action used at time zero. -/
+/-- History-dependent behavior: favor the recorded interior action. -/
 def historyDependentBehavior : BehaviorPolicy Bool Bool :=
-  fun n u ↦ biasedBoolPMF (initialAction n u)
+  fun n u ↦ biasedBoolPMF (interiorAction n u)
+
+/-- Every behavior row gives positive mass to every action. -/
+theorem historyDependentBehavior_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → ControlledObservation Bool Bool) (a : Bool) :
+    0 < historyDependentBehavior n u a :=
+  biasedBoolPMF_pos _ _
+
+/-- Every environment row gives positive mass to every outcome. -/
+theorem boolControlledEnvironment_pos (s a y : Bool) :
+    0 < boolControlledEnvironment s a y :=
+  biasedBoolPMF_pos _ _
+
+/-- Consequently every action--outcome continuation atom has positive mass
+from every completed prefix. -/
+theorem controlledContinuationPMF_pos (n : ℕ)
+    (u : (i : Finset.Iic n) → ControlledObservation Bool Bool)
+    (next : ControlledObservation Bool Bool) :
+    0 < controlledContinuationPMF boolControlledEnvironment
+      historyDependentBehavior n u next := by
+  rw [show next = (next.1, next.2) by exact Prod.eta next,
+    controlledContinuationPMF_apply]
+  exact ENNReal.mul_pos_iff.2
+    ⟨historyDependentBehavior_pos n u next.1,
+      boolControlledEnvironment_pos _ _ _⟩
 
 /-- A two-policy catalog.  The `false` atom is uniform; the `true` atom favors
 `true` with probability `3/4`. -/
@@ -108,33 +142,35 @@ theorem historyDependentBehavior_ratioBound (i : Bool) :
 theorem boolImportanceCap_pos (i : Bool) : 0 < boolImportanceCap i := by
   fin_cases i <;> norm_num [boolImportanceCap]
 
-/-- Two paths with the same current decision--outcome coordinate at time two, but
-different initial actions. -/
-def initialTrueActionPath (n : ℕ) : ControlledObservation Bool Bool :=
-  if n = 0 then (true, false) else (false, false)
+/-- Two paths with the same deterministic initial and current coordinates at
+time two, but different actions at the interior coordinate one. -/
+def interiorTrueActionPath (n : ℕ) : ControlledObservation Bool Bool :=
+  if n = 1 then (true, false) else (false, false)
 
 def allFalseControlledPath (_n : ℕ) : ControlledObservation Bool Bool :=
   (false, false)
 
-theorem behaviorWitness_same_current :
-    initialTrueActionPath 2 = allFalseControlledPath 2 := by
-  norm_num [initialTrueActionPath, allFalseControlledPath]
+theorem behaviorWitness_same_initial_and_current :
+    interiorTrueActionPath 0 = (false, false) ∧
+      allFalseControlledPath 0 = (false, false) ∧
+      interiorTrueActionPath 2 = allFalseControlledPath 2 := by
+  norm_num [interiorTrueActionPath, allFalseControlledPath]
 
-theorem behaviorWitness_different_initial_action :
-    (initialTrueActionPath 0).1 ≠ (allFalseControlledPath 0).1 := by
-  norm_num [initialTrueActionPath, allFalseControlledPath]
+theorem behaviorWitness_different_interior_action :
+    (interiorTrueActionPath 1).1 ≠ (allFalseControlledPath 1).1 := by
+  norm_num [interiorTrueActionPath, allFalseControlledPath]
 
 /-- Despite the same current coordinate, behavior assigns different next-action
 mass because it reads the earlier action. -/
 theorem historyDependentBehavior_witness :
     historyDependentBehavior 2
-        (Preorder.frestrictLe 2 initialTrueActionPath) true = 3 / 4 ∧
+        (Preorder.frestrictLe 2 interiorTrueActionPath) true = 3 / 4 ∧
       historyDependentBehavior 2
         (Preorder.frestrictLe 2 allFalseControlledPath) true = 1 / 4 := by
   constructor <;>
-    norm_num [historyDependentBehavior, biasedBoolPMF, initialAction,
+    norm_num [historyDependentBehavior, biasedBoolPMF, interiorAction,
       PMF.ofFintype_apply, Preorder.frestrictLe_apply,
-      initialTrueActionPath, allFalseControlledPath]
+      interiorTrueActionPath, allFalseControlledPath]
 
 /-- At the first witness prefix, the uniform target produces both the small
 and large importance weights: `2/3` on the favored action and `2` on the
@@ -142,15 +178,15 @@ unfavored action. -/
 theorem both_importance_weights_witness :
     controlledImportanceRatio historyDependentBehavior
         (boolTargetPolicyCatalog false) 2
-        (Preorder.frestrictLe 2 initialTrueActionPath) true = 2 / 3 ∧
+        (Preorder.frestrictLe 2 interiorTrueActionPath) true = 2 / 3 ∧
       controlledImportanceRatio historyDependentBehavior
         (boolTargetPolicyCatalog false) 2
-        (Preorder.frestrictLe 2 initialTrueActionPath) false = 2 := by
+        (Preorder.frestrictLe 2 interiorTrueActionPath) false = 2 := by
   constructor <;>
     norm_num [controlledImportanceRatio, historyDependentBehavior,
-      boolTargetPolicyCatalog, fairBoolPMF, biasedBoolPMF, initialAction,
+      boolTargetPolicyCatalog, fairBoolPMF, biasedBoolPMF, interiorAction,
       PMF.ofFintype_apply, Preorder.frestrictLe_apply,
-      initialTrueActionPath]
+      interiorTrueActionPath]
 
 /-- The complete finite catalog discharges the exact interfaces consumed by
 the predictable-mean empirical-Bernstein PAC--Bayes theorem. -/
@@ -197,10 +233,12 @@ theorem boolControlledCatalog_interfaces :
 #check controlledTrajectoryMeasure
 #check controlledObservedImportanceScore_condExp
 #check controlledImportanceCatalog_predictableMean_interfaces
+#check controlledContinuationPMF_pos
 #check both_importance_weights_witness
 
 #print axioms controlledObservedImportanceScore_condExp
 #print axioms controlledImportanceCatalog_predictableMean_interfaces
+#print axioms controlledContinuationPMF_pos
 #print axioms boolControlledCatalog_interfaces
 
 end
