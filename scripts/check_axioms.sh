@@ -234,6 +234,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.abs_markovPoissonDrift_sub_candidate_le"
   "FormalSLT.StochasticDynamics.abs_stationaryPoissonResidual_le_candidateOscillation"
   "FormalSLT.StochasticDynamics.neg_poissonResidualAverage_le_candidateMaxGapAverage"
+  "FormalSLT.StochasticDynamics.neg_posteriorPoissonResidualAverage_le_candidateMaxGapAverage"
+  "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_path_event"
   "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event"
 )

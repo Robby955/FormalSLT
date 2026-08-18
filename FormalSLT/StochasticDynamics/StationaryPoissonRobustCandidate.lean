@@ -24,6 +24,11 @@ stationary average.  The resulting honest residual envelope is therefore
 
 `osc(g_Q) + 2 (1+B) eta`.
 
+An additional path-adaptive endpoint replaces `osc(g_Q)` by the observed
+max-minus-drift average, posterior-averaged after the path.  It is derived
+from the same supplied-Poisson event; it does not add a second concentration
+argument.
+
 The finite-depth capstone constructs `h` from `Q` and a fixed reference PMF.
 It uses the computed Dobrushin coefficient of `Q` and has residual price
 
@@ -530,6 +535,113 @@ lemma finiteOscillation_markovPoissonDrift_finiteDepth_le
 variable {I T : Type*}
   [Fintype I] [DecidableEq I] [Nonempty I]
   [Fintype T] [DecidableEq T]
+
+/-- Posterior average of the realized candidate max-minus-drift gaps.  Unlike
+the global candidate oscillation, this quantity retains which states the path
+actually visited. -/
+def posteriorCandidatePoissonMaxGapAverage
+    (Q : Z → PMF Z) (score : I → MarkovTransitionScore Z)
+    (potential : I → Z → ℝ) (posterior : I → ℝ)
+    (n : ℕ) (x : ℕ → Z) : ℝ :=
+  posteriorAverage posterior fun i ↦
+    candidatePoissonMaxGapAverage Q (score i) (potential i) n x
+
+omit [DecidableEq I] [Nonempty I] [Fintype T] [DecidableEq T] in
+/-- Posterior form of the path-sharp robust residual transfer.  The candidate
+drift deficit is evaluated along the realized path; only the doubled row-TV
+misspecification term remains uniform. -/
+theorem neg_posteriorPoissonResidualAverage_le_candidateMaxGapAverage
+    (P Q : Z → PMF Z) (stationary : PMF Z)
+    (hstationary : IsInvariantPMF P stationary)
+    {score : I → MarkovTransitionScore Z}
+    {potential : I → Z → ℝ} {B eta : ℝ} (heta : 0 ≤ eta)
+    (hscore : ∀ i x y, score i x y ∈ Set.Icc (0 : ℝ) 1)
+    (hspan : ∀ i x y, |potential i y - potential i x| ≤ B)
+    (hrowTV : ∀ z, finitePMFTotalVariation (P z) (Q z) ≤ eta)
+    {posterior : I → ℝ} (hposterior : IsPMF posterior)
+    (n : ℕ) (hn : 0 < n) (x : ℕ → Z) :
+    -posteriorPoissonResidualAverage
+        P stationary score potential posterior n x ≤
+      posteriorCandidatePoissonMaxGapAverage
+          Q score potential posterior n x +
+        2 * ((1 + B) * eta) := by
+  unfold posteriorPoissonResidualAverage
+    posteriorCandidatePoissonMaxGapAverage posteriorAverage
+  rw [show
+      -(∑ i : I, posterior i *
+          poissonResidualAverage P stationary (score i) (potential i) n x) =
+        ∑ i : I, posterior i *
+          (-poissonResidualAverage P stationary (score i) (potential i) n x) by
+    rw [← Finset.sum_neg_distrib]
+    apply Finset.sum_congr rfl
+    intro i _hi
+    ring]
+  calc
+    (∑ i : I, posterior i *
+        (-poissonResidualAverage P stationary (score i) (potential i) n x)) ≤
+        ∑ i : I, posterior i *
+          (candidatePoissonMaxGapAverage Q (score i) (potential i) n x +
+            2 * ((1 + B) * eta)) := by
+      apply Finset.sum_le_sum
+      intro i _hi
+      apply mul_le_mul_of_nonneg_left _ (hposterior.nonneg i)
+      exact neg_poissonResidualAverage_le_candidateMaxGapAverage
+        P Q stationary hstationary heta (hscore i) (hspan i) hrowTV n hn x
+    _ = (∑ i : I, posterior i *
+          candidatePoissonMaxGapAverage Q (score i) (potential i) n x) +
+        2 * ((1 + B) * eta) := by
+      simp_rw [mul_add]
+      rw [Finset.sum_add_distrib, ← Finset.sum_mul, hposterior.sum_one, one_mul]
+
+/-- Path-adaptive robust candidate-kernel stationary-risk event.  It reuses
+the exact supplied-Poisson concentration event and only sharpens the algebraic
+residual conversion, so no concentration argument is duplicated. -/
+theorem exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_path_event
+    (P Q : Z → PMF Z) (stationary : PMF Z)
+    (hstationary : IsInvariantPMF P stationary) (x0 : Z)
+    {score : I → MarkovTransitionScore Z}
+    (hscore : ∀ i x y, score i x y ∈ Set.Icc (0 : ℝ) 1)
+    {potential : I → Z → ℝ} {B eta : ℝ}
+    (hB : 0 ≤ B) (heta : 0 ≤ eta)
+    (hspan : ∀ i x y, |potential i y - potential i x| ≤ B)
+    (hrowTV : ∀ z, finitePMFTotalVariation (P z) (Q z) ≤ eta)
+    {prior : I → ℝ} (hprior : IsFullSupportPMF prior)
+    {weight : T → ℝ} (hweight : IsFullSupportPMF weight)
+    {lam : T → ℝ} {delta : ℝ} (hdelta : 0 < delta)
+    (hlam : ∀ j, 0 < lam j) (hlam_one : ∀ j, lam j < 1) :
+    ∃ goodEvent : Set (ℕ → Z),
+      (markovPathMeasure P x0).real goodEventᶜ ≤ delta ∧
+        ∀ x ∈ goodEvent, ∀ j : T,
+          ∀ posterior : I → ℝ, IsPMF posterior →
+            ∀ n : ℕ, 2 ≤ n →
+              stationaryPosteriorMarkovRisk P stationary score posterior <
+                empiricalTransitionPosteriorRisk score posterior n x +
+                  (1 + 2 * B) *
+                    trajectoryEmpiricalBernsteinPACBayesBoundary
+                      prior weight lam
+                        (fun i ↦ poissonCorrectedTrajectoryScore
+                          B (score i) (potential i))
+                        posterior delta j n x +
+                  B / (n : ℝ) +
+                  posteriorCandidatePoissonMaxGapAverage
+                    Q score potential posterior n x +
+                  2 * ((1 + B) * eta) := by
+  rcases exists_stationaryPoissonEmpiricalBernsteinPACBayes_event
+      P stationary hstationary x0 hscore hB hspan
+      hprior hweight hdelta hlam hlam_one with
+    ⟨goodEvent, hmass, hgood⟩
+  refine ⟨goodEvent, hmass, ?_⟩
+  intro x hx j posterior hposterior n hn
+  have hnpos : 0 < n := by omega
+  have hbase := hgood x hx j posterior hposterior n hn
+  have hendpoint := posteriorPoissonEndpointCorrection_le
+    hB hspan hposterior n hnpos x
+  have hres :=
+    neg_posteriorPoissonResidualAverage_le_candidateMaxGapAverage
+      P Q stationary hstationary heta hscore hspan hrowTV
+        hposterior n hnpos x
+  unfold stationaryPoissonEmpiricalBernsteinPACBayesBoundary at hbase
+  linarith
 
 /-- Empirical-Bernstein PAC-Bayes stationary-risk event for fixed candidate
 Poisson potentials.  The candidate oscillation and the doubled row-TV price
