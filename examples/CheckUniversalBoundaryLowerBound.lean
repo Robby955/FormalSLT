@@ -1,0 +1,52 @@
+import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
+
+/-!
+# Universal anytime-boundary lower-bound checker
+
+The unconditional checks cover the Portmanteau bridge, fair-sign CLT, positive
+Gaussian tails, and universal `sqrt n` anytime-boundary floor.  The final check
+records the exact conditional reduction from the still-open fair-sign upper LIL
+to the sharp normalized limsup lower bound.
+-/
+
+namespace FormalSLT.Examples.CheckUniversalBoundaryLowerBound
+
+open FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
+
+#check oneSidedCrossingEvent
+#check UpperLILCrossing
+#check not_eventually_boundary_lt_mul_of_upperLILCrossing
+#check oneSidedAnytimeBoundary_limsup_ge_one_of_upperLILCrossing
+#check eventually_map_Ioi_mass_gt_of_tendstoInDistribution
+
+#check fairSignLaw
+#check fairSignPathLaw
+#check fairSignIncrement_hasLaw
+#check fairSignIncrement_iIndep
+#check fairSignIncrement_mean_zero
+#check fairSignIncrement_secondMoment_one
+#check fairSign_tendstoInDistribution_gaussian
+#check gaussianReal_zero_one_Ioi_pos
+#check fairSign_eventually_normalizedTail_mass_gt
+#check fairSign_anytimeBoundary_eventually_ge_sqrt
+
+#check rademacherLILScale
+#check rademacherLILScale_eventually_pos
+#check FairSignUpperLIL
+#check fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL
+
+#print axioms not_eventually_boundary_lt_mul_of_upperLILCrossing
+#print axioms oneSidedAnytimeBoundary_limsup_ge_one_of_upperLILCrossing
+#print axioms eventually_map_Ioi_mass_gt_of_tendstoInDistribution
+#print axioms fairSignIncrement_hasLaw
+#print axioms fairSignIncrement_iIndep
+#print axioms fairSignIncrement_mean_zero
+#print axioms fairSignIncrement_secondMoment_one
+#print axioms fairSign_tendstoInDistribution_gaussian
+#print axioms gaussianReal_zero_one_Ioi_pos
+#print axioms fairSign_eventually_normalizedTail_mass_gt
+#print axioms fairSign_anytimeBoundary_eventually_ge_sqrt
+#print axioms rademacherLILScale_eventually_pos
+#print axioms fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL
+
+end FormalSLT.Examples.CheckUniversalBoundaryLowerBound
