@@ -1024,6 +1024,317 @@ theorem countableForwardBesselPACBayesBoundary_tendsto_zero
       (htime_two j) (htime_floor j) ω
   · exact hrate
 
+/-! ## Explicit all-sample-size selector and vanishing width -/
+
+/-- Catalog atom selected at sample size `n`.  For `n >= 4`, its geometric
+floor lies below `n`. -/
+def geometricForwardTiltIndex (n : ℕ) : ℕ :=
+  (Nat.log 4 n).pred
+
+theorem geometricForwardTiltIndex_add_one {n : ℕ} (hn : 4 ≤ n) :
+    geometricForwardTiltIndex n + 1 = Nat.log 4 n := by
+  unfold geometricForwardTiltIndex
+  exact Nat.succ_pred_eq_of_pos (Nat.log_pos (by norm_num) hn)
+
+/-- The selected atom is admissible at every sample size `n >= 4`. -/
+theorem geometricForwardTiltIndex_floor {n : ℕ} (hn : 4 ≤ n) :
+    geometricForwardTiltTime (geometricForwardTiltIndex n) ≤ n := by
+  unfold geometricForwardTiltTime
+  rw [geometricForwardTiltIndex_add_one hn]
+  exact Nat.pow_log_le_self 4 (by omega)
+
+/-- The explicit sample-size selector visits arbitrarily fine tilt atoms. -/
+theorem geometricForwardTiltIndex_tendsto_atTop :
+    Filter.Tendsto geometricForwardTiltIndex Filter.atTop Filter.atTop := by
+  rw [Filter.tendsto_atTop]
+  intro b
+  filter_upwards [Filter.eventually_ge_atTop (4 ^ (b + 1))] with n hn
+  have hlog : b + 1 ≤ Nat.log 4 n :=
+    Nat.le_log_of_pow_le (by norm_num) hn
+  unfold geometricForwardTiltIndex
+  simpa using Nat.pred_le_pred hlog
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- Every atom of a finite PMF has mass at most one. -/
+theorem finitePMF_apply_le_one {rho : ι → ℝ} (hrho : IsPMF rho) (i : ι) :
+    rho i ≤ 1 := by
+  have hsingle := Finset.single_le_sum
+    (fun j (_hj : j ∈ (Finset.univ : Finset ι)) ↦ hrho.nonneg j)
+    (Finset.mem_univ i)
+  simpa [hrho.sum_one] using hsingle
+
+/-- A finite prior-dependent ceiling for every posterior KL divergence. -/
+def finitePriorLogBarrier (prior : ι → ℝ) : ℝ :=
+  ∑ i, -Real.log (prior i)
+
+omit [DecidableEq ι] [Nonempty ι] in
+theorem finitePriorLogBarrier_nonneg {prior : ι → ℝ}
+    (hprior : IsFullSupportPMF prior) :
+    0 ≤ finitePriorLogBarrier prior := by
+  unfold finitePriorLogBarrier
+  exact Finset.sum_nonneg fun i _ ↦ neg_nonneg.mpr
+    (Real.log_nonpos (hprior.pos i).le
+      (finitePMF_apply_le_one hprior.toIsPMF i))
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- A single KL summand is bounded by its prior log barrier. -/
+theorem klDiv_term_le_neg_log_prior
+    {rho prior : ι → ℝ} (hrho : IsPMF rho)
+    (hprior : IsFullSupportPMF prior) (i : ι) :
+    rho i * Real.log (rho i / prior i) ≤ -Real.log (prior i) := by
+  have hrho0 := hrho.nonneg i
+  have hrho1 := finitePMF_apply_le_one hrho i
+  have hprior0 := hprior.pos i
+  have hprior1 := finitePMF_apply_le_one hprior.toIsPMF i
+  have hneglog : 0 ≤ -Real.log (prior i) := neg_nonneg.mpr
+    (Real.log_nonpos hprior0.le hprior1)
+  rcases hrho0.eq_or_lt with hzero | hrhopos
+  · rw [← hzero]
+    simp only [zero_div, Real.log_zero, zero_mul]
+    exact hneglog
+  · rw [Real.log_div hrhopos.ne' hprior0.ne']
+    have hlogrho : Real.log (rho i) ≤ 0 :=
+      Real.log_nonpos hrhopos.le hrho1
+    calc
+      rho i * (Real.log (rho i) - Real.log (prior i)) =
+          rho i * Real.log (rho i) +
+            rho i * (-Real.log (prior i)) := by ring
+      _ ≤ 0 + 1 * (-Real.log (prior i)) :=
+        add_le_add
+          (mul_nonpos_of_nonneg_of_nonpos hrho0 hlogrho)
+          (mul_le_mul_of_nonneg_right hrho1 hneglog)
+      _ = -Real.log (prior i) := by ring
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- Uniform finite-class KL ceiling.  The barrier is deliberately simple;
+sharpness is unnecessary for proving the selected width vanishes. -/
+theorem klDiv_le_finitePriorLogBarrier
+    {rho prior : ι → ℝ} (hrho : IsPMF rho)
+    (hprior : IsFullSupportPMF prior) :
+    klDiv rho prior ≤ finitePriorLogBarrier prior := by
+  unfold klDiv finitePriorLogBarrier
+  exact Finset.sum_le_sum fun i _ ↦
+    klDiv_term_le_neg_log_prior hrho hprior i
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- Arbitrary posterior sequences on a finite class have negligible KL at the
+selected effective sample-size scale. -/
+theorem klDiv_div_geometricForwardTiltIndex_tendsto_zero
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    (posterior : ℕ → ι → ℝ) (hposterior : ∀ n, IsPMF (posterior n)) :
+    Filter.Tendsto
+      (fun n ↦ klDiv (posterior n) prior /
+        (2 : ℝ) ^ (geometricForwardTiltIndex n + 1))
+      Filter.atTop (nhds 0) := by
+  have hindexSucc : Filter.Tendsto
+      (fun n ↦ geometricForwardTiltIndex n + 1)
+      Filter.atTop Filter.atTop := by
+    simpa only [Function.comp_def] using
+      (Filter.tendsto_add_atTop_nat 1).comp
+        geometricForwardTiltIndex_tendsto_atTop
+  have hden : Filter.Tendsto
+      (fun n ↦ (2 : ℝ) ^ (geometricForwardTiltIndex n + 1))
+      Filter.atTop Filter.atTop := by
+    simpa only [Function.comp_def] using
+      (tendsto_pow_atTop_atTop_of_one_lt
+        (by norm_num : (1 : ℝ) < 2)).comp hindexSucc
+  have hupper : Filter.Tendsto
+      (fun n ↦ finitePriorLogBarrier prior /
+        (2 : ℝ) ^ (geometricForwardTiltIndex n + 1))
+      Filter.atTop (nhds 0) :=
+    tendsto_const_nhds.div_atTop hden
+  apply squeeze_zero
+  · intro n
+    exact div_nonneg (klDiv_nonneg (hposterior n) hprior) (by positivity)
+  · intro n
+    exact div_le_div_of_nonneg_right
+      (klDiv_le_finitePriorLogBarrier (hposterior n) hprior) (by positivity)
+  · exact hupper
+
+/-- Explicit all-sample-size rate obtained by substituting
+`geometricForwardTiltIndex n` into the countable catalog. -/
+def allTimeGeometricPolynomialForwardRate
+    (complexity : ℕ → ℝ) (delta : ℝ) (n : ℕ) : ℝ :=
+  2 * geometricForwardTilt (geometricForwardTiltIndex n) +
+    (complexity n +
+        Real.log ((((geometricForwardTiltIndex n : ℝ) + 1) *
+          ((geometricForwardTiltIndex n : ℝ) + 2)) / delta)) /
+      (2 : ℝ) ^ (geometricForwardTiltIndex n + 1)
+
+/-- The all-sample-size rate vanishes whenever its time-indexed complexity is
+negligible relative to the selected effective sample size. -/
+theorem allTimeGeometricPolynomialForwardRate_tendsto_zero
+    {complexity : ℕ → ℝ} {delta : ℝ}
+    (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
+    (hcomplexity : Filter.Tendsto
+      (fun n ↦ complexity n /
+        (2 : ℝ) ^ (geometricForwardTiltIndex n + 1))
+      Filter.atTop (nhds 0)) :
+    Filter.Tendsto (allTimeGeometricPolynomialForwardRate complexity delta)
+      Filter.atTop (nhds 0) := by
+  have h0 := tendsto_pow_const_div_const_pow_of_one_lt 0
+    (by norm_num : (1 : ℝ) < 2)
+  have htiltBase : Filter.Tendsto geometricForwardTilt
+      Filter.atTop (nhds 0) := by
+    have hscaled := h0.const_mul (1 / 2)
+    convert hscaled using 1
+    · funext j
+      unfold geometricForwardTilt
+      rw [pow_succ]
+      ring
+    · norm_num
+  have htilt : Filter.Tendsto
+      (fun n ↦ geometricForwardTilt (geometricForwardTiltIndex n))
+      Filter.atTop (nhds 0) := by
+    simpa only [Function.comp_def] using
+      htiltBase.comp geometricForwardTiltIndex_tendsto_atTop
+  have hlogBase :=
+    polynomialForwardTilt_log_cost_div_geometric_tendsto_zero hdelta hdelta1
+  have hlog : Filter.Tendsto
+      (fun n ↦ Real.log ((((geometricForwardTiltIndex n : ℝ) + 1) *
+        ((geometricForwardTiltIndex n : ℝ) + 2)) / delta) /
+          (2 : ℝ) ^ (geometricForwardTiltIndex n + 1))
+      Filter.atTop (nhds 0) := by
+    simpa only [Function.comp_def] using
+      hlogBase.comp geometricForwardTiltIndex_tendsto_atTop
+  have hsum := htilt.const_mul 2 |>.add (hcomplexity.add hlog)
+  convert hsum using 1
+  · funext n
+    rw [allTimeGeometricPolynomialForwardRate, add_div]
+  · norm_num
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- Nonnegativity of the exact geometric-catalog boundary on unit-valued
+prefixes. -/
+theorem countableForwardBesselPACBayesBoundary_nonneg
+    {prior posterior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    (hposterior : IsPMF posterior)
+    {X : ι → ℕ → Ω → ℝ} {delta : ℝ}
+    (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
+    (hX : ∀ i k ω, 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+    (j n : ℕ) (hn : 2 ≤ n) (ω : Ω) :
+    0 ≤ countableForwardBesselPACBayesBoundary
+      prior polynomialForwardTiltWeight geometricForwardTilt
+      X posterior delta j n ω := by
+  unfold countableForwardBesselPACBayesBoundary
+  have hpenalty := forwardPosteriorHybridBesselPenalty_mem_Icc
+    hposterior hn hX ω
+  have hpsi0 := forwardEmpiricalBernsteinPsi_nonneg
+    (geometricForwardTilt_pos j).le (geometricForwardTilt_lt_one j)
+  have hratio : 1 ≤
+      (((j : ℝ) + 1) * ((j : ℝ) + 2)) / delta := by
+    apply (le_div_iff₀ hdelta).2
+    have hj : (0 : ℝ) ≤ j := Nat.cast_nonneg j
+    nlinarith
+  rw [polynomialForwardTiltWeight_log_cost hdelta.ne' j]
+  exact div_nonneg
+    (add_nonneg
+      (add_nonneg (klDiv_nonneg hposterior hprior)
+        (Real.log_nonneg hratio))
+      (mul_nonneg hpsi0 hpenalty.1))
+    (mul_nonneg (Nat.cast_nonneg _) (geometricForwardTilt_pos j).le)
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- At every `n >= 4`, the explicit selected exact boundary is controlled by
+the all-sample-size deterministic rate. -/
+theorem countableForwardBesselPACBayesBoundary_selected_le_allTimeRate
+    {prior posterior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    (hposterior : IsPMF posterior)
+    {X : ι → ℕ → Ω → ℝ} {delta : ℝ}
+    (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
+    (hX : ∀ i k ω, 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+    {n : ℕ} (hn : 4 ≤ n) (ω : Ω) :
+    countableForwardBesselPACBayesBoundary
+        prior polynomialForwardTiltWeight geometricForwardTilt
+        X posterior delta (geometricForwardTiltIndex n) n ω ≤
+      allTimeGeometricPolynomialForwardRate
+        (fun _ ↦ klDiv posterior prior) delta n := by
+  have hbound := countableForwardBesselPACBayesBoundary_le_geometricRate
+    hprior hposterior hdelta hdelta1 hX
+    (geometricForwardTiltIndex n) n (by omega)
+    (geometricForwardTiltIndex_floor hn) ω
+  simpa [allTimeGeometricPolynomialForwardRate,
+    geometricPolynomialForwardRate] using hbound
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- For every integer sample size, the explicitly selected exact boundary
+converges to zero.  The posterior may vary arbitrarily with time; finite full
+support supplies the required uniform KL ceiling. -/
+theorem countableForwardBesselPACBayesBoundary_selected_tendsto_zero
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    (posterior : ℕ → ι → ℝ) (hposterior : ∀ n, IsPMF (posterior n))
+    {X : ι → ℕ → Ω → ℝ} {delta : ℝ}
+    (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
+    (hX : ∀ i k ω, 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+    (ω : Ω) :
+    Filter.Tendsto
+      (fun n ↦ countableForwardBesselPACBayesBoundary
+        prior polynomialForwardTiltWeight geometricForwardTilt
+        X (posterior n) delta (geometricForwardTiltIndex n) n ω)
+      Filter.atTop (nhds 0) := by
+  let complexity : ℕ → ℝ := fun n ↦ klDiv (posterior n) prior
+  have hcomplexity : Filter.Tendsto
+      (fun n ↦ complexity n /
+        (2 : ℝ) ^ (geometricForwardTiltIndex n + 1))
+      Filter.atTop (nhds 0) :=
+    klDiv_div_geometricForwardTiltIndex_tendsto_zero
+      hprior posterior hposterior
+  have hrate := allTimeGeometricPolynomialForwardRate_tendsto_zero
+    hdelta hdelta1 hcomplexity
+  apply squeeze_zero'
+  · filter_upwards [Filter.eventually_ge_atTop 4] with n hn
+    exact countableForwardBesselPACBayesBoundary_nonneg
+      hprior (hposterior n) hdelta hdelta1 hX
+      (geometricForwardTiltIndex n) n (by omega) ω
+  · filter_upwards [Filter.eventually_ge_atTop 4] with n hn
+    exact countableForwardBesselPACBayesBoundary_selected_le_allTimeRate
+      hprior (hposterior n) hdelta hdelta1 hX hn ω
+  · exact hrate
+
+/-- One outer-mass event supports arbitrary path- and time-dependent finite
+posteriors, the explicit atom selected at every sample size, and an exact
+boundary whose width converges to zero over all integer times.  No
+measurability of the posterior selector is needed: selection is substitution
+into the common event. -/
+theorem exists_geometricForwardBesselPACBayes_allTime_vanishing_event
+    [IsProbabilityMeasure μ]
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    {X : ι → ℕ → Ω → ℝ} {mean : ι → ℝ}
+    {delta : ℝ} (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
+    (hX_adapted : ∀ i, IncrementAdapted ℱ (X i))
+    (hX_unit : ∀ i k ω, 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+    (hmean : ∀ i k, μ[X i k | ℱ k] =ᵐ[μ] fun _ ↦ mean i)
+    (posterior : Ω → ℕ → ι → ℝ)
+    (hposterior : ∀ ω n, IsPMF (posterior ω n)) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        (∀ ω ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          posteriorAverage (posterior ω n) mean <
+            posteriorAverage (posterior ω n)
+                (fun i ↦ forwardPrefixMean (fun k ↦ X i k ω) n) +
+              countableForwardBesselPACBayesBoundary
+                prior polynomialForwardTiltWeight geometricForwardTilt
+                X (posterior ω n) delta
+                (geometricForwardTiltIndex n) n ω) ∧
+        (∀ ω ∈ goodEvent,
+          Filter.Tendsto
+            (fun n ↦ countableForwardBesselPACBayesBoundary
+              prior polynomialForwardTiltWeight geometricForwardTilt
+              X (posterior ω n) delta
+              (geometricForwardTiltIndex n) n ω)
+            Filter.atTop (nhds 0)) := by
+  obtain ⟨goodEvent, hmass, hgood⟩ :=
+    exists_geometricForwardBesselPACBayes_event
+      hprior hdelta hX_adapted hX_unit hmean
+  refine ⟨goodEvent, hmass, ?_, ?_⟩
+  · intro ω hω n hn
+    exact hgood ω hω (geometricForwardTiltIndex n) (posterior ω n)
+      (hposterior ω n) n hn
+  · intro ω _hω
+    exact countableForwardBesselPACBayesBoundary_selected_tendsto_zero
+      hprior (posterior ω) (hposterior ω)
+      hdelta hdelta1 hX_unit ω
+
 end
 
 end FormalSLT.PACBayes.ForwardBesselPACBayesCountable
