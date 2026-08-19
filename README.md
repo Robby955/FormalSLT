@@ -651,9 +651,13 @@ declaration and prints its axiom profile.
   declared atom. A selector may depend on the path, time, and posterior. The
   boundary contains one hypothesis KL term, the selected atom's log-weight
   penalty, and the posterior average of per-hypothesis hybrid Bessel penalties.
-  The hybrid expression is a lower envelope, not an e-process, and the Boolean
-  receipt is structural rather than a numerical-width certificate;
-  [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean)
+  The hybrid expression is a lower envelope, not an e-process. The fair-Boolean
+  receipt checks the common-event structure; the biased-Boolean receipt at
+  `n = 32` has Bessel variance `1/32`, `KL = log 2`, a theorem-produced good
+  path, risk below `343/1000`, and a same-prefix empirical-Bernstein versus
+  fixed-proxy comparison of approximately `0.312` versus `0.760`;
+  [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean),
+  [`CheckForwardBesselPACBayesIIDInformative.lean`](./examples/CheckForwardBesselPACBayesIIDInformative.lean)
 - **Gaussian KL identification** — `diagonalGaussianMeasure_klDiv_toReal_eq`
   and `sphericalGaussianMeasure_klDiv_toReal_eq`;
   [`CheckGaussianMeasureKL.lean`](./examples/CheckGaussianMeasureKL.lean)

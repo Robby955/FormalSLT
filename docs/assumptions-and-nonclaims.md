@@ -280,10 +280,12 @@ averaging.
 conditional-mean identity from strongly measurable IID `[0,1]` losses. The
 forward lane remains finite-hypothesis and finite-tilt. The hybrid Bessel
 expression is a lower envelope of the actual e-process, not itself a proved
-e-process. The checked Boolean receipt proves the common-event and selector
-semantics but no informative numerical width. There is no countable or
-all-real tilt optimizer, vanishing optimized all-time boundary,
-continuous-hypothesis extension, or novelty/priority claim.
+e-process. The fair-Boolean receipt proves the common-event and selector
+semantics. The informative biased-Boolean receipt has Bessel variance `1/32`,
+`KL = log 2`, a theorem-produced good path with risk below `343/1000`, and a
+same-prefix boundary comparison of approximately `0.312` versus `0.760`.
+There is no countable or all-real tilt optimizer, vanishing optimized all-time
+boundary, continuous-hypothesis extension, or novelty/priority claim.
 
 `PACBayes.FiniteEmpiricalVariance` supplies the finite empirical-variance
 foundation for arbitrary real-valued per-hypothesis losses: population
@@ -523,8 +525,10 @@ arbitrary measurable hypothesis space. The separate forward construction now
 supplies an actual predictable-residual e-process, a hybrid Bessel
 lower-envelope conversion, and a finite-hypothesis/finite-tilt PAC-Bayes
 master with an IID adapter. It does not make the hybrid expression itself an
-e-process, produce an informative-width receipt or a vanishing optimized
-all-time boundary, or extend the forward lane to continuous hypotheses.
+e-process or provide a vanishing optimized all-time boundary, and it does not
+extend the forward lane to continuous hypotheses. Its informative
+biased-Boolean receipt has positive Bessel variance, nonzero KL, a
+theorem-produced good path, and the checked same-prefix boundary comparison.
 Countable and exact all-real `lambda` optimization also remain open.
 
 ### Algorithmic stability expected bound
