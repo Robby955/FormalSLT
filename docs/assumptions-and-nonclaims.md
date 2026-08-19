@@ -105,6 +105,14 @@ selected after observing the trajectory. Entry `j` has KL-confidence term
 `(KL(rho || prior) + log (1 / (delta * weight j))) / (n * lambda_j)` and
 sub-Gamma variance term `lambda_j / (8 * (1 - lambda_j / 3))`.
 
+`StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` mixes the checked
+deterministic-start path laws against an arbitrary supplied finite-state PMF.
+The initial PMF need not have full support. Because the raw all-time,
+all-posterior, all-tilt failure set is common to every deterministic start,
+the mixed law retains the same `delta` bound without a union bound or an added
+confidence penalty. A point-mass initial PMF recovers the deterministic-start
+path law.
+
 The selector corollary is pointwise and imposes no measurability or adaptedness
 condition on the selector. It evaluates the common all-atom event; it does not
 construct a selected process or add an optional-stopping guarantee.
@@ -112,11 +120,13 @@ construct a selected process or add an optional-stopping guarantee.
 The checked target is the posterior average of the one-step conditional risks
 encountered along the realized trajectory. The theorem does not require
 stationarity, mixing, or irreducibility. It also does not cover a predictor
-catalog fitted or updated on the same trajectory, a random initial
-distribution, continuous state spaces, multistep forecasts, stationary
+catalog fitted or updated on the same trajectory, non-homogeneous or
+controlled kernels, continuous state spaces, multistep forecasts, stationary
 long-run risk, countable or predictable tilt mixtures, an arbitrary joint
 posterior on predictor--tilt pairs, empirical-variance control, or post-sample
-optimization over an uncontrolled real tilt.
+optimization over an uncontrolled real tilt. The random-initial extension is
+finite-state and Markov; it does not extend the deterministic-start
+prefix-dependent trajectory theorem to random starts.
 
 ### Supplied-Poisson stationary risk
 
@@ -957,3 +967,11 @@ Natural next layers are a random initial law, target-law occupancy and dynamic
 policy comparators, auxiliary-data catalog construction, automatic finite-depth
 Poisson potentials from contraction, and continuous-state stationary
 inference.
+members after seeing their scored outcomes. The arbitrary supplied initial
+PMF is checked for the homogeneous finite-state Markov weighted-tilt theorem,
+not for this general prefix-dependent trajectory layer. Natural next layers
+are random starts for prefix-dependent kernels, controlled/action-dependent
+kernels, auxiliary-data catalog construction, empirical-variance adaptation,
+and normalized countable or predictable tilt families. Continuous-state
+kernels and stationary-risk conclusions require separate formal interfaces
+and are not consequences of the current results.

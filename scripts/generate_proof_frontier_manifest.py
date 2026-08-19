@@ -89,6 +89,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "semantics and an arbitrary-state/arbitrary-hypothesis forward "
             "PAC-Bayes endpoint over a finite predeclared tilt catalog. The "
             "Markov squared-loss theorem is a specialization"
+            "scores. The Markov squared-loss theorem is a specialization, and "
+            "its homogeneous finite-state weighted-tilt certificate also "
+            "supports any supplied finite-state initial PMF by mixing the "
+            "checked deterministic-start path laws"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
@@ -109,6 +113,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "interface for catalogs constructed from auxiliary random data. "
             "Continue vanishing-width and normalized countable or predictable "
             "tilt work in the concentration layer."
+            "Add controlled kernels and an interface for catalogs constructed "
+            "from auxiliary random data. Extend random starts to the general "
+            "prefix-dependent trajectory layer. "
+            "Continue empirical-variance and normalized countable or "
+            "predictable tilt work in the concentration layer."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -159,6 +168,13 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "arbitrary joint predictor--tilt posteriors, countable or all-real "
             "tilt control, multistep prediction, optional stopping, matched "
             "boundary comparison, or stationary long-run risk."
+            "scored outcomes. Random initial laws are checked only for the "
+            "homogeneous finite-state Markov weighted-tilt certificate, not "
+            "for the general prefix-dependent trajectory layer. It does not "
+            "cover controlled kernels, arbitrary joint predictor--tilt posteriors, "
+            "countable or all-real tilt control, empirical variance, "
+            "continuous state spaces, multistep prediction, optional stopping, "
+            "or stationary long-run risk."
         ),
     },
     {

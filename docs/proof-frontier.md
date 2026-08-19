@@ -87,6 +87,21 @@ files.
   evidence, matched arbitrary-state comparison, and normalized countable or
   predictable tilt selection. These results are not arbitrary real-tilt or
   joint predictor--tilt posterior theorems, or stationarity or mixing theorems.
+  predictions update from the observed prefix. Separately, the homogeneous
+  finite-state Markov weighted-tilt certificate now mixes its checked
+  deterministic-start path laws against any supplied finite-state initial PMF
+  without a union bound or added confidence penalty. One measurable
+  exceptional event has mass at most `delta`; on its complement the bound is
+  simultaneous over every positive time, posterior PMF, and predeclared finite
+  tilt atom, so the posterior and one atom may be selected after the path is
+  observed. This does not validate creating new catalog members after seeing
+  their scored outcomes. The next reviewable extensions are controlled
+  kernels, auxiliary-data catalog construction, empirical-variance adaptation,
+  and normalized countable or predictable tilt selection. The result is not
+  an arbitrary real-tilt optimization theorem, an arbitrary joint
+  predictor--tilt posterior theorem, a stationarity or mixing theorem, or a
+  continuous-state stochastic-dynamics result. The general prefix-dependent
+  trajectory certificate still has deterministic start.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

@@ -1004,6 +1004,18 @@ library theorem index.
 | `markovPosteriorAverageConditionalRisk_lt_tiltMixture_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Outside the shared event, every declared tilt and posterior obeys the weighted Markov prequential-risk boundary |
 | `markovPosteriorAverageConditionalRisk_lt_tiltMixture_selected_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Pointwise post-path selection of one predeclared tilt atom on the common event; no measurable or adapted selector and no added optional-stopping result |
 | `markovPACBayes_tiltMixture_prequentialRisk_certificate` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Publication-facing measurable certificate simultaneous over all positive times, posteriors, and declared finite tilt atoms |
+| `markovPathMeasureInitial` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Mixes the checked deterministic-start finite Markov path laws against a supplied finite-state initial PMF |
+| `markovPathMeasureInitial.instIsProbabilityMeasure` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Registers the mixed random-initial path law as a probability measure |
+| `markovPathMeasureInitial_pure` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Recovers the deterministic-start Markov path law from a point-mass initial PMF |
+| `markovPathMeasureInitial_real_le_of_forall_start` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Transfers a common raw-set mass bound from every deterministic start to any supplied finite initial PMF without a union bound |
+| `markovPACBayes_tiltMixture_allPosteriors_bound_initialLaw` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Controls the shared all-time, all-posterior, all-tilt raw failure set under the mixed random-initial path law |
+| `markovPACBayesTiltMixtureInitialLawExceptionalEvent` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Measurable hull of the shared failure set under the supplied random-initial path law |
+| `markovPACBayesTiltMixtureInitialLawExceptionalEvent_measurable` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Proves measurability of the random-initial-law exceptional event |
+| `markovPACBayesTiltMixtureRawFailure_subset_initialLawExceptionalEvent` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Shows the raw posterior/time/tilt failure set lies inside the random-initial measurable hull |
+| `markovPACBayesTiltMixtureInitialLawExceptionalEvent_mass_le_delta` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Bounds the measurable random-initial exceptional event by the unchanged confidence level `delta` |
+| `markovPosteriorAverageConditionalRisk_lt_tiltMixture_initialLaw_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Gives the weighted finite-tilt Markov prequential-risk bound outside the random-initial common event |
+| `markovPosteriorAverageConditionalRisk_lt_tiltMixture_initialLaw_selected_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Permits pointwise post-path selection of one predeclared tilt atom under the random-initial common event |
+| `markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Publication-facing finite-state certificate for any supplied initial PMF, simultaneous over positive times, posteriors, and declared tilt atoms |
 
 ## Supplied-Poisson stationary Markov risk
 

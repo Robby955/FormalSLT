@@ -183,6 +183,11 @@
   checker gives an asymmetric path-selected posterior/tilt receipt; its two
   explicit selector paths exercise branches but are not proved good or
   positive-probability
+- [x] Supplied finite-state initial-law Markov PAC-Bayes extension:
+  an arbitrary initial PMF mixes the common raw failure mass across the
+  deterministic-start path laws before one measurable hull is taken. The
+  asymmetric receipt uses initial masses `1/3` and `2/3`, bounds exceptional
+  mass by `1/20`, and proves good-complement mass at least `19/20`
 - [x] All-sample-size empirical-Bernstein PAC-Bayes certificate:
   the leave-one-coordinate Bessel identity, reverse Bessel martingale, reverse
   joint mean/variance exponential submartingale, epoch-level posterior/catalog
@@ -300,6 +305,9 @@
     prior forward endpoint to arbitrary measurable state spaces under a
     supplied jointly measurable score contract.
   - Generalize the deterministic initial state to a supplied initial law.
+  - [x] Generalize the finite homogeneous-Markov weighted-tilt certificate
+    from a deterministic initial state to an arbitrary supplied finite-state
+    initial PMF, without a union bound or added confidence penalty.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
     their scored outcomes.
@@ -310,6 +318,9 @@
     multistep conclusions as separate later theorem families.
   - Keep stationary, mixing, and multistep conclusions as separate later
     theorem families; add an atomless transition receipt as separate evidence.
+  - Keep random-start prefix-dependent trajectory semantics, stationary,
+    mixing, continuous-state, and multistep conclusions as separate later
+    theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product
