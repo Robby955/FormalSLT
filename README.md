@@ -252,7 +252,7 @@ pointwise after the behavior path because the event is simultaneous.
   [`StationaryTargetPolicyOPE.lean`](./FormalSLT/StochasticDynamics/StationaryTargetPolicyOPE.lean)
 - **Checked example:**
   [`CheckStationaryTargetPolicyOPE.lean`](./examples/CheckStationaryTargetPolicyOPE.lean)
-  verifies two Boolean target policies, ratios `1/2`, `1`, and `3/2`, exact
+  verifies two Boolean target policies, ratios `1/2` and `3/2`, exact
   invariant laws and nonconstant Poisson potentials, constant predictable mean
   `4/15`, and positive observed Bessel variation.
 

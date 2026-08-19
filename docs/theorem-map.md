@@ -870,7 +870,7 @@ full-trajectory off-policy estimator.
 | Declaration | Module | Role |
 |---|---|---|
 | `targetPolicyPotentialMean_eq_inducedKernel` | `StochasticDynamics.StationaryTargetPolicyOPE` | Identifies the action/outcome potential mean with expectation under the target-policy-induced state kernel |
-| `targetPolicyPoissonControlledScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyOPE` | Keeps the normalized importance-weighted Poisson-corrected score in `[0,1]` under the supplied span and ratio caps |
+| `targetPolicyPoissonControlledScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyOPE` | Keeps the unweighted Poisson-corrected transition score in `[0,1]` under the supplied score and span bounds |
 | `stationaryTargetPolicyPredictableMean_eq` | `StochasticDynamics.StationaryTargetPolicyOPE` | Rewrites the behavior-law predictable mean as the affine normalization of stationary target-policy risk |
 | `stationaryTargetPolicyObservedScore_condExp` | `StochasticDynamics.StationaryTargetPolicyOPE` | Proves the exact behavior-law conditional mean for the observed OPE score |
 | `posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean` | `StochasticDynamics.StationaryTargetPolicyOPE` | Identifies the posterior prefix mean with the affine posterior stationary target-policy risk |
