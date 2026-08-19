@@ -117,6 +117,34 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
     },
     {
+        "id": "anytime-boundary-lower-bounds",
+        "status": "partially_closed",
+        "scope": (
+            "deterministic one-sided boundaries for the infinite fair-"
+            "Rademacher walk; an unconditional fixed-Gaussian-tail sqrt-n "
+            "floor from the CLT and Portmanteau theorem; and an unconditional "
+            "unbounded sqrt-n floor from disjoint blocks and the second "
+            "Borel--Cantelli lemma"
+        ),
+        "difficulty": "hard",
+        "source": (
+            "docs/assumptions-and-nonclaims.md#universal-fair-sign-anytime-boundary-lower-bound"
+        ),
+        "next_step": (
+            "Prove the fair-sign upper law of the iterated logarithm needed by "
+            "the checked constant-one reduction, then study structured tilt-"
+            "family and two-sided minimax lower bounds."
+        ),
+        "boundary": (
+            "The unconditional result is specific to deterministic one-sided "
+            "boundaries under the fair-sign product law. It proves divergence "
+            "after sqrt-n normalization, not the sqrt(2 n log log n) rate. "
+            "The sharp limsup theorem explicitly assumes the still-unproved "
+            "FairSignUpperLIL proposition and a boundedness side condition; it "
+            "does not close a full LIL theorem."
+        ),
+    },
+    {
         "id": "pac-bayes-all-real-lambda",
         "status": "partially_closed",
         "scope": (

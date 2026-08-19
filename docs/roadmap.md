@@ -404,8 +404,13 @@
   - Generic chaining (Talagrand)
 
 - [ ] **Minimax lower bounds**
-  - Fano, Assouad, Le Cam
-  - Matching the upper bounds
+  - [x] Fair-sign deterministic one-sided anytime boundaries have an
+    unconditional unbounded `sqrt n` floor, with a separate fixed-Gaussian-tail
+    eventual lower bound
+  - [ ] Prove the fair-sign upper LIL needed by the checked sharp
+    `sqrt(2 n log log n)` constant-one reduction
+  - [ ] Fano, Assouad, Le Cam and matching lower bounds for the structured
+    PAC-Bayes/tilt families
 
 ## Design Principles
 

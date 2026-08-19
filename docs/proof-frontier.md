@@ -75,6 +75,13 @@ files.
   separable-terminal, modulus, and boundary hypotheses. What remains is the
   construction of arbitrary measurable suprema and a general measure-side
   chaining budget rather than supplied interfaces.
+- `anytime-boundary-lower-bounds`: for the fair-Rademacher walk, the CLT and
+  Portmanteau give a fixed-Gaussian-tail `sqrt n` boundary floor, while a
+  disjoint-block Borel--Cantelli argument proves that every valid deterministic
+  one-sided anytime boundary exceeds every fixed nonnegative multiple of
+  `sqrt n` infinitely often. The sharp `sqrt(2 n log log n)` constant-one
+  conclusion is only a checked reduction from the explicitly unproved
+  `FairSignUpperLIL` premise; no full LIL is claimed.
 - `pac-bayes-all-real-lambda`: the base fixed-tilt, fixed-posterior
   spherical-Gaussian i.i.d. specialization and finite fixed catalogs with
   sample-dependent selection are checked. The finite indicator-Bernstein lane

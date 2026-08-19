@@ -762,6 +762,11 @@ declarations; modules are relative to `FormalSLT`.
 | `frequently_geometricEpoch_loglogCost` | `AnytimeValid.AllocationLogLog` | Positive summable epoch weights pay an explicit iterated-logarithm cost along an unbounded geometric-epoch subsequence |
 | `polynomialEpochWeight_hasSum` | `AnytimeValid.AllocationLogLog` | The telescoping polynomial epoch allocation has total mass exactly one |
 | `polynomialGeometricEpoch_log_cost` | `AnytimeValid.AllocationLogLog` | Exact logarithmic price of the polynomial allocation at geometric epoch times |
+| `fairSign_tendstoInDistribution_gaussian` | `AnytimeValid.UniversalBoundaryLowerBound` | Fair-sign normalized sums converge in distribution to the standard Gaussian |
+| `fairSign_ae_frequently_sum_gt_mul_sqrt` | `AnytimeValid.UniversalBoundaryLowerBound` | The fair-sign walk exceeds every fixed nonnegative multiple of `sqrt n` infinitely often almost surely |
+| `fairSign_anytimeBoundary_frequently_ge_mul_sqrt` | `AnytimeValid.UniversalBoundaryLowerBound` | Every valid deterministic one-sided fair-sign anytime boundary exceeds every fixed nonnegative `sqrt n` multiple infinitely often |
+| `fairSign_anytimeBoundary_eventually_ge_sqrt` | `AnytimeValid.UniversalBoundaryLowerBound` | Gaussian-tail anti-concentration forces an eventual fixed-constant `sqrt n` boundary floor |
+| `fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL` | `AnytimeValid.UniversalBoundaryLowerBound` | Conditional reduction from the explicit still-open fair-sign upper-LIL premise to the sharp constant-one limsup floor |
 | `bettingWealth_supermartingale` | `AnytimeValid.BettingCS` | Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale |
 | `betting_time_uniform_confidence_sequence` | `AnytimeValid.BettingCS` | Countable-time Ville confidence sequence for the betting wealth e-process |
 | `betting_confidence_sequence_of_condMean` | `AnytimeValid.BettingCS` | End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null |

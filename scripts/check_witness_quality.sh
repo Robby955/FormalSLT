@@ -208,6 +208,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckEProcess.lean"
   "examples/CheckSelectionCost.lean"
   "examples/CheckAllocationLogLog.lean"
+  "examples/CheckUniversalBoundaryLowerBound.lean"
   "examples/CheckBettingCSNonVacuityWitness.lean"
   "examples/CheckTimeUniformPACBayes.lean"
   "examples/CheckTimeUniformScorePACBayes.lean"
