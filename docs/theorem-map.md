@@ -915,15 +915,31 @@ optional-stopping result.
 | `abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation` | `StochasticDynamics.StationaryPoissonDobrushin` | Sharp finite-PMF expectation duality with no extra factor two under the `L1 / 2` convention |
 | `finiteDobrushinCoefficient_isOscillationContraction` | `StochasticDynamics.StationaryPoissonDobrushin` | Derives oscillation contraction directly from the computed finite Dobrushin coefficient |
 | `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event` | `StochasticDynamics.StationaryPoissonDobrushin` | Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel |
+| `markovPoissonDrift` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Candidate-comparable Poisson drift before subtracting a stationary target |
+| `abs_markovPoissonDrift_sub_candidate_le` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Transfers Poisson drift across a row-TV kernel perturbation at price `(1 + B) * eta` |
+| `abs_stationaryPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Bounds the true stationary residual by candidate-drift oscillation plus the doubled row-TV price |
+| `neg_poissonResidualAverage_le_candidateMaxGapAverage` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Replaces uniform candidate oscillation by an observed max-minus-running-mean correction along the path |
+| `exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_path_event` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Path-adaptive stationary-risk event for a fixed candidate kernel and supplied row-TV envelope |
+| `exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Uniform candidate-oscillation stationary-risk event with explicit doubled misspecification price |
+| `exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Constructs the candidate finite-depth potential and exposes geometric plus row-TV residual terms |
+| `finitePMFTotalVariation_triangle` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Triangle inequality for probabilists' finite total variation |
+| `finiteDobrushinCoefficient_le_candidate_add_two_mul_rowTV` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Bounds the true Dobrushin coefficient by the candidate coefficient plus twice the row-TV radius |
+| `candidateDobrushin_add_two_mul_rowTV_isOscillationContraction` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Turns the candidate coefficient and row-TV radius into a valid true-kernel oscillation factor |
+| `invariantPMF_unique_of_finiteDobrushinCoefficient_lt_one` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Proves at most one supplied invariant PMF when the true finite coefficient is below one |
+| `invariantPMF_unique_of_candidate_rowTV` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Certifies uniqueness among supplied true-kernel invariant PMFs from the candidate perturbation bound |
+| `stationaryPosteriorMarkovRisk_eq_of_candidate_rowTV` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Makes posterior stationary risk independent of the supplied invariant witness under the strict certificate |
 
 The base bridge accepts the invariant PMF, potential, span bound, and optional
 residual envelope as inputs. The finite-depth modules construct the potential
 and its span and residual bounds from known-kernel contraction data, and the
 Dobrushin specialization computes that contraction from the finite kernel.
-The invariant PMF and depth remain supplied. This section does not infer an
-unknown kernel, select depth after data, or establish mixing times,
-irreducibility, invariant-law existence or uniqueness, a measurable confidence
-event, continuous-state validity, or unrestricted tilt selection.
+The robust modules transfer from a fixed candidate kernel under a supplied
+deterministic row-TV envelope and prove uniqueness among supplied invariant
+PMFs under a strict candidate certificate. The invariant PMF and depth remain
+supplied. This section does not estimate an unknown kernel or row-TV radius,
+select a candidate or depth after data, or establish mixing times,
+irreducibility, invariant-law existence, a measurable confidence event,
+continuous-state validity, or unrestricted tilt selection.
 
 ## Named tail-probability corollaries
 

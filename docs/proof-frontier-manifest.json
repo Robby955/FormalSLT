@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 185,
-    "library_and_example_lean_lines": 112626,
-    "library_lean_lines": 91289,
-    "library_modules": 231,
-    "theorem_map_entries": 879
+    "example_lean_files": 187,
+    "library_and_example_lean_lines": 114475,
+    "library_lean_lines": 92391,
+    "library_modules": 233,
+    "theorem_map_entries": 892
   },
   "theorem_families": [
     {
@@ -4952,6 +4952,84 @@
           "module": "StochasticDynamics.StationaryPoissonDobrushin",
           "name": "exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event",
           "summary": "Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "markovPoissonDrift",
+          "summary": "Candidate-comparable Poisson drift before subtracting a stationary target"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "abs_markovPoissonDrift_sub_candidate_le",
+          "summary": "Transfers Poisson drift across a row-TV kernel perturbation at price (1 + B) * eta"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "abs_stationaryPoissonResidual_le_candidateOscillation",
+          "summary": "Bounds the true stationary residual by candidate-drift oscillation plus the doubled row-TV price"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "neg_poissonResidualAverage_le_candidateMaxGapAverage",
+          "summary": "Replaces uniform candidate oscillation by an observed max-minus-running-mean correction along the path"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_path_event",
+          "summary": "Path-adaptive stationary-risk event for a fixed candidate kernel and supplied row-TV envelope"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_event",
+          "summary": "Uniform candidate-oscillation stationary-risk event with explicit doubled misspecification price"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustCandidate",
+          "name": "exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event",
+          "summary": "Constructs the candidate finite-depth potential and exposes geometric plus row-TV residual terms"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustInvariant",
+          "name": "finitePMFTotalVariation_triangle",
+          "summary": "Triangle inequality for probabilists' finite total variation"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustInvariant",
+          "name": "finiteDobrushinCoefficient_le_candidate_add_two_mul_rowTV",
+          "summary": "Bounds the true Dobrushin coefficient by the candidate coefficient plus twice the row-TV radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustInvariant",
+          "name": "candidateDobrushin_add_two_mul_rowTV_isOscillationContraction",
+          "summary": "Turns the candidate coefficient and row-TV radius into a valid true-kernel oscillation factor"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustInvariant",
+          "name": "invariantPMF_unique_of_finiteDobrushinCoefficient_lt_one",
+          "summary": "Proves at most one supplied invariant PMF when the true finite coefficient is below one"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustInvariant",
+          "name": "invariantPMF_unique_of_candidate_rowTV",
+          "summary": "Certifies uniqueness among supplied true-kernel invariant PMFs from the candidate perturbation bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonRobustInvariant",
+          "name": "stationaryPosteriorMarkovRisk_eq_of_candidate_rowTV",
+          "summary": "Makes posterior stationary risk independent of the supplied invariant witness under the strict certificate"
         }
       ],
       "name": "Supplied-Poisson stationary Markov risk"

@@ -246,6 +246,10 @@
   - [x] Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds, and compute
     a valid contraction factor from the finite Dobrushin coefficient.
+  - [x] Transfer the stationary certificate from a fixed candidate kernel
+    under a deterministic row-TV envelope, including the doubled perturbation
+    price and uniqueness among supplied invariant PMFs under strict candidate
+    contraction.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
@@ -253,8 +257,9 @@
   - Extend the checked finite weighted-tilt selection to normalized countable
     or predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
-  - Keep inferred invariant laws, mixing guarantees, continuous-state, and
-    multistep conclusions as separate later theorem families.
+  - Keep invariant-law existence, statistically estimated kernel/row-TV
+    confidence sets, mixing guarantees, continuous-state, and multistep
+    conclusions as separate later theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product

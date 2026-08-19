@@ -168,6 +168,38 @@ kernel, select `m` after observing the scored trajectory, prove a mixing time
 or irreducibility, cover random initial laws or controlled dynamics, or turn
 the outer-mass confidence package into a separately measurable event.
 
+### Candidate-kernel robustness and invariant-target uniqueness
+
+`StochasticDynamics.StationaryPoissonRobustCandidate` separates the true
+finite kernel `P` from a fixed candidate kernel `Q` used to construct the
+Poisson correction. It assumes a deterministic rowwise bound
+`TV(P(z), Q(z)) <= eta`, `[0,1]` transition scores, a supplied invariant PMF
+of `P`, and a candidate potential with span at most `B`. The checked drift
+transfer is `|g_P(z) - g_Q(z)| <= (1 + B) * eta`; centering at the invariant
+target therefore yields the uniform residual envelope
+`oscillation(g_Q) + 2 * (1 + B) * eta`. A second endpoint uses the observed
+candidate-drift maximum minus its running mean and is derived from the same
+outer-mass event, not from an additional concentration claim.
+
+The finite-depth capstone fixes a reference PMF and depth `m`, constructs the
+potential from `Q`, and retains the residual price
+`alpha_Q^m * D + 2 * (1 + B_m) * eta`. The hypothesis, candidate, reference
+PMF, depth, and tilt catalog are all fixed before applying the theorem.
+
+`StochasticDynamics.StationaryPoissonRobustInvariant` proves the deterministic
+perturbation bound
+`Dobrushin(P) <= Dobrushin(Q) + 2 * eta`. If the right-hand side is strictly
+below one, the true kernel contracts finite oscillation and any two supplied
+invariant PMFs of `P` are equal. Consequently the stationary risk and its
+posterior average are independent of which supplied invariant witness is used.
+This is an at-most-one result: it does not construct an invariant PMF or prove
+that one exists.
+
+These modules do not estimate `P`, `eta`, or the candidate kernel from data;
+construct a confidence set; permit post-data candidate or depth selection;
+prove invariant-law existence or a quantitative mixing time; or cover random
+initial laws, controlled dynamics, continuous states, or unrestricted tilts.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -621,7 +653,10 @@ observed; the result does not validate inventing or fitting new catalog
 members after seeing their scored outcomes. Separate modules now provide a
 forward empirical-Bernstein trajectory boundary, a normalized countable
 declared-tilt selector, the supplied-Poisson stationary-risk bridge above, and
-finite-depth potentials under supplied or computed Dobrushin contraction.
-Natural next layers are post-data depth allocation, a random initial law,
-controlled/action-dependent kernels, auxiliary-data catalog construction,
-unknown-kernel confidence sets, and continuous-state stationary inference.
+finite-depth potentials under supplied or computed Dobrushin contraction. A
+fixed candidate kernel can now be transferred under a deterministic row-TV
+envelope, including uniqueness among supplied invariant PMFs under strict
+candidate contraction. Natural next layers are post-data depth allocation, a
+random initial law, controlled/action-dependent kernels, auxiliary-data
+catalog construction, statistically valid unknown-kernel confidence sets,
+invariant-law existence, and continuous-state stationary inference.
