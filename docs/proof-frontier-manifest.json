@@ -86,7 +86,7 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 187,
-    "library_and_example_lean_lines": 114475,
+    "library_and_example_lean_lines": 114555,
     "library_lean_lines": 92391,
     "library_modules": 233,
     "theorem_map_entries": 892

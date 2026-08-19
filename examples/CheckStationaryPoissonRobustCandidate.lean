@@ -512,6 +512,72 @@ theorem ergodicBool_path_stationary_certificate :
 #print axioms ergodicBool_candidateMaxGapAverage_zero
 #print axioms ergodicBool_path_stationary_certificate
 
+/-! Exhaustive audit for the remaining exported helper statements. -/
+
+#check approximatePoissonResidual_eq_markovPoissonDrift_sub
+#check finiteMaximum
+#check le_finiteMaximum
+#check pmfIntegral_le_finiteMaximum
+#check abs_sub_pmfIntegral_le_finiteOscillation
+#check abs_pmfIntegral_sub_le_of_abs_sub_le
+#check markovPoissonDrift_stationary_mean
+#check stationaryRisk_sub_markovPoissonDrift_le_candidateMeanGap
+#check stationaryRisk_sub_markovPoissonDrift_le_candidateMaxGap
+#check candidatePoissonDriftRunningMean
+#check candidatePoissonMaxGapAverage
+#check candidatePoissonMaxGapAverage_eq_max_sub_runningMean
+#check markovPoissonDrift_finiteDepth_eq
+#check finiteOscillation_markovPoissonDrift_finiteDepth_le
+#check posteriorCandidatePoissonMaxGapAverage
+
+#print axioms approximatePoissonResidual_eq_markovPoissonDrift_sub
+#print axioms le_finiteMaximum
+#print axioms pmfIntegral_le_finiteMaximum
+#print axioms abs_sub_pmfIntegral_le_finiteOscillation
+#print axioms abs_pmfIntegral_sub_le_of_abs_sub_le
+#print axioms markovPoissonDrift_stationary_mean
+#print axioms stationaryRisk_sub_markovPoissonDrift_le_candidateMeanGap
+#print axioms stationaryRisk_sub_markovPoissonDrift_le_candidateMaxGap
+#print axioms candidatePoissonMaxGapAverage_eq_max_sub_runningMean
+#print axioms markovPoissonDrift_finiteDepth_eq
+#print axioms finiteOscillation_markovPoissonDrift_finiteDepth_le
+
+#check robustBoolPotential_span
+#check robustBoolScore_mem_Icc
+#check robustBoolStationary_invariant
+#check robustBoolUniform_isFullSupportPMF
+#check robustBoolTilt_pos
+#check robustBoolTilt_lt_one
+#check robustBool_trueDrift
+#check robustBool_candidateDrift
+#check robustBool_false_residual
+#check robustBool_candidateDrift_oscillation
+#check robustBool_candidateCenteredOscillation_zero
+#check robustBool_stationaryRisk
+#check robustBool_rowTV
+#check robustBool_candidateDobrushin
+#check ergodicBool_trueDrift
+#check ergodicBool_false_residual
+#check ergodicBool_stationaryRisk
+
+#print axioms robustBoolPotential_span
+#print axioms robustBoolScore_mem_Icc
+#print axioms robustBoolStationary_invariant
+#print axioms robustBoolUniform_isFullSupportPMF
+#print axioms robustBoolTilt_pos
+#print axioms robustBoolTilt_lt_one
+#print axioms robustBool_trueDrift
+#print axioms robustBool_candidateDrift
+#print axioms robustBool_false_residual
+#print axioms robustBool_candidateDrift_oscillation
+#print axioms robustBool_candidateCenteredOscillation_zero
+#print axioms robustBool_stationaryRisk
+#print axioms robustBool_rowTV
+#print axioms robustBool_candidateDobrushin
+#print axioms ergodicBool_trueDrift
+#print axioms ergodicBool_false_residual
+#print axioms ergodicBool_stationaryRisk
+
 end
 
 end FormalSLT.Examples.CheckStationaryPoissonRobustCandidate

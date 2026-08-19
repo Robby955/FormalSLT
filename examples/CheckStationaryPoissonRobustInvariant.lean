@@ -217,6 +217,20 @@ theorem robustInvariantBool_stationaryTarget_independent
 #print axioms robustInvariantBoolStationary_unique
 #print axioms robustInvariantBool_stationaryTarget_independent
 
+#check finitePMFTotalVariation_comm
+#check finitePMFTotalVariation_eq_zero_iff
+#print axioms finitePMFTotalVariation_comm
+#print axioms finitePMFTotalVariation_eq_zero_iff
+
+#check robustInvariantBool_candidateCoefficient
+#check robustInvariantBool_extremeRowsTV
+#check robustInvariantBool_candidateCertificate
+#check robustInvariantBool_stationaryRisk
+#print axioms robustInvariantBool_candidateCoefficient
+#print axioms robustInvariantBool_extremeRowsTV
+#print axioms robustInvariantBool_candidateCertificate
+#print axioms robustInvariantBool_stationaryRisk
+
 end
 
 end FormalSLT.StochasticDynamics
