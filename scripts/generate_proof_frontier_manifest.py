@@ -50,32 +50,31 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "next-state scores; the semantic layer derives exact conditional "
             "risk, centering, and a sharp one-quarter variance proxy. A fixed "
             "score functional may encode an online update rule whose current "
-            "prediction is chosen before the next state arrives. A "
-            "separate Markov squared-loss specialization adds finite full-"
-            "support weighted-tilt, all-time, all-posterior, all-atom "
-            "PAC-Bayes control from one master e-process"
+            "prediction is chosen before the next state arrives. A finite "
+            "trajectory adapter gives all-positive-time, all-posterior, "
+            "all-atom PAC-Bayes control for a predeclared catalog of such "
+            "scores. The Markov squared-loss theorem is a specialization"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Add a supplied initial distribution and, separately, determine "
-            "the assumptions needed to lift the prefix-dependent semantic "
-            "layer to predictable or independently trained score catalogs. "
-            "Continue normalized countable or predictable tilt work only in "
-            "the concentration layer."
+            "Add a supplied initial distribution, controlled kernels, and an "
+            "interface for catalogs constructed from auxiliary random data. "
+            "Continue empirical-variance and normalized countable or "
+            "predictable tilt work in the concentration layer."
         ),
         "boundary": (
-            "The general prefix-dependent result is a path-semantics and "
-            "conditional-expectation bridge only; it is not a confidence "
-            "event, concentration theorem, PAC-Bayes theorem, controlled "
-            "kernel, or policy result. The separate Markov certificate targets "
-            "posterior-average one-step conditional risk at one post-path-"
-            "selected atom of a fixed finite tilt catalog. It does not cover "
-            "posterior-uniform certification of online-updated catalogs, "
-            "random initial laws, arbitrary joint "
-            "predictor--tilt posteriors, countable or all-real tilt control, "
-            "empirical variance, continuous state spaces, multistep prediction, "
-            "optional stopping, or stationary long-run risk."
+            "TrajectoryRisk alone is a path-semantics and conditional-"
+            "expectation bridge. TrajectoryPACBayes adds one measurable "
+            "confidence event for finite predeclared catalogs, including "
+            "fixed-in-advance online update rules; the posterior and one "
+            "finite tilt atom may be selected after the path. The theorem "
+            "does not validate creating catalog members after observing their "
+            "scored outcomes, and it does not cover random initial laws, "
+            "controlled kernels, arbitrary joint predictor--tilt posteriors, "
+            "countable or all-real tilt control, empirical variance, "
+            "continuous state spaces, multistep prediction, optional stopping, "
+            "or stationary long-run risk."
         ),
     },
     {
