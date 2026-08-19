@@ -39,6 +39,10 @@ lemma realParameterizedClippedTrajectoryScore_unit
   · exact le_max_left 0 (min 1 (theta + y))
   · exact max_le (by norm_num) (min_le_left 1 (theta + y))
 
+#check realParameterizedClippedTrajectoryScore
+#check realParameterizedClippedTrajectoryScore_joint
+#check realParameterizedClippedTrajectoryScore_unit
+
 /-! A stochastic real-state receipt with nonzero conditional variance. -/
 
 def realRademacherValue (b : Bool) : Real := if b then 1 else -1
@@ -78,7 +82,10 @@ lemma stochasticRealPrefixKernel_positive_variance
   norm_num [realParameterizedClippedTrajectoryScore,
     realRademacherValue, PMF.uniformOfFintype_apply]
 
+#check realRademacherValue
+#check realRademacherPMF
 #check stochasticRealPrefixKernel
+#check stochasticRealPrefixKernel.instIsMarkovKernel
 #check stochasticRealPrefixKernel_positive_variance
 
 /-- The parameterized kernel-risk integration lemma instantiated with an
@@ -127,6 +134,7 @@ example (posterior : Measure Real) [IsProbabilityMeasure posterior]
 #print axioms stronglyMeasurable_trajectory_ambient_of_filtered_prod
 #print axioms exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event
 #print axioms realParameterizedClippedTrajectoryScore_joint
+#print axioms realParameterizedClippedTrajectoryScore_unit
 #print axioms stochasticRealPrefixKernel_positive_variance
 
 end
