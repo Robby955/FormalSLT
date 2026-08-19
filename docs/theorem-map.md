@@ -898,6 +898,23 @@ These results control target one-step conditional risks at behavior-realized
 prefixes. They do not identify target occupancy or value, estimate the
 environment or propensities, or construct a full-trajectory importance ratio.
 
+## Finite-horizon target-path change of measure
+
+| Declaration | Module | Role |
+|---|---|---|
+| `controlledFinitePrefixExpectation_eq_trajectoryIntegral` | `StochasticDynamics.TargetPathChangeOfMeasure` | Identifies the recursive finite-prefix expectation with the corresponding marginal integral under the actual infinite trajectory law |
+| `controlledFinitePrefixExpectation_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Proves the exact finite-prefix target-versus-behavior likelihood-ratio identity |
+| `prefixControlledTargetTrajectory_integral_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | States the change of measure directly for the actual infinite target and behavior trajectory laws |
+| `prefixControlledTargetTrajectory_cylinder_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Gives the measurable finite-prefix cylinder probability identity |
+| `controlledFiniteHorizonRisk_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Rewrites a finite-horizon target payoff as a likelihood-weighted behavior payoff |
+| `prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Recovers target terminal-state occupancy from the weighted behavior path law |
+| `controlledFinitePrefixLikelihoodRatio_le_pow` | `StochasticDynamics.TargetPathChangeOfMeasure` | Bounds the cumulative weight by `C ^ n` under a supplied one-step ratio cap |
+
+These are exact finite-horizon identities for finite state and action spaces.
+They do not provide an anytime-valid full-trajectory importance-sampling
+boundary, learned propensities, unknown-environment inference, or a
+continuous-space result.
+
 ## Finite Markov prequential risk
 
 | Declaration | Module | Role |

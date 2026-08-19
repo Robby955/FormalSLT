@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials. The dynamic comparators allow history-dependent targets and a known prefix/time-dependent environment, but control one-step risks only at behavior-realized prefixes. Neither lane is a target-occupancy, full-trajectory importance-sampling, learned-nuisance, or unknown-kernel result.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials. The dynamic comparators allow history-dependent targets and a known prefix/time-dependent environment, but control one-step risks only at behavior-realized prefixes. The separate target-path change-of-measure theorem is exact at each fixed finite horizon and exposes worst-case weight range C ^ n; it is not an anytime-valid cumulative-weight boundary. No controlled lane is a learned-nuisance or unknown-kernel result.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, target-law occupancy or dynamic-policy value for controlled dynamics, and an interface for catalogs constructed from auxiliary random data.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap. A stationary state-Markov target-policy OPE specialization adds one all-time, all-posterior event when the dynamics, behavior propensities, invariant PMFs, and exact bounded Poisson potentials are supplied. Encountered-prefix comparator theorems cover history-dependent targets under a homogeneous or known prefix/time-dependent environment",
+      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, an anytime-valid cumulative-weight or dynamic-policy value theorem for controlled dynamics, and an interface for catalogs constructed from auxiliary random data.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap. A stationary state-Markov target-policy OPE specialization adds one all-time, all-posterior event when the dynamics, behavior propensities, invariant PMFs, and exact bounded Poisson potentials are supplied. Encountered-prefix comparator theorems cover history-dependent targets under a homogeneous or known prefix/time-dependent environment. A separate finite-horizon target-path theorem gives exact likelihood-weighted behavior-law identities for prefix payoffs, measurable cylinders, and terminal-state occupancy",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 187,
-    "library_and_example_lean_lines": 114125,
-    "library_lean_lines": 92122,
-    "library_modules": 233,
-    "theorem_map_entries": 888
+    "example_lean_files": 188,
+    "library_and_example_lean_lines": 115245,
+    "library_lean_lines": 92912,
+    "library_modules": 234,
+    "theorem_map_entries": 895
   },
   "theorem_families": [
     {
@@ -4738,6 +4738,53 @@
         }
       ],
       "name": "Dynamic target-policy comparators"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFinitePrefixExpectation_eq_trajectoryIntegral",
+          "summary": "Identifies the recursive finite-prefix expectation with the corresponding marginal integral under the actual infinite trajectory law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFinitePrefixExpectation_changeOfMeasure",
+          "summary": "Proves the exact finite-prefix target-versus-behavior likelihood-ratio identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "prefixControlledTargetTrajectory_integral_changeOfMeasure",
+          "summary": "States the change of measure directly for the actual infinite target and behavior trajectory laws"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "prefixControlledTargetTrajectory_cylinder_changeOfMeasure",
+          "summary": "Gives the measurable finite-prefix cylinder probability identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFiniteHorizonRisk_changeOfMeasure",
+          "summary": "Rewrites a finite-horizon target payoff as a likelihood-weighted behavior payoff"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure",
+          "summary": "Recovers target terminal-state occupancy from the weighted behavior path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFinitePrefixLikelihoodRatio_le_pow",
+          "summary": "Bounds the cumulative weight by C ^ n under a supplied one-step ratio cap"
+        }
+      ],
+      "name": "Finite-horizon target-path change of measure"
     },
     {
       "entries": [

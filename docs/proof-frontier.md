@@ -44,9 +44,13 @@ files.
   propensities, invariant laws, and exact bounded potentials are supplied.
   Encountered-prefix comparator theorems separately cover history-dependent
   target policies under homogeneous or known prefix/time-dependent controlled
-  environments. Catalogs remain fixed before their scored outcomes. These are
-  not target-occupancy, full-trajectory importance-sampling, learned-nuisance,
-  or unknown-kernel theorems. Open layers include a supplied initial law,
+  environments. A separate finite-horizon change-of-measure theorem identifies
+  target-path prefix expectations, measurable cylinders, and terminal-state
+  occupancy with cumulative likelihood-weighted behavior-path quantities, and
+  exposes the worst-case `C ^ n` range. Catalogs remain fixed before their
+  scored outcomes. None of these results supplies an anytime-valid cumulative-
+  weight boundary, learned nuisance, or unknown-kernel theorem. Open layers
+  include a supplied initial law,
   auxiliary-data catalog construction, automatic Poisson potentials and
   invariant laws, unknown-kernel inference, continuous state spaces, and
   unrestricted all-real tilt control.

@@ -65,15 +65,19 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "when the dynamics, behavior propensities, invariant PMFs, and "
             "exact bounded Poisson potentials are supplied. Encountered-prefix "
             "comparator theorems cover history-dependent targets under a "
-            "homogeneous or known prefix/time-dependent environment"
+            "homogeneous or known prefix/time-dependent environment. A "
+            "separate finite-horizon target-path theorem gives exact "
+            "likelihood-weighted behavior-law identities for prefix payoffs, "
+            "measurable cylinders, and terminal-state occupancy"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
             "Construct finite-depth Poisson potentials and their residual and "
             "span bounds from explicit contraction data. Add a supplied "
-            "initial distribution, target-law occupancy or dynamic-policy "
-            "value for controlled dynamics, and an interface for catalogs "
+            "initial distribution, an anytime-valid cumulative-weight or "
+            "dynamic-policy value theorem for controlled dynamics, and an "
+            "interface for catalogs "
             "constructed from auxiliary random data."
         ),
         "boundary": (
@@ -97,8 +101,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "bounded potentials. The dynamic comparators allow history-"
             "dependent targets and a known prefix/time-dependent environment, "
             "but control one-step risks only at behavior-realized prefixes. "
-            "Neither lane is a target-occupancy, full-trajectory importance-"
-            "sampling, learned-nuisance, or unknown-kernel result."
+            "The separate target-path change-of-measure theorem is exact at "
+            "each fixed finite horizon and exposes worst-case weight range "
+            "C ^ n; it is not an anytime-valid cumulative-weight boundary. "
+            "No controlled lane is a learned-nuisance or unknown-kernel result."
         ),
     },
     {

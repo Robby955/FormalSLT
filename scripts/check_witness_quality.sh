@@ -152,6 +152,11 @@ classify_witness() {
 #      same-current/different-interior histories, encountered risks `5/8` and
 #      `3/8`, a prefix-dependent environment witness, full-support continuation
 #      laws, and positive observed Bessel variation for both target atoms)
+#   prefixControlledTargetTrajectory_integral_changeOfMeasure
+#     (fair Boolean behavior, target action mass `3/4`, deterministic
+#      copy-action environment, exact one-step likelihood ratios `3/2` and
+#      `1/2`, unit behavior expectation, and target occupancy `3/4` recovered
+#      from the likelihood-weighted behavior path law)
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
@@ -227,6 +232,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckStationaryPoissonPACBayes.lean"
   "examples/CheckDynamicTargetPolicyComparator.lean"
+  "examples/CheckTargetPathChangeOfMeasure.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"

@@ -238,6 +238,27 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_prefixControlledTargetMean"
   "FormalSLT.StochasticDynamics.exists_prefixDynamicTargetPolicyComparator_event"
   "FormalSLT.StochasticDynamics.prefixDynamicTargetPolicyComparator_selected_of_simultaneous"
+  "FormalSLT.StochasticDynamics.controlledPrefixRestrict_refl"
+  "FormalSLT.StochasticDynamics.controlledPrefixSnoc_last"
+  "FormalSLT.StochasticDynamics.controlledPrefixRestrict_snoc"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_eq_partialTrajIntegral"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_eq_trajectoryIntegral"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_one_eq_trajectoryIntegral"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_one"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixLikelihoodRatio_snoc"
+  "FormalSLT.StochasticDynamics.prefixControlledContinuation_expectation_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.prefixControlledTargetTrajectory_integral_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.measurableSet_controlledTrajectoryCylinder"
+  "FormalSLT.StochasticDynamics.prefixControlledTargetTrajectory_cylinder_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.controlledFiniteHorizonRisk_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixEventProbability_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixEventProbability_eq_trajectoryCylinderProbability"
+  "FormalSLT.StochasticDynamics.controlledFiniteHorizonStateOccupancy_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.prefixControlledTargetTrajectoryStateOccupancy_eq_finite"
+  "FormalSLT.StochasticDynamics.prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure"
+  "FormalSLT.StochasticDynamics.controlledFinitePrefixLikelihoodRatio_le_pow"
+  "FormalSLT.StochasticDynamics.controlledWeightedPrefixPayoff_mem_Icc"
 )
 
 # Axioms permitted in a clean proof.
@@ -295,6 +316,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
   echo "import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator"
   echo "import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator"
+  echo "import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -348,7 +370,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonPACBayes \
   FormalSLT.StochasticDynamics.ControlledTrajectory \
   FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator \
-  FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator >/dev/null
+  FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator \
+  FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

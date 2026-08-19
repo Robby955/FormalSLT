@@ -252,8 +252,12 @@
   - [x] Add encountered-prefix comparators for history-dependent target
     policies under homogeneous and known prefix/time-dependent controlled
     environments.
-  - Extend the controlled interface to target-law occupancy, dynamic-policy
-    value, or learned nuisance quantities under separate assumptions.
+  - [x] Add exact finite-horizon target-path change of measure, measurable
+    cylinder, and terminal-state occupancy identities, with explicit `C ^ n`
+    cumulative-weight range inflation.
+  - Extend the controlled interface to an anytime-valid cumulative-weight or
+    dynamic-policy value theorem, or learned nuisance quantities, under
+    separate assumptions.
   - Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds.
   - Generalize the deterministic initial state to a supplied initial law.

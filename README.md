@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C265-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-233-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-114%2C125-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C298-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-234-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-115%2C245-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -287,6 +287,29 @@ conditional risks at behavior-realized prefixes. It is not target-policy
 occupancy or value, full-trajectory importance sampling, doubly robust OPE, or
 unknown-environment inference.
 
+### Finite-horizon target-path change of measure
+
+`TargetPathChangeOfMeasure` constructs the finite-prefix law of a supplied
+history-dependent target policy under the same known prefix-dependent
+environment and identifies it with the corresponding marginal of the actual
+infinite target trajectory law. Under overlap, the target expectation of every
+finite-prefix payoff equals its behavior-law expectation weighted by the
+product of target-to-behavior action likelihood ratios. Event, terminal-state
+occupancy, and finite-horizon risk forms are exposed separately.
+
+- **Lean theorem:**
+  `prefixControlledTargetTrajectory_integral_changeOfMeasure` in
+  [`TargetPathChangeOfMeasure.lean`](./FormalSLT/StochasticDynamics/TargetPathChangeOfMeasure.lean)
+- **Checked example:**
+  [`CheckTargetPathChangeOfMeasure.lean`](./examples/CheckTargetPathChangeOfMeasure.lean)
+  verifies likelihood ratios `3/2` and `1/2`, unit behavior expectation, and
+  recovery of target state occupancy `3/4` from behavior occupancy `1/2`.
+
+This is an exact finite-horizon identity, not an anytime concentration result.
+A one-step ratio cap `C` gives only the explicit worst-case range `C ^ n`; no
+vanishing full-trajectory importance-sampling boundary, unknown-environment
+inference, or learned-nuisance guarantee is claimed.
+
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
 [`docs/LITERATURE.md`](./docs/LITERATURE.md).
@@ -483,6 +506,11 @@ declaration and prints its axiom profile.
   history-dependent targets under homogeneous or known prefix-dependent
   controlled dynamics;
   [`CheckDynamicTargetPolicyComparator.lean`](./examples/CheckDynamicTargetPolicyComparator.lean)
+- **Finite-horizon target-path change of measure** —
+  `prefixControlledTargetTrajectory_integral_changeOfMeasure` identifies
+  target-path finite-prefix expectations with likelihood-weighted behavior-path
+  expectations, with event, occupancy, risk, and explicit `C ^ n` range forms;
+  [`CheckTargetPathChangeOfMeasure.lean`](./examples/CheckTargetPathChangeOfMeasure.lean)
 
 ### Concentration and metric entropy
 
@@ -1143,6 +1171,11 @@ The main learning-theory results are deliberately finite and explicit.
   history-dependent behavior and target policies; bounded transition scores;
   overlap; a common action-ratio cap; and finite declared tilts in `(0,1)`.
   The controlled risk is evaluated at behavior-realized prefixes
+- **Target-path change of measure:** finite state and action types;
+  deterministic initial decision--state pair; known prefix/time-dependent
+  environment; supplied history-dependent behavior and target policies; and
+  overlap. The exact identity is finite-horizon; a supplied ratio cap yields
+  only the worst-case cumulative range `C ^ n`
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -1161,7 +1194,9 @@ The main learning-theory results are deliberately finite and explicit.
 - Catalog members created after observing their scored outcomes, random
   initial laws, continuous-state dynamics, automatic invariant-law or Poisson-
   potential construction, mixing-derived span guarantees, and a general
-  target-law occupancy or dynamic-policy value theorem. Fixed-in-advance online
+  anytime-valid target-law occupancy or dynamic-policy value theorem.
+  Finite-horizon target-path occupancy identities are checked separately.
+  Fixed-in-advance online
   update rules are covered by the finite prefix-dependent trajectory adapter;
   finite controlled behavior-law semantics are checked separately; stationary
   Markov and state-Markov target-policy risks are covered only when the

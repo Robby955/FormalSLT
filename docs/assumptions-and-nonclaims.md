@@ -208,6 +208,25 @@ likelihood ratio, estimate the environment or propensities, supply a doubly
 robust or learned-nuisance guarantee, or cover continuous state or action
 spaces.
 
+### Finite-horizon target-path change of measure
+
+`StochasticDynamics.TargetPathChangeOfMeasure` constructs the recursive
+finite-prefix target-policy expectation and proves that it agrees with the
+corresponding finite marginal of the actual infinite target trajectory law.
+Under policy overlap, every finite-prefix target expectation equals the
+behavior-path expectation weighted by the cumulative product of one-step
+target-to-behavior action likelihood ratios. Checked corollaries cover
+measurable prefix cylinders, finite-horizon payoff risk, terminal-state
+occupancy, and normalization of the likelihood ratio.
+
+State and action types are finite; the initial decision--state pair is
+deterministic; the prefix/time-dependent environment and both policies are
+supplied; and the horizon is fixed. A supplied one-step ratio cap `C` yields
+the explicit bound `W_n <= C ^ n`. The module proves no anytime concentration
+or PAC-Bayes result for these cumulative weights, no vanishing target-value
+boundary, no learned propensity or environment guarantee, and no
+continuous-space change-of-measure theorem.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
