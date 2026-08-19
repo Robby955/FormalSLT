@@ -289,16 +289,26 @@ uniform over every eligible posterior measure and every declared tilt atom.
 `StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes` derives
 those process-measurability interfaces for finite-state, deterministic-start,
 full-prefix trajectories from coordinatewise strong measurability of the
-bounded score in the hypothesis parameter. This controls posterior-average
-encountered one-step conditional risk, not stationary or long-run risk. It does
-not construct a measurable posterior selector or selected process, cover
-arbitrary measurable state spaces, random initial laws, unknown kernels, or a
-score family fitted after its scored outcomes are observed.
+bounded score in the hypothesis parameter. The separate
+`StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes`
+adapter permits arbitrary measurable state and hypothesis spaces. It derives
+the same process interfaces from one supplied `[0,1]` score contract jointly
+strongly measurable in the hypothesis, complete prefix, and next state, under
+full-prefix Markov kernels and a deterministic initial state.
+
+These trajectory endpoints control posterior-average encountered one-step
+conditional risk, not stationary or long-run risk. They do not construct a
+measurable posterior selector or selected process, provide a random initial
+law, estimate an unknown kernel, or validate a score family fitted after its
+scored outcomes are observed. The `Real` checker uses a two-atom Rademacher
+transition law to prove positive conditional variance; it is not an atomless
+dynamics receipt and does not evaluate or compare the PAC-Bayes boundary.
 
 The hybrid Bessel expression is a lower envelope of the actual e-process, not
 itself a proved e-process. The finite-hypothesis IID receipts remain separate.
-The informative biased-Boolean receipt has Bessel variance `1/32`, `KL = log
-2`, a theorem-produced good path with risk below `343/1000`, and a same-prefix
+The separate finite-IID informative biased-Boolean receipt has Bessel variance
+`1/32`, `KL = log 2`, a theorem-produced good path with risk below `343/1000`,
+and a same-prefix
 boundary comparison of approximately `0.312` versus `0.760`. There is no
 countable or all-real tilt optimizer, vanishing optimized all-time boundary,
 or novelty/priority claim.
@@ -541,11 +551,13 @@ arbitrary measurable hypothesis space. The separate forward construction now
 supplies an actual predictable-residual e-process, a hybrid Bessel
 lower-envelope conversion, a finite-hypothesis/finite-tilt PAC-Bayes master
 with an IID adapter, and a continuous-prior master over arbitrary measurable
-hypotheses with a finite-state full-prefix trajectory adapter. It does not make
+hypotheses with an arbitrary-measurable-state full-prefix trajectory adapter.
+It does not make
 the hybrid expression itself an e-process, provide a vanishing optimized
-all-time boundary, cover arbitrary measurable state dynamics, or construct a
-measurable posterior selector or selected process. Its informative
-biased-Boolean receipt has positive Bessel variance, nonzero KL, a
+all-time boundary, supply a random initial law, or construct a measurable
+posterior selector or selected process. Its arbitrary-state extension requires
+a supplied jointly measurable score family. The separate finite-IID
+informative biased-Boolean receipt has positive Bessel variance, nonzero KL, a
 theorem-produced good path, and the checked same-prefix boundary comparison.
 Countable and exact all-real `lambda` optimization also remain open.
 

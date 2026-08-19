@@ -38,12 +38,18 @@ files.
   over every positive time, posterior PMF, and predeclared finite tilt atom,
   so the posterior and one atom may be selected after the path is observed.
   This does not validate creating new catalog members after seeing their
-  scored outcomes. The next reviewable extensions are a supplied initial law,
-  controlled kernels, auxiliary-data catalog construction, empirical-variance
-  adaptation, and normalized countable or predictable tilt selection. The
-  result is not an arbitrary real-tilt optimization theorem, an arbitrary
-  joint predictor--tilt posterior theorem, a stationarity or mixing theorem,
-  or a continuous-state stochastic-dynamics result.
+  scored outcomes. A separate `MeasurableTrajectoryRisk` layer supplies the
+  same conditional-risk semantics on arbitrary measurable state spaces under
+  one jointly strongly measurable prefix/next-state score. The
+  `ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` capstone combines
+  arbitrary measurable state and hypothesis spaces with a deterministic start,
+  controlling every `n >= 2`, eligible posterior, and atom of a finite
+  predeclared tilt catalog. It does not construct a measurable selector or
+  selected process. The next reviewable extensions are a supplied initial law,
+  controlled kernels, auxiliary-data catalog construction, atomless-dynamics
+  evidence, matched arbitrary-state comparison, and normalized countable or
+  predictable tilt selection. These results are not arbitrary real-tilt or
+  joint predictor--tilt posterior theorems, or stationarity or mixing theorems.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a
@@ -140,18 +146,24 @@ files.
   Observations remain finite-valued. Separately, the checked forward lane mixes
   the actual predictable-residual e-process over finite hypothesis and tilt
   priors and also integrates it over an arbitrary measurable hypothesis space;
-  its finite-state full-prefix trajectory adapter derives the parameterized
-  process measurability assumptions. The hybrid Bessel term remains a lower
-  envelope. Its common continuous-prior event supports every `n >= 2`, every
-  eligible posterior measure, and every declared finite tilt atom, with one
-  hypothesis KL and the selected atom's log-weight penalty. The
-  informative forward receipt has positive Bessel variance `1/32`, `KL = log
+  its arbitrary-measurable-state full-prefix trajectory adapter derives the
+  parameterized process measurability assumptions from one supplied score
+  contract jointly strongly measurable in the hypothesis, complete prefix,
+  and next state. It retains a deterministic initial state. The hybrid Bessel
+  term remains a lower envelope. Its common continuous-prior event supports
+  every `n >= 2`, every eligible posterior measure, and every declared finite
+  tilt atom, with one hypothesis KL and the selected atom's log-weight penalty.
+  The separate finite-IID informative forward receipt has positive Bessel
+  variance `1/32`, `KL = log
   2`, a theorem-produced good path, a risk ceiling below `343/1000`, and a
   same-prefix boundary comparison of approximately `0.312` versus `0.760`.
-  The hybrid expression is not itself an e-process, and vanishing optimized,
-  countable/all-real, and arbitrary-measurable-state forward endpoints remain
-  open. The event is posterior-uniform but does not construct a measurable
-  selector or selected process.
+  The arbitrary-state `Real` checker separately uses a two-atom transition law
+  and proves positive conditional variance, but does not evaluate the PAC-Bayes
+  boundary or cover atomless dynamics. The hybrid expression is not itself an
+  e-process; vanishing optimized, countable/all-real, random-initial-law, and
+  matched arbitrary-state comparison endpoints remain open. The event is
+  posterior-uniform but does not construct a measurable selector or selected
+  process.
   Neither forward nor reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream

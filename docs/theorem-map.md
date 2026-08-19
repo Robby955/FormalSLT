@@ -831,7 +831,7 @@ declarations; modules are relative to `FormalSLT`.
 | `fairBoolThreshold_twoGaussianGrid_certificate` | `PACBayes.IIDContinuousGaussianGrid` | Stochastic two-entry certificate for `N(0,1)` at tilt `1/2` and `N(1,1)` at tilt `1/4`, with total failure budget `exp(-1)` |
 | `fairBoolThreshold_twoGaussianSelected_certificate` | `PACBayes.IIDContinuousGaussianGrid` | The worked two-entry fair-Bernoulli catalog remains valid for every sample-dependent Boolean selector |
 
-## Finite prefix-dependent trajectory semantics
+## Prefix-dependent trajectory semantics
 
 | Declaration | Module | Role |
 |---|---|---|
@@ -844,8 +844,15 @@ declarations; modules are relative to `FormalSLT`.
 | `trajectoryMeasure_prefixKernel_eq_markovPathMeasure` | `StochasticDynamics.TrajectoryRisk` | Identifies the existing finite Markov path measure as a definitional specialization of the prefix-dependent trajectory measure |
 | `trajectoryRiskInnovation_markovSquaredTrajectoryScore` | `StochasticDynamics.TrajectoryRisk` | Identifies the existing Markov squared-loss innovation as a definitional specialization of the general trajectory innovation |
 | `pathSquaredLoss_condExp_via_trajectory` | `StochasticDynamics.TrajectoryRisk` | Recovers the existing homogeneous-Markov squared-loss conditional-expectation statement from the prefix-dependent semantic theorem |
+| `JointlyStronglyMeasurableTrajectoryScore` | `StochasticDynamics.MeasurableTrajectoryRisk` | Requires a trajectory score to be jointly strongly measurable in the complete prefix and next state on an arbitrary measurable state space |
+| `observedTrajectoryScore_condExp_of_joint` | `StochasticDynamics.MeasurableTrajectoryRisk` | Derives the exact prefix-conditional score expectation for deterministic-start arbitrary-state full-prefix kernels |
+| `trajectoryRiskInnovation_condExp_eq_zero_of_joint` | `StochasticDynamics.MeasurableTrajectoryRisk` | Proves conditional centering of the arbitrary-state trajectory innovation from the generated path law |
+| `trajectoryRiskInnovation_condSecondMoment_le_one_fourth_of_joint` | `StochasticDynamics.MeasurableTrajectoryRisk` | Derives the sharp universal `1/4` conditional second-moment proxy without a finite-state assumption |
 
-This section is a path-semantics and conditional-expectation bridge. It does
+The first layer is finite-state. The separate measurable layer permits an
+arbitrary measurable state space under a supplied jointly strongly measurable
+score contract and retains a deterministic initial state. This section is a
+path-semantics and conditional-expectation bridge. It does
 not itself provide a confidence event, concentration inequality, PAC-Bayes
 bound, controlled-process theorem, policy-optimization theorem, or
 optional-stopping result.
@@ -856,6 +863,16 @@ optional-stopping result.
 |---|---|---|
 | `exists_trajectoryEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes` | Finite-hypothesis, finite-state full-prefix capstone with one outer event for every `n >= 2`, posterior PMF, and declared finite tilt atom |
 | `exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes` | Finite-state full-prefix adapter for arbitrary measurable hypotheses and every eligible posterior measure, deriving process measurability from coordinatewise parameter measurability |
+| `JointlyStronglyMeasurableParameterizedTrajectoryScore` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Joint hypothesis/prefix/next-state measurability contract used to derive both filtered and ambient parameterized-process interfaces |
+| `stronglyMeasurable_continuousMeasurableTrajectoryLowerProcess_filtered` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Derives filtered product measurability of the parameterized forward lower process from one supplied joint hypothesis/prefix/next-state score contract |
+| `exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Deterministic-start capstone for arbitrary measurable state and hypothesis spaces, simultaneous over all `n >= 2`, eligible posterior measures, and a finite positive normalized tilt prior with `0 < lambda_j < 1` |
+
+The arbitrary-state capstone requires a supplied jointly measurable bounded
+score and a deterministic start. Its event is posterior-uniform, but it does
+not construct a measurable selector or selected process, provide a random
+initial law, or replace the finite tilt catalog. The basic `Real` checker uses
+a two-atom transition law and proves positive conditional variance; it is not
+an atomless receipt or a matched boundary comparison.
 
 ## Finite Markov prequential risk
 

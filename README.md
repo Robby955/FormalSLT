@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C187-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-230-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-111%2C934-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C224-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-232-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-113%2C184-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -149,11 +149,13 @@ term and the selected atom's `log (1 / (delta * weight))` cost.
 
 A separate continuous-prior engine integrates the actual parameterized
 predictable-residual processes over an arbitrary measurable hypothesis space.
-For finite-state full-prefix trajectories, coordinatewise strong measurability
-of the bounded score derives the required filtered and ambient product
-measurability. One outer-mass event is simultaneous over every `n >= 2`, every
-eligible posterior probability measure, and every atom of a finite positive
-predeclared tilt prior with `0 < lambda_j < 1`.
+Its full-prefix trajectory adapter also permits an arbitrary measurable state
+space, a deterministic initial state, and a `[0,1]` score jointly strongly
+measurable in the hypothesis, complete prefix, and next state. That single
+score contract derives the filtered and ambient product measurability. One
+outer-mass event is simultaneous over every `n >= 2`, every eligible posterior
+probability measure, and every atom of a finite positive predeclared tilt prior
+with `0 < lambda_j < 1`.
 
 - **Lean theorems:** `exists_forwardBesselPACBayes_event` and the IID endpoint
   `exists_forwardIIDBesselPACBayes_event` in
@@ -163,9 +165,9 @@ predeclared tilt prior with `0 < lambda_j < 1`.
 - **Continuous Lean theorems:**
   `exists_continuousForwardPredictableMeanBesselPACBayes_event` in
   [`ContinuousForwardPredictableMeanBesselPACBayes.lean`](./FormalSLT/PACBayes/ContinuousForwardPredictableMeanBesselPACBayes.lean)
-  and the finite-state trajectory adapter
-  `exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event` in
-  [`ContinuousTrajectoryEmpiricalBernsteinPACBayes.lean`](./FormalSLT/StochasticDynamics/ContinuousTrajectoryEmpiricalBernsteinPACBayes.lean)
+  and the arbitrary-state trajectory capstone
+  `exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event` in
+  [`ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean`](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean)
 - **Checked example:**
   [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean)
   uses a fair-Boolean IID stream, a posterior selected from the observed label,
@@ -187,8 +189,10 @@ prefix; it does not assert that this path lies outside the fixed-proxy lane's
 separate exceptional event. The finite tilt catalog does not yet give a
 vanishing optimized all-time boundary. The continuous event is
 posterior-uniform but does not construct a measurable posterior selector or a
-selected process, and its trajectory adapter remains finite-state with
-deterministic start. No novelty or priority claim is made.
+selected process, and its trajectory adapter starts deterministically. The
+arbitrary-state endpoint requires a supplied jointly
+measurable score family; it does not learn that family from the scored path.
+No novelty or priority claim is made.
 
 ### Finite Markov prequential PAC-Bayes
 
@@ -674,16 +678,18 @@ declaration and prints its axiom profile.
   fixed-proxy comparison of approximately `0.312` versus `0.760`;
   [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean),
   [`CheckForwardBesselPACBayesIIDInformative.lean`](./examples/CheckForwardBesselPACBayesIIDInformative.lean)
-- **Continuous-prior finite-state trajectory endpoint** —
+- **Continuous-prior arbitrary-state trajectory endpoint** —
   `exists_continuousForwardPredictableMeanBesselPACBayes_event` replaces the
   finite hypothesis sum by integration over an arbitrary measurable parameter
-  space, and `exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event`
-  derives the process-measurability interfaces from coordinatewise parameter
-  measurability of a bounded finite-state full-prefix score. The common outer
-  event controls every `n >= 2`, eligible posterior measure, and atom of a
-  finite predeclared tilt prior. The checker fixes `Theta = Real` to make the
-  non-finite hypothesis surface explicit;
-  [`CheckContinuousTrajectoryEmpiricalBernsteinPACBayes.lean`](./examples/CheckContinuousTrajectoryEmpiricalBernsteinPACBayes.lean)
+  space, and
+  `exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event`
+  derives its process obligations from a bounded score jointly strongly
+  measurable in the hypothesis, complete prefix, and next state. The common
+  outer event controls every `n >= 2`, eligible posterior measure, and atom of
+  a finite predeclared tilt prior. The checker fixes both `Theta = Real` and
+  `Z = Real`; its stochastic kernel has two real atoms and proves positive
+  conditional variance, but it does not evaluate the PAC-Bayes boundary;
+  [`CheckContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean`](./examples/CheckContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean)
 - **Gaussian KL identification** — `diagonalGaussianMeasure_klDiv_toReal_eq`
   and `sphericalGaussianMeasure_klDiv_toReal_eq`;
   [`CheckGaussianMeasureKL.lean`](./examples/CheckGaussianMeasureKL.lean)
@@ -843,7 +849,10 @@ release check is in [Audit commands](#audit-commands).
   product-measurability interfaces. Use
   `FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes`
   for its finite-state full-prefix adapter, which derives those interfaces
-  from coordinatewise parameter measurability of the score.
+  from coordinatewise parameter measurability of the score. Use
+  `FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes`
+  for arbitrary measurable state and hypothesis spaces with one supplied joint
+  score contract in the hypothesis, complete prefix, and next state.
 - Use `FormalSLT.PACBayes.CountableJointMeanVariancePACBayes` for the
   support-aware fixed-sample `Nat`-indexed master event and per-entry prior
   moment extraction. Use
@@ -949,9 +958,11 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
 - **Stochastic dynamics:** `StochasticDynamics.TrajectoryRisk`,
+  `StochasticDynamics.MeasurableTrajectoryRisk`,
   `StochasticDynamics.TrajectoryPACBayes`,
   `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes`,
   `StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes`,
+  `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes`,
   `StochasticDynamics.MarkovRisk`,
   `StochasticDynamics.MarkovPACBayes`, and
   `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
@@ -1030,13 +1041,14 @@ The main learning-theory results are deliberately finite and explicit.
   simultaneous over all positive times, posterior PMFs, and atoms
   `0 < lambda_j < 3` of a full-support finite tilt prior. This does not validate
   creating new catalog members after observing their scored outcomes.
-- **Continuous-hypothesis finite-state trajectory PAC-Bayes:** finite state
-  space, deterministic start, arbitrary full-prefix probability kernels, a
-  finite predeclared positive tilt prior, and a bounded score whose sections
-  are strongly measurable in the arbitrary measurable hypothesis parameter.
-  The common event is uniform over every admissible posterior measure, but the
-  theorem does not construct a measurable posterior selector or selected
-  process and does not cover arbitrary measurable state dynamics.
+- **Continuous-hypothesis arbitrary-state trajectory PAC-Bayes:** arbitrary
+  measurable state and hypothesis spaces, deterministic start, arbitrary
+  full-prefix Markov kernels, a finite predeclared positive tilt prior, and a
+  bounded score jointly strongly measurable in the hypothesis, complete
+  prefix, and next state. The common event is uniform over every admissible
+  posterior measure, but the theorem does not construct a measurable posterior
+  selector or selected process and does not learn the score family from the
+  scored path.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
@@ -1054,17 +1066,19 @@ The main learning-theory results are deliberately finite and explicit.
 - A general probability-space Dudley theorem that constructs arbitrary
   measurable suprema and the required separability/chaining interface
 - An infinite-class confidence sequence
-- A countable or all-real forward tilt mixture, a vanishing optimized all-time
-  hybrid-Bessel boundary, or a continuous-hypothesis version of the forward
-  lane. The checked stochastic object is the predictable-residual e-process;
+- A countable or all-real forward tilt mixture or a vanishing optimized
+  all-time hybrid-Bessel boundary. The checked stochastic object is the
+  predictable-residual e-process;
   the hybrid Bessel expression is only its lower envelope, not a separately
   proved e-process. The offline reverse-epoch theorem remains a distinct
   all-sample-size result over arbitrary measurable hypothesis spaces with
   finite-valued observations.
 - Catalog members created after observing their scored outcomes, random
-  initial laws, continuous-state dynamics, and stationary or mixing-based
-  long-run risk guarantees. Fixed-in-advance online update rules are covered by
-  the finite prefix-dependent trajectory adapter.
+  initial laws, atomless-dynamics receipts, matched boundary comparisons, and
+  stationary or mixing-based long-run risk guarantees. Fixed-in-advance online
+  update rules are covered by the finite adapter; arbitrary measurable state
+  and hypothesis spaces are covered under a supplied jointly measurable score
+  family and deterministic start.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1150,9 +1164,11 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   checked hybrid Bessel lower envelope, mix finite hypothesis and tilt priors,
   and supply the finite-IID all-posterior selected-atom adapter
 - [x] Extend the forward predictable-residual master to arbitrary measurable
-  hypothesis spaces and derive its finite-state full-prefix trajectory adapter
+  hypothesis and state spaces through a supplied jointly measurable full-prefix
+  score family
 - [ ] Extend the forward lane to a vanishing optimized all-time boundary,
-  countable or all-real tilt control, and arbitrary measurable state dynamics
+  countable or all-real tilt control, random initial laws, atomless transition
+  receipts, and matched boundary comparisons
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 - [x] Extend the finite PAC-Bayes certificate to a predeclared catalog of

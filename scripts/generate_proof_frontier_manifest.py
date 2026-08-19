@@ -45,23 +45,24 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "id": "finite-markov-prequential-risk",
         "status": "partially_closed",
         "scope": (
-            "finite-state trajectories with deterministic start and arbitrary "
-            "fixed prefix-dependent probability kernels and bounded prefix/"
-            "next-state scores; the semantic layer derives exact conditional "
-            "risk, centering, and a sharp one-quarter variance proxy. A fixed "
-            "score functional may encode an online update rule whose current "
-            "prediction is chosen before the next state arrives. A finite "
-            "trajectory adapter gives all-positive-time, all-posterior, "
-            "all-atom PAC-Bayes control for a predeclared catalog of such "
-            "scores. The Markov squared-loss theorem is a specialization"
+            "deterministic-start trajectories with arbitrary fixed full-prefix "
+            "probability kernels and bounded prefix/next-state scores; the "
+            "semantic layer derives exact conditional risk, centering, and a "
+            "sharp one-quarter variance proxy. The finite layer supports "
+            "fixed-in-advance online update rules. A separate supplied jointly "
+            "measurable score contract gives arbitrary-measurable-state "
+            "semantics and an arbitrary-state/arbitrary-hypothesis forward "
+            "PAC-Bayes endpoint over a finite predeclared tilt catalog. The "
+            "Markov squared-loss theorem is a specialization"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Add a supplied initial distribution, controlled kernels, and an "
+            "Add a supplied initial distribution, atomless-dynamics receipt, "
+            "controlled kernels, and an "
             "interface for catalogs constructed from auxiliary random data. "
-            "Continue empirical-variance and normalized countable or "
-            "predictable tilt work in the concentration layer."
+            "Continue vanishing-width and normalized countable or predictable "
+            "tilt work in the concentration layer."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -70,11 +71,16 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "fixed-in-advance online update rules; the posterior and one "
             "finite tilt atom may be selected after the path. The theorem "
             "does not validate creating catalog members after observing their "
-            "scored outcomes, and it does not cover random initial laws, "
-            "controlled kernels, arbitrary joint predictor--tilt posteriors, "
-            "countable or all-real tilt control, empirical variance, "
-            "continuous state spaces, multistep prediction, optional stopping, "
-            "or stationary long-run risk."
+            "scored outcomes. The arbitrary-state endpoint requires a supplied "
+            "jointly measurable score and does not construct a measurable "
+            "posterior selector or selected process. The current Real checker "
+            "uses a two-atom transition law and proves positive conditional "
+            "variance, but does not evaluate the PAC-Bayes boundary. These "
+            "results do not cover random "
+            "initial laws, atomless-dynamics evidence, controlled kernels, "
+            "arbitrary joint predictor--tilt posteriors, countable or all-real "
+            "tilt control, multistep prediction, optional stopping, matched "
+            "boundary comparison, or stationary long-run risk."
         ),
     },
     {
@@ -127,7 +133,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "hypothesis predictable-residual e-process with a hybrid Bessel "
             "lower envelope and finite weighted PAC-Bayes tilt catalog; a "
             "forward continuous-prior master over arbitrary measurable "
-            "hypotheses with a finite-state full-prefix trajectory adapter; "
+            "hypotheses with an arbitrary-measurable-state full-prefix "
+            "trajectory adapter under a supplied joint score contract; "
             "and "
             "an offline reverse all-sample-size empirical-Bernstein endpoint "
             "over arbitrary measurable hypothesis spaces"
@@ -152,8 +159,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "has both a finite hypothesis--tilt mixture and an arbitrary-"
             "measurable-hypothesis prior mixture of predictable-residual "
             "e-processes; its hybrid Bessel expression is only a pointwise "
-            "lower envelope and its tilt catalog is finite. Its "
-            "informative biased-Boolean receipt has Bessel variance 1/32, "
+            "lower envelope and its tilt catalog is finite. The separate "
+            "finite-IID informative biased-Boolean receipt has Bessel variance "
+            "1/32, "
             "KL = log 2, a theorem-produced good path with risk below "
             "343/1000, and a same-prefix boundary comparison of approximately "
             "0.312 versus 0.760. "
@@ -161,8 +169,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
             "result. The continuous-prior event is posterior-uniform but does "
-            "not construct a measurable selector or selected process, and no "
-            "forward result is simultaneous over all real tilts."
+            "not construct a measurable selector or selected process. Its "
+            "arbitrary-state adapter starts deterministically, and the basic "
+            "Real checker uses a two-atom transition law without evaluating a "
+            "PAC-Bayes boundary. No forward result is simultaneous over all "
+            "real tilts."
         ),
     },
     {
@@ -193,8 +204,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "empirical-Bernstein e-process, exact Welford/Abel identities, a "
             "hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes "
             "master, its finite-IID adapter, and a continuous-prior master "
-            "over arbitrary measurable hypotheses with a finite-state "
-            "full-prefix trajectory adapter"
+            "over arbitrary measurable hypotheses with an arbitrary-"
+            "measurable-state full-prefix trajectory adapter under a supplied "
+            "joint score contract"
         ),
         "difficulty": "hard",
         "source": (
@@ -202,9 +214,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
         "next_step": (
             "Derive a countable or stitched vanishing-width forward tilt "
-            "mixture, extend the full-prefix adapter to arbitrary measurable "
-            "states, and continue matched-boundary evidence and external "
-            "review."
+            "mixture, add random initial laws and atomless-dynamics receipts, "
+            "and continue matched-boundary evidence and external review."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
@@ -231,8 +242,13 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "per-hypothesis Bessel penalty. The hybrid expression is not "
             "itself an e-process. Its continuous-prior master permits arbitrary "
             "measurable hypotheses but retains a declared finite tilt catalog "
-            "and a finite-state trajectory adapter. Its informative "
-            "Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-"
+            "and now has an arbitrary-measurable-state trajectory adapter under "
+            "a supplied joint score contract and deterministic start. The basic "
+            "Real checker uses a two-atom transition law and proves positive "
+            "conditional variance, but it does not evaluate the PAC-Bayes "
+            "boundary or cover atomless dynamics. The separate finite-IID "
+            "informative Boolean receipt has Bessel variance 1/32, KL = log 2, "
+            "a theorem-"
             "produced good path with risk below 343/1000, and a same-prefix "
             "boundary comparison of approximately 0.312 versus 0.760. "
             "The separately budgeted rational risk theorem remains a distinct "

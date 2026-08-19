@@ -122,8 +122,10 @@ specialization for a fixed finite-dimensional spherical-Gaussian prior and
 posterior, with an explicit KL formula. This does not make the time-uniform
 result simultaneous over all continuous posteriors. A separate forward
 predictable-residual engine is posterior-uniform over arbitrary measurable
-hypotheses under explicit parameter/process-measurability assumptions, with a
-finite-state full-prefix trajectory adapter and finite predeclared tilts. The
+hypotheses under explicit parameter/process-measurability assumptions. Its
+full-prefix trajectory adapter permits arbitrary measurable states through a
+supplied joint hypothesis/prefix/next-state score contract and retains finite
+predeclared tilts and deterministic start. The
 separate offline
 all-sample-size empirical-Bernstein endpoint is posterior-uniform on an
 arbitrary measurable hypothesis space under its finite-observation and
@@ -240,10 +242,13 @@ itself construct a forward e-process, predictable betting strategy,
 optional-stopping API, continuous-observation result, or all-real post-hoc
 optimizer. The separate forward result now has both finite-hypothesis and
 arbitrary-measurable-hypothesis masters but remains finite-tilt; its hybrid
-expression is only a lower envelope. Its finite-state trajectory adapter does
-not cover arbitrary measurable state dynamics or construct a measurable
-posterior selector. Its informative
-receipt proves positive Bessel variance `1/32`, `KL = log 2`, a
+expression is only a lower envelope. Its arbitrary-state trajectory adapter
+requires a supplied jointly measurable score, starts deterministically, and
+does not construct a measurable posterior selector. The basic `Real` receipt
+uses a two-atom transition law and proves positive conditional variance, not an
+atomless dynamics result or matched boundary comparison. The separate
+finite-IID informative receipt proves positive Bessel variance `1/32`,
+`KL = log 2`, a
 theorem-produced good path with risk below `343/1000`, and a same-prefix
 boundary comparison of approximately `0.312` versus `0.760`. It still has no
 vanishing optimized finite-catalog boundary.

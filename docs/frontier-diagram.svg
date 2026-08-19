@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1240" height="900" viewBox="0 0 1240 900" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT scope frontier</title>
-  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample and all-sample-size empirical-Bernstein PAC-Bayes routes with exact Bessel variance over arbitrary measurable hypothesis spaces and finite observations, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov prequential risk, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, a countable process-level tilt mixture, all-real tilt optimization, a forward exact-Bessel e-process and optional-stopping API, same-trajectory or predictable Markov learners, random initial laws and continuous state and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
+  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample and all-sample-size empirical-Bernstein PAC-Bayes routes with exact Bessel variance, arbitrary measurable hypotheses and state spaces under supplied score contracts, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov specializations, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, a countable process-level tilt mixture, all-real tilt optimization, a forward exact-Bessel e-process and optional-stopping API, same-trajectory or predictable Markov learners, random initial laws and atomless transition receipts and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
   <defs>
     <style>
       text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
@@ -67,8 +67,8 @@
   <rect x="60" y="638" width="525" height="66" rx="8" class="item-in"/>
   <circle cx="84" cy="671" r="11" class="badge-in"/>
   <path d="M78 671 L83 676 L91 667" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="104" y="666" class="item-label">Finite Markov prequential risk</text>
-  <text x="104" y="688" class="item-sub">path laws, conditional-risk certificates, fixed-tilt PAC-Bayes</text>
+  <text x="104" y="666" class="item-label">Trajectory and Markov prequential risk</text>
+  <text x="104" y="688" class="item-sub">arbitrary-state joint-score semantics + finite Markov specialization</text>
 
   <rect x="60" y="720" width="525" height="66" rx="8" class="item-in"/>
   <circle cx="84" cy="753" r="11" class="badge-in"/>
@@ -106,8 +106,8 @@
 
   <rect x="655" y="556" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="589" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="699" y="584" class="item-label">Random initial laws, continuous state, mixing risk</text>
-  <text x="699" y="606" class="item-sub">beyond deterministic-start finite-state path laws</text>
+  <text x="699" y="584" class="item-label">Random initial laws, atomless receipts, mixing risk</text>
+  <text x="699" y="606" class="item-sub">beyond deterministic starts and the checked two-atom Real receipt</text>
 
   <rect x="655" y="638" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="671" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
