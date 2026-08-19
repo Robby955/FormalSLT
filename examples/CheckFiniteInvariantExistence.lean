@@ -196,31 +196,73 @@ theorem invariantExistenceBool_canonical_eq_displayed :
     (finiteInvariantPMF_isInvariant invariantExistenceBoolKernel)
     invariantExistenceBoolStationary_invariant
 
+/-! Exhaustive audit for the exported finite-invariant API and receipt. -/
+
 #check finiteKernelPushLinear
 #check finiteKernelPushSimplex
+#check finiteKernelOrbit
+#check finiteKernelCesaroVector
 #check finiteKernelCesaro
-#check exists_finiteKernelPushSimplex_fixedPoint
-#check exists_invariantPMF
 #check finiteInvariantPMF
+
+#check finiteKernelPushLinear_apply
+#check finiteKernelPushLinear_mem_stdSimplex
+#check finiteKernelPushSimplex_apply
+#check continuous_finiteKernelPushSimplex
+#check finiteKernelOrbit_zero
+#check finiteKernelOrbit_succ
+#check finiteKernelCesaroVector_mem_stdSimplex
+#check finiteKernelPushLinear_orbit
+#check finiteKernelPushLinear_cesaroVector_sub
+#check tendsto_finiteKernelCesaro_endpoint_zero
+#check tendsto_finiteKernelPushLinear_cesaroVector_sub_zero
+#check exists_finiteKernelPushSimplex_fixedPoint
+#check finiteKernelPushLinear_realMass_eq_bind
+#check exists_invariantPMF
 #check finiteInvariantPMF_isInvariant
 #check existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one
 #check existsUnique_invariantPMF_of_candidate_rowTV
 
+#print axioms finiteKernelPushLinear_apply
+#print axioms finiteKernelPushLinear_mem_stdSimplex
+#print axioms finiteKernelPushSimplex_apply
+#print axioms continuous_finiteKernelPushSimplex
+#print axioms finiteKernelOrbit_zero
+#print axioms finiteKernelOrbit_succ
+#print axioms finiteKernelCesaroVector_mem_stdSimplex
+#print axioms finiteKernelPushLinear_orbit
+#print axioms finiteKernelPushLinear_cesaroVector_sub
+#print axioms tendsto_finiteKernelCesaro_endpoint_zero
+#print axioms tendsto_finiteKernelPushLinear_cesaroVector_sub_zero
 #print axioms exists_finiteKernelPushSimplex_fixedPoint
+#print axioms finiteKernelPushLinear_realMass_eq_bind
 #print axioms exists_invariantPMF
 #print axioms finiteInvariantPMF_isInvariant
 #print axioms existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one
 #print axioms existsUnique_invariantPMF_of_candidate_rowTV
 
+#check invariantExistenceBoolKernel
+#check invariantExistenceBoolStationary
+#check invariantExistenceBoolCandidate
 #check invariantExistenceBoolStationary_invariant
+#check invariantExistenceBool_extremeRowsTV
 #check invariantExistenceBool_coefficient
+#check invariantExistenceBool_coefficient_lt_one
+#check invariantExistenceBool_candidate_rowTV
+#check invariantExistenceBool_candidateCoefficient
+#check invariantExistenceBool_candidateCertificate
 #check invariantExistenceBool_exists
 #check invariantExistenceBool_existsUnique
 #check invariantExistenceBool_existsUnique_of_candidate
 #check invariantExistenceBool_canonical_eq_displayed
 
 #print axioms invariantExistenceBoolStationary_invariant
+#print axioms invariantExistenceBool_extremeRowsTV
 #print axioms invariantExistenceBool_coefficient
+#print axioms invariantExistenceBool_coefficient_lt_one
+#print axioms invariantExistenceBool_candidate_rowTV
+#print axioms invariantExistenceBool_candidateCoefficient
+#print axioms invariantExistenceBool_candidateCertificate
 #print axioms invariantExistenceBool_exists
 #print axioms invariantExistenceBool_existsUnique
 #print axioms invariantExistenceBool_existsUnique_of_candidate

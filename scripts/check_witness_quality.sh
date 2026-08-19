@@ -199,6 +199,14 @@ classify_witness() {
 #     (two predeclared Boolean candidate kernels, exact depth-two span/residual
 #     pairs, separate risk/transition budgets summing to 1/2, and two covered
 #     paths exercising both selector branches without claiming either is good)
+#   empiricalStationaryCatalog_allPosteriors_of_not_mem /
+#     receiptInformative_bothBranches_exist
+#     (fair true kernel, two predeclared candidate perturbations, branch mass
+#      exactly 1/4 versus one common risk-event budget 1/8, theorem-produced
+#      good paths in both data-selected candidate branches, point-posterior
+#      KL = log 2, strictly positive observed Bessel variance, selected boundary
+#      below 11/40, and final empirical-risk-plus-boundary below 7/8; row-TV
+#      errors are supplied exactly and the reported depth is fixed at zero)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -252,6 +260,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckStationaryPoissonRobustCandidate.lean"
   "examples/CheckEmpiricalTransitionConfidence.lean"
   "examples/CheckEmpiricalStationaryCatalog.lean"
+  "examples/CheckEmpiricalStationaryCatalogInformative.lean"
 )
 
 fail=0

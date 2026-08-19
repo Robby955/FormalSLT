@@ -417,19 +417,113 @@ theorem catalogFair_depthTwo_quarterEta_remainder :
   rw [catalogFair_depthTwo_residual, catalogFair_depthTwo_span]
   norm_num
 
+/-! Exhaustive audit for the exported catalog API and this concrete receipt. -/
+
+#check empiricalStationaryCatalogSpan
+#check empiricalStationaryCatalogPotential
+#check empiricalStationaryCatalogCorrectedScore
+#check empiricalStationaryCatalogBoundary
+#check empiricalStationaryCatalogDepthAtomExceptionalEvent
+#check empiricalStationaryCatalogCandidateExceptionalEvent
+#check empiricalStationaryCatalogExceptionalEvent
+#check empiricalStationaryCatalogBoundary_eq_explicit
+#check empiricalStationaryCatalogCorrectedScore_mem_Icc
+#check empiricalStationaryCatalogDepthAtomExceptionalEvent_mass_le
+#check empiricalStationaryCatalogCandidateExceptionalEvent_mass_le
 #check empiricalStationaryCatalogExceptionalEvent_mass_le
 #check empiricalStationaryCatalog_allPosteriors_of_not_mem
 #check exists_empiricalStationaryCatalog_event
 #check exists_selectedEmpiricalStationaryCatalog_event
 #check exists_selectedCanonicalEmpiricalStationaryCatalog_event
 
+#print axioms empiricalStationaryCatalogBoundary_eq_explicit
+#print axioms empiricalStationaryCatalogCorrectedScore_mem_Icc
+#print axioms empiricalStationaryCatalogDepthAtomExceptionalEvent_mass_le
+#print axioms empiricalStationaryCatalogCandidateExceptionalEvent_mass_le
 #print axioms empiricalStationaryCatalogExceptionalEvent_mass_le
 #print axioms empiricalStationaryCatalog_allPosteriors_of_not_mem
 #print axioms exists_empiricalStationaryCatalog_event
 #print axioms exists_selectedEmpiricalStationaryCatalog_event
 #print axioms exists_selectedCanonicalEmpiricalStationaryCatalog_event
+
+#check catalogTrueKernel
+#check catalogFairKernel
+#check catalogStationary
+#check catalogTransitionScore
+#check catalogCandidate
+#check catalogReference
+#check catalogScore
+#check catalogD
+#check catalogCandidateWeight
+#check catalogPrior
+#check catalogTransitionPrior
+#check catalogTransitionWeight
+#check catalogTransitionTilt
+#check catalogPosterior
+#check catalogSelector
+#check catalogDepthSelector
+#check catalogRiskTiltSelector
+#check catalogTransitionTiltSelector
+#check catalogFalseBranchPath
+#check catalogTrueBranchPath
+
+#check catalogStationary_invariant
+#check catalogTransitionScore_mem_Icc
+#check catalogTrue_dobrushin
+#check catalogCanonicalStationary_eq_displayed
+#check catalogFair_dobrushin
+#check catalogTrue_centeredOscillation
+#check catalogFair_centeredOscillation
+#check catalogCandidate_coefficient_lt_one
+#check catalogD_nonneg
+#check catalogD_bounds
+#check catalogCandidateWeight_isFullSupport
+#check catalogPrior_isFullSupport
+#check catalogTransitionPrior_isFullSupport
+#check catalogTransitionWeight_isFullSupport
+#check catalogTransitionTilt_pos
+#check catalogTransitionTilt_lt_one
+#check catalogPosterior_isPMF
+#check boolCatalog_sameData_certificate
+#check catalogTrue_depthTwo_span
+#check catalogTrue_depthTwo_residual
+#check catalogFair_depthTwo_span
+#check catalogFair_depthTwo_residual
+#check catalogTrue_depthTwo_atom_budget
+#check catalogFalseBranch_allRowsVisited
+#check catalogTrueBranch_allRowsVisited
+#check catalogSelector_false_branch
+#check catalogSelector_true_branch
+#check catalogTrue_depthTwo_zeroEta_remainder
+#check catalogFair_depthTwo_quarterEta_remainder
+
+#print axioms catalogStationary_invariant
+#print axioms catalogTransitionScore_mem_Icc
+#print axioms catalogTrue_dobrushin
 #print axioms catalogCanonicalStationary_eq_displayed
+#print axioms catalogFair_dobrushin
+#print axioms catalogTrue_centeredOscillation
+#print axioms catalogFair_centeredOscillation
+#print axioms catalogCandidate_coefficient_lt_one
+#print axioms catalogD_nonneg
+#print axioms catalogD_bounds
+#print axioms catalogCandidateWeight_isFullSupport
+#print axioms catalogPrior_isFullSupport
+#print axioms catalogTransitionPrior_isFullSupport
+#print axioms catalogTransitionWeight_isFullSupport
+#print axioms catalogTransitionTilt_pos
+#print axioms catalogTransitionTilt_lt_one
+#print axioms catalogPosterior_isPMF
 #print axioms boolCatalog_sameData_certificate
+#print axioms catalogTrue_depthTwo_span
+#print axioms catalogTrue_depthTwo_residual
+#print axioms catalogFair_depthTwo_span
+#print axioms catalogFair_depthTwo_residual
+#print axioms catalogTrue_depthTwo_atom_budget
+#print axioms catalogFalseBranch_allRowsVisited
+#print axioms catalogTrueBranch_allRowsVisited
+#print axioms catalogSelector_false_branch
+#print axioms catalogSelector_true_branch
 #print axioms catalogTrue_depthTwo_zeroEta_remainder
 #print axioms catalogFair_depthTwo_quarterEta_remainder
 
