@@ -266,6 +266,23 @@
   - Extend same-data stationary selection beyond a finite predeclared
     candidate catalog, or use auxiliary data/sample splitting, before plugging
     a newly fitted candidate into a stationary-risk score.
+  - [x] Add finite state--action behavior-law semantics for full-history
+    behavior and target policies, including exact one-step normalized
+    importance-score conditional means under overlap and a declared ratio cap.
+  - [x] Add stationary state-Markov target-policy OPE for known dynamics and
+    behavior propensities with supplied invariant laws and exact bounded
+    Poisson potentials.
+  - [x] Add encountered-prefix comparators for history-dependent target
+    policies under homogeneous and known prefix/time-dependent controlled
+    environments.
+  - [x] Add exact finite-horizon target-path change of measure, measurable
+    cylinder, and terminal-state occupancy identities, with explicit `C ^ n`
+    cumulative-weight range inflation.
+  - Extend the controlled interface to an anytime-valid cumulative-weight or
+    dynamic-policy value theorem, or learned nuisance quantities, under
+    separate assumptions.
+  - Construct finite-depth Poisson potentials automatically from explicit
+    kernel-contraction data, with checked residual and span bounds.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing

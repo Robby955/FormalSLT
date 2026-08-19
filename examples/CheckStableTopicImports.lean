@@ -15,6 +15,13 @@ is an actual predictable-residual e-process; its hybrid-Bessel term is only a
 lower envelope.  Its finite-hypothesis, finite-declared-tilt and IID wrappers
 control every eligible time `n >= 2` through one outer-mass event.
 Compatibility aliases remain usable without carrying duplicate proof bodies.
+The stochastic-dynamics umbrella also exposes the finite controlled-trajectory
+importance-weighting semantic bridge and its stationary target-policy OPE
+specialization.  That specialization assumes finite state-based Markov target
+policies, a known environment and behavior propensities, supplied invariant
+target laws and exact Poisson potentials, and declared overlap and span bounds;
+it does not cover unknown-kernel estimation or full-trajectory importance
+sampling.
 -/
 
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
@@ -111,6 +118,20 @@ Compatibility aliases remain usable without carrying duplicate proof bodies.
 #check FormalSLT.StochasticDynamics.finiteInvariantPMF_isInvariant
 #check FormalSLT.StochasticDynamics.existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one
 #check FormalSLT.StochasticDynamics.existsUnique_invariantPMF_of_candidate_rowTV
+#check FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp
+#check FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces
+#check FormalSLT.StochasticDynamics.stationaryTargetPolicyObservedScore_condExp
+#check FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event
+#check FormalSLT.StochasticDynamics.stationaryTargetPolicyOPE_selected_of_simultaneous
+#check FormalSLT.StochasticDynamics.exists_dynamicTargetPolicyComparator_event
+#check FormalSLT.StochasticDynamics.dynamicTargetPolicyComparator_selected_of_simultaneous
+#check FormalSLT.StochasticDynamics.prefixControlledObservedImportanceScore_condExp
+#check FormalSLT.StochasticDynamics.exists_prefixDynamicTargetPolicyComparator_event
+#check FormalSLT.StochasticDynamics.prefixDynamicTargetPolicyComparator_selected_of_simultaneous
+#check FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_eq_trajectoryIntegral
+#check FormalSLT.StochasticDynamics.prefixControlledTargetTrajectory_integral_changeOfMeasure
+#check FormalSLT.StochasticDynamics.prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure
+#check FormalSLT.StochasticDynamics.controlledFinitePrefixLikelihoodRatio_le_pow
 
 #check FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily
 #check FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective
@@ -208,3 +229,17 @@ Compatibility aliases remain usable without carrying duplicate proof bodies.
 #print axioms FormalSLT.StochasticDynamics.finiteInvariantPMF_isInvariant
 #print axioms FormalSLT.StochasticDynamics.existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one
 #print axioms FormalSLT.StochasticDynamics.existsUnique_invariantPMF_of_candidate_rowTV
+#print axioms FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp
+#print axioms FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces
+#print axioms FormalSLT.StochasticDynamics.stationaryTargetPolicyObservedScore_condExp
+#print axioms FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event
+#print axioms FormalSLT.StochasticDynamics.stationaryTargetPolicyOPE_selected_of_simultaneous
+#print axioms FormalSLT.StochasticDynamics.exists_dynamicTargetPolicyComparator_event
+#print axioms FormalSLT.StochasticDynamics.dynamicTargetPolicyComparator_selected_of_simultaneous
+#print axioms FormalSLT.StochasticDynamics.prefixControlledObservedImportanceScore_condExp
+#print axioms FormalSLT.StochasticDynamics.exists_prefixDynamicTargetPolicyComparator_event
+#print axioms FormalSLT.StochasticDynamics.prefixDynamicTargetPolicyComparator_selected_of_simultaneous
+#print axioms FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_eq_trajectoryIntegral
+#print axioms FormalSLT.StochasticDynamics.prefixControlledTargetTrajectory_integral_changeOfMeasure
+#print axioms FormalSLT.StochasticDynamics.prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure
+#print axioms FormalSLT.StochasticDynamics.controlledFinitePrefixLikelihoodRatio_le_pow

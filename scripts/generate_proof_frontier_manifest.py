@@ -68,6 +68,18 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "post-path candidate, depth, tilt, and posterior substitution. "
             "Finite-simplex Cesaro averages construct a chosen invariant PMF "
             "for every nonempty finite kernel"
+            "approximate Poisson potentials. A finite controlled-trajectory "
+            "semantic layer derives exact behavior-law predictable means for "
+            "normalized one-step target-policy scores under overlap and a "
+            "declared importance-ratio cap. A stationary state-Markov target-"
+            "policy OPE specialization adds one all-time, all-posterior event "
+            "when the dynamics, behavior propensities, invariant PMFs, and "
+            "exact bounded Poisson potentials are supplied. Encountered-prefix "
+            "comparator theorems cover history-dependent targets under a "
+            "homogeneous or known prefix/time-dependent environment. A "
+            "separate finite-horizon target-path theorem gives exact "
+            "likelihood-weighted behavior-law identities for prefix payoffs, "
+            "measurable cylinders, and terminal-state occupancy"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
@@ -77,6 +89,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "sample splitting. Add a supplied initial distribution, controlled "
             "kernels, continuous-state interfaces, and quantitative mixing "
             "guarantees."
+            "Construct finite-depth Poisson potentials and their residual and "
+            "span bounds from explicit contraction data. Add a supplied "
+            "initial distribution, an anytime-valid cumulative-weight or "
+            "dynamic-policy value theorem for controlled dynamics, and an "
+            "interface for catalogs "
+            "constructed from auxiliary random data."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -86,7 +104,7 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite tilt atom may be selected after the path. The theorem "
             "does not validate creating catalog members after observing their "
             "scored outcomes, and it does not cover random initial laws, "
-            "controlled kernels, arbitrary joint predictor--tilt posteriors, "
+            "arbitrary joint predictor--tilt posteriors, "
             "unrestricted all-real tilt control, continuous state spaces, "
             "multistep prediction, or optional stopping. The separate "
             "stationary theorem uses an invariant PMF. Finite-state existence "
@@ -99,6 +117,20 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "every required row is visited; it does not validate a newly "
             "path-fitted Poisson score, establish a mixing time, cover "
             "continuous states, or provide a measurable-event theorem."
+            "stationary theorem requires the invariant PMF, potentials, span "
+            "bound, and any residual envelope as inputs; it does not infer "
+            "them, establish mixing or uniqueness, learn an unknown kernel, "
+            "or provide a measurable-event theorem. The controlled semantic "
+            "layer by itself is behavior-law and one-step. The separate "
+            "stationary target-policy OPE theorem requires known dynamics and "
+            "behavior propensities plus supplied invariant laws and exact "
+            "bounded potentials. The dynamic comparators allow history-"
+            "dependent targets and a known prefix/time-dependent environment, "
+            "but control one-step risks only at behavior-realized prefixes. "
+            "The separate target-path change-of-measure theorem is exact at "
+            "each fixed finite horizon and exposes worst-case weight range "
+            "C ^ n; it is not an anytime-valid cumulative-weight boundary. "
+            "No controlled lane is a learned-nuisance or unknown-kernel result."
         ),
     },
     {

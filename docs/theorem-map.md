@@ -849,6 +849,72 @@ not itself provide a confidence event, concentration inequality, PAC-Bayes
 bound, controlled-process theorem, policy-optimization theorem, or
 optional-stopping result.
 
+## Finite controlled trajectory semantics
+
+| Declaration | Module | Role |
+|---|---|---|
+| `controlledContinuationPMF_apply` | `StochasticDynamics.ControlledTrajectory` | Expands the behavior-policy/environment continuation mass into its action and outcome factors |
+| `conditionalTrajectoryRisk_controlledNormalizedImportanceScore` | `StochasticDynamics.ControlledTrajectory` | Identifies the normalized behavior-law conditional risk with the declared target-policy transition risk under overlap |
+| `controlledObservedImportanceScore_condExp` | `StochasticDynamics.ControlledTrajectory` | Proves the exact filtration-conditional mean of the observed normalized one-step importance score |
+| `controlledObservedImportanceScore_incrementAdapted` | `StochasticDynamics.ControlledTrajectory` | Shows the importance-weighted observation is measurable at the next filtration level |
+| `controlledTargetConditionalMean_stronglyAdapted` | `StochasticDynamics.ControlledTrajectory` | Shows the target-policy transition mean is predictable from the completed prefix |
+| `controlledImportanceCatalog_predictableMean_interfaces` | `StochasticDynamics.ControlledTrajectory` | Packages the boundedness, adaptedness, predictable mean, and conditional-expectation interfaces for a finite predeclared target-policy catalog |
+
+These statements are under the behavior trajectory law and concern encountered
+one-step target-policy transition risk. They do not identify target-law state
+occupancy or stationary target-policy value, and do not construct a
+full-trajectory off-policy estimator.
+
+## Stationary target-policy off-policy evaluation
+
+| Declaration | Module | Role |
+|---|---|---|
+| `targetPolicyPotentialMean_eq_inducedKernel` | `StochasticDynamics.StationaryTargetPolicyOPE` | Identifies the action/outcome potential mean with expectation under the target-policy-induced state kernel |
+| `targetPolicyPoissonControlledScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyOPE` | Keeps the unweighted Poisson-corrected transition score in `[0,1]` under the supplied score and span bounds |
+| `stationaryTargetPolicyPredictableMean_eq` | `StochasticDynamics.StationaryTargetPolicyOPE` | Rewrites the behavior-law predictable mean as the affine normalization of stationary target-policy risk |
+| `stationaryTargetPolicyObservedScore_condExp` | `StochasticDynamics.StationaryTargetPolicyOPE` | Proves the exact behavior-law conditional mean for the observed OPE score |
+| `posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean` | `StochasticDynamics.StationaryTargetPolicyOPE` | Identifies the posterior prefix mean with the affine posterior stationary target-policy risk |
+| `exists_stationaryTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyOPE` | One outer event controls every `n >= 2`, posterior PMF, and finite declared tilt atom |
+| `stationaryTargetPolicyOPE_selected_of_simultaneous` | `StochasticDynamics.StationaryTargetPolicyOPE` | Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event, without a selected-process claim |
+
+The environment, behavior propensities, invariant PMFs, exact bounded Poisson
+potentials, overlap, and ratio cap are inputs. This section uses one-step action
+importance ratios and does not establish target-occupancy change of measure,
+learn nuisance quantities, or handle unknown dynamics.
+
+## Dynamic target-policy comparators
+
+| Declaration | Module | Role |
+|---|---|---|
+| `controlledTargetConditionalMean_eq_encounteredRisk_div` | `StochasticDynamics.DynamicTargetPolicyComparator` | Identifies the normalized behavior-law predictable mean with target one-step conditional risk at the encountered prefix |
+| `posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean` | `StochasticDynamics.DynamicTargetPolicyComparator` | Converts the posterior predictable-mean prefix average to posterior encountered target risk |
+| `exists_dynamicTargetPolicyComparator_event` | `StochasticDynamics.DynamicTargetPolicyComparator` | One outer event controls every `n >= 2`, posterior PMF, and finite declared tilt atom for a known homogeneous environment |
+| `dynamicTargetPolicyComparator_selected_of_simultaneous` | `StochasticDynamics.DynamicTargetPolicyComparator` | Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event |
+| `prefixControlledObservedImportanceScore_condExp` | `StochasticDynamics.PrefixDynamicTargetPolicyComparator` | Exact conditional mean under a known prefix/time-dependent controlled environment |
+| `exists_prefixDynamicTargetPolicyComparator_event` | `StochasticDynamics.PrefixDynamicTargetPolicyComparator` | Comparator event for history-dependent targets and a known full-prefix environment kernel |
+| `prefixDynamicTargetPolicyComparator_selected_of_simultaneous` | `StochasticDynamics.PrefixDynamicTargetPolicyComparator` | Pointwise selector corollary for the prefix-environment event |
+
+These results control target one-step conditional risks at behavior-realized
+prefixes. They do not identify target occupancy or value, estimate the
+environment or propensities, or construct a full-trajectory importance ratio.
+
+## Finite-horizon target-path change of measure
+
+| Declaration | Module | Role |
+|---|---|---|
+| `controlledFinitePrefixExpectation_eq_trajectoryIntegral` | `StochasticDynamics.TargetPathChangeOfMeasure` | Identifies the recursive finite-prefix expectation with the corresponding marginal integral under the actual infinite trajectory law |
+| `controlledFinitePrefixExpectation_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Proves the exact finite-prefix target-versus-behavior likelihood-ratio identity |
+| `prefixControlledTargetTrajectory_integral_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | States the change of measure directly for the actual infinite target and behavior trajectory laws |
+| `prefixControlledTargetTrajectory_cylinder_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Gives the measurable finite-prefix cylinder probability identity |
+| `controlledFiniteHorizonRisk_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Rewrites a finite-horizon target payoff as a likelihood-weighted behavior payoff |
+| `prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure` | `StochasticDynamics.TargetPathChangeOfMeasure` | Recovers target terminal-state occupancy from the weighted behavior path law |
+| `controlledFinitePrefixLikelihoodRatio_le_pow` | `StochasticDynamics.TargetPathChangeOfMeasure` | Bounds the cumulative weight by `C ^ n` under a supplied one-step ratio cap |
+
+These are exact finite-horizon identities for finite state and action spaces.
+They do not provide an anytime-valid full-trajectory importance-sampling
+boundary, learned propensities, unknown-environment inference, or a
+continuous-space result.
+
 ## Finite Markov prequential risk
 
 | Declaration | Module | Role |

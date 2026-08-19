@@ -51,6 +51,29 @@ files.
   predictable tilt selection. The result is not an arbitrary real-tilt
   optimization theorem, an arbitrary joint predictor--tilt posterior theorem,
   or a measurable selected-boundary e-process theorem.
+  arbitrary prefix-dependent kernels and bounded scores. Finite-catalog
+  sub-Gamma and forward empirical-Bernstein adapters give common all-time
+  posterior-uniform events, and the normalized countable declared-tilt lane
+  supplies a vanishing selected boundary. A separate supplied-Poisson bridge
+  converts the empirical-Bernstein trajectory event to stationary risk from a
+  supplied invariant PMF and bounded exact or approximate potentials. The
+  controlled semantic layer derives exact behavior-law predictable means for
+  normalized one-step target-policy scores under overlap and a declared ratio
+  cap. A separate stationary state-Markov target-policy OPE theorem gives an
+  all-time, all-posterior behavior-law event when the dynamics, behavior
+  propensities, invariant laws, and exact bounded potentials are supplied.
+  Encountered-prefix comparator theorems separately cover history-dependent
+  target policies under homogeneous or known prefix/time-dependent controlled
+  environments. A separate finite-horizon change-of-measure theorem identifies
+  target-path prefix expectations, measurable cylinders, and terminal-state
+  occupancy with cumulative likelihood-weighted behavior-path quantities, and
+  exposes the worst-case `C ^ n` range. Catalogs remain fixed before their
+  scored outcomes. None of these results supplies an anytime-valid cumulative-
+  weight boundary, learned nuisance, or unknown-kernel theorem. Open layers
+  include a supplied initial law,
+  auxiliary-data catalog construction, automatic Poisson potentials and
+  invariant laws, unknown-kernel inference, continuous state spaces, and
+  unrestricted all-real tilt control.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

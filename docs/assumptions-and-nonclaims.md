@@ -78,9 +78,9 @@ for every positive time, every posterior PMF, and every declared tilt atom.
 The posterior and one tilt atom may be selected after the trajectory.
 
 This does not validate creating new catalog members after observing the
-outcomes on which they are scored. It also does not provide a controlled
-kernel or policy interface, action-dependent dynamics, random initial law,
-continuous-state theorem, multistep forecast, optional-stopping theorem,
+outcomes on which they are scored. It also does not itself provide a
+controlled kernel or policy interface, action-dependent dynamics, random
+initial law, continuous-state theorem, multistep forecast, optional-stopping theorem,
 empirical-variance boundary, countable tilt family, or stationary long-run
 conclusion. The checked target is the posterior average of the one-step
 prefix-conditional risks encountered along the realized trajectory.
@@ -303,6 +303,89 @@ of the common outer-mass event or that the selected boundary is an e-process.
 Finite invariant existence does not imply irreducibility, uniqueness without a
 strict certificate, convergence of arbitrary initial laws, a convergence
 rate, or a mixing time.
+### Controlled trajectory semantics
+
+`StochasticDynamics.ControlledTrajectory` supplies a separate finite
+state--action behavior-law interface. The behavior and each target policy may
+inspect the complete available decision--outcome prefix. Under explicit
+overlap and a common importance-ratio cap, a predeclared finite catalog of
+bounded transition scores is normalized into `[0,1]`. The module proves the
+exact behavior-law conditional mean of that one-step importance score and
+discharges the `IncrementAdapted`, `StronglyAdapted`, and conditional-
+expectation premises consumed by the forward predictable-mean PAC-Bayes layer.
+
+The state, action, and policy-catalog types are finite; the initial
+decision--state pair is deterministic; and the controlled environment is a
+supplied homogeneous state--action kernel. This is not a target-trajectory
+change-of-measure theorem, a target-versus-behavior occupancy correction, a
+stationary target-policy value theorem, a full-trajectory importance-sampling
+result, or a guarantee for learned propensities or an unknown environment.
+
+### Stationary target-policy off-policy evaluation
+
+`StochasticDynamics.StationaryTargetPolicyOPE` specializes the controlled
+interface to a finite catalog of state-Markov target policies. The environment
+kernel and history-dependent behavior propensities are known. Each target
+policy has a supplied invariant state PMF and supplied exact bounded Poisson
+potential. Explicit overlap, a common positive action-ratio cap, bounded
+transition scores, a full-support finite hypothesis prior, and a full-support
+finite tilt prior with atoms in `(0,1)` are theorem assumptions.
+
+Under those assumptions, one behavior-law outer event is simultaneous over
+every `n >= 2`, posterior PMF, and declared tilt atom. The theorem controls the
+posterior stationary target-policy risk using the normalized one-step
+importance-weighted, Poisson-corrected observed scores and their checked hybrid
+Bessel penalty. Pointwise posterior and tilt substitution uses the already
+simultaneous event; it does not construct a selected process.
+
+The theorem does not estimate the environment or behavior policy, construct
+or estimate invariant PMFs or Poisson potentials, handle history-dependent
+target policies, correct target-law occupancy through a full-trajectory
+likelihood ratio, or establish doubly robust, continuous-space, or
+unknown-kernel OPE.
+
+### Dynamic target-policy comparators
+
+`StochasticDynamics.DynamicTargetPolicyComparator` accepts finite catalogs of
+history-dependent target policies and bounded full-prefix transition scores
+under a known homogeneous controlled environment and history-dependent
+behavior policy. `StochasticDynamics.PrefixDynamicTargetPolicyComparator`
+replaces the homogeneous environment with a supplied kernel that may depend on
+time and the complete available prefix. Both the behavior and target policies
+may inspect that prefix.
+
+The assumptions are explicit overlap, a common positive action-ratio cap, a
+full-support finite hypothesis prior, and a full-support finite tilt prior with
+atoms in `(0,1)`. One behavior-law outer event is simultaneous over every
+`n >= 2`, posterior PMF, and declared tilt atom. Pointwise posterior and tilt
+substitution is valid only because those choices are made inside the already
+simultaneous conclusion; no selected process is constructed.
+
+The controlled target is the posterior average of target one-step conditional
+risks at prefixes encountered under the behavior law. These theorems do not
+identify target-policy occupancy or value, construct a full-trajectory
+likelihood ratio, estimate the environment or propensities, supply a doubly
+robust or learned-nuisance guarantee, or cover continuous state or action
+spaces.
+
+### Finite-horizon target-path change of measure
+
+`StochasticDynamics.TargetPathChangeOfMeasure` constructs the recursive
+finite-prefix target-policy expectation and proves that it agrees with the
+corresponding finite marginal of the actual infinite target trajectory law.
+Under policy overlap, every finite-prefix target expectation equals the
+behavior-path expectation weighted by the cumulative product of one-step
+target-to-behavior action likelihood ratios. Checked corollaries cover
+measurable prefix cylinders, finite-horizon payoff risk, terminal-state
+occupancy, and normalization of the likelihood ratio.
+
+State and action types are finite; the initial decision--state pair is
+deterministic; the prefix/time-dependent environment and both policies are
+supplied; and the horizon is fixed. A supplied one-step ratio cap `C` yields
+the explicit bound `W_n <= C ^ n`. The module proves no anytime concentration
+or PAC-Bayes result for these cumulative weights, no vanishing target-value
+boundary, no learned propensity or environment guarantee, and no
+continuous-space change-of-measure theorem.
 
 ### Azuma and sharp McDiarmid constants
 
@@ -769,3 +852,8 @@ layers are path-fitted candidates outside a predeclared catalog, a random
 initial law, controlled/action-dependent kernels, auxiliary-data construction
 of valid stationary-score catalogs, mixing guarantees, and continuous-state
 stationary inference.
+declared-tilt selector, and the supplied-Poisson stationary-risk bridge above.
+Natural next layers are a random initial law, target-law occupancy and dynamic
+policy comparators, auxiliary-data catalog construction, automatic finite-depth
+Poisson potentials from contraction, and continuous-state stationary
+inference.

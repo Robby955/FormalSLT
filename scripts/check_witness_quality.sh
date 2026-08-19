@@ -150,6 +150,21 @@ classify_witness() {
 #     (asymmetric Boolean kernel with computed Dobrushin coefficient `1/4`,
 #      attained oscillation contraction, exact depth-two potential and residual
 #      values, and a finite-depth stationary certificate at delta `1/20`)
+#   exists_dynamicTargetPolicyComparator_event /
+#     exists_prefixDynamicTargetPolicyComparator_event
+#     (history-dependent Boolean behavior and two target policies, reachable
+#      same-current/different-interior histories, encountered risks `5/8` and
+#      `3/8`, a prefix-dependent environment witness, full-support continuation
+#      laws, and positive observed Bessel variation for both target atoms)
+#   exists_stationaryTargetPolicyOPE_event
+#     (finite Boolean states/actions with explicit behavior and target policies,
+#      invariant target law, exact bounded Poisson potential, nonconstant
+#      importance ratios, exact predictable mean, and positive Bessel variation)
+#   prefixControlledTargetTrajectory_integral_changeOfMeasure
+#     (fair Boolean behavior, target action mass `3/4`, deterministic
+#      copy-action environment, exact one-step likelihood ratios `3/2` and
+#      `1/2`, unit behavior expectation, and target occupancy `3/4` recovered
+#      from the likelihood-weighted behavior path law)
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
@@ -254,6 +269,9 @@ HEADLINE_WITNESSES=(
   "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckStationaryPoissonPACBayes.lean"
   "examples/CheckStationaryPoissonContraction.lean"
+  "examples/CheckStationaryTargetPolicyOPE.lean"
+  "examples/CheckDynamicTargetPolicyComparator.lean"
+  "examples/CheckTargetPathChangeOfMeasure.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
