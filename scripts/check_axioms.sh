@@ -240,6 +240,23 @@ THEOREMS=(
   "FormalSLT.AnytimeValid.SelectionCost.symmetric_simultaneous_upperTail_mass_le_alpha"
   "FormalSLT.AnytimeValid.SelectionCost.symmetric_selected_upperTail_mass_le_alpha"
   "FormalSLT.AnytimeValid.SelectionCost.symmetric_log_selection_penalty"
+  "FormalSLT.AnytimeValid.AllocationLogLog.exists_small_weight_on_dyadicBlock"
+  "FormalSLT.AnytimeValid.AllocationLogLog.exists_logCost_ge_log_blockCard"
+  "FormalSLT.AnytimeValid.AllocationLogLog.exists_logCost_ge_indexLog_sub_log_two"
+  "FormalSLT.AnytimeValid.AllocationLogLog.frequently_logCost_ge_indexLog_sub_log_two"
+  "FormalSLT.AnytimeValid.AllocationLogLog.geometricEpochTime_natLog"
+  "FormalSLT.AnytimeValid.AllocationLogLog.geometricEpochScale_log"
+  "FormalSLT.AnytimeValid.AllocationLogLog.geometricEpochIteratedLog_eq"
+  "FormalSLT.AnytimeValid.AllocationLogLog.exists_geometricEpoch_loglogCost"
+  "FormalSLT.AnytimeValid.AllocationLogLog.frequently_geometricEpoch_loglogCost"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_pos"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_eq_sub"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_sum_range"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_hasSum"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_summable"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_tsum"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_log_cost"
+  "FormalSLT.AnytimeValid.AllocationLogLog.polynomialGeometricEpoch_log_cost"
 )
 
 # Axioms permitted in a clean proof.
@@ -280,6 +297,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.AnytimeValid.ForwardBesselProcess"
   echo "import FormalSLT.AnytimeValid.SelectionCost"
+  echo "import FormalSLT.AnytimeValid.AllocationLogLog"
   echo "import FormalSLT.PACBayes.ForwardBesselPACBayes"
   echo "import FormalSLT.PACBayes.ForwardBesselPACBayesIID"
   echo "import FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch"
@@ -330,6 +348,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
   FormalSLT.AnytimeValid.ForwardBesselProcess \
   FormalSLT.AnytimeValid.SelectionCost \
+  FormalSLT.AnytimeValid.AllocationLogLog \
   FormalSLT.PACBayes.ForwardBesselPACBayes \
   FormalSLT.PACBayes.ForwardBesselPACBayesIID \
   FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch \

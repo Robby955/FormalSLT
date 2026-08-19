@@ -83,7 +83,11 @@ files.
   event, all-posterior validity, and post-path selection of a declared atom with
   its exact weight penalty. A separate finite selection-cost guardrail proves
   the predeclared-weight/Kraft correction and an exact diagonal witness forcing
-  a common raw correction of at least the catalog size. The checked fixed-sample
+  a common raw correction of at least the catalog size. A countable-allocation
+  guardrail separately proves that positive summable weights incur an explicit
+  iterated-logarithm atom cost along an unbounded geometric-epoch subsequence;
+  this is an allocation/union-stitching obstruction, not a universal LIL or
+  minimax lower bound. The checked fixed-sample
   countable joint master now
   has a downstream finite-posterior exact-`xi` selector over its predeclared
   `Nat`-indexed tilt-pair catalog. A separate forward lane now checks the

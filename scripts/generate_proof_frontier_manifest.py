@@ -125,7 +125,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite normalized hypothesis--tilt e-process with one Ville "
             "event and selected-atom weight penalty; a finite adaptive-"
             "selection guardrail with exact predeclared-weight/Kraft upper "
-            "bounds and diagonal-witness cardinality necessity; a forward finite-"
+            "bounds and diagonal-witness cardinality necessity; a countable-"
+            "allocation guardrail with a blockwise reciprocal-weight obstruction "
+            "and geometric-epoch log-log subsequence cost; a forward finite-"
             "hypothesis predictable-residual e-process with a hybrid Bessel "
             "lower envelope and finite weighted PAC-Bayes tilt catalog; and "
             "an offline reverse all-sample-size empirical-Bernstein endpoint "
@@ -158,7 +160,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "A separate fixed-sample countable joint "
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
-            "result. No forward result is simultaneous over arbitrary "
+            "result. The countable-allocation result is specific to union/"
+            "confidence allocation and does not prove a universal LIL or "
+            "minimax boundary lower bound. No forward result is simultaneous over arbitrary "
             "continuous posteriors or all real tilts."
         ),
     },

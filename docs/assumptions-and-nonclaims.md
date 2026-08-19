@@ -139,6 +139,22 @@ do not establish countable or continuous selection costs, an LIL lower bound,
 or optimality of the constants in the repository's coupled PAC-Bayes process
 families.
 
+### Countable-allocation log-log guardrail
+
+`AnytimeValid.AllocationLogLog` assumes a nonnegative summable sequence of
+predeclared confidence weights with total mass at most one. Every inclusive
+integer block `[N, 2N]` then contains an atom of weight at most
+`1 / (N + 1)`. If all weights are positive, the corresponding logarithmic
+price is at least `log (N + 1)` somewhere in every block. At geometric times
+`4^(k+1)`, this yields an explicit iterated-logarithm price along an unbounded
+subsequence. The polynomial weights `1 / ((k+1)(k+2))` supply an exact
+telescoping receipt with total mass one.
+
+This result is specific to countable confidence allocation and union-bound
+stitching. It does not prove a minimax lower bound over all confidence
+sequences, a law of the iterated logarithm, or optimality of a structured
+mixture boundary.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use

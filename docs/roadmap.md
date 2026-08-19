@@ -377,7 +377,11 @@
     level, together with a measurable-event finite-IID `[0,1]` loss adapter.
     A finite adaptive-selection guardrail now proves the corresponding
     predeclared-weight and Kraft upper bounds and gives an exact diagonal
-    witness forcing a common raw correction of at least the catalog size.
+    witness forcing a common raw correction of at least the catalog size. A
+    separate countable-allocation guardrail proves a blockwise reciprocal-
+    weight obstruction and an explicit log-log atom cost along an unbounded
+    geometric-epoch subsequence, with exact telescoping polynomial weights.
+    It is not a universal confidence-sequence or LIL lower bound.
     A second forward lane now checks the predictable-residual
     empirical-Bernstein e-process, its hybrid Bessel lower envelope, and a
     finite hypothesis--tilt PAC-Bayes master with an IID adapter and
