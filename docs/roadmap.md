@@ -237,9 +237,13 @@
     envelope as an e-process.
 
 - [ ] **Finite stochastic-dynamics extensions**
+  - [x] Support finite predeclared catalogs of prefix-dependent scores,
+    including fixed-in-advance online update rules whose time-`n` prediction
+    is determined before the next state is observed.
   - Generalize the deterministic initial state to a supplied initial law.
-  - Support predictable or independently trained predictor catalogs without
-    claiming validity for arbitrary same-trajectory fitting.
+  - Add an interface for catalogs constructed from auxiliary random training
+    data without claiming validity for catalog members created after observing
+    their scored outcomes.
   - Extend the checked finite weighted-tilt selection to normalized countable
     or predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.

@@ -45,28 +45,36 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "id": "finite-markov-prequential-risk",
         "status": "partially_closed",
         "scope": (
-            "finite-state Markov paths with deterministic start, a fixed "
-            "bounded observable, and a finite catalog of fixed predictors; "
-            "the checked surface includes a sharp one-quarter variance proxy "
-            "and finite full-support weighted-tilt, all-time, all-posterior, "
-            "all-atom PAC-Bayes control from one master e-process"
+            "finite-state trajectories with deterministic start and arbitrary "
+            "fixed prefix-dependent probability kernels and bounded prefix/"
+            "next-state scores; the semantic layer derives exact conditional "
+            "risk, centering, and a sharp one-quarter variance proxy. A fixed "
+            "score functional may encode an online update rule whose current "
+            "prediction is chosen before the next state arrives. A finite "
+            "trajectory adapter gives all-positive-time, all-posterior, "
+            "all-atom PAC-Bayes control for a predeclared catalog of such "
+            "scores. The Markov squared-loss theorem is a specialization"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Generalize the path law to a supplied initial distribution, "
-            "support predictable or independently trained predictor catalogs, "
-            "and add normalized countable or predictable tilt families."
+            "Add a supplied initial distribution, controlled kernels, and an "
+            "interface for catalogs constructed from auxiliary random data. "
+            "Continue empirical-variance and normalized countable or "
+            "predictable tilt work in the concentration layer."
         ),
         "boundary": (
-            "The checked certificate targets posterior-average one-step "
-            "conditional risk at one post-path-selected atom of a fixed finite "
-            "tilt catalog. The pointwise selector need not be measurable or "
-            "adapted and adds no optional-stopping result. The certificate "
-            "does not cover same-trajectory fitting, an arbitrary joint "
-            "predictor--tilt posterior, countable or all-real tilt control, "
-            "empirical variance, stationarity, mixing, continuous state "
-            "spaces, multistep prediction, or long-run risk."
+            "TrajectoryRisk alone is a path-semantics and conditional-"
+            "expectation bridge. TrajectoryPACBayes adds one measurable "
+            "confidence event for finite predeclared catalogs, including "
+            "fixed-in-advance online update rules; the posterior and one "
+            "finite tilt atom may be selected after the path. The theorem "
+            "does not validate creating catalog members after observing their "
+            "scored outcomes, and it does not cover random initial laws, "
+            "controlled kernels, arbitrary joint predictor--tilt posteriors, "
+            "countable or all-real tilt control, empirical variance, "
+            "continuous state spaces, multistep prediction, optional stopping, "
+            "or stationary long-run risk."
         ),
     },
     {
@@ -140,8 +148,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "forward e-process. The new forward hybrid-Bessel PAC-Bayes master "
             "is a genuine finite hypothesis--tilt mixture of predictable-"
             "residual e-processes; its hybrid Bessel expression is only a "
-            "pointwise lower envelope, its catalog is finite, and its Boolean "
-            "receipt is structural rather than an informative-width result. "
+            "pointwise lower envelope and its catalog is finite. Its "
+            "informative biased-Boolean receipt has Bessel variance 1/32, "
+            "KL = log 2, a theorem-produced good path with risk below "
+            "343/1000, and a same-prefix boundary comparison of approximately "
+            "0.312 versus 0.760. "
             "A separate fixed-sample countable joint "
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "

@@ -198,6 +198,11 @@ THEOREMS=(
   "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_measurableExceptionalEvent_spec"
   "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_allPosteriors_of_not_mem_measurableExceptionalEvent"
   "FormalSLT.PACBayes.TimeUniformIIDTiltMixture.timeUniformIIDPACBayes_tiltMixture_selected_of_not_mem_measurableExceptionalEvent"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_condExp"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_incrementAdapted"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condExp_eq_zero"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condSecondMoment_le_one_fourth"
+  "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp_via_trajectory"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -206,6 +211,10 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate"
   "FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
   "FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate"
+  "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condExp_eq_zero"
+  "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condSecondMoment_le_one_fourth"
+  "FormalSLT.StochasticDynamics.trajectoryPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
+  "FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate"
 )
 
 # Axioms permitted in a clean proof.
@@ -253,9 +262,11 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
   echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -300,9 +311,11 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.TimeUniformScorePACBayes \
   FormalSLT.PACBayes.TimeUniformTiltMixture \
   FormalSLT.PACBayes.TimeUniformIIDTiltMixture \
+  FormalSLT.StochasticDynamics.TrajectoryRisk \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
-  FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture >/dev/null
+  FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
+  FormalSLT.StochasticDynamics.TrajectoryPACBayes >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

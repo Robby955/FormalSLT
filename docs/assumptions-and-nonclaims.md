@@ -46,6 +46,45 @@ These product-sample results do not cover time series, active learning, or
 dependent data without additional assumptions. The repository's separate
 online-to-PAC and anytime-valid modules state their own sequential assumptions.
 
+### Finite prefix-dependent trajectory semantics and PAC-Bayes
+
+`StochasticDynamics.TrajectoryRisk` constructs an Ionescu--Tulcea path law on
+a finite state type from a deterministic initial state and a supplied family
+of probability kernels. At step `n`, the kernel may depend on the complete
+prefix indexed by `Finset.Iic n`. A supplied real-valued score may likewise
+depend on that prefix and the next state, and is assumed pointwise to lie in
+`[0,1]`.
+
+Under those assumptions, the module identifies the exact prefix-conditional
+expectation of the observed score. Observed score minus conditional risk is
+next-step adapted, bounded in absolute value by one, conditionally centered,
+and has conditional second moment at most `1/4`. The existing finite Markov
+squared-loss definitions are recovered by definitional bridge lemmas.
+
+Because the score may inspect the whole available prefix, it can encode the
+prediction emitted by an online update rule fixed in advance. The theorem
+requires only that this time-`n` score be determined before coordinate `n+1`
+is observed. `TrajectoryRisk` itself is the semantic and
+conditional-expectation layer; by itself it does not provide a confidence
+event or PAC-Bayes bound.
+
+`StochasticDynamics.TrajectoryPACBayes` lifts that semantic layer to a finite
+catalog of bounded prefix-dependent scores declared before the trajectory.
+The catalog may therefore contain fixed-in-advance online update rules. With a
+full-support prior on the finite catalog and a full-support finite tilt prior
+whose atoms satisfy `0 < lambda_j < 3`, one measurable exceptional event has
+probability at most `delta`. On its complement, the bound holds simultaneously
+for every positive time, every posterior PMF, and every declared tilt atom.
+The posterior and one tilt atom may be selected after the trajectory.
+
+This does not validate creating new catalog members after observing the
+outcomes on which they are scored. It also does not provide a controlled
+kernel or policy interface, action-dependent dynamics, random initial law,
+continuous-state theorem, multistep forecast, optional-stopping theorem,
+empirical-variance boundary, countable tilt family, or stationary long-run
+conclusion. The checked target is the posterior average of the one-step
+prefix-conditional risks encountered along the realized trajectory.
+
 ### Finite Markov prequential risk
 
 `StochasticDynamics.MarkovRisk` constructs a dependent path law from an actual
@@ -241,10 +280,12 @@ averaging.
 conditional-mean identity from strongly measurable IID `[0,1]` losses. The
 forward lane remains finite-hypothesis and finite-tilt. The hybrid Bessel
 expression is a lower envelope of the actual e-process, not itself a proved
-e-process. The checked Boolean receipt proves the common-event and selector
-semantics but no informative numerical width. There is no countable or
-all-real tilt optimizer, vanishing optimized all-time boundary,
-continuous-hypothesis extension, or novelty/priority claim.
+e-process. The fair-Boolean receipt proves the common-event and selector
+semantics. The informative biased-Boolean receipt has Bessel variance `1/32`,
+`KL = log 2`, a theorem-produced good path with risk below `343/1000`, and a
+same-prefix boundary comparison of approximately `0.312` versus `0.760`.
+There is no countable or all-real tilt optimizer, vanishing optimized all-time
+boundary, continuous-hypothesis extension, or novelty/priority claim.
 
 `PACBayes.FiniteEmpiricalVariance` supplies the finite empirical-variance
 foundation for arbitrary real-valued per-hypothesis losses: population
@@ -484,8 +525,10 @@ arbitrary measurable hypothesis space. The separate forward construction now
 supplies an actual predictable-residual e-process, a hybrid Bessel
 lower-envelope conversion, and a finite-hypothesis/finite-tilt PAC-Bayes
 master with an IID adapter. It does not make the hybrid expression itself an
-e-process, produce an informative-width receipt or a vanishing optimized
-all-time boundary, or extend the forward lane to continuous hypotheses.
+e-process or provide a vanishing optimized all-time boundary, and it does not
+extend the forward lane to continuous hypotheses. Its informative
+biased-Boolean receipt has positive Bessel variance, nonzero KL, a
+theorem-produced good path, and the checked same-prefix boundary comparison.
 Countable and exact all-real `lambda` optimization also remain open.
 
 ### Algorithmic stability expected bound
@@ -515,12 +558,19 @@ full unrestricted empirical-process chaining theorem.
 
 ### Stochastic-dynamics extensions
 
-The current finite Markov results freeze the observable and finite predictor
-catalog before the trajectory is generated. A posterior over that fixed
-catalog and one atom of a predeclared finite tilt prior may be selected from
-the trajectory, but this does not validate fitting new predictors on the same
-observations. Natural next layers are a random initial law, predictable or
-independently trained catalogs, and normalized countable or predictable tilt
-families. Same-trajectory training, continuous-state kernels, and
-stationary-risk conclusions require separate formal interfaces and are not
-consequences of the current certificate.
+The prefix-dependent semantic layer lets a fixed-in-advance kernel family and
+score functional inspect the observed finite prefix. Thus it can represent an
+online update rule whose time-`n` prediction is fixed before the next state is
+revealed. The finite `TrajectoryPACBayes` adapter packages a predeclared
+catalog of such rules and gives posterior-uniform, all-positive-time control
+from one measurable event. A posterior over that catalog and one atom of a
+predeclared finite tilt prior may be selected from the trajectory.
+
+The catalog itself must still be fixed before the scored trajectory is
+observed; the result does not validate inventing or fitting new catalog
+members after seeing their scored outcomes. Natural next layers are a random
+initial law, controlled/action-dependent kernels, auxiliary-data catalog
+construction, empirical-variance adaptation, and normalized countable or
+predictable tilt families. Continuous-state kernels and stationary-risk
+conclusions require separate formal interfaces and are not consequences of
+the current results.

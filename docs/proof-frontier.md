@@ -30,19 +30,20 @@ files.
 ## Current Next Lanes
 
 - `finite-markov-prequential-risk`: the finite-state, deterministic-start
-  path-law bridge, sharp universal `1/4` variance proxy, fixed-predictor
-  finite-grid certificate, and finite weighted-tilt PAC-Bayes certificate are
-  checked. One measurable exceptional event has mass at most `delta`; on its
-  complement the bound is simultaneous over every positive time, posterior
-  PMF, and predeclared finite tilt atom, so the posterior and one atom may be
-  selected after the path is observed. The pointwise selector need not be
-  measurable or adapted and adds no optional-stopping result. The next
-  reviewable extensions are a supplied initial law, predictable or
-  independently trained catalogs, and normalized countable or predictable
-  tilt selection. The result is not a same-trajectory fitting theorem, an
-  arbitrary real-tilt optimization theorem, an arbitrary joint
-  predictor--tilt posterior theorem, a stationarity or mixing theorem, or a
-  continuous-state stochastic-dynamics result.
+  path-law bridge and sharp universal `1/4` variance proxy are checked for
+  arbitrary prefix-dependent kernels and bounded scores. The finite
+  `TrajectoryPACBayes` adapter permits a predeclared catalog of scores whose
+  predictions update from the observed prefix. One measurable exceptional
+  event has mass at most `delta`; on its complement the bound is simultaneous
+  over every positive time, posterior PMF, and predeclared finite tilt atom,
+  so the posterior and one atom may be selected after the path is observed.
+  This does not validate creating new catalog members after seeing their
+  scored outcomes. The next reviewable extensions are a supplied initial law,
+  controlled kernels, auxiliary-data catalog construction, empirical-variance
+  adaptation, and normalized countable or predictable tilt selection. The
+  result is not an arbitrary real-tilt optimization theorem, an arbitrary
+  joint predictor--tilt posterior theorem, a stationarity or mixing theorem,
+  or a continuous-state stochastic-dynamics result.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

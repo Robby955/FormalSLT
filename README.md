@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C936-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-220-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-104%2C109-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C993-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-222-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-105%2C430-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -651,9 +651,13 @@ declaration and prints its axiom profile.
   declared atom. A selector may depend on the path, time, and posterior. The
   boundary contains one hypothesis KL term, the selected atom's log-weight
   penalty, and the posterior average of per-hypothesis hybrid Bessel penalties.
-  The hybrid expression is a lower envelope, not an e-process, and the Boolean
-  receipt is structural rather than a numerical-width certificate;
-  [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean)
+  The hybrid expression is a lower envelope, not an e-process. The fair-Boolean
+  receipt checks the common-event structure; the biased-Boolean receipt at
+  `n = 32` has Bessel variance `1/32`, `KL = log 2`, a theorem-produced good
+  path, risk below `343/1000`, and a same-prefix empirical-Bernstein versus
+  fixed-proxy comparison of approximately `0.312` versus `0.760`;
+  [`CheckForwardBesselPACBayesIID.lean`](./examples/CheckForwardBesselPACBayesIID.lean),
+  [`CheckForwardBesselPACBayesIIDInformative.lean`](./examples/CheckForwardBesselPACBayesIIDInformative.lean)
 - **Gaussian KL identification** — `diagonalGaussianMeasure_klDiv_toReal_eq`
   and `sphericalGaussianMeasure_klDiv_toReal_eq`;
   [`CheckGaussianMeasureKL.lean`](./examples/CheckGaussianMeasureKL.lean)
@@ -910,7 +914,8 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
-- **Stochastic dynamics:** `StochasticDynamics.MarkovRisk`,
+- **Stochastic dynamics:** `StochasticDynamics.TrajectoryRisk`,
+  `StochasticDynamics.TrajectoryPACBayes`, `StochasticDynamics.MarkovRisk`,
   `StochasticDynamics.MarkovPACBayes`, and
   `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
   topic import `FormalSLT.StochasticDynamics`
@@ -976,6 +981,14 @@ The main learning-theory results are deliberately finite and explicit.
   derives these obligations from strongly measurable `[0,1]` losses and an IID
   sample stream. The hybrid Bessel minimum is taken per hypothesis before
   posterior averaging.
+- **Finite prefix-dependent trajectory PAC-Bayes:** finite state space,
+  deterministic initial state, arbitrary prefix-dependent probability kernels,
+  and a finite catalog of bounded scores declared before the trajectory. A
+  score may encode a fixed-in-advance online update rule whose prediction uses
+  the observed prefix but not the next state. One measurable event is
+  simultaneous over all positive times, posterior PMFs, and atoms
+  `0 < lambda_j < 3` of a full-support finite tilt prior. This does not validate
+  creating new catalog members after observing their scored outcomes.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
@@ -1000,9 +1013,10 @@ The main learning-theory results are deliberately finite and explicit.
   proved e-process. The offline reverse-epoch theorem remains a distinct
   all-sample-size result over arbitrary measurable hypothesis spaces with
   finite-valued observations.
-- Same-trajectory-trained or online-updated predictors, random initial laws,
-  continuous-state dynamics, and stationary or mixing-based long-run risk
-  guarantees
+- Catalog members created after observing their scored outcomes, random
+  initial laws, continuous-state dynamics, and stationary or mixing-based
+  long-run risk guarantees. Fixed-in-advance online update rules are covered by
+  the finite prefix-dependent trajectory adapter.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1091,9 +1105,11 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   countable or all-real tilt control, and continuous hypothesis spaces
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
-- [ ] Extend the finite Markov PAC-Bayes certificate to random initial laws,
-  predictable or independently trained predictor catalogs, and normalized
-  countable or predictable tilt families
+- [x] Extend the finite PAC-Bayes certificate to a predeclared catalog of
+  prefix-dependent scores, including fixed-in-advance online update rules
+- [ ] Extend the stochastic-dynamics layer to random initial laws,
+  auxiliary-data catalog construction, and normalized countable or predictable
+  tilt families
 
 ## Dependencies
 
