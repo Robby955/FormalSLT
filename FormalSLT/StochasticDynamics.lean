@@ -6,11 +6,14 @@ Authors: Robby Sneiderman
 
 import FormalSLT.StochasticDynamics.MarkovRisk
 import FormalSLT.StochasticDynamics.TrajectoryRisk
+import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk
 import FormalSLT.StochasticDynamics.ControlledTrajectory
 import FormalSLT.StochasticDynamics.MarkovPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
@@ -28,11 +31,15 @@ import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure
 /-!
 # Stable stochastic-dynamics imports
 
-This declaration-free umbrella re-exports finite-state trajectory semantics,
-including arbitrary prefix-dependent probability kernels and bounded
-prefix/next-state scores with deterministic start.  It also re-exports the
-separate Markov anytime-valid and posterior-uniform PAC-Bayes certificates for
-finite predictor catalogs, including the empirical-Bernstein trajectory
+This declaration-free umbrella re-exports deterministic-start trajectory
+semantics for both finite and arbitrary measurable state spaces. The finite
+layer supports arbitrary prefix-dependent probability kernels and bounded
+prefix/next-state scores; the measurable-state layer uses a jointly measurable
+bounded score contract. It also re-exports Markov anytime-valid and
+posterior-uniform PAC-Bayes certificates, including finite-catalog and
+arbitrary-measurable-hypothesis empirical-Bernstein trajectory endpoints.
+
+The stationary finite-state layer includes the supplied-Poisson
 endpoint, its supplied-Poisson stationary-risk specialization, and the
 finite-depth automatic Poisson construction under oscillation contraction.
 It also exposes the robust fixed-candidate Poisson bridge under an explicit
@@ -54,6 +61,7 @@ history-dependent target policies, including a known prefix/time-dependent
 environment kernel.  For a supplied target policy, it also exports an exact
 finite-horizon target-path change-of-measure identity, target state occupancy
 identity, and the explicit `C ^ n` likelihood-weight range inflation.  These
-do not estimate an unknown kernel or invariant law or provide an anytime
-full-trajectory importance-sampling guarantee.
+controlled endpoints do not themselves estimate the environment, invariant
+law, or nuisance functions, and no endpoint gives an anytime cumulative-weight
+importance-sampling guarantee.
 -/

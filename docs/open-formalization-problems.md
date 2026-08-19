@@ -120,7 +120,13 @@ For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and
 posterior, with an explicit KL formula. This does not make the time-uniform
-result simultaneous over all continuous posteriors. The separate offline
+result simultaneous over all continuous posteriors. A separate forward
+predictable-residual engine is posterior-uniform over arbitrary measurable
+hypotheses under explicit parameter/process-measurability assumptions. Its
+full-prefix trajectory adapter permits arbitrary measurable states through a
+supplied joint hypothesis/prefix/next-state score contract and retains finite
+predeclared tilts and deterministic start. The
+separate offline
 all-sample-size empirical-Bernstein endpoint is posterior-uniform on an
 arbitrary measurable hypothesis space under its finite-observation and
 log-likelihood-ratio assumptions.
@@ -234,12 +240,25 @@ continuity, and log-likelihood-ratio integrability. It uses one event shared by
 every `n >= 2`, but is an offline reverse-exchangeability theorem: it does not
 itself construct a forward e-process, predictable betting strategy,
 optional-stopping API, continuous-observation result, or all-real post-hoc
-optimizer. The separate forward result remains finite-hypothesis and
-finite-tilt; its hybrid expression is only a lower envelope. Its informative
-receipt proves positive Bessel variance `1/32`, `KL = log 2`, a
+optimizer. The separate forward result now has both finite-hypothesis and
+arbitrary-measurable-hypothesis masters but remains finite-tilt; its hybrid
+expression is only a lower envelope. Its arbitrary-state trajectory adapter
+requires a supplied jointly measurable score, starts deterministically, and
+does not construct a measurable posterior selector. The basic `Real` receipt
+uses a two-atom transition law and proves positive conditional variance without
+evaluating the PAC-Bayes boundary. The separate Gaussian/fair-Boolean
+trajectory receipt has posterior finite-set mass zero, `KL = 1/32`, and, at
+`n = 64`, `delta = 1/8`, and `lambda = 1/2`, boundary
+`<= 489/1024 < 1/2`. Every fixed hypothesis has positive observed Bessel
+variance on a theorem-produced good path in each of two mass-`1/4` sign-flip
+branches. It fixes the posterior and tilt and still uses a two-atom state law,
+so it is not an atomless-dynamics result, selected-process theorem, or matched
+boundary comparison. The separate finite-IID informative receipt proves
+positive Bessel variance `1/32`,
+`KL = log 2`, a
 theorem-produced good path with risk below `343/1000`, and a same-prefix
 boundary comparison of approximately `0.312` versus `0.760`. It still has no
-continuous-hypothesis endpoint or vanishing optimized finite-catalog boundary.
+vanishing optimized finite-catalog boundary.
 The random-matching proof formalizes the source variance inequality; neither
 route is presented with a novelty or priority claim.
 

@@ -227,6 +227,15 @@ classify_witness() {
 #      KL = log 2, strictly positive observed Bessel variance, selected boundary
 #      below 11/40, and final empirical-risk-plus-boundary below 7/8; row-TV
 #      errors are supplied exactly and the reported depth is fixed at zero)
+#   exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event /
+#     receiptInformative_bothBranches_exist
+#     (Real state space and `(Fin 1 -> Real) x Bool` hypothesis space;
+#      shifted-Gaussian product posterior with finite-set mass zero and exact
+#      KL 1/32; genuine zero-one sign-flip score; two opposite-sign cylinders
+#      of mass 1/4 each intersect one common event of failure outer mass at
+#      most 1/8; every fixed hypothesis has positive observed Bessel variance;
+#      posterior empirical risk is 1/2 and the complete RHS is below one;
+#      fixed posterior and tilt, and the state law itself has two-point support)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -287,6 +296,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckEmpiricalTransitionConfidence.lean"
   "examples/CheckEmpiricalStationaryCatalog.lean"
   "examples/CheckEmpiricalStationaryCatalogInformative.lean"
+  "examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean"
 )
 
 fail=0

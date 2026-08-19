@@ -74,6 +74,19 @@ files.
   auxiliary-data catalog construction, automatic Poisson potentials and
   invariant laws, unknown-kernel inference, continuous state spaces, and
   unrestricted all-real tilt control.
+  This does not validate creating new catalog members after seeing their
+  scored outcomes. A separate `MeasurableTrajectoryRisk` layer supplies the
+  same conditional-risk semantics on arbitrary measurable state spaces under
+  one jointly strongly measurable prefix/next-state score. The
+  `ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` capstone combines
+  arbitrary measurable state and hypothesis spaces with a deterministic start,
+  controlling every `n >= 2`, eligible posterior, and atom of a finite
+  predeclared tilt catalog. It does not construct a measurable selector or
+  selected process. The next reviewable extensions are a supplied initial law,
+  controlled kernels, auxiliary-data catalog construction, atomless-dynamics
+  evidence, matched arbitrary-state comparison, and normalized countable or
+  predictable tilt selection. These results are not arbitrary real-tilt or
+  joint predictor--tilt posterior theorems, or stationarity or mixing theorems.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a
@@ -183,14 +196,30 @@ files.
   selection.
   Observations remain finite-valued. Separately, the checked forward lane mixes
   the actual predictable-residual e-process over finite hypothesis and tilt
-  priors and converts its quadratic penalty to a hybrid Bessel lower envelope.
-  Its common event supports every `n >= 2`, posterior PMF, and declared atom,
-  with one hypothesis KL and the selected atom's log-weight penalty. The
-  informative forward receipt has positive Bessel variance `1/32`, `KL = log
+  priors and also integrates it over an arbitrary measurable hypothesis space;
+  its arbitrary-measurable-state full-prefix trajectory adapter derives the
+  parameterized process measurability assumptions from one supplied score
+  contract jointly strongly measurable in the hypothesis, complete prefix,
+  and next state. It retains a deterministic initial state. The hybrid Bessel
+  term remains a lower envelope. Its common continuous-prior event supports
+  every `n >= 2`, every eligible posterior measure, and every declared finite
+  tilt atom, with one hypothesis KL and the selected atom's log-weight penalty.
+  The separate finite-IID informative forward receipt has positive Bessel
+  variance `1/32`, `KL = log
   2`, a theorem-produced good path, a risk ceiling below `343/1000`, and a
   same-prefix boundary comparison of approximately `0.312` versus `0.760`.
-  The hybrid expression is not itself an e-process, and vanishing optimized,
-  countable/all-real, and continuous-hypothesis forward endpoints remain open.
+  The basic arbitrary-state `Real` checker separately uses a two-atom
+  transition law and proves positive conditional variance without evaluating
+  the PAC-Bayes boundary. The numerical Gaussian/fair-Boolean trajectory
+  receipt has posterior finite-set mass zero, `KL = 1/32`, positive observed
+  Bessel variance for every fixed hypothesis on a theorem-produced good path
+  in each of two mass-`1/4` sign-flip branches, and boundary at most `489/1024`
+  at `n = 64` and `delta = 1/8`. It fixes the posterior and tilt, and its
+  real-state transition law has two-point support. The hybrid expression is not
+  itself an e-process; vanishing optimized, countable/all-real,
+  random-initial-law, atomless-dynamics, and matched arbitrary-state comparison
+  endpoints remain open. The event is posterior-uniform but does not construct
+  a measurable selector or selected process.
   Neither forward nor reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream

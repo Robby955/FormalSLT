@@ -224,15 +224,15 @@ flowchart TD
     pathwise["Pathwise PAC-Bayes compiler<br/>one event, all posteriors, all times"]
     tu["Time-uniform PAC-Bayes endpoints<br/>process-level finite tilt + finite-class IID<br/>+ spherical Gaussian"]
     pathlaw["Finite transition PMFs<br/>Ionescu–Tulcea path laws"]
-    markovrisk["Markov conditional-risk certificates<br/>prequential risk, sharp 1/4 variance proxy"]
-    markovpb["Markov prequential PAC-Bayes<br/>fixed tilt 0 &lt; λ &lt; 3, finite catalog"]
+    markovrisk["Trajectory conditional-risk semantics<br/>arbitrary state under a joint score; sharp 1/4 proxy"]
+    markovpb["Trajectory and Markov PAC-Bayes<br/>arbitrary hypotheses/state + finite specializations"]
     otp["Online-to-PAC conversion<br/>explicit regret + deviation hypotheses"]
     stats["Statistics interfaces<br/>estimation, Fisher information,<br/>Cramér–Rao, exponential families"]
     pbc["Fixed-sample PAC-Bayes components<br/>(diagram C)"]
     prefix["Prefix-kernel deviation<br/>sharp McDiarmid"]
     ttm["TestTimeMeta five-slot composition<br/>McAllester · online/IID · Bernstein/Gaussian<br/>anytime/Ville · prefix-kernel"]
     markovopen1["Same-trajectory-trained or predictable<br/>Markov learners (open)"]
-    markovopen2["Random initial laws, continuous state,<br/>stationary or mixing risk (open)"]
+    markovopen2["Random initial laws, atomless receipts,<br/>stationary or mixing risk (open)"]
     otpopen["Algorithm-specific online<br/>regret theorem (open)"]
 
     condmgf --> supermart
@@ -300,9 +300,12 @@ These diagrams do not claim more than the theorem signatures state:
 - The Gaussian time-uniform endpoints cover fixed spherical-Gaussian
   prior/posterior pairs and finite declared catalogs, not every posterior or
   every real tilt.
-- The Markov certificates do not cover same-trajectory training, random
-  initial laws, continuous state spaces, or stationary/mixing risk unless a
-  theorem explicitly says so.
+- The finite homogeneous-Markov certificates do not cover same-trajectory
+  training, random initial laws, continuous state spaces, or stationary/mixing
+  risk unless a theorem explicitly says so. The separate full-prefix adapter
+  covers arbitrary measurable state and hypothesis spaces under a supplied
+  jointly measurable score and deterministic start; its current `Real` receipt
+  has only two transition atoms.
 - No diagram on this page makes a novelty or priority claim; adjacent work is
   surveyed in [`related-work.md`](./related-work.md).
 

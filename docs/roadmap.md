@@ -196,12 +196,25 @@
   the predictable-residual empirical-Bernstein process is checked as the
   stochastic e-process, while two Bessel envelopes and their hybrid minimum
   give the observable lower-envelope conversion. A finite full-support
-  hypothesis--tilt master has one outer-mass event for every `n >= 2`, posterior
-  PMF, and declared atom, with path/time/posterior-dependent selection, one
-  hypothesis KL, and one selected-atom log penalty. The IID bounded-loss adapter
-  and a structural fair-Boolean good-path receipt are checked separately. A
-  second biased-Boolean receipt proves positive Bessel variance `1/32`, `KL =
-  log 2`, a theorem-produced good path with risk below `343/1000`, and a
+  hypothesis--tilt master and a separate continuous-prior master over arbitrary
+  measurable hypotheses each have one outer-mass event for every `n >= 2`,
+  admissible posterior, and declared finite tilt atom. The full-prefix
+  trajectory adapter permits arbitrary measurable state and hypothesis spaces
+  and derives the continuous master's process-measurability interfaces from one
+  supplied score jointly strongly measurable in the hypothesis, complete
+  prefix, and next state. It retains a deterministic start. The separate
+  basic `Theta = Real`, `Z = Real` checker uses a two-atom Rademacher kernel and
+  proves positive conditional variance without evaluating the PAC-Bayes
+  boundary. A separate Gaussian/fair-Boolean trajectory receipt has posterior
+  finite-set mass zero, `KL = 1/32`, positive observed Bessel variance on a
+  theorem-produced good path in each of two mass-`1/4` sign-flip branches, and
+  boundary `<= 489/1024 < 1/2` at `n = 64`, `delta = 1/8`, and
+  `lambda = 1/2`. It fixes posterior and tilt and uses a two-atom state law, so
+  it does not cover atomless dynamics, selected processes, or a matched
+  comparison. The IID bounded-loss adapter and a structural fair-Boolean
+  good-path receipt are checked separately. A second biased-Boolean receipt
+  proves positive Bessel variance
+  `1/32`, `KL = log 2`, a theorem-produced good path below `343/1000`, and a
   same-prefix empirical-Bernstein versus fixed-proxy boundary comparison of
   approximately `0.312` versus `0.760`.
 - [x] General-measurable-hypothesis all-sample-size extension:
@@ -233,10 +246,10 @@
   - [x] Add a positive-KL, positive-variance forward receipt with an
     informative numerical width.
   - Study vanishing optimized all-time boundaries, countable or all-real
-    tilts, and continuous hypotheses. Do not treat the hybrid Bessel lower
-    envelope as an e-process.
+    tilts, random initial laws, atomless-dynamics receipts, and matched boundary
+    comparisons. Do not treat the hybrid Bessel lower envelope as an e-process.
 
-- [ ] **Finite stochastic-dynamics extensions**
+- [ ] **Stochastic-dynamics extensions**
   - [x] Support finite predeclared catalogs of prefix-dependent scores,
     including fixed-in-advance online update rules whose time-`n` prediction
     is determined before the next state is observed.
@@ -283,6 +296,9 @@
     separate assumptions.
   - Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds.
+  - [x] Extend deterministic-start full-prefix semantics and the continuous-
+    prior forward endpoint to arbitrary measurable state spaces under a
+    supplied jointly measurable score contract.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
@@ -292,6 +308,8 @@
     parameter after observing the path.
   - Keep unvisited-row normalization, mixing guarantees, continuous-state, and
     multistep conclusions as separate later theorem families.
+  - Keep stationary, mixing, and multistep conclusions as separate later
+    theorem families; add an atomless transition receipt as separate evidence.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product
@@ -428,9 +446,15 @@
     A second forward lane now checks the predictable-residual
     empirical-Bernstein e-process, its hybrid Bessel lower envelope, and a
     finite hypothesis--tilt PAC-Bayes master with an IID adapter and
-    path/time/posterior-dependent atom selection. Its informative receipt has
-    positive Bessel variance and KL, a theorem-produced good path, and a
-    checked same-prefix improvement over the fixed-proxy boundary.
+    path/time/posterior-dependent atom selection. Its separate finite-IID
+    informative receipt has positive Bessel variance and KL, a theorem-produced
+    good path, and a checked same-prefix improvement over the fixed-proxy
+    boundary.
+    The arbitrary-state Gaussian/fair-Boolean receipt separately checks
+    posterior finite-set mass zero, `KL = 1/32`, and boundary
+    `<= 489/1024 < 1/2` on theorem-produced good paths in both mass-`1/4`
+    sign-flip branches. It fixes the posterior and tilt and uses a two-atom
+    Rademacher state law.
     The reverse-exchangeability lane now separately gives one all-sample-size
     empirical-Bernstein event for finite IID data and finite hypotheses, with
     constants `5/2` and `5`. Extending the forward process lane to a vanishing

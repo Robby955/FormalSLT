@@ -250,6 +250,40 @@ THEOREMS=(
   "FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSign_anytimeBoundary_eventually_ge_sqrt"
   "FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.rademacherLILScale_eventually_pos"
   "FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_observedTrajectoryScore_succ_of_joint"
+  "FormalSLT.StochasticDynamics.measurable_observedTrajectoryScore_of_joint"
+  "FormalSLT.StochasticDynamics.integrable_observedTrajectoryScore_of_joint"
+  "FormalSLT.StochasticDynamics.integral_observedTrajectoryScore_traj_of_joint"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_of_joint"
+  "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_mem_Icc_of_joint"
+  "FormalSLT.StochasticDynamics.integrable_conditionalTrajectoryRisk_of_joint"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_condExp_of_joint"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_incrementAdapted_of_joint"
+  "FormalSLT.StochasticDynamics.integrable_trajectoryRiskInnovation_of_joint"
+  "FormalSLT.StochasticDynamics.abs_trajectoryRiskInnovation_le_one_of_joint"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condExp_eq_zero_of_joint"
+  "FormalSLT.StochasticDynamics.trajectoryRiskInnovation_condSecondMoment_le_one_fourth_of_joint"
+  "FormalSLT.StochasticDynamics.measurableTrajectoryRiskShortfall_eq_neg_innovation"
+  "FormalSLT.StochasticDynamics.measurableTrajectoryRiskShortfall_incrementAdapted_of_joint"
+  "FormalSLT.StochasticDynamics.abs_measurableTrajectoryRiskShortfall_le_one_of_joint"
+  "FormalSLT.StochasticDynamics.measurableTrajectoryRiskShortfall_condExp_eq_zero_of_joint"
+  "FormalSLT.StochasticDynamics.measurableTrajectoryRiskShortfall_condSecondMoment_le_one_fourth_of_joint"
+  "FormalSLT.StochasticDynamics.clippedRealTrajectoryScore_jointlyStronglyMeasurable"
+  "FormalSLT.StochasticDynamics.clippedRealTrajectoryScore_mem_Icc"
+  "FormalSLT.StochasticDynamics.clippedRealTrajectoryScore_condExp"
+  "FormalSLT.StochasticDynamics.clippedRealTrajectoryRisk_zero_prefix"
+  "FormalSLT.StochasticDynamics.jointlyStronglyMeasurableTrajectoryScore_section"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_observedTrajectoryScore_parameter_of_joint"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_parameter_of_joint"
+  "FormalSLT.StochasticDynamics.integrable_conditionalTrajectoryRisk_parameter_of_joint"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_incrementAdapted_parameterized_of_joint"
+  "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_stronglyAdapted_parameterized_of_joint"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_condExp_parameterized_of_joint"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_observedTrajectoryScore_joint_filtered"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_joint_filtered"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousMeasurableTrajectoryLowerProcess_filtered"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_trajectory_ambient_of_filtered_prod"
+  "FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.pathSquaredLoss_condExp"
   "FormalSLT.StochasticDynamics.markovRiskInnovation_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.markovPrequentialRiskExceptionalEvent_mass_le_delta"
@@ -460,6 +494,37 @@ THEOREMS=(
   "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_tsum"
   "FormalSLT.AnytimeValid.AllocationLogLog.polynomialEpochWeight_log_cost"
   "FormalSLT.AnytimeValid.AllocationLogLog.polynomialGeometricEpoch_log_cost"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardPredictableMeanEmpiricalBernsteinLowerProcess_le_exp_card"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_forwardPrefixMean_parameter"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_forwardBesselQ_parameter"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_forwardHybridBesselPenalty_parameter"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardPrefixMean_mem_Icc_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardHybridBesselPenalty_nonneg_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardHybridBesselPenalty_le_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselPriorProcess_eProcess"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselMasterProcess_eProcess"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselExceptionalEvent_mass_le_delta"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselScore_eq_prefixMeans"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_forwardPrefixMean_parameter_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_forwardHybridBesselPenalty_parameter_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_exp_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integral_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBessel_boundaryFailure_mem_exceptionalEvent"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBessel_allPosteriors_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.exists_continuousForwardPredictableMeanBesselPACBayes_event"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_uncurry_of_finite_discrete_right"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_parameter"
+  "FormalSLT.StochasticDynamics.measurableSpace_prod_piLE_le_ambient"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_observedTrajectoryScore_parameter_prod"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_parameter_prod"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousTrajectoryLowerProcess_filtered"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousTrajectoryLowerProcess_ambient"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryEmpiricalBernsteinPACBayesBoundary_eq_generic"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorAverageConditionalRisk_eq_generic"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorEmpiricalPrequentialRisk_eq_generic"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event"
 )
 
 # Axioms permitted in a clean proof.
@@ -511,6 +576,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
   echo "import FormalSLT.StochasticDynamics.TrajectoryRisk"
   echo "import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound"
+  echo "import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk"
+  echo "import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
@@ -530,6 +597,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator"
   echo "import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator"
   echo "import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure"
+  echo "import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes"
+  echo "import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -578,6 +647,8 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.TimeUniformIIDTiltMixture \
   FormalSLT.StochasticDynamics.TrajectoryRisk \
   FormalSLT.AnytimeValid.UniversalBoundaryLowerBound \
+  FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk \
+  FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes \
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
@@ -597,7 +668,9 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.ControlledTrajectory \
   FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator \
   FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator \
-  FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure >/dev/null
+  FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure \
+  FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes \
+  FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

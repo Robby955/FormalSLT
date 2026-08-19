@@ -73,6 +73,7 @@ import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.ForwardBesselPACBayes
 import FormalSLT.PACBayes.ForwardBesselPACBayesCountable
 import FormalSLT.PACBayes.ForwardBesselPACBayesIID
+import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes

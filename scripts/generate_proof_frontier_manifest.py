@@ -80,6 +80,15 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "separate finite-horizon target-path theorem gives exact "
             "likelihood-weighted behavior-law identities for prefix payoffs, "
             "measurable cylinders, and terminal-state occupancy"
+            "deterministic-start trajectories with arbitrary fixed full-prefix "
+            "probability kernels and bounded prefix/next-state scores; the "
+            "semantic layer derives exact conditional risk, centering, and a "
+            "sharp one-quarter variance proxy. The finite layer supports "
+            "fixed-in-advance online update rules. A separate supplied jointly "
+            "measurable score contract gives arbitrary-measurable-state "
+            "semantics and an arbitrary-state/arbitrary-hypothesis forward "
+            "PAC-Bayes endpoint over a finite predeclared tilt catalog. The "
+            "Markov squared-loss theorem is a specialization"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
@@ -95,6 +104,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "dynamic-policy value theorem for controlled dynamics, and an "
             "interface for catalogs "
             "constructed from auxiliary random data."
+            "Add a supplied initial distribution, atomless-dynamics receipt, "
+            "controlled kernels, and an "
+            "interface for catalogs constructed from auxiliary random data. "
+            "Continue vanishing-width and normalized countable or predictable "
+            "tilt work in the concentration layer."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -131,6 +145,20 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "each fixed finite horizon and exposes worst-case weight range "
             "C ^ n; it is not an anytime-valid cumulative-weight boundary. "
             "No controlled lane is a learned-nuisance or unknown-kernel result."
+            "scored outcomes. The arbitrary-state endpoint requires a supplied "
+            "jointly measurable score and does not construct a measurable "
+            "posterior selector or selected process. The basic Real checker "
+            "uses a two-atom transition law and proves positive conditional "
+            "variance without evaluating the PAC-Bayes boundary. The separate "
+            "Gaussian/fair-Boolean receipt has posterior finite-set mass zero, "
+            "KL = 1/32, and boundary at most 489/1024 on theorem-produced "
+            "good paths in both mass-1/4 sign-flip branches. It fixes the "
+            "posterior and tilt and still uses two-atom dynamics. These "
+            "results do not cover random "
+            "initial laws, atomless-dynamics evidence, controlled kernels, "
+            "arbitrary joint predictor--tilt posteriors, countable or all-real "
+            "tilt control, multistep prediction, optional stopping, matched "
+            "boundary comparison, or stationary long-run risk."
         ),
     },
     {
@@ -213,16 +241,20 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "allocation guardrail with a blockwise reciprocal-weight obstruction "
             "and geometric-epoch log-log subsequence cost; a forward finite-"
             "hypothesis predictable-residual e-process with a hybrid Bessel "
-            "lower envelope and finite weighted PAC-Bayes tilt catalog; and "
+            "lower envelope and finite weighted PAC-Bayes tilt catalog; a "
+            "forward continuous-prior master over arbitrary measurable "
+            "hypotheses with an arbitrary-measurable-state full-prefix "
+            "trajectory adapter under a supplied joint score contract; "
+            "and "
             "an offline reverse all-sample-size empirical-Bernstein endpoint "
             "over arbitrary measurable hypothesis spaces"
         ),
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
-            "Extend the forward finite normalized hypothesis--tilt master to "
-            "a countable vanishing-width mixture and measurable hypothesis "
-            "priors, then pursue honest all-real localization using continuous "
+            "Extend the forward finite-tilt continuous-prior master to a "
+            "countable vanishing-width mixture, then pursue honest all-real "
+            "localization using continuous "
             "score control or a supremum-to-integral argument. Keep that "
             "forward-process target distinct from the checked offline reverse "
             "continuous-posterior endpoint."
@@ -234,10 +266,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "an arbitrary measurable hypothesis space, but it is an offline "
             "reverse-exchangeability result with declared finite tilts, not a "
             "forward e-process. The new forward hybrid-Bessel PAC-Bayes master "
-            "is a genuine finite hypothesis--tilt mixture of predictable-"
-            "residual e-processes; its hybrid Bessel expression is only a "
-            "pointwise lower envelope and its catalog is finite. Its "
-            "informative biased-Boolean receipt has Bessel variance 1/32, "
+            "has both a finite hypothesis--tilt mixture and an arbitrary-"
+            "measurable-hypothesis prior mixture of predictable-residual "
+            "e-processes; its hybrid Bessel expression is only a pointwise "
+            "lower envelope and its tilt catalog is finite. The separate "
+            "finite-IID informative biased-Boolean receipt has Bessel variance "
+            "1/32, "
             "KL = log 2, a theorem-produced good path with risk below "
             "343/1000, and a same-prefix boundary comparison of approximately "
             "0.312 versus 0.760. "
@@ -248,6 +282,15 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "confidence allocation and does not prove a universal LIL or "
             "minimax boundary lower bound. No forward result is simultaneous over arbitrary "
             "continuous posteriors or all real tilts."
+            "result. The continuous-prior event is posterior-uniform but does "
+            "not construct a measurable selector or selected process. Its "
+            "arbitrary-state adapter starts deterministically. Its separate "
+            "Gaussian/fair-Boolean numerical receipt has posterior finite-set "
+            "mass zero, KL = 1/32, and boundary at most 489/1024 on theorem-"
+            "produced good paths in both mass-1/4 sign-flip branches. It fixes "
+            "the posterior and tilt, uses two-atom dynamics, and supplies no "
+            "matched comparison. No forward result is simultaneous over all "
+            "real tilts."
         ),
     },
     {
@@ -277,7 +320,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "hypothesis spaces; plus a known predictable-residual forward "
             "empirical-Bernstein e-process, exact Welford/Abel identities, a "
             "hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes "
-            "master, and its finite-IID adapter"
+            "master, its finite-IID adapter, and a continuous-prior master "
+            "over arbitrary measurable hypotheses with an arbitrary-"
+            "measurable-state full-prefix trajectory adapter under a supplied "
+            "joint score contract"
         ),
         "difficulty": "hard",
         "source": (
@@ -285,8 +331,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
         "next_step": (
             "Derive a countable or stitched vanishing-width forward tilt "
-            "mixture and extend its PAC-Bayes master to measurable hypothesis "
-            "priors. Continue matched-boundary evidence and external review."
+            "mixture, add random initial laws and atomless-dynamics receipts, "
+            "and continue matched-boundary evidence and external review."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
@@ -311,9 +357,19 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "Separately, the forward lane packages the actual predictable-"
             "residual process as an e-process and bounds it below by a hybrid "
             "per-hypothesis Bessel penalty. The hybrid expression is not "
-            "itself an e-process. Its PAC-Bayes master currently has finite "
-            "hypotheses and a declared finite tilt catalog. Its informative "
-            "Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-"
+            "itself an e-process. Its continuous-prior master permits arbitrary "
+            "measurable hypotheses but retains a declared finite tilt catalog "
+            "and now has an arbitrary-measurable-state trajectory adapter under "
+            "a supplied joint score contract and deterministic start. Its "
+            "Gaussian/fair-Boolean receipt has posterior finite-set mass zero, "
+            "KL = 1/32, positive observed Bessel variance for every fixed "
+            "hypothesis on theorem-produced good paths in both mass-1/4 sign-"
+            "flip branches, and boundary at most 489/1024 at n = 64 and "
+            "delta = 1/8. The posterior and tilt are fixed, the transition law "
+            "has two-point support, and no matched competing-boundary "
+            "comparison is proved. The separate finite-IID "
+            "informative Boolean receipt has Bessel variance 1/32, KL = log 2, "
+            "a theorem-"
             "produced good path with risk below 343/1000, and a same-prefix "
             "boundary comparison of approximately 0.312 versus 0.760. "
             "The separately budgeted rational risk theorem remains a distinct "
