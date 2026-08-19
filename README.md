@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C863-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-2%2C936-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-220-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-103%2C148-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-104%2C109-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -157,13 +157,22 @@ term and the selected atom's `log (1 / (delta * weight))` cost.
   uses a fair-Boolean IID stream, a posterior selected from the observed label,
   and a path/time/posterior-dependent tilt selector. It checks event mass at
   most `1/2`, `KL = log 2`, and existence of a good path.
+- **Informative receipt:**
+  [`CheckForwardBesselPACBayesIIDInformative.lean`](./examples/CheckForwardBesselPACBayesIIDInformative.lean)
+  uses a biased Boolean IID stream at `n = 32` and `delta = 1/160`. It proves
+  positive Bessel sample variance `1/32`, `KL = log 2`, a theorem-produced
+  good path in a prefix cylinder of mass greater than `delta`, and a selected
+  risk ceiling below `343/1000`. On the same prefix, the checked
+  empirical-Bernstein boundary lies in `(0.3117, 0.3118)`, while the
+  fixed-proxy sub-Gamma boundary lies in `(0.7599, 0.7600)`.
 
 The displayed hybrid Bessel expression is only a checked lower envelope of the
 actual predictable-residual e-process; it is not itself proved to be an
-e-process. The receipt does not establish an informative numerical width, and
-the finite tilt catalog does not yet give a vanishing optimized all-time
-boundary. This forward lane remains finite-hypothesis and makes no novelty or
-priority claim.
+e-process. The informative receipt compares boundary formulas on one selected
+prefix; it does not assert that this path lies outside the fixed-proxy lane's
+separate exceptional event. The finite tilt catalog does not yet give a
+vanishing optimized all-time boundary. This forward lane remains
+finite-hypothesis and makes no novelty or priority claim.
 
 ### Finite Markov prequential PAC-Bayes
 

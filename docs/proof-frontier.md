@@ -141,10 +141,12 @@ files.
   priors and converts its quadratic penalty to a hybrid Bessel lower envelope.
   Its common event supports every `n >= 2`, posterior PMF, and declared atom,
   with one hypothesis KL and the selected atom's log-weight penalty. The
-  forward receipt has no informative numerical width, the hybrid expression is
-  not itself an e-process, and vanishing optimized, countable/all-real, and
-  continuous-hypothesis forward endpoints remain open. Neither forward nor
-  reverse result carries a novelty or priority claim.
+  informative forward receipt has positive Bessel variance `1/32`, `KL = log
+  2`, a theorem-produced good path, a risk ceiling below `343/1000`, and a
+  same-prefix boundary comparison of approximately `0.312` versus `0.760`.
+  The hybrid expression is not itself an e-process, and vanishing optimized,
+  countable/all-real, and continuous-hypothesis forward endpoints remain open.
+  Neither forward nor reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream
   Rademacher, VC, metric-entropy, and stability wrappers. Dependent-coordinate
