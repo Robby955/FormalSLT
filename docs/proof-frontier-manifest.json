@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem. The controlled layer is a behavior-law one-step semantic interface, not a target-law occupancy, stationary-value, or full-trajectory off-policy theorem.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials; it is not a target-occupancy, full-trajectory importance-sampling, learned-nuisance, or unknown-kernel result.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, target-law occupancy or stationary-value results for controlled dynamics, and an interface for catalogs constructed from auxiliary random data.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap",
+      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, target-law occupancy or dynamic-policy results for controlled dynamics, and an interface for catalogs constructed from auxiliary random data.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap. A stationary state-Markov target-policy OPE specialization adds one all-time, all-posterior event when the dynamics, behavior propensities, invariant PMFs, and exact bounded Poisson potentials are supplied",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 185,
-    "library_and_example_lean_lines": 112049,
-    "library_lean_lines": 90829,
-    "library_modules": 230,
-    "theorem_map_entries": 874
+    "example_lean_files": 186,
+    "library_and_example_lean_lines": 112954,
+    "library_lean_lines": 91380,
+    "library_modules": 231,
+    "theorem_map_entries": 881
   },
   "theorem_families": [
     {
@@ -4644,6 +4644,53 @@
         }
       ],
       "name": "Finite controlled trajectory semantics"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "targetPolicyPotentialMean_eq_inducedKernel",
+          "summary": "Identifies the action/outcome potential mean with expectation under the target-policy-induced state kernel"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "targetPolicyPoissonControlledScore_mem_Icc",
+          "summary": "Keeps the normalized importance-weighted Poisson-corrected score in [0,1] under the supplied span and ratio caps"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyPredictableMean_eq",
+          "summary": "Rewrites the behavior-law predictable mean as the affine normalization of stationary target-policy risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyObservedScore_condExp",
+          "summary": "Proves the exact behavior-law conditional mean for the observed OPE score"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean",
+          "summary": "Identifies the posterior prefix mean with the affine posterior stationary target-policy risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "exists_stationaryTargetPolicyOPE_event",
+          "summary": "One outer event controls every n >= 2, posterior PMF, and finite declared tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyOPE_selected_of_simultaneous",
+          "summary": "Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event, without a selected-process claim"
+        }
+      ],
+      "name": "Stationary target-policy off-policy evaluation"
     },
     {
       "entries": [

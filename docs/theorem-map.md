@@ -865,6 +865,23 @@ one-step target-policy transition risk. They do not identify target-law state
 occupancy or stationary target-policy value, and do not construct a
 full-trajectory off-policy estimator.
 
+## Stationary target-policy off-policy evaluation
+
+| Declaration | Module | Role |
+|---|---|---|
+| `targetPolicyPotentialMean_eq_inducedKernel` | `StochasticDynamics.StationaryTargetPolicyOPE` | Identifies the action/outcome potential mean with expectation under the target-policy-induced state kernel |
+| `targetPolicyPoissonControlledScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyOPE` | Keeps the normalized importance-weighted Poisson-corrected score in `[0,1]` under the supplied span and ratio caps |
+| `stationaryTargetPolicyPredictableMean_eq` | `StochasticDynamics.StationaryTargetPolicyOPE` | Rewrites the behavior-law predictable mean as the affine normalization of stationary target-policy risk |
+| `stationaryTargetPolicyObservedScore_condExp` | `StochasticDynamics.StationaryTargetPolicyOPE` | Proves the exact behavior-law conditional mean for the observed OPE score |
+| `posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean` | `StochasticDynamics.StationaryTargetPolicyOPE` | Identifies the posterior prefix mean with the affine posterior stationary target-policy risk |
+| `exists_stationaryTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyOPE` | One outer event controls every `n >= 2`, posterior PMF, and finite declared tilt atom |
+| `stationaryTargetPolicyOPE_selected_of_simultaneous` | `StochasticDynamics.StationaryTargetPolicyOPE` | Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event, without a selected-process claim |
+
+The environment, behavior propensities, invariant PMFs, exact bounded Poisson
+potentials, overlap, and ratio cap are inputs. This section uses one-step action
+importance ratios and does not establish target-occupancy change of measure,
+learn nuisance quantities, or handle unknown dynamics.
+
 ## Finite Markov prequential risk
 
 | Declaration | Module | Role |

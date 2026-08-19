@@ -310,6 +310,8 @@ theorem opeBool_stationaryTargetPolicy_certificate :
 
 #check targetPolicyKernel
 #check targetPolicyPotentialMean_eq_inducedKernel
+#check targetPolicyPoissonControlledScore_mem_Icc
+#check stationaryTargetPolicyPredictableMean_eq
 #check stationaryTargetPolicyRisk
 #check IsExactTargetPolicyPoissonSolution
 #check stationaryTargetPolicyObservedScore_condExp
@@ -319,6 +321,8 @@ theorem opeBool_stationaryTargetPolicy_certificate :
 
 #print axioms stationaryTargetPolicyObservedScore_condExp
 #print axioms targetPolicyPotentialMean_eq_inducedKernel
+#print axioms targetPolicyPoissonControlledScore_mem_Icc
+#print axioms stationaryTargetPolicyPredictableMean_eq
 #print axioms posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean
 #print axioms exists_stationaryTargetPolicyOPE_event
 #print axioms stationaryTargetPolicyOPE_selected_of_simultaneous

@@ -161,6 +161,29 @@ change-of-measure theorem, a target-versus-behavior occupancy correction, a
 stationary target-policy value theorem, a full-trajectory importance-sampling
 result, or a guarantee for learned propensities or an unknown environment.
 
+### Stationary target-policy off-policy evaluation
+
+`StochasticDynamics.StationaryTargetPolicyOPE` specializes the controlled
+interface to a finite catalog of state-Markov target policies. The environment
+kernel and history-dependent behavior propensities are known. Each target
+policy has a supplied invariant state PMF and supplied exact bounded Poisson
+potential. Explicit overlap, a common positive action-ratio cap, bounded
+transition scores, a full-support finite hypothesis prior, and a full-support
+finite tilt prior with atoms in `(0,1)` are theorem assumptions.
+
+Under those assumptions, one behavior-law outer event is simultaneous over
+every `n >= 2`, posterior PMF, and declared tilt atom. The theorem controls the
+posterior stationary target-policy risk using the normalized one-step
+importance-weighted, Poisson-corrected observed scores and their checked hybrid
+Bessel penalty. Pointwise posterior and tilt substitution uses the already
+simultaneous event; it does not construct a selected process.
+
+The theorem does not estimate the environment or behavior policy, construct
+or estimate invariant PMFs or Poisson potentials, handle history-dependent
+target policies, correct target-law occupancy through a full-trajectory
+likelihood ratio, or establish doubly robust, continuous-space, or
+unknown-kernel OPE.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -614,7 +637,7 @@ observed; the result does not validate inventing or fitting new catalog
 members after seeing their scored outcomes. Separate modules now provide a
 forward empirical-Bernstein trajectory boundary, a normalized countable
 declared-tilt selector, and the supplied-Poisson stationary-risk bridge above.
-Natural next layers are a random initial law, target-law occupancy and
-stationary-value results for controlled dynamics, auxiliary-data catalog
-construction, automatic finite-depth Poisson potentials from contraction, and
-continuous-state stationary inference.
+Natural next layers are a random initial law, target-law occupancy and dynamic
+policy comparators, auxiliary-data catalog construction, automatic finite-depth
+Poisson potentials from contraction, and continuous-state stationary
+inference.

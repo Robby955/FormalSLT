@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C208-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-230-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-112%2C049-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C231-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-231-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-112%2C954-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -238,6 +238,28 @@ This is a behavior-law semantic and conditional-expectation interface. It does
 not identify stationary target-policy value, correct target-versus-behavior
 state occupancy, or prove a target-trajectory off-policy evaluation theorem.
 
+### Stationary target-policy off-policy evaluation
+
+`StationaryTargetPolicyOPE` combines the controlled behavior-law interface
+with a supplied invariant PMF and exact bounded Poisson potential for each
+state-Markov target policy. With known environment and behavior propensities,
+explicit overlap and a common action-ratio cap, one outer-mass event controls
+the posterior stationary target-policy risk at every `n >= 2` and every atom
+of a finite declared tilt catalog. The posterior and tilt may be chosen
+pointwise after the behavior path because the event is simultaneous.
+
+- **Lean theorem:** `exists_stationaryTargetPolicyOPE_event` in
+  [`StationaryTargetPolicyOPE.lean`](./FormalSLT/StochasticDynamics/StationaryTargetPolicyOPE.lean)
+- **Checked example:**
+  [`CheckStationaryTargetPolicyOPE.lean`](./examples/CheckStationaryTargetPolicyOPE.lean)
+  verifies two Boolean target policies, ratios `1/2`, `1`, and `3/2`, exact
+  invariant laws and nonconstant Poisson potentials, constant predictable mean
+  `4/15`, and positive observed Bessel variation.
+
+The theorem uses one-step action importance ratios. It does not estimate the
+environment, behavior propensities, invariant laws, or potentials; it is not a
+full-trajectory importance-sampling or target-occupancy correction theorem.
+
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
 [`docs/LITERATURE.md`](./docs/LITERATURE.md).
@@ -421,6 +443,12 @@ declaration and prints its axiom profile.
   behavior-law predictable mean for normalized one-step target-policy scores
   under explicit overlap and ratio-cap assumptions;
   [`CheckControlledTrajectory.lean`](./examples/CheckControlledTrajectory.lean)
+- **Stationary target-policy OPE certificate** —
+  `exists_stationaryTargetPolicyOPE_event` gives one behavior-law outer event
+  uniform over all `n >= 2`, posterior PMFs, and finite declared tilt atoms for
+  known finite controlled dynamics with supplied invariant laws and exact
+  bounded Poisson potentials;
+  [`CheckStationaryTargetPolicyOPE.lean`](./examples/CheckStationaryTargetPolicyOPE.lean)
 
 ### Concentration and metric entropy
 
@@ -974,8 +1002,9 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `StochasticDynamics.MarkovPACBayesTiltMixture`, and
   `StochasticDynamics.StationaryPoissonPACBayes`, together with the separate
   controlled behavior-law semantic interface
-  `StochasticDynamics.ControlledTrajectory`, re-exported by the stable topic
-  import `FormalSLT.StochasticDynamics`
+  `StochasticDynamics.ControlledTrajectory` and its supplied-Poisson
+  `StochasticDynamics.StationaryTargetPolicyOPE` specialization, re-exported by
+  the stable topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -1066,6 +1095,12 @@ The main learning-theory results are deliberately finite and explicit.
   one-step transition scores; overlap; and a supplied common importance-ratio
   cap. The result identifies the behavior-law predictable mean, not target-law
   occupancy or stationary target value
+- **Stationary target-policy OPE:** finite state, action, target-policy, and
+  tilt types; known homogeneous environment and behavior propensities;
+  state-Markov target policies; supplied invariant PMFs and exact bounded
+  Poisson potentials; overlap; a common action-ratio cap; and finite declared
+  tilts in `(0,1)`. The event is uniform over `n >= 2`, posterior PMFs, and
+  declared tilt atoms under the behavior path law
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -1083,12 +1118,12 @@ The main learning-theory results are deliberately finite and explicit.
   finite-valued observations.
 - Catalog members created after observing their scored outcomes, random
   initial laws, continuous-state dynamics, automatic invariant-law or Poisson-
-  potential construction, mixing-derived span guarantees, and a target-law
-  occupancy or stationary off-policy value theorem. Fixed-in-advance online
+  potential construction, mixing-derived span guarantees, and a general
+  target-law occupancy or dynamic-policy value theorem. Fixed-in-advance online
   update rules are covered by the finite prefix-dependent trajectory adapter;
   finite controlled behavior-law semantics are checked separately; stationary
-  Markov risk is covered only when the invariant PMF and bounded Poisson data
-  are supplied.
+  Markov and state-Markov target-policy risks are covered only when the
+  invariant PMF and bounded Poisson data are supplied.
 - A neural-network generalization theorem
 
 For the full statement, see

@@ -60,14 +60,17 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "approximate Poisson potentials. A finite controlled-trajectory "
             "semantic layer derives exact behavior-law predictable means for "
             "normalized one-step target-policy scores under overlap and a "
-            "declared importance-ratio cap"
+            "declared importance-ratio cap. A stationary state-Markov target-"
+            "policy OPE specialization adds one all-time, all-posterior event "
+            "when the dynamics, behavior propensities, invariant PMFs, and "
+            "exact bounded Poisson potentials are supplied"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
             "Construct finite-depth Poisson potentials and their residual and "
             "span bounds from explicit contraction data. Add a supplied "
-            "initial distribution, target-law occupancy or stationary-value "
+            "initial distribution, target-law occupancy or dynamic-policy "
             "results for controlled dynamics, and an interface for catalogs "
             "constructed from auxiliary random data."
         ),
@@ -85,10 +88,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "stationary theorem requires the invariant PMF, potentials, span "
             "bound, and any residual envelope as inputs; it does not infer "
             "them, establish mixing or uniqueness, learn an unknown kernel, "
-            "or provide a measurable-event theorem. The controlled layer is "
-            "a behavior-law one-step semantic interface, not a target-law "
-            "occupancy, stationary-value, or full-trajectory off-policy "
-            "theorem."
+            "or provide a measurable-event theorem. The controlled semantic "
+            "layer by itself is behavior-law and one-step. The separate "
+            "stationary target-policy OPE theorem requires known dynamics and "
+            "behavior propensities plus supplied invariant laws and exact "
+            "bounded potentials; it is not a target-occupancy, full-trajectory "
+            "importance-sampling, learned-nuisance, or unknown-kernel result."
         ),
     },
     {

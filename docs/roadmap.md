@@ -246,8 +246,11 @@
   - [x] Add finite state--action behavior-law semantics for full-history
     behavior and target policies, including exact one-step normalized
     importance-score conditional means under overlap and a declared ratio cap.
-  - Extend the controlled semantic interface to target-law occupancy or
-    stationary target-policy value under separately stated assumptions.
+  - [x] Add stationary state-Markov target-policy OPE for known dynamics and
+    behavior propensities with supplied invariant laws and exact bounded
+    Poisson potentials.
+  - Extend the controlled interface to target-law occupancy, dynamic-policy
+    comparators, or learned nuisance quantities under separate assumptions.
   - Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds.
   - Generalize the deterministic initial state to a supplied initial law.

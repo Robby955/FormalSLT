@@ -39,9 +39,12 @@ files.
   supplied invariant PMF and bounded exact or approximate potentials. The
   controlled semantic layer derives exact behavior-law predictable means for
   normalized one-step target-policy scores under overlap and a declared ratio
-  cap. Catalogs remain fixed before their scored outcomes; the controlled
-  result is not a target-law occupancy, stationary-value, or full-trajectory
-  off-policy theorem. Open layers include a supplied initial law,
+  cap. A separate stationary state-Markov target-policy OPE theorem gives an
+  all-time, all-posterior behavior-law event when the dynamics, behavior
+  propensities, invariant laws, and exact bounded potentials are supplied.
+  Catalogs remain fixed before their scored outcomes. This is not a
+  target-occupancy, full-trajectory importance-sampling, learned-nuisance, or
+  unknown-kernel theorem. Open layers include a supplied initial law,
   auxiliary-data catalog construction, automatic Poisson potentials and
   invariant laws, unknown-kernel inference, continuous state spaces, and
   unrestricted all-real tilt control.
