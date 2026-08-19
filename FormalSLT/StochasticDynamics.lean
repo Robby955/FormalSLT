@@ -9,6 +9,7 @@ import FormalSLT.StochasticDynamics.TrajectoryRisk
 import FormalSLT.StochasticDynamics.MarkovPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
+import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw
 
 /-!
 # Stable stochastic-dynamics imports
@@ -19,5 +20,5 @@ prefix/next-state scores with deterministic start.  It also re-exports the
 separate Markov anytime-valid and posterior-uniform PAC-Bayes certificates for
 finite predictor catalogs, including the finite full-support tilt-catalog
 endpoint where one predeclared tilt atom may be selected after observing the
-trajectory.
+trajectory, under an arbitrary supplied finite-state initial PMF.
 -/

@@ -137,6 +137,10 @@ classify_witness() {
 #      two-tilt prior, a path-selected posterior and post-path tilt atom, both
 #      selected boundaries below 1/20, and risk below 11/20; the two explicit
 #      selector-branch paths are not proved good or positive-probability)
+#   markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw
+#     (non-Dirac initial masses 1/3 and 2/3 on the same asymmetric chain,
+#      exceptional mass at most 1/20, measurable good-complement mass at least
+#      19/20, and the same selected posterior/tilt risk certificate)
 #   trajectoryPACBayes_tiltMixture_prequentialRisk_certificate
 #     (prefix-dependent Bool kernel and score with full-support rows; at time
 #      two, two prefixes share the fixed initial and current states but differ

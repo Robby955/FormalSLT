@@ -211,6 +211,15 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.markovPACBayes_prequentialRisk_certificate"
   "FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
   "FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate"
+  "FormalSLT.StochasticDynamics.markovPathMeasureInitial_pure"
+  "FormalSLT.StochasticDynamics.markovPathMeasureInitial_real_le_of_forall_start"
+  "FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_allPosteriors_bound_initialLaw"
+  "FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureInitialLawExceptionalEvent_measurable"
+  "FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureRawFailure_subset_initialLawExceptionalEvent"
+  "FormalSLT.StochasticDynamics.markovPACBayesTiltMixtureInitialLawExceptionalEvent_mass_le_delta"
+  "FormalSLT.StochasticDynamics.markovPosteriorAverageConditionalRisk_lt_tiltMixture_initialLaw_of_not_mem"
+  "FormalSLT.StochasticDynamics.markovPosteriorAverageConditionalRisk_lt_tiltMixture_initialLaw_selected_of_not_mem"
+  "FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw"
   "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condExp_eq_zero"
   "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.trajectoryPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
@@ -266,6 +275,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.MarkovRisk"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
+  echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw"
   echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
@@ -315,6 +325,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
+  FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw \
   FormalSLT.StochasticDynamics.TrajectoryPACBayes >/dev/null
 
 echo "== axiom audit =="

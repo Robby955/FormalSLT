@@ -116,6 +116,11 @@ law, with `0 < λ_j < 3` for each atom. The posterior and one atom may be
 selected after observing the trajectory. The selector endpoint is pointwise:
 it needs no measurability or adaptedness assumption and adds no
 optional-stopping guarantee beyond the common all-atom event.
+`StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` extends this endpoint
+to an arbitrary supplied finite-state initial PMF by mixing the common raw
+failure mass across the deterministic-start laws before taking one measurable
+hull under the mixed law. It adds no union bound or confidence penalty, and
+the initial PMF need not have full support.
 For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and

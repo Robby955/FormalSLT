@@ -225,14 +225,14 @@ flowchart TD
     tu["Time-uniform PAC-Bayes endpoints<br/>process-level finite tilt + finite-class IID<br/>+ spherical Gaussian"]
     pathlaw["Finite transition PMFs<br/>Ionescu–Tulcea path laws"]
     markovrisk["Markov conditional-risk certificates<br/>prequential risk, sharp 1/4 variance proxy"]
-    markovpb["Markov prequential PAC-Bayes<br/>fixed tilt 0 &lt; λ &lt; 3, finite catalog"]
+    markovpb["Markov prequential PAC-Bayes<br/>supplied initial PMF, weighted finite tilts"]
     otp["Online-to-PAC conversion<br/>explicit regret + deviation hypotheses"]
     stats["Statistics interfaces<br/>estimation, Fisher information,<br/>Cramér–Rao, exponential families"]
     pbc["Fixed-sample PAC-Bayes components<br/>(diagram C)"]
     prefix["Prefix-kernel deviation<br/>sharp McDiarmid"]
     ttm["TestTimeMeta five-slot composition<br/>McAllester · online/IID · Bernstein/Gaussian<br/>anytime/Ville · prefix-kernel"]
     markovopen1["Same-trajectory-trained or predictable<br/>Markov learners (open)"]
-    markovopen2["Random initial laws, continuous state,<br/>stationary or mixing risk (open)"]
+    markovopen2["Random-start prefix kernels, continuous state,<br/>stationary or mixing risk (open)"]
     otpopen["Algorithm-specific online<br/>regret theorem (open)"]
 
     condmgf --> supermart
@@ -300,9 +300,9 @@ These diagrams do not claim more than the theorem signatures state:
 - The Gaussian time-uniform endpoints cover fixed spherical-Gaussian
   prior/posterior pairs and finite declared catalogs, not every posterior or
   every real tilt.
-- The Markov certificates do not cover same-trajectory training, random
-  initial laws, continuous state spaces, or stationary/mixing risk unless a
-  theorem explicitly says so.
+- The supplied-initial-PMF homogeneous Markov certificate does not cover
+  same-trajectory training, random-start prefix-dependent kernels, continuous
+  state spaces, or stationary/mixing risk.
 - No diagram on this page makes a novelty or priority claim; adjacent work is
   surveyed in [`related-work.md`](./related-work.md).
 

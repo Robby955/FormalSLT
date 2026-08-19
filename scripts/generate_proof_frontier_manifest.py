@@ -53,13 +53,17 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "prediction is chosen before the next state arrives. A finite "
             "trajectory adapter gives all-positive-time, all-posterior, "
             "all-atom PAC-Bayes control for a predeclared catalog of such "
-            "scores. The Markov squared-loss theorem is a specialization"
+            "scores. The Markov squared-loss theorem is a specialization, and "
+            "its homogeneous finite-state weighted-tilt certificate also "
+            "supports any supplied finite-state initial PMF by mixing the "
+            "checked deterministic-start path laws"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Add a supplied initial distribution, controlled kernels, and an "
-            "interface for catalogs constructed from auxiliary random data. "
+            "Add controlled kernels and an interface for catalogs constructed "
+            "from auxiliary random data. Extend random starts to the general "
+            "prefix-dependent trajectory layer. "
             "Continue empirical-variance and normalized countable or "
             "predictable tilt work in the concentration layer."
         ),
@@ -70,8 +74,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "fixed-in-advance online update rules; the posterior and one "
             "finite tilt atom may be selected after the path. The theorem "
             "does not validate creating catalog members after observing their "
-            "scored outcomes, and it does not cover random initial laws, "
-            "controlled kernels, arbitrary joint predictor--tilt posteriors, "
+            "scored outcomes. Random initial laws are checked only for the "
+            "homogeneous finite-state Markov weighted-tilt certificate, not "
+            "for the general prefix-dependent trajectory layer. It does not "
+            "cover controlled kernels, arbitrary joint predictor--tilt posteriors, "
             "countable or all-real tilt control, empirical variance, "
             "continuous state spaces, multistep prediction, optional stopping, "
             "or stationary long-run risk."

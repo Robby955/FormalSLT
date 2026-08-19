@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C156-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-228-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-110%2C388-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C168-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-229-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-110%2C781-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -176,19 +176,25 @@ finite-hypothesis and makes no novelty or priority claim.
 
 ### Finite Markov prequential PAC-Bayes
 
-For a finite-state Markov transition kernel, deterministic initial state, fixed
-finite predictor catalog, and predeclared full-support finite tilt prior, one
-tilt atom may be selected after the trajectory. The target is encountered
-one-step conditional risk, not stationary risk.
+For a finite-state Markov transition kernel, a supplied finite-state initial
+PMF, fixed finite predictor catalog, and predeclared full-support finite tilt
+prior, one tilt atom may be selected after the trajectory. The initial PMF
+need not have full support, and a point mass recovers the deterministic-start
+law. The target is encountered one-step conditional risk, not stationary risk.
 
-- **Lean theorem:**
-  `markovPACBayes_tiltMixture_prequentialRisk_certificate` in
+- **Lean theorems:**
+  `markovPACBayes_tiltMixture_prequentialRisk_certificate` and
+  `markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw` in
   [`MarkovPACBayesTiltMixture.lean`](./FormalSLT/StochasticDynamics/MarkovPACBayesTiltMixture.lean)
+  and
+  [`MarkovPACBayesTiltMixtureInitialLaw.lean`](./FormalSLT/StochasticDynamics/MarkovPACBayesTiltMixtureInitialLaw.lean)
 - **Checked example:**
   [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean) uses an
   asymmetric two-state chain, a path-selected point posterior and tilt atom,
   exact `KL = log 2`, two selected boundaries below `1/20`, and conditional
-  risk below `11/20`. The explicit selector-branch paths are not proved good or
+  risk below `11/20`. Its random-initial receipt has masses `1/3` and `2/3`,
+  exceptional mass at most `1/20`, and measurable good-complement mass at
+  least `19/20`. The explicit selector-branch paths are not proved good or
   positive-probability.
 
 The source theorem, exact agreement, material differences, and external-review
@@ -229,7 +235,9 @@ questions for each result are tracked in
   catalog. A normalized finite tilt prior whose atoms satisfy `0 < λ_j < 3`
   gives one measurable exceptional event; on its complement, the posterior
   and one predeclared tilt atom may be selected after the trajectory, with the
-  atom's exact weight penalty.
+  atom's exact weight penalty. The same common failure set is controlled under
+  an arbitrary supplied finite-state initial PMF by mixing the
+  deterministic-start path laws before taking one measurable hull.
 - **Test-time PAC-Bayes certificate:** a finite-horizon, five-component
   population-risk bound assembled from a conditional sub-Gamma increment
   model, with a worked instance proving all five contributions strictly
@@ -367,6 +375,17 @@ declaration and prints its axiom profile.
   exact KL `log 2`, both selected boundaries are below `1/20`, and conditional
   risk is below `11/20` at confidence `19/20`. The two explicit paths only
   exercise selector branches; they are not proved good or positive-probability;
+  [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean)
+- **Random-initial finite weighted-tilt Markov PAC-Bayes certificate** —
+  `markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw` mixes the
+  deterministic-start path laws against an arbitrary supplied finite-state
+  initial PMF without a union bound or added confidence penalty. The initial
+  PMF need not have full support, and `markovPathMeasureInitial_pure` recovers
+  the deterministic-start law. The non-Dirac Boolean receipt has initial
+  masses `1/3` and `2/3`, exceptional mass at most `1/20`, and good-complement
+  mass at least `19/20`. This remains a homogeneous finite-state one-step-risk
+  theorem, not a stationary, mixing, controlled-kernel, or continuous-state
+  result;
   [`CheckMarkovPACBayes.lean`](./examples/CheckMarkovPACBayes.lean)
 
 ### Concentration and metric entropy
@@ -917,8 +936,9 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
 - **Stochastic dynamics:** `StochasticDynamics.TrajectoryRisk`,
   `StochasticDynamics.TrajectoryPACBayes`, `StochasticDynamics.MarkovRisk`,
   `StochasticDynamics.MarkovPACBayes`, and
-  `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
-  topic import `FormalSLT.StochasticDynamics`
+  `StochasticDynamics.MarkovPACBayesTiltMixture`, and
+  `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw`, re-exported by the
+  stable topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -990,11 +1010,12 @@ The main learning-theory results are deliberately finite and explicit.
   `0 < lambda_j < 3` of a full-support finite tilt prior. This does not validate
   creating new catalog members after observing their scored outcomes.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
-  deterministic initial state, and a fixed `[0,1]` observable and finite
-  catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
-  PAC-Bayes endpoint is simultaneous over every positive time, posterior, and
-  atom `0 < λ_j < 3` of a full-support finite tilt prior declared before the
-  trajectory. A pointwise post-path selector may choose one atom but need not
+  an arbitrary supplied finite-state initial PMF, and a fixed `[0,1]`
+  observable and finite catalog of fixed `[0,1]`-valued predictors with a
+  full-support prior; the PAC-Bayes endpoint is simultaneous over every
+  positive time, posterior, and atom `0 < λ_j < 3` of a full-support finite
+  tilt prior declared before the trajectory. The initial PMF need not have
+  full support. A pointwise post-path selector may choose one atom but need not
   be measurable or adapted and adds no optional-stopping guarantee. The target
   is posterior-average one-step conditional squared risk along the realized
   path
@@ -1013,10 +1034,12 @@ The main learning-theory results are deliberately finite and explicit.
   proved e-process. The offline reverse-epoch theorem remains a distinct
   all-sample-size result over arbitrary measurable hypothesis spaces with
   finite-valued observations.
-- Catalog members created after observing their scored outcomes, random
-  initial laws, continuous-state dynamics, and stationary or mixing-based
-  long-run risk guarantees. Fixed-in-advance online update rules are covered by
-  the finite prefix-dependent trajectory adapter.
+- Catalog members created after observing their scored outcomes, random-start
+  general prefix-dependent trajectory laws, continuous-state dynamics, and
+  stationary or mixing-based long-run risk guarantees. Fixed-in-advance online
+  update rules are covered by the finite prefix-dependent trajectory adapter;
+  arbitrary supplied initial PMFs are checked for the homogeneous finite-state
+  Markov weighted-tilt certificate.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1107,9 +1130,10 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   spherical Gaussian priors and posteriors
 - [x] Extend the finite PAC-Bayes certificate to a predeclared catalog of
   prefix-dependent scores, including fixed-in-advance online update rules
-- [ ] Extend the stochastic-dynamics layer to random initial laws,
-  auxiliary-data catalog construction, and normalized countable or predictable
-  tilt families
+- [x] Extend the finite homogeneous-Markov weighted-tilt certificate to an
+  arbitrary supplied finite-state initial PMF
+- [ ] Extend the stochastic-dynamics layer to auxiliary-data catalog
+  construction and normalized countable or predictable tilt families
 
 ## Dependencies
 
