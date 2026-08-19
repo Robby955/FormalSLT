@@ -256,9 +256,16 @@
   - [x] Build time-uniform empirical transition-coordinate confidence bands,
     normalize them on visited rows, and permit post-data candidate-kernel
     selection for row-TV and Dobrushin contraction certificates.
-  - Uniformize Poisson-potential catalogs over data-selected candidate kernels,
-    or use auxiliary data/sample splitting, before plugging a selected
-    candidate back into a stationary-risk score.
+  - [x] Uniformize a finite predeclared candidate--depth Poisson catalog, join
+    its risk event with transition confidence on the same path, and permit
+    post-path candidate, depth, risk-tilt, transition-tilt, and posterior
+    substitution on visited rows.
+  - [x] Construct an invariant PMF for every nonempty finite kernel by Cesaro
+    compactness, choose a canonical invariant target, and prove uniqueness
+    under strict true-kernel or candidate row-TV contraction.
+  - Extend same-data stationary selection beyond a finite predeclared
+    candidate catalog, or use auxiliary data/sample splitting, before plugging
+    a newly fitted candidate into a stationary-risk score.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
@@ -266,9 +273,8 @@
   - Extend the checked finite weighted-tilt selection to normalized countable
     or predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
-  - Keep invariant-law existence, unvisited-row normalization, mixing
-    guarantees, continuous-state, and multistep conclusions as separate later
-    theorem families.
+  - Keep unvisited-row normalization, mixing guarantees, continuous-state, and
+    multistep conclusions as separate later theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product

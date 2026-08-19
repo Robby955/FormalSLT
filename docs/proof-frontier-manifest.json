@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem still requires an invariant PMF. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The empirical transition event permits post-data candidate selection for row-TV and contraction only after every required row is visited; it does not validate a same-data-selected Poisson score, construct an invariant law, establish a mixing time, cover continuous states, or provide a measurable-event theorem.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem uses an invariant PMF. Finite-state existence constructs a noncomputable chosen invariant target; uniqueness still requires a strict contraction certificate. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The combined empirical catalog event permits same-path selection only within a finite predeclared candidate family and only after every required row is visited; it does not validate a newly path-fitted Poisson score, establish a mixing time, cover continuous states, or provide a measurable-event theorem.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Confidence-allocate over candidate Poisson potentials and finite depths, or use auxiliary data/sample splitting, before inserting a selected candidate into a stationary-risk score. Add a supplied initial distribution, controlled kernels, and continuous-state interfaces.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. Finite-depth Neumann potentials have explicit geometric span and residual bounds, finite Dobrushin coefficients supply contraction, fixed candidate kernels transfer under deterministic row-TV envelopes, and time-uniform empirical transition bands certify visited-row TV budgets and post-data candidate contraction",
+      "next_step": "Handle candidates fitted outside the finite predeclared catalog using an independently uniform construction or auxiliary data/sample splitting. Add a supplied initial distribution, controlled kernels, continuous-state interfaces, and quantitative mixing guarantees.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. Finite-depth Neumann potentials have explicit geometric span and residual bounds, finite Dobrushin coefficients supply contraction, fixed candidate kernels transfer under deterministic row-TV envelopes, and time-uniform empirical transition bands certify visited-row TV budgets and post-data candidate contraction. A finite predeclared candidate--depth catalog combines the stationary risk and transition events on the same path and permits post-path candidate, depth, tilt, and posterior substitution. Finite-simplex Cesaro averages construct a chosen invariant PMF for every nonempty finite kernel",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 189,
-    "library_and_example_lean_lines": 117367,
-    "library_lean_lines": 94087,
-    "library_modules": 235,
-    "theorem_map_entries": 915
+    "example_lean_files": 192,
+    "library_and_example_lean_lines": 120233,
+    "library_lean_lines": 95256,
+    "library_modules": 238,
+    "theorem_map_entries": 942
   },
   "theorem_families": [
     {
@@ -5176,6 +5176,178 @@
         }
       ],
       "name": "Empirical transition confidence for unknown finite kernels"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteKernelPushLinear",
+          "summary": "Linear push-forward of real state weights through a finite Markov kernel"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteKernelPushSimplex",
+          "summary": "Kernel push-forward as a self-map of the finite real probability simplex"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteKernelOrbit",
+          "summary": "Iterates the simplex push-forward from a supplied starting distribution"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteKernelCesaroVector",
+          "summary": "Real coordinate vector of the Cesaro average of the finite-kernel orbit"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteKernelCesaro",
+          "summary": "Cesaro orbit average packaged in the finite probability simplex"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "exists_finiteKernelPushSimplex_fixedPoint",
+          "summary": "Uses compactness and the vanishing Cesaro defect to construct a simplex fixed point"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "exists_invariantPMF",
+          "summary": "Every kernel on a nonempty finite state space has an invariant PMF"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteInvariantPMF",
+          "summary": "Noncomputable chosen invariant PMF supplied by finite-state existence"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.FiniteInvariantExistence",
+          "name": "finiteInvariantPMF_isInvariant",
+          "summary": "Proves invariance of the chosen finite invariant PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.FiniteInvariantUniqueness",
+          "name": "existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one",
+          "summary": "Upgrades finite-state existence to a unique invariant PMF under strict true-kernel Dobrushin contraction"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.FiniteInvariantUniqueness",
+          "name": "existsUnique_invariantPMF_of_candidate_rowTV",
+          "summary": "Upgrades existence to uniqueness under a strict candidate row-TV contraction certificate"
+        }
+      ],
+      "name": "Finite invariant laws"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogSpan",
+          "summary": "Closed candidate-specific span bound at a declared finite Poisson depth"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogPotential",
+          "summary": "Candidate-specific finite-depth potential fixed by the declared catalog"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogCorrectedScore",
+          "summary": "Unit-normalized trajectory score for one declared candidate and depth"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogBoundary",
+          "summary": "Selected boundary combining hybrid-Bessel/KL, endpoint, candidate residual, and row-TV transfer terms"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogBoundary_eq_explicit",
+          "summary": "Displays the candidate--depth--geometric-tilt confidence allocation in the logarithmic term"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogCorrectedScore_mem_Icc",
+          "summary": "Keeps every declared candidate--depth corrected score in [0,1]"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogDepthAtomExceptionalEvent",
+          "summary": "Risk failure set for one declared candidate and finite depth"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogCandidateExceptionalEvent",
+          "summary": "Countable union of depth-atom failures for one candidate"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogExceptionalEvent",
+          "summary": "Finite union of candidate failures for the predeclared risk catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogDepthAtomExceptionalEvent_mass_le",
+          "summary": "Charges one candidate--depth atom its declared share of risk-event outer mass"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogCandidateExceptionalEvent_mass_le",
+          "summary": "Sums the polynomial depth allocation for one candidate"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalogExceptionalEvent_mass_le",
+          "summary": "Bounds the full predeclared catalog risk event by deltaRisk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "empiricalStationaryCatalog_allPosteriors_of_not_mem",
+          "summary": "Gives every candidate, depth, risk tilt, time, and finite posterior its stationary-risk bound outside the common risk event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "exists_empiricalStationaryCatalog_event",
+          "summary": "Intersects the risk catalog and same-path transition confidence at total cost deltaRisk + deltaTransition"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "exists_selectedEmpiricalStationaryCatalog_event",
+          "summary": "Permits path- and time-selected candidate, depth, both tilts, and posterior substitution on visited rows"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalStationaryCatalog",
+          "name": "exists_selectedCanonicalEmpiricalStationaryCatalog_event",
+          "summary": "Removes the supplied invariant premise by targeting the chosen finite invariant PMF"
+        }
+      ],
+      "name": "Same-trajectory empirical stationary catalog"
     },
     {
       "entries": [

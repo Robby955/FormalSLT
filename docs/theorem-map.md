@@ -980,6 +980,58 @@ or validate a Poisson potential or stationary-risk score selected from the same
 trajectory without separate uniformization or sample splitting. The event is
 controlled by outer mass; no measurability theorem is claimed.
 
+## Finite invariant laws
+
+| Declaration | Module | Role |
+|---|---|---|
+| `finiteKernelPushLinear` | `StochasticDynamics.FiniteInvariantExistence` | Linear push-forward of real state weights through a finite Markov kernel |
+| `finiteKernelPushSimplex` | `StochasticDynamics.FiniteInvariantExistence` | Kernel push-forward as a self-map of the finite real probability simplex |
+| `finiteKernelOrbit` | `StochasticDynamics.FiniteInvariantExistence` | Iterates the simplex push-forward from a supplied starting distribution |
+| `finiteKernelCesaroVector` | `StochasticDynamics.FiniteInvariantExistence` | Real coordinate vector of the Cesaro average of the finite-kernel orbit |
+| `finiteKernelCesaro` | `StochasticDynamics.FiniteInvariantExistence` | Cesaro orbit average packaged in the finite probability simplex |
+| `exists_finiteKernelPushSimplex_fixedPoint` | `StochasticDynamics.FiniteInvariantExistence` | Uses compactness and the vanishing Cesaro defect to construct a simplex fixed point |
+| `exists_invariantPMF` | `StochasticDynamics.FiniteInvariantExistence` | Every kernel on a nonempty finite state space has an invariant PMF |
+| `finiteInvariantPMF` | `StochasticDynamics.FiniteInvariantExistence` | Noncomputable chosen invariant PMF supplied by finite-state existence |
+| `finiteInvariantPMF_isInvariant` | `StochasticDynamics.FiniteInvariantExistence` | Proves invariance of the chosen finite invariant PMF |
+| `existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one` | `StochasticDynamics.FiniteInvariantUniqueness` | Upgrades finite-state existence to a unique invariant PMF under strict true-kernel Dobrushin contraction |
+| `existsUnique_invariantPMF_of_candidate_rowTV` | `StochasticDynamics.FiniteInvariantUniqueness` | Upgrades existence to uniqueness under a strict candidate row-TV contraction certificate |
+
+Existence is algebraic and finite-state; `finiteInvariantPMF` is chosen with
+classical choice and is not an executable stationary solver. Existence alone
+does not imply uniqueness, irreducibility, convergence from arbitrary initial
+laws, a convergence rate, or a mixing time. The two `ExistsUnique` theorems
+require the displayed strict contraction hypotheses.
+
+## Same-trajectory empirical stationary catalog
+
+| Declaration | Module | Role |
+|---|---|---|
+| `empiricalStationaryCatalogSpan` | `StochasticDynamics.EmpiricalStationaryCatalog` | Closed candidate-specific span bound at a declared finite Poisson depth |
+| `empiricalStationaryCatalogPotential` | `StochasticDynamics.EmpiricalStationaryCatalog` | Candidate-specific finite-depth potential fixed by the declared catalog |
+| `empiricalStationaryCatalogCorrectedScore` | `StochasticDynamics.EmpiricalStationaryCatalog` | Unit-normalized trajectory score for one declared candidate and depth |
+| `empiricalStationaryCatalogBoundary` | `StochasticDynamics.EmpiricalStationaryCatalog` | Selected boundary combining hybrid-Bessel/KL, endpoint, candidate residual, and row-TV transfer terms |
+| `empiricalStationaryCatalogBoundary_eq_explicit` | `StochasticDynamics.EmpiricalStationaryCatalog` | Displays the candidate--depth--geometric-tilt confidence allocation in the logarithmic term |
+| `empiricalStationaryCatalogCorrectedScore_mem_Icc` | `StochasticDynamics.EmpiricalStationaryCatalog` | Keeps every declared candidate--depth corrected score in `[0,1]` |
+| `empiricalStationaryCatalogDepthAtomExceptionalEvent` | `StochasticDynamics.EmpiricalStationaryCatalog` | Risk failure set for one declared candidate and finite depth |
+| `empiricalStationaryCatalogCandidateExceptionalEvent` | `StochasticDynamics.EmpiricalStationaryCatalog` | Countable union of depth-atom failures for one candidate |
+| `empiricalStationaryCatalogExceptionalEvent` | `StochasticDynamics.EmpiricalStationaryCatalog` | Finite union of candidate failures for the predeclared risk catalog |
+| `empiricalStationaryCatalogDepthAtomExceptionalEvent_mass_le` | `StochasticDynamics.EmpiricalStationaryCatalog` | Charges one candidate--depth atom its declared share of risk-event outer mass |
+| `empiricalStationaryCatalogCandidateExceptionalEvent_mass_le` | `StochasticDynamics.EmpiricalStationaryCatalog` | Sums the polynomial depth allocation for one candidate |
+| `empiricalStationaryCatalogExceptionalEvent_mass_le` | `StochasticDynamics.EmpiricalStationaryCatalog` | Bounds the full predeclared catalog risk event by `deltaRisk` |
+| `empiricalStationaryCatalog_allPosteriors_of_not_mem` | `StochasticDynamics.EmpiricalStationaryCatalog` | Gives every candidate, depth, risk tilt, time, and finite posterior its stationary-risk bound outside the common risk event |
+| `exists_empiricalStationaryCatalog_event` | `StochasticDynamics.EmpiricalStationaryCatalog` | Intersects the risk catalog and same-path transition confidence at total cost `deltaRisk + deltaTransition` |
+| `exists_selectedEmpiricalStationaryCatalog_event` | `StochasticDynamics.EmpiricalStationaryCatalog` | Permits path- and time-selected candidate, depth, both tilts, and posterior substitution on visited rows |
+| `exists_selectedCanonicalEmpiricalStationaryCatalog_event` | `StochasticDynamics.EmpiricalStationaryCatalog` | Removes the supplied invariant premise by targeting the chosen finite invariant PMF |
+
+The candidate kernels, reference PMFs, centered-risk envelopes, and score
+catalog are fixed before the trajectory. Selection is valid only by
+substitution among these declarations on the common event; an arbitrary
+path-fitted candidate is not covered. The transition-normalized conclusion
+requires every source row to have positive visit mass. The event is controlled
+by outer mass and is not separately proved measurable, the selected boundary
+is not asserted to be an e-process, and the result does not provide random
+initial laws, continuous-state validity, irreducibility, or mixing guarantees.
+
 ## Named tail-probability corollaries
 
 | Declaration | Module | Role |

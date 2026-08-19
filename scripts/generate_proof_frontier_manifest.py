@@ -62,16 +62,21 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "Dobrushin coefficients supply contraction, fixed candidate "
             "kernels transfer under deterministic row-TV envelopes, and "
             "time-uniform empirical transition bands certify visited-row TV "
-            "budgets and post-data candidate contraction"
+            "budgets and post-data candidate contraction. A finite "
+            "predeclared candidate--depth catalog combines the stationary "
+            "risk and transition events on the same path and permits "
+            "post-path candidate, depth, tilt, and posterior substitution. "
+            "Finite-simplex Cesaro averages construct a chosen invariant PMF "
+            "for every nonempty finite kernel"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Confidence-allocate over candidate Poisson potentials and finite "
-            "depths, or use auxiliary data/sample splitting, before inserting "
-            "a selected candidate into a stationary-risk score. Add a supplied "
-            "initial distribution, controlled kernels, and continuous-state "
-            "interfaces."
+            "Handle candidates fitted outside the finite predeclared catalog "
+            "using an independently uniform construction or auxiliary data/"
+            "sample splitting. Add a supplied initial distribution, controlled "
+            "kernels, continuous-state interfaces, and quantitative mixing "
+            "guarantees."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -84,13 +89,15 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "controlled kernels, arbitrary joint predictor--tilt posteriors, "
             "unrestricted all-real tilt control, continuous state spaces, "
             "multistep prediction, or optional stopping. The separate "
-            "stationary theorem still requires an invariant PMF. Finite-depth "
+            "stationary theorem uses an invariant PMF. Finite-state existence "
+            "constructs a noncomputable chosen invariant target; uniqueness "
+            "still requires a strict contraction certificate. Finite-depth "
             "potentials and known-kernel contraction are constructed, and a "
             "fixed candidate transfers under a deterministic row-TV envelope. "
-            "The empirical transition event permits post-data candidate "
-            "selection for row-TV and contraction only after every required "
-            "row is visited; it does not validate a same-data-selected Poisson "
-            "score, construct an invariant law, establish a mixing time, cover "
+            "The combined empirical catalog event permits same-path selection "
+            "only within a finite predeclared candidate family and only after "
+            "every required row is visited; it does not validate a newly "
+            "path-fitted Poisson score, establish a mixing time, cover "
             "continuous states, or provide a measurable-event theorem."
         ),
     },

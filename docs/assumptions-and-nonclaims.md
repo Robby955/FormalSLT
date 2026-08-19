@@ -253,6 +253,57 @@ score from the same data without a predeclared uniform catalog, auxiliary data,
 or sample splitting. The common confidence set is an outer-mass package; no
 separate measurability theorem is claimed.
 
+### Same-trajectory empirical stationary catalogs
+
+`StochasticDynamics.EmpiricalStationaryCatalog` supplies the predeclared
+uniform catalog required by the preceding nonclaim. The theorem fixes a finite
+candidate type, candidate kernels, reference PMFs, nonnegative centered-risk
+envelopes, full-support candidate weights, and a finite score prior before the
+trajectory is observed. Every candidate must have finite Dobrushin coefficient
+strictly below one. Candidate `c` and depth `m` receive risk-event mass
+`deltaRisk * candidateWeight c / ((m+1)(m+2))`; the existing countable
+geometric allocation then covers every risk-tilt index, time `n >= 2`, and
+finite-class posterior within that atom.
+
+The risk-catalog event and the finite transition-coordinate event are
+intersected on the same path, with complement outer mass bounded by
+`deltaRisk + deltaTransition`. No independence or sample split is assumed.
+When all source visit masses are positive, the candidate, depth, risk tilt,
+finite transition tilt, and posterior may depend on the path and time by
+pointwise substitution into the common event. The selected row-TV radius feeds
+the boundary
+
+`(1 + 2 B_m) * hybridBesselKL + B_m / n + alpha_c^m D_c + 2 (1 + B_m) eta`,
+
+where the first term contains the candidate--depth--tilt allocation cost. The
+same conclusion returns the candidate perturbation bound for the true
+Dobrushin coefficient, an oscillation-contraction certificate, and uniqueness
+conditional on the selected strict inequality
+`Dobrushin(Q_c) + 2 eta < 1`.
+
+`StochasticDynamics.FiniteInvariantExistence` proves that every kernel on a
+nonempty finite state space has an invariant PMF. The proof takes Cesaro
+averages in the real probability simplex, extracts a convergent subsequence by
+compactness, and converts the fixed point back to a PMF.
+`finiteInvariantPMF P` is a noncomputable `Classical.choose` witness, not a
+closed-form or executable stationary solver. The canonical catalog corollary
+targets this chosen invariant PMF without a caller-supplied existence premise.
+`StochasticDynamics.FiniteInvariantUniqueness` combines existence with either
+a strict true-kernel Dobrushin coefficient or a strict candidate row-TV
+certificate to prove `ExistsUnique`.
+
+The catalog does not authorize kernels, reference PMFs, or score/potential
+entries invented after their scored trajectory has been observed; selection
+is only among the finite declarations already controlled by the common risk
+event. The normalized transition component remains unavailable for unvisited
+rows. The theorem has a deterministic initial state, finite state and
+hypothesis spaces, finite candidates and transition tilts, and the fixed
+countable geometric risk-tilt family. It does not prove a measurable version
+of the common outer-mass event or that the selected boundary is an e-process.
+Finite invariant existence does not imply irreducibility, uniqueness without a
+strict certificate, convergence of arbitrary initial laws, a convergence
+rate, or a mixing time.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -711,7 +762,10 @@ fixed candidate kernel can now be transferred under a deterministic row-TV
 envelope, including uniqueness among supplied invariant PMFs under strict
 candidate contraction. Empirical transition-coordinate bands now add
 time-uniform visited-row confidence radii and post-data candidate contraction
-certificates for unknown finite kernels. Natural next layers are post-data
-depth allocation, a random initial law, controlled/action-dependent kernels,
-auxiliary-data construction of valid stationary-score catalogs,
-invariant-law existence, and continuous-state stationary inference.
+certificates for unknown finite kernels. A finite predeclared candidate--depth
+catalog now combines those bands with the stationary risk event on the same
+path, and every nonempty finite kernel has a chosen invariant PMF. Natural next
+layers are path-fitted candidates outside a predeclared catalog, a random
+initial law, controlled/action-dependent kernels, auxiliary-data construction
+of valid stationary-score catalogs, mixing guarantees, and continuous-state
+stationary inference.
