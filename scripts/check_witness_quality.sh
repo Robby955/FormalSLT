@@ -145,7 +145,8 @@ classify_witness() {
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
-#      positive-mass good paths for both data-selected point-posterior branches,
+#      positive-mass supported branches that each contain a theorem-produced
+#      good path for the corresponding data-selected point posterior,
 #      KL = log 2, delta = 1/160, Bessel variance 1/512, exact countable-atom
 #      costs at n = 512 and 2048, checked boundary enclosures 0.2738--0.2744
 #      and 0.1432--0.1434, and strict same-path shrinkage; the catalog is fixed
