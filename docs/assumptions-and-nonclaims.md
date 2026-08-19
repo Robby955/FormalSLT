@@ -184,6 +184,30 @@ target policies, correct target-law occupancy through a full-trajectory
 likelihood ratio, or establish doubly robust, continuous-space, or
 unknown-kernel OPE.
 
+### Dynamic target-policy comparators
+
+`StochasticDynamics.DynamicTargetPolicyComparator` accepts finite catalogs of
+history-dependent target policies and bounded full-prefix transition scores
+under a known homogeneous controlled environment and history-dependent
+behavior policy. `StochasticDynamics.PrefixDynamicTargetPolicyComparator`
+replaces the homogeneous environment with a supplied kernel that may depend on
+time and the complete available prefix. Both the behavior and target policies
+may inspect that prefix.
+
+The assumptions are explicit overlap, a common positive action-ratio cap, a
+full-support finite hypothesis prior, and a full-support finite tilt prior with
+atoms in `(0,1)`. One behavior-law outer event is simultaneous over every
+`n >= 2`, posterior PMF, and declared tilt atom. Pointwise posterior and tilt
+substitution is valid only because those choices are made inside the already
+simultaneous conclusion; no selected process is constructed.
+
+The controlled target is the posterior average of target one-step conditional
+risks at prefixes encountered under the behavior law. These theorems do not
+identify target-policy occupancy or value, construct a full-trajectory
+likelihood ratio, estimate the environment or propensities, supply a doubly
+robust or learned-nuisance guarantee, or cover continuous state or action
+spaces.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use

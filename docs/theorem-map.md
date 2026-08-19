@@ -882,6 +882,22 @@ potentials, overlap, and ratio cap are inputs. This section uses one-step action
 importance ratios and does not establish target-occupancy change of measure,
 learn nuisance quantities, or handle unknown dynamics.
 
+## Dynamic target-policy comparators
+
+| Declaration | Module | Role |
+|---|---|---|
+| `controlledTargetConditionalMean_eq_encounteredRisk_div` | `StochasticDynamics.DynamicTargetPolicyComparator` | Identifies the normalized behavior-law predictable mean with target one-step conditional risk at the encountered prefix |
+| `posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean` | `StochasticDynamics.DynamicTargetPolicyComparator` | Converts the posterior predictable-mean prefix average to posterior encountered target risk |
+| `exists_dynamicTargetPolicyComparator_event` | `StochasticDynamics.DynamicTargetPolicyComparator` | One outer event controls every `n >= 2`, posterior PMF, and finite declared tilt atom for a known homogeneous environment |
+| `dynamicTargetPolicyComparator_selected_of_simultaneous` | `StochasticDynamics.DynamicTargetPolicyComparator` | Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event |
+| `prefixControlledObservedImportanceScore_condExp` | `StochasticDynamics.PrefixDynamicTargetPolicyComparator` | Exact conditional mean under a known prefix/time-dependent controlled environment |
+| `exists_prefixDynamicTargetPolicyComparator_event` | `StochasticDynamics.PrefixDynamicTargetPolicyComparator` | Comparator event for history-dependent targets and a known full-prefix environment kernel |
+| `prefixDynamicTargetPolicyComparator_selected_of_simultaneous` | `StochasticDynamics.PrefixDynamicTargetPolicyComparator` | Pointwise selector corollary for the prefix-environment event |
+
+These results control target one-step conditional risks at behavior-realized
+prefixes. They do not identify target occupancy or value, estimate the
+environment or propensities, or construct a full-trajectory importance ratio.
+
 ## Finite Markov prequential risk
 
 | Declaration | Module | Role |

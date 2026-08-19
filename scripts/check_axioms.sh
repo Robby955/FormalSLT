@@ -226,6 +226,18 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event"
   "FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp"
   "FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces"
+  "FormalSLT.StochasticDynamics.controlledTargetConditionalMean_eq_encounteredRisk_div"
+  "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean"
+  "FormalSLT.StochasticDynamics.exists_dynamicTargetPolicyComparator_event"
+  "FormalSLT.StochasticDynamics.dynamicTargetPolicyComparator_selected_of_simultaneous"
+  "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_prefixControlledNormalizedImportanceScore"
+  "FormalSLT.StochasticDynamics.prefixControlledObservedImportanceScore_condExp"
+  "FormalSLT.StochasticDynamics.prefixControlledTargetConditionalMean_stronglyAdapted"
+  "FormalSLT.StochasticDynamics.prefixControlledImportanceCatalog_predictableMean_interfaces"
+  "FormalSLT.StochasticDynamics.prefixControlledTargetConditionalMean_eq_risk_div"
+  "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_prefixControlledTargetMean"
+  "FormalSLT.StochasticDynamics.exists_prefixDynamicTargetPolicyComparator_event"
+  "FormalSLT.StochasticDynamics.prefixDynamicTargetPolicyComparator_selected_of_simultaneous"
 )
 
 # Axioms permitted in a clean proof.
@@ -281,6 +293,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
+  echo "import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator"
+  echo "import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -332,7 +346,9 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.TrajectoryPACBayes \
   FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes \
   FormalSLT.StochasticDynamics.StationaryPoissonPACBayes \
-  FormalSLT.StochasticDynamics.ControlledTrajectory >/dev/null
+  FormalSLT.StochasticDynamics.ControlledTrajectory \
+  FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator \
+  FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

@@ -249,8 +249,11 @@
   - [x] Add stationary state-Markov target-policy OPE for known dynamics and
     behavior propensities with supplied invariant laws and exact bounded
     Poisson potentials.
+  - [x] Add encountered-prefix comparators for history-dependent target
+    policies under homogeneous and known prefix/time-dependent controlled
+    environments.
   - Extend the controlled interface to target-law occupancy, dynamic-policy
-    comparators, or learned nuisance quantities under separate assumptions.
+    value, or learned nuisance quantities under separate assumptions.
   - Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds.
   - Generalize the deterministic initial state to a supplied initial law.

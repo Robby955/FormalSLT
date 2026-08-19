@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C231-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-231-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-112%2C954-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C265-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-233-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-114%2C125-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -260,6 +260,33 @@ The theorem uses one-step action importance ratios. It does not estimate the
 environment, behavior propensities, invariant laws, or potentials; it is not a
 full-trajectory importance-sampling or target-occupancy correction theorem.
 
+### Dynamic target-policy comparators
+
+`DynamicTargetPolicyComparator` controls finite catalogs of history-dependent
+target policies along the prefixes encountered under a history-dependent
+behavior policy. `PrefixDynamicTargetPolicyComparator` additionally permits a
+known environment kernel that depends on time and the complete available
+prefix. Under bounded transition scores, overlap, and a common action-ratio
+cap, one outer event is simultaneous over every `n >= 2`, posterior PMF, and
+atom of a finite declared tilt catalog.
+
+- **Lean theorems:** `exists_dynamicTargetPolicyComparator_event` and
+  `exists_prefixDynamicTargetPolicyComparator_event` in
+  [`DynamicTargetPolicyComparator.lean`](./FormalSLT/StochasticDynamics/DynamicTargetPolicyComparator.lean)
+  and
+  [`PrefixDynamicTargetPolicyComparator.lean`](./FormalSLT/StochasticDynamics/PrefixDynamicTargetPolicyComparator.lean)
+- **Checked example:**
+  [`CheckDynamicTargetPolicyComparator.lean`](./examples/CheckDynamicTargetPolicyComparator.lean)
+  verifies two reachable Boolean histories with the same initial and current
+  state but different interior actions, history-dependent target risks
+  `5/8` and `3/8`, a prefix-dependent environment witness, positive support,
+  and positive observed Bessel variation for both target atoms.
+
+The controlled quantity is the posterior average of target one-step
+conditional risks at behavior-realized prefixes. It is not target-policy
+occupancy or value, full-trajectory importance sampling, doubly robust OPE, or
+unknown-environment inference.
+
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
 [`docs/LITERATURE.md`](./docs/LITERATURE.md).
@@ -449,6 +476,13 @@ declaration and prints its axiom profile.
   known finite controlled dynamics with supplied invariant laws and exact
   bounded Poisson potentials;
   [`CheckStationaryTargetPolicyOPE.lean`](./examples/CheckStationaryTargetPolicyOPE.lean)
+- **Dynamic target-policy comparator certificates** —
+  `exists_dynamicTargetPolicyComparator_event` and
+  `exists_prefixDynamicTargetPolicyComparator_event` give behavior-law events
+  uniform over all `n >= 2`, posterior PMFs, and finite declared tilt atoms for
+  history-dependent targets under homogeneous or known prefix-dependent
+  controlled dynamics;
+  [`CheckDynamicTargetPolicyComparator.lean`](./examples/CheckDynamicTargetPolicyComparator.lean)
 
 ### Concentration and metric entropy
 
@@ -1003,8 +1037,11 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `StochasticDynamics.StationaryPoissonPACBayes`, together with the separate
   controlled behavior-law semantic interface
   `StochasticDynamics.ControlledTrajectory` and its supplied-Poisson
-  `StochasticDynamics.StationaryTargetPolicyOPE` specialization, re-exported by
-  the stable topic import `FormalSLT.StochasticDynamics`
+  `StochasticDynamics.StationaryTargetPolicyOPE` specialization and the
+  encountered-prefix comparator modules
+  `StochasticDynamics.DynamicTargetPolicyComparator` and
+  `StochasticDynamics.PrefixDynamicTargetPolicyComparator`, re-exported by the
+  stable topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -1101,6 +1138,11 @@ The main learning-theory results are deliberately finite and explicit.
   Poisson potentials; overlap; a common action-ratio cap; and finite declared
   tilts in `(0,1)`. The event is uniform over `n >= 2`, posterior PMFs, and
   declared tilt atoms under the behavior path law
+- **Dynamic target-policy comparators:** finite state, action, target-policy,
+  and tilt types; known homogeneous or prefix/time-dependent environment;
+  history-dependent behavior and target policies; bounded transition scores;
+  overlap; a common action-ratio cap; and finite declared tilts in `(0,1)`.
+  The controlled risk is evaluated at behavior-realized prefixes
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 

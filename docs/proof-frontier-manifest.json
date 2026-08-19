@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials; it is not a target-occupancy, full-trajectory importance-sampling, learned-nuisance, or unknown-kernel result.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials. The dynamic comparators allow history-dependent targets and a known prefix/time-dependent environment, but control one-step risks only at behavior-realized prefixes. Neither lane is a target-occupancy, full-trajectory importance-sampling, learned-nuisance, or unknown-kernel result.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, target-law occupancy or dynamic-policy results for controlled dynamics, and an interface for catalogs constructed from auxiliary random data.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap. A stationary state-Markov target-policy OPE specialization adds one all-time, all-posterior event when the dynamics, behavior propensities, invariant PMFs, and exact bounded Poisson potentials are supplied",
+      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, target-law occupancy or dynamic-policy value for controlled dynamics, and an interface for catalogs constructed from auxiliary random data.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap. A stationary state-Markov target-policy OPE specialization adds one all-time, all-posterior event when the dynamics, behavior propensities, invariant PMFs, and exact bounded Poisson potentials are supplied. Encountered-prefix comparator theorems cover history-dependent targets under a homogeneous or known prefix/time-dependent environment",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 186,
-    "library_and_example_lean_lines": 112954,
-    "library_lean_lines": 91380,
-    "library_modules": 231,
-    "theorem_map_entries": 881
+    "example_lean_files": 187,
+    "library_and_example_lean_lines": 114125,
+    "library_lean_lines": 92122,
+    "library_modules": 233,
+    "theorem_map_entries": 888
   },
   "theorem_families": [
     {
@@ -4657,7 +4657,7 @@
           "kind": "theorem",
           "module": "StochasticDynamics.StationaryTargetPolicyOPE",
           "name": "targetPolicyPoissonControlledScore_mem_Icc",
-          "summary": "Keeps the normalized importance-weighted Poisson-corrected score in [0,1] under the supplied span and ratio caps"
+          "summary": "Keeps the unweighted Poisson-corrected transition score in [0,1] under the supplied score and span bounds"
         },
         {
           "kind": "theorem",
@@ -4691,6 +4691,53 @@
         }
       ],
       "name": "Stationary target-policy off-policy evaluation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "controlledTargetConditionalMean_eq_encounteredRisk_div",
+          "summary": "Identifies the normalized behavior-law predictable mean with target one-step conditional risk at the encountered prefix"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean",
+          "summary": "Converts the posterior predictable-mean prefix average to posterior encountered target risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "exists_dynamicTargetPolicyComparator_event",
+          "summary": "One outer event controls every n >= 2, posterior PMF, and finite declared tilt atom for a known homogeneous environment"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "dynamicTargetPolicyComparator_selected_of_simultaneous",
+          "summary": "Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.PrefixDynamicTargetPolicyComparator",
+          "name": "prefixControlledObservedImportanceScore_condExp",
+          "summary": "Exact conditional mean under a known prefix/time-dependent controlled environment"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.PrefixDynamicTargetPolicyComparator",
+          "name": "exists_prefixDynamicTargetPolicyComparator_event",
+          "summary": "Comparator event for history-dependent targets and a known full-prefix environment kernel"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.PrefixDynamicTargetPolicyComparator",
+          "name": "prefixDynamicTargetPolicyComparator_selected_of_simultaneous",
+          "summary": "Pointwise selector corollary for the prefix-environment event"
+        }
+      ],
+      "name": "Dynamic target-policy comparators"
     },
     {
       "entries": [

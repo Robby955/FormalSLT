@@ -42,9 +42,11 @@ files.
   cap. A separate stationary state-Markov target-policy OPE theorem gives an
   all-time, all-posterior behavior-law event when the dynamics, behavior
   propensities, invariant laws, and exact bounded potentials are supplied.
-  Catalogs remain fixed before their scored outcomes. This is not a
-  target-occupancy, full-trajectory importance-sampling, learned-nuisance, or
-  unknown-kernel theorem. Open layers include a supplied initial law,
+  Encountered-prefix comparator theorems separately cover history-dependent
+  target policies under homogeneous or known prefix/time-dependent controlled
+  environments. Catalogs remain fixed before their scored outcomes. These are
+  not target-occupancy, full-trajectory importance-sampling, learned-nuisance,
+  or unknown-kernel theorems. Open layers include a supplied initial law,
   auxiliary-data catalog construction, automatic Poisson potentials and
   invariant laws, unknown-kernel inference, continuous state spaces, and
   unrestricted all-real tilt control.

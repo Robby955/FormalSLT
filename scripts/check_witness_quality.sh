@@ -146,6 +146,12 @@ classify_witness() {
 #     (asymmetric Boolean Markov chain, supplied invariant PMF `(2/3,1/3)`,
 #      two nonconstant exact Poisson potentials, corrected-score endpoints
 #      `0` and `1`, and an all-time/all-posterior certificate at delta `1/20`)
+#   exists_dynamicTargetPolicyComparator_event /
+#     exists_prefixDynamicTargetPolicyComparator_event
+#     (history-dependent Boolean behavior and two target policies, reachable
+#      same-current/different-interior histories, encountered risks `5/8` and
+#      `3/8`, a prefix-dependent environment witness, full-support continuation
+#      laws, and positive observed Bessel variation for both target atoms)
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
@@ -220,6 +226,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckMarkovPACBayes.lean"
   "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckStationaryPoissonPACBayes.lean"
+  "examples/CheckDynamicTargetPolicyComparator.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"

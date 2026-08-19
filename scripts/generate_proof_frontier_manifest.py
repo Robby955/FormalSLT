@@ -63,7 +63,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "declared importance-ratio cap. A stationary state-Markov target-"
             "policy OPE specialization adds one all-time, all-posterior event "
             "when the dynamics, behavior propensities, invariant PMFs, and "
-            "exact bounded Poisson potentials are supplied"
+            "exact bounded Poisson potentials are supplied. Encountered-prefix "
+            "comparator theorems cover history-dependent targets under a "
+            "homogeneous or known prefix/time-dependent environment"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
@@ -71,7 +73,7 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "Construct finite-depth Poisson potentials and their residual and "
             "span bounds from explicit contraction data. Add a supplied "
             "initial distribution, target-law occupancy or dynamic-policy "
-            "results for controlled dynamics, and an interface for catalogs "
+            "value for controlled dynamics, and an interface for catalogs "
             "constructed from auxiliary random data."
         ),
         "boundary": (
@@ -92,8 +94,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "layer by itself is behavior-law and one-step. The separate "
             "stationary target-policy OPE theorem requires known dynamics and "
             "behavior propensities plus supplied invariant laws and exact "
-            "bounded potentials; it is not a target-occupancy, full-trajectory "
-            "importance-sampling, learned-nuisance, or unknown-kernel result."
+            "bounded potentials. The dynamic comparators allow history-"
+            "dependent targets and a known prefix/time-dependent environment, "
+            "but control one-step risks only at behavior-realized prefixes. "
+            "Neither lane is a target-occupancy, full-trajectory importance-"
+            "sampling, learned-nuisance, or unknown-kernel result."
         ),
     },
     {
