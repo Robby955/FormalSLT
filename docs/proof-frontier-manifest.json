@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, countable or all-real tilt control, empirical variance, continuous state spaces, multistep prediction, optional stopping, or stationary long-run risk.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem requires the invariant PMF, potentials, span bound, and any residual envelope as inputs; it does not infer them, establish mixing or uniqueness, learn an unknown kernel, or provide a measurable-event theorem.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Add a supplied initial distribution, controlled kernels, and an interface for catalogs constructed from auxiliary random data. Continue empirical-variance and normalized countable or predictable tilt work in the concentration layer.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization",
+      "next_step": "Construct finite-depth Poisson potentials and their residual and span bounds from explicit contraction data. Add a supplied initial distribution, controlled kernels, and an interface for catalogs constructed from auxiliary random data.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 183,
-    "library_and_example_lean_lines": 110388,
-    "library_lean_lines": 89725,
-    "library_modules": 228,
-    "theorem_map_entries": 855
+    "example_lean_files": 184,
+    "library_and_example_lean_lines": 111344,
+    "library_lean_lines": 90394,
+    "library_modules": 229,
+    "theorem_map_entries": 868
   },
   "theorem_families": [
     {
@@ -4806,6 +4806,89 @@
         }
       ],
       "name": "Finite Markov prequential risk"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "IsInvariantPMF",
+          "summary": "Predicate asserting that a supplied finite PMF is invariant for the supplied transition matrix"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "stationaryMarkovRisk",
+          "summary": "Stationary average of the one-step transition-row risk under the supplied PMF"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "approximatePoissonResidual",
+          "summary": "Pointwise residual in the supplied Poisson equation relative to stationary risk"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "IsExactPoissonSolution",
+          "summary": "Exact supplied-Poisson predicate requiring the residual to vanish at every state"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "poissonCorrectedTransitionScore_mem_Icc",
+          "summary": "Keeps the affine Poisson-corrected score in [0,1] under an explicit potential-span bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "conditionalTrajectoryRisk_poissonCorrectedTrajectoryScore",
+          "summary": "Identifies corrected conditional risk with stationary risk plus the pointwise Poisson residual"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "sum_poissonPotential_increment",
+          "summary": "Telescopes potential increments along any finite trajectory prefix"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "trajectoryEmpiricalPrequentialRisk_poissonCorrected",
+          "summary": "Expresses corrected empirical risk through observed transition risk and the exact endpoint correction"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "stationaryPoissonEmpiricalBernsteinPACBayesBoundary",
+          "summary": "Combines the corrected-score empirical-Bernstein width, endpoint correction, and signed residual average"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "exists_stationaryPoissonEmpiricalBernsteinPACBayes_event",
+          "summary": "One outer-mass event controls stationary posterior risk for every n >= 2, posterior PMF, and declared finite tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event",
+          "summary": "Replaces the signed path residual and endpoint by supplied posterior residual envelopes and B / n"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event",
+          "summary": "Exact-Poisson specialization with zero residual and the exact telescoping endpoint term"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonPACBayes",
+          "name": "exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event",
+          "summary": "Exact-Poisson stationary-risk certificate with only the simple B / n endpoint price"
+        }
+      ],
+      "name": "Supplied-Poisson stationary Markov risk"
     },
     {
       "entries": [

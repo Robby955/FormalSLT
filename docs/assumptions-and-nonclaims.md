@@ -118,6 +118,31 @@ long-run risk, countable or predictable tilt mixtures, an arbitrary joint
 posterior on predictor--tilt pairs, empirical-variance control, or post-sample
 optimization over an uncontrolled real tilt.
 
+### Supplied-Poisson stationary risk
+
+`StochasticDynamics.StationaryPoissonPACBayes` is a separate deterministic
+bridge from the trajectory empirical-Bernstein event to stationary Markov
+risk. Its inputs are a finite homogeneous transition PMF, a deterministic
+initial state, a supplied invariant PMF, a finite catalog of `[0,1]`
+transition scores, and one supplied bounded Poisson potential per hypothesis.
+The declared finite tilt atoms satisfy `0 < lambda_j < 1`.
+
+The affine Poisson correction stays in `[0,1]` under the explicit span bound.
+The module proves exact conditional-risk and telescoping identities. One
+outer-mass event is then simultaneous over every `n >= 2`, posterior PMF, and
+declared tilt atom. For exact Poisson solutions, the residual vanishes and the
+remaining endpoint correction is at most `B / n`. For approximate solutions,
+the public envelope theorem retains the posterior average of the supplied
+pointwise residual envelope.
+
+The result does not construct or prove uniqueness of the invariant PMF, solve
+the Poisson equation, construct a potential from the kernel, infer a span or
+residual bound from contraction, establish irreducibility or mixing, learn an
+unknown kernel, or cover random initial laws, controlled dynamics, continuous
+states, continuous hypotheses, countable tilts, or arbitrary real-tilt
+optimization. The common event is an outer-probability package; no separate
+measurability theorem for that event is claimed.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -568,9 +593,9 @@ predeclared finite tilt prior may be selected from the trajectory.
 
 The catalog itself must still be fixed before the scored trajectory is
 observed; the result does not validate inventing or fitting new catalog
-members after seeing their scored outcomes. Natural next layers are a random
-initial law, controlled/action-dependent kernels, auxiliary-data catalog
-construction, empirical-variance adaptation, and normalized countable or
-predictable tilt families. Continuous-state kernels and stationary-risk
-conclusions require separate formal interfaces and are not consequences of
-the current results.
+members after seeing their scored outcomes. Separate modules now provide a
+forward empirical-Bernstein trajectory boundary, a normalized countable
+declared-tilt selector, and the supplied-Poisson stationary-risk bridge above.
+Natural next layers are a random initial law, controlled/action-dependent
+kernels, auxiliary-data catalog construction, automatic finite-depth Poisson
+potentials from contraction, and continuous-state stationary inference.

@@ -887,6 +887,29 @@ optional-stopping result.
 | `markovPosteriorAverageConditionalRisk_lt_tiltMixture_selected_of_not_mem` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Pointwise post-path selection of one predeclared tilt atom on the common event; no measurable or adapted selector and no added optional-stopping result |
 | `markovPACBayes_tiltMixture_prequentialRisk_certificate` | `StochasticDynamics.MarkovPACBayesTiltMixture` | Publication-facing measurable certificate simultaneous over all positive times, posteriors, and declared finite tilt atoms |
 
+## Supplied-Poisson stationary Markov risk
+
+| Declaration | Module | Role |
+|---|---|---|
+| `IsInvariantPMF` | `StochasticDynamics.StationaryPoissonPACBayes` | Predicate asserting that a supplied finite PMF is invariant for the supplied transition matrix |
+| `stationaryMarkovRisk` | `StochasticDynamics.StationaryPoissonPACBayes` | Stationary average of the one-step transition-row risk under the supplied PMF |
+| `approximatePoissonResidual` | `StochasticDynamics.StationaryPoissonPACBayes` | Pointwise residual in the supplied Poisson equation relative to stationary risk |
+| `IsExactPoissonSolution` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact supplied-Poisson predicate requiring the residual to vanish at every state |
+| `poissonCorrectedTransitionScore_mem_Icc` | `StochasticDynamics.StationaryPoissonPACBayes` | Keeps the affine Poisson-corrected score in `[0,1]` under an explicit potential-span bound |
+| `conditionalTrajectoryRisk_poissonCorrectedTrajectoryScore` | `StochasticDynamics.StationaryPoissonPACBayes` | Identifies corrected conditional risk with stationary risk plus the pointwise Poisson residual |
+| `sum_poissonPotential_increment` | `StochasticDynamics.StationaryPoissonPACBayes` | Telescopes potential increments along any finite trajectory prefix |
+| `trajectoryEmpiricalPrequentialRisk_poissonCorrected` | `StochasticDynamics.StationaryPoissonPACBayes` | Expresses corrected empirical risk through observed transition risk and the exact endpoint correction |
+| `stationaryPoissonEmpiricalBernsteinPACBayesBoundary` | `StochasticDynamics.StationaryPoissonPACBayes` | Combines the corrected-score empirical-Bernstein width, endpoint correction, and signed residual average |
+| `exists_stationaryPoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonPACBayes` | One outer-mass event controls stationary posterior risk for every `n >= 2`, posterior PMF, and declared finite tilt atom |
+| `exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Replaces the signed path residual and endpoint by supplied posterior residual envelopes and `B / n` |
+| `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson specialization with zero residual and the exact telescoping endpoint term |
+| `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson stationary-risk certificate with only the simple `B / n` endpoint price |
+
+The invariant PMF, potential, span bound, and optional residual envelope are
+inputs. This section does not construct any of them, infer an unknown kernel,
+or establish mixing, irreducibility, invariant-law uniqueness, a measurable
+confidence event, continuous-state validity, or unrestricted tilt selection.
+
 ## Named tail-probability corollaries
 
 | Declaration | Module | Role |

@@ -53,15 +53,19 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "prediction is chosen before the next state arrives. A finite "
             "trajectory adapter gives all-positive-time, all-posterior, "
             "all-atom PAC-Bayes control for a predeclared catalog of such "
-            "scores. The Markov squared-loss theorem is a specialization"
+            "scores. The Markov squared-loss theorem is a specialization. "
+            "A separate supplied-Poisson bridge converts the forward "
+            "empirical-Bernstein trajectory event to finite-state stationary "
+            "risk from a supplied invariant PMF and bounded exact or "
+            "approximate Poisson potentials"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Add a supplied initial distribution, controlled kernels, and an "
-            "interface for catalogs constructed from auxiliary random data. "
-            "Continue empirical-variance and normalized countable or "
-            "predictable tilt work in the concentration layer."
+            "Construct finite-depth Poisson potentials and their residual and "
+            "span bounds from explicit contraction data. Add a supplied "
+            "initial distribution, controlled kernels, and an interface for "
+            "catalogs constructed from auxiliary random data."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -72,9 +76,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "does not validate creating catalog members after observing their "
             "scored outcomes, and it does not cover random initial laws, "
             "controlled kernels, arbitrary joint predictor--tilt posteriors, "
-            "countable or all-real tilt control, empirical variance, "
-            "continuous state spaces, multistep prediction, optional stopping, "
-            "or stationary long-run risk."
+            "unrestricted all-real tilt control, continuous state spaces, "
+            "multistep prediction, or optional stopping. The separate "
+            "stationary theorem requires the invariant PMF, potentials, span "
+            "bound, and any residual envelope as inputs; it does not infer "
+            "them, establish mixing or uniqueness, learn an unknown kernel, "
+            "or provide a measurable-event theorem."
         ),
     },
     {
