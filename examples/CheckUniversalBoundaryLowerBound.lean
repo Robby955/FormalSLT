@@ -13,6 +13,7 @@ fair-sign upper LIL to the sharp normalized limsup lower bound.
 namespace FormalSLT.Examples.CheckUniversalBoundaryLowerBound
 
 open FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
+open Filter MeasureTheory
 
 #check oneSidedCrossingEvent
 #check UpperLILCrossing
@@ -32,6 +33,8 @@ open FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
 #check fairSignBlockLength
 #check fairSignBlock
 #check fairSignBlockNormalizedSum
+#check fairSignCoordinateSigma
+#check fairSignBlockSigma
 #check fairSignBlockTailEvent
 #check fairSignIncrement_hasLaw
 #check fairSignIncrement_measurable
@@ -127,5 +130,10 @@ open FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
 #print axioms fairSign_anytimeBoundary_frequently_ge_mul_sqrt
 #print axioms rademacherLILScale_eventually_pos
 #print axioms fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL
+
+example :
+    ∀ᵐ ω ∂fairSignPathLaw,
+      ∃ᶠ n : ℕ in atTop, (3 : ℝ) * Real.sqrt n < fairSignSum n ω :=
+  fairSign_ae_frequently_sum_gt_mul_sqrt 3 (by norm_num)
 
 end FormalSLT.Examples.CheckUniversalBoundaryLowerBound

@@ -8,7 +8,7 @@
 
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C255-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-231-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-112%2C393-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-112%2C401-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -394,7 +394,8 @@ declaration and prints its axiom profile.
   often. `fairSign_anytimeBoundary_eventually_ge_sqrt` gives the complementary
   CLT/Portmanteau floor at each fixed Gaussian-tail level. The sharp
   `sqrt(2 n log log n)` constant-one corollary is checked only under the
-  explicit, still-unproved `FairSignUpperLIL` premise;
+  explicit, still-unproved `FairSignUpperLIL` premise and the theorem's
+  bounded-ratio side condition;
   [`CheckUniversalBoundaryLowerBound.lean`](./examples/CheckUniversalBoundaryLowerBound.lean)
 
 ### Concentration and metric entropy
