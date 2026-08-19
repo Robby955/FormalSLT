@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C184-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-229-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-111%2C344-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C249-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-231-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-112%2C626-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -215,6 +215,38 @@ The invariant PMF and potentials are theorem inputs. This module does not
 infer an invariant law, solve a Poisson equation, estimate an unknown kernel,
 derive a span bound from contraction or mixing, or assert measurability of the
 outer-mass event. State, hypothesis, and tilt types remain finite.
+
+### Finite-depth Poisson construction and computed contraction
+
+For a known finite transition kernel and a supplied invariant PMF, the library
+now constructs the depth-`m` truncated potential
+`h_m = sum_{t < m} T^t (g - R)`. Under oscillation contraction by
+`0 <= alpha < 1` and centered row-risk oscillation at most `D`, its potential
+span is at most `D * (1 - alpha^m) / (1 - alpha)` and its pointwise Poisson
+residual is at most `alpha^m * D`. Substituting these bounds into the supplied
+bridge gives one outer-mass stationary-risk event shared by every `n >= 2`,
+posterior PMF, and declared finite tilt atom.
+
+For finite kernels, `finiteDobrushinCoefficient` computes `alpha` as the
+maximum pairwise row total variation under the `TV = L1 / 2` convention. The
+sharp finite-PMF duality theorem proves that this coefficient contracts
+oscillation, so the public Dobrushin capstone requires no separately supplied
+potential or contraction proof.
+
+- **Lean theorem:**
+  `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event`
+  in
+  [`StationaryPoissonDobrushin.lean`](./FormalSLT/StochasticDynamics/StationaryPoissonDobrushin.lean)
+- **Checked example:**
+  [`CheckStationaryPoissonContraction.lean`](./examples/CheckStationaryPoissonContraction.lean)
+  computes coefficient `1/4` for an asymmetric Boolean kernel, proves the
+  oscillation bound is attained by an indicator, checks the depth-two
+  potential and residual exactly, and instantiates the stationary certificate.
+
+The kernel and invariant PMF remain inputs, and `m` is fixed before applying
+the theorem. These modules do not estimate an unknown kernel, construct or
+prove uniqueness of an invariant law, permit post-data depth selection, or
+claim irreducibility, a mixing time, or a measurable confidence event.
 
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
@@ -944,7 +976,9 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes`,
   `StochasticDynamics.MarkovRisk`, `StochasticDynamics.MarkovPACBayes`,
   `StochasticDynamics.MarkovPACBayesTiltMixture`, and
-  `StochasticDynamics.StationaryPoissonPACBayes`, re-exported by the stable
+  `StochasticDynamics.StationaryPoissonPACBayes`,
+  `StochasticDynamics.StationaryPoissonContraction`, and
+  `StochasticDynamics.StationaryPoissonDobrushin`, re-exported by the stable
   topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
@@ -1027,9 +1061,12 @@ The main learning-theory results are deliberately finite and explicit.
   path
 - **Supplied-Poisson stationary risk:** finite state, hypothesis, and tilt
   types; deterministic initial state; supplied invariant PMF; supplied bounded
-  exact or approximate Poisson potentials; and finite declared tilts in
-  `(0,1)`. The event is an outer-mass package shared by every `n >= 2`,
-  posterior PMF, and declared tilt atom
+  exact or approximate Poisson potentials, or a fixed-depth potential
+  constructed from a known kernel and an explicit oscillation contraction;
+  and finite declared tilts in `(0,1)`. The Dobrushin specialization computes
+  the contraction factor from pairwise row total variation. The event is an
+  outer-mass package shared by every `n >= 2`, posterior PMF, and declared tilt
+  atom
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -1046,11 +1083,12 @@ The main learning-theory results are deliberately finite and explicit.
   all-sample-size result over arbitrary measurable hypothesis spaces with
   finite-valued observations.
 - Catalog members created after observing their scored outcomes, random
-  initial laws, continuous-state dynamics, automatic invariant-law or Poisson-
-  potential construction, and mixing-derived span guarantees. Fixed-in-advance
-  online update rules are covered by the finite prefix-dependent trajectory
-  adapter; stationary risk is covered only when the invariant PMF and bounded
-  Poisson data are supplied.
+  initial laws, continuous-state dynamics, automatic invariant-law
+  construction, unknown-kernel contraction certificates, post-data Poisson
+  depth selection, and general mixing-time guarantees. Fixed-in-advance online
+  update rules are covered by the finite prefix-dependent trajectory adapter;
+  finite-depth stationary risk still requires a known kernel, a supplied
+  invariant PMF, and strict computed or supplied oscillation contraction.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1143,7 +1181,7 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   prefix-dependent scores, including fixed-in-advance online update rules
 - [x] Add a finite stationary-risk bridge from a supplied invariant PMF and
   supplied bounded exact or approximate Poisson potentials
-- [ ] Construct finite-depth Poisson potentials and their span and residual
+- [x] Construct finite-depth Poisson potentials and their span and residual
   bounds from explicit kernel-contraction data
 - [ ] Extend the stochastic-dynamics layer to random initial laws,
   auxiliary-data catalog construction, and normalized countable or predictable

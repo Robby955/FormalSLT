@@ -143,6 +143,31 @@ states, continuous hypotheses, countable tilts, or arbitrary real-tilt
 optimization. The common event is an outer-probability package; no separate
 measurability theorem for that event is claimed.
 
+### Finite-depth Poisson construction and Dobrushin contraction
+
+`StochasticDynamics.StationaryPoissonContraction` constructs the truncated
+Neumann potential `h_m = sum_{t < m} T^t (g - R)` for a known finite kernel, a
+supplied invariant PMF, and a depth `m` fixed before applying the theorem. If
+the Markov expectation operator contracts finite oscillation by
+`0 <= alpha < 1` and the centered row-risk oscillation is at most `D`, the
+module proves the exact residual identity, the closed span bound
+`D * (1 - alpha^m) / (1 - alpha)`, and the pointwise residual bound
+`alpha^m * D`. Its capstone substitutes those quantities into the
+supplied-Poisson empirical-Bernstein event.
+
+`StochasticDynamics.StationaryPoissonDobrushin` defines finite total variation
+as one half of the row `L1` distance, computes the maximum pairwise row total
+variation, and proves that this Dobrushin coefficient contracts oscillation
+without an extra factor two. The unit-range capstone therefore constructs the
+potential and discharges the contraction and centered-risk envelopes directly
+from the known kernel and score range.
+
+These results remain finite-state, finite-hypothesis, and finite-tilt. They do
+not construct or prove uniqueness of the invariant PMF, estimate an unknown
+kernel, select `m` after observing the scored trajectory, prove a mixing time
+or irreducibility, cover random initial laws or controlled dynamics, or turn
+the outer-mass confidence package into a separately measurable event.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -595,7 +620,8 @@ The catalog itself must still be fixed before the scored trajectory is
 observed; the result does not validate inventing or fitting new catalog
 members after seeing their scored outcomes. Separate modules now provide a
 forward empirical-Bernstein trajectory boundary, a normalized countable
-declared-tilt selector, and the supplied-Poisson stationary-risk bridge above.
-Natural next layers are a random initial law, controlled/action-dependent
-kernels, auxiliary-data catalog construction, automatic finite-depth Poisson
-potentials from contraction, and continuous-state stationary inference.
+declared-tilt selector, the supplied-Poisson stationary-risk bridge above, and
+finite-depth potentials under supplied or computed Dobrushin contraction.
+Natural next layers are post-data depth allocation, a random initial law,
+controlled/action-dependent kernels, auxiliary-data catalog construction,
+unknown-kernel confidence sets, and continuous-state stationary inference.

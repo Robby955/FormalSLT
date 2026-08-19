@@ -146,6 +146,10 @@ classify_witness() {
 #     (asymmetric Boolean Markov chain, supplied invariant PMF `(2/3,1/3)`,
 #      two nonconstant exact Poisson potentials, corrected-score endpoints
 #      `0` and `1`, and an all-time/all-posterior certificate at delta `1/20`)
+#   exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_closed_event
+#     (asymmetric Boolean kernel with computed Dobrushin coefficient `1/4`,
+#      attained oscillation contraction, exact depth-two potential and residual
+#      values, and a finite-depth stationary certificate at delta `1/20`)
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
@@ -220,6 +224,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckMarkovPACBayes.lean"
   "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckStationaryPoissonPACBayes.lean"
+  "examples/CheckStationaryPoissonContraction.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"

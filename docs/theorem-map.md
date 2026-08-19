@@ -904,11 +904,26 @@ optional-stopping result.
 | `exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Replaces the signed path residual and endpoint by supplied posterior residual envelopes and `B / n` |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson specialization with zero residual and the exact telescoping endpoint term |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson stationary-risk certificate with only the simple `B / n` endpoint price |
+| `finiteDepthPoisson_residual_identity` | `StochasticDynamics.StationaryPoissonContraction` | Identifies the truncated Neumann potential's exact Poisson residual with `T^m (g - R)` |
+| `iteratedMarkovPotentialMean_oscillation_le` | `StochasticDynamics.StationaryPoissonContraction` | Iterates a supplied oscillation contraction to the geometric factor `alpha^t` |
+| `finiteDepthPoissonPotential_span` | `StochasticDynamics.StationaryPoissonContraction` | Bounds the depth-`m` potential span by the finite geometric sum times the centered-risk oscillation envelope |
+| `finiteDepthPoissonResidual_le` | `StochasticDynamics.StationaryPoissonContraction` | Uses invariance and oscillation contraction to bound the pointwise residual by `alpha^m D` |
+| `finiteDepthPoissonSpanBound_closed` | `StochasticDynamics.StationaryPoissonContraction` | Rewrites the geometric span as `D * (1 - alpha^m) / (1 - alpha)` when `alpha < 1` |
+| `exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event` | `StochasticDynamics.StationaryPoissonContraction` | Instantiates the stationary empirical-Bernstein event with the constructed depth-`m` potential, closed span, and geometric residual |
+| `finitePMFTotalVariation` | `StochasticDynamics.StationaryPoissonDobrushin` | Finite-PMF total variation using the probabilists' `L1 / 2` convention |
+| `finiteDobrushinCoefficient` | `StochasticDynamics.StationaryPoissonDobrushin` | Maximum pairwise total variation between rows of a known finite transition kernel |
+| `abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation` | `StochasticDynamics.StationaryPoissonDobrushin` | Sharp finite-PMF expectation duality with no extra factor two under the `L1 / 2` convention |
+| `finiteDobrushinCoefficient_isOscillationContraction` | `StochasticDynamics.StationaryPoissonDobrushin` | Derives oscillation contraction directly from the computed finite Dobrushin coefficient |
+| `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event` | `StochasticDynamics.StationaryPoissonDobrushin` | Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel |
 
-The invariant PMF, potential, span bound, and optional residual envelope are
-inputs. This section does not construct any of them, infer an unknown kernel,
-or establish mixing, irreducibility, invariant-law uniqueness, a measurable
-confidence event, continuous-state validity, or unrestricted tilt selection.
+The base bridge accepts the invariant PMF, potential, span bound, and optional
+residual envelope as inputs. The finite-depth modules construct the potential
+and its span and residual bounds from known-kernel contraction data, and the
+Dobrushin specialization computes that contraction from the finite kernel.
+The invariant PMF and depth remain supplied. This section does not infer an
+unknown kernel, select depth after data, or establish mixing times,
+irreducibility, invariant-law existence or uniqueness, a measurable confidence
+event, continuous-state validity, or unrestricted tilt selection.
 
 ## Named tail-probability corollaries
 

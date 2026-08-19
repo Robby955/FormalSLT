@@ -243,8 +243,9 @@
   - [x] Convert the trajectory empirical-Bernstein event to finite-state
     stationary risk from a supplied invariant PMF and supplied bounded exact
     or approximate Poisson potentials.
-  - Construct finite-depth Poisson potentials automatically from explicit
-    kernel-contraction data, with checked residual and span bounds.
+  - [x] Construct finite-depth Poisson potentials automatically from explicit
+    kernel-contraction data, with checked residual and span bounds, and compute
+    a valid contraction factor from the finite Dobrushin coefficient.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
