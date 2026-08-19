@@ -40,10 +40,16 @@ files.
   This does not validate creating new catalog members after seeing their
   scored outcomes. The next reviewable extensions are a supplied initial law,
   controlled kernels, auxiliary-data catalog construction, empirical-variance
-  adaptation, and normalized countable or predictable tilt selection. The
-  result is not an arbitrary real-tilt optimization theorem, an arbitrary
-  joint predictor--tilt posterior theorem, a stationarity or mixing theorem,
-  or a continuous-state stochastic-dynamics result.
+  adaptation, and normalized countable or predictable tilt selection. A
+  separate stationary-risk lane supplies an exact/approximate Poisson bridge
+  and constructs fixed-depth truncated Neumann potentials with geometric span
+  and residual bounds; its Dobrushin specialization computes a valid
+  oscillation contraction factor from the known finite kernel. That lane still
+  requires a supplied invariant PMF and a fixed predeclared depth, and it does
+  not learn an unknown kernel, select depth after the path, or prove a general
+  mixing result. Neither lane is an arbitrary real-tilt optimization theorem,
+  an arbitrary joint predictor--tilt posterior theorem, or a continuous-state
+  stochastic-dynamics result.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

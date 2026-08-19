@@ -54,18 +54,22 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "trajectory adapter gives all-positive-time, all-posterior, "
             "all-atom PAC-Bayes control for a predeclared catalog of such "
             "scores. The Markov squared-loss theorem is a specialization. "
-            "A separate supplied-Poisson bridge converts the forward "
-            "empirical-Bernstein trajectory event to finite-state stationary "
-            "risk from a supplied invariant PMF and bounded exact or "
-            "approximate Poisson potentials"
+            "A supplied-Poisson bridge converts the forward empirical-"
+            "Bernstein trajectory event to finite-state stationary risk. A "
+            "finite-depth specialization automatically constructs truncated "
+            "Neumann potentials from a known kernel and invariant PMF, with "
+            "geometric residual and span bounds from either supplied "
+            "oscillation contraction data or the computed finite Dobrushin "
+            "coefficient"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Construct finite-depth Poisson potentials and their residual and "
-            "span bounds from explicit contraction data. Add a supplied "
-            "initial distribution, controlled kernels, and an interface for "
-            "catalogs constructed from auxiliary random data."
+            "Confidence-allocate over finite Poisson depths so depth may be "
+            "selected after the path, then add robust candidate-kernel and "
+            "empirical transition interfaces. Add a supplied initial "
+            "distribution, controlled kernels, and an interface for catalogs "
+            "constructed from auxiliary random data."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -78,10 +82,14 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "controlled kernels, arbitrary joint predictor--tilt posteriors, "
             "unrestricted all-real tilt control, continuous state spaces, "
             "multistep prediction, or optional stopping. The separate "
-            "stationary theorem requires the invariant PMF, potentials, span "
-            "bound, and any residual envelope as inputs; it does not infer "
-            "them, establish mixing or uniqueness, learn an unknown kernel, "
-            "or provide a measurable-event theorem."
+            "supplied-Poisson theorem accepts potentials, a span bound, and a "
+            "residual envelope as inputs. Its finite-depth specialization "
+            "constructs those potentials and bounds for a fixed predeclared "
+            "depth from a known kernel, a supplied invariant PMF, and either "
+            "supplied contraction data or the computed finite Dobrushin "
+            "coefficient. It does not select depth after observing the path, "
+            "construct an invariant law, learn an unknown kernel, or provide "
+            "a measurable-event theorem."
         ),
     },
     {
