@@ -243,6 +243,11 @@
   - [x] Convert the trajectory empirical-Bernstein event to finite-state
     stationary risk from a supplied invariant PMF and supplied bounded exact
     or approximate Poisson potentials.
+  - [x] Add finite state--action behavior-law semantics for full-history
+    behavior and target policies, including exact one-step normalized
+    importance-score conditional means under overlap and a declared ratio cap.
+  - Extend the controlled semantic interface to target-law occupancy or
+    stationary target-policy value under separately stated assumptions.
   - Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds.
   - Generalize the deterministic initial state to a supplied initial law.

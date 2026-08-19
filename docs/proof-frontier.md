@@ -31,19 +31,20 @@ files.
 
 - `finite-markov-prequential-risk`: the finite-state, deterministic-start
   path-law bridge and sharp universal `1/4` variance proxy are checked for
-  arbitrary prefix-dependent kernels and bounded scores. The finite
-  `TrajectoryPACBayes` adapter permits a predeclared catalog of scores whose
-  predictions update from the observed prefix. One measurable exceptional
-  event has mass at most `delta`; on its complement the bound is simultaneous
-  over every positive time, posterior PMF, and predeclared finite tilt atom,
-  so the posterior and one atom may be selected after the path is observed.
-  This does not validate creating new catalog members after seeing their
-  scored outcomes. The next reviewable extensions are a supplied initial law,
-  controlled kernels, auxiliary-data catalog construction, empirical-variance
-  adaptation, and normalized countable or predictable tilt selection. The
-  result is not an arbitrary real-tilt optimization theorem, an arbitrary
-  joint predictor--tilt posterior theorem, a stationarity or mixing theorem,
-  or a continuous-state stochastic-dynamics result.
+  arbitrary prefix-dependent kernels and bounded scores. Finite-catalog
+  sub-Gamma and forward empirical-Bernstein adapters give common all-time
+  posterior-uniform events, and the normalized countable declared-tilt lane
+  supplies a vanishing selected boundary. A separate supplied-Poisson bridge
+  converts the empirical-Bernstein trajectory event to stationary risk from a
+  supplied invariant PMF and bounded exact or approximate potentials. The
+  controlled semantic layer derives exact behavior-law predictable means for
+  normalized one-step target-policy scores under overlap and a declared ratio
+  cap. Catalogs remain fixed before their scored outcomes; the controlled
+  result is not a target-law occupancy, stationary-value, or full-trajectory
+  off-policy theorem. Open layers include a supplied initial law,
+  auxiliary-data catalog construction, automatic Poisson potentials and
+  invariant laws, unknown-kernel inference, continuous state spaces, and
+  unrestricted all-real tilt control.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

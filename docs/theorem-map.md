@@ -849,6 +849,22 @@ not itself provide a confidence event, concentration inequality, PAC-Bayes
 bound, controlled-process theorem, policy-optimization theorem, or
 optional-stopping result.
 
+## Finite controlled trajectory semantics
+
+| Declaration | Module | Role |
+|---|---|---|
+| `controlledContinuationPMF_apply` | `StochasticDynamics.ControlledTrajectory` | Expands the behavior-policy/environment continuation mass into its action and outcome factors |
+| `conditionalTrajectoryRisk_controlledNormalizedImportanceScore` | `StochasticDynamics.ControlledTrajectory` | Identifies the normalized behavior-law conditional risk with the declared target-policy transition risk under overlap |
+| `controlledObservedImportanceScore_condExp` | `StochasticDynamics.ControlledTrajectory` | Proves the exact filtration-conditional mean of the observed normalized one-step importance score |
+| `controlledObservedImportanceScore_incrementAdapted` | `StochasticDynamics.ControlledTrajectory` | Shows the importance-weighted observation is measurable at the next filtration level |
+| `controlledTargetConditionalMean_stronglyAdapted` | `StochasticDynamics.ControlledTrajectory` | Shows the target-policy transition mean is predictable from the completed prefix |
+| `controlledImportanceCatalog_predictableMean_interfaces` | `StochasticDynamics.ControlledTrajectory` | Packages the boundedness, adaptedness, predictable mean, and conditional-expectation interfaces for a finite predeclared target-policy catalog |
+
+These statements are under the behavior trajectory law and concern encountered
+one-step target-policy transition risk. They do not identify target-law state
+occupancy or stationary target-policy value, and do not construct a
+full-trajectory off-policy estimator.
+
 ## Finite Markov prequential risk
 
 | Declaration | Module | Role |

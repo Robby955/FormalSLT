@@ -57,15 +57,19 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "A separate supplied-Poisson bridge converts the forward "
             "empirical-Bernstein trajectory event to finite-state stationary "
             "risk from a supplied invariant PMF and bounded exact or "
-            "approximate Poisson potentials"
+            "approximate Poisson potentials. A finite controlled-trajectory "
+            "semantic layer derives exact behavior-law predictable means for "
+            "normalized one-step target-policy scores under overlap and a "
+            "declared importance-ratio cap"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
             "Construct finite-depth Poisson potentials and their residual and "
             "span bounds from explicit contraction data. Add a supplied "
-            "initial distribution, controlled kernels, and an interface for "
-            "catalogs constructed from auxiliary random data."
+            "initial distribution, target-law occupancy or stationary-value "
+            "results for controlled dynamics, and an interface for catalogs "
+            "constructed from auxiliary random data."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -75,13 +79,16 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite tilt atom may be selected after the path. The theorem "
             "does not validate creating catalog members after observing their "
             "scored outcomes, and it does not cover random initial laws, "
-            "controlled kernels, arbitrary joint predictor--tilt posteriors, "
+            "arbitrary joint predictor--tilt posteriors, "
             "unrestricted all-real tilt control, continuous state spaces, "
             "multistep prediction, or optional stopping. The separate "
             "stationary theorem requires the invariant PMF, potentials, span "
             "bound, and any residual envelope as inputs; it does not infer "
             "them, establish mixing or uniqueness, learn an unknown kernel, "
-            "or provide a measurable-event theorem."
+            "or provide a measurable-event theorem. The controlled layer is "
+            "a behavior-law one-step semantic interface, not a target-law "
+            "occupancy, stationary-value, or full-trajectory off-policy "
+            "theorem."
         ),
     },
     {

@@ -78,9 +78,9 @@ for every positive time, every posterior PMF, and every declared tilt atom.
 The posterior and one tilt atom may be selected after the trajectory.
 
 This does not validate creating new catalog members after observing the
-outcomes on which they are scored. It also does not provide a controlled
-kernel or policy interface, action-dependent dynamics, random initial law,
-continuous-state theorem, multistep forecast, optional-stopping theorem,
+outcomes on which they are scored. It also does not itself provide a
+controlled kernel or policy interface, action-dependent dynamics, random
+initial law, continuous-state theorem, multistep forecast, optional-stopping theorem,
 empirical-variance boundary, countable tilt family, or stationary long-run
 conclusion. The checked target is the posterior average of the one-step
 prefix-conditional risks encountered along the realized trajectory.
@@ -142,6 +142,24 @@ unknown kernel, or cover random initial laws, controlled dynamics, continuous
 states, continuous hypotheses, countable tilts, or arbitrary real-tilt
 optimization. The common event is an outer-probability package; no separate
 measurability theorem for that event is claimed.
+
+### Controlled trajectory semantics
+
+`StochasticDynamics.ControlledTrajectory` supplies a separate finite
+state--action behavior-law interface. The behavior and each target policy may
+inspect the complete available decision--outcome prefix. Under explicit
+overlap and a common importance-ratio cap, a predeclared finite catalog of
+bounded transition scores is normalized into `[0,1]`. The module proves the
+exact behavior-law conditional mean of that one-step importance score and
+discharges the `IncrementAdapted`, `StronglyAdapted`, and conditional-
+expectation premises consumed by the forward predictable-mean PAC-Bayes layer.
+
+The state, action, and policy-catalog types are finite; the initial
+decision--state pair is deterministic; and the controlled environment is a
+supplied homogeneous state--action kernel. This is not a target-trajectory
+change-of-measure theorem, a target-versus-behavior occupancy correction, a
+stationary target-policy value theorem, a full-trajectory importance-sampling
+result, or a guarantee for learned propensities or an unknown environment.
 
 ### Azuma and sharp McDiarmid constants
 
@@ -596,6 +614,7 @@ observed; the result does not validate inventing or fitting new catalog
 members after seeing their scored outcomes. Separate modules now provide a
 forward empirical-Bernstein trajectory boundary, a normalized countable
 declared-tilt selector, and the supplied-Poisson stationary-risk bridge above.
-Natural next layers are a random initial law, controlled/action-dependent
-kernels, auxiliary-data catalog construction, automatic finite-depth Poisson
-potentials from contraction, and continuous-state stationary inference.
+Natural next layers are a random initial law, target-law occupancy and
+stationary-value results for controlled dynamics, auxiliary-data catalog
+construction, automatic finite-depth Poisson potentials from contraction, and
+continuous-state stationary inference.
