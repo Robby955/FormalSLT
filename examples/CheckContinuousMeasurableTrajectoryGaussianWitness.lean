@@ -5,7 +5,7 @@ import Mathlib.InformationTheory.KullbackLeibler.ChainRule
 import Mathlib.Probability.Distributions.Uniform
 
 /-!
-# Continuous-state, continuous-posterior trajectory receipt
+# Continuous-hypothesis, real-state trajectory receipt
 
 The trajectory state space is `Real` and the hypothesis space is
 `(Fin 1 -> Real) x Bool`.  The state kernel emits fair Rademacher values on
@@ -836,13 +836,82 @@ theorem receiptInformative_bothBranches_exist :
 
 /-! ## Public receipt and axiom audit -/
 
-#check exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event
+#check GaussianCoordinate
+#check Hypothesis
+#check receiptPriorGaussianParams
+#check receiptPosteriorGaussianParams
+#check receiptPriorGaussian
+#check receiptPosteriorGaussian
+#check receiptBoolPMF
+#check receiptBoolPMF_isPMF
+#check receiptBoolMeasure
+#check receiptPriorGaussian_probability
+#check receiptPosteriorGaussian_probability
+#check receiptBoolMeasure_probability
+#check receiptBoolKernel
+#check receiptBoolKernel_markov
+#check receiptPrior
+#check receiptPosterior
+#check receiptPrior_probability
+#check receiptPosterior_probability
+#check receiptPriorGaussian_nullSingleton
+#check receiptPosteriorGaussian_nullSingleton
+#check receiptPrior_nullSingleton
+#check receiptPosterior_nullSingleton
+#check receiptPosterior_finite_set_mass_zero
+#check receiptPosterior_absolutelyContinuous
+#check receiptPosterior_llr_integrable
 #check receiptPosterior_kl_eq
+#check receiptPrediction
+#check receiptRealLabel
+#check receiptScore
+#check receiptPrediction_measurable
+#check receiptRealLabel_measurable
+#check receiptScore_joint
+#check receiptScore_mem_Icc
+#check receiptScore_attains_endpoints
+#check receiptPositiveGaussian
+#check receiptNegativeGaussian
+#check receiptScore_uses_gaussian_and_bool
+#check receiptRademacherValue
+#check receiptStatePMF
+#check receiptStateKernel
+#check receiptStateKernel_markov
+#check receiptWeight
+#check receiptTilt
+#check receiptHorizon
+#check receiptDelta
+#check receiptConditionalRisk_eq_half
+#check receiptTrajectoryAverageConditionalRisk_eq_half
+#check receiptPosteriorAverageConditionalRisk_eq_half
+#check receiptTwoBoolEmpiricalRisk_add_eq_one
+#check receiptBoolIntegralEmpiricalRisk_eq_half
+#check receiptPosteriorEmpiricalRisk_eq_half
+#check receiptWeight_pos
+#check receiptWeight_sum
+#check receiptTilt_pos
+#check receiptTilt_lt_one
+#check receiptPosteriorHybridPenalty_le
+#check receiptLogEight_le_three
+#check receiptPsiHalf_le_half
 #check receiptBoundary_le
 #check receiptBoundary_lt_half
+#check receiptSignFlipBranch
+#check receiptSignFlipBranch_measurable
+#check receiptState_singleton_mass
 #check receiptSignFlipBranch_mass
+#check receiptSignFlipBranch_real_mass
+#check receiptEvent_exists
+#check receiptGoodEvent
+#check receiptGoodEvent_mass_le
+#check receiptGoodEvent_certificate
+#check receiptGoodPath_in_each_branch
+#check receiptObservedScore_pair
+#check receiptBesselQ_pos
+#check receiptSampleVariance_pos
 #check receiptInformative_goodPath_exists
 #check receiptInformative_bothBranches_exist
+#check exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event
 
 #print axioms receiptBoolPMF_isPMF
 #print axioms receiptPosterior_finite_set_mass_zero
