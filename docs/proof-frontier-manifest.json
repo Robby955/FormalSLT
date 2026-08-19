@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate supplied-Poisson theorem accepts potentials, a span bound, and a residual envelope as inputs. Its finite-depth specialization constructs those potentials and bounds for a fixed predeclared depth from a known kernel, a supplied invariant PMF, and either supplied contraction data or the computed finite Dobrushin coefficient. It does not select depth after observing the path, construct an invariant law, learn an unknown kernel, or provide a measurable-event theorem.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem still requires an invariant PMF. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The empirical transition event permits post-data candidate selection for row-TV and contraction only after every required row is visited; it does not validate a same-data-selected Poisson score, construct an invariant law, establish a mixing time, cover continuous states, or provide a measurable-event theorem.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Confidence-allocate over finite Poisson depths so depth may be selected after the path, then add robust candidate-kernel and empirical transition interfaces. Add a supplied initial distribution, controlled kernels, and an interface for catalogs constructed from auxiliary random data.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk. A finite-depth specialization automatically constructs truncated Neumann potentials from a known kernel and invariant PMF, with geometric residual and span bounds from either supplied oscillation contraction data or the computed finite Dobrushin coefficient",
+      "next_step": "Confidence-allocate over candidate Poisson potentials and finite depths, or use auxiliary data/sample splitting, before inserting a selected candidate into a stationary-risk score. Add a supplied initial distribution, controlled kernels, and continuous-state interfaces.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. Finite-depth Neumann potentials have explicit geometric span and residual bounds, finite Dobrushin coefficients supply contraction, fixed candidate kernels transfer under deterministic row-TV envelopes, and time-uniform empirical transition bands certify visited-row TV budgets and post-data candidate contraction",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 187,
-    "library_and_example_lean_lines": 114555,
-    "library_lean_lines": 92391,
-    "library_modules": 233,
-    "theorem_map_entries": 892
+    "example_lean_files": 188,
+    "library_and_example_lean_lines": 115868,
+    "library_lean_lines": 93074,
+    "library_modules": 234,
+    "theorem_map_entries": 907
   },
   "theorem_families": [
     {
@@ -5033,6 +5033,101 @@
         }
       ],
       "name": "Supplied-Poisson stationary Markov risk"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "TransitionCoordinate",
+          "summary": "Finite source--destination coordinate together with the direct or complement side"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "transitionVisitMass",
+          "summary": "Observed source-state visit count over the first n transitions"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "transitionEdgeMass",
+          "summary": "Observed source--destination transition count over the first n transitions"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "empiricalTransitionFrequency",
+          "summary": "Visited-row empirical transition frequency"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "transitionCoordinateBoundary",
+          "summary": "Dirac-posterior empirical-Bernstein boundary for one direct or complement coordinate"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "transitionCoordinateRadius",
+          "summary": "Two-sided coordinate radius normalized by positive source visit mass"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "empiricalCandidateRowTotalVariation",
+          "summary": "Empirical row discrepancy between a candidate kernel and observed transition frequencies"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "empiricalTransitionRowRadius",
+          "summary": "Sum of simultaneous coordinate radii on the probabilists' TV scale"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "empiricalCandidateKernelTVBudget",
+          "summary": "Maximum candidate row discrepancy plus statistical radius across all source states"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "exists_empiricalTransitionCoordinate_event",
+          "summary": "One outer-mass event gives two-sided predictable-versus-observed bands for every coordinate and time n >= 2"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "exists_empiricalTransitionFrequency_event",
+          "summary": "Normalizes the common coordinate event on every row with positive visit mass"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "exists_empiricalCandidateRowTotalVariation_event",
+          "summary": "Certifies a row-TV ball for every candidate kernel introduced after the common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "exists_selectedEmpiricalCandidateRowTotalVariation_event",
+          "summary": "Explicit path- and time-selected candidate specialization with no additional selection cost"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "exists_empiricalCandidateKernelTV_event",
+          "summary": "Gives one uniform candidate-kernel row-TV budget when every source row has been visited"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidence",
+          "name": "exists_selectedEmpiricalKernelContraction_event",
+          "summary": "Combines a selected candidate's empirical row-TV budget with Dobrushin perturbation, true-kernel contraction, and uniqueness among supplied invariant PMFs"
+        }
+      ],
+      "name": "Empirical transition confidence for unknown finite kernels"
     },
     {
       "entries": [

@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C320-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-233-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-114%2C555-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C379-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-234-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-115%2C868-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -286,6 +286,46 @@ The candidate kernel, row-TV radius, reference PMF, invariant PMF, and depth
 are supplied deterministic inputs. These modules do not estimate a kernel or
 row-TV radius, construct an invariant PMF, justify post-data candidate or
 depth selection, or cover continuous state spaces.
+
+### Empirical transition confidence and plug-in contraction
+
+For an unknown finite homogeneous kernel `P`, the visit-gated indicators
+`1{x_k = z, x_{k+1} = y}` and their complements form one finite score catalog.
+The forward empirical-Bernstein trajectory theorem then gives one outer-mass
+event, shared by every `n >= 2`, declared tilt atom, source, and destination,
+with two-sided confidence bands for the predictable transition masses. A
+visited row can be normalized by its observed visit count to give coordinate
+confidence radii and a row-total-variation certificate.
+
+The candidate kernel is universally quantified inside this common event. It
+may therefore be selected after observing the path without an additional
+candidate-selection penalty. When every row has been visited, the maximum
+empirical row discrepancy plus the simultaneous statistical radius gives a
+uniform row-TV budget. Combining it with the robust Dobrushin lemmas certifies
+`Dobrushin(P) <= Dobrushin(Q) + 2 * eta`, true-kernel oscillation contraction,
+and uniqueness among supplied invariant PMFs whenever the displayed factor is
+strictly below one.
+
+- **Lean theorem:**
+  `exists_selectedEmpiricalKernelContraction_event` in
+  [`EmpiricalTransitionConfidence.lean`](./FormalSLT/StochasticDynamics/EmpiricalTransitionConfidence.lean)
+- **Checked example:**
+  [`CheckEmpiricalTransitionConfidence.lean`](./examples/CheckEmpiricalTransitionConfidence.lean)
+  instantiates the all-time event for a Boolean kernel and proves a separate
+  balanced-prefix arithmetic receipt at `n = 1024`: every row is visited 512
+  times, the fair candidate has zero empirical discrepancy, the certified
+  kernel-TV budget is below `1/4`, and the candidate perturbation factor is
+  below one.
+
+The normalized claims require positive visit mass, and the all-row contraction
+certificate requires every source row to have been visited. The balanced path
+receipt proves deterministic arithmetic conditional on membership in the
+statistical good event; it does not prove that named path belongs to the event
+or that their intersection has positive probability. The module does not
+estimate an invariant PMF, prove invariant-law existence, produce a mixing
+time, or justify constructing a Poisson potential from the same data without
+a separately uniformized catalog or sample split. Its event is an outer-mass
+package; no measurability theorem for that event is claimed.
 
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
@@ -1016,11 +1056,12 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `StochasticDynamics.MarkovRisk`, `StochasticDynamics.MarkovPACBayes`,
   `StochasticDynamics.MarkovPACBayesTiltMixture`, and
   `StochasticDynamics.StationaryPoissonPACBayes`,
-  `StochasticDynamics.StationaryPoissonContraction`, and
+  `StochasticDynamics.StationaryPoissonContraction`,
   `StochasticDynamics.StationaryPoissonDobrushin`,
-  `StochasticDynamics.StationaryPoissonRobustCandidate`, and
-  `StochasticDynamics.StationaryPoissonRobustInvariant`, re-exported by the
-  stable topic import `FormalSLT.StochasticDynamics`
+  `StochasticDynamics.StationaryPoissonRobustCandidate`,
+  `StochasticDynamics.StationaryPoissonRobustInvariant`, and
+  `StochasticDynamics.EmpiricalTransitionConfidence`, re-exported by the stable
+  topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
 
@@ -1111,6 +1152,12 @@ The main learning-theory results are deliberately finite and explicit.
   fixed reference PMF and depth for candidate-potential construction. The
   event is an outer-mass package shared by every `n >= 2`, posterior PMF, and
   declared tilt atom
+- **Empirical transition confidence:** finite homogeneous kernel, deterministic
+  initial state, and finite state and tilt types. One outer-mass event controls
+  every transition coordinate and time `n >= 2`. Normalized row certificates
+  require positive visit counts; the uniform kernel certificate requires every
+  row to be visited. A candidate kernel may be selected from the observed path
+  because it is quantified inside the common coordinate event
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -1128,13 +1175,14 @@ The main learning-theory results are deliberately finite and explicit.
   finite-valued observations.
 - Catalog members created after observing their scored outcomes, random
   initial laws, continuous-state dynamics, automatic invariant-law
-  construction, confidence sets for an unknown kernel or row-TV radius,
-  post-data candidate or Poisson-depth selection, and general mixing-time
-  guarantees. Fixed-in-advance online update rules are covered by the finite
-  prefix-dependent trajectory adapter. The robust stationary lane accepts a
-  fixed candidate kernel and deterministic row-TV envelope and proves
-  uniqueness only among supplied invariant PMFs; it does not infer either
-  input from data or prove invariant-law existence.
+  construction, confidence bands for unvisited transition rows, statistically
+  valid same-data selection of a Poisson potential or depth, and general
+  mixing-time guarantees. Fixed-in-advance online update rules are covered by
+  the finite prefix-dependent trajectory adapter. The empirical transition
+  lane permits post-data candidate selection for its row-TV and contraction
+  conclusions, but it does not make the resulting candidate potential a valid
+  same-data stationary-risk score. The robust stationary lane proves
+  uniqueness only among supplied invariant PMFs and does not prove existence.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1232,6 +1280,9 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 - [x] Transfer stationary certificates from a fixed candidate kernel under a
   deterministic row-TV envelope and certify uniqueness among supplied
   invariant PMFs under strict candidate contraction
+- [x] Add time-uniform empirical transition-coordinate bands, visited-row TV
+  certificates, and post-data candidate plug-in contraction for unknown finite
+  kernels
 - [ ] Extend the stochastic-dynamics layer to random initial laws,
   auxiliary-data catalog construction, and normalized countable or predictable
   tilt families

@@ -182,6 +182,14 @@ classify_witness() {
 #     (true identity Bool kernel versus a fixed fair-row candidate, exact
 #     row-TV distance 1/2, and a sharp obstruction showing that the doubled
 #     misspecification price is necessary rather than a proof artifact)
+#   exists_selectedEmpiricalKernelContraction_event /
+#     transitionBalanced_candidate_contraction_threshold
+#     (one all-time event for every transition coordinate and post-data
+#     candidate; separately, a balanced Boolean prefix at n = 1024 has every
+#     row visited 512 times, zero fair-candidate empirical discrepancy, kernel
+#     TV budget below 1/4, and strict candidate perturbation contraction. The
+#     arithmetic witness is conditional on good-event membership and does not
+#     prove that the named path is good or a positive-probability intersection.)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -233,6 +241,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
   "examples/CheckStationaryPoissonRobustCandidate.lean"
+  "examples/CheckEmpiricalTransitionConfidence.lean"
 )
 
 fail=0

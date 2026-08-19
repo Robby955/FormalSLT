@@ -250,6 +250,12 @@
     under a deterministic row-TV envelope, including the doubled perturbation
     price and uniqueness among supplied invariant PMFs under strict candidate
     contraction.
+  - [x] Build time-uniform empirical transition-coordinate confidence bands,
+    normalize them on visited rows, and permit post-data candidate-kernel
+    selection for row-TV and Dobrushin contraction certificates.
+  - Uniformize candidate Poisson potentials and finite depths, or use auxiliary
+    data/sample splitting, before plugging a selected candidate back into a
+    stationary-risk score.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
@@ -257,9 +263,9 @@
   - Extend the checked finite weighted-tilt selection to normalized countable
     or predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
-  - Keep invariant-law existence, statistically estimated kernel/row-TV
-    confidence sets, mixing guarantees, continuous-state, and multistep
-    conclusions as separate later theorem families.
+  - Keep invariant-law existence, unvisited-row normalization, mixing
+    guarantees, continuous-state, and multistep conclusions as separate later
+    theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product

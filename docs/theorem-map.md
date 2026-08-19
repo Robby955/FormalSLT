@@ -941,6 +941,35 @@ select a candidate or depth after data, or establish mixing times,
 irreducibility, invariant-law existence, a measurable confidence event,
 continuous-state validity, or unrestricted tilt selection.
 
+## Empirical transition confidence for unknown finite kernels
+
+| Declaration | Module | Role |
+|---|---|---|
+| `TransitionCoordinate` | `StochasticDynamics.EmpiricalTransitionConfidence` | Finite source--destination coordinate together with the direct or complement side |
+| `transitionVisitMass` | `StochasticDynamics.EmpiricalTransitionConfidence` | Observed source-state visit count over the first `n` transitions |
+| `transitionEdgeMass` | `StochasticDynamics.EmpiricalTransitionConfidence` | Observed source--destination transition count over the first `n` transitions |
+| `empiricalTransitionFrequency` | `StochasticDynamics.EmpiricalTransitionConfidence` | Visited-row empirical transition frequency |
+| `transitionCoordinateBoundary` | `StochasticDynamics.EmpiricalTransitionConfidence` | Dirac-posterior empirical-Bernstein boundary for one direct or complement coordinate |
+| `transitionCoordinateRadius` | `StochasticDynamics.EmpiricalTransitionConfidence` | Two-sided coordinate radius normalized by positive source visit mass |
+| `empiricalCandidateRowTotalVariation` | `StochasticDynamics.EmpiricalTransitionConfidence` | Empirical row discrepancy between a candidate kernel and observed transition frequencies |
+| `empiricalTransitionRowRadius` | `StochasticDynamics.EmpiricalTransitionConfidence` | Sum of simultaneous coordinate radii on the probabilists' TV scale |
+| `empiricalCandidateKernelTVBudget` | `StochasticDynamics.EmpiricalTransitionConfidence` | Maximum candidate row discrepancy plus statistical radius across all source states |
+| `exists_empiricalTransitionCoordinate_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | One outer-mass event gives two-sided predictable-versus-observed bands for every coordinate and time `n >= 2` |
+| `exists_empiricalTransitionFrequency_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Normalizes the common coordinate event on every row with positive visit mass |
+| `exists_empiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Certifies a row-TV ball for every candidate kernel introduced after the common event |
+| `exists_selectedEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Explicit path- and time-selected candidate specialization with no additional selection cost |
+| `exists_empiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Gives one uniform candidate-kernel row-TV budget when every source row has been visited |
+| `exists_selectedEmpiricalKernelContraction_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Combines a selected candidate's empirical row-TV budget with Dobrushin perturbation, true-kernel contraction, and uniqueness among supplied invariant PMFs |
+
+The normalized row statements require positive source visit mass, and the
+uniform kernel statement requires every row to have been visited. Candidate
+selection is valid for these row-TV and contraction conclusions because the
+candidate is quantified after the common coordinate event. This does not
+construct an invariant PMF, prove invariant-law existence, give a mixing time,
+or validate a Poisson potential or stationary-risk score selected from the same
+trajectory without separate uniformization or sample splitting. The event is
+controlled by outer mass; no measurability theorem is claimed.
+
 ## Named tail-probability corollaries
 
 | Declaration | Module | Role |

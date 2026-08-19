@@ -259,6 +259,29 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.invariantPMF_unique_of_candidate_rowTV"
   "FormalSLT.StochasticDynamics.stationaryMarkovRisk_eq_of_candidate_rowTV"
   "FormalSLT.StochasticDynamics.stationaryPosteriorMarkovRisk_eq_of_candidate_rowTV"
+  "FormalSLT.StochasticDynamics.transitionIndicatorScore_mem_Icc"
+  "FormalSLT.StochasticDynamics.transitionCoordinateMarkovScore_mem_Icc"
+  "FormalSLT.StochasticDynamics.transitionCoordinateTrajectoryScore_mem_Icc"
+  "FormalSLT.StochasticDynamics.transitionVisitMass_nonneg"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_transitionCoordinate_direct"
+  "FormalSLT.StochasticDynamics.observedTrajectoryScore_transitionCoordinate_complement"
+  "FormalSLT.StochasticDynamics.markovRowRisk_transitionIndicatorScore"
+  "FormalSLT.StochasticDynamics.markovRowRisk_transitionCoordinate_complement"
+  "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_transitionCoordinate_direct"
+  "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_transitionCoordinate_complement"
+  "FormalSLT.StochasticDynamics.trajectoryEmpiricalPrequentialRisk_transitionCoordinate_direct"
+  "FormalSLT.StochasticDynamics.trajectoryAverageConditionalRisk_transitionCoordinate_direct"
+  "FormalSLT.StochasticDynamics.trajectoryEmpiricalPrequentialRisk_transitionCoordinate_complement"
+  "FormalSLT.StochasticDynamics.trajectoryAverageConditionalRisk_transitionCoordinate_complement"
+  "FormalSLT.StochasticDynamics.pacBayesPosteriorAverage_dirac"
+  "FormalSLT.StochasticDynamics.finiteUniformRealPMF_isFullSupport"
+  "FormalSLT.StochasticDynamics.klDiv_dirac_finiteUniformRealPMF"
+  "FormalSLT.StochasticDynamics.exists_empiricalTransitionCoordinate_event"
+  "FormalSLT.StochasticDynamics.exists_empiricalTransitionFrequency_event"
+  "FormalSLT.StochasticDynamics.exists_empiricalCandidateRowTotalVariation_event"
+  "FormalSLT.StochasticDynamics.exists_selectedEmpiricalCandidateRowTotalVariation_event"
+  "FormalSLT.StochasticDynamics.exists_empiricalCandidateKernelTV_event"
+  "FormalSLT.StochasticDynamics.exists_selectedEmpiricalKernelContraction_event"
 )
 
 # Axioms permitted in a clean proof.
@@ -317,6 +340,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant"
+  echo "import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -371,7 +395,8 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonContraction \
   FormalSLT.StochasticDynamics.StationaryPoissonDobrushin \
   FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate \
-  FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant >/dev/null
+  FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant \
+  FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

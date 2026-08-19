@@ -200,6 +200,34 @@ construct a confidence set; permit post-data candidate or depth selection;
 prove invariant-law existence or a quantitative mixing time; or cover random
 initial laws, controlled dynamics, continuous states, or unrestricted tilts.
 
+### Empirical transition confidence and selected candidates
+
+`StochasticDynamics.EmpiricalTransitionConfidence` treats each finite
+source--destination transition indicator and its complement as a bounded
+trajectory score. For a finite homogeneous kernel and deterministic initial
+state, one outer-mass event is simultaneous over all `n >= 2`, source and
+destination coordinates, and atoms of a supplied finite tilt catalog. Before
+normalization, the theorem compares observed transition mass with predictable
+visit-gated transition mass and remains meaningful for an unvisited row.
+
+Normalizing to a transition-probability radius requires strictly positive
+source visit mass. Summing the simultaneous coordinate radii gives a row-TV
+certificate. The candidate kernel is introduced only after the common event,
+so it may be selected from the observed path without another selection cost.
+If every source row has positive visit mass, the maximum row certificate feeds
+the deterministic Dobrushin perturbation theorem and can certify contraction
+of the true kernel and uniqueness among supplied invariant PMFs.
+
+The result is finite-state and does not provide a positive normalized radius
+for an unvisited row. It does not construct an invariant PMF or prove one
+exists, estimate a mixing time, cover a random initial law, or extend to
+continuous states. Post-data candidate validity here is limited to the row-TV
+and deterministic contraction conclusions already uniform in the candidate;
+it does not justify selecting a candidate Poisson potential or stationary-risk
+score from the same data without a predeclared uniform catalog, auxiliary data,
+or sample splitting. The common confidence set is an outer-mass package; no
+separate measurability theorem is claimed.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -656,7 +684,9 @@ declared-tilt selector, the supplied-Poisson stationary-risk bridge above, and
 finite-depth potentials under supplied or computed Dobrushin contraction. A
 fixed candidate kernel can now be transferred under a deterministic row-TV
 envelope, including uniqueness among supplied invariant PMFs under strict
-candidate contraction. Natural next layers are post-data depth allocation, a
-random initial law, controlled/action-dependent kernels, auxiliary-data
-catalog construction, statistically valid unknown-kernel confidence sets,
+candidate contraction. Empirical transition-coordinate bands now add
+time-uniform visited-row confidence radii and post-data candidate contraction
+certificates for unknown finite kernels. Natural next layers are post-data
+depth allocation, a random initial law, controlled/action-dependent kernels,
+auxiliary-data construction of valid stationary-score catalogs,
 invariant-law existence, and continuous-state stationary inference.
