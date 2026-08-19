@@ -13,6 +13,7 @@ import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
@@ -38,7 +39,8 @@ layer supports arbitrary prefix-dependent probability kernels and bounded
 prefix/next-state scores; the measurable-state layer uses a jointly measurable
 bounded score contract. It also re-exports Markov anytime-valid and
 posterior-uniform PAC-Bayes certificates, including finite-catalog and
-arbitrary-measurable-hypothesis empirical-Bernstein trajectory endpoints.
+countable-tilt finite-state trajectory endpoints and arbitrary-measurable-
+hypothesis empirical-Bernstein trajectory endpoints.
 For the finite homogeneous Markov tilt-catalog endpoint, it also re-exports
 the extension from a deterministic start to an arbitrary supplied finite-state
 initial PMF.

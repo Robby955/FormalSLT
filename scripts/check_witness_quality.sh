@@ -290,6 +290,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckStationaryPoissonPACBayes.lean"
   "examples/CheckStationaryPoissonContraction.lean"
+  "examples/CheckStationaryPoissonDepthSelection.lean"
   "examples/CheckStationaryTargetPolicyOPE.lean"
   "examples/CheckDynamicTargetPolicyComparator.lean"
   "examples/CheckTargetPathChangeOfMeasure.lean"

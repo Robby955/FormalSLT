@@ -60,11 +60,11 @@ interfaces once the theorem assumptions are clean enough to reuse.
 
 ### 3. Joint hypothesis--tilt processes and continuous-posterior extensions
 
-**Target.** Extend the checked finite normalized hypothesis--tilt e-process to
-a countable declared tilt mixture, then extend the current fixed
-spherical-Gaussian specialization to broader posterior families. A countable
-theorem should retain positive predeclared tilt weights and expose the
-corresponding `log (1 / weight)` cost; it should not claim unrestricted
+**Target.** Extend the checked countable finite-hypothesis forward master to
+arbitrary measurable hypothesis priors and arbitrary measurable states, then
+develop predictable tilt families and honest all-real localization. Any such
+extension should retain explicit predeclared weights or a proved localization
+penalty; it must not silently turn selected catalog atoms into unrestricted
 post-sample optimization over all real tilts.
 
 The current repo proves finite PMFs, KL divergence nonnegativity, Gibbs
@@ -109,6 +109,16 @@ losses. The posterior and atom may be selected from the path and time, and the
 atom may inspect the posterior. The boundary pays one hypothesis KL and the
 selected atom's log-weight cost. The hybrid expression is not itself proved to
 be an e-process.
+`PACBayes.ForwardBesselPACBayesCountable` strengthens this finite-hypothesis
+lane to a normalized positive `Nat`-indexed mixture of the actual
+predictable-residual processes. One event controls every `n >= 2`, finite
+posterior PMF, and declared atom with cost
+`log (1 / (delta * weight j))`. For the checked polynomial weights, geometric
+tilts, and selector `j(n) = (Nat.log 4 n).pred`, the exact selected boundary
+tends to zero for arbitrary path- and time-dependent posterior PMFs. The
+finite-state full-prefix trajectory adapter obtains the corresponding result
+by countable confidence allocation; it does not claim that the allocation
+union or hybrid-Bessel boundary is itself a master e-process.
 For dependent data, `StochasticDynamics.MarkovPACBayesTiltMixture` checks an
 all-positive-time theorem simultaneous over every posterior and every atom of
 a predeclared full-support finite tilt prior under an actual finite Markov path
@@ -138,28 +148,23 @@ log-likelihood-ratio assumptions.
 
 **Dependencies.**
 
-- add an all-`λ` confidence event beyond the checked fixed-sample
-  natural-index selector for a countable tilt-pair catalog;
-- extend the finite normalized hypothesis--tilt e-process to a countable
-  mixture with the required summability and integrability obligations;
-- derive a vanishing optimized all-time boundary from the checked forward
-  hybrid-Bessel lane without treating the hybrid expression as an e-process;
+- integrate countable tilts with arbitrary measurable hypothesis priors;
+- derive the corresponding jointly measurable arbitrary-state adapter;
 - develop a localization penalty for any honest all-`λ` statement;
-- extend beyond the fixed spherical-Gaussian posterior family while retaining
-  explicit measurable-space and integrability assumptions.
+- design predictable time-varying tilt interfaces without retroactive fitting;
+- extend random-start support beyond the homogeneous finite-state Markov layer.
 
-**Boundary.** The normalized process-level tilt master remains finite and
-selects one declared atom rather than an arbitrary joint posterior. Its failure
-set has outer mass at most `delta`; its finite-IID adapter wraps the concrete
-risk failure set in a measurable event of mass at most `delta`. The
-finite-hypothesis grid theorem remains finite, and the Markov posterior-uniform
-theorem likewise selects one atom from a predeclared finite prior. It is not
-countable, an all-real optimizer, a predictable time-varying tilt, or an
-arbitrary joint predictor--tilt posterior theorem. The base
-continuous-hypothesis i.i.d. theorem is fixed-tilt and fixed-posterior, and is
-specialized to spherical Gaussians. Finite fixed catalogs of posterior/tilt
-pairs support simultaneous validity and sample-dependent selection, but this is
-not an all-posterior or all-`λ` time-uniform confidence statement.
+**Boundary.** The finite-hypothesis forward layer has a normalized countable
+master e-process and an explicit geometric selector with a vanishing exact
+boundary. It selects one declared atom rather than an arbitrary joint posterior
+or an uncontrolled real tilt. The finite-state trajectory countable theorem
+uses confidence allocation rather than asserting a countable master e-process.
+The continuous-prior and arbitrary-measurable-state forward layers still retain
+finite predeclared tilt catalogs. The base continuous-hypothesis i.i.d. theorem
+is fixed-tilt and fixed-posterior and specialized to spherical Gaussians.
+Finite fixed catalogs of posterior/tilt pairs support simultaneous validity and
+sample-dependent selection, but this is not an all-posterior or all-`λ`
+time-uniform confidence statement.
 
 ### PAC-Bayes empirical sample variance
 
@@ -169,8 +174,11 @@ mixture submartingale, posterior-uniform finite tilt catalog, closed-form epoch
 endpoint, and infinite-product stitch are derived from the bounded-loss model
 rather than supplied as assumptions. Separately, the forward lane checks the
 predictable-residual e-process, its hybrid Bessel lower envelope, a finite
-hypothesis--tilt PAC-Bayes master, and an IID bounded-loss adapter. All-real
-tilt optimization remains open in both routes.
+hypothesis--tilt PAC-Bayes master, a normalized countable finite-hypothesis
+master with an explicit vanishing geometric selector, an IID bounded-loss
+adapter, and a finite-state full-prefix countable trajectory adapter. All-real
+tilt optimization remains open in both routes, and the continuous-prior and
+arbitrary-state forward layers remain finite-tilt.
 
 The checked foundation defines the population and Bessel empirical loss
 variances, proves the exact ordered-pair second-order-statistic identity,
@@ -245,8 +253,10 @@ continuity, and log-likelihood-ratio integrability. It uses one event shared by
 every `n >= 2`, but is an offline reverse-exchangeability theorem: it does not
 itself construct a forward e-process, predictable betting strategy,
 optional-stopping API, continuous-observation result, or all-real post-hoc
-optimizer. The separate forward result now has both finite-hypothesis and
-arbitrary-measurable-hypothesis masters but remains finite-tilt; its hybrid
+optimizer. The separate forward result now has a normalized countable master
+for finite hypotheses and a finite-state countable trajectory adapter with an
+explicit vanishing selected boundary. The arbitrary-measurable-hypothesis
+master and arbitrary-state adapter remain finite-tilt, and the hybrid
 expression is only a lower envelope. Its arbitrary-state trajectory adapter
 requires a supplied jointly measurable score, starts deterministically, and
 does not construct a measurable posterior selector. The basic `Real` receipt
@@ -262,8 +272,8 @@ boundary comparison. The separate finite-IID informative receipt proves
 positive Bessel variance `1/32`,
 `KL = log 2`, a
 theorem-produced good path with risk below `343/1000`, and a same-prefix
-boundary comparison of approximately `0.312` versus `0.760`. It still has no
-vanishing optimized finite-catalog boundary.
+boundary comparison of approximately `0.312` versus `0.760`. The countable
+selector is explicit but is not an optimized all-real boundary.
 The random-matching proof formalizes the source variance inequality; neither
 route is presented with a novelty or priority claim.
 

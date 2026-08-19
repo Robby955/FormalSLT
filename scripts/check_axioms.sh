@@ -19,6 +19,9 @@ LAKE="${LAKE:-$HOME/.elan/bin/lake}"
 
 # Flagship public theorems to audit (fully qualified).
 THEOREMS=(
+  "FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily"
+  "FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective"
+  "FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail"
   "FormalSLT.PACBayesKL.informationTheory_klDiv_toPMF_eq_of_support"
   "FormalSLT.PACBayesKL.toReal_informationTheory_klDiv_toPMF_eq_of_support"
   "FormalSLT.TestTimeMeta.flagshipFourComponent_four_slots_positive"
@@ -146,6 +149,9 @@ THEOREMS=(
   "FormalSLT.PACBayes.ForwardBesselPACBayes.forwardBesselPACBayes_allPosteriors_of_not_mem"
   "FormalSLT.PACBayes.ForwardBesselPACBayes.forwardBesselPACBayes_selected_of_not_mem"
   "FormalSLT.PACBayes.ForwardBesselPACBayes.exists_forwardBesselPACBayes_event"
+  "FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesMasterProcess_eProcess_of_bounded"
+  "FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event"
+  "FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event"
   "FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardPrefixMean_iidObservedLoss"
   "FormalSLT.PACBayes.ForwardBesselPACBayesIID.posteriorAverage_forwardPrefixMean_iidObservedLoss"
   "FormalSLT.PACBayes.ForwardBesselPACBayesIID.iidObservedLoss_incrementAdapted"
@@ -307,6 +313,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate"
   "FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_selected_event"
+  "FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"
+  "FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_event"
   "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_poissonCorrectedTrajectoryScore"
   "FormalSLT.StochasticDynamics.sum_poissonPotential_increment"
   "FormalSLT.StochasticDynamics.trajectoryEmpiricalPrequentialRisk_poissonCorrected"
@@ -544,6 +552,7 @@ trap 'rm -rf "$WORK"' EXIT
 CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
+  echo "import FormalSLT.VC"
   echo "import FormalSLT.PACBayes.FinitePMFBridge"
   echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
   echo "import FormalSLT.TestTimeMeta.FlagshipAnytimeValid"
@@ -583,6 +592,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.TimeUniformScorePACBayes"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
   echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
+  echo "import FormalSLT.PACBayes.ForwardBesselPACBayesCountable"
   echo "import FormalSLT.StochasticDynamics.TrajectoryRisk"
   echo "import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound"
   echo "import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk"
@@ -593,6 +603,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw"
   echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
   echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonContraction"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin"
@@ -616,6 +627,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 echo "== building flagship modules =="
 "$LAKE" build \
+  FormalSLT.VC \
   FormalSLT.PACBayes.FinitePMFBridge \
   FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \
   FormalSLT.TestTimeMeta.FlagshipAnytimeValid \
@@ -648,6 +660,7 @@ echo "== building flagship modules =="
   FormalSLT.AnytimeValid.SelectionCost \
   FormalSLT.AnytimeValid.AllocationLogLog \
   FormalSLT.PACBayes.ForwardBesselPACBayes \
+  FormalSLT.PACBayes.ForwardBesselPACBayesCountable \
   FormalSLT.PACBayes.ForwardBesselPACBayesIID \
   FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
@@ -664,6 +677,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
   FormalSLT.StochasticDynamics.TrajectoryPACBayes \
   FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes \
+  FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable \
   FormalSLT.StochasticDynamics.StationaryPoissonPACBayes \
   FormalSLT.StochasticDynamics.StationaryPoissonContraction \
   FormalSLT.StochasticDynamics.StationaryPoissonDobrushin \
@@ -692,11 +706,6 @@ echo "$RAW"
 # capitalized/qualified identifier is a forbidden axiom.
 FLAT="$(printf '%s\n' "$RAW" | tr '\n' ' ')"
 
-STRIPPED="$FLAT"
-for a in "${ALLOWED[@]}"; do
-  STRIPPED="${STRIPPED//$a/}"
-done
-
 # Hard failures: explicitly flag the usual offenders for a clear message.
 # `native_decide` surfaces either `Lean.ofReduceBool` or a generated
 # `..._native.native_decide.ax_*` axiom depending on the toolchain; match both.
@@ -711,32 +720,23 @@ fi
 # bare "depends on axioms: [Foo" residue should remain inside the bracketed
 # lists. We extract the bracketed axiom lists and re-scan them.
 LISTS="$(printf '%s\n' "$FLAT" | grep -Eo '\[[^]]*\]' || true)"
-RESIDUE="$LISTS"
-for a in "${ALLOWED[@]}"; do
-  RESIDUE="${RESIDUE//$a/}"
-done
 # Remove brackets, commas, and whitespace; anything left is an unexpected axiom.
-RESIDUE="$(printf '%s' "$RESIDUE" | tr -d '[],[:space:]')"
+RESIDUE="$(printf '%s' "$LISTS" | sed -E 's/propext|Classical\.choice|Quot\.sound//g' | tr -d '[],[:space:]')"
 if [ -n "$RESIDUE" ]; then
   echo "ERROR: unexpected axiom(s) outside the allowed set: $RESIDUE" >&2
   exit 1
 fi
 
 # Sanity: each theorem must actually have been printed (guards against a rename
-# silently dropping a target from the audit).
-MISSING=0
-for t in "${THEOREMS[@]}"; do
-  # An axiom-free theorem prints "does not depend on any axioms" (no "depends on
-  # axioms" substring), which is the cleanest case, so accept both phrasings.
-  if grep -qF "'$t' depends on axioms" <<< "$RAW"; then
-    continue
-  fi
-  if grep -qF "'$t' does not depend on any axioms" <<< "$RAW"; then
-    continue
-  fi
-  echo "ERROR: no axiom report for $t (renamed or removed?)" >&2
-  MISSING=1
-done
-[ "$MISSING" -eq 0 ] || exit 1
+# silently dropping a target from the audit). Compare the two sorted name sets
+# once; repeatedly scanning the full Lean transcript is needlessly quadratic.
+EXPECTED_REPORTS="$(printf '%s\n' "${THEOREMS[@]}" | sort -u)"
+ACTUAL_REPORTS="$(printf '%s\n' "$RAW" | sed -nE "s/^'([^']+)' (depends on axioms|does not depend on any axioms).*/\1/p" | sort -u)"
+MISSING_REPORTS="$(comm -23 <(printf '%s\n' "$EXPECTED_REPORTS") <(printf '%s\n' "$ACTUAL_REPORTS"))"
+if [ -n "$MISSING_REPORTS" ]; then
+  echo "ERROR: no axiom report for:" >&2
+  printf '%s\n' "$MISSING_REPORTS" >&2
+  exit 1
+fi
 
 echo "axiom gate passed: only {propext, Classical.choice, Quot.sound}"

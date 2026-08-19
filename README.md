@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C528-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-238-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-120%2C233-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C860-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-251-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-130%2C383-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -147,6 +147,13 @@ post-data posterior PMF, and every declared tilt atom. The selected atom may
 depend on the path, time, and posterior. Its boundary pays one hypothesis KL
 term and the selected atom's `log (1 / (delta * weight))` cost.
 
+For finite hypotheses, a separate normalized `Nat`-indexed tilt mixture is an
+actual master e-process. Its geometric tilt schedule permits post-path atom and
+posterior substitution and gives an explicit selected boundary tending to
+zero. The finite-state full-prefix trajectory adapter obtains the analogous
+all-time vanishing conclusion by countable confidence allocation across
+singleton events; it does not claim that this union is itself an e-process.
+
 A separate continuous-prior engine integrates the actual parameterized
 predictable-residual processes over an arbitrary measurable hypothesis space.
 Its full-prefix trajectory adapter also permits an arbitrary measurable state
@@ -162,6 +169,13 @@ with `0 < lambda_j < 1`.
   [`ForwardBesselPACBayes.lean`](./FormalSLT/PACBayes/ForwardBesselPACBayes.lean)
   and
   [`ForwardBesselPACBayesIID.lean`](./FormalSLT/PACBayes/ForwardBesselPACBayesIID.lean)
+- **Countable-tilt Lean theorems:**
+  `exists_geometricForwardBesselPACBayes_allTime_vanishing_event` in
+  [`ForwardBesselPACBayesCountable.lean`](./FormalSLT/PACBayes/ForwardBesselPACBayesCountable.lean)
+  and the full-prefix trajectory endpoint
+  `exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event`
+  in
+  [`TrajectoryEmpiricalBernsteinPACBayesCountable.lean`](./FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean)
 - **Continuous Lean theorems:**
   `exists_continuousForwardPredictableMeanBesselPACBayes_event` in
   [`ContinuousForwardPredictableMeanBesselPACBayes.lean`](./FormalSLT/PACBayes/ContinuousForwardPredictableMeanBesselPACBayes.lean)
@@ -197,8 +211,10 @@ The displayed hybrid Bessel expression is only a checked lower envelope of the
 actual predictable-residual e-process; it is not itself proved to be an
 e-process. The informative receipt compares boundary formulas on one selected
 prefix; it does not assert that this path lies outside the fixed-proxy lane's
-separate exceptional event. The finite tilt catalog does not yet give a
-vanishing optimized all-time boundary. The continuous event is
+separate exceptional event. The checked countable result is finite-hypothesis
+and uses an explicit geometric selector; it is not all-real optimization or a
+predictable tilt rule. The continuous-prior and arbitrary-state event remains
+finite-tilt and is
 posterior-uniform but does not construct a measurable posterior selector or a
 selected process, and its trajectory adapter starts deterministically. The
 arbitrary-state endpoint requires a supplied jointly measurable score family;
@@ -453,6 +469,7 @@ a separate measurability theorem. The selected boundary is not asserted to be
 an e-process. Finite invariant existence supplies neither a computable closed
 form nor irreducibility, a convergence rate, or a mixing time; uniqueness
 requires one of the displayed strict contraction hypotheses.
+
 ### Controlled trajectory semantics
 
 For finite state and action spaces, `ControlledTrajectory` constructs the path
@@ -548,7 +565,7 @@ vanishing full-trajectory importance-sampling boundary, unknown-environment
 inference, or learned-nuisance guarantee is claimed.
 
 The source theorem, exact agreement, material differences, and external-review
-questions for each result are tracked in
+questions for selected flagship results are tracked in
 [`docs/LITERATURE.md`](./docs/LITERATURE.md).
 
 ## Current results
@@ -1360,49 +1377,28 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformScorePACBayes`,
   `PACBayes.TimeUniformTiltMixture`,
   `PACBayes.TimeUniformIIDTiltMixture`,
+  `PACBayes.ForwardBesselPACBayes`,
+  `PACBayes.ForwardBesselPACBayesCountable`,
+  `PACBayes.ForwardBesselPACBayesIID`,
   `PACBayes.ContinuousForwardPredictableMeanBesselPACBayes`,
   `PACBayes.TimeUniformContinuousPACBayes`,
   `PACBayes.TimeUniformGaussianPACBayes`, `PACBayes.TimeUniformIID`,
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
-- **Stochastic dynamics:** `StochasticDynamics.TrajectoryRisk`,
-  `StochasticDynamics.TrajectoryPACBayes`,
-  `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes`,
-  `StochasticDynamics.MarkovRisk`, `StochasticDynamics.MarkovPACBayes`,
-  `StochasticDynamics.MarkovPACBayesTiltMixture`, and
-  `StochasticDynamics.StationaryPoissonPACBayes`,
-  `StochasticDynamics.StationaryPoissonContraction`,
-  `StochasticDynamics.StationaryPoissonDobrushin`,
-  `StochasticDynamics.StationaryPoissonDepthSelection`,
-  `StochasticDynamics.StationaryPoissonRobustCandidate`,
-  `StochasticDynamics.StationaryPoissonRobustInvariant`, and
-  `StochasticDynamics.EmpiricalTransitionConfidence`,
-  `StochasticDynamics.EmpiricalStationaryCatalog`,
-  `StochasticDynamics.FiniteInvariantExistence`, and
-  `StochasticDynamics.FiniteInvariantUniqueness`, re-exported by the stable
-  `StochasticDynamics.MeasurableTrajectoryRisk`,
-  `StochasticDynamics.TrajectoryPACBayes`,
-  `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes`,
-  `StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes`,
-  `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes`,
-  `StochasticDynamics.MarkovRisk`,
-  `StochasticDynamics.MarkovPACBayes`, and
-  `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
-  topic import `FormalSLT.StochasticDynamics`
-  `StochasticDynamics.StationaryPoissonPACBayes`, together with the separate
-  controlled behavior-law semantic interface
-  `StochasticDynamics.ControlledTrajectory` and its supplied-Poisson
-  `StochasticDynamics.StationaryTargetPolicyOPE` specialization and the
-  encountered-prefix comparator modules
-  `StochasticDynamics.DynamicTargetPolicyComparator` and
-  `StochasticDynamics.PrefixDynamicTargetPolicyComparator`, re-exported by the
-  `StochasticDynamics.MarkovPACBayesTiltMixture`, and
-  `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw`, re-exported by the
-  stable topic import `FormalSLT.StochasticDynamics`
+- **Stochastic dynamics:** finite and measurable-state trajectory semantics;
+  finite, countable-tilt, and continuous-prior trajectory PAC-Bayes; homogeneous Markov
+  certificates with deterministic or supplied finite-state initial law;
+  stationary Poisson construction, depth selection, robustness, transition
+  confidence, invariant existence, and empirical candidate catalogs; and
+  controlled semantics, stationary target-policy OPE, dynamic comparators,
+  and finite-horizon target-path change of measure. These modules are
+  re-exported by `FormalSLT.StochasticDynamics`; exact names and endpoints are
+  listed in [`docs/theorem-map.md`](./docs/theorem-map.md).
 
 ## Scope and open boundaries
 
-The main learning-theory results are deliberately finite and explicit.
+Many foundational learning-theory results are deliberately finite, and every
+public theorem keeps its finite or measurable-space scope explicit.
 
 ### Assumptions
 
@@ -1520,11 +1516,6 @@ The main learning-theory results are deliberately finite and explicit.
   may be selected from that path, but every normalized source row must have
   positive visit mass. The target is the chosen finite invariant PMF; strict
   candidate contraction is required for uniqueness
-- **Supplied-Poisson stationary risk:** finite state, hypothesis, and tilt
-  types; deterministic initial state; supplied invariant PMF; supplied bounded
-  exact or approximate Poisson potentials; and finite declared tilts in
-  `(0,1)`. The event is an outer-mass package shared by every `n >= 2`,
-  posterior PMF, and declared tilt atom
 - **Controlled trajectory semantics:** finite state, action, and target-policy
   catalog types; deterministic initial decision--state pair; full-history
   behavior and target policies; homogeneous controlled environment; bounded
@@ -1555,44 +1546,24 @@ The main learning-theory results are deliberately finite and explicit.
 - A general probability-space Dudley theorem that constructs arbitrary
   measurable suprema and the required separability/chaining interface
 - An infinite-class confidence sequence
-- A countable or all-real forward tilt mixture or a vanishing optimized
-  all-time hybrid-Bessel boundary. The checked stochastic object is the
-  predictable-residual e-process;
-  the hybrid Bessel expression is only its lower envelope, not a separately
-  proved e-process. The offline reverse-epoch theorem remains a distinct
-  all-sample-size result over arbitrary measurable hypothesis spaces with
-  finite-valued observations.
-- Catalog members created after observing their scored outcomes, random
-  initial laws, continuous-state dynamics, confidence bands for unvisited
-  transition rows, arbitrary path-fitted Poisson candidates outside a finite
-  predeclared catalog, and general mixing-time guarantees. Post-data candidate,
-  depth, geometric risk-tilt, finite transition-tilt, and posterior selection
-  are covered by one same-trajectory catalog event only for the declared
-  finite candidate family and visited rows. Fixed-in-advance online update
-  rules are covered by the finite prefix-dependent trajectory adapter. Finite
-  invariant-law existence is proved, but the canonical law is a noncomputable
-  choice and uniqueness still requires a strict Dobrushin or candidate row-TV
-  contraction certificate.
-  initial laws, continuous-state dynamics, automatic invariant-law or Poisson-
-  potential construction, mixing-derived span guarantees, and a general
-  anytime-valid target-law occupancy or dynamic-policy value theorem.
-  Finite-horizon target-path occupancy identities are checked separately.
-  Fixed-in-advance online
-  update rules are covered by the finite prefix-dependent trajectory adapter;
-  finite controlled behavior-law semantics are checked separately; stationary
-  Markov and state-Markov target-policy risks are covered only when the
-  invariant PMF and bounded Poisson data are supplied.
-  initial laws, atomless-dynamics receipts, matched boundary comparisons, and
-  stationary or mixing-based long-run risk guarantees. Fixed-in-advance online
-  update rules are covered by the finite adapter; arbitrary measurable state
-  and hypothesis spaces are covered under a supplied jointly measurable score
-  family and deterministic start.
-- Catalog members created after observing their scored outcomes, random-start
-  general prefix-dependent trajectory laws, continuous-state dynamics, and
-  stationary or mixing-based long-run risk guarantees. Fixed-in-advance online
-  update rules are covered by the finite prefix-dependent trajectory adapter;
-  arbitrary supplied initial PMFs are checked for the homogeneous finite-state
-  Markov weighted-tilt certificate.
+- A countable continuous-prior or arbitrary-state forward tilt master,
+  predictable tilt family, all-real tilt optimizer, or vanishing *optimized*
+  all-time hybrid-Bessel boundary. The finite-hypothesis normalized countable
+  master and the finite-state trajectory geometric selector with boundary
+  tending to zero are checked separately. The latter uses countable confidence
+  allocation rather than a selected countable master e-process. In every case,
+  the hybrid Bessel expression is only a lower envelope of the actual
+  predictable-residual e-process, not a separately proved e-process.
+- Catalog members created after their scored outcomes, arbitrary path-fitted
+  Poisson candidates outside the finite predeclared catalog, normalized
+  confidence for unvisited rows, random starts for general prefix-dependent,
+  measurable-state, or controlled trajectories, continuous-state stationary
+  risk, quantitative mixing, learned controlled nuisances, and an anytime-valid
+  cumulative-weight target-policy value theorem. Fixed-in-advance online rules,
+  arbitrary measurable state and hypothesis spaces with deterministic start,
+  supplied finite-state initial PMFs for the homogeneous Markov endpoint,
+  finite invariant-law existence, and fixed-horizon target-path identities are
+  checked separately under their stated assumptions.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1628,10 +1599,7 @@ Run the complete release check from the repository root:
 ```bash
 lake exe cache get
 lake build FormalSLT
-for f in examples/*.lean; do
-  echo "$f"
-  lake env lean "$f"
-done
+make examples
 make tutorials
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
@@ -1645,7 +1613,7 @@ git diff --check
 
 Expected results:
 
-- the root build, example sweep, and tutorials finish successfully;
+- the root build, recursive example sweep, and tutorials finish successfully;
 - public checkers print only standard Lean/Mathlib axioms;
 - the proof-debt scans find no executable `sorry`, `admit`, or custom axiom;
 - generated proof-frontier, badge, and documentation anchors are current; and
@@ -1664,8 +1632,11 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   measurable suprema and non-finite outcome constructions
 - [x] Lift the checked countable fixed-sample master event to finite-posterior
   and exact piecewise-`xi` natural-index selector endpoints
-- [ ] Countable weighted `λ` catalogs for process-level selection beyond the
-  checked fixed-sample selector layer
+- [x] Mix a normalized `Nat`-indexed forward tilt catalog into a
+  finite-hypothesis master e-process with exact atom costs and post-path
+  selection
+- [x] Add a finite-state full-prefix countable-allocation endpoint whose
+  explicit geometric selected boundary tends to zero
 - [x] Mix a finite, normalized hypothesis--tilt catalog into one generic
   sub-Gamma e-process with post-path atom selection
 - [x] Specialize the finite hypothesis--tilt master to measurable IID `[0,1]`
@@ -1680,9 +1651,10 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
 - [x] Extend the forward predictable-residual master to arbitrary measurable
   hypothesis and state spaces through a supplied jointly measurable full-prefix
   score family, with a fixed-posterior Gaussian/Rademacher numerical receipt
-- [ ] Extend the forward lane to a vanishing optimized all-time boundary,
-  countable or all-real tilt control, random initial laws, atomless transition
-  receipts, and matched boundary comparisons
+- [ ] Extend countable forward control to continuous priors and arbitrary
+  states; add predictable or all-real tilt control, a vanishing optimized
+  boundary, broader random-start support, atomless transition receipts, and
+  matched comparisons
 - [ ] Extend end-to-end i.i.d. bounded-loss PAC-Bayes beyond finite-dimensional
   spherical Gaussian priors and posteriors
 - [x] Extend the finite PAC-Bayes certificate to a predeclared catalog of
@@ -1705,13 +1677,12 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   depth, tilt, and posterior substitution
 - [x] Construct an invariant PMF for every nonempty finite kernel and upgrade
   it to uniqueness under strict Dobrushin or candidate row-TV contraction
-- [ ] Extend the stochastic-dynamics layer to random initial laws,
-  auxiliary-data catalog construction, and normalized countable or predictable
-  tilt families
 - [x] Extend the finite homogeneous-Markov weighted-tilt certificate to an
   arbitrary supplied finite-state initial PMF
-- [ ] Extend the stochastic-dynamics layer to auxiliary-data catalog
-  construction and normalized countable or predictable tilt families
+- [ ] Extend random starts to prefix-dependent, measurable-state, and
+  controlled endpoints; add auxiliary-data catalog construction, countable
+  tilts for continuous-prior and arbitrary-state layers, and predictable tilt
+  families
 
 ## Dependencies
 

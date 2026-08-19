@@ -10,11 +10,11 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes, and it does not cover random initial laws, controlled kernels, arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, continuous state spaces, multistep prediction, or optional stopping. The separate stationary theorem uses an invariant PMF. Finite-state existence constructs a noncomputable chosen invariant target; uniqueness still requires a strict contraction certificate. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The combined empirical catalog event permits same-path selection only within a finite predeclared candidate family and only after every required row is visited; it does not validate a newly path-fitted Poisson score, establish a mixing time, cover continuous states, or provide a measurable-event theorem.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes or supply arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, multistep prediction, or optional stopping. The separate stationary theorem uses an invariant PMF. Finite-state existence constructs a noncomputable chosen invariant target; uniqueness still requires a strict contraction certificate. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The combined empirical catalog event permits same-path selection only within a finite predeclared candidate family and only after every required row is visited; it does not validate a newly path-fitted Poisson score, establish a mixing time, cover continuous-state stationary risk, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials. The dynamic comparators allow history-dependent targets and a known prefix/time-dependent environment, but control one-step risks only at behavior-realized prefixes. The separate target-path change-of-measure theorem is exact at each fixed finite horizon and exposes worst-case weight range C ^ n; it is not an anytime-valid cumulative-weight boundary. No controlled lane is a learned-nuisance or unknown-kernel result. The arbitrary-state endpoint requires a supplied jointly measurable score and does not construct a measurable posterior selector or selected process. The basic Real checker uses a two-atom transition law and proves positive conditional variance without evaluating the PAC-Bayes boundary. The separate Gaussian/fair-Boolean receipt has posterior finite-set mass zero, KL = 1/32, and boundary at most 489/1024 on theorem-produced good paths in both mass-1/4 sign-flip branches. It fixes the posterior and tilt and still uses two-atom dynamics. The finite-hypothesis forward layer has a normalized countable master e-process, while the finite-state trajectory layer obtains its countable result by confidence allocation rather than a countable master-process claim. These results do not cover random starts for the general prefix-dependent or measurable-state layers, atomless-dynamics evidence, arbitrary joint predictor--tilt posteriors, countable tilts for the continuous-prior or arbitrary-state layers, all-real tilt control, multistep prediction, optional stopping, matched boundary comparison, or stationary long-run risk. Random initial laws are checked only for the homogeneous finite-state Markov weighted-tilt certificate.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
-      "next_step": "Handle candidates fitted outside the finite predeclared catalog using an independently uniform construction or auxiliary data/sample splitting. Add a supplied initial distribution, controlled kernels, continuous-state interfaces, and quantitative mixing guarantees.",
-      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. Finite-depth Neumann potentials have explicit geometric span and residual bounds, finite Dobrushin coefficients supply contraction, fixed candidate kernels transfer under deterministic row-TV envelopes, and time-uniform empirical transition bands certify visited-row TV budgets and post-data candidate contraction. A finite predeclared candidate--depth catalog combines the stationary risk and transition events on the same path and permits post-path candidate, depth, tilt, and posterior substitution. Finite-simplex Cesaro averages construct a chosen invariant PMF for every nonempty finite kernel",
+      "next_step": "Handle candidates fitted outside the finite predeclared catalog using an independently uniform construction or auxiliary data/sample splitting. Extend random starts beyond the homogeneous finite-state Markov endpoint to the general prefix-dependent, measurable-state, and controlled layers. Add unvisited-row and quantitative mixing interfaces, an anytime-valid cumulative-weight or target-policy value theorem, countable control for the continuous-prior and arbitrary-state layers, predictable or all-real tilts, and stronger multistate and atomless evidence.",
+      "scope": "finite-state trajectories with deterministic start and arbitrary fixed prefix-dependent probability kernels and bounded prefix/next-state scores; the semantic layer derives exact conditional risk, centering, and a sharp one-quarter variance proxy. A fixed score functional may encode an online update rule whose current prediction is chosen before the next state arrives. A finite trajectory adapter gives all-positive-time, all-posterior, all-atom PAC-Bayes control for a predeclared catalog of such scores. A separate finite-state adapter allocates confidence over a positive natural-number tilt catalog and supplies an explicit geometric selector whose exact boundary tends to zero. The Markov squared-loss theorem is a specialization. A separate supplied-Poisson bridge converts the forward empirical-Bernstein trajectory event to finite-state stationary risk from a supplied invariant PMF and bounded exact or approximate Poisson potentials. Finite-depth Neumann potentials have explicit geometric span and residual bounds, finite Dobrushin coefficients supply contraction, fixed candidate kernels transfer under deterministic row-TV envelopes, and time-uniform empirical transition bands certify visited-row TV budgets and post-data candidate contraction. A finite predeclared candidate--depth catalog combines the stationary risk and transition events on the same path and permits post-path candidate, depth, tilt, and posterior substitution. Finite-simplex Cesaro averages construct a chosen invariant PMF for every nonempty finite kernel. A finite controlled-trajectory semantic layer derives exact behavior-law predictable means for normalized one-step target-policy scores under overlap and a declared importance-ratio cap. A stationary state-Markov target-policy OPE specialization adds one all-time, all-posterior event when the dynamics, behavior propensities, invariant PMFs, and exact bounded Poisson potentials are supplied. Encountered-prefix comparator theorems cover history-dependent targets under a homogeneous or known prefix/time-dependent environment. A separate finite-horizon target-path theorem gives exact likelihood-weighted behavior-law identities for prefix payoffs, measurable cylinders, and terminal-state occupancy. A separate supplied jointly measurable score contract gives arbitrary-measurable-state semantics and an arbitrary-state/arbitrary-hypothesis forward PAC-Bayes endpoint over a finite predeclared tilt catalog. The homogeneous finite-state Markov weighted-tilt certificate also supports any supplied finite-state initial PMF by mixing the checked deterministic-start path laws",
       "source": "docs/roadmap.md#near-term",
       "status": "partially_closed"
     },
@@ -37,20 +37,29 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The process-level continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. The reverse stitched theorem is instead uniform over finite-KL posteriors on an arbitrary measurable hypothesis space, but it is an offline reverse-exchangeability result with declared finite tilts, not a forward e-process. The new forward hybrid-Bessel PAC-Bayes master is a genuine finite hypothesis--tilt mixture of predictable-residual e-processes; its hybrid Bessel expression is only a pointwise lower envelope and its catalog is finite. Its informative biased-Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No forward result is simultaneous over arbitrary continuous posteriors or all real tilts.",
+      "boundary": "The unconditional result is specific to deterministic one-sided boundaries under the fair-sign product law. It proves divergence after sqrt-n normalization, not the sqrt(2 n log log n) rate. The sharp limsup theorem explicitly assumes the still-unproved FairSignUpperLIL proposition and a boundedness side condition; it does not close a full LIL theorem.",
+      "difficulty": "hard",
+      "id": "anytime-boundary-lower-bounds",
+      "next_step": "Prove the fair-sign upper law of the iterated logarithm needed by the checked constant-one reduction, then study structured tilt-family and two-sided minimax lower bounds.",
+      "scope": "deterministic one-sided boundaries for the infinite fair-Rademacher walk; an unconditional fixed-Gaussian-tail sqrt-n floor from the CLT and Portmanteau theorem; and an unconditional unbounded sqrt-n floor from disjoint blocks and the second Borel--Cantelli lemma",
+      "source": "docs/assumptions-and-nonclaims.md#universal-fair-sign-anytime-boundary-lower-bound",
+      "status": "partially_closed"
+    },
+    {
+      "boundary": "The spherical-Gaussian i.i.d. process theorem fixes its posterior and tilt. The reverse stitched theorem is posterior-uniform on an arbitrary measurable hypothesis space, but it is an offline reverse-exchangeability result. The forward hybrid-Bessel master is an actual predictable-residual e-process. For finite hypotheses it has both finite-catalog and normalized countable-catalog masters; the latter has an explicit selected boundary tending to zero. The arbitrary measurable-hypothesis master retains a finite tilt catalog, and the hybrid expression is only a pointwise lower envelope. Its arbitrary-state adapter starts deterministically and does not construct a measurable selector or selected process. The Gaussian/fair-Boolean receipt fixes posterior and tilt, has KL = 1/32 and boundary at most 489/1024, and uses two-atom dynamics. The allocation guardrails are specific to predeclared Kraft or countable confidence weights. The finite-state trajectory countable theorem uses confidence allocation rather than asserting a countable master e-process. No checked forward result is simultaneous over all real tilts or uses predictable time-varying tilts, and no allocation result is a universal minimax or LIL lower bound.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the forward finite normalized hypothesis--tilt master to a countable vanishing-width mixture and measurable hypothesis priors, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
-      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope and finite weighted PAC-Bayes tilt catalog; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
+      "next_step": "Extend the checked countable finite-hypothesis construction to the continuous-prior and arbitrary-state layers, then pursue predictable tilt families and honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a finite adaptive-selection guardrail with exact predeclared-weight/Kraft upper bounds and diagonal-witness cardinality necessity; a countable-allocation guardrail with a blockwise reciprocal-weight obstruction and geometric-epoch log-log subsequence cost; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope, a finite weighted PAC-Bayes tilt catalog, and a normalized positive natural-number tilt master whose explicit geometric selector has an exact boundary tending to zero; a forward continuous-prior master over arbitrary measurable hypotheses with an arbitrary-measurable-state full-prefix trajectory adapter under a supplied joint score contract; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
     {
-      "boundary": "The stitched reverse-epoch endpoint gives one measurable infinite-IID event shared by every n >= 2. The continuous-prior version is uniform over every posterior probability measure on an arbitrary measurable hypothesis space that is absolutely continuous with respect to the fixed prior and has an integrable log-likelihood ratio. It retains finite-valued observations and is an offline reverse-exchangeability theorem, not a forward e-process or optional-stopping API. The tilt catalogs are declared in advance, so there is no all-real optimization. The continuous product-Gaussian/fair-Boolean receipt gives every finite set posterior mass zero, has KL = 1/32, and uses an unscaled zero-one sign-flip mismatch loss that depends on both hypothesis coordinates and attains both endpoints. Every nonempty-sample posterior empirical risk is 1/2; at n = 2^20 and delta = 1/2, the correction is below 1/2 and the theorem-produced right-hand side is below 1. A checked corollary gives a path outside the exceptional event. The receipt fixes the posterior and does not exercise data-dependent continuous-posterior selection. Separately, the forward lane packages the actual predictable-residual process as an e-process and bounds it below by a hybrid per-hypothesis Bessel penalty. The hybrid expression is not itself an e-process. Its PAC-Bayes master currently has finite hypotheses and a declared finite tilt catalog. Its informative Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. The separately budgeted rational risk theorem remains a distinct two-event result.",
+      "boundary": "The stitched reverse-epoch endpoint gives one measurable infinite-IID event shared by every n >= 2. The continuous-prior version is uniform over every posterior probability measure on an arbitrary measurable hypothesis space that is absolutely continuous with respect to the fixed prior and has an integrable log-likelihood ratio. It retains finite-valued observations and is an offline reverse-exchangeability theorem, not a forward e-process or optional-stopping API. The tilt catalogs are declared in advance, so there is no all-real optimization. The continuous product-Gaussian/fair-Boolean receipt gives every finite set posterior mass zero, has KL = 1/32, and uses an unscaled zero-one sign-flip mismatch loss that depends on both hypothesis coordinates and attains both endpoints. Every nonempty-sample posterior empirical risk is 1/2; at n = 2^20 and delta = 1/2, the correction is below 1/2 and the theorem-produced right-hand side is below 1. A checked corollary gives a path outside the exceptional event. The receipt fixes the posterior and does not exercise data-dependent continuous-posterior selection. Separately, the forward lane packages the actual predictable-residual process as an e-process and bounds it below by a hybrid per-hypothesis Bessel penalty. The hybrid expression is not itself an e-process. For finite hypotheses, a normalized positive natural-number tilt master and explicit geometric selector give an exact selected boundary tending to zero. A separate finite-state trajectory theorem obtains the same selected conclusion by countable confidence allocation, not a countable master-process claim. Its continuous-prior master permits arbitrary measurable hypotheses but retains a declared finite tilt catalog and now has an arbitrary-measurable-state trajectory adapter under a supplied joint score contract and deterministic start. Its Gaussian/fair-Boolean receipt has posterior finite-set mass zero, KL = 1/32, positive observed Bessel variance for every fixed hypothesis on theorem-produced good paths in both mass-1/4 sign-flip branches, and boundary at most 489/1024 at n = 64 and delta = 1/8. The posterior and tilt are fixed, the transition law has two-point support, and no matched competing-boundary comparison is proved. The separate finite-IID informative Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. The separately budgeted rational risk theorem remains a distinct two-event result.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Derive a countable or stitched vanishing-width forward tilt mixture and extend its PAC-Bayes master to measurable hypothesis priors. Continue matched-boundary evidence and external review.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector; plus a proved reverse Bessel martingale, reverse joint mean/variance epoch process, reverse finite catalog, closed-form epoch endpoint, finite-prefix infinite-product bridge, and one stitched all-sample-size finite-IID event; plus a continuous-prior reverse mixture, finite tilt catalog, closed-form epoch bound, and stitched all-sample-size endpoint over arbitrary measurable hypothesis spaces; plus a known predictable-residual forward empirical-Bernstein e-process, exact Welford/Abel identities, a hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes master, and its finite-IID adapter",
+      "next_step": "Extend the checked countable forward construction to continuous priors and arbitrary states, develop predictable or all-real tilt control, add broader random-start and atomless-dynamics receipts, and continue matched-boundary evidence and external review.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector; plus a proved reverse Bessel martingale, reverse joint mean/variance epoch process, reverse finite catalog, closed-form epoch endpoint, finite-prefix infinite-product bridge, and one stitched all-sample-size finite-IID event; plus a continuous-prior reverse mixture, finite tilt catalog, closed-form epoch bound, and stitched all-sample-size endpoint over arbitrary measurable hypothesis spaces; plus a known predictable-residual forward empirical-Bernstein e-process, exact Welford/Abel identities, a hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes master, its normalized natural-number tilt extension with an explicit vanishing geometric selector, its finite-IID adapter, and a continuous-prior master over arbitrary measurable hypotheses with an arbitrary-measurable-state full-prefix trajectory adapter under a supplied joint score contract, plus a finite-state full-prefix trajectory adapter with countable confidence allocation and the same vanishing selected-boundary conclusion",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -70,7 +79,7 @@
     "sources": [
       "FormalSLT/**/*.lean",
       "FormalSLT.lean",
-      "examples/*.lean",
+      "examples/**/*.lean",
       "docs/theorem-map.md",
       "docs/roadmap.md",
       "docs/next-lane.md",
@@ -85,11 +94,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 192,
-    "library_and_example_lean_lines": 120233,
-    "library_lean_lines": 95256,
-    "library_modules": 238,
-    "theorem_map_entries": 942
+    "example_lean_files": 207,
+    "library_and_example_lean_lines": 130383,
+    "library_lean_lines": 102134,
+    "library_modules": 251,
+    "theorem_map_entries": 1013
   },
   "theorem_families": [
     {
@@ -669,6 +678,12 @@
         },
         {
           "kind": "theorem",
+          "module": "Concentration.SharpMcDiarmid",
+          "name": "mcdiarmid_twoSided_of_hasBoundedDifferences_sharp",
+          "summary": "Two-sided homogeneous product bounded-differences tail P(|f - E[f]| >= \u03b5) <= 2 exp(-2\u03b5\u00b2 / sum_k c_k\u00b2)"
+        },
+        {
+          "kind": "theorem",
           "module": "Concentration.HeterogeneousMcDiarmid",
           "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero",
           "summary": "Heterogeneous-law product upper tail with the sharp McDiarmid exponent"
@@ -678,6 +693,12 @@
           "module": "Concentration.HeterogeneousMcDiarmid",
           "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero_lower",
           "summary": "Heterogeneous-law product lower tail with the sharp McDiarmid exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_twoSided_of_hasBoundedDifferences_sharp_hetero",
+          "summary": "Two-sided heterogeneous-law product tail P(|f - E[f]| >= \u03b5) <= 2 exp(-2\u03b5\u00b2 / sum_k c_k\u00b2)"
         },
         {
           "kind": "theorem",
@@ -4156,6 +4177,90 @@
         },
         {
           "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "selectedWeightedScore_expectation_le_one",
+          "summary": "A predeclared-weight correction preserves expectation at most one for an arbitrary observation-dependent selector over a finite nonnegative score catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "simultaneous_kraft_upperTail_mass_le_alpha",
+          "summary": "Finite simultaneous tail control under reciprocal corrections satisfying the Kraft budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "diagonalSpike_selectedCoefficient_safe_iff",
+          "summary": "Exact diagonal-witness characterization: coefficient-corrected selection is safe exactly when the coefficient sum is at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "diagonalSpike_scalarCorrection_safe_iff_card_le",
+          "summary": "A common positive correction is safe on the diagonal witness exactly when it is at least the catalog cardinality"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "diagonalSpike_logCorrection_ge_logCard",
+          "summary": "The safe common correction pays at least log |I| on the log scale for the checked diagonal witness"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.AllocationLogLog",
+          "name": "exists_small_weight_on_dyadicBlock",
+          "summary": "Every inclusive block [N,2N] of a nonnegative countable allocation contains an atom no larger than 1/(N+1)"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.AllocationLogLog",
+          "name": "frequently_geometricEpoch_loglogCost",
+          "summary": "Positive summable epoch weights pay an explicit iterated-logarithm cost along an unbounded geometric-epoch subsequence"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.AllocationLogLog",
+          "name": "polynomialEpochWeight_hasSum",
+          "summary": "The telescoping polynomial epoch allocation has total mass exactly one"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.AllocationLogLog",
+          "name": "polynomialGeometricEpoch_log_cost",
+          "summary": "Exact logarithmic price of the polynomial allocation at geometric epoch times"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.UniversalBoundaryLowerBound",
+          "name": "fairSign_tendstoInDistribution_gaussian",
+          "summary": "Fair-sign normalized sums converge in distribution to the standard Gaussian"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.UniversalBoundaryLowerBound",
+          "name": "fairSign_ae_frequently_sum_gt_mul_sqrt",
+          "summary": "The fair-sign walk exceeds every fixed nonnegative multiple of sqrt n infinitely often almost surely"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.UniversalBoundaryLowerBound",
+          "name": "fairSign_anytimeBoundary_frequently_ge_mul_sqrt",
+          "summary": "Every valid deterministic one-sided fair-sign anytime boundary exceeds every fixed nonnegative sqrt n multiple infinitely often"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.UniversalBoundaryLowerBound",
+          "name": "fairSign_anytimeBoundary_eventually_ge_sqrt",
+          "summary": "Gaussian-tail anti-concentration forces an eventual fixed-constant sqrt n boundary floor"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.UniversalBoundaryLowerBound",
+          "name": "fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL",
+          "summary": "Conditional reduction from the explicit still-open fair-sign upper-LIL premise to the sharp constant-one limsup floor"
+        },
+        {
+          "kind": "theorem",
           "module": "AnytimeValid.BettingCS",
           "name": "bettingWealth_supermartingale",
           "summary": "Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale"
@@ -4275,6 +4380,24 @@
         },
         {
           "kind": "theorem",
+          "module": "PACBayes.ForwardBesselPACBayesCountable",
+          "name": "countableForwardBesselPACBayesMasterProcess_eProcess_of_bounded",
+          "summary": "Proves that the normalized positive Nat-indexed mixture of finite-hypothesis predictable-residual components is one e-process"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ForwardBesselPACBayesCountable",
+          "name": "exists_countableForwardBesselPACBayes_event",
+          "summary": "One outer-mass event controls every n >= 2, finite posterior PMF, and atom of a predeclared positive normalized countable tilt catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ForwardBesselPACBayesCountable",
+          "name": "exists_geometricForwardBesselPACBayes_allTime_vanishing_event",
+          "summary": "Uses the polynomial-weight geometric catalog and explicit sample-size selector to obtain simultaneous validity and an exact selected boundary tending to zero"
+        },
+        {
+          "kind": "theorem",
           "module": "PACBayes.ForwardBesselPACBayesIID",
           "name": "iidObservedLoss_condExp_eq_populationRisk",
           "summary": "Derives the per-hypothesis conditional mean from the natural-filtration IID bounded-loss model"
@@ -4284,6 +4407,12 @@
           "module": "PACBayes.ForwardBesselPACBayesIID",
           "name": "exists_forwardIIDBesselPACBayes_event",
           "summary": "IID risk-facing capstone with the same all-time, all-posterior, all-atom common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousForwardPredictableMeanBesselPACBayes",
+          "name": "exists_continuousForwardPredictableMeanBesselPACBayes_event",
+          "summary": "One outer-mass event over an arbitrary measurable hypothesis space controls every n >= 2, eligible posterior measure, and atom of a finite predeclared tilt prior"
         }
       ],
       "name": "Forward empirical-Bernstein and PAC-Bayes"
@@ -4600,9 +4729,268 @@
           "module": "StochasticDynamics.TrajectoryRisk",
           "name": "pathSquaredLoss_condExp_via_trajectory",
           "summary": "Recovers the existing homogeneous-Markov squared-loss conditional-expectation statement from the prefix-dependent semantic theorem"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.MeasurableTrajectoryRisk",
+          "name": "JointlyStronglyMeasurableTrajectoryScore",
+          "summary": "Requires a trajectory score to be jointly strongly measurable in the complete prefix and next state on an arbitrary measurable state space"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MeasurableTrajectoryRisk",
+          "name": "observedTrajectoryScore_condExp_of_joint",
+          "summary": "Derives the exact prefix-conditional score expectation for deterministic-start arbitrary-state full-prefix kernels"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MeasurableTrajectoryRisk",
+          "name": "trajectoryRiskInnovation_condExp_eq_zero_of_joint",
+          "summary": "Proves conditional centering of the arbitrary-state trajectory innovation from the generated path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MeasurableTrajectoryRisk",
+          "name": "trajectoryRiskInnovation_condSecondMoment_le_one_fourth_of_joint",
+          "summary": "Derives the sharp universal 1/4 conditional second-moment proxy without a finite-state assumption"
         }
       ],
-      "name": "Finite prefix-dependent trajectory semantics"
+      "name": "Prefix-dependent trajectory semantics"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ControlledTrajectory",
+          "name": "controlledContinuationPMF_apply",
+          "summary": "Expands the behavior-policy/environment continuation mass into its action and outcome factors"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ControlledTrajectory",
+          "name": "conditionalTrajectoryRisk_controlledNormalizedImportanceScore",
+          "summary": "Identifies the normalized behavior-law conditional risk with the declared target-policy transition risk under overlap"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ControlledTrajectory",
+          "name": "controlledObservedImportanceScore_condExp",
+          "summary": "Proves the exact filtration-conditional mean of the observed normalized one-step importance score"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ControlledTrajectory",
+          "name": "controlledObservedImportanceScore_incrementAdapted",
+          "summary": "Shows the importance-weighted observation is measurable at the next filtration level"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ControlledTrajectory",
+          "name": "controlledTargetConditionalMean_stronglyAdapted",
+          "summary": "Shows the target-policy transition mean is predictable from the completed prefix"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ControlledTrajectory",
+          "name": "controlledImportanceCatalog_predictableMean_interfaces",
+          "summary": "Packages the boundedness, adaptedness, predictable mean, and conditional-expectation interfaces for a finite predeclared target-policy catalog"
+        }
+      ],
+      "name": "Finite controlled trajectory semantics"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "targetPolicyPotentialMean_eq_inducedKernel",
+          "summary": "Identifies the action/outcome potential mean with expectation under the target-policy-induced state kernel"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "targetPolicyPoissonControlledScore_mem_Icc",
+          "summary": "Keeps the unweighted Poisson-corrected transition score in [0,1] under the supplied score and span bounds"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyPredictableMean_eq",
+          "summary": "Rewrites the behavior-law predictable mean as the affine normalization of stationary target-policy risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyObservedScore_condExp",
+          "summary": "Proves the exact behavior-law conditional mean for the observed OPE score"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean",
+          "summary": "Identifies the posterior prefix mean with the affine posterior stationary target-policy risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "exists_stationaryTargetPolicyOPE_event",
+          "summary": "One outer event controls every n >= 2, posterior PMF, and finite declared tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyOPE_selected_of_simultaneous",
+          "summary": "Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event, without a selected-process claim"
+        }
+      ],
+      "name": "Stationary target-policy off-policy evaluation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "controlledTargetConditionalMean_eq_encounteredRisk_div",
+          "summary": "Identifies the normalized behavior-law predictable mean with target one-step conditional risk at the encountered prefix"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean",
+          "summary": "Converts the posterior predictable-mean prefix average to posterior encountered target risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "exists_dynamicTargetPolicyComparator_event",
+          "summary": "One outer event controls every n >= 2, posterior PMF, and finite declared tilt atom for a known homogeneous environment"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.DynamicTargetPolicyComparator",
+          "name": "dynamicTargetPolicyComparator_selected_of_simultaneous",
+          "summary": "Pointwise path/time/posterior-dependent posterior and tilt substitution into the simultaneous event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.PrefixDynamicTargetPolicyComparator",
+          "name": "prefixControlledObservedImportanceScore_condExp",
+          "summary": "Exact conditional mean under a known prefix/time-dependent controlled environment"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.PrefixDynamicTargetPolicyComparator",
+          "name": "exists_prefixDynamicTargetPolicyComparator_event",
+          "summary": "Comparator event for history-dependent targets and a known full-prefix environment kernel"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.PrefixDynamicTargetPolicyComparator",
+          "name": "prefixDynamicTargetPolicyComparator_selected_of_simultaneous",
+          "summary": "Pointwise selector corollary for the prefix-environment event"
+        }
+      ],
+      "name": "Dynamic target-policy comparators"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFinitePrefixExpectation_eq_trajectoryIntegral",
+          "summary": "Identifies the recursive finite-prefix expectation with the corresponding marginal integral under the actual infinite trajectory law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFinitePrefixExpectation_changeOfMeasure",
+          "summary": "Proves the exact finite-prefix target-versus-behavior likelihood-ratio identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "prefixControlledTargetTrajectory_integral_changeOfMeasure",
+          "summary": "States the change of measure directly for the actual infinite target and behavior trajectory laws"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "prefixControlledTargetTrajectory_cylinder_changeOfMeasure",
+          "summary": "Gives the measurable finite-prefix cylinder probability identity"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFiniteHorizonRisk_changeOfMeasure",
+          "summary": "Rewrites a finite-horizon target payoff as a likelihood-weighted behavior payoff"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "prefixControlledTargetTrajectoryStateOccupancy_changeOfMeasure",
+          "summary": "Recovers target terminal-state occupancy from the weighted behavior path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TargetPathChangeOfMeasure",
+          "name": "controlledFinitePrefixLikelihoodRatio_le_pow",
+          "summary": "Bounds the cumulative weight by C ^ n under a supplied one-step ratio cap"
+        }
+      ],
+      "name": "Finite-horizon target-path change of measure"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes",
+          "name": "exists_trajectoryEmpiricalBernsteinPACBayes_event",
+          "summary": "Finite-hypothesis, finite-state full-prefix capstone with one outer event for every n >= 2, posterior PMF, and declared finite tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable",
+          "name": "trajectoryCountableEmpiricalBernsteinPACBayesExceptionalEvent_mass_le",
+          "summary": "Bounds the countable union of singleton full-prefix trajectory events by delta; this is confidence allocation, not a master-e-process claim"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable",
+          "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_event",
+          "summary": "Finite-state full-prefix event simultaneous over every n >= 2, finite posterior PMF, and natural-number geometric tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable",
+          "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event",
+          "summary": "Allows arbitrary path- and time-dependent finite posterior PMFs, uses the explicit every-sample-size selector, and proves the exact observed boundary tends to zero"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes",
+          "name": "exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event",
+          "summary": "Finite-state full-prefix adapter for arbitrary measurable hypotheses and every eligible posterior measure, deriving process measurability from coordinatewise parameter measurability"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes",
+          "name": "JointlyStronglyMeasurableParameterizedTrajectoryScore",
+          "summary": "Joint hypothesis/prefix/next-state measurability contract used to derive both filtered and ambient parameterized-process interfaces"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes",
+          "name": "stronglyMeasurable_continuousMeasurableTrajectoryLowerProcess_filtered",
+          "summary": "Derives filtered product measurability of the parameterized forward lower process from one supplied joint hypothesis/prefix/next-state score contract"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes",
+          "name": "exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event",
+          "summary": "Deterministic-start capstone for arbitrary measurable state and hypothesis spaces, simultaneous over all n >= 2, eligible posterior measures, and a finite positive normalized tilt prior with 0 < lambda_j < 1"
+        }
+      ],
+      "name": "Trajectory forward empirical-Bernstein PAC-Bayes"
     },
     {
       "entries": [
@@ -4803,6 +5191,78 @@
           "module": "StochasticDynamics.MarkovPACBayesTiltMixture",
           "name": "markovPACBayes_tiltMixture_prequentialRisk_certificate",
           "summary": "Publication-facing measurable certificate simultaneous over all positive times, posteriors, and declared finite tilt atoms"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPathMeasureInitial",
+          "summary": "Mixes the checked deterministic-start finite Markov path laws against a supplied finite-state initial PMF"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPathMeasureInitial.instIsProbabilityMeasure",
+          "summary": "Registers the mixed random-initial path law as a probability measure"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPathMeasureInitial_pure",
+          "summary": "Recovers the deterministic-start Markov path law from a point-mass initial PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPathMeasureInitial_real_le_of_forall_start",
+          "summary": "Transfers a common raw-set mass bound from every deterministic start to any supplied finite initial PMF without a union bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPACBayes_tiltMixture_allPosteriors_bound_initialLaw",
+          "summary": "Controls the shared all-time, all-posterior, all-tilt raw failure set under the mixed random-initial path law"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPACBayesTiltMixtureInitialLawExceptionalEvent",
+          "summary": "Measurable hull of the shared failure set under the supplied random-initial path law"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPACBayesTiltMixtureInitialLawExceptionalEvent_measurable",
+          "summary": "Proves measurability of the random-initial-law exceptional event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPACBayesTiltMixtureRawFailure_subset_initialLawExceptionalEvent",
+          "summary": "Shows the raw posterior/time/tilt failure set lies inside the random-initial measurable hull"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPACBayesTiltMixtureInitialLawExceptionalEvent_mass_le_delta",
+          "summary": "Bounds the measurable random-initial exceptional event by the unchanged confidence level delta"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPosteriorAverageConditionalRisk_lt_tiltMixture_initialLaw_of_not_mem",
+          "summary": "Gives the weighted finite-tilt Markov prequential-risk bound outside the random-initial common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPosteriorAverageConditionalRisk_lt_tiltMixture_initialLaw_selected_of_not_mem",
+          "summary": "Permits pointwise post-path selection of one predeclared tilt atom under the random-initial common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw",
+          "name": "markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw",
+          "summary": "Publication-facing finite-state certificate for any supplied initial PMF, simultaneous over positive times, posteriors, and declared tilt atoms"
         }
       ],
       "name": "Finite Markov prequential risk"

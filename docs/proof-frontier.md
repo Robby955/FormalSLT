@@ -29,79 +29,34 @@ files.
 
 ## Current Next Lanes
 
-- `finite-markov-prequential-risk`: the finite-state, deterministic-start
-  path-law bridge and sharp universal `1/4` variance proxy are checked for
-  arbitrary prefix-dependent kernels and bounded scores. The finite
-  `TrajectoryPACBayes` adapter permits a predeclared catalog of scores whose
-  predictions update from the observed prefix. One measurable exceptional
-  event has mass at most `delta`; on its complement the bound is simultaneous
-  over every positive time, posterior PMF, and predeclared finite tilt atom,
-  so the posterior and one atom may be selected after the path is observed.
-  The separate stationary layer constructs finite-depth Poisson corrections,
-  confidence-allocates over depth and a countable geometric risk-tilt catalog,
-  estimates visited-row transition error on the same path, and permits
-  selection within a finite predeclared candidate catalog. Every nonempty
-  finite kernel now has a noncomputable chosen invariant PMF, with uniqueness
-  only under a strict Dobrushin or candidate row-TV certificate. This does not
-  validate creating new catalog members after seeing their scored outcomes or
-  fitting an arbitrary candidate outside the predeclared family. The next
-  reviewable extensions are a supplied initial law, controlled kernels,
-  auxiliary-data catalog construction, unvisited-row normalization,
-  quantitative mixing, continuous states, and normalized countable or
-  predictable tilt selection. The result is not an arbitrary real-tilt
-  optimization theorem, an arbitrary joint predictor--tilt posterior theorem,
-  or a measurable selected-boundary e-process theorem.
-  arbitrary prefix-dependent kernels and bounded scores. Finite-catalog
-  sub-Gamma and forward empirical-Bernstein adapters give common all-time
-  posterior-uniform events, and the normalized countable declared-tilt lane
-  supplies a vanishing selected boundary. A separate supplied-Poisson bridge
-  converts the empirical-Bernstein trajectory event to stationary risk from a
-  supplied invariant PMF and bounded exact or approximate potentials. The
-  controlled semantic layer derives exact behavior-law predictable means for
-  normalized one-step target-policy scores under overlap and a declared ratio
-  cap. A separate stationary state-Markov target-policy OPE theorem gives an
-  all-time, all-posterior behavior-law event when the dynamics, behavior
-  propensities, invariant laws, and exact bounded potentials are supplied.
-  Encountered-prefix comparator theorems separately cover history-dependent
-  target policies under homogeneous or known prefix/time-dependent controlled
-  environments. A separate finite-horizon change-of-measure theorem identifies
-  target-path prefix expectations, measurable cylinders, and terminal-state
-  occupancy with cumulative likelihood-weighted behavior-path quantities, and
-  exposes the worst-case `C ^ n` range. Catalogs remain fixed before their
-  scored outcomes. None of these results supplies an anytime-valid cumulative-
-  weight boundary, learned nuisance, or unknown-kernel theorem. Open layers
-  include a supplied initial law,
-  auxiliary-data catalog construction, automatic Poisson potentials and
-  invariant laws, unknown-kernel inference, continuous state spaces, and
-  unrestricted all-real tilt control.
-  This does not validate creating new catalog members after seeing their
-  scored outcomes. A separate `MeasurableTrajectoryRisk` layer supplies the
-  same conditional-risk semantics on arbitrary measurable state spaces under
-  one jointly strongly measurable prefix/next-state score. The
-  `ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` capstone combines
-  arbitrary measurable state and hypothesis spaces with a deterministic start,
-  controlling every `n >= 2`, eligible posterior, and atom of a finite
-  predeclared tilt catalog. It does not construct a measurable selector or
-  selected process. The next reviewable extensions are a supplied initial law,
-  controlled kernels, auxiliary-data catalog construction, atomless-dynamics
-  evidence, matched arbitrary-state comparison, and normalized countable or
-  predictable tilt selection. These results are not arbitrary real-tilt or
-  joint predictor--tilt posterior theorems, or stationarity or mixing theorems.
-  predictions update from the observed prefix. Separately, the homogeneous
-  finite-state Markov weighted-tilt certificate now mixes its checked
-  deterministic-start path laws against any supplied finite-state initial PMF
-  without a union bound or added confidence penalty. One measurable
-  exceptional event has mass at most `delta`; on its complement the bound is
-  simultaneous over every positive time, posterior PMF, and predeclared finite
-  tilt atom, so the posterior and one atom may be selected after the path is
-  observed. This does not validate creating new catalog members after seeing
-  their scored outcomes. The next reviewable extensions are controlled
-  kernels, auxiliary-data catalog construction, empirical-variance adaptation,
-  and normalized countable or predictable tilt selection. The result is not
-  an arbitrary real-tilt optimization theorem, an arbitrary joint
-  predictor--tilt posterior theorem, a stationarity or mixing theorem, or a
-  continuous-state stochastic-dynamics result. The general prefix-dependent
-  trajectory certificate still has deterministic start.
+- `finite-markov-prequential-risk`: full-prefix semantics and the sharp `1/4`
+  variance proxy are checked for finite and arbitrary measurable state spaces.
+  Finite-catalog, countable-tilt, and continuous-prior adapters give common
+  all-time events over their stated posterior and predeclared-tilt classes.
+  The general prefix-dependent and measurable-state endpoints retain a
+  deterministic start; the homogeneous finite-state Markov weighted-tilt
+  endpoint separately accepts any supplied finite-state initial PMF.
+
+  The finite stationary layer constructs finite-depth Poisson corrections,
+  computes Dobrushin contraction, transfers fixed candidate kernels under
+  row-TV error, estimates visited-row transition error, selects within a finite
+  predeclared candidate--depth catalog, and constructs an invariant PMF for
+  every nonempty finite kernel. Uniqueness requires a strict contraction
+  certificate. The controlled layer proves one-step behavior-law semantics,
+  stationary state-Markov OPE with supplied nuisance objects, encountered-
+  prefix dynamic comparators, and exact fixed-horizon path-law change of
+  measure with worst-case `C ^ n` weights.
+
+  Catalogs must be declared before their scored outcomes. Same-path stationary
+  selection is limited to the finite predeclared candidate catalog and visited
+  rows; the arbitrary-state endpoint requires a jointly measurable bounded
+  score; and
+  none of the controlled results supplies learned nuisances or an anytime
+  cumulative-weight value boundary. Open work includes auxiliary-data catalog
+  construction, random starts beyond the homogeneous finite-state endpoint,
+  unvisited-row and mixing interfaces, continuous-state stationary risk,
+  countable tilts for continuous-prior and arbitrary-state layers, predictable
+  or all-real tilts, and stronger multistate and atomless evidence.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a
@@ -152,19 +107,21 @@ files.
   guardrail separately proves that positive summable weights incur an explicit
   iterated-logarithm atom cost along an unbounded geometric-epoch subsequence;
   this is an allocation/union-stitching obstruction, not a universal LIL or
-  minimax lower bound. The checked fixed-sample
-  countable joint master now
+  minimax lower bound. The checked fixed-sample countable joint master now
   has a downstream finite-posterior exact-`xi` selector over its predeclared
   `Nat`-indexed tilt-pair catalog. A separate forward lane now checks the
   predictable-residual empirical-Bernstein e-process, two Bessel envelopes and
-  their per-hypothesis hybrid minimum, a finite hypothesis--tilt PAC-Bayes
-  master, and its IID bounded-loss adapter. One outer-mass event supports every
-  `n >= 2`, posterior PMF, and declared atom, including
-  path/time/posterior-dependent atom selection. Countable process-level
-  selection, all-real lambda optimization, a vanishing optimized all-time
-  boundary, and forward-process posterior control for general continuous
-  families remain open. The hybrid Bessel expression is a lower envelope of
-  the actual e-process, not itself a proved e-process.
+  their per-hypothesis hybrid minimum, finite and normalized countable
+  finite-hypothesis masters, and an IID bounded-loss adapter. The countable
+  master is an actual e-process supporting every `n >= 2`, posterior PMF, and
+  declared atom with its exact weight cost; an explicit geometric selector has
+  boundary tending to zero. The finite-state full-prefix trajectory adapter
+  obtains the analogous conclusion by countable confidence allocation, not by
+  asserting that its event union is a countable master e-process. Countable
+  continuous-prior or arbitrary-state masters, predictable or all-real tilt
+  control, and a vanishing optimized boundary remain open. The hybrid Bessel
+  expression is a lower envelope of the actual e-process, not itself a proved
+  e-process.
 - `pac-bayes-empirical-bernstein`: the finite per-hypothesis foundation,
   random-matching representation, and source-normalized lower-tail MGF are
   checked for `[0,1]` losses under the explicit finite IID product law and
@@ -231,10 +188,12 @@ files.
   in each of two mass-`1/4` sign-flip branches, and boundary at most `489/1024`
   at `n = 64` and `delta = 1/8`. It fixes the posterior and tilt, and its
   real-state transition law has two-point support. The hybrid expression is not
-  itself an e-process; vanishing optimized, countable/all-real,
-  random-initial-law, atomless-dynamics, and matched arbitrary-state comparison
-  endpoints remain open. The event is posterior-uniform but does not construct
-  a measurable selector or selected process.
+  itself an e-process. The finite-hypothesis countable master and finite-state
+  geometric vanishing selector are checked separately; countable
+  continuous-prior/arbitrary-state, predictable/all-real, optimized-boundary,
+  random-start, atomless-dynamics, and matched arbitrary-state comparison
+  endpoints remain open. The continuous event is posterior-uniform but does
+  not construct a measurable selector or selected process.
   Neither forward nor reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream

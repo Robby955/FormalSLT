@@ -250,9 +250,13 @@
   - Obtain independent PAC-Bayes/constants and Lean probability reviews.
   - [x] Add a positive-KL, positive-variance forward receipt with an
     informative numerical width.
-  - Study vanishing optimized all-time boundaries, countable or all-real
-    tilts, random initial laws, atomless-dynamics receipts, and matched boundary
-    comparisons. Do not treat the hybrid Bessel lower envelope as an e-process.
+  - [x] Add the normalized countable finite-hypothesis master and the
+    finite-state full-prefix geometric selector whose boundary tends to zero.
+  - Extend that countable control to continuous priors and arbitrary states;
+    study predictable or all-real tilts, optimized boundaries, random starts
+    beyond the homogeneous finite-state Markov endpoint, atomless-dynamics
+    receipts, and matched comparisons. Do not treat the hybrid Bessel lower
+    envelope as an e-process.
 
 - [ ] **Stochastic-dynamics extensions**
   - [x] Support finite predeclared catalogs of prefix-dependent scores,
@@ -299,28 +303,24 @@
   - Extend the controlled interface to an anytime-valid cumulative-weight or
     dynamic-policy value theorem, or learned nuisance quantities, under
     separate assumptions.
-  - Construct finite-depth Poisson potentials automatically from explicit
-    kernel-contraction data, with checked residual and span bounds.
   - [x] Extend deterministic-start full-prefix semantics and the continuous-
     prior forward endpoint to arbitrary measurable state spaces under a
     supplied jointly measurable score contract.
-  - Generalize the deterministic initial state to a supplied initial law.
   - [x] Generalize the finite homogeneous-Markov weighted-tilt certificate
     from a deterministic initial state to an arbitrary supplied finite-state
     initial PMF, without a union bound or added confidence penalty.
+  - Generalize random starts to prefix-dependent, measurable-state, and
+    controlled trajectory endpoints.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
     their scored outcomes.
-  - Extend the checked finite weighted-tilt selection to normalized countable
-    or predictable tilt families without optimizing an uncontrolled real
+  - Extend the checked normalized countable finite-hypothesis and finite-state
+    trajectory results to continuous priors and arbitrary states; study
+    predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
-  - Keep unvisited-row normalization, mixing guarantees, continuous-state, and
-    multistep conclusions as separate later theorem families.
-  - Keep stationary, mixing, and multistep conclusions as separate later
-    theorem families; add an atomless transition receipt as separate evidence.
-  - Keep random-start prefix-dependent trajectory semantics, stationary,
-    mixing, continuous-state, and multistep conclusions as separate later
-    theorem families.
+  - Keep unvisited-row normalization, quantitative mixing, continuous-state
+    stationary risk, multistep conclusions, and atomless transition evidence
+    as separate later theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product
@@ -468,12 +468,14 @@
     Rademacher state law.
     The reverse-exchangeability lane now separately gives one all-sample-size
     empirical-Bernstein event for finite IID data and finite hypotheses, with
-    constants `5/2` and `5`. Extending the forward process lane to a vanishing
-    optimized boundary, a countable or all-real tilt catalog, continuous
-    Bernstein posteriors, and infinite hypothesis classes remains open. The
-    separate reverse continuous lane covers arbitrary measurable hypotheses
-    for finite-valued observations; it does not close these forward
-    extensions.
+    constants `5/2` and `5`. The finite-hypothesis forward lane now has a
+    normalized countable master, and its finite-state full-prefix adapter has a
+    geometric selected boundary tending to zero. Extending those results to
+    countable continuous-prior or arbitrary-state control, predictable or
+    all-real tilts, an optimized boundary, and infinite hypothesis classes
+    remains open. The separate reverse continuous lane covers arbitrary
+    measurable hypotheses for finite-valued observations; it does not close
+    these forward extensions.
 
 ### Long-term
 

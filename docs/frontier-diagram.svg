@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1240" height="900" viewBox="0 0 1240 900" role="img" aria-labelledby="title desc">
   <title id="title">FormalSLT scope frontier</title>
-  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample and all-sample-size empirical-Bernstein PAC-Bayes routes with exact Bessel variance, arbitrary measurable hypotheses and state spaces under supplied score contracts, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov specializations, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, a countable process-level tilt mixture, all-real tilt optimization, a forward exact-Bessel e-process and optional-stopping API, same-trajectory or predictable Markov learners, random initial laws and atomless transition receipts and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
+  <desc id="desc">Two-column diagram. The left column lists machine-checked surfaces: the finite-class learning spine, heterogeneous sharp McDiarmid, the VC route, metric entropy with checked entropy-integral endpoints, fixed-sample and all-sample-size empirical-Bernstein PAC-Bayes routes with exact Bessel variance, a countable finite-hypothesis forward master with a vanishing selected boundary, arbitrary measurable hypotheses and state spaces under supplied score contracts, anytime-valid inference with time-uniform PAC-Bayes endpoints, finite Markov specializations, and stability plus statistics plus composition surfaces. The right column lists open targets: arbitrary measurable-supremum Dudley constructions, countable tilts for continuous-prior and arbitrary-state layers, all-real tilt optimization, a forward exact-Bessel e-process and optional-stopping API, same-trajectory or predictable Markov learners, general random initial laws and atomless transition receipts and mixing risk, an algorithm-specific online regret theorem, and a neural-network generalization theorem.</desc>
   <defs>
     <style>
       text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
@@ -86,8 +86,8 @@
 
   <rect x="655" y="228" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="261" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="699" y="256" class="item-label">Countable process-level tilt mixture</text>
-  <text x="699" y="278" class="item-sub">summability and interchange beyond the finite process master</text>
+  <text x="699" y="256" class="item-label">Countable continuous-prior/state tilts</text>
+  <text x="699" y="278" class="item-sub">beyond the checked finite-hypothesis countable master</text>
 
   <rect x="655" y="310" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="343" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
@@ -106,8 +106,8 @@
 
   <rect x="655" y="556" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="589" r="11" fill="none" stroke="#64748b" stroke-width="2"/>
-  <text x="699" y="584" class="item-label">Random initial laws, atomless receipts, mixing risk</text>
-  <text x="699" y="606" class="item-sub">beyond deterministic starts and the checked two-atom Real receipt</text>
+  <text x="699" y="584" class="item-label">General random starts, atomless receipts, mixing risk</text>
+  <text x="699" y="606" class="item-sub">beyond the homogeneous finite-state random-start theorem</text>
 
   <rect x="655" y="638" width="525" height="66" rx="8" class="item-out"/>
   <circle cx="679" cy="671" r="11" fill="none" stroke="#64748b" stroke-width="2"/>

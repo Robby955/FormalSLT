@@ -281,10 +281,11 @@ These diagrams do not claim more than the theorem signatures state:
 - The fixed-time random-matching score is not an e-process.
 - Terminal random matchings at different sample sizes are not projectively
   nested.
-- The checked countable master and selector use a finite hypothesis type and
-  finite posterior over a predeclared natural-number catalog; they are not a
-  countable-hypothesis posterior, all-real tilt optimizer, or time-uniform
-  process.
+- The checked fixed-sample joint mean/variance countable master and selector use
+  a finite hypothesis type and finite posterior over a predeclared
+  natural-number catalog; they are not a countable-hypothesis posterior,
+  all-real tilt optimizer, or time-uniform process. The separate forward
+  countable master is a time-uniform e-process.
 - The finite time-uniform tilt master selects one declared atom; it is not a
   countable mixture, an arbitrary joint hypothesis--tilt posterior, an all-real
   tilt optimizer, or an i.i.d. loss specialization.

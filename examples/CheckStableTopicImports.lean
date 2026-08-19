@@ -9,19 +9,20 @@ import FormalSLT.StochasticDynamics
 /-!
 # Stable topic-import smoke test
 
-The three supported topic umbrellas expose representative finite, continuous,
+The four supported topic umbrellas expose representative finite, continuous,
 Gaussian, VC, sequential, and forward-Bessel endpoints.  The forward master
 is an actual predictable-residual e-process; its hybrid-Bessel term is only a
 lower envelope.  Its finite-hypothesis, finite-declared-tilt and IID wrappers
 control every eligible time `n >= 2` through one outer-mass event.
 Compatibility aliases remain usable without carrying duplicate proof bodies.
-The stochastic-dynamics umbrella also exposes the finite controlled-trajectory
-importance-weighting semantic bridge and its stationary target-policy OPE
-specialization.  That specialization assumes finite state-based Markov target
-policies, a known environment and behavior propensities, supplied invariant
-target laws and exact Poisson potentials, and declared overlap and span bounds;
-it does not cover unknown-kernel estimation or full-trajectory importance
-sampling.
+The stochastic-dynamics umbrella also exposes countable trajectory selection,
+stationary Poisson construction and empirical candidate catalogs, controlled
+importance-weighting semantics, target-policy OPE, arbitrary-measurable-state
+and hypothesis endpoints, and the supplied-initial-law homogeneous Markov
+adapter. The OPE specialization still assumes known dynamics and behavior
+propensities plus supplied invariant and Poisson objects; it does not estimate
+those nuisances or provide an anytime full-trajectory importance-sampling
+guarantee.
 -/
 
 #check FormalSLT.PACBayes.TimeUniformGaussian.timeUniformSphericalGaussianPACBayes_bound
@@ -70,6 +71,9 @@ sampling.
 #check FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
 #check FormalSLT.PACBayes.ForwardBesselPACBayes.forwardBesselPACBayesMasterProcess_eProcess_of_bounded
 #check FormalSLT.PACBayes.ForwardBesselPACBayes.exists_forwardBesselPACBayes_event
+#check FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesMasterProcess_eProcess_of_bounded
+#check FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event
+#check FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event
 #check FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayesExceptionalEvent_mass_le_delta
 #check FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayes_selected_of_not_mem
 #check FormalSLT.PACBayes.ForwardBesselPACBayesIID.exists_forwardIIDBesselPACBayes_event
@@ -101,6 +105,8 @@ sampling.
 #check FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate
 #check FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_event
 #check FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_selected_event
+#check FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event
+#check FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_event
 #check FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_poissonCorrectedTrajectoryScore
 #check FormalSLT.StochasticDynamics.sum_poissonPotential_increment
 #check FormalSLT.StochasticDynamics.trajectoryEmpiricalPrequentialRisk_poissonCorrected
@@ -114,6 +120,7 @@ sampling.
 #check FormalSLT.StochasticDynamics.exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event
 #check FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_le_candidate_add_two_mul_rowTV
 #check FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_lt_one_of_candidate_rowTV
+#check FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event
 #check FormalSLT.StochasticDynamics.invariantPMF_unique_of_candidate_rowTV
 #check FormalSLT.StochasticDynamics.stationaryMarkovRisk_eq_of_candidate_rowTV
 #check FormalSLT.StochasticDynamics.exists_empiricalTransitionCoordinate_event
@@ -200,6 +207,9 @@ sampling.
 #print axioms FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event
 #print axioms FormalSLT.PACBayes.ForwardBesselPACBayes.forwardBesselPACBayesMasterProcess_eProcess_of_bounded
 #print axioms FormalSLT.PACBayes.ForwardBesselPACBayes.exists_forwardBesselPACBayes_event
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesMasterProcess_eProcess_of_bounded
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event
+#print axioms FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event
 #print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayesExceptionalEvent_mass_le_delta
 #print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardIIDBesselPACBayes_selected_of_not_mem
 #print axioms FormalSLT.PACBayes.ForwardBesselPACBayesIID.exists_forwardIIDBesselPACBayes_event
@@ -228,6 +238,8 @@ sampling.
 #print axioms FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate
 #print axioms FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_event
 #print axioms FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_selected_event
+#print axioms FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event
+#print axioms FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_event
 #print axioms FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_poissonCorrectedTrajectoryScore
 #print axioms FormalSLT.StochasticDynamics.sum_poissonPotential_increment
 #print axioms FormalSLT.StochasticDynamics.trajectoryEmpiricalPrequentialRisk_poissonCorrected
@@ -241,6 +253,7 @@ sampling.
 #print axioms FormalSLT.StochasticDynamics.exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event
 #print axioms FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_le_candidate_add_two_mul_rowTV
 #print axioms FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_lt_one_of_candidate_rowTV
+#print axioms FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event
 #print axioms FormalSLT.StochasticDynamics.invariantPMF_unique_of_candidate_rowTV
 #print axioms FormalSLT.StochasticDynamics.stationaryMarkovRisk_eq_of_candidate_rowTV
 #print axioms FormalSLT.StochasticDynamics.exists_empiricalTransitionCoordinate_event
