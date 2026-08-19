@@ -375,6 +375,9 @@
     normalized finite hypothesis--tilt e-process with one Ville event and a
     selected-atom weight penalty is checked separately at the generic process
     level, together with a measurable-event finite-IID `[0,1]` loss adapter.
+    A finite adaptive-selection guardrail now proves the corresponding
+    predeclared-weight and Kraft upper bounds and gives an exact diagonal
+    witness forcing a common raw correction of at least the catalog size.
     A second forward lane now checks the predictable-residual
     empirical-Bernstein e-process, its hybrid Bessel lower envelope, and a
     finite hypothesis--tilt PAC-Bayes master with an IID adapter and

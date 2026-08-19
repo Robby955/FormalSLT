@@ -81,7 +81,10 @@ files.
   additionally has a posterior-uniform weighted tilt catalog. At process level,
   one normalized finite hypothesis--tilt e-process now gives a common Ville
   event, all-posterior validity, and post-path selection of a declared atom with
-  its exact weight penalty. The checked fixed-sample countable joint master now
+  its exact weight penalty. A separate finite selection-cost guardrail proves
+  the predeclared-weight/Kraft correction and an exact diagonal witness forcing
+  a common raw correction of at least the catalog size. The checked fixed-sample
+  countable joint master now
   has a downstream finite-posterior exact-`xi` selector over its predeclared
   `Nat`-indexed tilt-pair catalog. A separate forward lane now checks the
   predictable-residual empirical-Bernstein e-process, two Bessel envelopes and

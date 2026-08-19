@@ -41,7 +41,7 @@
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
       "next_step": "Extend the forward finite normalized hypothesis--tilt master to a countable vanishing-width mixture and measurable hypothesis priors, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
-      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope and finite weighted PAC-Bayes tilt catalog; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a finite adaptive-selection guardrail with exact predeclared-weight/Kraft upper bounds and diagonal-witness cardinality necessity; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope and finite weighted PAC-Bayes tilt catalog; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 183,
-    "library_and_example_lean_lines": 110388,
-    "library_lean_lines": 89725,
-    "library_modules": 228,
-    "theorem_map_entries": 855
+    "example_lean_files": 184,
+    "library_and_example_lean_lines": 111090,
+    "library_lean_lines": 90276,
+    "library_modules": 229,
+    "theorem_map_entries": 859
   },
   "theorem_families": [
     {
@@ -4153,6 +4153,30 @@
           "module": "AnytimeValid.EProcess",
           "name": "eProcess_optionalContinuation",
           "summary": "Optional continuation: the stopped value of an e-process keeps integral at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "selectedWeightedScore_expectation_le_one",
+          "summary": "A predeclared-weight correction preserves expectation at most one for an arbitrary observation-dependent selector over a finite nonnegative score catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "simultaneous_kraft_upperTail_mass_le_alpha",
+          "summary": "Finite simultaneous tail control under reciprocal corrections satisfying the Kraft budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "diagonalSpike_selectedCoefficient_safe_iff",
+          "summary": "Exact diagonal-witness characterization: coefficient-corrected selection is safe exactly when the coefficient sum is at most one"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "diagonalSpike_scalarCorrection_safe_iff_card_le",
+          "summary": "A common positive correction is safe on the diagonal witness exactly when it is at least the catalog cardinality"
         },
         {
           "kind": "theorem",

@@ -118,6 +118,27 @@ long-run risk, countable or predictable tilt mixtures, an arbitrary joint
 posterior on predictor--tilt pairs, empirical-variance control, or post-sample
 optimization over an uncontrolled real tilt.
 
+### Finite adaptive-selection cost guardrail
+
+`AnytimeValid.SelectionCost` works with arbitrary finite observations and
+finite score catalogs. If every score is nonnegative with expectation at most
+one and the nonnegative predeclared weights sum to at most one, multiplying an
+observation-selected score by its declared weight preserves expectation at
+most one. Equivalent simultaneous upper-tail statements expose the reciprocal
+weight or Kraft correction.
+
+The diagonal-spike family gives an exact finite adversarial witness. Each
+coordinate has expectation one, the uncorrected selected expectation is the
+catalog cardinality, and a common positive correction is safe on this witness
+if and only if it is at least that cardinality. This proves the corresponding
+`log |I|` lower bound for the symmetric correction on the checked witness.
+
+These are finite Markov/union/Kraft facts, not a new concentration theorem or
+a universal minimax result for every structured sequential tilt family. They
+do not establish countable or continuous selection costs, an LIL lower bound,
+or optimality of the constants in the repository's coupled PAC-Bayes process
+families.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use

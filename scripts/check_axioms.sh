@@ -215,6 +215,31 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.trajectoryPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
   "FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate"
+  "FormalSLT.AnytimeValid.SelectionCost.finiteEventMass_upperTail_le_expectation_div"
+  "FormalSLT.AnytimeValid.SelectionCost.finiteEventMass_upperTail_le_alpha"
+  "FormalSLT.AnytimeValid.SelectionCost.finiteEventMass_mono"
+  "FormalSLT.AnytimeValid.SelectionCost.finiteScoreMixture_expectation_le_one"
+  "FormalSLT.AnytimeValid.SelectionCost.finiteScoreMixture_nonneg"
+  "FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore_expectation_le_one"
+  "FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore_expectation_le_one_of_pmf"
+  "FormalSLT.AnytimeValid.SelectionCost.simultaneous_upperTail_mass_le_sum_reciprocal"
+  "FormalSLT.AnytimeValid.SelectionCost.simultaneous_kraft_upperTail_mass_le_alpha"
+  "FormalSLT.AnytimeValid.SelectionCost.selected_kraft_upperTail_mass_le_alpha"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_nonneg"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_expectation_eq_one"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_selectedWeightedScore_eq_one"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_selectedWeightedScore_expectation_eq_one"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_selected_expectation_eq_card"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_selectedCoefficient_expectation_eq_sum"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_selectedCoefficient_safe_iff"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_kraftCorrection_safe_iff"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_scalarCorrection_expectation_eq_card_div"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_scalarCorrection_safe_iff_card_le"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_logCorrection_ge_logCard"
+  "FormalSLT.AnytimeValid.SelectionCost.diagonalSpike_reciprocal_union_sharp"
+  "FormalSLT.AnytimeValid.SelectionCost.symmetric_simultaneous_upperTail_mass_le_alpha"
+  "FormalSLT.AnytimeValid.SelectionCost.symmetric_selected_upperTail_mass_le_alpha"
+  "FormalSLT.AnytimeValid.SelectionCost.symmetric_log_selection_penalty"
 )
 
 # Axioms permitted in a clean proof.
@@ -254,6 +279,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.AnytimeValid.ForwardBesselProcess"
+  echo "import FormalSLT.AnytimeValid.SelectionCost"
   echo "import FormalSLT.PACBayes.ForwardBesselPACBayes"
   echo "import FormalSLT.PACBayes.ForwardBesselPACBayesIID"
   echo "import FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch"
@@ -303,6 +329,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
   FormalSLT.AnytimeValid.ForwardBesselProcess \
+  FormalSLT.AnytimeValid.SelectionCost \
   FormalSLT.PACBayes.ForwardBesselPACBayes \
   FormalSLT.PACBayes.ForwardBesselPACBayesIID \
   FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch \

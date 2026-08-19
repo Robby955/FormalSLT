@@ -64,14 +64,24 @@ example : Real.log ((Fintype.card Bool : Real) / (1 / 20 : Real)) =
   apply symmetric_log_selection_penalty
   norm_num
 
+#check finiteExpectation
+#check finiteEventMass
+#check finiteScoreMixture
+#check selectedWeightedScore
 #check finiteEventMass_upperTail_le_expectation_div
 #check finiteEventMass_upperTail_le_alpha
+#check finiteEventMass_mono
 #check finiteScoreMixture_expectation_le_one
+#check finiteScoreMixture_nonneg
 #check selectedWeightedScore_expectation_le_one
+#check selectedWeightedScore_expectation_le_one_of_pmf
 #check simultaneous_upperTail_mass_le_sum_reciprocal
 #check simultaneous_kraft_upperTail_mass_le_alpha
 #check selected_kraft_upperTail_mass_le_alpha
+#check diagonalSpike
+#check diagonalSpike_nonneg
 #check diagonalSpike_expectation_eq_one
+#check diagonalSpike_selectedWeightedScore_eq_one
 #check diagonalSpike_selectedWeightedScore_expectation_eq_one
 #check diagonalSpike_selected_expectation_eq_card
 #check diagonalSpike_selectedCoefficient_expectation_eq_sum
@@ -85,14 +95,28 @@ example : Real.log ((Fintype.card Bool : Real) / (1 / 20 : Real)) =
 #check symmetric_selected_upperTail_mass_le_alpha
 #check symmetric_log_selection_penalty
 
+#check fairBool
+#check fairBool_fullSupport
+#check bool_diagonal_each_mean_one
+#check bool_diagonal_selected_uncorrected_mean_two
+#check bool_diagonal_selected_weighted_mean_one
+#check bool_diagonal_scalarCorrection_safe_iff_two_le
+#check bool_diagonal_logCorrection_ge_log_two
+#check bool_diagonal_reciprocal_union_exact
+
 #print axioms finiteEventMass_upperTail_le_expectation_div
 #print axioms finiteEventMass_upperTail_le_alpha
+#print axioms finiteEventMass_mono
 #print axioms finiteScoreMixture_expectation_le_one
+#print axioms finiteScoreMixture_nonneg
 #print axioms selectedWeightedScore_expectation_le_one
+#print axioms selectedWeightedScore_expectation_le_one_of_pmf
 #print axioms simultaneous_upperTail_mass_le_sum_reciprocal
 #print axioms simultaneous_kraft_upperTail_mass_le_alpha
 #print axioms selected_kraft_upperTail_mass_le_alpha
+#print axioms diagonalSpike_nonneg
 #print axioms diagonalSpike_expectation_eq_one
+#print axioms diagonalSpike_selectedWeightedScore_eq_one
 #print axioms diagonalSpike_selectedWeightedScore_expectation_eq_one
 #print axioms diagonalSpike_selected_expectation_eq_card
 #print axioms diagonalSpike_selectedCoefficient_expectation_eq_sum
@@ -106,6 +130,7 @@ example : Real.log ((Fintype.card Bool : Real) / (1 / 20 : Real)) =
 #print axioms symmetric_selected_upperTail_mass_le_alpha
 #print axioms symmetric_log_selection_penalty
 
+#print axioms fairBool_fullSupport
 #print axioms bool_diagonal_each_mean_one
 #print axioms bool_diagonal_selected_uncorrected_mean_two
 #print axioms bool_diagonal_selected_weighted_mean_one
