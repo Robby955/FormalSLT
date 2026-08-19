@@ -86,10 +86,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 184,
-    "library_and_example_lean_lines": 111090,
-    "library_lean_lines": 90276,
+    "library_and_example_lean_lines": 111092,
+    "library_lean_lines": 90278,
     "library_modules": 229,
-    "theorem_map_entries": 859
+    "theorem_map_entries": 862
   },
   "theorem_families": [
     {
@@ -669,6 +669,12 @@
         },
         {
           "kind": "theorem",
+          "module": "Concentration.SharpMcDiarmid",
+          "name": "mcdiarmid_twoSided_of_hasBoundedDifferences_sharp",
+          "summary": "Two-sided homogeneous product bounded-differences tail P(|f - E[f]| >= \u03b5) <= 2 exp(-2\u03b5\u00b2 / sum_k c_k\u00b2)"
+        },
+        {
+          "kind": "theorem",
           "module": "Concentration.HeterogeneousMcDiarmid",
           "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero",
           "summary": "Heterogeneous-law product upper tail with the sharp McDiarmid exponent"
@@ -678,6 +684,12 @@
           "module": "Concentration.HeterogeneousMcDiarmid",
           "name": "mcdiarmid_of_hasBoundedDifferences_sharp_hetero_lower",
           "summary": "Heterogeneous-law product lower tail with the sharp McDiarmid exponent"
+        },
+        {
+          "kind": "theorem",
+          "module": "Concentration.HeterogeneousMcDiarmid",
+          "name": "mcdiarmid_twoSided_of_hasBoundedDifferences_sharp_hetero",
+          "summary": "Two-sided heterogeneous-law product tail P(|f - E[f]| >= \u03b5) <= 2 exp(-2\u03b5\u00b2 / sum_k c_k\u00b2)"
         },
         {
           "kind": "theorem",
@@ -4177,6 +4189,12 @@
           "module": "AnytimeValid.SelectionCost",
           "name": "diagonalSpike_scalarCorrection_safe_iff_card_le",
           "summary": "A common positive correction is safe on the diagonal witness exactly when it is at least the catalog cardinality"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.SelectionCost",
+          "name": "diagonalSpike_logCorrection_ge_logCard",
+          "summary": "The safe common correction pays at least log |I| on the log scale for the checked diagonal witness"
         },
         {
           "kind": "theorem",

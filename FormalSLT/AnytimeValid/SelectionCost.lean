@@ -123,7 +123,7 @@ theorem finiteEventMass_mono
 expectation at most one whenever every component does. -/
 theorem finiteScoreMixture_expectation_le_one
     [Fintype Omega] [Fintype I]
-    (p : Omega -> Real) (_hp : IsPMF p)
+    (p : Omega -> Real)
     (weight : I -> Real)
     (hweight_nonneg : forall i, 0 <= weight i)
     (hweight_sum : ∑ i, weight i <= 1)
@@ -184,7 +184,7 @@ theorem selectedWeightedScore_expectation_le_one
         (fun i _ => mul_nonneg (hweight_nonneg i) (hscore_nonneg i omega))
         (Finset.mem_univ (select omega))
     _ <= 1 := finiteScoreMixture_expectation_le_one
-      p hp weight hweight_nonneg hweight_sum score hscore_mean
+      p weight hweight_nonneg hweight_sum score hscore_mean
 
 /-- PMF-weighted specialization of the adaptive-selection guardrail. -/
 theorem selectedWeightedScore_expectation_le_one_of_pmf
@@ -488,8 +488,10 @@ theorem diagonalSpike_reciprocal_union_sharp
 
 /-! ## Symmetric finite catalogs -/
 
-/-- With equal allocation over a nonempty catalog, the exact multiplicative
-selection cost is the catalog cardinality. -/
+/-- With equal allocation over a nonempty catalog, the multiplicative threshold
+`card I / alpha` is sufficient for simultaneous failure mass at most `alpha`.
+Necessity of the factor `card I` is proved separately for the diagonal witness
+in `diagonalSpike_scalarCorrection_safe_iff_card_le`. -/
 theorem symmetric_simultaneous_upperTail_mass_le_alpha
     [Fintype Omega] [Fintype I] [Nonempty I]
     (p : Omega -> Real) (hp : IsPMF p)

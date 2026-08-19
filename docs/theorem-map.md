@@ -757,7 +757,7 @@ declarations; modules are relative to `FormalSLT`.
 | `simultaneous_kraft_upperTail_mass_le_alpha` | `AnytimeValid.SelectionCost` | Finite simultaneous tail control under reciprocal corrections satisfying the Kraft budget |
 | `diagonalSpike_selectedCoefficient_safe_iff` | `AnytimeValid.SelectionCost` | Exact diagonal-witness characterization: coefficient-corrected selection is safe exactly when the coefficient sum is at most one |
 | `diagonalSpike_scalarCorrection_safe_iff_card_le` | `AnytimeValid.SelectionCost` | A common positive correction is safe on the diagonal witness exactly when it is at least the catalog cardinality |
-| `diagonalSpike_logCorrection_ge_logCard` | `AnytimeValid.SelectionCost` | The safe common correction pays at least `log |I|` on the log scale for the checked diagonal witness |
+| `diagonalSpike_logCorrection_ge_logCard` | `AnytimeValid.SelectionCost` | The safe common correction pays at least `log \|I\|` on the log scale for the checked diagonal witness |
 | `bettingWealth_supermartingale` | `AnytimeValid.BettingCS` | Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale |
 | `betting_time_uniform_confidence_sequence` | `AnytimeValid.BettingCS` | Countable-time Ville confidence sequence for the betting wealth e-process |
 | `betting_confidence_sequence_of_condMean` | `AnytimeValid.BettingCS` | End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null |

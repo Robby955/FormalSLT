@@ -543,6 +543,14 @@ def audit_lean_files(files: list[Path]) -> dict[str, list[dict[str, Any]]]:
     }
 
 
+def split_markdown_table_row(line: str) -> list[str]:
+    """Split a Markdown table row without treating escaped pipes as columns."""
+    return [
+        cell.replace(r"\|", "|").strip()
+        for cell in re.split(r"(?<!\\)\|", line.strip("|"))
+    ]
+
+
 def parse_theorem_map() -> list[dict[str, Any]]:
     lines = THEOREM_MAP.read_text(encoding="utf-8").splitlines()
     families: list[dict[str, Any]] = []
@@ -562,7 +570,7 @@ def parse_theorem_map() -> list[dict[str, Any]]:
                 header = None
             continue
 
-        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        cells = split_markdown_table_row(line)
         if all(set(cell) <= {"-", ":"} for cell in cells):
             continue
         if header is None:
@@ -656,6 +664,9 @@ def main() -> int:
 
     if args.self_test:
         source_resolution_self_test()
+        assert split_markdown_table_row(
+            r"| Declaration | Module | Role with \|escaped\| delimiters |"
+        ) == ["Declaration", "Module", "Role with |escaped| delimiters"]
         print("source resolution self-test passed")
         return 0
 
