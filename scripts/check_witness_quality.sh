@@ -170,6 +170,15 @@ classify_witness() {
 #     the theorem-produced risk ceiling is below 343/1000 and the checked
 #     forward-Bessel boundary is strictly below the fixed-proxy sub-Gamma
 #     boundary evaluated on the same prefix)
+#   exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event /
+#     receiptInformative_bothBranches_exist
+#     (Real state space and `(Fin 1 -> Real) x Bool` hypothesis space;
+#      shifted-Gaussian product posterior with finite-set mass zero and exact
+#      KL 1/32; genuine zero-one sign-flip score; two opposite-sign cylinders
+#      of mass 1/4 each intersect one common event of failure outer mass at
+#      most 1/8; every fixed hypothesis has positive observed Bessel variance;
+#      posterior empirical risk is 1/2 and the complete RHS is below one;
+#      fixed posterior and tilt, and the state law itself has two-point support)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -218,6 +227,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
+  "examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean"
 )
 
 fail=0
