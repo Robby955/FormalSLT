@@ -147,7 +147,7 @@ measurability theorem for that event is claimed.
 
 `StochasticDynamics.StationaryPoissonContraction` constructs the truncated
 Neumann potential `h_m = sum_{t < m} T^t (g - R)` for a known finite kernel, a
-supplied invariant PMF, and a depth `m` fixed before applying the theorem. If
+supplied invariant PMF, and a fixed depth `m`. If
 the Markov expectation operator contracts finite oscillation by
 `0 <= alpha < 1` and the centered row-risk oscillation is at most `D`, the
 module proves the exact residual identity, the closed span bound
@@ -162,11 +162,36 @@ without an extra factor two. The unit-range capstone therefore constructs the
 potential and discharges the contraction and centered-risk envelopes directly
 from the known kernel and score range.
 
-These results remain finite-state, finite-hypothesis, and finite-tilt. They do
-not construct or prove uniqueness of the invariant PMF, estimate an unknown
-kernel, select `m` after observing the scored trajectory, prove a mixing time
-or irreducibility, cover random initial laws or controlled dynamics, or turn
-the outer-mass confidence package into a separately measurable event.
+These fixed-depth results remain finite-state, finite-hypothesis, and
+finite-tilt. They do not construct or prove uniqueness of the invariant PMF,
+estimate an unknown kernel, prove a mixing time or irreducibility, cover random
+initial laws or controlled dynamics, or turn the outer-mass confidence package
+into a separately measurable event.
+
+### Confidence-allocated Poisson depth selection
+
+`StochasticDynamics.StationaryPoissonDepthSelection` keeps the finite kernel,
+invariant PMF, finite score catalog, contraction factor, and centered-risk
+oscillation envelope fixed. It allocates depth mass
+`q_m = 1 / ((m+1)(m+2))` and uses the existing countable geometric tilt
+allocation within each depth. The resulting one outer event is simultaneous
+over every finite depth, tilt index, time `n >= 2`, and posterior PMF. Hence a
+depth, tilt, and finite posterior may depend on the realized path and reported
+time by pointwise substitution into that event.
+
+The exact boundary includes the joint cost
+`log (((m+1)(m+2)(j+1)(j+2))/delta)`, the observed corrected-score
+hybrid-Bessel penalty, the endpoint term `B_m / n`, and residual
+`alpha^m D`. Under `0 <= alpha < 1`, the deterministic selector
+`m(n) = floor(log_2 n)` together with the geometric all-time tilt has complete
+width tending to zero, including the allocation, endpoint, and residual terms.
+
+This theorem does not turn the selected boundary into an e-process or assert
+that the countable depth union is a master e-process. The common event is
+controlled by outer mass and is not separately proved measurable. The theorem
+does not learn the kernel, construct the invariant PMF, justify selecting a
+candidate-kernel Poisson catalog from the same data, or extend beyond finite
+state and hypothesis spaces.
 
 ### Candidate-kernel robustness and invariant-target uniqueness
 

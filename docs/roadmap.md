@@ -246,6 +246,9 @@
   - [x] Construct finite-depth Poisson potentials automatically from explicit
     kernel-contraction data, with checked residual and span bounds, and compute
     a valid contraction factor from the finite Dobrushin coefficient.
+  - [x] Confidence-allocate one outer event over every finite Poisson depth and
+    countable geometric tilt, permit post-path depth and tilt substitution, and
+    prove that the full logarithmic-depth stationary boundary vanishes.
   - [x] Transfer the stationary certificate from a fixed candidate kernel
     under a deterministic row-TV envelope, including the doubled perturbation
     price and uniqueness among supplied invariant PMFs under strict candidate
@@ -253,9 +256,9 @@
   - [x] Build time-uniform empirical transition-coordinate confidence bands,
     normalize them on visited rows, and permit post-data candidate-kernel
     selection for row-TV and Dobrushin contraction certificates.
-  - Uniformize candidate Poisson potentials and finite depths, or use auxiliary
-    data/sample splitting, before plugging a selected candidate back into a
-    stationary-risk score.
+  - Uniformize Poisson-potential catalogs over data-selected candidate kernels,
+    or use auxiliary data/sample splitting, before plugging a selected
+    candidate back into a stationary-risk score.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing

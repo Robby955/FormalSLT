@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 188,
-    "library_and_example_lean_lines": 115868,
-    "library_lean_lines": 93074,
-    "library_modules": 234,
-    "theorem_map_entries": 907
+    "example_lean_files": 189,
+    "library_and_example_lean_lines": 117367,
+    "library_lean_lines": 94087,
+    "library_modules": 235,
+    "theorem_map_entries": 915
   },
   "theorem_families": [
     {
@@ -4952,6 +4952,54 @@
           "module": "StochasticDynamics.StationaryPoissonDobrushin",
           "name": "exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event",
           "summary": "Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "depthTiltPolynomial_log_cost",
+          "summary": "Expands the nested depth and geometric-tilt allocation to the exact joint logarithmic price"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "stationaryPoissonDepthSelectionBoundary_eq_explicit",
+          "summary": "Displays the complete selected-depth width, including observed hybrid-Bessel, endpoint, and residual terms"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "stationaryPoissonDepthSelectionExceptionalEvent_mass_le",
+          "summary": "Allocates one outer event over every finite depth and the countable geometric tilt catalog"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "exists_stationaryPoissonDepthSelection_selected_event",
+          "summary": "Permits path- and time-dependent depth, tilt, and finite-posterior substitution on the common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "stationaryPoissonFiniteDepthArgmin_le",
+          "summary": "Certifies the finite post-path depth argmin against every depth in its declared range"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "logarithmicDepthTiltLogRate_tendsto_zero",
+          "summary": "Shows that the joint allocation price vanishes at the geometric tilt's effective sample-size scale"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "stationaryPoissonDepthSelectionBoundary_logarithmic_tendsto_zero",
+          "summary": "Proves the full exact boundary vanishes for logarithmic depth and arbitrary time-varying finite posteriors"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDepthSelection",
+          "name": "exists_stationaryPoissonDepthSelection_allTime_vanishing_event",
+          "summary": "One outer event combines all-time stationary-risk validity with the vanishing selected boundary"
         },
         {
           "kind": "definition",

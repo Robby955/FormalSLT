@@ -915,6 +915,14 @@ optional-stopping result.
 | `abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation` | `StochasticDynamics.StationaryPoissonDobrushin` | Sharp finite-PMF expectation duality with no extra factor two under the `L1 / 2` convention |
 | `finiteDobrushinCoefficient_isOscillationContraction` | `StochasticDynamics.StationaryPoissonDobrushin` | Derives oscillation contraction directly from the computed finite Dobrushin coefficient |
 | `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event` | `StochasticDynamics.StationaryPoissonDobrushin` | Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel |
+| `depthTiltPolynomial_log_cost` | `StochasticDynamics.StationaryPoissonDepthSelection` | Expands the nested depth and geometric-tilt allocation to the exact joint logarithmic price |
+| `stationaryPoissonDepthSelectionBoundary_eq_explicit` | `StochasticDynamics.StationaryPoissonDepthSelection` | Displays the complete selected-depth width, including observed hybrid-Bessel, endpoint, and residual terms |
+| `stationaryPoissonDepthSelectionExceptionalEvent_mass_le` | `StochasticDynamics.StationaryPoissonDepthSelection` | Allocates one outer event over every finite depth and the countable geometric tilt catalog |
+| `exists_stationaryPoissonDepthSelection_selected_event` | `StochasticDynamics.StationaryPoissonDepthSelection` | Permits path- and time-dependent depth, tilt, and finite-posterior substitution on the common event |
+| `stationaryPoissonFiniteDepthArgmin_le` | `StochasticDynamics.StationaryPoissonDepthSelection` | Certifies the finite post-path depth argmin against every depth in its declared range |
+| `logarithmicDepthTiltLogRate_tendsto_zero` | `StochasticDynamics.StationaryPoissonDepthSelection` | Shows that the joint allocation price vanishes at the geometric tilt's effective sample-size scale |
+| `stationaryPoissonDepthSelectionBoundary_logarithmic_tendsto_zero` | `StochasticDynamics.StationaryPoissonDepthSelection` | Proves the full exact boundary vanishes for logarithmic depth and arbitrary time-varying finite posteriors |
+| `exists_stationaryPoissonDepthSelection_allTime_vanishing_event` | `StochasticDynamics.StationaryPoissonDepthSelection` | One outer event combines all-time stationary-risk validity with the vanishing selected boundary |
 | `markovPoissonDrift` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Candidate-comparable Poisson drift before subtracting a stationary target |
 | `abs_markovPoissonDrift_sub_candidate_le` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Transfers Poisson drift across a row-TV kernel perturbation at price `(1 + B) * eta` |
 | `abs_stationaryPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Bounds the true stationary residual by candidate-drift oscillation plus the doubled row-TV price |
@@ -935,11 +943,13 @@ and its span and residual bounds from known-kernel contraction data, and the
 Dobrushin specialization computes that contraction from the finite kernel.
 The robust modules transfer from a fixed candidate kernel under a supplied
 deterministic row-TV envelope and prove uniqueness among supplied invariant
-PMFs under a strict candidate certificate. The invariant PMF and depth remain
-supplied. This section does not estimate an unknown kernel or row-TV radius,
-select a candidate or depth after data, or establish mixing times,
-irreducibility, invariant-law existence, a measurable confidence event,
-continuous-state validity, or unrestricted tilt selection.
+PMFs under a strict candidate certificate. The depth-selection module instead
+confidence-allocates over every finite depth and a fixed countable geometric
+tilt catalog for one known kernel. The invariant PMF remains supplied. This
+section does not estimate an unknown kernel or row-TV radius, validate a
+same-data Poisson catalog built from a selected candidate kernel, or establish
+mixing times, irreducibility, invariant-law existence, a measurable confidence
+event, continuous-state validity, or unrestricted real-tilt selection.
 
 ## Empirical transition confidence for unknown finite kernels
 

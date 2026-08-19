@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C379-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-234-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-115%2C868-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C420-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-235-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-117%2C367-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -243,10 +243,43 @@ potential or contraction proof.
   oscillation bound is attained by an indicator, checks the depth-two
   potential and residual exactly, and instantiates the stationary certificate.
 
-The kernel and invariant PMF remain inputs, and `m` is fixed before applying
-the theorem. These modules do not estimate an unknown kernel, construct or
-prove uniqueness of an invariant law, permit post-data depth selection, or
-claim irreducibility, a mixing time, or a measurable confidence event.
+The fixed-depth capstones keep the kernel, invariant PMF, and `m` as inputs.
+They do not estimate an unknown kernel, construct or prove uniqueness of an
+invariant law, or claim irreducibility, a mixing time, or a measurable
+confidence event. The next module confidence-allocates over all finite depths.
+
+### Confidence-allocated Poisson depth selection
+
+For a known finite kernel, supplied invariant PMF, strict oscillation
+contraction `0 <= alpha < 1`, and finite score catalog, one outer-mass event is
+simultaneous over every finite Poisson depth, geometric tilt atom, time
+`n >= 2`, and posterior PMF. Depth `m` receives weight
+`1 / ((m + 1) * (m + 2))`, so the exact nested confidence price is
+`log (((m+1)(m+2)(j+1)(j+2))/delta)`. A depth, tilt, and posterior may then be
+chosen after observing the path by substitution into this common event.
+
+The deterministic choices `m(n) = floor(log_2 n)` and the all-time geometric
+tilt give a complete stationary-risk width that tends to zero for every path
+and every time-varying finite posterior. The width retains all three terms:
+the empirical-Bernstein trajectory contribution, the endpoint span divided by
+`n`, and the geometric residual `alpha^m D`.
+
+- **Lean theorem:**
+  `exists_stationaryPoissonDepthSelection_allTime_vanishing_event` in
+  [`StationaryPoissonDepthSelection.lean`](./FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean)
+- **Checked examples:**
+  [`CheckStationaryPoissonDepthSelection.lean`](./examples/CheckStationaryPoissonDepthSelection.lean)
+  instantiates the common event and vanishing-width theorem; and
+  [`CheckStationaryPoissonContraction.lean`](./examples/CheckStationaryPoissonContraction.lean)
+  evaluates nonconstant depth-one and depth-two potentials on one asymmetric
+  Boolean prefix, exposes confidence prices `log 240` and `log 480`, and proves
+  that the finite post-path argmin is no worse than either declared depth.
+
+This is confidence allocation, not a selected e-process: neither the
+envelope-penalized boundary nor the countable depth union is claimed to be a
+master e-process. The event is controlled by outer mass, with no separate
+measurability theorem. The kernel and invariant PMF remain supplied, and the
+result remains finite-state and finite-hypothesis.
 
 ### Candidate-kernel robustness and invariant-target uniqueness
 
@@ -1058,6 +1091,7 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `StochasticDynamics.StationaryPoissonPACBayes`,
   `StochasticDynamics.StationaryPoissonContraction`,
   `StochasticDynamics.StationaryPoissonDobrushin`,
+  `StochasticDynamics.StationaryPoissonDepthSelection`,
   `StochasticDynamics.StationaryPoissonRobustCandidate`,
   `StochasticDynamics.StationaryPoissonRobustInvariant`, and
   `StochasticDynamics.EmpiricalTransitionConfidence`, re-exported by the stable
@@ -1141,11 +1175,13 @@ The main learning-theory results are deliberately finite and explicit.
   be measurable or adapted and adds no optional-stopping guarantee. The target
   is posterior-average one-step conditional squared risk along the realized
   path
-- **Supplied-Poisson stationary risk:** finite state, hypothesis, and tilt
-  types; deterministic initial state; supplied invariant PMF; supplied bounded
-  exact or approximate Poisson potentials, or a fixed-depth potential
-  constructed from a known kernel and an explicit oscillation contraction;
-  and finite declared tilts in `(0,1)`. The Dobrushin specialization computes
+- **Supplied-Poisson stationary risk:** finite state and hypothesis types;
+  deterministic initial state; supplied invariant PMF; supplied bounded exact
+  or approximate Poisson potentials, or finite-depth potentials constructed
+  from a known kernel and an explicit oscillation contraction. The base lane
+  uses finite declared tilts in `(0,1)`; the depth-selection lane allocates over
+  all finite depths and a fixed countable geometric tilt catalog. The
+  Dobrushin specialization computes
   the contraction factor from pairwise row total variation. The robust
   specialization instead fixes a candidate kernel, a supplied rowwise
   probabilists' TV radius, a supplied invariant PMF of the true kernel, and a
@@ -1176,13 +1212,16 @@ The main learning-theory results are deliberately finite and explicit.
 - Catalog members created after observing their scored outcomes, random
   initial laws, continuous-state dynamics, automatic invariant-law
   construction, confidence bands for unvisited transition rows, statistically
-  valid same-data selection of a Poisson potential or depth, and general
-  mixing-time guarantees. Fixed-in-advance online update rules are covered by
-  the finite prefix-dependent trajectory adapter. The empirical transition
-  lane permits post-data candidate selection for its row-TV and contraction
-  conclusions, but it does not make the resulting candidate potential a valid
-  same-data stationary-risk score. The robust stationary lane proves
-  uniqueness only among supplied invariant PMFs and does not prove existence.
+  valid same-data construction of a Poisson-potential catalog from a selected
+  candidate kernel, and general mixing-time guarantees. Post-data depth and
+  geometric-tilt selection are covered for the fixed known-kernel catalog by
+  one confidence-allocated outer event. Fixed-in-advance online update rules
+  are covered by the finite prefix-dependent trajectory adapter. The empirical
+  transition lane permits post-data candidate selection for its row-TV and
+  contraction conclusions, but it does not make the resulting candidate
+  potential a valid same-data stationary-risk score. The robust stationary
+  lane proves uniqueness only among supplied invariant PMFs and does not prove
+  existence.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1277,6 +1316,9 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   supplied bounded exact or approximate Poisson potentials
 - [x] Construct finite-depth Poisson potentials and their span and residual
   bounds from explicit kernel-contraction data
+- [x] Confidence-allocate over every finite Poisson depth and the countable
+  geometric tilt catalog, with post-path selection and a vanishing
+  logarithmic-depth stationary boundary
 - [x] Transfer stationary certificates from a fixed candidate kernel under a
   deterministic row-TV envelope and certify uniqueness among supplied
   invariant PMFs under strict candidate contraction
