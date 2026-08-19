@@ -215,6 +215,37 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.trajectoryPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
   "FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardPredictableMeanEmpiricalBernsteinLowerProcess_le_exp_card"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_forwardPrefixMean_parameter"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_forwardBesselQ_parameter"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_forwardHybridBesselPenalty_parameter"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardPrefixMean_mem_Icc_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardHybridBesselPenalty_nonneg_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.forwardHybridBesselPenalty_le_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselPriorProcess_eProcess"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselMasterProcess_eProcess"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselExceptionalEvent_mass_le_delta"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.stronglyMeasurable_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselScore_eq_prefixMeans"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_forwardPrefixMean_parameter_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_forwardHybridBesselPenalty_parameter_of_unit"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integrable_exp_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.integral_continuousForwardPredictableMeanBesselScore"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBessel_boundaryFailure_mem_exceptionalEvent"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBessel_allPosteriors_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.exists_continuousForwardPredictableMeanBesselPACBayes_event"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_uncurry_of_finite_discrete_right"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_parameter"
+  "FormalSLT.StochasticDynamics.measurableSpace_prod_piLE_le_ambient"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_observedTrajectoryScore_parameter_prod"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_conditionalTrajectoryRisk_parameter_prod"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousTrajectoryLowerProcess_filtered"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousTrajectoryLowerProcess_ambient"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryEmpiricalBernsteinPACBayesBoundary_eq_generic"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorAverageConditionalRisk_eq_generic"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorEmpiricalPrequentialRisk_eq_generic"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event"
 )
 
 # Axioms permitted in a clean proof.
@@ -267,6 +298,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
   echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
+  echo "import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes"
+  echo "import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -315,7 +348,9 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
-  FormalSLT.StochasticDynamics.TrajectoryPACBayes >/dev/null
+  FormalSLT.StochasticDynamics.TrajectoryPACBayes \
+  FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes \
+  FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"
