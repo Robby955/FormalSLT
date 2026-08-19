@@ -142,6 +142,10 @@ classify_witness() {
 #      two, two prefixes share the fixed initial and current states but differ
 #      at the interior state, producing distinct kernel rows and score values;
 #      the exact length-three cylinder masses are not evaluated)
+#   exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event
+#     (asymmetric Boolean Markov chain, supplied invariant PMF `(2/3,1/3)`,
+#      two nonconstant exact Poisson potentials, corrected-score endpoints
+#      `0` and `1`, and an all-time/all-posterior certificate at delta `1/20`)
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
@@ -215,6 +219,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckMarkovRisk.lean"
   "examples/CheckMarkovPACBayes.lean"
   "examples/CheckTrajectoryPACBayes.lean"
+  "examples/CheckStationaryPoissonPACBayes.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"

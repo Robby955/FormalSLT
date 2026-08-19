@@ -240,6 +240,11 @@
   - [x] Support finite predeclared catalogs of prefix-dependent scores,
     including fixed-in-advance online update rules whose time-`n` prediction
     is determined before the next state is observed.
+  - [x] Convert the trajectory empirical-Bernstein event to finite-state
+    stationary risk from a supplied invariant PMF and supplied bounded exact
+    or approximate Poisson potentials.
+  - Construct finite-depth Poisson potentials automatically from explicit
+    kernel-contraction data, with checked residual and span bounds.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
@@ -247,8 +252,8 @@
   - Extend the checked finite weighted-tilt selection to normalized countable
     or predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
-  - Keep stationary, mixing, continuous-state, and multistep conclusions as
-    separate later theorem families.
+  - Keep inferred invariant laws, mixing guarantees, continuous-state, and
+    multistep conclusions as separate later theorem families.
 
 - [x] **Sharp McDiarmid constant**
   - `ExposureMartingale.hasBoundedDifferences_tail_sharp` proves the product

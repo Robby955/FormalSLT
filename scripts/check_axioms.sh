@@ -215,6 +215,15 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.trajectoryRiskShortfall_condSecondMoment_le_one_fourth"
   "FormalSLT.StochasticDynamics.trajectoryPACBayesTiltMixtureExceptionalEvent_mass_le_delta"
   "FormalSLT.StochasticDynamics.trajectoryPACBayes_tiltMixture_prequentialRisk_certificate"
+  "FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_event"
+  "FormalSLT.StochasticDynamics.exists_trajectoryEmpiricalBernsteinPACBayes_selected_event"
+  "FormalSLT.StochasticDynamics.conditionalTrajectoryRisk_poissonCorrectedTrajectoryScore"
+  "FormalSLT.StochasticDynamics.sum_poissonPotential_increment"
+  "FormalSLT.StochasticDynamics.trajectoryEmpiricalPrequentialRisk_poissonCorrected"
+  "FormalSLT.StochasticDynamics.exists_stationaryPoissonEmpiricalBernsteinPACBayes_event"
+  "FormalSLT.StochasticDynamics.exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event"
+  "FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event"
+  "FormalSLT.StochasticDynamics.exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event"
 )
 
 # Axioms permitted in a clean proof.
@@ -267,6 +276,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayes"
   echo "import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture"
   echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes"
+  echo "import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes"
   for t in "${THEOREMS[@]}"; do
     echo "#print axioms $t"
   done
@@ -315,7 +326,9 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.MarkovRisk \
   FormalSLT.StochasticDynamics.MarkovPACBayes \
   FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture \
-  FormalSLT.StochasticDynamics.TrajectoryPACBayes >/dev/null
+  FormalSLT.StochasticDynamics.TrajectoryPACBayes \
+  FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes \
+  FormalSLT.StochasticDynamics.StationaryPoissonPACBayes >/dev/null
 
 echo "== axiom audit =="
 RAW="$("$LAKE" env lean "$CHECK" 2>&1)"

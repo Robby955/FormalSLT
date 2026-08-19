@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C156-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-228-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-110%2C388-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C184-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-229-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-111%2C344-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -190,6 +190,31 @@ one-step conditional risk, not stationary risk.
   exact `KL = log 2`, two selected boundaries below `1/20`, and conditional
   risk below `11/20`. The explicit selector-branch paths are not proved good or
   positive-probability.
+
+### Supplied-Poisson stationary PAC-Bayes
+
+For a finite-state homogeneous Markov kernel, a deterministic initial state,
+a supplied invariant PMF, and a finite catalog of bounded transition scores
+with supplied bounded Poisson potentials, one outer-mass event controls the
+posterior stationary risk at every `n >= 2` and every declared finite tilt
+atom. Exact Poisson solutions leave only the empirical-Bernstein width of the
+corrected score and a telescoping endpoint price bounded by `B / n`;
+approximate solutions additionally retain an explicit residual envelope.
+
+- **Lean theorem:**
+  `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event` in
+  [`StationaryPoissonPACBayes.lean`](./FormalSLT/StochasticDynamics/StationaryPoissonPACBayes.lean)
+- **Checked example:**
+  [`CheckStationaryPoissonPACBayes.lean`](./examples/CheckStationaryPoissonPACBayes.lean)
+  proves invariance of the asymmetric Boolean chain with stationary PMF
+  `(2/3, 1/3)`, verifies two nonconstant exact potentials, checks that the
+  corrected score attains both `0` and `1`, and instantiates the all-time,
+  all-posterior theorem at `delta = 1/20`.
+
+The invariant PMF and potentials are theorem inputs. This module does not
+infer an invariant law, solve a Poisson equation, estimate an unknown kernel,
+derive a span bound from contraction or mixing, or assert measurability of the
+outer-mass event. State, hypothesis, and tilt types remain finite.
 
 The source theorem, exact agreement, material differences, and external-review
 questions for each result are tracked in
@@ -915,9 +940,11 @@ The generated [theorem index](./docs/INDEX.md) lists public declarations;
   `PACBayes.TimeUniformIIDGrid`, `PACBayes.IIDContinuousGaussian`,
   `PACBayes.IIDContinuousGaussianGrid`
 - **Stochastic dynamics:** `StochasticDynamics.TrajectoryRisk`,
-  `StochasticDynamics.TrajectoryPACBayes`, `StochasticDynamics.MarkovRisk`,
-  `StochasticDynamics.MarkovPACBayes`, and
-  `StochasticDynamics.MarkovPACBayesTiltMixture`, re-exported by the stable
+  `StochasticDynamics.TrajectoryPACBayes`,
+  `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes`,
+  `StochasticDynamics.MarkovRisk`, `StochasticDynamics.MarkovPACBayes`,
+  `StochasticDynamics.MarkovPACBayesTiltMixture`, and
+  `StochasticDynamics.StationaryPoissonPACBayes`, re-exported by the stable
   topic import `FormalSLT.StochasticDynamics`
 
 ## Scope and open boundaries
@@ -998,6 +1025,11 @@ The main learning-theory results are deliberately finite and explicit.
   be measurable or adapted and adds no optional-stopping guarantee. The target
   is posterior-average one-step conditional squared risk along the realized
   path
+- **Supplied-Poisson stationary risk:** finite state, hypothesis, and tilt
+  types; deterministic initial state; supplied invariant PMF; supplied bounded
+  exact or approximate Poisson potentials; and finite declared tilts in
+  `(0,1)`. The event is an outer-mass package shared by every `n >= 2`,
+  posterior PMF, and declared tilt atom
 - **Chaining:** finite nets, images, supports, outcome spaces, and entropy sums
 - **Public axiom profile:** `[propext, Classical.choice, Quot.sound]`
 
@@ -1014,9 +1046,11 @@ The main learning-theory results are deliberately finite and explicit.
   all-sample-size result over arbitrary measurable hypothesis spaces with
   finite-valued observations.
 - Catalog members created after observing their scored outcomes, random
-  initial laws, continuous-state dynamics, and stationary or mixing-based
-  long-run risk guarantees. Fixed-in-advance online update rules are covered by
-  the finite prefix-dependent trajectory adapter.
+  initial laws, continuous-state dynamics, automatic invariant-law or Poisson-
+  potential construction, and mixing-derived span guarantees. Fixed-in-advance
+  online update rules are covered by the finite prefix-dependent trajectory
+  adapter; stationary risk is covered only when the invariant PMF and bounded
+  Poisson data are supplied.
 - A neural-network generalization theorem
 
 For the full statement, see
@@ -1107,6 +1141,10 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   spherical Gaussian priors and posteriors
 - [x] Extend the finite PAC-Bayes certificate to a predeclared catalog of
   prefix-dependent scores, including fixed-in-advance online update rules
+- [x] Add a finite stationary-risk bridge from a supplied invariant PMF and
+  supplied bounded exact or approximate Poisson potentials
+- [ ] Construct finite-depth Poisson potentials and their span and residual
+  bounds from explicit kernel-contraction data
 - [ ] Extend the stochastic-dynamics layer to random initial laws,
   auxiliary-data catalog construction, and normalized countable or predictable
   tilt families
