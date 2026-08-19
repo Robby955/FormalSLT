@@ -779,6 +779,7 @@ declarations; modules are relative to `FormalSLT`.
 | `exists_forwardBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayes` | One-event capstone simultaneous over every `n >= 2`, posterior PMF, and declared finite tilt atom |
 | `iidObservedLoss_condExp_eq_populationRisk` | `PACBayes.ForwardBesselPACBayesIID` | Derives the per-hypothesis conditional mean from the natural-filtration IID bounded-loss model |
 | `exists_forwardIIDBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayesIID` | IID risk-facing capstone with the same all-time, all-posterior, all-atom common event |
+| `exists_continuousForwardPredictableMeanBesselPACBayes_event` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayes` | One outer-mass event over an arbitrary measurable hypothesis space controls every `n >= 2`, eligible posterior measure, and atom of a finite predeclared tilt prior |
 
 ## Time-uniform PAC-Bayes
 
@@ -848,6 +849,13 @@ This section is a path-semantics and conditional-expectation bridge. It does
 not itself provide a confidence event, concentration inequality, PAC-Bayes
 bound, controlled-process theorem, policy-optimization theorem, or
 optional-stopping result.
+
+## Trajectory forward empirical-Bernstein PAC-Bayes
+
+| Declaration | Module | Role |
+|---|---|---|
+| `exists_trajectoryEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes` | Finite-hypothesis, finite-state full-prefix capstone with one outer event for every `n >= 2`, posterior PMF, and declared finite tilt atom |
+| `exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes` | Finite-state full-prefix adapter for arbitrary measurable hypotheses and every eligible posterior measure, deriving process measurability from coordinatewise parameter measurability |
 
 ## Finite Markov prequential risk
 

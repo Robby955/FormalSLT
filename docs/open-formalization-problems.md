@@ -120,7 +120,11 @@ For continuous hypotheses, the repo now also proves a process-level theorem on
 arbitrary measurable hypothesis spaces and an end-to-end i.i.d. bounded-loss
 specialization for a fixed finite-dimensional spherical-Gaussian prior and
 posterior, with an explicit KL formula. This does not make the time-uniform
-result simultaneous over all continuous posteriors. The separate offline
+result simultaneous over all continuous posteriors. A separate forward
+predictable-residual engine is posterior-uniform over arbitrary measurable
+hypotheses under explicit parameter/process-measurability assumptions, with a
+finite-state full-prefix trajectory adapter and finite predeclared tilts. The
+separate offline
 all-sample-size empirical-Bernstein endpoint is posterior-uniform on an
 arbitrary measurable hypothesis space under its finite-observation and
 log-likelihood-ratio assumptions.
@@ -234,12 +238,15 @@ continuity, and log-likelihood-ratio integrability. It uses one event shared by
 every `n >= 2`, but is an offline reverse-exchangeability theorem: it does not
 itself construct a forward e-process, predictable betting strategy,
 optional-stopping API, continuous-observation result, or all-real post-hoc
-optimizer. The separate forward result remains finite-hypothesis and
-finite-tilt; its hybrid expression is only a lower envelope. Its informative
+optimizer. The separate forward result now has both finite-hypothesis and
+arbitrary-measurable-hypothesis masters but remains finite-tilt; its hybrid
+expression is only a lower envelope. Its finite-state trajectory adapter does
+not cover arbitrary measurable state dynamics or construct a measurable
+posterior selector. Its informative
 receipt proves positive Bessel variance `1/32`, `KL = log 2`, a
 theorem-produced good path with risk below `343/1000`, and a same-prefix
 boundary comparison of approximately `0.312` versus `0.760`. It still has no
-continuous-hypothesis endpoint or vanishing optimized finite-catalog boundary.
+vanishing optimized finite-catalog boundary.
 The random-matching proof formalizes the source variance inequality; neither
 route is presented with a novelty or priority claim.
 

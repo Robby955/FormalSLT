@@ -139,14 +139,19 @@ files.
   selection.
   Observations remain finite-valued. Separately, the checked forward lane mixes
   the actual predictable-residual e-process over finite hypothesis and tilt
-  priors and converts its quadratic penalty to a hybrid Bessel lower envelope.
-  Its common event supports every `n >= 2`, posterior PMF, and declared atom,
-  with one hypothesis KL and the selected atom's log-weight penalty. The
+  priors and also integrates it over an arbitrary measurable hypothesis space;
+  its finite-state full-prefix trajectory adapter derives the parameterized
+  process measurability assumptions. The hybrid Bessel term remains a lower
+  envelope. Its common continuous-prior event supports every `n >= 2`, every
+  eligible posterior measure, and every declared finite tilt atom, with one
+  hypothesis KL and the selected atom's log-weight penalty. The
   informative forward receipt has positive Bessel variance `1/32`, `KL = log
   2`, a theorem-produced good path, a risk ceiling below `343/1000`, and a
   same-prefix boundary comparison of approximately `0.312` versus `0.760`.
   The hybrid expression is not itself an e-process, and vanishing optimized,
-  countable/all-real, and continuous-hypothesis forward endpoints remain open.
+  countable/all-real, and arbitrary-measurable-state forward endpoints remain
+  open. The event is posterior-uniform but does not construct a measurable
+  selector or selected process.
   Neither forward nor reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream

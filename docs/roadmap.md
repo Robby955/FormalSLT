@@ -196,9 +196,11 @@
   the predictable-residual empirical-Bernstein process is checked as the
   stochastic e-process, while two Bessel envelopes and their hybrid minimum
   give the observable lower-envelope conversion. A finite full-support
-  hypothesis--tilt master has one outer-mass event for every `n >= 2`, posterior
-  PMF, and declared atom, with path/time/posterior-dependent selection, one
-  hypothesis KL, and one selected-atom log penalty. The IID bounded-loss adapter
+  hypothesis--tilt master and a separate continuous-prior master over arbitrary
+  measurable hypotheses each have one outer-mass event for every `n >= 2`,
+  admissible posterior, and declared finite tilt atom. The finite-state
+  full-prefix trajectory adapter derives the continuous master's process
+  measurability interfaces from score sections. The IID bounded-loss adapter
   and a structural fair-Boolean good-path receipt are checked separately. A
   second biased-Boolean receipt proves positive Bessel variance `1/32`, `KL =
   log 2`, a theorem-produced good path with risk below `343/1000`, and a
@@ -233,8 +235,8 @@
   - [x] Add a positive-KL, positive-variance forward receipt with an
     informative numerical width.
   - Study vanishing optimized all-time boundaries, countable or all-real
-    tilts, and continuous hypotheses. Do not treat the hybrid Bessel lower
-    envelope as an e-process.
+    tilts, and arbitrary measurable state dynamics. Do not treat the hybrid
+    Bessel lower envelope as an e-process.
 
 - [ ] **Finite stochastic-dynamics extensions**
   - [x] Support finite predeclared catalogs of prefix-dependent scores,

@@ -125,16 +125,19 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite normalized hypothesis--tilt e-process with one Ville "
             "event and selected-atom weight penalty; a forward finite-"
             "hypothesis predictable-residual e-process with a hybrid Bessel "
-            "lower envelope and finite weighted PAC-Bayes tilt catalog; and "
+            "lower envelope and finite weighted PAC-Bayes tilt catalog; a "
+            "forward continuous-prior master over arbitrary measurable "
+            "hypotheses with a finite-state full-prefix trajectory adapter; "
+            "and "
             "an offline reverse all-sample-size empirical-Bernstein endpoint "
             "over arbitrary measurable hypothesis spaces"
         ),
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
-            "Extend the forward finite normalized hypothesis--tilt master to "
-            "a countable vanishing-width mixture and measurable hypothesis "
-            "priors, then pursue honest all-real localization using continuous "
+            "Extend the forward finite-tilt continuous-prior master to a "
+            "countable vanishing-width mixture, then pursue honest all-real "
+            "localization using continuous "
             "score control or a supremum-to-integral argument. Keep that "
             "forward-process target distinct from the checked offline reverse "
             "continuous-posterior endpoint."
@@ -146,9 +149,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "an arbitrary measurable hypothesis space, but it is an offline "
             "reverse-exchangeability result with declared finite tilts, not a "
             "forward e-process. The new forward hybrid-Bessel PAC-Bayes master "
-            "is a genuine finite hypothesis--tilt mixture of predictable-"
-            "residual e-processes; its hybrid Bessel expression is only a "
-            "pointwise lower envelope and its catalog is finite. Its "
+            "has both a finite hypothesis--tilt mixture and an arbitrary-"
+            "measurable-hypothesis prior mixture of predictable-residual "
+            "e-processes; its hybrid Bessel expression is only a pointwise "
+            "lower envelope and its tilt catalog is finite. Its "
             "informative biased-Boolean receipt has Bessel variance 1/32, "
             "KL = log 2, a theorem-produced good path with risk below "
             "343/1000, and a same-prefix boundary comparison of approximately "
@@ -156,8 +160,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "A separate fixed-sample countable joint "
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
-            "result. No forward result is simultaneous over arbitrary "
-            "continuous posteriors or all real tilts."
+            "result. The continuous-prior event is posterior-uniform but does "
+            "not construct a measurable selector or selected process, and no "
+            "forward result is simultaneous over all real tilts."
         ),
     },
     {
@@ -187,7 +192,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "hypothesis spaces; plus a known predictable-residual forward "
             "empirical-Bernstein e-process, exact Welford/Abel identities, a "
             "hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes "
-            "master, and its finite-IID adapter"
+            "master, its finite-IID adapter, and a continuous-prior master "
+            "over arbitrary measurable hypotheses with a finite-state "
+            "full-prefix trajectory adapter"
         ),
         "difficulty": "hard",
         "source": (
@@ -195,8 +202,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
         "next_step": (
             "Derive a countable or stitched vanishing-width forward tilt "
-            "mixture and extend its PAC-Bayes master to measurable hypothesis "
-            "priors. Continue matched-boundary evidence and external review."
+            "mixture, extend the full-prefix adapter to arbitrary measurable "
+            "states, and continue matched-boundary evidence and external "
+            "review."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
@@ -221,8 +229,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "Separately, the forward lane packages the actual predictable-"
             "residual process as an e-process and bounds it below by a hybrid "
             "per-hypothesis Bessel penalty. The hybrid expression is not "
-            "itself an e-process. Its PAC-Bayes master currently has finite "
-            "hypotheses and a declared finite tilt catalog. Its informative "
+            "itself an e-process. Its continuous-prior master permits arbitrary "
+            "measurable hypotheses but retains a declared finite tilt catalog "
+            "and a finite-state trajectory adapter. Its informative "
             "Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-"
             "produced good path with risk below 343/1000, and a same-prefix "
             "boundary comparison of approximately 0.312 versus 0.760. "

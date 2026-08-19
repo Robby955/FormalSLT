@@ -37,20 +37,20 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The process-level continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. The reverse stitched theorem is instead uniform over finite-KL posteriors on an arbitrary measurable hypothesis space, but it is an offline reverse-exchangeability result with declared finite tilts, not a forward e-process. The new forward hybrid-Bessel PAC-Bayes master is a genuine finite hypothesis--tilt mixture of predictable-residual e-processes; its hybrid Bessel expression is only a pointwise lower envelope and its catalog is finite. Its informative biased-Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. No forward result is simultaneous over arbitrary continuous posteriors or all real tilts.",
+      "boundary": "The process-level continuous-hypothesis i.i.d. theorem is fixed-tilt, fixed-posterior, and spherical-Gaussian. The reverse stitched theorem is instead uniform over finite-KL posteriors on an arbitrary measurable hypothesis space, but it is an offline reverse-exchangeability result with declared finite tilts, not a forward e-process. The new forward hybrid-Bessel PAC-Bayes master has both a finite hypothesis--tilt mixture and an arbitrary-measurable-hypothesis prior mixture of predictable-residual e-processes; its hybrid Bessel expression is only a pointwise lower envelope and its tilt catalog is finite. Its informative biased-Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. A separate fixed-sample countable joint master has a finite-posterior selector over its predeclared natural-index catalog, but it is not a process-level or all-real result. The continuous-prior event is posterior-uniform but does not construct a measurable selector or selected process, and no forward result is simultaneous over all real tilts.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the forward finite normalized hypothesis--tilt master to a countable vanishing-width mixture and measurable hypothesis priors, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
-      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope and finite weighted PAC-Bayes tilt catalog; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
+      "next_step": "Extend the forward finite-tilt continuous-prior master to a countable vanishing-width mixture, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope and finite weighted PAC-Bayes tilt catalog; a forward continuous-prior master over arbitrary measurable hypotheses with a finite-state full-prefix trajectory adapter; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
     {
-      "boundary": "The stitched reverse-epoch endpoint gives one measurable infinite-IID event shared by every n >= 2. The continuous-prior version is uniform over every posterior probability measure on an arbitrary measurable hypothesis space that is absolutely continuous with respect to the fixed prior and has an integrable log-likelihood ratio. It retains finite-valued observations and is an offline reverse-exchangeability theorem, not a forward e-process or optional-stopping API. The tilt catalogs are declared in advance, so there is no all-real optimization. The continuous product-Gaussian/fair-Boolean receipt gives every finite set posterior mass zero, has KL = 1/32, and uses an unscaled zero-one sign-flip mismatch loss that depends on both hypothesis coordinates and attains both endpoints. Every nonempty-sample posterior empirical risk is 1/2; at n = 2^20 and delta = 1/2, the correction is below 1/2 and the theorem-produced right-hand side is below 1. A checked corollary gives a path outside the exceptional event. The receipt fixes the posterior and does not exercise data-dependent continuous-posterior selection. Separately, the forward lane packages the actual predictable-residual process as an e-process and bounds it below by a hybrid per-hypothesis Bessel penalty. The hybrid expression is not itself an e-process. Its PAC-Bayes master currently has finite hypotheses and a declared finite tilt catalog. Its informative Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. The separately budgeted rational risk theorem remains a distinct two-event result.",
+      "boundary": "The stitched reverse-epoch endpoint gives one measurable infinite-IID event shared by every n >= 2. The continuous-prior version is uniform over every posterior probability measure on an arbitrary measurable hypothesis space that is absolutely continuous with respect to the fixed prior and has an integrable log-likelihood ratio. It retains finite-valued observations and is an offline reverse-exchangeability theorem, not a forward e-process or optional-stopping API. The tilt catalogs are declared in advance, so there is no all-real optimization. The continuous product-Gaussian/fair-Boolean receipt gives every finite set posterior mass zero, has KL = 1/32, and uses an unscaled zero-one sign-flip mismatch loss that depends on both hypothesis coordinates and attains both endpoints. Every nonempty-sample posterior empirical risk is 1/2; at n = 2^20 and delta = 1/2, the correction is below 1/2 and the theorem-produced right-hand side is below 1. A checked corollary gives a path outside the exceptional event. The receipt fixes the posterior and does not exercise data-dependent continuous-posterior selection. Separately, the forward lane packages the actual predictable-residual process as an e-process and bounds it below by a hybrid per-hypothesis Bessel penalty. The hybrid expression is not itself an e-process. Its continuous-prior master permits arbitrary measurable hypotheses but retains a declared finite tilt catalog and a finite-state trajectory adapter. Its informative Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-produced good path with risk below 343/1000, and a same-prefix boundary comparison of approximately 0.312 versus 0.760. The separately budgeted rational risk theorem remains a distinct two-event result.",
       "difficulty": "hard",
       "id": "pac-bayes-empirical-bernstein",
-      "next_step": "Derive a countable or stitched vanishing-width forward tilt mixture and extend its PAC-Bayes master to measurable hypothesis priors. Continue matched-boundary evidence and external review.",
-      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector; plus a proved reverse Bessel martingale, reverse joint mean/variance epoch process, reverse finite catalog, closed-form epoch endpoint, finite-prefix infinite-product bridge, and one stitched all-sample-size finite-IID event; plus a continuous-prior reverse mixture, finite tilt catalog, closed-form epoch bound, and stitched all-sample-size endpoint over arbitrary measurable hypothesis spaces; plus a known predictable-residual forward empirical-Bernstein e-process, exact Welford/Abel identities, a hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes master, and its finite-IID adapter",
+      "next_step": "Derive a countable or stitched vanishing-width forward tilt mixture, extend the full-prefix adapter to arbitrary measurable states, and continue matched-boundary evidence and external review.",
+      "scope": "finite per-hypothesis Bessel empirical loss variance, exact ordered-pair representation, finite-IID unbiasedness, random-matching source MGF, fixed-tilt posterior-uniform variance confidence over all posteriors on a finite hypothesis type, a standalone weighted finite variance-tilt catalog, fixed-parameter observable risk, and separately weighted finite eta/lambda catalogs, plus a fixed-sample per-hypothesis joint mean/Bessel-variance MGF core and a one-event weighted joint-pair posterior catalog with selector, including its explicit zero-residual branch and exact attained three-piece residual penalty, a closed-form clog-depth dyadic square-root-plus-linear endpoint, plus a support-aware Nat-indexed countable master mixture, per-entry prior-moment extraction, finite-posterior bound, and exact-xi selector; plus a proved reverse Bessel martingale, reverse joint mean/variance epoch process, reverse finite catalog, closed-form epoch endpoint, finite-prefix infinite-product bridge, and one stitched all-sample-size finite-IID event; plus a continuous-prior reverse mixture, finite tilt catalog, closed-form epoch bound, and stitched all-sample-size endpoint over arbitrary measurable hypothesis spaces; plus a known predictable-residual forward empirical-Bernstein e-process, exact Welford/Abel identities, a hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes master, its finite-IID adapter, and a continuous-prior master over arbitrary measurable hypotheses with a finite-state full-prefix trajectory adapter",
       "source": "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance",
       "status": "partially_closed"
     },
@@ -85,11 +85,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 183,
-    "library_and_example_lean_lines": 110388,
-    "library_lean_lines": 89725,
-    "library_modules": 228,
-    "theorem_map_entries": 855
+    "example_lean_files": 184,
+    "library_and_example_lean_lines": 111934,
+    "library_lean_lines": 91168,
+    "library_modules": 230,
+    "theorem_map_entries": 858
   },
   "theorem_families": [
     {
@@ -4284,6 +4284,12 @@
           "module": "PACBayes.ForwardBesselPACBayesIID",
           "name": "exists_forwardIIDBesselPACBayes_event",
           "summary": "IID risk-facing capstone with the same all-time, all-posterior, all-atom common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "PACBayes.ContinuousForwardPredictableMeanBesselPACBayes",
+          "name": "exists_continuousForwardPredictableMeanBesselPACBayes_event",
+          "summary": "One outer-mass event over an arbitrary measurable hypothesis space controls every n >= 2, eligible posterior measure, and atom of a finite predeclared tilt prior"
         }
       ],
       "name": "Forward empirical-Bernstein and PAC-Bayes"
@@ -4603,6 +4609,23 @@
         }
       ],
       "name": "Finite prefix-dependent trajectory semantics"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes",
+          "name": "exists_trajectoryEmpiricalBernsteinPACBayes_event",
+          "summary": "Finite-hypothesis, finite-state full-prefix capstone with one outer event for every n >= 2, posterior PMF, and declared finite tilt atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes",
+          "name": "exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event",
+          "summary": "Finite-state full-prefix adapter for arbitrary measurable hypotheses and every eligible posterior measure, deriving process measurability from coordinatewise parameter measurability"
+        }
+      ],
+      "name": "Trajectory forward empirical-Bernstein PAC-Bayes"
     },
     {
       "entries": [
