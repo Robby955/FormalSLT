@@ -37,13 +37,20 @@ files.
   event has mass at most `delta`; on its complement the bound is simultaneous
   over every positive time, posterior PMF, and predeclared finite tilt atom,
   so the posterior and one atom may be selected after the path is observed.
-  This does not validate creating new catalog members after seeing their
-  scored outcomes. The next reviewable extensions are a supplied initial law,
-  controlled kernels, auxiliary-data catalog construction, empirical-variance
-  adaptation, and normalized countable or predictable tilt selection. The
-  result is not an arbitrary real-tilt optimization theorem, an arbitrary
-  joint predictor--tilt posterior theorem, a stationarity or mixing theorem,
-  or a continuous-state stochastic-dynamics result.
+  The separate stationary layer constructs finite-depth Poisson corrections,
+  confidence-allocates over depth and a countable geometric risk-tilt catalog,
+  estimates visited-row transition error on the same path, and permits
+  selection within a finite predeclared candidate catalog. Every nonempty
+  finite kernel now has a noncomputable chosen invariant PMF, with uniqueness
+  only under a strict Dobrushin or candidate row-TV certificate. This does not
+  validate creating new catalog members after seeing their scored outcomes or
+  fitting an arbitrary candidate outside the predeclared family. The next
+  reviewable extensions are a supplied initial law, controlled kernels,
+  auxiliary-data catalog construction, unvisited-row normalization,
+  quantitative mixing, continuous states, and normalized countable or
+  predictable tilt selection. The result is not an arbitrary real-tilt
+  optimization theorem, an arbitrary joint predictor--tilt posterior theorem,
+  or a measurable selected-boundary e-process theorem.
 
 - `localized-rademacher-finite-concentration`: finite, reviewable, and now
   packaged through the iid product-weight bad-event adapter with a

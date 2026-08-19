@@ -143,6 +143,167 @@ states, continuous hypotheses, countable tilts, or arbitrary real-tilt
 optimization. The common event is an outer-probability package; no separate
 measurability theorem for that event is claimed.
 
+### Finite-depth Poisson construction and Dobrushin contraction
+
+`StochasticDynamics.StationaryPoissonContraction` constructs the truncated
+Neumann potential `h_m = sum_{t < m} T^t (g - R)` for a known finite kernel, a
+supplied invariant PMF, and a fixed depth `m`. If
+the Markov expectation operator contracts finite oscillation by
+`0 <= alpha < 1` and the centered row-risk oscillation is at most `D`, the
+module proves the exact residual identity, the closed span bound
+`D * (1 - alpha^m) / (1 - alpha)`, and the pointwise residual bound
+`alpha^m * D`. Its capstone substitutes those quantities into the
+supplied-Poisson empirical-Bernstein event.
+
+`StochasticDynamics.StationaryPoissonDobrushin` defines finite total variation
+as one half of the row `L1` distance, computes the maximum pairwise row total
+variation, and proves that this Dobrushin coefficient contracts oscillation
+without an extra factor two. The unit-range capstone therefore constructs the
+potential and discharges the contraction and centered-risk envelopes directly
+from the known kernel and score range.
+
+These fixed-depth results remain finite-state, finite-hypothesis, and
+finite-tilt. They do not construct or prove uniqueness of the invariant PMF,
+estimate an unknown kernel, prove a mixing time or irreducibility, cover random
+initial laws or controlled dynamics, or turn the outer-mass confidence package
+into a separately measurable event.
+
+### Confidence-allocated Poisson depth selection
+
+`StochasticDynamics.StationaryPoissonDepthSelection` keeps the finite kernel,
+invariant PMF, finite score catalog, contraction factor, and centered-risk
+oscillation envelope fixed. It allocates depth mass
+`q_m = 1 / ((m+1)(m+2))` and uses the existing countable geometric tilt
+allocation within each depth. The resulting one outer event is simultaneous
+over every finite depth, tilt index, time `n >= 2`, and posterior PMF. Hence a
+depth, tilt, and finite posterior may depend on the realized path and reported
+time by pointwise substitution into that event.
+
+The exact boundary includes the joint cost
+`log (((m+1)(m+2)(j+1)(j+2))/delta)`, the observed corrected-score
+hybrid-Bessel penalty, the endpoint term `B_m / n`, and residual
+`alpha^m D`. Under `0 <= alpha < 1`, the deterministic selector
+`m(n) = floor(log_2 n)` together with the geometric all-time tilt has complete
+width tending to zero, including the allocation, endpoint, and residual terms.
+
+This theorem does not turn the selected boundary into an e-process or assert
+that the countable depth union is a master e-process. The common event is
+controlled by outer mass and is not separately proved measurable. The theorem
+does not learn the kernel, construct the invariant PMF, justify selecting a
+candidate-kernel Poisson catalog from the same data, or extend beyond finite
+state and hypothesis spaces.
+
+### Candidate-kernel robustness and invariant-target uniqueness
+
+`StochasticDynamics.StationaryPoissonRobustCandidate` separates the true
+finite kernel `P` from a fixed candidate kernel `Q` used to construct the
+Poisson correction. It assumes a deterministic rowwise bound
+`TV(P(z), Q(z)) <= eta`, `[0,1]` transition scores, a supplied invariant PMF
+of `P`, and a candidate potential with span at most `B`. The checked drift
+transfer is `|g_P(z) - g_Q(z)| <= (1 + B) * eta`; centering at the invariant
+target therefore yields the uniform residual envelope
+`oscillation(g_Q) + 2 * (1 + B) * eta`. A second endpoint uses the observed
+candidate-drift maximum minus its running mean and is derived from the same
+outer-mass event, not from an additional concentration claim.
+
+The finite-depth capstone fixes a reference PMF and depth `m`, constructs the
+potential from `Q`, and retains the residual price
+`alpha_Q^m * D + 2 * (1 + B_m) * eta`. The hypothesis, candidate, reference
+PMF, depth, and tilt catalog are all fixed before applying the theorem.
+
+`StochasticDynamics.StationaryPoissonRobustInvariant` proves the deterministic
+perturbation bound
+`Dobrushin(P) <= Dobrushin(Q) + 2 * eta`. If the right-hand side is strictly
+below one, the true kernel contracts finite oscillation and any two supplied
+invariant PMFs of `P` are equal. Consequently the stationary risk and its
+posterior average are independent of which supplied invariant witness is used.
+This is an at-most-one result: it does not construct an invariant PMF or prove
+that one exists.
+
+These modules do not estimate `P`, `eta`, or the candidate kernel from data;
+construct a confidence set; permit post-data candidate or depth selection;
+prove invariant-law existence or a quantitative mixing time; or cover random
+initial laws, controlled dynamics, continuous states, or unrestricted tilts.
+
+### Empirical transition confidence and selected candidates
+
+`StochasticDynamics.EmpiricalTransitionConfidence` treats each finite
+source--destination transition indicator and its complement as a bounded
+trajectory score. For a finite homogeneous kernel and deterministic initial
+state, one outer-mass event is simultaneous over all `n >= 2`, source and
+destination coordinates, and atoms of a supplied finite tilt catalog. Before
+normalization, the theorem compares observed transition mass with predictable
+visit-gated transition mass and remains meaningful for an unvisited row.
+
+Normalizing to a transition-probability radius requires strictly positive
+source visit mass. Summing the simultaneous coordinate radii gives a row-TV
+certificate. The candidate kernel is introduced only after the common event,
+so it may be selected from the observed path without another selection cost.
+If every source row has positive visit mass, the maximum row certificate feeds
+the deterministic Dobrushin perturbation theorem and can certify contraction
+of the true kernel and uniqueness among supplied invariant PMFs.
+
+The result is finite-state and does not provide a positive normalized radius
+for an unvisited row. It does not construct an invariant PMF or prove one
+exists, estimate a mixing time, cover a random initial law, or extend to
+continuous states. Post-data candidate validity here is limited to the row-TV
+and deterministic contraction conclusions already uniform in the candidate;
+it does not justify selecting a candidate Poisson potential or stationary-risk
+score from the same data without a predeclared uniform catalog, auxiliary data,
+or sample splitting. The common confidence set is an outer-mass package; no
+separate measurability theorem is claimed.
+
+### Same-trajectory empirical stationary catalogs
+
+`StochasticDynamics.EmpiricalStationaryCatalog` supplies the predeclared
+uniform catalog required by the preceding nonclaim. The theorem fixes a finite
+candidate type, candidate kernels, reference PMFs, nonnegative centered-risk
+envelopes, full-support candidate weights, and a finite score prior before the
+trajectory is observed. Every candidate must have finite Dobrushin coefficient
+strictly below one. Candidate `c` and depth `m` receive risk-event mass
+`deltaRisk * candidateWeight c / ((m+1)(m+2))`; the existing countable
+geometric allocation then covers every risk-tilt index, time `n >= 2`, and
+finite-class posterior within that atom.
+
+The risk-catalog event and the finite transition-coordinate event are
+intersected on the same path, with complement outer mass bounded by
+`deltaRisk + deltaTransition`. No independence or sample split is assumed.
+When all source visit masses are positive, the candidate, depth, risk tilt,
+finite transition tilt, and posterior may depend on the path and time by
+pointwise substitution into the common event. The selected row-TV radius feeds
+the boundary
+
+`(1 + 2 B_m) * hybridBesselKL + B_m / n + alpha_c^m D_c + 2 (1 + B_m) eta`,
+
+where the first term contains the candidate--depth--tilt allocation cost. The
+same conclusion returns the candidate perturbation bound for the true
+Dobrushin coefficient, an oscillation-contraction certificate, and uniqueness
+conditional on the selected strict inequality
+`Dobrushin(Q_c) + 2 eta < 1`.
+
+`StochasticDynamics.FiniteInvariantExistence` proves that every kernel on a
+nonempty finite state space has an invariant PMF. The proof takes Cesaro
+averages in the real probability simplex, extracts a convergent subsequence by
+compactness, and converts the fixed point back to a PMF.
+`finiteInvariantPMF P` is a noncomputable `Classical.choose` witness, not a
+closed-form or executable stationary solver. The canonical catalog corollary
+targets this chosen invariant PMF without a caller-supplied existence premise.
+`StochasticDynamics.FiniteInvariantUniqueness` combines existence with either
+a strict true-kernel Dobrushin coefficient or a strict candidate row-TV
+certificate to prove `ExistsUnique`.
+
+The catalog does not authorize kernels, reference PMFs, or score/potential
+entries invented after their scored trajectory has been observed; selection
+is only among the finite declarations already controlled by the common risk
+event. The normalized transition component remains unavailable for unvisited
+rows. The theorem has a deterministic initial state, finite state and
+hypothesis spaces, finite candidates and transition tilts, and the fixed
+countable geometric risk-tilt family. It does not prove a measurable version
+of the common outer-mass event or that the selected boundary is an e-process.
+Finite invariant existence does not imply irreducibility, uniqueness without a
+strict certificate, convergence of arbitrary initial laws, a convergence
+rate, or a mixing time.
+
 ### Azuma and sharp McDiarmid constants
 
 The high-probability Rademacher bounds use
@@ -595,7 +756,16 @@ The catalog itself must still be fixed before the scored trajectory is
 observed; the result does not validate inventing or fitting new catalog
 members after seeing their scored outcomes. Separate modules now provide a
 forward empirical-Bernstein trajectory boundary, a normalized countable
-declared-tilt selector, and the supplied-Poisson stationary-risk bridge above.
-Natural next layers are a random initial law, controlled/action-dependent
-kernels, auxiliary-data catalog construction, automatic finite-depth Poisson
-potentials from contraction, and continuous-state stationary inference.
+declared-tilt selector, the supplied-Poisson stationary-risk bridge above, and
+finite-depth potentials under supplied or computed Dobrushin contraction. A
+fixed candidate kernel can now be transferred under a deterministic row-TV
+envelope, including uniqueness among supplied invariant PMFs under strict
+candidate contraction. Empirical transition-coordinate bands now add
+time-uniform visited-row confidence radii and post-data candidate contraction
+certificates for unknown finite kernels. A finite predeclared candidate--depth
+catalog now combines those bands with the stationary risk event on the same
+path, and every nonempty finite kernel has a chosen invariant PMF. Natural next
+layers are path-fitted candidates outside a predeclared catalog, a random
+initial law, controlled/action-dependent kernels, auxiliary-data construction
+of valid stationary-score catalogs, mixing guarantees, and continuous-state
+stationary inference.

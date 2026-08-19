@@ -146,6 +146,10 @@ classify_witness() {
 #     (asymmetric Boolean Markov chain, supplied invariant PMF `(2/3,1/3)`,
 #      two nonconstant exact Poisson potentials, corrected-score endpoints
 #      `0` and `1`, and an all-time/all-posterior certificate at delta `1/20`)
+#   exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_closed_event
+#     (asymmetric Boolean kernel with computed Dobrushin coefficient `1/4`,
+#      attained oscillation contraction, exact depth-two potential and residual
+#      values, and a finite-depth stationary certificate at delta `1/20`)
 #   informative_nonvacuous_receipt /
 #     informative_allTime_vanishing_capstone
 #     (genuinely prefix-dependent finite dynamics, static and online rules,
@@ -155,6 +159,11 @@ classify_witness() {
 #      costs at n = 512 and 2048, checked boundary enclosures 0.2738--0.2744
 #      and 0.1432--0.1434, and strict same-path shrinkage; the catalog is fixed
 #      before data and the countable endpoint is not a master selected e-process)
+#   exists_stationaryPoissonDepthSelection_allTime_vanishing_event
+#     (asymmetric two-state stationary chain, alpha = D = 1/4, nonconstant
+#      finite-depth potentials, two exact depth boundaries on one prefix, a
+#      finite argmin comparison, and exact logarithmic-depth width tending to
+#      zero)
 #   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
 #     countableJointMeanVariance_priorMoment_le_of_not_mem
 #     (predeclared Nat-indexed geometric joint-pair catalog, one existential good
@@ -174,6 +183,30 @@ classify_witness() {
 #     the theorem-produced risk ceiling is below 343/1000 and the checked
 #     forward-Bessel boundary is strictly below the fixed-proxy sub-Gamma
 #     boundary evaluated on the same prefix)
+#   exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event
+#     (true identity Bool kernel versus a fixed fair-row candidate, exact
+#     row-TV distance 1/2, and a sharp obstruction showing that the doubled
+#     misspecification price is necessary rather than a proof artifact)
+#   exists_selectedEmpiricalKernelContraction_event /
+#     transitionBalanced_candidate_contraction_threshold
+#     (one all-time event for every transition coordinate and post-data
+#     candidate; separately, a balanced Boolean prefix at n = 1024 has every
+#     row visited 512 times, zero fair-candidate empirical discrepancy, kernel
+#     TV budget below 1/4, and strict candidate perturbation contraction. The
+#     arithmetic witness is conditional on good-event membership and does not
+#     prove that the named path is good or a positive-probability intersection.)
+#   exists_selectedEmpiricalStationaryCatalog_event
+#     (two predeclared Boolean candidate kernels, exact depth-two span/residual
+#     pairs, separate risk/transition budgets summing to 1/2, and two covered
+#     paths exercising both selector branches without claiming either is good)
+#   empiricalStationaryCatalog_allPosteriors_of_not_mem /
+#     receiptInformative_bothBranches_exist
+#     (fair true kernel, two predeclared candidate perturbations, branch mass
+#      exactly 1/4 versus one common risk-event budget 1/8, theorem-produced
+#      good paths in both data-selected candidate branches, point-posterior
+#      KL = log 2, strictly positive observed Bessel variance, selected boundary
+#      below 11/40, and final empirical-risk-plus-boundary below 7/8; row-TV
+#      errors are supplied exactly and the reported depth is fixed at zero)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -220,9 +253,14 @@ HEADLINE_WITNESSES=(
   "examples/CheckMarkovPACBayes.lean"
   "examples/CheckTrajectoryPACBayes.lean"
   "examples/CheckStationaryPoissonPACBayes.lean"
+  "examples/CheckStationaryPoissonContraction.lean"
   "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
+  "examples/CheckStationaryPoissonRobustCandidate.lean"
+  "examples/CheckEmpiricalTransitionConfidence.lean"
+  "examples/CheckEmpiricalStationaryCatalog.lean"
+  "examples/CheckEmpiricalStationaryCatalogInformative.lean"
 )
 
 fail=0

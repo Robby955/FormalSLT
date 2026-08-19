@@ -904,11 +904,133 @@ optional-stopping result.
 | `exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Replaces the signed path residual and endpoint by supplied posterior residual envelopes and `B / n` |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson specialization with zero residual and the exact telescoping endpoint term |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson stationary-risk certificate with only the simple `B / n` endpoint price |
+| `finiteDepthPoisson_residual_identity` | `StochasticDynamics.StationaryPoissonContraction` | Identifies the truncated Neumann potential's exact Poisson residual with `T^m (g - R)` |
+| `iteratedMarkovPotentialMean_oscillation_le` | `StochasticDynamics.StationaryPoissonContraction` | Iterates a supplied oscillation contraction to the geometric factor `alpha^t` |
+| `finiteDepthPoissonPotential_span` | `StochasticDynamics.StationaryPoissonContraction` | Bounds the depth-`m` potential span by the finite geometric sum times the centered-risk oscillation envelope |
+| `finiteDepthPoissonResidual_le` | `StochasticDynamics.StationaryPoissonContraction` | Uses invariance and oscillation contraction to bound the pointwise residual by `alpha^m D` |
+| `finiteDepthPoissonSpanBound_closed` | `StochasticDynamics.StationaryPoissonContraction` | Rewrites the geometric span as `D * (1 - alpha^m) / (1 - alpha)` when `alpha < 1` |
+| `exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event` | `StochasticDynamics.StationaryPoissonContraction` | Instantiates the stationary empirical-Bernstein event with the constructed depth-`m` potential, closed span, and geometric residual |
+| `finitePMFTotalVariation` | `StochasticDynamics.StationaryPoissonDobrushin` | Finite-PMF total variation using the probabilists' `L1 / 2` convention |
+| `finiteDobrushinCoefficient` | `StochasticDynamics.StationaryPoissonDobrushin` | Maximum pairwise total variation between rows of a known finite transition kernel |
+| `abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation` | `StochasticDynamics.StationaryPoissonDobrushin` | Sharp finite-PMF expectation duality with no extra factor two under the `L1 / 2` convention |
+| `finiteDobrushinCoefficient_isOscillationContraction` | `StochasticDynamics.StationaryPoissonDobrushin` | Derives oscillation contraction directly from the computed finite Dobrushin coefficient |
+| `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event` | `StochasticDynamics.StationaryPoissonDobrushin` | Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel |
+| `depthTiltPolynomial_log_cost` | `StochasticDynamics.StationaryPoissonDepthSelection` | Expands the nested depth and geometric-tilt allocation to the exact joint logarithmic price |
+| `stationaryPoissonDepthSelectionBoundary_eq_explicit` | `StochasticDynamics.StationaryPoissonDepthSelection` | Displays the complete selected-depth width, including observed hybrid-Bessel, endpoint, and residual terms |
+| `stationaryPoissonDepthSelectionExceptionalEvent_mass_le` | `StochasticDynamics.StationaryPoissonDepthSelection` | Allocates one outer event over every finite depth and the countable geometric tilt catalog |
+| `exists_stationaryPoissonDepthSelection_selected_event` | `StochasticDynamics.StationaryPoissonDepthSelection` | Permits path- and time-dependent depth, tilt, and finite-posterior substitution on the common event |
+| `stationaryPoissonFiniteDepthArgmin_le` | `StochasticDynamics.StationaryPoissonDepthSelection` | Certifies the finite post-path depth argmin against every depth in its declared range |
+| `logarithmicDepthTiltLogRate_tendsto_zero` | `StochasticDynamics.StationaryPoissonDepthSelection` | Shows that the joint allocation price vanishes at the geometric tilt's effective sample-size scale |
+| `stationaryPoissonDepthSelectionBoundary_logarithmic_tendsto_zero` | `StochasticDynamics.StationaryPoissonDepthSelection` | Proves the full exact boundary vanishes for logarithmic depth and arbitrary time-varying finite posteriors |
+| `exists_stationaryPoissonDepthSelection_allTime_vanishing_event` | `StochasticDynamics.StationaryPoissonDepthSelection` | One outer event combines all-time stationary-risk validity with the vanishing selected boundary |
+| `markovPoissonDrift` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Candidate-comparable Poisson drift before subtracting a stationary target |
+| `abs_markovPoissonDrift_sub_candidate_le` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Transfers Poisson drift across a row-TV kernel perturbation at price `(1 + B) * eta` |
+| `abs_stationaryPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Bounds the true stationary residual by candidate-drift oscillation plus the doubled row-TV price |
+| `neg_poissonResidualAverage_le_candidateMaxGapAverage` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Replaces uniform candidate oscillation by an observed max-minus-running-mean correction along the path |
+| `exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_path_event` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Path-adaptive stationary-risk event for a fixed candidate kernel and supplied row-TV envelope |
+| `exists_stationaryRobustCandidatePoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Uniform candidate-oscillation stationary-risk event with explicit doubled misspecification price |
+| `exists_stationaryRobustCandidateFiniteDepthDobrushinPACBayes_event` | `StochasticDynamics.StationaryPoissonRobustCandidate` | Constructs the candidate finite-depth potential and exposes geometric plus row-TV residual terms |
+| `finitePMFTotalVariation_triangle` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Triangle inequality for probabilists' finite total variation |
+| `finiteDobrushinCoefficient_le_candidate_add_two_mul_rowTV` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Bounds the true Dobrushin coefficient by the candidate coefficient plus twice the row-TV radius |
+| `candidateDobrushin_add_two_mul_rowTV_isOscillationContraction` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Turns the candidate coefficient and row-TV radius into a valid true-kernel oscillation factor |
+| `invariantPMF_unique_of_finiteDobrushinCoefficient_lt_one` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Proves at most one supplied invariant PMF when the true finite coefficient is below one |
+| `invariantPMF_unique_of_candidate_rowTV` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Certifies uniqueness among supplied true-kernel invariant PMFs from the candidate perturbation bound |
+| `stationaryPosteriorMarkovRisk_eq_of_candidate_rowTV` | `StochasticDynamics.StationaryPoissonRobustInvariant` | Makes posterior stationary risk independent of the supplied invariant witness under the strict certificate |
 
-The invariant PMF, potential, span bound, and optional residual envelope are
-inputs. This section does not construct any of them, infer an unknown kernel,
-or establish mixing, irreducibility, invariant-law uniqueness, a measurable
-confidence event, continuous-state validity, or unrestricted tilt selection.
+The base bridge accepts the invariant PMF, potential, span bound, and optional
+residual envelope as inputs. The finite-depth modules construct the potential
+and its span and residual bounds from known-kernel contraction data, and the
+Dobrushin specialization computes that contraction from the finite kernel.
+The robust modules transfer from a fixed candidate kernel under a supplied
+deterministic row-TV envelope and prove uniqueness among supplied invariant
+PMFs under a strict candidate certificate. The depth-selection module instead
+confidence-allocates over every finite depth and a fixed countable geometric
+tilt catalog for one known kernel. The invariant PMF remains supplied. This
+section does not estimate an unknown kernel or row-TV radius, validate a
+same-data Poisson catalog built from a selected candidate kernel, or establish
+mixing times, irreducibility, invariant-law existence, a measurable confidence
+event, continuous-state validity, or unrestricted real-tilt selection.
+
+## Empirical transition confidence for unknown finite kernels
+
+| Declaration | Module | Role |
+|---|---|---|
+| `TransitionCoordinate` | `StochasticDynamics.EmpiricalTransitionConfidence` | Finite source--destination coordinate together with the direct or complement side |
+| `transitionVisitMass` | `StochasticDynamics.EmpiricalTransitionConfidence` | Observed source-state visit count over the first `n` transitions |
+| `transitionEdgeMass` | `StochasticDynamics.EmpiricalTransitionConfidence` | Observed source--destination transition count over the first `n` transitions |
+| `empiricalTransitionFrequency` | `StochasticDynamics.EmpiricalTransitionConfidence` | Visited-row empirical transition frequency |
+| `transitionCoordinateBoundary` | `StochasticDynamics.EmpiricalTransitionConfidence` | Dirac-posterior empirical-Bernstein boundary for one direct or complement coordinate |
+| `transitionCoordinateRadius` | `StochasticDynamics.EmpiricalTransitionConfidence` | Two-sided coordinate radius normalized by positive source visit mass |
+| `empiricalCandidateRowTotalVariation` | `StochasticDynamics.EmpiricalTransitionConfidence` | Empirical row discrepancy between a candidate kernel and observed transition frequencies |
+| `empiricalTransitionRowRadius` | `StochasticDynamics.EmpiricalTransitionConfidence` | Sum of simultaneous coordinate radii on the probabilists' TV scale |
+| `empiricalCandidateKernelTVBudget` | `StochasticDynamics.EmpiricalTransitionConfidence` | Maximum candidate row discrepancy plus statistical radius across all source states |
+| `exists_empiricalTransitionCoordinate_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | One outer-mass event gives two-sided predictable-versus-observed bands for every coordinate and time `n >= 2` |
+| `exists_empiricalTransitionFrequency_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Normalizes the common coordinate event on every row with positive visit mass |
+| `exists_empiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Certifies a row-TV ball for every candidate kernel introduced after the common event |
+| `exists_selectedEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Explicit path- and time-selected candidate specialization with no additional selection cost |
+| `exists_empiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Gives one uniform candidate-kernel row-TV budget when every source row has been visited |
+| `exists_selectedEmpiricalKernelContraction_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Combines a selected candidate's empirical row-TV budget with Dobrushin perturbation, true-kernel contraction, and uniqueness among supplied invariant PMFs |
+
+The normalized row statements require positive source visit mass, and the
+uniform kernel statement requires every row to have been visited. Candidate
+selection is valid for these row-TV and contraction conclusions because the
+candidate is quantified after the common coordinate event. This does not
+construct an invariant PMF, prove invariant-law existence, give a mixing time,
+or validate a Poisson potential or stationary-risk score selected from the same
+trajectory without separate uniformization or sample splitting. The event is
+controlled by outer mass; no measurability theorem is claimed.
+
+## Finite invariant laws
+
+| Declaration | Module | Role |
+|---|---|---|
+| `finiteKernelPushLinear` | `StochasticDynamics.FiniteInvariantExistence` | Linear push-forward of real state weights through a finite Markov kernel |
+| `finiteKernelPushSimplex` | `StochasticDynamics.FiniteInvariantExistence` | Kernel push-forward as a self-map of the finite real probability simplex |
+| `finiteKernelOrbit` | `StochasticDynamics.FiniteInvariantExistence` | Iterates the simplex push-forward from a supplied starting distribution |
+| `finiteKernelCesaroVector` | `StochasticDynamics.FiniteInvariantExistence` | Real coordinate vector of the Cesaro average of the finite-kernel orbit |
+| `finiteKernelCesaro` | `StochasticDynamics.FiniteInvariantExistence` | Cesaro orbit average packaged in the finite probability simplex |
+| `exists_finiteKernelPushSimplex_fixedPoint` | `StochasticDynamics.FiniteInvariantExistence` | Uses compactness and the vanishing Cesaro defect to construct a simplex fixed point |
+| `exists_invariantPMF` | `StochasticDynamics.FiniteInvariantExistence` | Every kernel on a nonempty finite state space has an invariant PMF |
+| `finiteInvariantPMF` | `StochasticDynamics.FiniteInvariantExistence` | Noncomputable chosen invariant PMF supplied by finite-state existence |
+| `finiteInvariantPMF_isInvariant` | `StochasticDynamics.FiniteInvariantExistence` | Proves invariance of the chosen finite invariant PMF |
+| `existsUnique_invariantPMF_of_finiteDobrushinCoefficient_lt_one` | `StochasticDynamics.FiniteInvariantUniqueness` | Upgrades finite-state existence to a unique invariant PMF under strict true-kernel Dobrushin contraction |
+| `existsUnique_invariantPMF_of_candidate_rowTV` | `StochasticDynamics.FiniteInvariantUniqueness` | Upgrades existence to uniqueness under a strict candidate row-TV contraction certificate |
+
+Existence is algebraic and finite-state; `finiteInvariantPMF` is chosen with
+classical choice and is not an executable stationary solver. Existence alone
+does not imply uniqueness, irreducibility, convergence from arbitrary initial
+laws, a convergence rate, or a mixing time. The two `ExistsUnique` theorems
+require the displayed strict contraction hypotheses.
+
+## Same-trajectory empirical stationary catalog
+
+| Declaration | Module | Role |
+|---|---|---|
+| `empiricalStationaryCatalogSpan` | `StochasticDynamics.EmpiricalStationaryCatalog` | Closed candidate-specific span bound at a declared finite Poisson depth |
+| `empiricalStationaryCatalogPotential` | `StochasticDynamics.EmpiricalStationaryCatalog` | Candidate-specific finite-depth potential fixed by the declared catalog |
+| `empiricalStationaryCatalogCorrectedScore` | `StochasticDynamics.EmpiricalStationaryCatalog` | Unit-normalized trajectory score for one declared candidate and depth |
+| `empiricalStationaryCatalogBoundary` | `StochasticDynamics.EmpiricalStationaryCatalog` | Selected boundary combining hybrid-Bessel/KL, endpoint, candidate residual, and row-TV transfer terms |
+| `empiricalStationaryCatalogBoundary_eq_explicit` | `StochasticDynamics.EmpiricalStationaryCatalog` | Displays the candidate--depth--geometric-tilt confidence allocation in the logarithmic term |
+| `empiricalStationaryCatalogCorrectedScore_mem_Icc` | `StochasticDynamics.EmpiricalStationaryCatalog` | Keeps every declared candidate--depth corrected score in `[0,1]` |
+| `empiricalStationaryCatalogDepthAtomExceptionalEvent` | `StochasticDynamics.EmpiricalStationaryCatalog` | Risk failure set for one declared candidate and finite depth |
+| `empiricalStationaryCatalogCandidateExceptionalEvent` | `StochasticDynamics.EmpiricalStationaryCatalog` | Countable union of depth-atom failures for one candidate |
+| `empiricalStationaryCatalogExceptionalEvent` | `StochasticDynamics.EmpiricalStationaryCatalog` | Finite union of candidate failures for the predeclared risk catalog |
+| `empiricalStationaryCatalogDepthAtomExceptionalEvent_mass_le` | `StochasticDynamics.EmpiricalStationaryCatalog` | Charges one candidate--depth atom its declared share of risk-event outer mass |
+| `empiricalStationaryCatalogCandidateExceptionalEvent_mass_le` | `StochasticDynamics.EmpiricalStationaryCatalog` | Sums the polynomial depth allocation for one candidate |
+| `empiricalStationaryCatalogExceptionalEvent_mass_le` | `StochasticDynamics.EmpiricalStationaryCatalog` | Bounds the full predeclared catalog risk event by `deltaRisk` |
+| `empiricalStationaryCatalog_allPosteriors_of_not_mem` | `StochasticDynamics.EmpiricalStationaryCatalog` | Gives every candidate, depth, risk tilt, time, and finite posterior its stationary-risk bound outside the common risk event |
+| `exists_empiricalStationaryCatalog_event` | `StochasticDynamics.EmpiricalStationaryCatalog` | Intersects the risk catalog and same-path transition confidence at total cost `deltaRisk + deltaTransition` |
+| `exists_selectedEmpiricalStationaryCatalog_event` | `StochasticDynamics.EmpiricalStationaryCatalog` | Permits path- and time-selected candidate, depth, both tilts, and posterior substitution on visited rows |
+| `exists_selectedCanonicalEmpiricalStationaryCatalog_event` | `StochasticDynamics.EmpiricalStationaryCatalog` | Removes the supplied invariant premise by targeting the chosen finite invariant PMF |
+
+The candidate kernels, reference PMFs, centered-risk envelopes, and score
+catalog are fixed before the trajectory. Selection is valid only by
+substitution among these declarations on the common event; an arbitrary
+path-fitted candidate is not covered. The transition-normalized conclusion
+requires every source row to have positive visit mass. The event is controlled
+by outer mass and is not separately proved measurable, the selected boundary
+is not asserted to be an e-process, and the result does not provide random
+initial laws, continuous-state validity, irreducibility, or mixing guarantees.
 
 ## Named tail-probability corollaries
 

@@ -57,15 +57,26 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "A separate supplied-Poisson bridge converts the forward "
             "empirical-Bernstein trajectory event to finite-state stationary "
             "risk from a supplied invariant PMF and bounded exact or "
-            "approximate Poisson potentials"
+            "approximate Poisson potentials. Finite-depth Neumann potentials "
+            "have explicit geometric span and residual bounds, finite "
+            "Dobrushin coefficients supply contraction, fixed candidate "
+            "kernels transfer under deterministic row-TV envelopes, and "
+            "time-uniform empirical transition bands certify visited-row TV "
+            "budgets and post-data candidate contraction. A finite "
+            "predeclared candidate--depth catalog combines the stationary "
+            "risk and transition events on the same path and permits "
+            "post-path candidate, depth, tilt, and posterior substitution. "
+            "Finite-simplex Cesaro averages construct a chosen invariant PMF "
+            "for every nonempty finite kernel"
         ),
         "difficulty": "medium",
         "source": "docs/roadmap.md#near-term",
         "next_step": (
-            "Construct finite-depth Poisson potentials and their residual and "
-            "span bounds from explicit contraction data. Add a supplied "
-            "initial distribution, controlled kernels, and an interface for "
-            "catalogs constructed from auxiliary random data."
+            "Handle candidates fitted outside the finite predeclared catalog "
+            "using an independently uniform construction or auxiliary data/"
+            "sample splitting. Add a supplied initial distribution, controlled "
+            "kernels, continuous-state interfaces, and quantitative mixing "
+            "guarantees."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -78,10 +89,16 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "controlled kernels, arbitrary joint predictor--tilt posteriors, "
             "unrestricted all-real tilt control, continuous state spaces, "
             "multistep prediction, or optional stopping. The separate "
-            "stationary theorem requires the invariant PMF, potentials, span "
-            "bound, and any residual envelope as inputs; it does not infer "
-            "them, establish mixing or uniqueness, learn an unknown kernel, "
-            "or provide a measurable-event theorem."
+            "stationary theorem uses an invariant PMF. Finite-state existence "
+            "constructs a noncomputable chosen invariant target; uniqueness "
+            "still requires a strict contraction certificate. Finite-depth "
+            "potentials and known-kernel contraction are constructed, and a "
+            "fixed candidate transfers under a deterministic row-TV envelope. "
+            "The combined empirical catalog event permits same-path selection "
+            "only within a finite predeclared candidate family and only after "
+            "every required row is visited; it does not validate a newly "
+            "path-fitted Poisson score, establish a mixing time, cover "
+            "continuous states, or provide a measurable-event theorem."
         ),
     },
     {

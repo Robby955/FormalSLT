@@ -243,8 +243,29 @@
   - [x] Convert the trajectory empirical-Bernstein event to finite-state
     stationary risk from a supplied invariant PMF and supplied bounded exact
     or approximate Poisson potentials.
-  - Construct finite-depth Poisson potentials automatically from explicit
-    kernel-contraction data, with checked residual and span bounds.
+  - [x] Construct finite-depth Poisson potentials automatically from explicit
+    kernel-contraction data, with checked residual and span bounds, and compute
+    a valid contraction factor from the finite Dobrushin coefficient.
+  - [x] Confidence-allocate one outer event over every finite Poisson depth and
+    countable geometric tilt, permit post-path depth and tilt substitution, and
+    prove that the full logarithmic-depth stationary boundary vanishes.
+  - [x] Transfer the stationary certificate from a fixed candidate kernel
+    under a deterministic row-TV envelope, including the doubled perturbation
+    price and uniqueness among supplied invariant PMFs under strict candidate
+    contraction.
+  - [x] Build time-uniform empirical transition-coordinate confidence bands,
+    normalize them on visited rows, and permit post-data candidate-kernel
+    selection for row-TV and Dobrushin contraction certificates.
+  - [x] Uniformize a finite predeclared candidate--depth Poisson catalog, join
+    its risk event with transition confidence on the same path, and permit
+    post-path candidate, depth, risk-tilt, transition-tilt, and posterior
+    substitution on visited rows.
+  - [x] Construct an invariant PMF for every nonempty finite kernel by Cesaro
+    compactness, choose a canonical invariant target, and prove uniqueness
+    under strict true-kernel or candidate row-TV contraction.
+  - Extend same-data stationary selection beyond a finite predeclared
+    candidate catalog, or use auxiliary data/sample splitting, before plugging
+    a newly fitted candidate into a stationary-risk score.
   - Generalize the deterministic initial state to a supplied initial law.
   - Add an interface for catalogs constructed from auxiliary random training
     data without claiming validity for catalog members created after observing
@@ -252,7 +273,7 @@
   - Extend the checked finite weighted-tilt selection to normalized countable
     or predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
-  - Keep inferred invariant laws, mixing guarantees, continuous-state, and
+  - Keep unvisited-row normalization, mixing guarantees, continuous-state, and
     multistep conclusions as separate later theorem families.
 
 - [x] **Sharp McDiarmid constant**
