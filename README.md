@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C224-brightgreen.svg)](#checked-surfaces)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C263-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-232-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-113%2C184-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-114%2C142-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -181,6 +181,17 @@ with `0 < lambda_j < 1`.
   risk ceiling below `343/1000`. On the same prefix, the checked
   empirical-Bernstein boundary lies in `(0.3117, 0.3118)`, while the
   fixed-proxy sub-Gamma boundary lies in `(0.7599, 0.7600)`.
+- **Continuous-hypothesis, real-state receipt:**
+  [`CheckContinuousMeasurableTrajectoryGaussianWitness.lean`](./examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean)
+  uses `Theta = (Fin 1 -> Real) x Bool`, state space `Real`, a
+  standard-Gaussian/fair-Boolean prior, a Gaussian mean-shift `1/4` posterior,
+  and a fair-Rademacher state kernel. It proves posterior finite-set mass zero,
+  `KL = 1/32`, posterior conditional and empirical risks both `1/2`, and, at
+  `n = 64`, `delta = 1/8`, and `lambda = 1/2`, boundary
+  `<= 489/1024 < 1/2`. Each opposite-sign two-step cylinder has mass `1/4`
+  and contains a path in the same theorem-produced good event; every fixed
+  hypothesis has positive observed Bessel sample variance there, and the
+  complete right-hand side is below one.
 
 The displayed hybrid Bessel expression is only a checked lower envelope of the
 actual predictable-residual e-process; it is not itself proved to be an
@@ -190,8 +201,10 @@ separate exceptional event. The finite tilt catalog does not yet give a
 vanishing optimized all-time boundary. The continuous event is
 posterior-uniform but does not construct a measurable posterior selector or a
 selected process, and its trajectory adapter starts deterministically. The
-arbitrary-state endpoint requires a supplied jointly
-measurable score family; it does not learn that family from the scored path.
+arbitrary-state endpoint requires a supplied jointly measurable score family;
+it does not learn that family from the scored path. The continuous-hypothesis
+receipt fixes its posterior and tilt, and its real-state dynamics have only two
+atoms; it is not an atomless-dynamics receipt or a matched boundary comparison.
 No novelty or priority claim is made.
 
 ### Finite Markov prequential PAC-Bayes
@@ -686,10 +699,16 @@ declaration and prints its axiom profile.
   derives its process obligations from a bounded score jointly strongly
   measurable in the hypothesis, complete prefix, and next state. The common
   outer event controls every `n >= 2`, eligible posterior measure, and atom of
-  a finite predeclared tilt prior. The checker fixes both `Theta = Real` and
-  `Z = Real`; its stochastic kernel has two real atoms and proves positive
-  conditional variance, but it does not evaluate the PAC-Bayes boundary;
-  [`CheckContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean`](./examples/CheckContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean)
+  a finite predeclared tilt prior. The basic `Theta = Real`, `Z = Real` checker
+  uses a two-atom kernel and proves positive conditional variance without
+  evaluating the boundary;
+  [`CheckContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean`](./examples/CheckContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean).
+  The separate Gaussian/fair-Boolean receipt has posterior finite-set mass
+  zero, `KL = 1/32`, positive observed Bessel variance on a theorem-produced
+  good path in each of two mass-`1/4` sign-flip branches, and boundary
+  `<= 489/1024 < 1/2`. It fixes the posterior and tilt and still uses a
+  two-atom real-state law;
+  [`CheckContinuousMeasurableTrajectoryGaussianWitness.lean`](./examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean)
 - **Gaussian KL identification** — `diagonalGaussianMeasure_klDiv_toReal_eq`
   and `sphericalGaussianMeasure_klDiv_toReal_eq`;
   [`CheckGaussianMeasureKL.lean`](./examples/CheckGaussianMeasureKL.lean)
@@ -1048,7 +1067,9 @@ The main learning-theory results are deliberately finite and explicit.
   prefix, and next state. The common event is uniform over every admissible
   posterior measure, but the theorem does not construct a measurable posterior
   selector or selected process and does not learn the score family from the
-  scored path.
+  scored path. The numerical Gaussian/fair-Boolean receipt fixes its posterior
+  and tilt and uses a two-atom Rademacher transition law on `Real`; it is not an
+  atomless-dynamics receipt or a matched boundary comparison.
 - **Finite Markov prequential risk:** finite state space, transition PMFs,
   deterministic initial state, and a fixed `[0,1]` observable and finite
   catalog of fixed `[0,1]`-valued predictors with a full-support prior; the
@@ -1165,7 +1186,7 @@ Completed work is indexed in [Checked surfaces](#checked-surfaces) and the
   and supply the finite-IID all-posterior selected-atom adapter
 - [x] Extend the forward predictable-residual master to arbitrary measurable
   hypothesis and state spaces through a supplied jointly measurable full-prefix
-  score family
+  score family, with a fixed-posterior Gaussian/Rademacher numerical receipt
 - [ ] Extend the forward lane to a vanishing optimized all-time boundary,
   countable or all-real tilt control, random initial laws, atomless transition
   receipts, and matched boundary comparisons

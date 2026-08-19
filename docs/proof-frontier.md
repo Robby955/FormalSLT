@@ -157,13 +157,18 @@ files.
   variance `1/32`, `KL = log
   2`, a theorem-produced good path, a risk ceiling below `343/1000`, and a
   same-prefix boundary comparison of approximately `0.312` versus `0.760`.
-  The arbitrary-state `Real` checker separately uses a two-atom transition law
-  and proves positive conditional variance, but does not evaluate the PAC-Bayes
-  boundary or cover atomless dynamics. The hybrid expression is not itself an
-  e-process; vanishing optimized, countable/all-real, random-initial-law, and
-  matched arbitrary-state comparison endpoints remain open. The event is
-  posterior-uniform but does not construct a measurable selector or selected
-  process.
+  The basic arbitrary-state `Real` checker separately uses a two-atom
+  transition law and proves positive conditional variance without evaluating
+  the PAC-Bayes boundary. The numerical Gaussian/fair-Boolean trajectory
+  receipt has posterior finite-set mass zero, `KL = 1/32`, positive observed
+  Bessel variance for every fixed hypothesis on a theorem-produced good path
+  in each of two mass-`1/4` sign-flip branches, and boundary at most `489/1024`
+  at `n = 64` and `delta = 1/8`. It fixes the posterior and tilt, and its
+  real-state transition law has two-point support. The hybrid expression is not
+  itself an e-process; vanishing optimized, countable/all-real,
+  random-initial-law, atomless-dynamics, and matched arbitrary-state comparison
+  endpoints remain open. The event is posterior-uniform but does not construct
+  a measurable selector or selected process.
   Neither forward nor reverse result carries a novelty or priority claim.
 - `sharp-mcdiarmid-product-kernel`: closed for independent finite product
   coordinates, including heterogeneous marginal laws and sharp downstream

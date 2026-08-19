@@ -203,11 +203,17 @@
   and derives the continuous master's process-measurability interfaces from one
   supplied score jointly strongly measurable in the hypothesis, complete
   prefix, and next state. It retains a deterministic start. The separate
-  `Theta = Real`, `Z = Real` checker uses a two-atom Rademacher kernel and proves
-  positive conditional variance, but does not evaluate the PAC-Bayes boundary,
-  cover atomless dynamics, or make a matched comparison. The IID bounded-loss
-  adapter and a structural fair-Boolean good-path receipt are checked
-  separately. A second biased-Boolean receipt proves positive Bessel variance
+  basic `Theta = Real`, `Z = Real` checker uses a two-atom Rademacher kernel and
+  proves positive conditional variance without evaluating the PAC-Bayes
+  boundary. A separate Gaussian/fair-Boolean trajectory receipt has posterior
+  finite-set mass zero, `KL = 1/32`, positive observed Bessel variance on a
+  theorem-produced good path in each of two mass-`1/4` sign-flip branches, and
+  boundary `<= 489/1024 < 1/2` at `n = 64`, `delta = 1/8`, and
+  `lambda = 1/2`. It fixes posterior and tilt and uses a two-atom state law, so
+  it does not cover atomless dynamics, selected processes, or a matched
+  comparison. The IID bounded-loss adapter and a structural fair-Boolean
+  good-path receipt are checked separately. A second biased-Boolean receipt
+  proves positive Bessel variance
   `1/32`, `KL = log 2`, a theorem-produced good path below `343/1000`, and a
   same-prefix empirical-Bernstein versus fixed-proxy boundary comparison of
   approximately `0.312` versus `0.760`.
@@ -392,6 +398,11 @@
     informative receipt has positive Bessel variance and KL, a theorem-produced
     good path, and a checked same-prefix improvement over the fixed-proxy
     boundary.
+    The arbitrary-state Gaussian/fair-Boolean receipt separately checks
+    posterior finite-set mass zero, `KL = 1/32`, and boundary
+    `<= 489/1024 < 1/2` on theorem-produced good paths in both mass-`1/4`
+    sign-flip branches. It fixes the posterior and tilt and uses a two-atom
+    Rademacher state law.
     The reverse-exchangeability lane now separately gives one all-sample-size
     empirical-Bernstein event for finite IID data and finite hypotheses, with
     constants `5/2` and `5`. Extending the forward process lane to a vanishing

@@ -305,7 +305,18 @@ transition law to prove positive conditional variance; it is not an atomless
 dynamics receipt and does not evaluate or compare the PAC-Bayes boundary.
 
 The hybrid Bessel expression is a lower envelope of the actual e-process, not
-itself a proved e-process. The finite-hypothesis IID receipts remain separate.
+itself a proved e-process. The basic arbitrary-state `Real` checker remains a
+structural receipt: its two-atom Rademacher transition law proves positive
+conditional variance without evaluating the PAC-Bayes boundary. The separate
+Gaussian/fair-Boolean trajectory receipt has state space `Real`, hypothesis
+space `(Fin 1 -> Real) x Bool`, posterior finite-set mass zero, `KL = 1/32`,
+positive observed Bessel variance on a theorem-produced good path in each of
+two mass-`1/4` sign-flip branches, and, at `n = 64`, `delta = 1/8`, and
+`lambda = 1/2`, boundary `<= 489/1024 < 1/2` with complete right-hand side
+below one. That receipt fixes the posterior and tilt, and its real-state
+transition law has only two atoms. It is not an atomless-dynamics receipt, a
+selected-process result, or a matched comparison against another boundary.
+The finite-hypothesis IID receipts remain separate.
 The separate finite-IID informative biased-Boolean receipt has Bessel variance
 `1/32`, `KL = log 2`, a theorem-produced good path with risk below `343/1000`,
 and a same-prefix
@@ -559,7 +570,11 @@ posterior selector or selected process. Its arbitrary-state extension requires
 a supplied jointly measurable score family. The separate finite-IID
 informative biased-Boolean receipt has positive Bessel variance, nonzero KL, a
 theorem-produced good path, and the checked same-prefix boundary comparison.
-Countable and exact all-real `lambda` optimization also remain open.
+The separate Gaussian/fair-Boolean real-state receipt has a fixed posterior and
+tilt, two-atom dynamics, `KL = 1/32`, and boundary at most `489/1024` on both
+mass-`1/4` sign-flip branches. Countable and exact all-real `lambda`
+optimization, atomless dynamics evidence, and matched arbitrary-state
+comparison also remain open.
 
 ### Algorithmic stability expected bound
 

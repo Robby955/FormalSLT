@@ -871,8 +871,22 @@ The arbitrary-state capstone requires a supplied jointly measurable bounded
 score and a deterministic start. Its event is posterior-uniform, but it does
 not construct a measurable selector or selected process, provide a random
 initial law, or replace the finite tilt catalog. The basic `Real` checker uses
-a two-atom transition law and proves positive conditional variance; it is not
-an atomless receipt or a matched boundary comparison.
+a two-atom transition law and proves positive conditional variance without
+evaluating the boundary. The separate Gaussian/fair-Boolean receipt proves
+posterior finite-set mass zero, `KL = 1/32`, and boundary
+`<= 489/1024 < 1/2` at `n = 64`, `delta = 1/8`, and `lambda = 1/2`; both
+oriented mass-`1/4` sign-flip branches contain theorem-produced good paths with
+positive observed Bessel variance for every fixed hypothesis. The receipt fixes
+its posterior and tilt and still uses a two-atom state law. It is not an
+atomless-dynamics receipt, selected-process theorem, or matched boundary
+comparison.
+
+The example theorem `receiptInformative_goodPath_exists` extracts a good path
+from each oriented mass-`1/4` sign-flip branch, and
+`receiptInformative_bothBranches_exist` supplies both paths. These receipt
+declarations live in
+`examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean`, outside the
+library theorem index.
 
 ## Finite Markov prequential risk
 
