@@ -380,30 +380,29 @@ theorem diagonalSpike_selectedCoefficient_expectation_eq_sum
   simp only [if_true]
   field_simp [(hp.pos omega).ne']
 
-/-- On the diagonal witness, nonnegative coefficient normalization is
-expectation-safe if and only if the coefficients sum to at most one. -/
+/-- On the diagonal witness, arbitrary real coefficients are expectation-safe
+if and only if the coefficients sum to at most one. -/
 theorem diagonalSpike_selectedCoefficient_safe_iff
     [Fintype Omega] [DecidableEq Omega]
     (p : Omega -> Real) (hp : IsFullSupportPMF p)
-    (coefficient : Omega -> Real)
-    (_hcoefficient_nonneg : forall omega, 0 <= coefficient omega) :
+    (coefficient : Omega -> Real) :
     finiteExpectation p
         (fun omega => coefficient omega * diagonalSpike p omega omega) <= 1 <->
       (∑ omega : Omega, coefficient omega) <= 1 := by
   rw [diagonalSpike_selectedCoefficient_expectation_eq_sum p hp coefficient]
 
-/-- Exact Kraft necessity on the diagonal witness.  Correcting coordinate `i`
-by reciprocal cost `1 / cost i` is safe exactly when those reciprocal costs
-sum to at most one. -/
+/-- Exact reciprocal-coefficient necessity on the diagonal witness.  Correcting
+coordinate `i` by `1 / cost i` is safe exactly when those reciprocal
+coefficients sum to at most one.  Algebraically this holds for arbitrary real
+`cost`; in particular, Lean's `1 / 0 = 0` convention is left explicit. -/
 theorem diagonalSpike_kraftCorrection_safe_iff
     [Fintype Omega] [DecidableEq Omega]
     (p : Omega -> Real) (hp : IsFullSupportPMF p)
-    (cost : Omega -> Real) (hcost_pos : forall omega, 0 < cost omega) :
+    (cost : Omega -> Real) :
     finiteExpectation p
         (fun omega => (1 / cost omega) * diagonalSpike p omega omega) <= 1 <->
       (∑ omega : Omega, 1 / cost omega) <= 1 :=
   diagonalSpike_selectedCoefficient_safe_iff p hp (fun omega => 1 / cost omega)
-    (fun omega => (one_div_pos.mpr (hcost_pos omega)).le)
 
 /-- A common scalar correction divides the diagonal selected expectation by
 that scalar, so its exact value is `|Omega| / correction`. -/

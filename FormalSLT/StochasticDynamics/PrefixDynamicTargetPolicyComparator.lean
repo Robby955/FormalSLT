@@ -152,11 +152,7 @@ theorem conditionalTrajectoryRisk_prefixControlledNormalizedImportanceScore
       (beta n u a).toReal *
           controlledImportanceRatio beta pi n u a =
         (pi n u a).toReal := by
-    by_cases hq : (beta n u a).toReal = 0
-    · have hp := hoverlap n u a hq
-      simp [controlledImportanceRatio, hq, hp]
-    · unfold controlledImportanceRatio
-      field_simp
+    exact mul_ratio_eq_of_zero_imp_zero (hoverlap n u a)
   rw [show
       (beta n u a).toReal * (Q n u a y).toReal *
           (controlledImportanceRatio beta pi n u a * score n u a y / C) =
@@ -309,16 +305,6 @@ def prefixDynamicTargetPolicyPosteriorEncounteredRisk
       (fun k ↦ prefixEncounteredTargetConditionalRisk
         Q (pi i) (score i) k x) n
 
-omit [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z]
-    [Fintype A] [MeasurableSpace A] [MeasurableSingletonClass A] in
-private theorem prefixForwardPrefixMean_div
-    (f : ℕ → ℝ) (C : ℝ) (n : ℕ) :
-    forwardPrefixMean (fun k ↦ f k / C) n =
-      forwardPrefixMean f n / C := by
-  unfold forwardPrefixMean
-  rw [← Finset.sum_div]
-  ring
-
 omit [MeasurableSpace Z] [MeasurableSingletonClass Z]
     [MeasurableSpace A] [MeasurableSingletonClass A] in
 theorem posteriorAverage_forwardPrefixMean_prefixControlledTargetMean
@@ -336,7 +322,7 @@ theorem posteriorAverage_forwardPrefixMean_prefixControlledTargetMean
   classical
   unfold prefixDynamicTargetPolicyPosteriorEncounteredRisk posteriorAverage
   simp_rw [prefixControlledTargetConditionalMean_eq_risk_div,
-    prefixForwardPrefixMean_div]
+    forwardPrefixMean_div]
   rw [Finset.sum_div]
   apply Finset.sum_congr rfl
   intro i _hi

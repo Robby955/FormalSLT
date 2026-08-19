@@ -25,7 +25,7 @@ open FormalSLT.StochasticDynamics
 
 noncomputable section
 
-local instance (p : Prop) : Decidable p := Classical.propDecidable p
+attribute [local instance 0] Classical.propDecidable
 
 /-- Asymmetric true kernel: the `false` row is `(3/4,1/4)` and the `true`
 row is fair. -/
@@ -306,8 +306,7 @@ theorem transitionBalanced_coordinateBoundary_lt_one_eighth
         transitionReceiptTiltWeight transitionReceiptTilt z y side
         (1 / 20) false 1024 transitionBalancedPath < 1 / 8 := by
   letI : DecidableEq Bool :=
-    fun a b ↦ FormalSLT.StochasticDynamics.transitionConfidencePropDecidable
-      (a = b)
+    fun a b ↦ Classical.propDecidable (a = b)
   letI : DecidableEq (TransitionCoordinate Bool) :=
     @instDecidableEqTransitionCoordinate Bool (inferInstance : DecidableEq Bool)
   have hpenalty := transitionBalanced_hybridPenalty_le
@@ -479,36 +478,29 @@ theorem transitionReceipt_selectedContraction_event :
     transitionReceiptTilt_pos transitionReceiptTilt_lt_one
     transitionReceiptSelectedCandidate
 
-/-- Coverage and deterministic nonvacuity are kept separate for the fair true
-kernel.  The event has failure outer mass at most `1/20`; if the named balanced
-path is in that event, the already-checked `eta < 1/4` arithmetic fires the
-strict-contraction and invariant-uniqueness branch.  This does not prove named
-path membership or a positive-probability intersection. -/
+/-- Coverage and deterministic nonvacuity are kept separate for the asymmetric
+true kernel and fair candidate.  The event has failure outer mass at most
+`1/20`; if the named balanced path is in that event, the already-checked
+`eta < 1/4` arithmetic fires the strict-contraction and invariant-uniqueness
+branch.  This does not prove named-path membership or a positive-probability
+intersection. -/
 theorem transitionReceipt_balancedPath_contraction_of_good :
     ∃ goodEvent : Set (ℕ → Bool),
-      (markovPathMeasure transitionReceiptCandidate false).real goodEventᶜ ≤
+      (markovPathMeasure transitionReceiptKernel false).real goodEventᶜ ≤
           (1 / 20 : ℝ) ∧
         (transitionBalancedPath ∈ goodEvent →
           let eta := empiricalCandidateKernelTVBudget
             transitionReceiptCandidate transitionReceiptPrior
               transitionReceiptTiltWeight transitionReceiptTilt
                 (1 / 20) false 1024 transitionBalancedPath
-          finiteDobrushinCoefficient transitionReceiptCandidate ≤ 2 * eta ∧
-            IsOscillationContraction transitionReceiptCandidate (2 * eta) ∧
-              finiteDobrushinCoefficient transitionReceiptCandidate < 1 ∧
+          finiteDobrushinCoefficient transitionReceiptKernel ≤ 2 * eta ∧
+            IsOscillationContraction transitionReceiptKernel (2 * eta) ∧
+              finiteDobrushinCoefficient transitionReceiptKernel < 1 ∧
                 ∀ stationary₁ stationary₂ : PMF Bool,
-                  IsInvariantPMF transitionReceiptCandidate stationary₁ →
-                    IsInvariantPMF transitionReceiptCandidate stationary₂ →
+                  IsInvariantPMF transitionReceiptKernel stationary₁ →
+                    IsInvariantPMF transitionReceiptKernel stationary₂ →
                       stationary₁ = stationary₂) := by
-  rcases exists_selectedEmpiricalKernelContraction_event
-      (τ := Bool) (prior := transitionReceiptPrior)
-      (weight := transitionReceiptTiltWeight)
-      (lam := transitionReceiptTilt) (delta := (1 / 20 : ℝ))
-      transitionReceiptCandidate false
-      transitionReceiptPrior_isFullSupport
-      transitionReceiptTiltWeight_isFullSupport (by norm_num)
-      transitionReceiptTilt_pos transitionReceiptTilt_lt_one
-      transitionReceiptSelectedCandidate with
+  rcases transitionReceipt_selectedContraction_event with
     ⟨goodEvent, hmass, hgood⟩
   refine ⟨goodEvent, hmass, ?_⟩
   intro hbalanced
@@ -524,12 +516,12 @@ theorem transitionReceipt_balancedPath_contraction_of_good :
   have hcertificate := hgood transitionBalancedPath hbalanced false 1024
     (by norm_num) hall
   have hcertificate' :
-      finiteDobrushinCoefficient transitionReceiptCandidate ≤
+      finiteDobrushinCoefficient transitionReceiptKernel ≤
           2 * empiricalCandidateKernelTVBudget transitionReceiptCandidate
             transitionReceiptPrior transitionReceiptTiltWeight
               transitionReceiptTilt (1 / 20) false 1024
                 transitionBalancedPath ∧
-        IsOscillationContraction transitionReceiptCandidate
+        IsOscillationContraction transitionReceiptKernel
           (2 * empiricalCandidateKernelTVBudget transitionReceiptCandidate
             transitionReceiptPrior transitionReceiptTiltWeight
               transitionReceiptTilt (1 / 20) false 1024
@@ -538,10 +530,10 @@ theorem transitionReceipt_balancedPath_contraction_of_good :
               transitionReceiptPrior transitionReceiptTiltWeight
                 transitionReceiptTilt (1 / 20) false 1024
                   transitionBalancedPath < 1 →
-            finiteDobrushinCoefficient transitionReceiptCandidate < 1 ∧
+            finiteDobrushinCoefficient transitionReceiptKernel < 1 ∧
               ∀ stationary₁ stationary₂ : PMF Bool,
-                IsInvariantPMF transitionReceiptCandidate stationary₁ →
-                  IsInvariantPMF transitionReceiptCandidate stationary₂ →
+                IsInvariantPMF transitionReceiptKernel stationary₁ →
+                  IsInvariantPMF transitionReceiptKernel stationary₂ →
                     stationary₁ = stationary₂) := by
     simpa [transitionReceiptSelectedCandidate,
       transitionReceiptCandidate_dobrushin_zero] using hcertificate

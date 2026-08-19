@@ -43,8 +43,7 @@ namespace FormalSLT.StochasticDynamics
 
 noncomputable section
 
-local instance transitionConfidencePropDecidable (p : Prop) : Decidable p :=
-  Classical.propDecidable p
+attribute [local instance 0] Classical.propDecidable
 
 variable {Z : Type*} [Fintype Z] [Nonempty Z]
   [MeasurableSpace Z] [MeasurableSingletonClass Z]

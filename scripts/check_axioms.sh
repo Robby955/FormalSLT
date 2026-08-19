@@ -434,9 +434,11 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean"
   "FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event"
   "FormalSLT.StochasticDynamics.stationaryTargetPolicyOPE_selected_of_simultaneous"
+  "FormalSLT.StochasticDynamics.mul_ratio_eq_of_zero_imp_zero"
   "FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp"
   "FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces"
   "FormalSLT.StochasticDynamics.controlledTargetConditionalMean_eq_encounteredRisk_div"
+  "FormalSLT.StochasticDynamics.forwardPrefixMean_div"
   "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean"
   "FormalSLT.StochasticDynamics.exists_dynamicTargetPolicyComparator_event"
   "FormalSLT.StochasticDynamics.dynamicTargetPolicyComparator_selected_of_simultaneous"
@@ -453,7 +455,6 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.controlledPrefixRestrict_snoc"
   "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_eq_partialTrajIntegral"
   "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_eq_trajectoryIntegral"
-  "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_one_eq_trajectoryIntegral"
   "FormalSLT.StochasticDynamics.controlledFinitePrefixExpectation_one"
   "FormalSLT.StochasticDynamics.controlledFinitePrefixLikelihoodRatio_snoc"
   "FormalSLT.StochasticDynamics.prefixControlledContinuation_expectation_changeOfMeasure"
@@ -720,8 +721,16 @@ fi
 # bare "depends on axioms: [Foo" residue should remain inside the bracketed
 # lists. We extract the bracketed axiom lists and re-scan them.
 LISTS="$(printf '%s\n' "$FLAT" | grep -Eo '\[[^]]*\]' || true)"
-# Remove brackets, commas, and whitespace; anything left is an unexpected axiom.
-RESIDUE="$(printf '%s' "$LISTS" | sed -E 's/propext|Classical\.choice|Quot\.sound//g' | tr -d '[],[:space:]')"
+# Split each list into complete axiom names, then remove only exact allowed
+# names. This preserves an unexpected name verbatim even if it contains an
+# allowed name as a substring.
+RESIDUE="$(
+  printf '%s\n' "$LISTS" |
+    tr -d '[]' |
+    tr ',' '\n' |
+    sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//; /^$/d' |
+    grep -Fvx -e propext -e Classical.choice -e Quot.sound || true
+)"
 if [ -n "$RESIDUE" ]; then
   echo "ERROR: unexpected axiom(s) outside the allowed set: $RESIDUE" >&2
   exit 1
@@ -731,7 +740,7 @@ fi
 # silently dropping a target from the audit). Compare the two sorted name sets
 # once; repeatedly scanning the full Lean transcript is needlessly quadratic.
 EXPECTED_REPORTS="$(printf '%s\n' "${THEOREMS[@]}" | sort -u)"
-ACTUAL_REPORTS="$(printf '%s\n' "$RAW" | sed -nE "s/^'([^']+)' (depends on axioms|does not depend on any axioms).*/\1/p" | sort -u)"
+ACTUAL_REPORTS="$(printf '%s\n' "$RAW" | sed -nE "s/.*'([^']+)' (depends on axioms|does not depend on any axioms).*/\1/p" | sort -u)"
 MISSING_REPORTS="$(comm -23 <(printf '%s\n' "$EXPECTED_REPORTS") <(printf '%s\n' "$ACTUAL_REPORTS"))"
 if [ -n "$MISSING_REPORTS" ]; then
   echo "ERROR: no axiom report for:" >&2

@@ -103,7 +103,8 @@ def dynamicTargetPolicyPosteriorEmpiricalScore
 
 omit [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z]
     [Fintype A] [MeasurableSpace A] [MeasurableSingletonClass A] in
-private theorem forwardPrefixMean_div
+/-- A common scalar denominator commutes with the finite forward prefix mean. -/
+theorem forwardPrefixMean_div
     (f : ℕ → ℝ) (C : ℝ) (n : ℕ) :
     forwardPrefixMean (fun k ↦ f k / C) n =
       forwardPrefixMean f n / C := by

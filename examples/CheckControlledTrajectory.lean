@@ -230,6 +230,7 @@ theorem boolControlledCatalog_interfaces :
     boolImportanceCap_pos boolControlledScore_mem_Icc
 
 #check controlledContinuationPMF_apply
+#check mul_ratio_eq_of_zero_imp_zero
 #check controlledImportanceRatio_nonneg
 #check controlledImportanceRatio_le_cap
 #check controlledNormalizedImportanceScore_mem_Icc
@@ -242,8 +243,10 @@ theorem boolControlledCatalog_interfaces :
 #check controlledImportanceCatalog_predictableMean_interfaces
 #check controlledContinuationPMF_pos
 #check both_importance_weights_witness
+#check boolControlledCatalog_interfaces
 
 #print axioms controlledContinuationPMF_apply
+#print axioms mul_ratio_eq_of_zero_imp_zero
 #print axioms controlledImportanceRatio_nonneg
 #print axioms controlledImportanceRatio_le_cap
 #print axioms controlledNormalizedImportanceScore_mem_Icc

@@ -150,7 +150,9 @@ def ControlledPolicyRatioBound
 
 omit [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z]
     [Fintype A] [MeasurableSpace A] [MeasurableSingletonClass A] in
-private lemma mul_ratio_eq_of_zero_imp_zero
+/-- Cancels a real ratio when zero denominator forces zero numerator.  This is
+the algebraic form of the controlled-policy overlap condition. -/
+lemma mul_ratio_eq_of_zero_imp_zero
     {p q : ℝ} (hzero : q = 0 → p = 0) :
     q * (p / q) = p := by
   by_cases hq : q = 0

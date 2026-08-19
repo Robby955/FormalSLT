@@ -285,20 +285,6 @@ theorem controlledFinitePrefixExpectation_eq_trajectoryIntegral
     (Preorder.measurable_frestrictLe (X := fun _ : ℕ ↦ ControlledObservation Z A)
       n).aemeasurable hf.aestronglyMeasurable
 
-/-- At the first decision, the recursive finite-prefix expectation is exactly
-the corresponding prefix integral under the Ionescu--Tulcea target law.  The
-general finite-prefix law below is defined by iterating this same continuation
-recursion. -/
-theorem controlledFinitePrefixExpectation_one_eq_trajectoryIntegral
-    (Q : PrefixControlledEnvironment Z A) (policy : TargetPolicy Z A)
-    (initial : ControlledObservation Z A)
-    (f : ((i : Finset.Iic 1) → ControlledObservation Z A) → ℝ) :
-    controlledFinitePrefixExpectation Q policy initial 1 f =
-      ∫ x, f (Preorder.frestrictLe 1 x)
-        ∂prefixControlledTargetTrajectoryMeasure Q policy initial := by
-  exact controlledFinitePrefixExpectation_eq_trajectoryIntegral
-    Q policy initial 1 f
-
 private theorem sum_pmf_toReal_eq_one
     {Omega : Type*} [Fintype Omega] (p : PMF Omega) :
     ∑ omega : Omega, (p omega).toReal = 1 := by
@@ -414,11 +400,7 @@ theorem prefixControlledContinuation_expectation_changeOfMeasure
   have hcancel :
       (beta n u a).toReal * controlledImportanceRatio beta pi n u a =
         (pi n u a).toReal := by
-    by_cases hzero : (beta n u a).toReal = 0
-    · have hpzero := hoverlap n u a hzero
-      simp [controlledImportanceRatio, hzero, hpzero]
-    · unfold controlledImportanceRatio
-      field_simp
+    exact mul_ratio_eq_of_zero_imp_zero (hoverlap n u a)
   rw [← hcancel]
   ring
 

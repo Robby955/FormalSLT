@@ -50,10 +50,9 @@ files.
   Catalogs must be declared before their scored outcomes. Same-path stationary
   selection is limited to the finite predeclared candidate catalog and visited
   rows; the arbitrary-state endpoint requires a jointly measurable bounded
-  score; and
-  none of the controlled results supplies learned nuisances or an anytime
-  cumulative-weight value boundary. Open work includes auxiliary-data catalog
-  construction, random starts beyond the homogeneous finite-state endpoint,
+  score; none of the controlled results supplies learned nuisances or an
+  anytime cumulative-weight value boundary. Open work includes auxiliary-data
+  catalog construction, random starts beyond the homogeneous finite-state endpoint,
   unvisited-row and mixing interfaces, continuous-state stationary risk,
   countable tilts for continuous-prior and arbitrary-state layers, predictable
   or all-real tilts, and stronger multistate and atomless evidence.

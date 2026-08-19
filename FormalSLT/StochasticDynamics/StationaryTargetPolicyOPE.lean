@@ -404,12 +404,12 @@ theorem posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean
 
 /-- Stationary target-policy empirical-Bernstein PAC--Bayes OPE theorem.
 
-The supplied invariant PMFs identify the target-policy stationary risks, and
-the supplied exact Poisson potentials flatten their behavior-law conditional
-means.  One outer event is valid simultaneously for every `n >= 2`, every
-post-data posterior PMF, and every atom of the declared finite tilt catalog;
-therefore those choices may be made from the realized path after the event is
-fixed. -/
+The supplied invariant PMFs certify that the reference laws really are
+stationary.  The exact Poisson identities are the algebraic inputs that flatten
+their behavior-law conditional means.  One outer event is valid simultaneously
+for every `n >= 2`, every post-data posterior PMF, and every atom of the declared
+finite tilt catalog; therefore those choices may be made from the realized path
+after the event is fixed. -/
 theorem exists_stationaryTargetPolicyOPE_event
     [Fintype ι] [DecidableEq ι] [Nonempty ι]
     [Fintype τ] [DecidableEq τ] [Nonempty τ]
@@ -442,7 +442,9 @@ theorem exists_stationaryTargetPolicyOPE_event
                 stationaryTargetPolicyOPEBoundary
                   prior weight lam β π score potential B C
                     posterior delta j n x := by
-  have _hinvariant := hinvariant
+  -- This premise supplies the stationary interpretation; the exact Poisson
+  -- identity below is the algebraic fact consumed by the concentration proof.
+  let _ := hinvariant
   have hcorrected : ∀ i n u a y,
       targetPolicyPoissonControlledScore
           (score i) (potential i) B n u a y ∈ Set.Icc (0 : ℝ) 1 := by

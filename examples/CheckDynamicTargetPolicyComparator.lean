@@ -332,6 +332,7 @@ theorem prefixDynamicBoolComparator_certificate :
 #check encounteredTargetConditionalRisk
 #check controlledTargetConditionalMean_eq_encounteredRisk_div
 #check dynamicTargetPolicyPosteriorEncounteredRisk
+#check forwardPrefixMean_div
 #check dynamicTargetPolicyPosteriorEmpiricalScore
 #check posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean
 #check dynamicTargetPolicyComparatorBoundary
@@ -357,6 +358,7 @@ theorem prefixDynamicBoolComparator_certificate :
 #check prefixDynamicTargetPolicyComparator_selected_of_simultaneous
 
 #print axioms controlledTargetConditionalMean_eq_encounteredRisk_div
+#print axioms forwardPrefixMean_div
 #print axioms posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean
 #print axioms exists_dynamicTargetPolicyComparator_event
 #print axioms dynamicTargetPolicyComparator_selected_of_simultaneous

@@ -46,7 +46,7 @@ theorem exists_small_weight_on_dyadicBlock
     (hweight_nonneg : ∀ k, 0 ≤ weight k)
     (hweight_summable : Summable weight)
     (hweight_total : ∑' k, weight k ≤ 1)
-    (N : ℕ) (hN : 1 ≤ N) :
+    (N : ℕ) :
     ∃ k ∈ Finset.Icc N (2 * N),
       weight k ≤ 1 / ((N : ℝ) + 1) := by
   classical
@@ -83,11 +83,11 @@ theorem exists_logCost_ge_log_blockCard
     (hweight_pos : ∀ k, 0 < weight k)
     (hweight_summable : Summable weight)
     (hweight_total : ∑' k, weight k ≤ 1)
-    (N : ℕ) (hN : 1 ≤ N) :
+    (N : ℕ) :
     ∃ k ∈ Finset.Icc N (2 * N),
       Real.log ((N : ℝ) + 1) ≤ Real.log (1 / weight k) := by
   obtain ⟨k, hk, hsmall⟩ := exists_small_weight_on_dyadicBlock
-    weight (fun j ↦ (hweight_pos j).le) hweight_summable hweight_total N hN
+    weight (fun j ↦ (hweight_pos j).le) hweight_summable hweight_total N
   refine ⟨k, hk, ?_⟩
   have hNpos : (0 : ℝ) < (N : ℝ) + 1 := by positivity
   have hmul : ((N : ℝ) + 1) * weight k ≤ 1 := by
@@ -107,12 +107,12 @@ theorem exists_logCost_ge_indexLog_sub_log_two
     (hweight_pos : ∀ k, 0 < weight k)
     (hweight_summable : Summable weight)
     (hweight_total : ∑' k, weight k ≤ 1)
-    (N : ℕ) (hN : 1 ≤ N) :
+    (N : ℕ) :
     ∃ k ∈ Finset.Icc N (2 * N),
       Real.log ((k : ℝ) + 1) - Real.log 2 ≤
         Real.log (1 / weight k) := by
   obtain ⟨k, hk, hcost⟩ := exists_logCost_ge_log_blockCard
-    weight hweight_pos hweight_summable hweight_total N hN
+    weight hweight_pos hweight_summable hweight_total N
   refine ⟨k, hk, ?_⟩
   have hk_upper : k ≤ 2 * N := (Finset.mem_Icc.mp hk).2
   have hkcast : (k : ℝ) + 1 ≤ 2 * ((N : ℝ) + 1) := by
@@ -139,9 +139,8 @@ theorem frequently_logCost_ge_indexLog_sub_log_two
   rw [Filter.frequently_atTop]
   intro K
   let N := max 1 K
-  have hN : 1 ≤ N := le_max_left 1 K
   obtain ⟨k, hk, hcost⟩ := exists_logCost_ge_indexLog_sub_log_two
-    weight hweight_pos hweight_summable hweight_total N hN
+    weight hweight_pos hweight_summable hweight_total N
   refine ⟨k, ?_, hcost⟩
   exact (le_max_right 1 K).trans (Finset.mem_Icc.mp hk).1
 
@@ -192,13 +191,13 @@ theorem exists_geometricEpoch_loglogCost
     (hweight_pos : ∀ k, 0 < weight k)
     (hweight_summable : Summable weight)
     (hweight_total : ∑' k, weight k ≤ 1)
-    (N : ℕ) (hN : 1 ≤ N) :
+    (N : ℕ) :
     ∃ k ∈ Finset.Icc N (2 * N),
       geometricEpochIteratedLog k -
           (Real.log 2 + Real.log (Real.log 4)) ≤
         Real.log (1 / weight k) := by
   obtain ⟨k, hk, hcost⟩ := exists_logCost_ge_indexLog_sub_log_two
-    weight hweight_pos hweight_summable hweight_total N hN
+    weight hweight_pos hweight_summable hweight_total N
   refine ⟨k, hk, ?_⟩
   rw [geometricEpochIteratedLog_eq]
   linarith

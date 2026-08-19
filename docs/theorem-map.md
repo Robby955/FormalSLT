@@ -939,6 +939,7 @@ These are exact finite-horizon identities for finite state and action spaces.
 They do not provide an anytime-valid full-trajectory importance-sampling
 boundary, learned propensities, unknown-environment inference, or a
 continuous-space result.
+
 ## Trajectory forward empirical-Bernstein PAC-Bayes
 
 | Declaration | Module | Role |
