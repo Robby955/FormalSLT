@@ -183,11 +183,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Add an informative numerical-width receipt for the forward "
-            "hybrid-Bessel endpoint, then derive a countable or stitched "
-            "vanishing-width forward tilt mixture and extend its PAC-Bayes "
-            "master to measurable hypothesis priors. Continue comparative "
-            "evidence and external review."
+            "Derive a countable or stitched vanishing-width forward tilt "
+            "mixture and extend its PAC-Bayes master to measurable hypothesis "
+            "priors. Continue matched-boundary evidence and external review."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
@@ -213,8 +211,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "residual process as an e-process and bounds it below by a hybrid "
             "per-hypothesis Bessel penalty. The hybrid expression is not "
             "itself an e-process. Its PAC-Bayes master currently has finite "
-            "hypotheses and a declared finite tilt catalog, and its Boolean "
-            "good-path receipt leaves the numerical width symbolic. "
+            "hypotheses and a declared finite tilt catalog. Its informative "
+            "Boolean receipt has Bessel variance 1/32, KL = log 2, a theorem-"
+            "produced good path with risk below 343/1000, and a same-prefix "
+            "boundary comparison of approximately 0.312 versus 0.760. "
             "The separately budgeted rational risk theorem remains a distinct "
             "two-event result."
         ),

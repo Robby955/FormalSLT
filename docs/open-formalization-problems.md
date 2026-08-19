@@ -235,10 +235,13 @@ every `n >= 2`, but is an offline reverse-exchangeability theorem: it does not
 itself construct a forward e-process, predictable betting strategy,
 optional-stopping API, continuous-observation result, or all-real post-hoc
 optimizer. The separate forward result remains finite-hypothesis and
-finite-tilt; its hybrid expression is only a lower envelope, its receipt has no
-informative numerical width, and it has no continuous-hypothesis endpoint. The
-random-matching proof formalizes the source variance inequality; neither route
-is presented with a novelty or priority claim.
+finite-tilt; its hybrid expression is only a lower envelope. Its informative
+receipt proves positive Bessel variance `1/32`, `KL = log 2`, a
+theorem-produced good path with risk below `343/1000`, and a same-prefix
+boundary comparison of approximately `0.312` versus `0.760`. It still has no
+continuous-hypothesis endpoint or vanishing optimized finite-catalog boundary.
+The random-matching proof formalizes the source variance inequality; neither
+route is presented with a novelty or priority claim.
 
 ## Medium-term
 

@@ -199,7 +199,11 @@
   hypothesis--tilt master has one outer-mass event for every `n >= 2`, posterior
   PMF, and declared atom, with path/time/posterior-dependent selection, one
   hypothesis KL, and one selected-atom log penalty. The IID bounded-loss adapter
-  and a structural fair-Boolean good-path receipt are checked separately.
+  and a structural fair-Boolean good-path receipt are checked separately. A
+  second biased-Boolean receipt proves positive Bessel variance `1/32`, `KL =
+  log 2`, a theorem-produced good path with risk below `343/1000`, and a
+  same-prefix empirical-Bernstein versus fixed-proxy boundary comparison of
+  approximately `0.312` versus `0.760`.
 - [x] General-measurable-hypothesis all-sample-size extension:
   continuous-prior integration, the reverse joint mean/variance epoch,
   predeclared dyadic tilt catalog, closed-form prefix endpoint, and infinite
@@ -226,10 +230,11 @@
     PAC-Bayes-kl, Hoeffding/Catoni, Tolstikhin--Seldin, and existing anytime
     PAC-Bayes boundaries on identical inputs.
   - Obtain independent PAC-Bayes/constants and Lean probability reviews.
-  - Add a positive-KL, positive-variance forward receipt with an informative
-    numerical width, then study vanishing optimized all-time boundaries,
-    countable or all-real tilts, and continuous hypotheses. Do not treat the
-    hybrid Bessel lower envelope as an e-process.
+  - [x] Add a positive-KL, positive-variance forward receipt with an
+    informative numerical width.
+  - Study vanishing optimized all-time boundaries, countable or all-real
+    tilts, and continuous hypotheses. Do not treat the hybrid Bessel lower
+    envelope as an e-process.
 
 - [ ] **Finite stochastic-dynamics extensions**
   - Generalize the deterministic initial state to a supplied initial law.
@@ -369,8 +374,9 @@
     A second forward lane now checks the predictable-residual
     empirical-Bernstein e-process, its hybrid Bessel lower envelope, and a
     finite hypothesis--tilt PAC-Bayes master with an IID adapter and
-    path/time/posterior-dependent atom selection. Its receipt is structural and
-    does not prove an informative numerical width.
+    path/time/posterior-dependent atom selection. Its informative receipt has
+    positive Bessel variance and KL, a theorem-produced good path, and a
+    checked same-prefix improvement over the fixed-proxy boundary.
     The reverse-exchangeability lane now separately gives one all-sample-size
     empirical-Bernstein event for finite IID data and finite hypotheses, with
     constants `5/2` and `5`. Extending the forward process lane to a vanishing
