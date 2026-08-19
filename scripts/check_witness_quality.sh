@@ -142,6 +142,15 @@ classify_witness() {
 #      two, two prefixes share the fixed initial and current states but differ
 #      at the interior state, producing distinct kernel rows and score values;
 #      the exact length-three cylinder masses are not evaluated)
+#   informative_nonvacuous_receipt /
+#     informative_allTime_vanishing_capstone
+#     (genuinely prefix-dependent finite dynamics, static and online rules,
+#      positive-mass supported branches that each contain a theorem-produced
+#      good path for the corresponding data-selected point posterior,
+#      KL = log 2, delta = 1/160, Bessel variance 1/512, exact countable-atom
+#      costs at n = 512 and 2048, checked boundary enclosures 0.2738--0.2744
+#      and 0.1432--0.1434, and strict same-path shrinkage; the catalog is fixed
+#      before data and the countable endpoint is not a master selected e-process)
 #   countableJointMeanVariance_catalogBadSamples_mass_le_delta /
 #     countableJointMeanVariance_priorMoment_le_of_not_mem
 #     (predeclared Nat-indexed geometric joint-pair catalog, one existential good
@@ -206,6 +215,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckMarkovRisk.lean"
   "examples/CheckMarkovPACBayes.lean"
   "examples/CheckTrajectoryPACBayes.lean"
+  "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean"
   "examples/CheckForwardBesselPACBayesIID.lean"
   "examples/CheckForwardBesselPACBayesIIDInformative.lean"
 )
