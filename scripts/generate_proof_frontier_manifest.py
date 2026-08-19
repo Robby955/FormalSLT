@@ -173,13 +173,45 @@ FRONTIER_LANES: list[dict[str, str]] = [
         ),
     },
     {
+        "id": "anytime-boundary-lower-bounds",
+        "status": "partially_closed",
+        "scope": (
+            "deterministic one-sided boundaries for the infinite fair-"
+            "Rademacher walk; an unconditional fixed-Gaussian-tail sqrt-n "
+            "floor from the CLT and Portmanteau theorem; and an unconditional "
+            "unbounded sqrt-n floor from disjoint blocks and the second "
+            "Borel--Cantelli lemma"
+        ),
+        "difficulty": "hard",
+        "source": (
+            "docs/assumptions-and-nonclaims.md#universal-fair-sign-anytime-boundary-lower-bound"
+        ),
+        "next_step": (
+            "Prove the fair-sign upper law of the iterated logarithm needed by "
+            "the checked constant-one reduction, then study structured tilt-"
+            "family and two-sided minimax lower bounds."
+        ),
+        "boundary": (
+            "The unconditional result is specific to deterministic one-sided "
+            "boundaries under the fair-sign product law. It proves divergence "
+            "after sqrt-n normalization, not the sqrt(2 n log log n) rate. "
+            "The sharp limsup theorem explicitly assumes the still-unproved "
+            "FairSignUpperLIL proposition and a boundedness side condition; it "
+            "does not close a full LIL theorem."
+        ),
+    },
+    {
         "id": "pac-bayes-all-real-lambda",
         "status": "partially_closed",
         "scope": (
             "finite hypotheses plus spherical-Gaussian continuous-hypothesis "
             "single-pair and finite fixed-catalog specializations; a generic "
             "finite normalized hypothesis--tilt e-process with one Ville "
-            "event and selected-atom weight penalty; a forward finite-"
+            "event and selected-atom weight penalty; a finite adaptive-"
+            "selection guardrail with exact predeclared-weight/Kraft upper "
+            "bounds and diagonal-witness cardinality necessity; a countable-"
+            "allocation guardrail with a blockwise reciprocal-weight obstruction "
+            "and geometric-epoch log-log subsequence cost; a forward finite-"
             "hypothesis predictable-residual e-process with a hybrid Bessel "
             "lower envelope and finite weighted PAC-Bayes tilt catalog; and "
             "an offline reverse all-sample-size empirical-Bernstein endpoint "
@@ -212,7 +244,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "A separate fixed-sample countable joint "
             "master has a finite-posterior selector over its predeclared "
             "natural-index catalog, but it is not a process-level or all-real "
-            "result. No forward result is simultaneous over arbitrary "
+            "result. The countable-allocation result is specific to union/"
+            "confidence allocation and does not prove a universal LIL or "
+            "minimax boundary lower bound. No forward result is simultaneous over arbitrary "
             "continuous posteriors or all real tilts."
         ),
     },
@@ -597,6 +631,14 @@ def audit_lean_files(files: list[Path]) -> dict[str, list[dict[str, Any]]]:
     }
 
 
+def split_markdown_table_row(line: str) -> list[str]:
+    """Split a Markdown table row without treating escaped pipes as columns."""
+    return [
+        cell.replace(r"\|", "|").strip()
+        for cell in re.split(r"(?<!\\)\|", line.strip("|"))
+    ]
+
+
 def parse_theorem_map() -> list[dict[str, Any]]:
     lines = THEOREM_MAP.read_text(encoding="utf-8").splitlines()
     families: list[dict[str, Any]] = []
@@ -616,7 +658,7 @@ def parse_theorem_map() -> list[dict[str, Any]]:
                 header = None
             continue
 
-        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        cells = split_markdown_table_row(line)
         if all(set(cell) <= {"-", ":"} for cell in cells):
             continue
         if header is None:
@@ -710,6 +752,9 @@ def main() -> int:
 
     if args.self_test:
         source_resolution_self_test()
+        assert split_markdown_table_row(
+            r"| Declaration | Module | Role with \|escaped\| delimiters |"
+        ) == ["Declaration", "Module", "Role with |escaped| delimiters"]
         print("source resolution self-test passed")
         return 0
 

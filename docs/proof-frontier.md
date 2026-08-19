@@ -105,13 +105,27 @@ files.
   separable-terminal, modulus, and boundary hypotheses. What remains is the
   construction of arbitrary measurable suprema and a general measure-side
   chaining budget rather than supplied interfaces.
+- `anytime-boundary-lower-bounds`: for the fair-Rademacher walk, the CLT and
+  Portmanteau give a fixed-Gaussian-tail `sqrt n` boundary floor, while a
+  disjoint-block Borel--Cantelli argument proves that every valid deterministic
+  one-sided anytime boundary exceeds every fixed nonnegative multiple of
+  `sqrt n` infinitely often. The sharp `sqrt(2 n log log n)` constant-one
+  conclusion is only a checked reduction from the explicitly unproved
+  `FairSignUpperLIL` premise; no full LIL is claimed.
 - `pac-bayes-all-real-lambda`: the base fixed-tilt, fixed-posterior
   spherical-Gaussian i.i.d. specialization and finite fixed catalogs with
   sample-dependent selection are checked. The finite indicator-Bernstein lane
   additionally has a posterior-uniform weighted tilt catalog. At process level,
   one normalized finite hypothesis--tilt e-process now gives a common Ville
   event, all-posterior validity, and post-path selection of a declared atom with
-  its exact weight penalty. The checked fixed-sample countable joint master now
+  its exact weight penalty. A separate finite selection-cost guardrail proves
+  the predeclared-weight/Kraft correction and an exact diagonal witness forcing
+  a common raw correction of at least the catalog size. A countable-allocation
+  guardrail separately proves that positive summable weights incur an explicit
+  iterated-logarithm atom cost along an unbounded geometric-epoch subsequence;
+  this is an allocation/union-stitching obstruction, not a universal LIL or
+  minimax lower bound. The checked fixed-sample
+  countable joint master now
   has a downstream finite-posterior exact-`xi` selector over its predeclared
   `Nat`-indexed tilt-pair catalog. A separate forward lane now checks the
   predictable-residual empirical-Bernstein e-process, two Bessel envelopes and

@@ -14,6 +14,9 @@ import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 import FormalSLT.AnytimeValid.ForwardBesselProcess
 import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
+import FormalSLT.AnytimeValid.SelectionCost
+import FormalSLT.AnytimeValid.AllocationLogLog
+import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
 import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
@@ -28,6 +31,6 @@ import FormalSLT.PACBayes.IIDContinuousGaussian
 
 This declaration-free umbrella re-exports Ville bounds, e-processes, betting
 processes, confidence sequences, mixtures, the predictable-residual forward
-process and its hybrid-Bessel lower envelope, and time-uniform PAC-Bayes
-results.
+process and its hybrid-Bessel lower envelope, adaptive-selection and countable
+allocation cost guardrails, and time-uniform PAC-Bayes results.
 -/

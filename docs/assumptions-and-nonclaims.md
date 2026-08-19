@@ -386,6 +386,61 @@ the explicit bound `W_n <= C ^ n`. The module proves no anytime concentration
 or PAC-Bayes result for these cumulative weights, no vanishing target-value
 boundary, no learned propensity or environment guarantee, and no
 continuous-space change-of-measure theorem.
+### Finite adaptive-selection cost guardrail
+
+`AnytimeValid.SelectionCost` works with arbitrary finite observations and
+finite score catalogs. If every score is nonnegative with expectation at most
+one and the nonnegative predeclared weights sum to at most one, multiplying an
+observation-selected score by its declared weight preserves expectation at
+most one. Equivalent simultaneous upper-tail statements expose the reciprocal
+weight or Kraft correction.
+
+The diagonal-spike family gives an exact finite adversarial witness. Each
+coordinate has expectation one, the uncorrected selected expectation is the
+catalog cardinality, and a common positive correction is safe on this witness
+if and only if it is at least that cardinality. This proves the corresponding
+`log |I|` lower bound for the symmetric correction on the checked witness.
+
+These are finite Markov/union/Kraft facts, not a new concentration theorem or
+a universal minimax result for every structured sequential tilt family. They
+do not establish countable or continuous selection costs, an LIL lower bound,
+or optimality of the constants in the repository's coupled PAC-Bayes process
+families.
+
+### Countable-allocation log-log guardrail
+
+`AnytimeValid.AllocationLogLog` assumes a nonnegative summable sequence of
+predeclared confidence weights with total mass at most one. Every inclusive
+integer block `[N, 2N]` then contains an atom of weight at most
+`1 / (N + 1)`. If all weights are positive, the corresponding logarithmic
+price is at least `log (N + 1)` somewhere in every block. At geometric times
+`4^(k+1)`, this yields an explicit iterated-logarithm price along an unbounded
+subsequence. The polynomial weights `1 / ((k+1)(k+2))` supply an exact
+telescoping receipt with total mass one.
+
+This result is specific to countable confidence allocation and union-bound
+stitching. It does not prove a minimax lower bound over all confidence
+sequences, a law of the iterated logarithm, or optimality of a structured
+mixture boundary.
+
+### Universal fair-sign anytime-boundary lower bound
+
+`AnytimeValid.UniversalBoundaryLowerBound` uses the infinite fair-Rademacher
+product law and deterministic one-sided boundaries. Its unconditional route
+combines the one-dimensional CLT, Portmanteau, disjoint rapidly growing
+coordinate blocks, and the second Borel--Cantelli lemma. If the probability of
+ever crossing a boundary is strictly below one, the boundary exceeds every
+fixed nonnegative multiple of `sqrt n` infinitely often. At a fixed constant
+whose standard-Gaussian upper tail exceeds the crossing budget, the boundary
+is eventually at least that constant times `sqrt n`.
+
+The sharp iterated-logarithm endpoint is conditional. The proposition
+`FairSignUpperLIL` names the missing almost-sure upper-LIL crossing theorem;
+`fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL` derives the constant-one
+boundary conclusion only after receiving that proposition and a boundedness
+side condition. The library does not prove `FairSignUpperLIL`, a general
+process-level LIL, randomized or data-dependent boundary lower bounds, or a
+two-sided minimax theorem.
 
 ### Azuma and sharp McDiarmid constants
 

@@ -9,9 +9,6 @@
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C528-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-238-blue.svg)](#module-map)
 [![Lean lines](https://img.shields.io/badge/Lean%20lines-120%2C233-brightgreen.svg)](#audit-commands)
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C298-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-234-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-115%2C245-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -712,6 +709,35 @@ declaration and prints its axiom profile.
   target-path finite-prefix expectations with likelihood-weighted behavior-path
   expectations, with event, occupancy, risk, and explicit `C ^ n` range forms;
   [`CheckTargetPathChangeOfMeasure.lean`](./examples/CheckTargetPathChangeOfMeasure.lean)
+- **Finite adaptive-selection cost guardrail** —
+  `selectedWeightedScore_expectation_le_one` proves that predeclared weights
+  preserve the e-value expectation bound under an observation-dependent
+  selector, while `diagonalSpike_scalarCorrection_safe_iff_card_le` and
+  `diagonalSpike_logCorrection_ge_logCard` give a sharp finite diagonal
+  witness: a common scalar correction must be at least the catalog size, hence
+  pays at least `log |I|` on the log scale;
+  [`CheckSelectionCost.lean`](./examples/CheckSelectionCost.lean)
+- **Countable-allocation log-log guardrail** —
+  `exists_small_weight_on_dyadicBlock` proves that every inclusive block
+  `[N, 2N]` of a nonnegative summable allocation contains an atom of weight at
+  most `1 / (N + 1)`. For positive weights,
+  `frequently_geometricEpoch_loglogCost` converts this into an explicit
+  `log log`-sized cost along an unbounded subsequence of geometric epochs.
+  `polynomialEpochWeight_hasSum` and
+  `polynomialGeometricEpoch_log_cost` give the exact telescoping allocation
+  receipt. This is an allocation/union-stitching obstruction, not a universal
+  confidence-sequence or LIL lower bound;
+  [`CheckAllocationLogLog.lean`](./examples/CheckAllocationLogLog.lean)
+- **Universal fair-sign anytime-boundary floor** —
+  `fairSign_anytimeBoundary_frequently_ge_mul_sqrt` proves unconditionally
+  that any deterministic one-sided boundary with crossing probability below
+  one must exceed every fixed nonnegative multiple of `sqrt n` infinitely
+  often. `fairSign_anytimeBoundary_eventually_ge_sqrt` gives the complementary
+  CLT/Portmanteau floor at each fixed Gaussian-tail level. The sharp
+  `sqrt(2 n log log n)` constant-one corollary is checked only under the
+  explicit, still-unproved `FairSignUpperLIL` premise and the theorem's
+  bounded-ratio side condition;
+  [`CheckUniversalBoundaryLowerBound.lean`](./examples/CheckUniversalBoundaryLowerBound.lean)
 
 ### Concentration and metric entropy
 

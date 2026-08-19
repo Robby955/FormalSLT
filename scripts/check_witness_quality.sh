@@ -108,6 +108,11 @@ classify_witness() {
 #   FormalSLT.Concentration.NamedTails.bernstein_tail (two-sided, Rademacher witness)
 #   maurer_pacbayes_kl_bound
 #   eProcess_typeI_control / eProcess_product_of_supermartingale / eProcess_optionalContinuation
+#   diagonalSpike_scalarCorrection_safe_iff_card_le /
+#     diagonalSpike_logCorrection_ge_logCard
+#     (fair-Boolean full-support law, exact coordinate expectation one,
+#      uncorrected selected expectation two, weighted selected expectation one,
+#      and exact raw/log correction necessity on the diagonal witness)
 #   optimized_lambda_confidence_sequence_subGamma / subGammaLogLogWidth_loglog_rate
 #   betting_confidence_sequence_of_condMean (concrete Rademacher witness, bet 1/4)
 #   timeUniformPACBayes_bound (process-level Ville crossing, concrete Rademacher witness)
@@ -253,6 +258,9 @@ HEADLINE_WITNESSES=(
   "examples/CheckNamedTails.lean"
   "examples/CheckMaurerKLNonVacuityWitness.lean"
   "examples/CheckEProcess.lean"
+  "examples/CheckSelectionCost.lean"
+  "examples/CheckAllocationLogLog.lean"
+  "examples/CheckUniversalBoundaryLowerBound.lean"
   "examples/CheckBettingCSNonVacuityWitness.lean"
   "examples/CheckTimeUniformPACBayes.lean"
   "examples/CheckTimeUniformScorePACBayes.lean"

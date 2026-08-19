@@ -1,0 +1,139 @@
+import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
+
+/-!
+# Universal anytime-boundary lower-bound checker
+
+The unconditional checks cover the Portmanteau bridge, fair-sign CLT, positive
+Gaussian tails, independent-block Borel--Cantelli argument, and the theorem that
+every valid boundary exceeds every fixed `sqrt n` multiple infinitely often.
+The final check records the exact conditional reduction from the still-open
+fair-sign upper LIL to the sharp normalized limsup lower bound.
+-/
+
+namespace FormalSLT.Examples.CheckUniversalBoundaryLowerBound
+
+open FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
+open Filter MeasureTheory
+
+#check oneSidedCrossingEvent
+#check UpperLILCrossing
+#check not_eventually_boundary_lt_mul_of_upperLILCrossing
+#check oneSidedAnytimeBoundary_limsup_ge_one_of_upperLILCrossing
+#check eventually_map_Ioi_mass_gt_of_tendstoInDistribution
+#check iIndepSet_of_disjoint_coordinate_blocks
+
+#check fairSignLaw
+#check fairSignPathLaw
+#check fairHalf
+#check fairSignIncrement
+#check fairSignSum
+#check fairSignNormalizedSum
+#check fairSignShift
+#check fairSignBlockStart
+#check fairSignBlockLength
+#check fairSignBlock
+#check fairSignBlockNormalizedSum
+#check fairSignCoordinateSigma
+#check fairSignBlockSigma
+#check fairSignBlockTailEvent
+#check fairSignIncrement_hasLaw
+#check fairSignIncrement_measurable
+#check fairSignIncrement_identDistrib
+#check fairSignIncrement_iIndep
+#check fairSignIncrement_mean_zero
+#check fairSignIncrement_secondMoment_one
+#check fairSign_tendstoInDistribution_gaussian
+#check gaussianReal_zero_one_Ioi_pos
+#check fairSign_eventually_normalizedTail_mass_gt
+#check fairSignShift_hasLaw
+#check fairSignShift_measurable
+#check fairSignBlockStart_succ
+#check fairSignBlockStart_pos
+#check fairSignBlockStart_strictMono
+#check fairSignBlockStart_tendsto_atTop
+#check fairSignBlockStart_le_length
+#check fairSignBlockLength_pos
+#check fairSignBlockLength_tendsto_atTop
+#check fairSignBlock_pairwise_disjoint
+#check fairSignBlockNormalizedSum_hasLaw
+#check fairSignBlockNormalizedSum_measurable
+#check fairSignBlockTailEvent_measurable
+#check fairSignCoordinateSigma_le
+#check fairSignBlockNormalizedSum_measurable_block
+#check fairSignBlockTailEvent_measurable_block
+#check fairSignBlockTailEvent_iIndepSet
+#check fairSignBlockTailEvent_measure_eq
+#check fairSign_eventually_blockTail_mass_gt
+#check fairSignBlockTailEvent_tsum_eq_top
+#check fairSignBlockTailEvent_limsup_measure_eq_one
+#check fairSign_ae_frequently_blockTail
+#check fairSignLaw_Icc_neg_one_one
+#check fairSign_ae_all_increment_mem_Icc
+#check fairSignSum_neg_card_le_of_increment_mem_Icc
+#check fairSignSum_block_decomposition
+#check fairSignBlockLength_sqrt
+#check fairSignBlockEndpoint_sqrt_le
+#check fairSignBlockTail_imp_endpoint
+#check fairSign_ae_frequently_sum_gt_mul_sqrt
+#check fairSign_anytimeBoundary_eventually_ge_sqrt
+#check fairSign_anytimeBoundary_frequently_ge_mul_sqrt
+
+#check rademacherLILScale
+#check rademacherLILScale_eventually_pos
+#check FairSignUpperLIL
+#check fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL
+
+#print axioms not_eventually_boundary_lt_mul_of_upperLILCrossing
+#print axioms oneSidedAnytimeBoundary_limsup_ge_one_of_upperLILCrossing
+#print axioms eventually_map_Ioi_mass_gt_of_tendstoInDistribution
+#print axioms iIndepSet_of_disjoint_coordinate_blocks
+#print axioms fairSignShift_measurable
+#print axioms fairSignIncrement_hasLaw
+#print axioms fairSignIncrement_measurable
+#print axioms fairSignIncrement_identDistrib
+#print axioms fairSignIncrement_iIndep
+#print axioms fairSignIncrement_mean_zero
+#print axioms fairSignIncrement_secondMoment_one
+#print axioms fairSign_tendstoInDistribution_gaussian
+#print axioms gaussianReal_zero_one_Ioi_pos
+#print axioms fairSign_eventually_normalizedTail_mass_gt
+#print axioms fairSignShift_hasLaw
+#print axioms fairSignBlockStart_succ
+#print axioms fairSignBlockStart_pos
+#print axioms fairSignBlockStart_strictMono
+#print axioms fairSignBlockStart_tendsto_atTop
+#print axioms fairSignBlockStart_le_length
+#print axioms fairSignBlockLength_pos
+#print axioms fairSignBlockLength_tendsto_atTop
+#print axioms fairSignBlock_pairwise_disjoint
+#print axioms fairSignBlockNormalizedSum_hasLaw
+#print axioms fairSignBlockNormalizedSum_measurable
+#print axioms fairSignBlockTailEvent_measurable
+#print axioms fairSignCoordinateSigma_le
+#print axioms fairSignBlockNormalizedSum_measurable_block
+#print axioms fairSignBlockTailEvent_measurable_block
+#print axioms fairSignBlockTailEvent_iIndepSet
+#print axioms fairSignBlockTailEvent_measure_eq
+#print axioms fairSign_eventually_blockTail_mass_gt
+#print axioms fairSignBlockTailEvent_tsum_eq_top
+#print axioms fairSignBlockTailEvent_limsup_measure_eq_one
+#print axioms fairSign_ae_frequently_blockTail
+#print axioms fairSignLaw_Icc_neg_one_one
+#print axioms fairSign_ae_all_increment_mem_Icc
+#print axioms fairSignSum_neg_card_le_of_increment_mem_Icc
+#print axioms fairSignSum_block_decomposition
+#print axioms fairSignBlockLength_sqrt
+#print axioms fairSignBlockEndpoint_sqrt_le
+#print axioms fairSignBlockTail_imp_endpoint
+#print axioms fairSign_ae_frequently_sum_gt_mul_sqrt
+#print axioms fairSign_anytimeBoundary_eventually_ge_sqrt
+#print axioms fairSign_anytimeBoundary_frequently_ge_mul_sqrt
+#print axioms rademacherLILScale_eventually_pos
+#print axioms fairSign_anytimeBoundary_limsup_ge_one_of_upperLIL
+
+example :
+    ∀ᵐ ω ∂fairSignPathLaw,
+      ∃ᶠ n : ℕ in atTop, (3 : ℝ) * Real.sqrt n < fairSignSum n ω :=
+  fairSign_ae_frequently_sum_gt_mul_sqrt 3 (by norm_num)
+
+end FormalSLT.Examples.CheckUniversalBoundaryLowerBound

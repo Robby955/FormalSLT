@@ -418,6 +418,13 @@
     normalized finite hypothesis--tilt e-process with one Ville event and a
     selected-atom weight penalty is checked separately at the generic process
     level, together with a measurable-event finite-IID `[0,1]` loss adapter.
+    A finite adaptive-selection guardrail now proves the corresponding
+    predeclared-weight and Kraft upper bounds and gives an exact diagonal
+    witness forcing a common raw correction of at least the catalog size. A
+    separate countable-allocation guardrail proves a blockwise reciprocal-
+    weight obstruction and an explicit log-log atom cost along an unbounded
+    geometric-epoch subsequence, with exact telescoping polynomial weights.
+    It is not a universal confidence-sequence or LIL lower bound.
     A second forward lane now checks the predictable-residual
     empirical-Bernstein e-process, its hybrid Bessel lower envelope, and a
     finite hypothesis--tilt PAC-Bayes master with an IID adapter and
@@ -440,8 +447,13 @@
   - Generic chaining (Talagrand)
 
 - [ ] **Minimax lower bounds**
-  - Fano, Assouad, Le Cam
-  - Matching the upper bounds
+  - [x] Fair-sign deterministic one-sided anytime boundaries have an
+    unconditional unbounded `sqrt n` floor, with a separate fixed-Gaussian-tail
+    eventual lower bound
+  - [ ] Prove the fair-sign upper LIL needed by the checked sharp
+    `sqrt(2 n log log n)` constant-one reduction
+  - [ ] Fano, Assouad, Le Cam and matching lower bounds for the structured
+    PAC-Bayes/tilt families
 
 ## Design Principles
 
