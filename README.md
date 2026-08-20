@@ -8,7 +8,7 @@
 
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C025-brightgreen.svg)](#checked-surfaces)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-260-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-135%2C902-brightgreen.svg)](#audit-commands)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-135%2C898-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 

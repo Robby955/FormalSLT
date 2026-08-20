@@ -9,20 +9,21 @@ import FormalSLT.AnytimeValid.VilleMaximalIneq
 import FormalSLT.AnytimeValid.SubGaussianCS
 
 /-!
-# E-processes, e-values, and safe-testing Type-I control
+# Test supermartingales, e-values, and safe-testing Type-I control
 
 This file packages the safe-testing / anytime-valid testing layer on top of the
 banked nonnegative-supermartingale Ville maximal inequality
-`FormalSLT.AnytimeValid.ville_maximal_ineq`. An **e-process** under a null
-measure `μ` is a process `E : ℕ → Ω → ℝ` that is (i) nonnegative, (ii)
-normalized at the origin (`E 0 = 1`), and (iii) a `𝒢`-supermartingale under `μ`.
+`FormalSLT.AnytimeValid.ville_maximal_ineq`. This module formalizes the
+nonnegative-supermartingale subclass of e-processes: a process
+`E : ℕ → Ω → ℝ` that is (i) nonnegative, (ii) normalized at the origin
+(`E 0 = 1`), and (iii) a `𝒢`-supermartingale under `μ`.
 Its running prefix maximum is the realized "betting wealth"; rejecting the null
 when that wealth reaches `1/α` controls the Type-I error at level `α`, uniformly
 over the stopping rule. This is the testing-side counterpart of the
 confidence-sequence layer in `SubGaussianCS.lean` / `MixtureCS.lean`.
 
-Three named results, all derived from `ville_maximal_ineq` and elementary
-measure theory (no new hard analysis):
+Three named results package the maximal-inequality, structural-product, and
+optional-stopping interfaces (no new hard analysis):
 
 * `eProcess_typeI_control`: the safe-testing guarantee. For an `EProcess μ 𝒢 E`
   under a probability measure, level `0 < α`, and horizon `n`, the rejection
@@ -32,12 +33,12 @@ measure theory (no new hard analysis):
   at *any* time `≤ n`), not a single fixed-time event. Instantiate
   `ville_maximal_ineq` at `a = 1/α`, divide through, and collapse `∫ E 0 = 1`.
 
-* `eProcess_product_of_supermartingale`: the e-value composition law. The
+* `eProcess_product_of_supermartingale`: a product constructor under an explicit
+  product-supermartingale premise. The
   pointwise product of two e-processes is again an e-process provided the product
-  is again a `𝒢`-supermartingale (the dischargeable hypothesis; full conditional
-  independence is out of scope, see the module note). It encodes "products of
-  combined e-values are e-values": nonnegative, starts at `1` (`1 * 1 = 1`),
-  supermartingale.
+  is again a `𝒢`-supermartingale. The module does not formalize an independence
+  condition implying that premise. It packages the remaining obligations:
+  nonnegativity and the start at `1` (`1 * 1 = 1`).
 
 * `eProcess_optionalContinuation`: optional continuation / stopped e-value. For
   any `ℕ∞`-valued `𝒢`-stopping time `τ` bounded by `n`, the stopped value
@@ -46,11 +47,11 @@ measure theory (no new hard analysis):
   it follows from `Submartingale.expected_stoppedValue_mono` applied to `-E`
   (`E[E_τ] ≤ E[E_0] = 1`), the same route the keystone uses.
 
-A genuine non-vacuous witness (the fixed-tilt exponential of a Rademacher
-increment, a nonnegative supermartingale with `E 0 = 1` and `E_1 > 1` on a
-positive-mass event) is built in `examples/CheckEProcess.lean`, where the
-three theorems fire on it with the numeric Type-I bound `≤ 1/4` at threshold
-`1/α = 4`.
+A nonconstant witness (the fixed-tilt exponential of a Rademacher increment, a
+nonnegative supermartingale with `E 0 = 1` and `E_1 > 1` on a positive-mass
+event) is built in `examples/CheckEProcess.lean`. The checker instantiates the
+three theorems and obtains the numeric Type-I bound `≤ 1/4` at threshold
+`1/α = 4`; it does not claim that this higher threshold is crossed.
 
 ## References
 
@@ -65,12 +66,10 @@ three theorems fire on it with the numeric Type-I bound `≤ 1/4` at threshold
 * Ville, J. (1939). *Étude critique de la notion de collectif.* (Original
   supermartingale maximal inequality.)
 
-## Formal-methods disambiguation (empty-field audit gates any "first" claim)
+## Formal-methods scope
 
-To the authors' knowledge this is the first e-process / safe-testing object
-mechanised in an interactive theorem prover; that claim is gated on an
-empty-field audit handed to the maintainer and is NOT baked into any theorem name
-or load-bearing comment. Where this differs from each known nearby effort:
+The module makes no novelty or priority claim. Its scope differs from nearby
+formal developments as follows:
 Karayel–Tan (AFP 2023) mechanise Hoeffding/Bernstein/McDiarmid concentration in
 Isabelle/HOL (fixed-sample, no anytime-valid object, no e-process, no test
 martingale). Sonoda et al. 2025 (arXiv:2503.19605) and Zhang–Lee–Liu 2026
@@ -78,10 +77,8 @@ martingale). Sonoda et al. 2025 (arXiv:2503.19605) and Zhang–Lee–Liu 2026
 an e-value / safe-testing Type-I guarantee nor an e-process rejection rule.
 Tassarotti (2021) is a probabilistic-program / Coq verification line, not
 anytime-valid testing. Bagnall–Stewart (2019) is a Coq PAC-learning /
-generalization-bound line (fixed-sample, no e-process). None of these formalize
-an e-process, e-value composition, or optional-stopping Type-I control. No
-"first Lean/Coq/Isabelle e-process" sentence ships until the empty-field audit
-clears.
+generalization-bound line (fixed-sample, no e-process). These bounded
+comparisons are not an ecosystem-wide absence result.
 -/
 
 open MeasureTheory ProbabilityTheory Finset
@@ -93,7 +90,8 @@ variable {Ω : Type*} {m0 : MeasurableSpace Ω} {μ : Measure Ω}
   {𝒢 : Filtration ℕ m0}
 
 /--
-An **e-process** for the null `μ` with respect to the filtration `𝒢`: a process
+The library's **supermartingale e-process** for the null `μ` with respect to the
+filtration `𝒢`: a process
 `E : ℕ → Ω → ℝ` that is nonnegative, normalized to `1` at the origin, and a
 `𝒢`-supermartingale under `μ`. These are exactly the three structural fields and
 nothing that smuggles the Type-I conclusion. The `E 0 = 1` normalization is the
@@ -199,15 +197,12 @@ theorem eProcess_typeI_control [IsProbabilityMeasure μ]
   exact hkey _ hmax
 
 /--
-**E-value composition law (supermartingale form).** The pointwise product of two
+**Product constructor (supermartingale form).** The pointwise product of two
 e-processes is again an e-process provided the product is again a
 `𝒢`-supermartingale (`hprod_sup`). This is the honest, dischargeable hypothesis:
-products of *independent* e-values are e-values, and conditional independence
-across `𝒢` is exactly what makes the product a supermartingale, but rather than
-carry an unverified independence predicate this states the supermartingale
-condition directly (it is the property actually used) and is provable on the
-witness. Nonnegativity and the `1 * 1 = 1` start are discharged from the two
-factor e-processes. -/
+the module does not formalize a conditional-independence criterion that would
+imply it. The statement records exactly the property used, while nonnegativity
+and the `1 * 1 = 1` start are discharged from the two factor e-processes. -/
 theorem eProcess_product_of_supermartingale
     {E F : ℕ → Ω → ℝ} (hE : EProcess μ 𝒢 E) (hF : EProcess μ 𝒢 F)
     (hprod_sup : Supermartingale (fun n ω => E n ω * F n ω) 𝒢 μ) :

@@ -103,8 +103,8 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 217,
-    "library_and_example_lean_lines": 135902,
-    "library_lean_lines": 107027,
+    "library_and_example_lean_lines": 135898,
+    "library_lean_lines": 107019,
     "library_modules": 260,
     "theorem_map_entries": 1029
   },
@@ -4139,7 +4139,7 @@
           "kind": "theorem",
           "module": "AnytimeValid.OptimizedLambdaCS",
           "name": "subGammaLogLogWidth_loglog_rate",
-          "summary": "Stitched boundary half-width grows at the iterated-logarithm rate"
+          "summary": "Concrete positivity and closed-form shape receipt at n = 16, \u03b4 = 1/2; no asymptotic-rate conclusion"
         },
         {
           "kind": "theorem",
@@ -4151,7 +4151,7 @@
           "kind": "theorem",
           "module": "AnytimeValid.OptimizedLambdaCS",
           "name": "optimized_lambda_two_sided_confidence_sequence",
-          "summary": "Two-sided optimized-\u03bb iterated-log confidence sequence via the deterministic stitching bridge and the X/-X transfer"
+          "summary": "Two-sided finite-grid time-uniform crossing boundary via the X/-X transfer"
         },
         {
           "kind": "theorem",
@@ -4175,7 +4175,7 @@
           "kind": "theorem",
           "module": "AnytimeValid.EProcess",
           "name": "eProcess_product_of_supermartingale",
-          "summary": "Product of nonnegative supermartingale factors with unit start is an e-process"
+          "summary": "Product constructor for e-processes under an explicit product-supermartingale premise"
         },
         {
           "kind": "theorem",

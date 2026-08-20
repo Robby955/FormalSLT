@@ -30,8 +30,9 @@ predictable-increment model already used by the confidence-sequence witness:
 `E` is a nonnegative `filtBool`-supermartingale with `E 0 = 1` (built from the
 banked `nonneg_supermartingale_of_condSubGamma` ∘ `condSubGamma_supermartingale_step`),
 so `eProcessWitness : EProcess μBool filtBool E`. It is non-trivial: on `ω = true`,
-`E 1 ω = exp(1 - 3/4) = exp(1/4) > 1`, so the rejection event is genuinely
-exercised (see `witness_exceeds_one`).
+`E 1 ω = exp(1 - 3/4) = exp(1/4) > 1`, so the process is genuinely nonconstant
+(see `witness_exceeds_one`). This does not show that it crosses the separate
+Type-I threshold `4` used below.
 
 The three theorems then fire:
 
@@ -172,8 +173,8 @@ theorem eProcessWitness : EProcess μBool filtBool Ewit where
 
 /--
 Non-triviality: the witness exceeds `1` on a positive-mass event. On `ω = true`,
-`E 1 ω = exp(1 - 3/4) = exp(1/4) > 1`, so the e-process is genuinely non-constant
-and the rejection event of `eProcess_typeI_control` is actually exercised. -/
+`E 1 ω = exp(1 - 3/4) = exp(1/4) > 1`, so the process is genuinely nonconstant.
+This theorem does not claim that the threshold-`4` rejection event is inhabited. -/
 theorem witness_exceeds_one : (1 : ℝ) < Ewit 1 true := by
   have h : Ewit 1 true = Real.exp (1 / 4) := by
     simp only [Ewit, subGammaExponentialProcess, runningSum, subGammaCgf]

@@ -745,13 +745,13 @@ declarations; modules are relative to `FormalSLT`.
 | `subGamma_stitched_boundary_supermartingale` | `AnytimeValid.OptimizedLambdaCS` | Stitched-over-`λ` sub-Gamma exponential process is a nonnegative supermartingale |
 | `stitched_atTop_crossing_bound` | `AnytimeValid.OptimizedLambdaCS` | Ville crossing bound for the stitched sub-Gamma boundary |
 | `optimized_lambda_confidence_sequence_subGamma` | `AnytimeValid.OptimizedLambdaCS` | Optimized-`λ` sub-Gamma confidence sequence with the stitched boundary |
-| `subGammaLogLogWidth_loglog_rate` | `AnytimeValid.OptimizedLambdaCS` | Stitched boundary half-width grows at the iterated-logarithm rate |
+| `subGammaLogLogWidth_loglog_rate` | `AnytimeValid.OptimizedLambdaCS` | Concrete positivity and closed-form shape receipt at `n = 16`, `δ = 1/2`; no asymptotic-rate conclusion |
 | `subGammaLogLogWidth_eq_boundary_optTilt` | `AnytimeValid.OptimizedLambdaCS` | The closed-form log-log width equals the sub-Gamma boundary at the per-time optimal tilt |
-| `optimized_lambda_two_sided_confidence_sequence` | `AnytimeValid.OptimizedLambdaCS` | Two-sided optimized-`λ` iterated-log confidence sequence via the deterministic stitching bridge and the `X`/`-X` transfer |
+| `optimized_lambda_two_sided_confidence_sequence` | `AnytimeValid.OptimizedLambdaCS` | Two-sided finite-grid time-uniform crossing boundary via the `X`/`-X` transfer |
 | `optimized_lambda_two_sided_closed_form_pointwise` | `AnytimeValid.OptimizedLambdaCS` | Closed-form pointwise interval-width form of the two-sided optimized-`λ` confidence sequence |
 | `fixedGrid_logLog_bridge_forces_exact_boundary` | `AnytimeValid.OptimizedLambdaCS` | Obstruction: a fixed finite-grid all-time closed-form bridge forces the grid to attain the exact per-time optimal boundary |
 | `eProcess_typeI_control` | `AnytimeValid.EProcess` | Safe-testing Type-I control: an e-process rejection event has mass at most the level `α` over the Ville maximal inequality |
-| `eProcess_product_of_supermartingale` | `AnytimeValid.EProcess` | Product of nonnegative supermartingale factors with unit start is an e-process |
+| `eProcess_product_of_supermartingale` | `AnytimeValid.EProcess` | Product constructor for e-processes under an explicit product-supermartingale premise |
 | `eProcess_optionalContinuation` | `AnytimeValid.EProcess` | Optional continuation: the stopped value of an e-process keeps integral at most one |
 | `selectedWeightedScore_expectation_le_one` | `AnytimeValid.SelectionCost` | A predeclared-weight correction preserves expectation at most one for an arbitrary observation-dependent selector over a finite nonnegative score catalog |
 | `simultaneous_kraft_upperTail_mass_le_alpha` | `AnytimeValid.SelectionCost` | Finite simultaneous tail control under reciprocal corrections satisfying the Kraft budget |
