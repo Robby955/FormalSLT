@@ -31,11 +31,7 @@ jobs:
         run: python3 scripts/check_no_orphan_lean_modules.py
 
       - name: Check examples and tutorials
-        run: |
-          for f in $(find examples -name '*.lean' | sort); do
-            echo "$f"
-            lake env lean "$f"
-          done
+        run: make examples
 
       - name: Verify public API and v0.1 compatibility
         run: make api

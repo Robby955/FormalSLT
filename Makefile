@@ -7,6 +7,7 @@ build:
 
 # Type-check every example and tutorial (the same loop CI runs).
 examples:
+	lake build FormalSLT.Applications
 	@for f in $$(find examples -name '*.lean' | sort); do \
 		echo "$$f"; \
 		lake env lean "$$f" || exit 1; \
