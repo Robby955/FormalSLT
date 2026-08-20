@@ -23,8 +23,8 @@ Poisson equations, contraction, and empirical transition certificates.
 [Read the theorem map](./docs/theorem-map.md)
 
 FormalSLT v0.1.0 was released on May 8, 2026. The larger theorem program is now
-integrated on <code>main</code>; the v0.2 public API and release artifact are
-being prepared. Until the v0.2 tag exists, pin an exact commit rather than
+integrated in the v0.2 release candidate; the public API and release artifact
+are being prepared. Until the v0.2 tag exists, pin an exact commit rather than
 treating <code>main</code> as a compatibility promise.
 
 ## Classification

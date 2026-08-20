@@ -74,7 +74,7 @@ Expected result:
 - all exact Lean examples from the annotated v0.1.0 tag compile against the
   current library;
 - the independent downstream Lake package builds through all four supported
-  topic imports;
+  topic imports, and hosted CI repeats that build on Linux and macOS;
 - every tracked Lean module is reachable from the core umbrella or the optional
   applications umbrella, while `FormalSLT.lean` reaches no
   `FormalSLT.Applications` module;
@@ -97,6 +97,20 @@ Expected result:
 - no executable `sorry`, no executable `admit`, no custom axioms, and no custom
   constants are found;
 - whitespace check passes.
+
+## Post-tag installation check
+
+Do not run the release-tag smoke as a substitute for the pre-tag checks above.
+After the target tag exists on the public remote, run the manual **Release tag
+install smoke** workflow for both operating systems, or run locally:
+
+```bash
+bash scripts/check_tag_install.sh v0.2.0
+```
+
+The script verifies the exact remote tag before creating a fresh downstream
+Lake package. It fails if the tag is absent or ambiguous, if Lake resolves a
+different commit, or if any of the four supported topic imports does not build.
 
 In a fresh checkout or worktree, run `lake exe cache get` before the first
 build. If `lake` is not on `PATH`, use `~/.elan/bin/lake`. A cold Mathlib
