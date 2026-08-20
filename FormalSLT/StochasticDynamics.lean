@@ -31,6 +31,7 @@ import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE
 import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure
@@ -75,8 +76,10 @@ target-policy OPE endpoint under a known environment and behavior policy,
 supplied invariant target laws and exact Poisson potentials, and declared
 overlap and span bounds.  It also exports the deterministic robust-candidate
 bridge from action-conditioned environment-row total variation to induced
-target-policy drift and stationary-residual envelopes.  It
-also exports encountered-prefix dynamic comparators for finite catalogs of
+target-policy drift and stationary-residual envelopes, together with the
+fixed-candidate, fixed-depth robust OPE event under supplied contraction and
+physical action-row total-variation certificates.  It also exports
+encountered-prefix dynamic comparators for finite catalogs of
 history-dependent target policies, including a known prefix/time-dependent
 environment kernel.  For a supplied target policy, it also exports an exact
 finite-horizon target-path change-of-measure identity, target state occupancy

@@ -265,6 +265,15 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
 # triggers such as "indicator" would incorrectly tag CDF indicator families as
 # Bernoulli results.
 DECLARATION_CONCEPTS: dict[str, list[str]] = {
+    "FormalSLT.StochasticDynamics.candidateTargetPolicyFiniteDepthPotential": [
+        "adaptive trajectory", "Poisson equation", "transition kernel"
+    ],
+    "FormalSLT.StochasticDynamics.finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le": [
+        "adaptive trajectory", "stationary / invariant law", "Poisson equation", "transition kernel"
+    ],
+    "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event": [
+        "adaptive trajectory", "stationary / invariant law", "Poisson equation", "PAC-Bayes", "transition kernel"
+    ],
     "FormalSLT.PACBayes.IndicatorVariance.indicatorPopulationRisk_mem_Icc": ["Bernoulli"],
     "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_centered": ["Bernoulli"],
     "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_secondMoment_eq": ["Bernoulli"],

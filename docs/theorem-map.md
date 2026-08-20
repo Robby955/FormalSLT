@@ -937,6 +937,21 @@ interval.
 |---|---|---|
 | `abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in `[0,1]`, potential span `B`, and a nonnegative uniform action-conditioned environment-row TV radius `etaEnv`, deterministically bounds the true stationary residual by `finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`; it supplies no confidence event, OPE theorem, or selection license |
 
+## Fixed-candidate finite-depth robust target-policy off-policy evaluation
+
+| Declaration | Module | Role |
+|---|---|---|
+| `candidateTargetPolicyFiniteDepthPotential` | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | Constructs the depth-`m` target-policy Poisson potential from a fixed candidate environment and supplied candidate reference PMF, without assuming that reference is invariant |
+| `finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le` | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | Transfers the ordinary finite-depth geometric-decay lemma to the candidate target-policy drift and bounds its oscillation by `alpha^m D` |
+| `exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | For fixed true and candidate environments, target-policy catalog, candidate references, physical action-row TV radius, oscillation data, and depth, one behavior-law outer event controls every `n >= 2`, posterior PMF, and declared finite tilt atom by the target-policy OPE boundary plus the posterior average of the constant envelope `alpha^m D + 2 (1 + B_m) etaEnv`, which equals that envelope for a posterior PMF |
+
+Here `B_m = finiteDepthPoissonClosedSpanBound alpha D m`. The robust residual
+is outside `stationaryTargetPolicyOPEBoundary` and is not multiplied by the
+importance-ratio cap `C`. The theorem fixes the candidate environment,
+references, contraction and row-TV certificates, and depth before the outer
+event; it licenses no empirical transition event, candidate selection,
+adaptive depth, or invariant-law construction.
+
 ## Dynamic target-policy comparators
 
 | Declaration | Module | Role |

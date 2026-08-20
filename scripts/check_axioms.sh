@@ -641,6 +641,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean_approximate"
   "FormalSLT.StochasticDynamics.neg_stationaryTargetPolicyPosteriorResidualAverage_le"
   "FormalSLT.StochasticDynamics.exists_stationaryApproximateTargetPolicyOPE_event"
+  "FormalSLT.StochasticDynamics.finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le"
+  "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event"
   "FormalSLT.StochasticDynamics.mul_ratio_eq_of_zero_imp_zero"
   "FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp"
   "FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces"
@@ -839,6 +841,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE"
+  echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
   echo "import FormalSLT.StochasticDynamics.ControlledMarkovization"
   echo "import FormalSLT.StochasticDynamics.ControlledKernelTV"
@@ -925,6 +928,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE \
+  FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE \
   FormalSLT.StochasticDynamics.ControlledTrajectory \
   FormalSLT.StochasticDynamics.ControlledMarkovization \
   FormalSLT.StochasticDynamics.ControlledKernelTV \

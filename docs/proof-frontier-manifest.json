@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 223,
-    "library_and_example_lean_lines": 146590,
-    "library_lean_lines": 117261,
-    "library_modules": 267,
-    "theorem_map_entries": 1035
+    "example_lean_files": 224,
+    "library_and_example_lean_lines": 146840,
+    "library_lean_lines": 117486,
+    "library_modules": 268,
+    "theorem_map_entries": 1038
   },
   "theorem_families": [
     {
@@ -4898,6 +4898,29 @@
         }
       ],
       "name": "Stationary target-policy robust-candidate bridge"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE",
+          "name": "candidateTargetPolicyFiniteDepthPotential",
+          "summary": "Constructs the depth-m target-policy Poisson potential from a fixed candidate environment and supplied candidate reference PMF, without assuming that reference is invariant"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE",
+          "name": "finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le",
+          "summary": "Transfers the ordinary finite-depth geometric-decay lemma to the candidate target-policy drift and bounds its oscillation by alpha^m D"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE",
+          "name": "exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event",
+          "summary": "For fixed true and candidate environments, target-policy catalog, candidate references, physical action-row TV radius, oscillation data, and depth, one behavior-law outer event controls every n >= 2, posterior PMF, and declared finite tilt atom by the target-policy OPE boundary plus the posterior average of the constant envelope alpha^m D + 2 (1 + B_m) etaEnv, which equals that envelope for a posterior PMF"
+        }
+      ],
+      "name": "Fixed-candidate finite-depth robust target-policy off-policy evaluation"
     },
     {
       "entries": [

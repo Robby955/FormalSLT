@@ -235,6 +235,34 @@ construct a confidence set; permit post-data candidate or depth selection;
 prove invariant-law existence or a quantitative mixing time; or cover random
 initial laws, controlled dynamics, continuous states, or unrestricted tilts.
 
+### Fixed-candidate finite-depth robust target-policy OPE
+
+`StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` composes the
+fixed approximate target-policy OPE event with a depth-`m` potential built from
+a fixed candidate controlled environment. It assumes true induced target-
+kernel invariance, `[0,1]` controlled transition scores, a common candidate
+target-kernel oscillation-contraction factor `0 <= alpha < 1`, centered
+candidate row-risk oscillation at most `D`, and the uniform physical action-row
+certificate `TV(P(state, action), Q(state, action)) <= etaEnv`. The checked
+span is `B_m = D * (1 - alpha^m) / (1 - alpha)`, and the robust residual is
+
+`alpha^m D + 2 * (1 + B_m) * etaEnv`.
+
+The conclusion retains this value as the posterior average of a constant
+envelope; the posterior-PMF premise makes that average equal to the displayed
+value. It is added outside the importance-weighted OPE boundary and is not
+multiplied by the ratio cap `C`. The one outer event remains simultaneous over
+the observed path, declared finite tilt atom, posterior PMF, and time. The true
+and candidate environments, behavior policy, target-policy and score catalogs,
+true invariant PMFs, candidate reference PMFs, contraction and row-TV
+certificates, and depth are all fixed before the event.
+
+This endpoint does not learn or select a candidate kernel, derive `etaEnv` from
+the observed trajectory, intersect an empirical transition-confidence event,
+adapt the depth to the path, construct the true invariant PMFs, or establish a
+full-trajectory target-versus-behavior change of measure. It is finite-state,
+finite-action, finite-hypothesis, and finite-tilt.
+
 ### Empirical transition confidence and selected candidates
 
 `StochasticDynamics.EmpiricalTransitionConfidence` treats each finite
