@@ -318,6 +318,12 @@
     trajectory results to continuous priors and arbitrary states; study
     predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
+  - Implement the [controlled queue application design](controlled-queue-application-design.md):
+    first close the augmented-state Markovization bridge and a known-kernel
+    fixed-policy receipt, then add deterministic certificate generation and
+    matched baselines. Keep unknown-dynamics target-policy OPE open
+    until its action-conditioned confidence and finite-depth transfer lemmas
+    are proved.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
     stationary risk, multistep conclusions, and atomless transition evidence
     as separate later theorem families.
