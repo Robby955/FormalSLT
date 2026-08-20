@@ -427,6 +427,15 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_empiricalStationaryCatalog_event"
   "FormalSLT.StochasticDynamics.exists_selectedEmpiricalStationaryCatalog_event"
   "FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event"
+  "FormalSLT.Applications.ControlledQueue.stateActionRowEquiv_apply_val"
+  "FormalSLT.Applications.ControlledQueue.observationRowEquiv_apply_val"
+  "FormalSLT.Applications.ControlledQueue.observationRowEquiv_symm_action_val"
+  "FormalSLT.Applications.ControlledQueue.observationRowEquiv_symm_state_val"
+  "FormalSLT.Applications.ControlledQueue.augmentedBehaviorStateTable_length"
+  "FormalSLT.Applications.ControlledQueue.augmentedBehaviorStateTable_getElem?_stateAction"
+  "FormalSLT.Applications.ControlledQueue.augmentedBehaviorStateTable_getElem?_observation"
+  "FormalSLT.Applications.ControlledQueue.transitionRow_val"
+  "FormalSLT.Applications.ControlledQueue.transitionRow_pair"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -793,6 +802,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection"
   echo "import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog"
   echo "import FormalSLT.Applications"
+  echo "import FormalSLT.Applications.ControlledQueueReindex"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -873,6 +883,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection \
   FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog \
   FormalSLT.Applications \
+  FormalSLT.Applications.ControlledQueueReindex \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

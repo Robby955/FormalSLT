@@ -68,6 +68,8 @@ check-controlled-queue-model:
 verify-controlled-queue-model: check-controlled-queue-model
 	python3 -m pytest -q tests/test_generate_controlled_queue_model.py
 	lake build FormalSLT.Applications.ControlledQueueData
+	lake build FormalSLT.Applications.ControlledQueueReindex
+	lake env lean examples/CheckControlledQueueReindex.lean
 
 # Regenerate the deterministic trace, counts, and trace SHA-256 manifest.
 generate-controlled-queue-trace:
