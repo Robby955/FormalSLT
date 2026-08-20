@@ -160,8 +160,10 @@ from supplied interfaces and open boundaries.
   the Poisson equation." *The Annals of Probability* 24(2), 916--931.
   [Author-hosted paper](https://web.stanford.edu/~glynn/papers/1996/GM96.pdf).
   FormalSLT's source dictionary uses the discrete Poisson equation (1),
-  additive functional (3), and martingale decomposition (4); its finite-depth
-  potential and explicit residual are derived variants.
+  additive functional (3), and martingale decomposition (4). The numbered-result
+  audit found that its finite-depth Neumann potential and explicit contraction
+  residual are derived variants, not reproductions of the paper's exact-solution,
+  Harris-chain, continuous-time, functional-CLT, or perturbation theorems.
 - Gaubert, S., and Qu, Z. (2015; published online 2014). "Dobrushin's
   ergodicity coefficient for Markov operators on cones." *Integral Equations
   and Operator Theory* 81(1), 127--150.
@@ -170,9 +172,11 @@ from supplied interfaces and open boundaries.
   Equations (1) and (4) are the finite row-TV and Hopf-oscillation comparators.
 - Mitrophanov, A. Yu. (2005). "Sensitivity and convergence of uniformly
   ergodic Markov chains." *Journal of Applied Probability* 42(4), 1003--1014.
-  [Publisher record](https://doi.org/10.1239/jap/1134587812). This is nearby
-  finite-time and invariant-law perturbation theory, not the exact source of
-  FormalSLT's row-triangle `+ 2 * eta` inequality.
+  [Publisher record](https://doi.org/10.1239/jap/1134587812). Its finite-state
+  coefficient is FormalSLT's maximum row-pair TV after normalization. Its
+  invariant-law sensitivity bound is a comparator; FormalSLT proves coefficient
+  robustness and conditional uniqueness, not stationary-law sensitivity. The
+  elementary row-triangle/Wolfer route remains the source of `+ 2 * eta`.
 - Wolfer, G. (2020). "Mixing time estimation in ergodic Markov chains from a
   single trajectory with contraction methods." In *Proceedings of ALT 2020*,
   PMLR 117, 890--905.
@@ -183,17 +187,21 @@ from supplied interfaces and open boundaries.
 - Kueffner, K., Meggendorfer, T., Weininger, M., and Wienhöft, P. (2026).
   "Confidence sequences for online statistical model checking of Markov
   decision processes." arXiv:2606.25797v1.
-  [Preprint](https://arxiv.org/abs/2606.25797v1). Theorem 3 is the required
-  time-uniform transition-coordinate comparator. It works with an IID
-  successor stream localized to each state-action pair and an MDP simulator
-  that permits resets and adaptive actions; FormalSLT's observed-row process
-  instead comes from one non-reset Markov trajectory.
+  [Preprint](https://arxiv.org/abs/2606.25797v1). Theorem 3's four confidence
+  sequences were compared formula by formula. Betting Bernstein is the closest
+  process comparator through its predictable-residual term, but it uses an
+  adaptive weighted tilt and a row-local IID clock. FormalSLT instead uses fixed
+  predeclared tilt atoms, global visit gating, a prior charge, a hybrid-Bessel
+  envelope, and later positive-visit normalization on one non-reset trajectory.
 
 The exact source-to-declaration classifications and total-variation conversion
 are in the [literature and theorem-fidelity ledger](./LITERATURE.md). Formal
 proof-assistant comparators are recorded in [Related work](./related-work.md).
-Neither page makes a priority claim, and entries marked **UNSWEPT** remain open
-audit obligations rather than evidence of absence.
+Neither page makes a priority claim. The combined risk-plus-transition
+informative receipt, Econlib clean-build and exact-axiom receipt, and public or
+upstream integration of the locally verified Mathlib bridge remain explicitly
+open. Any item still marked **UNSWEPT** is a named audit or release-evidence
+obligation, not evidence of absence.
 
 ## How this relates to TheoremPath
 
