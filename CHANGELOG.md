@@ -1,7 +1,8 @@
 # Changelog
 
-This file records user-visible changes to FormalSLT. A section is a release
-only after its tag and GitHub Release exist.
+This file records user-visible changes to FormalSLT. Each version entry states
+which publication artifacts actually exist; a source tag alone is not treated
+as evidence of a GitHub Release or DOI.
 
 ## Unreleased
 
@@ -55,10 +56,11 @@ v0.2 release, and no DOI is attached to them yet.
 
 ## v0.1.0 - 2026-05-08
 
-- First public FormalSLT release.
+- First public FormalSLT source tag. No GitHub Release or DOI was issued for
+  this version.
 - Finite-sample statistical-learning foundations spanning Rademacher
   complexity, VC theory, concentration, PAC-Bayes, stability, and initial
   sequential-inference interfaces.
 
 [Unreleased]: https://github.com/Robby955/FormalSLT/compare/v0.1.0...HEAD
-[v0.1.0]: https://github.com/Robby955/FormalSLT/releases/tag/v0.1.0
+[v0.1.0]: https://github.com/Robby955/FormalSLT/tree/v0.1.0
