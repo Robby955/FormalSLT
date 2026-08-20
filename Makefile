@@ -69,5 +69,19 @@ verify-controlled-queue-model: check-controlled-queue-model
 	python3 -m pytest -q tests/test_generate_controlled_queue_model.py
 	lake build FormalSLT.Applications.ControlledQueueData
 
+# Regenerate the deterministic trace, counts, and trace SHA-256 manifest.
+generate-controlled-queue-trace:
+	python3 scripts/generate_controlled_queue_trace.py
+
+# Check fresh generation, then independently replay every draw and causal update.
+check-controlled-queue-trace:
+	python3 scripts/generate_controlled_queue_trace.py --check
+	python3 scripts/verify_controlled_queue_trace.py --check
+
+# Run the byte/replay gate and its focused tamper and determinism tests.
+verify-controlled-queue-trace: check-controlled-queue-trace
+	python3 -m pytest -q tests/test_generate_controlled_queue_trace.py
+
 .PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests \
-	generate-controlled-queue-model check-controlled-queue-model verify-controlled-queue-model
+	generate-controlled-queue-model check-controlled-queue-model verify-controlled-queue-model \
+	generate-controlled-queue-trace check-controlled-queue-trace verify-controlled-queue-trace

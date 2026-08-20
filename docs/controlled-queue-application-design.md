@@ -1,6 +1,6 @@
 # Controlled queue application design
 
-Status: **MODEL/PREPROCESSING ONLY IMPLEMENTED / CERTIFICATE OPEN**
+Status: **MODEL AND TRACE/PREPROCESSING IMPLEMENTED / CERTIFICATE OPEN**
 
 Design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -8,9 +8,11 @@ Design base: FormalSLT release-candidate commit
 This packet specifies the smallest controlled finite-state application that can
 serve as a journal-grade demonstration of FormalSLT's trajectory, stationary,
 unknown-kernel, and policy-comparison layers. The frozen model input, exact
-rational table generator, generated Lean data module, and SHA-256 manifest are
-implemented. This remains preprocessing: it is not a statistical certificate,
-a theorem-produced good path, a proof bridge, or a numerical research result.
+rational table generator, deterministic 200,000-transition trace, exact causal
+prediction streams, independent replay verifier, generated Lean model-data
+module, and SHA-256 manifests are implemented. This remains preprocessing: it
+is not a statistical certificate, a theorem-produced good path, a proof
+bridge, Lean-verified trace data, or a numerical research result.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -147,23 +149,29 @@ Use one versioned JSON input with exact rational fields:
 - confidence allocation;
 - posterior, depth, and tilt grids.
 
-The current schema also records, without supplying values or semantics, what
-the next trace-producing slice must add: an initial state; versioned,
+The trace schema now supplies the exact initial state; versioned,
 language-independent PRNG and exact sampling contracts; and exact rational
-prior, posterior, candidate, coordinate, and tilt weight tables. A seed alone
-is not a reproducible sampling contract.
+prior, posterior, candidate, coordinate, and tilt weight tables. Its PRNG is a
+SHA-256 counter stream with a frozen test vector. Exact categorical draws use
+unsigned 64-bit big-endian words and rejection sampling before reduction
+modulo the common integer-weight denominator. A seed alone would not have been
+a reproducible sampling contract.
 
-A dependency-free deterministic generator must emit:
+A dependency-free deterministic generator now emits:
 
 1. the controlled trace;
-2. transition, action, visit, and loss count tables;
-3. a generated Lean module containing exact rational witnesses;
+2. transition, action, visit, and binary-outcome count tables;
+3. exact pre-outcome numerator/denominator streams for both causal Beta
+   predictors;
 4. a machine-readable manifest containing schema version, generator revision,
-   parameters, and SHA-256 hashes for every input and output.
+   parameters, and SHA-256 hashes for every consumed input, generator, verifier,
+   and output.
 
-The generator is preprocessing only. Lean must check normalization, bounds,
-counts, policy overlap, invariant laws, Poisson identities, selected grid
-membership, and final arithmetic.
+The generator and independent replay verifier are preprocessing only. The
+trace is deliberately not embedded in Lean. Later certificate slices must
+provide compact witnesses for Lean to check normalization, bounds, counts,
+policy overlap, invariant laws, Poisson identities, selected grid membership,
+and final arithmetic.
 
 ### Implemented preprocessing slice
 
@@ -173,10 +181,10 @@ The first slice freezes the model before any trajectory is sampled:
   service-before-arrival update, cyclic regime transition, candidate gammas,
   exact behavior and target policy vectors, predictor specifications, bounded
   outcomes, and future trace/catalog parameters;
-- the frozen input marks the initial state, language-independent PRNG/sampling
+- the model input marks the initial state, language-independent PRNG/sampling
   contracts, and prior/posterior/candidate/coordinate/tilt weights as required
-  inputs for the next trace-producing schema revision; it does not implement
-  or assign values to them;
+  inputs for a separate trace schema; `trace-v1.json` supplies and freezes all
+  of those values without changing the model schema;
 - `scripts/generate_controlled_queue_model.py` rejects duplicate keys, floats,
   noncanonical rationals, unknown fields, and schema drift, then compiles full
   exact rational kernel, policy, fixed-predictor, control-cost, and Brier-loss
@@ -189,16 +197,39 @@ The first slice freezes the model before any trajectory is sampled:
 - `applications/controlled_queue/generated/model-v1-manifest.json` binds the
   input, generator source, JSON tables, and Lean module by SHA-256.
 
-Run `make generate-controlled-queue-model` to regenerate. After obtaining the
-pinned Mathlib cache, run `make verify-controlled-queue-model` to fail on stale
-artifacts, exercise the exact arithmetic tests, and compile the generated Lean
-module.
+Run `make generate-controlled-queue-model` and
+`make generate-controlled-queue-trace` to regenerate. After obtaining the
+pinned Mathlib cache, run `make verify-controlled-queue-model` to exercise the
+model arithmetic tests and compile the generated Lean module. Run
+`make verify-controlled-queue-trace` for byte-staleness checks, the independent
+full replay, and the trace-specific tests; that target does not invoke Lean.
 
-This slice deliberately does **not** emit the controlled trace or empirical
-count tables in items 1--2 above. It also does not check invariant laws,
-Poisson identities, selected grids, final bounds, or good-event membership.
-Those are later model-to-theorem and certificate slices, not preprocessing
-claims.
+The second preprocessing slice adds `trace-v1.json`, a compact binary trace,
+exact empirical count tables, exact causal Beta prediction streams, a SHA-256
+manifest, and a separately implemented replay verifier. The verifier checks
+all hashes, regenerates every action and transition, reconstructs every count,
+and confirms each causal prediction uses only outcomes at indices strictly
+below its transition index.
+
+The binary stores physical states and actions as separate arrays. FormalSLT's
+`ControlledObservation Z A` is `A × Z`, while the generated augmented-kernel
+rows use state-major `(Z, A)` indexing. A future Lean bridge must prove the swap
+and index equivalence; preprocessing does not imply direct tuple identity.
+The causal Beta predictors remain dynamic behavior-encountered scores. They
+are not fixed stationary target-policy scores without augmenting the state by
+learner memory and proving the corresponding stationary theorem.
+
+There is also an initial-observation offset. The binary preserves
+`S_0, A_0, S_1, ..., A_{H-1}, S_H`, sampling `A_0` and `S_1` after the fixed
+physical state `S_0`. The current deterministic-initial
+`controlledTrajectoryMeasure` fixes the controlled observation `(A_0, S_1)`.
+A future use must therefore condition on and score an explicitly indexed
+suffix beginning at the realized first pair, or prove a random-initial
+controlled-law bridge. No direct full-trace horizon alignment is claimed.
+
+This slice still does not check invariant laws, Poisson identities, selected
+grids, final bounds, or good-event membership. Those are later model-to-theorem
+and certificate slices, not preprocessing claims.
 
 ## Matched comparison contract
 

@@ -1,0 +1,74 @@
+{
+  "artifact_status": "TRACE/PREPROCESSING ONLY",
+  "files": [
+    {
+      "path": "applications/controlled_queue/trace-v1.json",
+      "role": "trace_input",
+      "sha256": "64971dad11cba1ffc386903747d0c8977baae860bc68381cca44bd7ec8207050"
+    },
+    {
+      "path": "applications/controlled_queue/model-v1.json",
+      "role": "model_input",
+      "sha256": "4e92a71ddf07e04e202c901d8c7a682cdf306754a69a0e219fca8ef75abee5a0"
+    },
+    {
+      "bytes": 3600017,
+      "path": "applications/controlled_queue/generated/trace-v1.bin",
+      "role": "raw_trace_output",
+      "sha256": "f2f63274f5454d94a6a45408fb9c85d4b3ee667f826aa10ccd5ec60659bfc1af"
+    },
+    {
+      "bytes": 22602,
+      "path": "applications/controlled_queue/generated/trace-v1-counts.json",
+      "role": "counts_output",
+      "sha256": "a4941d7a9b4c21389c04c3ed9bea306c4da680ea71a9d2dabc0db3ab10cfd702"
+    }
+  ],
+  "generator": {
+    "path": "scripts/generate_controlled_queue_trace.py",
+    "revision": "controlled-queue-trace-generator-v1",
+    "sha256": "15e098c4230aa726b232c0bd51c4f28fbb44e5789e59bfe2e60e136bb28557d1"
+  },
+  "generator_dependencies": [
+    {
+      "path": "scripts/generate_controlled_queue_model.py",
+      "sha256": "7cf247a424a8ad7c2e59c8847c2a0853aa4a3a724812694b7e0ae5b15bcc024b"
+    }
+  ],
+  "independent_verifier": {
+    "path": "scripts/verify_controlled_queue_trace.py",
+    "sha256": "902d04377c6ffe41882159cefc2745866c5a668360b0cfa82408d8a4571810d2"
+  },
+  "manifest_note": "the manifest is canonical JSON and is not recursively self-hashed",
+  "nonclaims": [
+    "not a statistical certificate",
+    "not a theorem-produced good path",
+    "not Lean-verified trace data",
+    "not a direct deterministic-initial ControlledTrajectory horizon alignment",
+    "not an unknown-kernel target-policy OPE result"
+  ],
+  "parameters": {
+    "behavior_policy": "behavior_uniform",
+    "binary_layout": {
+      "header": "8 magic bytes followed by horizon as unsigned 64-bit big-endian",
+      "magic_hex": "4351545256310000",
+      "payload": [
+        "horizon + 1 physical state ids as unsigned bytes",
+        "horizon action indices as unsigned bytes",
+        "horizon global Beta numerators as unsigned 32-bit big-endian",
+        "horizon global Beta denominators as unsigned 32-bit big-endian",
+        "horizon queue-band/action Beta numerators as unsigned 32-bit big-endian",
+        "horizon queue-band/action Beta denominators as unsigned 32-bit big-endian"
+      ],
+      "version": "controlled-queue-trace-binary-v1"
+    },
+    "binary_version": "controlled-queue-trace-binary-v1",
+    "horizon": 200000,
+    "initial_state": 0,
+    "prng_version": "sha256-counter-stream-v1",
+    "sampling_version": "exact-categorical-u64-rejection-v1",
+    "source_candidate": "nominal"
+  },
+  "schema_version": "controlled-queue-trace-input-v1",
+  "trace_version": "controlled-queue-trace-v1"
+}

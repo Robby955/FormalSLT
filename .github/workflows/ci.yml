@@ -42,6 +42,9 @@ jobs:
       - name: Verify controlled-queue generated artifacts
         run: make check-controlled-queue-model
 
+      - name: Verify controlled-queue trace preprocessing
+        run: make check-controlled-queue-trace
+
       - name: Run repository-tool self-tests
         run: make python-tests
 

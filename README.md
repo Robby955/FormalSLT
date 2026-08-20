@@ -291,6 +291,7 @@ make downstream
 python3 -m pip install -r requirements-dev.txt
 make python-tests
 make check-controlled-queue-model
+make check-controlled-queue-trace
 bash scripts/check_axioms.sh
 bash scripts/check_witness_quality.sh
 FIDELITY_BASE_REF=origin/main bash scripts/check_statement_fidelity.sh
