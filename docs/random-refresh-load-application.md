@@ -62,6 +62,11 @@ For the oracle posterior at horizon `200,000`, Lean checks:
 | Unknown-kernel width | at most `3802036720268663 / 7748665344000000` |
 | Unknown-kernel empirical-risk plus width | below `6407/10000` |
 
+This numerical receipt evaluates the fixed nominal-kernel, depth-five,
+risk-tilt-five, oracle-posterior atom inside the simultaneous catalog. The
+path-dependent selector theorem below is a separate result and is not used to
+produce these displayed numbers.
+
 The transferred Dobrushin coefficient is strictly below one. One theorem gives
 a common event whose complement has real outer mass at most `1/20`, supporting
 the known- and empirical-kernel inequalities at every covered path and time.
@@ -100,7 +105,7 @@ confidence level, although they are not same-event comparisons:
 
 | Construction | Empirical-risk plus width |
 |---|---:|
-| Primary variance-adaptive, selected depth/tilt | below `0.1607` |
+| Primary variance-adaptive, fixed depth/tilt atom | below `0.1607` |
 | Fixed unit-range Poisson construction | below `0.1749` |
 | Fixed depth five, without depth-allocation price | below `0.158` |
 | Fixed-tilt non-variance-adaptive construction | below `0.157` |
