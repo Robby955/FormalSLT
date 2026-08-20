@@ -80,6 +80,18 @@ no worse than the fixed `(5, 5)` choice. It is noncomputable and its exact
 argmin is not identified. The selector theorem substitutes these functions
 into a simultaneous event; it does not construct a selected e-process.
 
+## Finite-catalog oracle certificate
+
+A separate two-sided construction orients each of the eight predictor/flip
+scores and places them in one predeclared catalog. On one all-time event whose
+complement has real outer mass at most `1/20`, the finite empirical-risk
+minimizer has an upper bound, every predictor has a matched lower bound, and
+the selected stationary risk is at most the exact catalog minimum `3/20` plus
+an explicit selected penalty. The probability quantifier is outside the time
+and comparator quantifiers. This certificate is independent of
+`balancedPath`; it neither proves that named path belongs to the event nor
+claims a measurable selector construction.
+
 ## Confidence-matched, separate-event baselines
 
 The three baselines use distinct exceptional events, but every risk event has
@@ -93,10 +105,10 @@ confidence level, although they are not same-event comparisons:
 | Fixed depth five, without depth-allocation price | below `0.158` |
 | Fixed-tilt non-variance-adaptive construction | below `0.157` |
 
-On this instance, the proved numerical upper thresholds for both fixed
-baselines are smaller than the corresponding proved threshold for the selected
-empirical-Bernstein construction. The checked results do not prove the exact
-width ordering or any uniform dominance theorem.
+On this instance, the proved numerical upper thresholds for the fixed-depth
+and fixed-tilt baselines are smaller than the corresponding proved threshold
+for the selected empirical-Bernstein construction. The checked results do not
+prove the exact width ordering or any uniform dominance theorem.
 
 ## Verification
 

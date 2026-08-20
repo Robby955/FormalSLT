@@ -555,6 +555,25 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines.balancedPath_nonVarianceBoundary_le"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines.balancedPath_nonVarianceRightHandSide_lt"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines.exists_nonVarianceAdaptive_event"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedPredictorPrior_isFullSupport"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.oracleRiskFailureBudget_pos"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedPosterior_isPMF"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedBrierScore_mem_Icc"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.markovRowRisk_one_sub"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.stationaryMarkovRisk_one_sub"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.empiricalTransitionRisk_one_sub"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.centeredMarkovRowRisk_one_sub"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedBrierScore_centeredOscillation_le"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.oracleSelectedPredictor_empiricalRisk_minimal"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedNormal_stationaryPosteriorRisk"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedFlipped_stationaryPosteriorRisk"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedNormal_empiricalPosteriorRisk"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.orientedFlipped_empiricalPosteriorRisk"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.oracle_stationaryRisk_eq_catalogMinimum"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.catalogMinimumStationaryRisk_le"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.twoSidedOracleExceptionalEvent_mass_le"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.exists_randomRefreshLoad_twoSidedOracle_event"
+  "FormalSLT.StochasticDynamics.RandomRefreshLoadOracleCertificate.exists_randomRefreshLoad_twoSidedOracle_le_event"
   "FormalSLT.StochasticDynamics.finiteKernelPushLinear_apply"
   "FormalSLT.StochasticDynamics.finiteKernelPushLinear_mem_stdSimplex"
   "FormalSLT.StochasticDynamics.finiteKernelPushSimplex_apply"
@@ -761,6 +780,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection"
   echo "import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog"
   echo "import FormalSLT.Applications"
+  echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
@@ -838,6 +858,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection \
   FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog \
   FormalSLT.Applications \
+  FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE \

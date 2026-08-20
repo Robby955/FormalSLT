@@ -29,6 +29,7 @@ verify-random-refresh-load:
 		examples/CheckRandomRefreshLoadReceipt.lean \
 		examples/CheckRandomRefreshLoadAdaptiveSelection.lean \
 		examples/CheckRandomRefreshLoadBaselines.lean \
+		examples/CheckRandomRefreshLoadOracleCertificate.lean \
 		examples/CheckRandomRefreshLoadApplication.lean; do \
 		echo "$$f"; \
 		lake env lean "$$f" || exit 1; \

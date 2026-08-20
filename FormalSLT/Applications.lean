@@ -10,6 +10,7 @@ import FormalSLT.Applications.RandomRefreshLoadPath
 import FormalSLT.Applications.RandomRefreshLoadReceipt
 import FormalSLT.Applications.RandomRefreshLoadAdaptiveSelection
 import FormalSLT.Applications.RandomRefreshLoadBaselines
+import FormalSLT.Applications.RandomRefreshLoadOracleCertificate
 
 /-!
 # FormalSLT applications

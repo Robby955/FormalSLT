@@ -5,8 +5,9 @@ import FormalSLT.Applications
 
 This is the one-command integration checker for the model, balanced arithmetic
 path, common-event certificate, numerical receipt, adaptive selectors, and
-separate-event baselines.  The component checkers provide exhaustive public
-declaration and axiom coverage.
+separate-event baselines. It also checks the independent all-time two-sided
+oracle event, which does not depend on the named arithmetic path. The component
+checkers provide exhaustive public declaration and axiom coverage.
 -/
 
 open FormalSLT.StochasticDynamics
@@ -19,6 +20,7 @@ open FormalSLT.StochasticDynamics
 #check RandomRefreshLoadBaselines.balancedPath_fixedRangeRightHandSide_lt
 #check RandomRefreshLoadBaselines.balancedPath_fixedDepthRightHandSide_lt
 #check RandomRefreshLoadBaselines.balancedPath_nonVarianceRightHandSide_lt
+#check RandomRefreshLoadOracleCertificate.exists_randomRefreshLoad_twoSidedOracle_le_event
 
 #print axioms RandomRefreshLoadModel.candidate_stationaryRisk
 #print axioms RandomRefreshLoadModel.exists_randomRefreshLoad_matched_event
@@ -28,3 +30,4 @@ open FormalSLT.StochasticDynamics
 #print axioms RandomRefreshLoadBaselines.balancedPath_fixedRangeRightHandSide_lt
 #print axioms RandomRefreshLoadBaselines.balancedPath_fixedDepthRightHandSide_lt
 #print axioms RandomRefreshLoadBaselines.balancedPath_nonVarianceRightHandSide_lt
+#print axioms RandomRefreshLoadOracleCertificate.exists_randomRefreshLoad_twoSidedOracle_le_event
