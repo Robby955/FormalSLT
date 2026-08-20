@@ -49,14 +49,10 @@ open FormalSLT.StochasticDynamics.RandomRefreshLoadReceipt
 #check balancedPath_transitionRowRadius_le
 #check balancedPath_candidateDiscrepancy_eq_zero
 #check balancedPath_empiricalKernelTVBudget_le_strong
-#check balancedPath_empiricalKernelTVBudget_le
 #check balancedPath_transferredCoefficient_lt_one
-#check balancedPath_unknownKernelBoundary_le
 #check balancedPath_unknownKernelBoundary_le_primary
 #check balancedPath_unknownKernelRightHandSide_le_primary
 #check balancedPath_unknownKernelRightHandSide_lt_primary
-#check balancedPath_unknownKernelRightHandSide_lt
-#check balancedPath_unknownKernelRightHandSide_lt_three_quarters
 #check IsMatchedReceiptEvent
 #check exists_balancedPath_conditional_numeric_certificate
 
@@ -99,14 +95,10 @@ open FormalSLT.StochasticDynamics.RandomRefreshLoadReceipt
 #print axioms balancedPath_transitionRowRadius_le
 #print axioms balancedPath_candidateDiscrepancy_eq_zero
 #print axioms balancedPath_empiricalKernelTVBudget_le_strong
-#print axioms balancedPath_empiricalKernelTVBudget_le
 #print axioms balancedPath_transferredCoefficient_lt_one
-#print axioms balancedPath_unknownKernelBoundary_le
 #print axioms balancedPath_unknownKernelBoundary_le_primary
 #print axioms balancedPath_unknownKernelRightHandSide_le_primary
 #print axioms balancedPath_unknownKernelRightHandSide_lt_primary
-#print axioms balancedPath_unknownKernelRightHandSide_lt
-#print axioms balancedPath_unknownKernelRightHandSide_lt_three_quarters
 #print axioms exists_balancedPath_conditional_numeric_certificate
 
 /-- Concrete arithmetic receipt on the frozen balanced path.  This checks the

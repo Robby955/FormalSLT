@@ -1074,34 +1074,16 @@ theorem balancedPath_empiricalKernelTVBudget_le_strong :
   rw [balancedPath_candidateDiscrepancy_eq_zero]
   simpa using balancedPath_transitionRowRadius_le z
 
-/-- Rounded empirical-kernel TV budget used by the public receipt. -/
-theorem balancedPath_empiricalKernelTVBudget_le :
-    selectedEmpiricalKernelTVBudget receiptHorizon balancedPath ≤
-      3181 / 14000 := by
-  exact balancedPath_empiricalKernelTVBudget_le_strong.trans (by norm_num)
-
-/-- The rounded empirical transfer budget still certifies strict contraction. -/
+/-- The strong empirical transfer budget certifies strict contraction. -/
 theorem balancedPath_transferredCoefficient_lt_one :
     finiteDobrushinCoefficient (refreshKernel Candidate.nominal) +
         2 * selectedEmpiricalKernelTVBudget receiptHorizon balancedPath < 1 := by
-  have heta := balancedPath_empiricalKernelTVBudget_le
+  have heta := balancedPath_empiricalKernelTVBudget_le_strong
   rw [refreshKernel_dobrushinCoefficient]
   norm_num [candidateGamma, candidateGammaNN] at heta ⊢
   nlinarith
 
 /-! ## Unknown-kernel width and end-to-end conditional receipt -/
-
-/-- The empirical transition transfer gives the checked unknown-kernel width. -/
-theorem balancedPath_unknownKernelBoundary_le :
-    selectedUnknownKernelBoundary receiptHorizon balancedPath ≤
-      9332332931 / 16128000000 := by
-  have hknown := balancedPath_knownKernelBoundary_le
-  have heta := balancedPath_empiricalKernelTVBudget_le
-  unfold selectedUnknownKernelBoundary empiricalStationaryCatalogBoundary
-  unfold selectedKnownKernelBoundary empiricalStationaryCatalogBoundary at hknown
-  rw [receiptSpan_eq] at ⊢ hknown
-  norm_num at heta ⊢ hknown
-  nlinarith
 
 /-- Primary exact-variance unknown-kernel width using the strong row-TV
 budget rather than the rounded display budget. -/
@@ -1133,22 +1115,6 @@ theorem balancedPath_unknownKernelRightHandSide_lt_primary :
         selectedUnknownKernelBoundary receiptHorizon balancedPath <
       6407 / 10000 :=
   balancedPath_unknownKernelRightHandSide_le_primary.trans_lt (by norm_num)
-
-/-- The empirical risk plus unknown-kernel width is below `0.7287`. -/
-theorem balancedPath_unknownKernelRightHandSide_lt :
-    empiricalTransitionPosteriorRisk brierScore oraclePosterior
-          receiptHorizon balancedPath +
-        selectedUnknownKernelBoundary receiptHorizon balancedPath <
-      7287 / 10000 := by
-  rw [balancedPath_oracle_empiricalRisk]
-  nlinarith [balancedPath_unknownKernelBoundary_le]
-
-theorem balancedPath_unknownKernelRightHandSide_lt_three_quarters :
-    empiricalTransitionPosteriorRisk brierScore oraclePosterior
-          receiptHorizon balancedPath +
-        selectedUnknownKernelBoundary receiptHorizon balancedPath <
-      3 / 4 :=
-  balancedPath_unknownKernelRightHandSide_lt.trans (by norm_num)
 
 /-- Event-level contract retained by the numerical receipt.  Membership and
 all-row coverage, not the mere definition of a deterministic path, activate
