@@ -18,6 +18,11 @@ of unknown-kernel target-policy OPE.
   frozen future parameters, and SHA-256 bindings for the input and outputs.
 - `../../FormalSLT/Applications/ControlledQueueData.lean`: generated Lean
   definitions and tables. It intentionally contains no theorem or certificate.
+- `../../FormalSLT/Applications/ControlledQueueReindex.lean`: checked row-order,
+  tuple-swap, and controlled-edge selection bridge.
+- `../../FormalSLT/Applications/ControlledQueueTypedModel.lean`: checked
+  table-backed kernel and policy PMFs with exact mass identities and the static
+  uniform-behavior probability and TV transfers.
 - `trace-v1.json`: exact initial state, horizon, source candidate, behavior
   policy, weight tables, binary layout, SHA-256 counter-stream contract, and
   unbiased rejection-sampling contract.
@@ -52,12 +57,15 @@ no-look-ahead, and stale-artifact tests.
 
 The binary stores `state_t` and `action_t` separately. FormalSLT's
 `ControlledObservation Z A` is represented as `A × Z`, while the generated
-model's 48 rows use state-major indices `2 * state + action`. A future theorem
-bridge must prove the required swap and index equivalence; these preprocessing
-files do not identify the tuples definitionally. Likewise, the causal Beta
-predictors currently support dynamic behavior-encountered comparison only.
-They are not fixed stationary target-policy scores unless learner memory is
-added to the state and a corresponding theorem is proved.
+model's 48 rows use state-major indices `2 * state + action`.
+`ControlledQueueReindex` proves the required swap, index equivalence, and
+controlled-edge row selection. `ControlledQueueTypedModel` reads the generated
+kernel and policy tables into typed PMFs with exact mass identities. Neither
+bridge imports the frozen trace or supplies an empirical confidence event.
+Likewise, the causal Beta predictors currently support dynamic
+behavior-encountered comparison only. They are not fixed stationary
+target-policy scores unless learner memory is added to the state and a
+corresponding theorem is proved.
 
 The stored path is `S_0, A_0, S_1, ..., A_{H-1}, S_H`. The current
 deterministic-initial `controlledTrajectoryMeasure` instead fixes an initial

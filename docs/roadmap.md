@@ -319,12 +319,20 @@
     predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
   - Implement the [controlled queue application design](controlled-queue-application-design.md):
-    the exact model tables and deterministic 200,000-transition preprocessing
-    trace are implemented and independently replayable. Next close the
-    augmented-state Markovization bridge and a known-kernel fixed-policy
-    receipt, then add compact deterministic certificate generation and matched
-    baselines. Keep unknown-dynamics target-policy OPE open until its
-    action-conditioned confidence and finite-depth transfer lemmas are proved.
+    - [x] Freeze and independently replay the exact model and deterministic
+      200,000-transition preprocessing trace.
+    - [x] Check controlled Markovization, generated-row reindexing, typed
+      table-backed PMFs, and the sharp uniform-behavior factor-two TV transfer.
+    - [x] Check generic target-policy candidate robustness, fixed-envelope
+      approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE.
+    - [ ] Compose empirical augmented-transition confidence with the checked
+      physical-row transfer.
+    - [ ] Add executable invariant, potential, score, and numerical
+      certificates plus the initial-offset bridge, compact trace witnesses, and
+      any claimed good-event alignment.
+    - [ ] Keep the final unknown-dynamics target-policy OPE claim open until the
+      event intersection and every candidate, depth, and other data-dependent
+      input are justified.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
     stationary risk, multistep conclusions, and atomless transition evidence
     as separate later theorem families.

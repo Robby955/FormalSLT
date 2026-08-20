@@ -1,23 +1,29 @@
 # Controlled queue application design
 
-Status: **MODEL AND TRACE/PREPROCESSING IMPLEMENTED / CERTIFICATE OPEN**
+Status: **TYPED MODEL AND FIXED-CANDIDATE ROBUST OPE BRIDGES CHECKED LOCALLY** /
+**EMPIRICAL APPLICATION CERTIFICATE OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
 
-Checked adapter snapshot: local commit
-`e16265e60a436db3227469cf97a99e7106b4dc94` (tree
-`49a236aaf1b2baccc9b171220155e76c598f7392`). This snapshot is local and is
-not yet part of public `main` or draft PR #99.
+Checked theorem-integration snapshot: local commit
+`de4b2f02761d50ae86276b1fd4ae8bdce83fc018` (tree
+`b63d0bf9358558bb38e1d208222f4f1af20b355c`). This snapshot is local and is
+not evidence of inclusion in public `main`, draft PR #99, or v0.2.
 
 This packet specifies the smallest controlled finite-state application that can
 serve as a journal-grade demonstration of FormalSLT's trajectory, stationary,
 unknown-kernel, and policy-comparison layers. The frozen model input, exact
 rational table generator, deterministic 200,000-transition trace, exact causal
 prediction streams, independent replay verifier, generated Lean model-data
-module, and SHA-256 manifests are implemented. This remains preprocessing: it
-is not a statistical certificate, a theorem-produced good path, a proof
-bridge, Lean-verified trace data, or a numerical research result.
+module, and SHA-256 manifests are implemented. Separate Lean modules now check
+the generated table-to-`PMF` semantics, uniform behavior policy, pointwise
+`3/2` target-to-behavior probability bound, and sharp factor-two physical-row
+TV transfer. Generic target-policy candidate robustness, fixed-envelope
+approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE are also
+checked. The trace remains preprocessing: it is not a theorem-produced good
+path, Lean-verified trace, empirical-event composition, or numerical
+application certificate.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -62,8 +68,9 @@ claim that real queues reset uniformly.
 - Each target action probability is either `1/4` or `3/4`.
 - Under the uniform behavior policy, the importance-ratio cap is `3/2`.
 
-Policy tables must be supplied as exact rationals and checked for normalization,
-positivity, and the advertised overlap bound.
+The typed-model bridge checks exact rational policy normalization and
+positivity, behavior mass `1/2`, and the pointwise target-to-behavior
+probability bound `3/2`.
 
 ### Outcomes and bounded losses
 
@@ -102,7 +109,8 @@ proved for them.
 
 ## Existing FormalSLT support
 
-The following pieces are already proved on the design base.
+The following pieces are checked at the local theorem-integration snapshot.
+The generic modules do not by themselves instantiate the queue application.
 
 | Requirement | Existing module | Supported scope |
 |---|---|---|
@@ -110,43 +118,46 @@ The following pieces are already proved on the design base.
 | Markov behavior-law reduction | `StochasticDynamics.ControlledMarkovization` | Exact controlled-prefix and path-law equality with the homogeneous chain on `Action × State` |
 | Action-conditioned TV transfer | `StochasticDynamics.ControlledKernelTV` | Exact shared-behavior TV decomposition; positive behavior mass gives the sharp inverse-probability row bound |
 | Generated queue row ordering | `Applications.ControlledQueueReindex` | Exact state-major/action-minor indexing and the `(S_t, A_t)` row selected by a controlled edge |
+| Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
+| Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
+| Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
+| Fixed-candidate finite-depth robust OPE | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | Candidate finite-depth potential and residual `alpha ^ m * D + 2 * ((1 + B_m) * etaEnv)` for candidate, depth, certificates, and envelope fixed before the event |
 | Fixed and history-dependent score comparison | `StochasticDynamics.DynamicTargetPolicyComparator` | Behavior-encountered histories |
 | Finite-depth Poisson selection | `StochasticDynamics.StationaryPoissonDepthSelection` | Ordinary finite-state Markov scores |
 | Empirical transition confidence | `StochasticDynamics.EmpiricalTransitionConfidence` | State-only transition rows and candidate TV budgets |
 | Same-path stationary candidate selection | `StochasticDynamics.EmpiricalStationaryCatalog` | Candidate, posterior, depth, and tilt catalogs |
 
-These modules are reusable substrate. Their existence does not by itself compose
-into unknown-dynamics controlled OPE.
+These modules are reusable substrate. Their existence does not by itself
+compose empirical transition confidence with controlled OPE or license
+data-dependent candidate, depth, or residual-envelope selection. The new
+declarations are outside the 19-name v0.2 compatibility allowlist.
 
-## Missing theorem and API work
+## Remaining theorem and application work
 
-The generic Markovization and action-conditioned TV bridges are checked. The
+The typed queue-table instantiation, sharp factor-two deterministic row-TV
+transfer, generic target-policy candidate robustness, fixed-envelope
+approximate-Poisson OPE, and fixed-candidate finite-depth OPE are checked. The
 following application and composition items remain **OPEN**.
 
-1. Typed queue-table instantiation: turn the generated rational kernel and
-   policy tables into checked `PMF`-valued environment and behavior/target
-   policies, and prove that their masses equal the frozen table entries.
-2. Concrete empirical-confidence composition: instantiate the augmented
-   transition-confidence endpoint with those typed queue kernels, then use the
-   behavior mass `1/2` to obtain the sharp physical-row bound `2 * eta`.
-3. Unknown-dynamics stationary target-policy OPE. The current OPE layer
-   assumes the environment, invariant laws, and Poisson solutions are supplied
-   exactly.
-4. Finite-depth target-policy OPE. Current adaptive depth applies to ordinary
-   Markov scores, not the controlled OPE endpoint.
-5. Executable rational invariant-law and Poisson-potential certificates. The
-   application should check generated witnesses rather than rely on
-   noncomputable existence choices.
+1. Empirical augmented-transition composition: instantiate transition
+   confidence on the 48-state behavior chain and feed its augmented-row bound
+   through the checked `2 * eta` physical-row transfer.
+2. Executable queue certificates: check exact rational invariant-law and
+   Poisson-potential witnesses, concrete cost and Brier score atoms, and final
+   numerical bounds.
+3. Trace-to-theorem composition: resolve the initial-observation offset, encode
+   compact trace witnesses, and separately prove any claimed good-event
+   membership.
+4. Final unknown-dynamics OPE: intersect the transition-confidence and OPE
+   events while preserving the checked posterior and tilt simultaneity, and
+   justify every candidate, depth, and other data-dependent input. The checked
+   finite-depth theorem fixes the candidate, depth, certificates, and
+   environment-row radius before its outer event; it does not license those
+   data-dependent selections.
 
-The first implementable paper slice should therefore contain:
-
-- known-kernel stationary OPE for fixed policy/cost atoms;
-- known-kernel dynamic comparison of fixed and causal Brier predictors;
-- empirical-kernel certification of the 48-state behavior chain after the
-  typed table instantiation;
-- no claim of unified unknown-kernel target-policy OPE until items 1--4 are
-  proved.
+Until those steps close, the generic ingredients are checked but the
+controlled queue's empirical unknown-dynamics OPE certificate remains open.
 
 ## Frozen input and generator contract
 
@@ -179,10 +190,11 @@ A dependency-free deterministic generator now emits:
    and output.
 
 The generator and independent replay verifier are preprocessing only. The
-trace is deliberately not embedded in Lean. Later certificate slices must
-provide compact witnesses for Lean to check normalization, bounds, counts,
-policy overlap, invariant laws, Poisson identities, selected grid membership,
-and final arithmetic.
+trace is deliberately not embedded in Lean. Checked adapters already discharge
+row ordering, table normalization and positivity, typed-PMF conversion, and
+the static probability and TV transfers. Later certificate slices must provide
+compact witnesses for counts, invariant laws, Poisson identities, trace/event
+alignment, selected grid membership, and final arithmetic.
 
 ### Implemented preprocessing slice
 
@@ -225,9 +237,10 @@ below its transition index.
 The binary stores physical states and actions as separate arrays. FormalSLT's
 `ControlledObservation Z A` is `A × Z`, while the generated augmented-kernel
 rows use state-major `(Z, A)` indexing. `ControlledQueueReindex` now proves the
-swap, index equivalence, and controlled-edge row selection. The generated
-rational tables still require a separate checked conversion into typed PMFs;
-preprocessing does not imply stochastic semantics by itself.
+swap, index equivalence, and controlled-edge row selection.
+`ControlledQueueTypedModel` reads the generated kernel and policy tables into
+typed PMFs with exact mass identities. Neither bridge imports the frozen trace
+or supplies an empirical confidence event.
 The causal Beta predictors remain dynamic behavior-encountered scores. They
 are not fixed stationary target-policy scores without augmenting the state by
 learner memory and proving the corresponding stationary theorem.
@@ -294,5 +307,6 @@ This application milestone is complete only when all of the following hold:
 - the exact Lean receipt gives at least one endpoint below one;
 - matched baselines use the same data and failure budget;
 - independent probability and Lean reviews are recorded;
-- all stronger unknown-dynamics OPE claims remain `OPEN` until their bridge
-  theorems are checked.
+- the final unknown-dynamics OPE claim remains `OPEN` until empirical-event
+  composition, executable certificates, trace alignment, and final arithmetic
+  are checked.

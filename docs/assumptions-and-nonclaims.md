@@ -397,6 +397,39 @@ target policies, correct target-law occupancy through a full-trajectory
 likelihood ratio, or establish doubly robust, continuous-space, or
 unknown-kernel OPE.
 
+### Target-policy robust-candidate bridge
+
+`StochasticDynamics.StationaryTargetPolicyRobustCandidate` compares a true
+environment `P` and candidate environment `Q` under one shared target policy.
+A uniform action-conditioned row bound
+`TV(P(z, a), Q(z, a)) <= etaEnv` implies the same bound for the induced
+target-policy state kernels. For a `[0,1]` transition score and potential of
+span at most `B`, the target-policy drifts differ by at most
+`(1 + B) * etaEnv`. With a supplied invariant PMF for the true induced kernel,
+the checked pointwise residual envelope is
+`oscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`.
+
+This deterministic bridge does not construct invariant PMFs, estimate `P` or
+`etaEnv`, create a confidence event, or license candidate, certificate, or
+residual-envelope selection after observing the path. The separate checked
+fixed-candidate finite-depth OPE endpoint and its selection boundaries are
+recorded above.
+
+### Approximate-Poisson stationary target-policy OPE
+
+`StochasticDynamics.StationaryTargetPolicyApproximateOPE` accepts a fixed true
+environment, behavior policy, target-policy catalog, supplied invariant PMFs,
+potentials, and pointwise residual envelopes. One behavior-law outer event is
+simultaneous over every `n >= 2`, posterior PMF, and declared finite tilt atom.
+Relative to the exact-Poisson endpoint, its upper bound adds exactly the
+posterior average of the supplied residual envelopes.
+
+The theorem does not construct finite-depth potentials, candidates, invariant
+laws, transition-confidence events, or residual envelopes; permit a
+data-dependent envelope; or prove the event intersection needed for final
+unknown-dynamics OPE. It also does not provide full-trajectory importance
+sampling or a two-sided confidence interval.
+
 ### Dynamic target-policy comparators
 
 `StochasticDynamics.DynamicTargetPolicyComparator` accepts finite catalogs of
@@ -1004,12 +1037,15 @@ risk event on the same path. Every nonempty finite kernel has a noncomputable
 chosen invariant PMF; uniqueness still requires a strict Dobrushin or candidate
 row-TV contraction certificate.
 
-The controlled layer proves exact one-step behavior-law semantics, a
-stationary state-Markov target-policy OPE endpoint under known dynamics and
-supplied invariant and Poisson objects, encountered-prefix comparators for
-history-dependent targets, and exact fixed-horizon target-path change of
-measure. These do not estimate nuisance quantities or give an anytime-valid
-cumulative-likelihood target-value boundary.
+The controlled layer proves exact one-step behavior-law semantics, stationary
+state-Markov target-policy OPE under supplied exact or approximate Poisson
+objects, deterministic candidate-environment robustness, and fixed-candidate
+finite-depth robust OPE. It also supplies encountered-prefix comparators for
+history-dependent targets and exact fixed-horizon target-path change of
+measure. These results do not infer environment-row confidence from data,
+license data-dependent candidates or depths without a common event, estimate
+nuisance quantities, or give an anytime-valid cumulative-likelihood
+target-value boundary.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and
