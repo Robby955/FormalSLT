@@ -1,14 +1,16 @@
 # Controlled queue application design
 
-Status: **DESIGN ONLY / OPEN**
+Status: **MODEL/PREPROCESSING ONLY IMPLEMENTED / CERTIFICATE OPEN**
 
 Design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
 
 This packet specifies the smallest controlled finite-state application that can
 serve as a journal-grade demonstration of FormalSLT's trajectory, stationary,
-unknown-kernel, and policy-comparison layers. It is not a theorem, an
-implemented model, or a numerical result.
+unknown-kernel, and policy-comparison layers. The frozen model input, exact
+rational table generator, generated Lean data module, and SHA-256 manifest are
+implemented. This remains preprocessing: it is not a statistical certificate,
+a theorem-produced good path, a proof bridge, or a numerical research result.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -156,6 +158,37 @@ A dependency-free deterministic generator must emit:
 The generator is preprocessing only. Lean must check normalization, bounds,
 counts, policy overlap, invariant laws, Poisson identities, selected grid
 membership, and final arithmetic.
+
+### Implemented preprocessing slice
+
+The first slice freezes the model before any trajectory is sampled:
+
+- `applications/controlled_queue/model-v1.json` fixes the 24-state encoding,
+  service-before-arrival update, cyclic regime transition, candidate gammas,
+  exact behavior and target policy vectors, predictor specifications, bounded
+  outcomes, and future trace/catalog parameters;
+- `scripts/generate_controlled_queue_model.py` rejects duplicate keys, floats,
+  noncanonical rationals, unknown fields, and schema drift, then compiles full
+  exact rational kernel, policy, fixed-predictor, control-cost, and Brier-loss
+  tables;
+- `applications/controlled_queue/generated/model-v1-tables.json` is the
+  machine-readable generated table set;
+- `FormalSLT/Applications/ControlledQueueData.lean` contains generated
+  definitions and tables only and is reachable through the opt-in application
+  umbrella, not the stable v0.2 API list;
+- `applications/controlled_queue/generated/model-v1-manifest.json` binds the
+  input, generator source, JSON tables, and Lean module by SHA-256.
+
+Run `make generate-controlled-queue-model` to regenerate. After obtaining the
+pinned Mathlib cache, run `make verify-controlled-queue-model` to fail on stale
+artifacts, exercise the exact arithmetic tests, and compile the generated Lean
+module.
+
+This slice deliberately does **not** emit the controlled trace or empirical
+count tables in items 1--2 above. It also does not check invariant laws,
+Poisson identities, selected grids, final bounds, or good-event membership.
+Those are later model-to-theorem and certificate slices, not preprocessing
+claims.
 
 ## Matched comparison contract
 

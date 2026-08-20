@@ -1,0 +1,284 @@
+{
+  "schema_version": "controlled-queue-input-v1",
+  "model_version": "controlled-queue-v1",
+  "artifact_status": "MODEL/PREPROCESSING ONLY",
+  "state_space": {
+    "queue_capacity": 7,
+    "regime_count": 3,
+    "encoding": "state_id = 3 * queue + regime",
+    "augmented_encoding": "augmented_state_id = 2 * state_id + action_index",
+    "update_order": [
+      "service",
+      "arrival",
+      "regime_transition"
+    ],
+    "arrival_by_regime": [
+      0,
+      1,
+      2
+    ],
+    "regime_transition": "next_regime = (regime + 1) mod 3"
+  },
+  "actions": [
+    {
+      "id": "eco",
+      "service_capacity": 1
+    },
+    {
+      "id": "boost",
+      "service_capacity": 2
+    }
+  ],
+  "candidates": [
+    {
+      "id": "low",
+      "gamma": "5/8"
+    },
+    {
+      "id": "nominal",
+      "gamma": "3/4"
+    },
+    {
+      "id": "high",
+      "gamma": "7/8"
+    }
+  ],
+  "nominal_candidate": "nominal",
+  "kernel": {
+    "form": "gamma * delta(queue_step) + (1 - gamma) * uniform",
+    "uniform_state_count": 24
+  },
+  "behavior_policy": {
+    "id": "behavior_uniform",
+    "boost_probability_by_state": [
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2",
+      "1/2"
+    ]
+  },
+  "target_policies": [
+    {
+      "id": "conservative",
+      "boost_probability_by_state": [
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4"
+      ]
+    },
+    {
+      "id": "queue_threshold",
+      "boost_probability_by_state": [
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "1/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4"
+      ]
+    },
+    {
+      "id": "regime_aware",
+      "boost_probability_by_state": [
+        "1/4",
+        "1/4",
+        "3/4",
+        "1/4",
+        "1/4",
+        "3/4",
+        "1/4",
+        "1/4",
+        "3/4",
+        "1/4",
+        "1/4",
+        "3/4",
+        "1/4",
+        "1/4",
+        "3/4",
+        "1/4",
+        "1/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4"
+      ]
+    },
+    {
+      "id": "aggressive",
+      "boost_probability_by_state": [
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4",
+        "3/4"
+      ]
+    }
+  ],
+  "fixed_predictors": [
+    {
+      "id": "global_climatology",
+      "kind": "constant",
+      "probability": "1/4"
+    },
+    {
+      "id": "queue_action_threshold",
+      "kind": "deterministic_overload_threshold",
+      "low_probability": "1/4",
+      "high_probability": "3/4"
+    },
+    {
+      "id": "nominal_model_overload",
+      "kind": "candidate_overload_probability",
+      "candidate": "nominal"
+    }
+  ],
+  "causal_predictors": [
+    {
+      "id": "global_beta",
+      "kind": "beta_global",
+      "prior_alpha": 1,
+      "prior_beta": 1,
+      "history_contract": "transition indices strictly below t"
+    },
+    {
+      "id": "queue_band_action_beta",
+      "kind": "beta_queue_band_action",
+      "prior_alpha": 1,
+      "prior_beta": 1,
+      "queue_bands": [
+        [
+          0,
+          3
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          6,
+          7
+        ]
+      ],
+      "history_contract": "transition indices strictly below t"
+    }
+  ],
+  "outcomes": {
+    "overload_queue_minimum": 6,
+    "control_cost_queue_weight": 8,
+    "control_cost_boost_weight": 7,
+    "control_cost_denominator": 63
+  },
+  "generation": {
+    "horizon": 200000,
+    "random_seed": 20260820,
+    "confidence_allocation": {
+      "total": "1/20",
+      "trajectory": "1/40",
+      "transition": "1/40"
+    },
+    "posterior_catalog": [
+      "global_climatology",
+      "queue_action_threshold",
+      "nominal_model_overload",
+      "global_beta",
+      "queue_band_action_beta"
+    ],
+    "depth_grid": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      8,
+      12
+    ],
+    "tilt_grid": [
+      "1/16",
+      "1/8",
+      "1/4",
+      "1/2",
+      "1"
+    ]
+  }
+}

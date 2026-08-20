@@ -56,4 +56,18 @@ downstream:
 python-tests:
 	python3 -m pytest -q tests
 
-.PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests
+# Regenerate exact rational tables for the controlled-queue preprocessing slice.
+generate-controlled-queue-model:
+	python3 scripts/generate_controlled_queue_model.py
+
+# Fail immediately when generated data or its SHA-256 manifest is stale.
+check-controlled-queue-model:
+	python3 scripts/generate_controlled_queue_model.py --check
+
+# Check the stale-artifact gate, exact arithmetic tests, and generated Lean module.
+verify-controlled-queue-model: check-controlled-queue-model
+	python3 -m pytest -q tests/test_generate_controlled_queue_model.py
+	lake build FormalSLT.Applications.ControlledQueueData
+
+.PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests \
+	generate-controlled-queue-model check-controlled-queue-model verify-controlled-queue-model

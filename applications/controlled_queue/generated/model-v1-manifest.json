@@ -1,0 +1,73 @@
+{
+  "artifact_status": "MODEL/PREPROCESSING ONLY",
+  "files": [
+    {
+      "path": "applications/controlled_queue/model-v1.json",
+      "role": "input",
+      "sha256": "df4a051631ecd73b320f692a74a84669263bb6c54c91f037b73cbd6c8a5e1bd6"
+    },
+    {
+      "path": "applications/controlled_queue/generated/model-v1-tables.json",
+      "role": "output",
+      "sha256": "8609a50449572af9db6ed068b0e81c27733047fc7717b213e3b44eba810667d2"
+    },
+    {
+      "path": "FormalSLT/Applications/ControlledQueueData.lean",
+      "role": "output",
+      "sha256": "8b3785c84183326270643bee6320ecd0aa7834fa84438512e56765c1996d51d7"
+    }
+  ],
+  "generator": {
+    "path": "scripts/generate_controlled_queue_model.py",
+    "revision": "controlled-queue-preprocess-v1",
+    "sha256": "c6f68324b528e6e0e006bb2c3351c6d7323407972f01182bde0a6ab651a23dd7"
+  },
+  "model_version": "controlled-queue-v1",
+  "nonclaims": [
+    "not a statistical certificate",
+    "not a theorem-produced good path",
+    "not a proof bridge"
+  ],
+  "parameters": {
+    "action_count": 2,
+    "augmented_behavior_state_count": 48,
+    "candidate_gammas": [
+      "5/8",
+      "3/4",
+      "7/8"
+    ],
+    "confidence_allocation": {
+      "total": "1/20",
+      "trajectory": "1/40",
+      "transition": "1/40"
+    },
+    "depth_grid": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      8,
+      12
+    ],
+    "horizon": 200000,
+    "nominal_candidate": "nominal",
+    "physical_state_count": 24,
+    "posterior_catalog": [
+      "global_climatology",
+      "queue_action_threshold",
+      "nominal_model_overload",
+      "global_beta",
+      "queue_band_action_beta"
+    ],
+    "random_seed": 20260820,
+    "tilt_grid": [
+      "1/16",
+      "1/8",
+      "1/4",
+      "1/2",
+      "1"
+    ]
+  },
+  "schema_version": "controlled-queue-input-v1"
+}
