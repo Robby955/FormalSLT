@@ -240,6 +240,12 @@ classify_witness() {
 #      most 1/8; every fixed hypothesis has positive observed Bessel variance;
 #      posterior empirical risk is 1/2 and the complete RHS is below one;
 #      fixed posterior and tilt, and the state law itself has two-point support)
+#   exists_balancedPath_conditional_numeric_certificate
+#     (twenty-state frozen arithmetic path with exactly 200,000 transitions;
+#      every row has 10,000 visits; exact oracle empirical risk 3/20; known-
+#      kernel RHS below 1607/10000 and empirical-kernel RHS below 6407/10000;
+#      transferred Dobrushin coefficient below one.  The concrete receipt does
+#      not claim that the named path belongs to the theorem-produced event.)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -302,6 +308,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckEmpiricalStationaryCatalog.lean"
   "examples/CheckEmpiricalStationaryCatalogInformative.lean"
   "examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean"
+  "examples/CheckRandomRefreshLoadReceipt.lean"
 )
 
 fail=0

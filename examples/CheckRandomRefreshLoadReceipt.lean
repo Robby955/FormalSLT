@@ -1,0 +1,125 @@
+import FormalSLT.Applications.RandomRefreshLoadReceipt
+
+open FormalSLT.StochasticDynamics
+open FormalSLT.StochasticDynamics.RandomRefreshLoadModel
+open FormalSLT.StochasticDynamics.RandomRefreshLoadPath
+open FormalSLT.StochasticDynamics.RandomRefreshLoadReceipt
+
+#check receiptHorizon
+#check receiptHorizon_eq
+#check empiricalTransitionRisk_eq_edgeMass_sum
+#check balancedPath_oracle_empiricalRisk
+#check oraclePosterior_stationaryRisk
+#check receiptCorrectedScore
+#check receiptCorrectedTransitionScore
+#check receiptSpan_eq
+#check receiptCorrectedScore_oracle_eq
+#check receiptCorrectedScore_mem_Icc
+#check receiptDepthResidual_eq
+#check receiptCorrectedNormalization_eq
+#check receiptRiskLogCost_le_twenty
+#check receiptPsi_one_sixtyFour_le
+#check receiptCorrectedPenalty_le
+#check receiptTrajectoryBoundary_le
+#check balancedPath_knownKernelBoundary_le
+#check balancedPath_knownKernelRightHandSide_lt
+#check forwardBesselQ_eq_sum_sq_sub_sq_sum_div
+#check forwardBesselQ_transitionTable
+#check receiptOraclePotentialValue
+#check receiptOracleCenteredValue
+#check receiptOracleCenteredValue_eq
+#check receiptOracleCenteredValue_sum_eq_zero
+#check nominal_markovPotentialMean_eq
+#check receiptOraclePotential_eq
+#check receiptCorrectedTransitionScore_apply
+#check balancedPath_correctedScoreBesselQ_eq
+#check receiptCorrectedPenalty_le_exact
+#check receiptTrajectoryBoundary_le_exact
+#check balancedPath_knownKernelBoundary_le_exact
+#check balancedPath_knownKernelRightHandSide_lt_primary
+#check balancedPath_directCoordinateBesselQ
+#check balancedPath_complementCoordinateBesselQ
+#check balancedPath_coordinateBesselQ
+#check balancedPath_coordinatePenalty_le
+#check receiptTransitionLogCost_le_eleven
+#check receiptPsi_one_eighth_le
+#check balancedPath_coordinateBoundary_le
+#check balancedPath_coordinateRadius_le
+#check balancedPath_transitionRowRadius_le
+#check balancedPath_candidateDiscrepancy_eq_zero
+#check balancedPath_empiricalKernelTVBudget_le_strong
+#check balancedPath_empiricalKernelTVBudget_le
+#check balancedPath_transferredCoefficient_lt_one
+#check balancedPath_unknownKernelBoundary_le
+#check balancedPath_unknownKernelBoundary_le_primary
+#check balancedPath_unknownKernelRightHandSide_le_primary
+#check balancedPath_unknownKernelRightHandSide_lt_primary
+#check balancedPath_unknownKernelRightHandSide_lt
+#check balancedPath_unknownKernelRightHandSide_lt_three_quarters
+#check IsMatchedReceiptEvent
+#check exists_balancedPath_conditional_numeric_certificate
+
+#print axioms receiptHorizon_eq
+#print axioms empiricalTransitionRisk_eq_edgeMass_sum
+#print axioms balancedPath_oracle_empiricalRisk
+#print axioms oraclePosterior_stationaryRisk
+#print axioms receiptSpan_eq
+#print axioms receiptCorrectedScore_oracle_eq
+#print axioms receiptCorrectedScore_mem_Icc
+#print axioms receiptDepthResidual_eq
+#print axioms receiptCorrectedNormalization_eq
+#print axioms receiptRiskLogCost_le_twenty
+#print axioms receiptPsi_one_sixtyFour_le
+#print axioms receiptCorrectedPenalty_le
+#print axioms receiptTrajectoryBoundary_le
+#print axioms balancedPath_knownKernelBoundary_le
+#print axioms balancedPath_knownKernelRightHandSide_lt
+#print axioms forwardBesselQ_eq_sum_sq_sub_sq_sum_div
+#print axioms forwardBesselQ_transitionTable
+#print axioms receiptOracleCenteredValue_eq
+#print axioms receiptOracleCenteredValue_sum_eq_zero
+#print axioms nominal_markovPotentialMean_eq
+#print axioms receiptOraclePotential_eq
+#print axioms receiptCorrectedTransitionScore_apply
+#print axioms balancedPath_correctedScoreBesselQ_eq
+#print axioms receiptCorrectedPenalty_le_exact
+#print axioms receiptTrajectoryBoundary_le_exact
+#print axioms balancedPath_knownKernelBoundary_le_exact
+#print axioms balancedPath_knownKernelRightHandSide_lt_primary
+#print axioms balancedPath_directCoordinateBesselQ
+#print axioms balancedPath_complementCoordinateBesselQ
+#print axioms balancedPath_coordinateBesselQ
+#print axioms balancedPath_coordinatePenalty_le
+#print axioms receiptTransitionLogCost_le_eleven
+#print axioms receiptPsi_one_eighth_le
+#print axioms balancedPath_coordinateBoundary_le
+#print axioms balancedPath_coordinateRadius_le
+#print axioms balancedPath_transitionRowRadius_le
+#print axioms balancedPath_candidateDiscrepancy_eq_zero
+#print axioms balancedPath_empiricalKernelTVBudget_le_strong
+#print axioms balancedPath_empiricalKernelTVBudget_le
+#print axioms balancedPath_transferredCoefficient_lt_one
+#print axioms balancedPath_unknownKernelBoundary_le
+#print axioms balancedPath_unknownKernelBoundary_le_primary
+#print axioms balancedPath_unknownKernelRightHandSide_le_primary
+#print axioms balancedPath_unknownKernelRightHandSide_lt_primary
+#print axioms balancedPath_unknownKernelRightHandSide_lt
+#print axioms balancedPath_unknownKernelRightHandSide_lt_three_quarters
+#print axioms exists_balancedPath_conditional_numeric_certificate
+
+/-- Concrete arithmetic receipt on the frozen balanced path.  This checks the
+reported known- and unknown-kernel widths without asserting membership in the
+theorem-produced common event. -/
+example :
+    empiricalTransitionPosteriorRisk brierScore oraclePosterior
+          receiptHorizon balancedPath = 3 / 20 ∧
+      selectedKnownKernelBoundary receiptHorizon balancedPath ≤
+          20679874814747 / 1937166336000000 ∧
+      selectedUnknownKernelBoundary receiptHorizon balancedPath ≤
+          3802036720268663 / 7748665344000000 ∧
+      finiteDobrushinCoefficient (refreshKernel Candidate.nominal) +
+          2 * selectedEmpiricalKernelTVBudget receiptHorizon balancedPath < 1 := by
+  exact ⟨balancedPath_oracle_empiricalRisk,
+    balancedPath_knownKernelBoundary_le_exact,
+    balancedPath_unknownKernelBoundary_le_primary,
+    balancedPath_transferredCoefficient_lt_one⟩

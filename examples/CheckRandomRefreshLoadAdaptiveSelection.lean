@@ -1,0 +1,54 @@
+import FormalSLT.Applications.RandomRefreshLoadAdaptiveSelection
+
+open FormalSLT.PACBayes.StabilityBridge
+open FormalSLT.StochasticDynamics
+open FormalSLT.StochasticDynamics.RandomRefreshLoadModel
+open FormalSLT.StochasticDynamics.RandomRefreshLoadAdaptiveSelection
+
+#check empiricalSuccessorRate
+#check adaptiveHorizon
+#check adaptiveHorizon_eq
+#check adaptiveCandidate
+#check balancedPath_empiricalSuccessorRate
+#check balancedPath_adaptiveCandidate
+#check constantZeroPath
+#check constantZeroPath_empiricalSuccessorRate
+#check constantZeroPath_adaptiveCandidate
+#check empiricalPredictorRisk
+#check adaptivePredictor
+#check adaptivePredictor_empiricalRisk_minimal
+#check balancedPath_empiricalPredictorRisk
+#check balancedPath_adaptivePredictor
+#check constantZeroPath_empiricalPredictorRisk
+#check constantZeroPath_adaptivePredictor
+#check adaptivePosterior
+#check adaptivePosterior_isPMF
+#check balancedPath_adaptivePosterior
+#check DepthChoice
+#check RiskTiltChoice
+#check BoundaryChoice
+#check adaptiveEmpiricalKernelTVBudget
+#check adaptiveBoundaryAtom
+#check adaptiveBoundaryChoice
+#check adaptiveBoundaryChoice_minimal
+#check adaptiveDepth
+#check adaptiveRiskTilt
+#check adaptiveSelectedBoundary
+#check adaptiveSelectedBoundary_le_fixedFive
+#check exists_randomRefreshLoad_adaptiveSelection_event
+
+#print axioms balancedPath_empiricalSuccessorRate
+#print axioms adaptiveHorizon_eq
+#print axioms balancedPath_adaptiveCandidate
+#print axioms constantZeroPath_empiricalSuccessorRate
+#print axioms constantZeroPath_adaptiveCandidate
+#print axioms adaptivePredictor_empiricalRisk_minimal
+#print axioms balancedPath_empiricalPredictorRisk
+#print axioms balancedPath_adaptivePredictor
+#print axioms constantZeroPath_empiricalPredictorRisk
+#print axioms constantZeroPath_adaptivePredictor
+#print axioms adaptivePosterior_isPMF
+#print axioms balancedPath_adaptivePosterior
+#print axioms adaptiveBoundaryChoice_minimal
+#print axioms adaptiveSelectedBoundary_le_fixedFive
+#print axioms exists_randomRefreshLoad_adaptiveSelection_event
