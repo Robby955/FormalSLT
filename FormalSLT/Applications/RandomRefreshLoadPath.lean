@@ -8,18 +8,21 @@ import FormalSLT.Applications.RandomRefreshLoadModel
 import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
 
 /-!
-# A balanced 200,000-transition path for the random-refresh load model
+# A periodic balanced path for the random-refresh load model
 
 This module gives a fully deterministic arithmetic receipt for the empirical
-transition table used by the twenty-state application.  The first `150,000`
-edges repeat a length-`400` order-two de Bruijn circuit `375` times.  Thus
-every ordered pair occurs `375` times.  The final `50,000` edges make `2,500`
-complete turns around the deterministic successor cycle.
+transition table used by the twenty-state application.  One length-`1,600`
+period consists of three length-`400` order-two de Bruijn circuits followed by
+twenty complete turns around the deterministic length-`20` successor cycle.
+The entire block repeats, so the path has no eventually homogeneous tail.
 
-Consequently every state has exactly `10,000` departures, every successor
-edge has multiplicity `2,875`, and every other edge has multiplicity `375`.
-These statements concern this named arithmetic witness only; they make no
-claim that the witness belongs to a statistical good event.
+Every complete block gives each state exactly `80` departures, each successor
+edge multiplicity `23`, and every other edge multiplicity `3`.  Consequently
+the first `200,000 = 125 * 1,600` transitions retain the original exact table:
+`10,000` departures per state, successor-edge multiplicity `2,875`, and every
+other edge multiplicity `375`.  These statements concern this named
+arithmetic witness only; they make no claim that the witness belongs to a
+statistical good event.
 -/
 
 open Finset
@@ -81,11 +84,12 @@ def deBruijnVertex (k : ℕ) : State :=
 def successorCycleVertex (k : ℕ) : State :=
   ⟨k % 20, Nat.mod_lt _ (by norm_num)⟩
 
-/-- The balanced arithmetic witness.  Its first segment is the repeated
-de Bruijn circuit; its second segment is the successor cycle. -/
+/-- The balanced arithmetic witness.  Each `1,600`-edge period contains three
+de Bruijn circuits followed by twenty successor cycles. -/
 def balancedPath (k : ℕ) : State :=
-  if k < 150000 then deBruijnVertex k
-  else successorCycleVertex (k - 150000)
+  let r := k % 1600
+  if r < 1200 then deBruijnVertex r
+  else successorCycleVertex (r - 1200)
 
 private theorem sum_range_mul_of_periodic {M : Type*} [AddCommMonoid M]
     (f : ℕ → M) (p r : ℕ) (hperiod : Function.Periodic f p) :
@@ -111,32 +115,44 @@ theorem successorCycleVertex_periodic :
   apply Fin.ext
   simp [successorCycleVertex, Nat.add_mod_right]
 
-private theorem deBruijnVertex_zero : deBruijnVertex 0 = 0 := by decide
+private theorem deBruijnVertex_1200 : deBruijnVertex 1200 = 0 := by decide
 
-private theorem deBruijnVertex_150000 : deBruijnVertex 150000 = 0 := by decide
-
-private theorem balancedPath_first (k : ℕ) (hk : k < 150000) :
+private theorem balancedPath_first (k : ℕ) (hk : k < 1200) :
     balancedPath k = deBruijnVertex k := by
-  simp [balancedPath, hk]
+  have hk1600 : k < 1600 := hk.trans (by norm_num)
+  simp [balancedPath, Nat.mod_eq_of_lt hk1600, hk]
 
-private theorem balancedPath_boundary : balancedPath 150000 = 0 := by
+private theorem balancedPath_boundary : balancedPath 1200 = 0 := by
   simp [balancedPath, successorCycleVertex]
 
-private theorem balancedPath_first_next (k : ℕ) (hk : k < 150000) :
+private theorem balancedPath_first_next (k : ℕ) (hk : k < 1200) :
     balancedPath (k + 1) = deBruijnVertex (k + 1) := by
-  by_cases hnext : k + 1 < 150000
+  by_cases hnext : k + 1 < 1200
   · exact balancedPath_first (k + 1) hnext
-  · have hkEq : k + 1 = 150000 := by omega
-    rw [hkEq, balancedPath_boundary, deBruijnVertex_150000]
+  · have hkEq : k + 1 = 1200 := by omega
+    rw [hkEq, balancedPath_boundary, deBruijnVertex_1200]
 
-private theorem balancedPath_second (k : ℕ) :
-    balancedPath (150000 + k) = successorCycleVertex k := by
-  rw [balancedPath, if_neg (by omega)]
-  rw [Nat.add_sub_cancel_left]
+private theorem balancedPath_second (k : ℕ) (hk : k < 400) :
+    balancedPath (1200 + k) = successorCycleVertex k := by
+  have hlt : 1200 + k < 1600 := by omega
+  simp [balancedPath, Nat.mod_eq_of_lt hlt]
 
-private theorem balancedPath_second_next (k : ℕ) :
-    balancedPath (150000 + k + 1) = successorCycleVertex (k + 1) := by
-  simpa [Nat.add_assoc] using balancedPath_second (k + 1)
+private theorem balancedPath_second_next (k : ℕ) (hk : k < 400) :
+    balancedPath (1200 + k + 1) = successorCycleVertex (k + 1) := by
+  by_cases hnext : k + 1 < 400
+  · simpa [Nat.add_assoc] using balancedPath_second (k + 1) hnext
+  · have hkEq : k = 399 := by omega
+    subst k
+    norm_num [balancedPath, successorCycleVertex, deBruijnVertex,
+      deBruijnOffset, deBruijnBlock]
+
+/-- The balanced path repeats after every `1,600` transitions. -/
+theorem balancedPath_periodic : Function.Periodic balancedPath 1600 := by
+  intro k
+  simp [balancedPath, Nat.add_mod_right]
+
+private def balancedPathVisitIndicator (z : State) (k : ℕ) : ℝ :=
+  if (balancedPath k).val = z.val then 1 else 0
 
 private theorem successor_visit_card : ∀ z : State,
     ((Finset.range 20).filter (fun k ↦ successorCycleVertex k = z)).card = 1 := by
@@ -346,172 +362,210 @@ private theorem successor_edge_indicator_periodic (z y : State) :
   simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using congrArg
     (fun v ↦ if successorCycleVertex k = z ∧ v = y then (1 : ℝ) else 0) hnext
 
-/-- Every state is the source of exactly `10,000` of the first `200,000`
-transitions of the named path. -/
-theorem balancedPath_transitionVisitMass (z : State) :
-    transitionVisitMass z 200000 balancedPath = 10000 := by
-  unfold transitionVisitMass
-  rw [show 200000 = 150000 + 50000 by norm_num,
-    Finset.sum_range_add]
+private theorem balancedPath_visit_sum (z : State) :
+    (∑ k ∈ Finset.range 1600,
+      if balancedPath k = z then (1 : ℝ) else 0) = 80 := by
+  rw [show 1600 = 1200 + 400 by norm_num, Finset.sum_range_add]
   have hfirst :
-      (∑ k ∈ Finset.range 150000,
-        if balancedPath k = z then (1 : ℝ) else 0) = 7500 := by
+      (∑ k ∈ Finset.range 1200,
+        if balancedPath k = z then (1 : ℝ) else 0) = 60 := by
     calc
-      (∑ k ∈ Finset.range 150000,
+      (∑ k ∈ Finset.range 1200,
           if balancedPath k = z then (1 : ℝ) else 0) =
-          ∑ k ∈ Finset.range (400 * 375),
+          ∑ k ∈ Finset.range (400 * 3),
             if deBruijnVertex k = z then (1 : ℝ) else 0 := by
               apply Finset.sum_congr
               · norm_num
               · intro k hk
-                have hklt : k < 150000 := Finset.mem_range.mp hk
-                rw [balancedPath_first k hklt]
-      _ = 375 • (∑ k ∈ Finset.range 400,
+                rw [balancedPath_first k (Finset.mem_range.mp hk)]
+      _ = 3 • (∑ k ∈ Finset.range 400,
             if deBruijnVertex k = z then (1 : ℝ) else 0) :=
-          sum_range_mul_of_periodic _ 400 375
+          sum_range_mul_of_periodic _ 400 3
             (deBruijn_visit_indicator_periodic z)
-      _ = 7500 := by rw [deBruijn_visit_sum]; norm_num
+      _ = 60 := by rw [deBruijn_visit_sum]; norm_num
   have hsecond :
-      (∑ k ∈ Finset.range 50000,
-        if balancedPath (150000 + k) = z then (1 : ℝ) else 0) = 2500 := by
+      (∑ k ∈ Finset.range 400,
+        if balancedPath (1200 + k) = z then (1 : ℝ) else 0) = 20 := by
     calc
-      (∑ k ∈ Finset.range 50000,
-          if balancedPath (150000 + k) = z then (1 : ℝ) else 0) =
-          ∑ k ∈ Finset.range (20 * 2500),
+      (∑ k ∈ Finset.range 400,
+          if balancedPath (1200 + k) = z then (1 : ℝ) else 0) =
+          ∑ k ∈ Finset.range (20 * 20),
             if successorCycleVertex k = z then (1 : ℝ) else 0 := by
               apply Finset.sum_congr
               · norm_num
-              · intro k _hk
-                rw [balancedPath_second]
-      _ = 2500 • (∑ k ∈ Finset.range 20,
+              · intro k hk
+                rw [balancedPath_second k (Finset.mem_range.mp hk)]
+      _ = 20 • (∑ k ∈ Finset.range 20,
             if successorCycleVertex k = z then (1 : ℝ) else 0) :=
-          sum_range_mul_of_periodic _ 20 2500
+          sum_range_mul_of_periodic _ 20 20
             (successor_visit_indicator_periodic z)
-      _ = 2500 := by rw [successor_visit_sum]; norm_num
+      _ = 20 := by rw [successor_visit_sum]; norm_num
+  rw [hfirst, hsecond]
+  norm_num
+
+private theorem balancedPath_edge_sum (z y : State) :
+    (∑ k ∈ Finset.range 1600,
+      if balancedPath k = z ∧ balancedPath (k + 1) = y
+      then (1 : ℝ) else 0) =
+        if y = successor z then 23 else 3 := by
+  rw [show 1600 = 1200 + 400 by norm_num, Finset.sum_range_add]
+  have hfirst :
+      (∑ k ∈ Finset.range 1200,
+        if balancedPath k = z ∧ balancedPath (k + 1) = y
+        then (1 : ℝ) else 0) = 3 := by
+    calc
+      (∑ k ∈ Finset.range 1200,
+          if balancedPath k = z ∧ balancedPath (k + 1) = y
+          then (1 : ℝ) else 0) =
+          ∑ k ∈ Finset.range (400 * 3),
+            if deBruijnVertex k = z ∧ deBruijnVertex (k + 1) = y
+            then (1 : ℝ) else 0 := by
+              apply Finset.sum_congr
+              · norm_num
+              · intro k hk
+                have hklt := Finset.mem_range.mp hk
+                rw [balancedPath_first k hklt,
+                  balancedPath_first_next k hklt]
+      _ = 3 • (∑ k ∈ Finset.range 400,
+            if deBruijnVertex k = z ∧ deBruijnVertex (k + 1) = y
+            then (1 : ℝ) else 0) :=
+          sum_range_mul_of_periodic _ 400 3
+            (deBruijn_edge_indicator_periodic z y)
+      _ = 3 := by rw [deBruijn_edge_sum]; norm_num
+  have hsecond :
+      (∑ k ∈ Finset.range 400,
+        if balancedPath (1200 + k) = z ∧
+            balancedPath (1200 + k + 1) = y
+        then (1 : ℝ) else 0) =
+          if y = successor z then 20 else 0 := by
+    calc
+      (∑ k ∈ Finset.range 400,
+          if balancedPath (1200 + k) = z ∧
+              balancedPath (1200 + k + 1) = y
+          then (1 : ℝ) else 0) =
+          ∑ k ∈ Finset.range (20 * 20),
+            if successorCycleVertex k = z ∧
+                successorCycleVertex (k + 1) = y
+            then (1 : ℝ) else 0 := by
+              apply Finset.sum_congr
+              · norm_num
+              · intro k hk
+                have hklt := Finset.mem_range.mp hk
+                rw [balancedPath_second k hklt,
+                  balancedPath_second_next k hklt]
+      _ = 20 • (∑ k ∈ Finset.range 20,
+            if successorCycleVertex k = z ∧
+                successorCycleVertex (k + 1) = y
+            then (1 : ℝ) else 0) :=
+          sum_range_mul_of_periodic _ 20 20
+            (successor_edge_indicator_periodic z y)
+      _ = if y = successor z then 20 else 0 := by
+        rw [successor_edge_sum]
+        split_ifs <;> norm_num
+  rw [hfirst, hsecond]
+  split_ifs <;> norm_num
+
+private theorem balancedPath_visit_indicator_periodic (z : State) :
+    Function.Periodic (balancedPathVisitIndicator z) 1600 := by
+  intro k
+  unfold balancedPathVisitIndicator
+  rw [balancedPath_periodic k]
+
+private theorem balancedPath_transitionIndicator_sum (z y : State) :
+    (∑ k ∈ Finset.range 1600,
+      transitionIndicatorScore z y (balancedPath k) (balancedPath (k + 1))) =
+        if y = successor z then 23 else 3 := by
+  refine Eq.trans ?_ (balancedPath_edge_sum z y)
+  apply Finset.sum_congr rfl
+  intro k _hk
+  by_cases hz : balancedPath k = z <;>
+    by_cases hy : balancedPath (k + 1) = y <;>
+      simp [transitionIndicatorScore, hz, hy]
+
+private theorem balancedPath_transitionIndicator_periodic (z y : State) :
+    Function.Periodic
+      (fun k ↦ transitionIndicatorScore z y
+        (balancedPath k) (balancedPath (k + 1))) 1600 := by
+  intro k
+  change transitionIndicatorScore z y (balancedPath (k + 1600))
+      (balancedPath (k + 1600 + 1)) =
+    transitionIndicatorScore z y (balancedPath k) (balancedPath (k + 1))
+  rw [balancedPath_periodic k]
+  have hnext := balancedPath_periodic (k + 1)
+  simpa [Nat.add_assoc, Nat.add_left_comm, Nat.add_comm] using congrArg
+    (fun v ↦ transitionIndicatorScore z y (balancedPath k) v) hnext
+
+/-- Every complete `1,600`-edge block gives each state exactly `80`
+departures. -/
+theorem balancedPath_transitionVisitMass_mul_period (z : State) (r : ℕ) :
+    transitionVisitMass z (1600 * r) balancedPath = 80 * (r : ℝ) := by
+  unfold transitionVisitMass
+  simp only [Fin.ext_iff]
+  change (∑ k ∈ Finset.range (1600 * r),
+    balancedPathVisitIndicator z k) = 80 * (r : ℝ)
   calc
-    _ =
-        (∑ k ∈ Finset.range 150000,
-          if balancedPath k = z then (1 : ℝ) else 0) +
-        (∑ k ∈ Finset.range 50000,
-          if balancedPath (150000 + k) = z then (1 : ℝ) else 0) := by
-      apply congrArg₂ (fun a b : ℝ ↦ a + b)
-      · apply Finset.sum_congr rfl
-        intro k _hk
-        by_cases h : balancedPath k = z <;> simp [h]
-      · apply Finset.sum_congr rfl
-        intro k _hk
-        by_cases h : balancedPath (150000 + k) = z <;> simp [h]
-    _ = 7500 + 2500 := congrArg₂ (fun a b : ℝ ↦ a + b) hfirst hsecond
-    _ = 10000 := by norm_num
+    _ = r • _ :=
+      sum_range_mul_of_periodic _ 1600 r
+        (balancedPath_visit_indicator_periodic z)
+    _ = r • (80 : ℝ) := congrArg (fun q : ℝ ↦ r • q)
+      (by simpa [balancedPathVisitIndicator, Fin.ext_iff] using
+        balancedPath_visit_sum z)
+    _ = 80 * (r : ℝ) := by
+      simp [nsmul_eq_mul]
+      ring
+
+/-- Every complete `1,600`-edge block gives each successor edge multiplicity
+`23` and every other edge multiplicity `3`. -/
+theorem balancedPath_transitionEdgeMass_mul_period
+    (z y : State) (r : ℕ) :
+    transitionEdgeMass z y (1600 * r) balancedPath =
+      if y = successor z then 23 * (r : ℝ) else 3 * (r : ℝ) := by
+  unfold transitionEdgeMass
+  calc
+    _ = r • _ :=
+      sum_range_mul_of_periodic _ 1600 r
+        (balancedPath_transitionIndicator_periodic z y)
+    _ = r • (if y = successor z then (23 : ℝ) else 3) :=
+      congrArg (fun q : ℝ ↦ r • q)
+        (balancedPath_transitionIndicator_sum z y)
+    _ = if y = successor z then 23 * (r : ℝ) else 3 * (r : ℝ) := by
+      split_ifs <;> simp [nsmul_eq_mul] <;> ring
+
+/-- At every positive complete-block horizon, the empirical transition
+frequencies equal the nominal refresh-kernel row probabilities exactly. -/
+theorem balancedPath_empiricalTransitionFrequency_mul_period
+    (z y : State) (r : ℕ) (hr : 0 < r) :
+    empiricalTransitionFrequency z y (1600 * r) balancedPath =
+      if y = successor z then 23 / 80 else 3 / 80 := by
+  rw [empiricalTransitionFrequency,
+    balancedPath_transitionEdgeMass_mul_period,
+    balancedPath_transitionVisitMass_mul_period]
+  have hr0 : (r : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hr)
+  split_ifs <;> field_simp [hr0]
+
+/-- Every state is the source of exactly `10,000` of the first `200,000`
+transitions of the named path. -/
+theorem balancedPath_transitionVisitMass (z : State) :
+    transitionVisitMass z 200000 balancedPath = 10000 := by
+  have h := balancedPath_transitionVisitMass_mul_period z 125
+  norm_num at h ⊢
+  exact h
 
 /-- Exact transition table of the named `200,000`-edge path. -/
 theorem balancedPath_transitionEdgeMass (z y : State) :
     transitionEdgeMass z y 200000 balancedPath =
       if y = successor z then 2875 else 375 := by
-  unfold transitionEdgeMass transitionIndicatorScore
-  rw [show 200000 = 150000 + 50000 by norm_num,
-    Finset.sum_range_add]
-  have hfirst :
-      (∑ k ∈ Finset.range 150000,
-        if balancedPath k = z ∧ balancedPath (k + 1) = y
-        then (1 : ℝ) else 0) = 375 := by
-    calc
-      (∑ k ∈ Finset.range 150000,
-          if balancedPath k = z ∧ balancedPath (k + 1) = y
-          then (1 : ℝ) else 0) =
-          ∑ k ∈ Finset.range (400 * 375),
-            if deBruijnVertex k = z ∧ deBruijnVertex (k + 1) = y
-            then (1 : ℝ) else 0 := by
-              apply Finset.sum_congr
-              · norm_num
-              · intro k hk
-                have hklt : k < 150000 := Finset.mem_range.mp hk
-                rw [balancedPath_first k hklt,
-                  balancedPath_first_next k hklt]
-      _ = 375 • (∑ k ∈ Finset.range 400,
-            if deBruijnVertex k = z ∧ deBruijnVertex (k + 1) = y
-            then (1 : ℝ) else 0) :=
-          sum_range_mul_of_periodic _ 400 375
-            (deBruijn_edge_indicator_periodic z y)
-      _ = 375 := by rw [deBruijn_edge_sum]; norm_num
-  have hsecond :
-      (∑ k ∈ Finset.range 50000,
-        if balancedPath (150000 + k) = z ∧
-            balancedPath (150000 + k + 1) = y
-        then (1 : ℝ) else 0) =
-          if y = successor z then 2500 else 0 := by
-    calc
-      (∑ k ∈ Finset.range 50000,
-          if balancedPath (150000 + k) = z ∧
-              balancedPath (150000 + k + 1) = y
-          then (1 : ℝ) else 0) =
-          ∑ k ∈ Finset.range (20 * 2500),
-            if successorCycleVertex k = z ∧
-                successorCycleVertex (k + 1) = y
-            then (1 : ℝ) else 0 := by
-              apply Finset.sum_congr
-              · norm_num
-              · intro k _hk
-                rw [balancedPath_second, balancedPath_second_next]
-      _ = 2500 • (∑ k ∈ Finset.range 20,
-            if successorCycleVertex k = z ∧
-                successorCycleVertex (k + 1) = y
-            then (1 : ℝ) else 0) :=
-          sum_range_mul_of_periodic _ 20 2500
-            (successor_edge_indicator_periodic z y)
-      _ = if y = successor z then 2500 else 0 := by
-        rw [successor_edge_sum]
-        split_ifs <;> norm_num
-  split_ifs at hsecond ⊢
-  · calc
-      _ =
-          (∑ k ∈ Finset.range 150000,
-            if balancedPath k = z ∧ balancedPath (k + 1) = y
-            then (1 : ℝ) else 0) +
-          (∑ k ∈ Finset.range 50000,
-            if balancedPath (150000 + k) = z ∧
-                balancedPath (150000 + k + 1) = y
-            then (1 : ℝ) else 0) := by
-        apply congrArg₂ (fun a b : ℝ ↦ a + b)
-        · apply Finset.sum_congr rfl
-          intro k _hk
-          by_cases h : balancedPath k = z ∧ balancedPath (k + 1) = y <;>
-            simp [h]
-        · apply Finset.sum_congr rfl
-          intro k _hk
-          by_cases h : balancedPath (150000 + k) = z ∧
-              balancedPath (150000 + k + 1) = y <;> simp [h]
-      _ = 375 + 2500 := congrArg₂ (fun a b : ℝ ↦ a + b) hfirst hsecond
-      _ = 2875 := by norm_num
-  · calc
-      _ =
-          (∑ k ∈ Finset.range 150000,
-            if balancedPath k = z ∧ balancedPath (k + 1) = y
-            then (1 : ℝ) else 0) +
-          (∑ k ∈ Finset.range 50000,
-            if balancedPath (150000 + k) = z ∧
-                balancedPath (150000 + k + 1) = y
-            then (1 : ℝ) else 0) := by
-        apply congrArg₂ (fun a b : ℝ ↦ a + b)
-        · apply Finset.sum_congr rfl
-          intro k _hk
-          by_cases h : balancedPath k = z ∧ balancedPath (k + 1) = y <;>
-            simp [h]
-        · apply Finset.sum_congr rfl
-          intro k _hk
-          by_cases h : balancedPath (150000 + k) = z ∧
-              balancedPath (150000 + k + 1) = y <;> simp [h]
-      _ = 375 + 0 := congrArg₂ (fun a b : ℝ ↦ a + b) hfirst hsecond
-      _ = 375 := by norm_num
+  have h := balancedPath_transitionEdgeMass_mul_period z y 125
+  norm_num at h ⊢
+  exact h
 
-/-- The empirical transition frequencies are exactly the nominal refresh
-kernel row probabilities. -/
+/-- The empirical transition frequencies at the receipt horizon are exactly
+the nominal refresh-kernel row probabilities. -/
 theorem balancedPath_empiricalTransitionFrequency (z y : State) :
     empiricalTransitionFrequency z y 200000 balancedPath =
       if y = successor z then 23 / 80 else 3 / 80 := by
-  rw [empiricalTransitionFrequency, balancedPath_transitionEdgeMass,
-    balancedPath_transitionVisitMass]
-  split_ifs <;> norm_num
+  simpa using balancedPath_empiricalTransitionFrequency_mul_period
+    z y 125 (by norm_num)
 
 end
 

@@ -11,10 +11,11 @@ import FormalSLT.Applications.RandomRefreshLoadPath
 # Numerical receipt for the twenty-state random-refresh load model
 
 This module evaluates the depth-five stationary-risk certificate on the
-deterministic balanced path from `RandomRefreshLoadPath`.  The path has
-`200,000` transitions, visits every source row `10,000` times, and realizes
-the nominal transition table exactly.  The oracle's empirical Brier risk is
-exactly `3/20`.
+deterministic balanced path from `RandomRefreshLoadPath`.  The path repeats a
+length-`1,600` balanced block.  At every positive whole-block horizon it
+realizes the nominal transition table and oracle empirical Brier risk `3/20`
+exactly.  At the reported `200,000`-transition horizon it visits every source
+row `10,000` times.
 
 The exact corrected-score Bessel statistic sharpens the known-kernel width to
 `20679874814747 / 1937166336000000`, giving a reported right-hand side below
@@ -95,30 +96,37 @@ theorem empiricalTransitionRisk_eq_edgeMass_sum
             intro y _hy
             rw [transitionEdgeMass, Finset.sum_mul]
 
-/-- The point posterior reduces the empirical catalog risk to the oracle
-score on the named balanced path. -/
-theorem balancedPath_oracle_empiricalRisk :
+/-- At every positive complete-block horizon, the oracle's empirical Brier
+risk equals its stationary risk exactly.  In particular, the periodic repair
+cannot drift toward the successor-cycle risk along its long-run block
+subsequence. -/
+theorem balancedPath_oracle_empiricalRisk_mul_period
+    (r : ℕ) (hr : 0 < r) :
     empiricalTransitionPosteriorRisk brierScore oraclePosterior
-        receiptHorizon balancedPath = 3 / 20 := by
+        (1600 * r) balancedPath = 3 / 20 := by
   unfold empiricalTransitionPosteriorRisk oraclePosterior
   rw [pacBayesPosteriorAverage_dirac]
   rw [empiricalTransitionRisk_eq_edgeMass_sum]
   have hedge (z y : State) :
-      transitionEdgeMass z y receiptHorizon balancedPath =
-        10000 * (refreshKernel Candidate.nominal z y).toReal := by
-    rw [receiptHorizon_eq, balancedPath_transitionEdgeMass,
+      transitionEdgeMass z y (1600 * r) balancedPath =
+        (80 * (r : ℝ)) *
+          (refreshKernel Candidate.nominal z y).toReal := by
+    rw [balancedPath_transitionEdgeMass_mul_period,
       refreshKernel_apply_toReal]
     by_cases h : y = successor z
     · simp [h, candidateBase, candidateBaseNN]
       norm_num [candidateGamma, candidateGammaNN]
+      ring
     · simp [h, candidateBase, candidateBaseNN]
       norm_num
+      ring
   simp_rw [hedge]
   have hdouble :
       (∑ z : State, ∑ y : State,
-        (10000 * (refreshKernel Candidate.nominal z y).toReal) *
+        ((80 * (r : ℝ)) *
+            (refreshKernel Candidate.nominal z y).toReal) *
           brierScore Predictor.oracle z y) =
-        10000 * (∑ z : State, ∑ y : State,
+        (80 * (r : ℝ)) * (∑ z : State, ∑ y : State,
           (refreshKernel Candidate.nominal z y).toReal *
             brierScore Predictor.oracle z y) := by
     rw [Finset.mul_sum]
@@ -129,16 +137,17 @@ theorem balancedPath_oracle_empiricalRisk :
     intro y _hy
     ring
   rw [hdouble]
+  have hr0 : (r : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hr)
   calc
-    (10000 * (∑ z : State, ∑ y : State,
+    ((80 * (r : ℝ)) * (∑ z : State, ∑ y : State,
           (refreshKernel Candidate.nominal z y).toReal *
             brierScore Predictor.oracle z y)) /
-        (receiptHorizon : ℝ) =
+        ((1600 * r : ℕ) : ℝ) =
       stationaryMarkovRisk (refreshKernel Candidate.nominal) uniformLaw
         (brierScore Predictor.oracle) := by
           unfold stationaryMarkovRisk markovRowRisk
           simp only [PMF.integral_eq_sum, smul_eq_mul,
-            uniformLaw_apply_toReal, receiptHorizon]
+            uniformLaw_apply_toReal, Nat.cast_mul, Nat.cast_ofNat]
           rw [show
             (∑ z : State,
               (1 / 20 : ℝ) * (∑ y : State,
@@ -149,8 +158,17 @@ theorem balancedPath_oracle_empiricalRisk :
                   (refreshKernel Candidate.nominal z y).toReal *
                     brierScore Predictor.oracle z y) by
               rw [Finset.mul_sum]]
+          field_simp [hr0]
           ring
     _ = 3 / 20 := nominal_stationaryRisk Predictor.oracle
+
+/-- The point posterior reduces the empirical catalog risk to the oracle
+score at the reported `200,000`-transition horizon. -/
+theorem balancedPath_oracle_empiricalRisk :
+    empiricalTransitionPosteriorRisk brierScore oraclePosterior
+        receiptHorizon balancedPath = 3 / 20 := by
+  simpa [receiptHorizon] using
+    balancedPath_oracle_empiricalRisk_mul_period 125 (by norm_num)
 
 /-- The point posterior's stationary risk is also exactly `3/20`. -/
 theorem oraclePosterior_stationaryRisk :

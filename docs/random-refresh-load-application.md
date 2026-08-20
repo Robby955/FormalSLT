@@ -30,18 +30,23 @@ loss. Their exact stationary risks are:
 The model-specific centered row-risk oscillation envelopes are `7/80`, `7/40`,
 and `21/80`; the `early` predictor attains each envelope.
 
-## Frozen arithmetic path
+## Periodic arithmetic path
 
-The deterministic `balancedPath` has exactly `200,000` transitions. It visits
-every source state `10,000` times and realizes the nominal transition table:
+The deterministic `balancedPath` repeats a `1,600`-transition block: three
+complete order-two de Bruijn circuits followed by twenty complete successor
+cycles. Every positive whole-block horizon realizes the nominal transition
+table exactly and has empirical oracle Brier risk `3/20`; there is no
+eventually homogeneous successor-cycle tail. At the reported `200,000 =
+125 * 1,600` horizon, it visits every source state `10,000` times and has:
 
 ```text
 successor edge frequency = 23/80
 every other edge frequency = 3/80
 ```
 
-These are arithmetic identities. They do not show that the path is typical or
-that it belongs to any theorem-produced good event.
+These arithmetic identities remove the former long-run tail contradiction.
+They do not show that the path is typical or that it belongs to any
+theorem-produced good event.
 
 ## Primary receipt
 

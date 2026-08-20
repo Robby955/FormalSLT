@@ -8,6 +8,7 @@ open FormalSLT.StochasticDynamics.RandomRefreshLoadReceipt
 #check receiptHorizon
 #check receiptHorizon_eq
 #check empiricalTransitionRisk_eq_edgeMass_sum
+#check balancedPath_oracle_empiricalRisk_mul_period
 #check balancedPath_oracle_empiricalRisk
 #check oraclePosterior_stationaryRisk
 #check receiptCorrectedScore
@@ -61,6 +62,7 @@ open FormalSLT.StochasticDynamics.RandomRefreshLoadReceipt
 
 #print axioms receiptHorizon_eq
 #print axioms empiricalTransitionRisk_eq_edgeMass_sum
+#print axioms balancedPath_oracle_empiricalRisk_mul_period
 #print axioms balancedPath_oracle_empiricalRisk
 #print axioms oraclePosterior_stationaryRisk
 #print axioms receiptSpan_eq
