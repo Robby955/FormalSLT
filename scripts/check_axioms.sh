@@ -436,6 +436,19 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.augmentedBehaviorStateTable_getElem?_observation"
   "FormalSLT.Applications.ControlledQueue.transitionRow_val"
   "FormalSLT.Applications.ControlledQueue.transitionRow_pair"
+  "FormalSLT.Applications.ControlledQueue.candidateKernelTableMass_pos"
+  "FormalSLT.Applications.ControlledQueue.candidateKernelTableMass_sum_one"
+  "FormalSLT.Applications.ControlledQueue.policyTableMass_pos"
+  "FormalSLT.Applications.ControlledQueue.policyTableMass_sum_one"
+  "FormalSLT.Applications.ControlledQueue.candidateEnvironment_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.queuePolicy_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.behaviorPolicy_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.targetPolicy_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.targetPolicy_probability_le_three_halves_behavior"
+  "FormalSLT.Applications.ControlledQueue.candidateEnvironment_transition_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.augmentedCandidateBehaviorKernel_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.augmentedBehavior_candidateEnvironment_rowTV_eq_sum"
+  "FormalSLT.Applications.ControlledQueue.environmentRowTV_candidate_le_two_mul_augmentedRowTV"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -816,6 +829,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog"
   echo "import FormalSLT.Applications"
   echo "import FormalSLT.Applications.ControlledQueueReindex"
+  echo "import FormalSLT.Applications.ControlledQueueTypedModel"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -899,6 +913,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog \
   FormalSLT.Applications \
   FormalSLT.Applications.ControlledQueueReindex \
+  FormalSLT.Applications.ControlledQueueTypedModel \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

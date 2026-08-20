@@ -13,6 +13,7 @@ import FormalSLT.Applications.RandomRefreshLoadBaselines
 import FormalSLT.Applications.RandomRefreshLoadOracleCertificate
 import FormalSLT.Applications.ControlledQueueData
 import FormalSLT.Applications.ControlledQueueReindex
+import FormalSLT.Applications.ControlledQueueTypedModel
 
 /-!
 # FormalSLT applications
@@ -21,8 +22,9 @@ Concrete, reproducible models used to exercise the library's statistical
 certificates.  Application modules are public and checked, but they are not
 part of the small v0.2 stable-endpoint promise.
 
-`ControlledQueueData` is an opt-in generated preprocessing table, and
+`ControlledQueueData` is an opt-in generated preprocessing table,
 `ControlledQueueReindex` connects its row order to controlled action--state
-observations.  Neither module is a statistical certificate or makes a
-theorem-produced good-path claim.
+observations, and `ControlledQueueTypedModel` turns the exact rational kernel
+and policy tables into typed PMFs.  These modules do not identify a candidate
+with the true environment or make a theorem-produced good-path claim.
 -/
