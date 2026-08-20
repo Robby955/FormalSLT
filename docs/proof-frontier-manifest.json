@@ -103,10 +103,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 221,
-    "library_and_example_lean_lines": 145668,
-    "library_lean_lines": 116471,
+    "library_and_example_lean_lines": 145672,
+    "library_lean_lines": 116475,
     "library_modules": 265,
-    "theorem_map_entries": 1029
+    "theorem_map_entries": 1030
   },
   "theorem_families": [
     {
@@ -4852,6 +4852,17 @@
         }
       ],
       "name": "Stationary target-policy off-policy evaluation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
+          "name": "abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation",
+          "summary": "Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in [0,1], potential span B, and a nonnegative uniform action-conditioned environment-row TV radius etaEnv, deterministically bounds the true stationary residual by finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv); it supplies no confidence event, OPE theorem, or selection license"
+        }
+      ],
+      "name": "Stationary target-policy robust-candidate bridge"
     },
     {
       "entries": [

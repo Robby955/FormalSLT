@@ -907,6 +907,12 @@ potentials, overlap, and ratio cap are inputs. This section uses one-step action
 importance ratios and does not establish target-occupancy change of measure,
 learn nuisance quantities, or handle unknown dynamics.
 
+## Stationary target-policy robust-candidate bridge
+
+| Declaration | Module | Role |
+|---|---|---|
+| `abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in `[0,1]`, potential span `B`, and a nonnegative uniform action-conditioned environment-row TV radius `etaEnv`, deterministically bounds the true stationary residual by `finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`; it supplies no confidence event, OPE theorem, or selection license |
+
 ## Dynamic target-policy comparators
 
 | Declaration | Module | Role |

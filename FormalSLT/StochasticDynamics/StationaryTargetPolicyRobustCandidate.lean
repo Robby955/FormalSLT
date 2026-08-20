@@ -57,7 +57,8 @@ def targetPolicyRowScore
 omit [Nonempty Z] [MeasurableSpace A] [MeasurableSingletonClass A] in
 /-- The row-score adapter has exactly the original target-policy row risk
 under the induced state kernel. -/
-@[simp] theorem markovRowRisk_targetPolicyRowScore
+@[simp]
+theorem markovRowRisk_targetPolicyRowScore
     (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
     (score : TargetPolicyTransitionScore Z A) (state : Z) :
     markovRowRisk (targetPolicyKernel P π)
@@ -71,7 +72,8 @@ under the induced state kernel. -/
 
 omit [Nonempty Z] [MeasurableSpace A] [MeasurableSingletonClass A] in
 /-- The same adapter preserves stationary target-policy risk. -/
-@[simp] theorem stationaryMarkovRisk_targetPolicyRowScore
+@[simp]
+theorem stationaryMarkovRisk_targetPolicyRowScore
     (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
     (stationary : PMF Z) (score : TargetPolicyTransitionScore Z A) :
     stationaryMarkovRisk (targetPolicyKernel P π) stationary
@@ -93,7 +95,8 @@ def targetPolicyPoissonDrift
 omit [Nonempty Z] [MeasurableSpace A] [MeasurableSingletonClass A] in
 /-- Target-policy drift is ordinary Markov drift for the induced kernel and
 the constant-next-state row-score adapter. -/
-@[simp] theorem targetPolicyPoissonDrift_eq_markovPoissonDrift
+@[simp]
+theorem targetPolicyPoissonDrift_eq_markovPoissonDrift
     (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
     (score : TargetPolicyTransitionScore Z A) (potential : Z → ℝ)
     (state : Z) :
@@ -115,7 +118,8 @@ def approximateTargetPolicyPoissonResidual
 omit [Nonempty Z] [MeasurableSpace A] [MeasurableSingletonClass A] in
 /-- The target-policy residual is the ordinary induced-kernel residual under
 the row-score adapter. -/
-@[simp] theorem approximateTargetPolicyPoissonResidual_eq_inducedKernel
+@[simp]
+theorem approximateTargetPolicyPoissonResidual_eq_inducedKernel
     (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
     (stationary : PMF Z) (score : TargetPolicyTransitionScore Z A)
     (potential : Z → ℝ) (state : Z) :
