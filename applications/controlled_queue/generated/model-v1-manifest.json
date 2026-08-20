@@ -4,12 +4,12 @@
     {
       "path": "applications/controlled_queue/model-v1.json",
       "role": "input",
-      "sha256": "df4a051631ecd73b320f692a74a84669263bb6c54c91f037b73cbd6c8a5e1bd6"
+      "sha256": "4e92a71ddf07e04e202c901d8c7a682cdf306754a69a0e219fca8ef75abee5a0"
     },
     {
       "path": "applications/controlled_queue/generated/model-v1-tables.json",
       "role": "output",
-      "sha256": "8609a50449572af9db6ed068b0e81c27733047fc7717b213e3b44eba810667d2"
+      "sha256": "7d8cf4d970f6e41413ccdf7d62b13bc77418076836505d06ebb4a606493ab724"
     },
     {
       "path": "FormalSLT/Applications/ControlledQueueData.lean",
@@ -20,7 +20,7 @@
   "generator": {
     "path": "scripts/generate_controlled_queue_model.py",
     "revision": "controlled-queue-preprocess-v1",
-    "sha256": "c6f68324b528e6e0e006bb2c3351c6d7323407972f01182bde0a6ab651a23dd7"
+    "sha256": "7cf247a424a8ad7c2e59c8847c2a0853aa4a3a724812694b7e0ae5b15bcc024b"
   },
   "model_version": "controlled-queue-v1",
   "nonclaims": [
@@ -51,6 +51,22 @@
       12
     ],
     "horizon": 200000,
+    "next_trace_slice_contract": {
+      "prng_sampling_requirement": "language-independent, versioned, byte-reproducible",
+      "required_exact_weight_tables": [
+        "prior_weights",
+        "posterior_weights",
+        "candidate_weights",
+        "coordinate_weights",
+        "tilt_weights"
+      ],
+      "required_fields": [
+        "initial_state",
+        "prng_contract",
+        "sampling_contract"
+      ],
+      "status": "OPEN"
+    },
     "nominal_candidate": "nominal",
     "physical_state_count": 24,
     "posterior_catalog": [

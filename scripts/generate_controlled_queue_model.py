@@ -56,6 +56,18 @@ CAUSAL_PREDICTOR_IDS = (
     "global_beta",
     "queue_band_action_beta",
 )
+NEXT_TRACE_REQUIRED_FIELDS = (
+    "initial_state",
+    "prng_contract",
+    "sampling_contract",
+)
+NEXT_TRACE_REQUIRED_WEIGHT_TABLES = (
+    "prior_weights",
+    "posterior_weights",
+    "candidate_weights",
+    "coordinate_weights",
+    "tilt_weights",
+)
 
 
 class SchemaError(ValueError):
@@ -409,6 +421,7 @@ def validate_spec(spec: dict[str, Any]) -> None:
             "posterior_catalog",
             "depth_grid",
             "tilt_grid",
+            "next_trace_slice_contract",
         },
         "generation",
     )
@@ -446,6 +459,38 @@ def validate_spec(spec: dict[str, Any]) -> None:
     ]
     if not tilts or any(value <= 0 for value in tilts) or tilts != sorted(set(tilts)):
         raise SchemaError("generation.tilt_grid must be positive, nonempty, sorted, and unique")
+    next_trace = _expect_object(
+        generation["next_trace_slice_contract"],
+        "generation.next_trace_slice_contract",
+    )
+    _expect_keys(
+        next_trace,
+        {
+            "status",
+            "prng_sampling_requirement",
+            "required_fields",
+            "required_exact_weight_tables",
+        },
+        "generation.next_trace_slice_contract",
+    )
+    _expect_exact(
+        next_trace["status"], "OPEN", "generation.next_trace_slice_contract.status"
+    )
+    _expect_exact(
+        next_trace["prng_sampling_requirement"],
+        "language-independent, versioned, byte-reproducible",
+        "generation.next_trace_slice_contract.prng_sampling_requirement",
+    )
+    _expect_exact(
+        next_trace["required_fields"],
+        list(NEXT_TRACE_REQUIRED_FIELDS),
+        "generation.next_trace_slice_contract.required_fields",
+    )
+    _expect_exact(
+        next_trace["required_exact_weight_tables"],
+        list(NEXT_TRACE_REQUIRED_WEIGHT_TABLES),
+        "generation.next_trace_slice_contract.required_exact_weight_tables",
+    )
 
 
 def state_id(queue: int, regime: int) -> int:
@@ -670,6 +715,7 @@ def build_tables(spec: dict[str, Any]) -> dict[str, Any]:
             "posterior_catalog": generation["posterior_catalog"],
             "depth_grid": generation["depth_grid"],
             "tilt_grid": generation["tilt_grid"],
+            "next_trace_slice_contract": generation["next_trace_slice_contract"],
         },
     }
 
@@ -932,6 +978,7 @@ def build_manifest(
             "posterior_catalog": generation["posterior_catalog"],
             "depth_grid": generation["depth_grid"],
             "tilt_grid": generation["tilt_grid"],
+            "next_trace_slice_contract": generation["next_trace_slice_contract"],
         },
         "files": [
             {

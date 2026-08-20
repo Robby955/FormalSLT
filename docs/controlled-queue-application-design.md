@@ -25,7 +25,7 @@ membership.
 - Physical state: `Fin 8 × Fin 3`, interpreted as queue length and arrival
   regime, for 24 states.
 - Actions: `eco` and `boost`, serving at most one or two jobs respectively.
-- Markovized behavior state: `Action × State`, for 48 states.
+- Markovized behavior state: `State × Action`, for 48 states.
 
 The state encoding, action encoding, update order, truncation at queue length
 seven, and regime transition rule must be fixed in a versioned input file
@@ -147,6 +147,12 @@ Use one versioned JSON input with exact rational fields:
 - confidence allocation;
 - posterior, depth, and tilt grids.
 
+The current schema also records, without supplying values or semantics, what
+the next trace-producing slice must add: an initial state; versioned,
+language-independent PRNG and exact sampling contracts; and exact rational
+prior, posterior, candidate, coordinate, and tilt weight tables. A seed alone
+is not a reproducible sampling contract.
+
 A dependency-free deterministic generator must emit:
 
 1. the controlled trace;
@@ -167,6 +173,10 @@ The first slice freezes the model before any trajectory is sampled:
   service-before-arrival update, cyclic regime transition, candidate gammas,
   exact behavior and target policy vectors, predictor specifications, bounded
   outcomes, and future trace/catalog parameters;
+- the frozen input marks the initial state, language-independent PRNG/sampling
+  contracts, and prior/posterior/candidate/coordinate/tilt weights as required
+  inputs for the next trace-producing schema revision; it does not implement
+  or assign values to them;
 - `scripts/generate_controlled_queue_model.py` rejects duplicate keys, floats,
   noncanonical rationals, unknown fields, and schema drift, then compiles full
   exact rational kernel, policy, fixed-predictor, control-cost, and Brier-loss

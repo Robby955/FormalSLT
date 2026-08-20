@@ -97,49 +97,113 @@ def test_queue_step_and_refresh_formula_match_the_frozen_specification() -> None
             ]
 
 
-def test_control_cost_and_fixed_brier_losses_are_bounded() -> None:
-    _spec, tables = load_spec_and_tables()
+def test_control_cost_and_overload_outcome_use_exact_frozen_formulas() -> None:
+    spec, tables = load_spec_and_tables()
+    outcomes = spec["outcomes"]
 
-    control_costs = [Fraction(row["value"]) for row in tables["control_cost"]]
-    assert min(control_costs) == 0
-    assert max(control_costs) == 1
-    assert all(Fraction(0) <= value <= Fraction(1) for value in control_costs)
+    expected_cost = []
+    for action in spec["actions"]:
+        boost_indicator = int(action["id"] == "boost")
+        for destination in range(24):
+            next_queue = destination // 3
+            value = Fraction(
+                outcomes["control_cost_queue_weight"] * next_queue
+                + outcomes["control_cost_boost_weight"] * boost_indicator,
+                outcomes["control_cost_denominator"],
+            )
+            expected_cost.append(
+                {
+                    "action": action["id"],
+                    "next_state": destination,
+                    "value": generator.rational_text(value),
+                }
+            )
+    assert tables["control_cost"] == expected_cost
 
-    brier_losses = [
-        Fraction(value)
-        for predictor in tables["fixed_brier_loss"]
-        for row in predictor["rows"]
-        for value in row["losses"]
+    expected_outcome = [
+        {
+            "next_state": destination,
+            "value": int(destination // 3 >= outcomes["overload_queue_minimum"]),
+        }
+        for destination in range(24)
     ]
-    assert brier_losses
-    assert all(Fraction(0) <= value <= Fraction(1) for value in brier_losses)
+    assert tables["overload_outcome"] == expected_outcome
 
 
-def test_nominal_predictor_is_compiled_from_the_nominal_kernel() -> None:
-    _spec, tables = load_spec_and_tables()
-    nominal_kernel = next(
-        candidate for candidate in tables["candidate_kernels"] if candidate["id"] == "nominal"
-    )
-    nominal_predictor = next(
-        predictor
-        for predictor in tables["fixed_predictors"]
-        if predictor["id"] == "nominal_model_overload"
-    )
-    overload_states = {
-        row["next_state"]
-        for row in tables["overload_outcome"]
-        if row["value"] == 1
+def test_all_predictor_formulas_and_causal_declarations_are_exact() -> None:
+    spec, tables = load_spec_and_tables()
+    step_by_row = {
+        (row["state"], row["action"]): row["next_state"]
+        for row in tables["queue_step"]
     }
-
-    for kernel_row, predictor_row in zip(
-        nominal_kernel["rows"], nominal_predictor["rows"], strict=True
-    ):
-        kernel_probability = sum(
-            Fraction(probability)
-            for destination, probability in enumerate(kernel_row["probabilities"])
-            if destination in overload_states
+    overload_minimum = spec["outcomes"]["overload_queue_minimum"]
+    nominal_gamma = Fraction(
+        next(
+            candidate["gamma"]
+            for candidate in spec["candidates"]
+            if candidate["id"] == spec["nominal_candidate"]
         )
-        assert kernel_probability == Fraction(predictor_row["overload_probability"])
+    )
+    overload_state_count = sum(
+        destination // 3 >= overload_minimum for destination in range(24)
+    )
+    uniform_overload_probability = Fraction(overload_state_count, 24)
+
+    predictors = {predictor["id"]: predictor for predictor in tables["fixed_predictors"]}
+    assert set(predictors) == {
+        "global_climatology",
+        "queue_action_threshold",
+        "nominal_model_overload",
+    }
+    for predictor_id, predictor in predictors.items():
+        assert len(predictor["rows"]) == 48
+        for row in predictor["rows"]:
+            step_overloads = (
+                step_by_row[(row["state"], row["action"])] // 3 >= overload_minimum
+            )
+            if predictor_id == "global_climatology":
+                expected = Fraction(1, 4)
+            elif predictor_id == "queue_action_threshold":
+                expected = Fraction(3, 4) if step_overloads else Fraction(1, 4)
+            else:
+                expected = (1 - nominal_gamma) * uniform_overload_probability
+                if step_overloads:
+                    expected += nominal_gamma
+            assert Fraction(row["overload_probability"]) == expected
+
+    assert tables["causal_predictors"] == spec["causal_predictors"]
+    assert [predictor["id"] for predictor in tables["causal_predictors"]] == [
+        "global_beta",
+        "queue_band_action_beta",
+    ]
+
+
+def test_every_fixed_predictor_brier_entry_uses_the_exact_square_loss() -> None:
+    _spec, tables = load_spec_and_tables()
+    probability_by_row = {
+        (predictor["id"], row["state"], row["action"]): Fraction(
+            row["overload_probability"]
+        )
+        for predictor in tables["fixed_predictors"]
+        for row in predictor["rows"]
+    }
+    outcomes = [Fraction(row["value"]) for row in tables["overload_outcome"]]
+
+    assert [entry["id"] for entry in tables["fixed_brier_loss"]] == [
+        "global_climatology",
+        "queue_action_threshold",
+        "nominal_model_overload",
+    ]
+    for predictor in tables["fixed_brier_loss"]:
+        assert len(predictor["rows"]) == 48
+        for row in predictor["rows"]:
+            probability = probability_by_row[
+                (predictor["id"], row["state"], row["action"])
+            ]
+            actual = [Fraction(value) for value in row["losses"]]
+            expected = [(probability - outcome) ** 2 for outcome in outcomes]
+            assert actual == expected
+            assert all(Fraction(0) <= value <= Fraction(1) for value in actual)
 
 
 def test_generation_is_byte_deterministic_and_manifest_hashes_outputs() -> None:
@@ -164,27 +228,64 @@ def test_generation_is_byte_deterministic_and_manifest_hashes_outputs() -> None:
     assert "not a theorem-produced good path" in manifest["nonclaims"]
 
 
-def test_check_mode_fails_closed_on_stale_manifest(tmp_path: Path) -> None:
-    input_path = tmp_path / "model-v1.json"
-    tables_path = tmp_path / "model-v1-tables.json"
-    lean_path = tmp_path / "ControlledQueueData.lean"
-    manifest_path = tmp_path / "model-v1-manifest.json"
-    input_path.write_bytes(generator.DEFAULT_INPUT.read_bytes())
-    arguments = [
-        "--input",
-        str(input_path),
-        "--tables-output",
-        str(tables_path),
-        "--lean-output",
-        str(lean_path),
-        "--manifest-output",
-        str(manifest_path),
-    ]
+def test_next_trace_contract_is_recorded_without_generating_a_trace() -> None:
+    spec, tables = load_spec_and_tables()
+    expected = spec["generation"]["next_trace_slice_contract"]
 
-    assert generator.main(arguments) == 0
-    assert generator.main([*arguments, "--check"]) == 0
-    manifest_path.write_bytes(manifest_path.read_bytes() + b" ")
-    assert generator.main([*arguments, "--check"]) == 1
+    assert expected == {
+        "status": "OPEN",
+        "prng_sampling_requirement": (
+            "language-independent, versioned, byte-reproducible"
+        ),
+        "required_fields": [
+            "initial_state",
+            "prng_contract",
+            "sampling_contract",
+        ],
+        "required_exact_weight_tables": [
+            "prior_weights",
+            "posterior_weights",
+            "candidate_weights",
+            "coordinate_weights",
+            "tilt_weights",
+        ],
+    }
+    assert tables["generation_parameters"]["next_trace_slice_contract"] == expected
+    _tables_bytes, _lean_bytes, manifest_bytes = generator.expected_artifacts(
+        generator.DEFAULT_INPUT, generator.DEFAULT_TABLES, generator.DEFAULT_LEAN
+    )
+    assert json.loads(manifest_bytes)["parameters"]["next_trace_slice_contract"] == expected
+    assert "trace" not in tables
+
+
+def test_check_mode_fails_closed_on_stale_input_table_lean_or_manifest_bytes(
+    tmp_path: Path,
+) -> None:
+    for stale_role in ("input", "tables", "lean", "manifest"):
+        case = tmp_path / stale_role
+        case.mkdir()
+        paths = {
+            "input": case / "model-v1.json",
+            "tables": case / "model-v1-tables.json",
+            "lean": case / "ControlledQueueData.lean",
+            "manifest": case / "model-v1-manifest.json",
+        }
+        paths["input"].write_bytes(generator.DEFAULT_INPUT.read_bytes())
+        arguments = [
+            "--input",
+            str(paths["input"]),
+            "--tables-output",
+            str(paths["tables"]),
+            "--lean-output",
+            str(paths["lean"]),
+            "--manifest-output",
+            str(paths["manifest"]),
+        ]
+
+        assert generator.main(arguments) == 0
+        assert generator.main([*arguments, "--check"]) == 0
+        paths[stale_role].write_bytes(paths[stale_role].read_bytes() + b" ")
+        assert generator.main([*arguments, "--check"]) == 1
 
 
 def test_schema_rejects_floats_and_noncanonical_rationals() -> None:

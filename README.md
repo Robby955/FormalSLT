@@ -7,10 +7,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C025-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-260-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-135%2C898-brightgreen.svg)](#audit-commands)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-261-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-144%2C458-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
+
+The Lean-line badge follows the repository-wide library-plus-examples count.
+That total includes the 8,556-line generated
+`FormalSLT/Applications/ControlledQueueData.lean` exact-table module; those
+lines are generated definitions and data, not hand-written theorem source.
 
 FormalSLT is a Lean 4 library for **machine-checked statistical learning under
 adaptive and dependent data**. Its main results connect empirical-Bernstein
@@ -285,6 +290,7 @@ make api
 make downstream
 python3 -m pip install -r requirements-dev.txt
 make python-tests
+make check-controlled-queue-model
 bash scripts/check_axioms.sh
 bash scripts/check_witness_quality.sh
 FIDELITY_BASE_REF=origin/main bash scripts/check_statement_fidelity.sh

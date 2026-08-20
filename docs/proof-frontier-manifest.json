@@ -103,9 +103,9 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 217,
-    "library_and_example_lean_lines": 135898,
-    "library_lean_lines": 107019,
-    "library_modules": 260,
+    "library_and_example_lean_lines": 144458,
+    "library_lean_lines": 115579,
+    "library_modules": 261,
     "theorem_map_entries": 1029
   },
   "theorem_families": [

@@ -39,6 +39,9 @@ jobs:
       - name: Install repository-tool test dependency
         run: python3 -m pip install -r requirements-dev.txt
 
+      - name: Verify controlled-queue generated artifacts
+        run: make check-controlled-queue-model
+
       - name: Run repository-tool self-tests
         run: make python-tests
 
