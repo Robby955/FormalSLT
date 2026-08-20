@@ -80,7 +80,7 @@ files.
   It names — but does not discharge — the whole-supremum random-threshold
   obligation for `localizedUpperDeviation - 2·R̂_loc` (localized symmetrization
   plus McDiarmid/Azuma). Separately, the finite Bernstein
-  variance-localization route is now closed locally through
+  variance-localization route is checked in this build through
   `localizedFiniteClassBernsteinHighConfidence_empirical_nonpos`, which uses a
   Bennett/Bernstein MGF layer, an averaged Bernstein tail, the localized
   variance proxy `c·r`, a finite union bound, and the fixed-threshold payoff.

@@ -119,6 +119,8 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "transition kernel": [
         "empiricalstationary",
         "empirical stationary",
+        "empiricaltransition",
+        "empirical transition",
         "stationarypoisson",
         "stationary poisson",
         "transitioncoordinate",

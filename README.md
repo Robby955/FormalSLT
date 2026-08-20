@@ -59,7 +59,7 @@ The curated discovery catalog is in the
 The [scope ledger](./docs/assumptions-and-nonclaims.md) is authoritative for
 boundaries that do not fit in this table.
 
-### 1. Anytime empirical-Bernstein PAC-Bayes
+### 1. All-sample-size empirical-Bernstein PAC-Bayes
 
 The offline IID endpoint gives one posterior-independent event on an infinite
 product path space. Outside it, every <code>n ≥ 2</code> and every admissible
@@ -231,7 +231,7 @@ For the released v0.1 API:
     require FormalSLT from git
       "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 
-For the integrated theorem snapshot that begins the v0.2 freeze:
+For the pre-release base snapshot that began the v0.2 freeze:
 
     require FormalSLT from git
       "https://github.com/Robby955/FormalSLT.git" @
@@ -256,7 +256,7 @@ namespace remains available but is not covered by the v0.2 compatibility
 promise.
 
 Until the `v0.2.0` release exists, pin an exact tested commit instead of moving
-`main`. For example, the integrated theorem snapshot used to start the v0.2
+`main`. For example, the pre-release base snapshot used to start the v0.2
 freeze can be consumed from another Lake package with:
 
 ```lean

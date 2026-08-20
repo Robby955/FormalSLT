@@ -53,6 +53,7 @@ DOCGEN_PATHS = (
     "FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html",
     "FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html",
     "FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.html",
+    "FormalSLT/StochasticDynamics/EmpiricalTransitionConfidenceCountable.html",
 )
 
 FLAGSHIP_ENDPOINTS = (

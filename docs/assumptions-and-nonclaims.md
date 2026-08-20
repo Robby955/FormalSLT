@@ -265,9 +265,10 @@ separate measurability theorem is claimed.
 
 `StochasticDynamics.EmpiricalTransitionConfidenceCountable` replaces the
 finite transition-tilt catalog in this confidence layer with the predeclared
-natural-number geometric catalog. One outer-mass event is simultaneous over
-all atoms, times `n >= 2`, and transition coordinates. The explicit geometric
-atom has an unnormalized coordinate boundary tending to zero along every path.
+natural-number geometric catalog. It requires a fixed full-support coordinate
+prior and `0 < delta <= 1`. One outer-mass event is simultaneous over all
+atoms, times `n >= 2`, and transition coordinates. The explicit geometric atom
+has an unnormalized coordinate boundary tending to zero along every path.
 Normalized coordinate and row radii tend to zero only under a positive
 limiting visit frequency for the source row. The maximum selected
 candidate-kernel budget tends to zero only if those frequency assumptions hold
