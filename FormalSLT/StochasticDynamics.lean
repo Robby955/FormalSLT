@@ -29,6 +29,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog
 import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate
 import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure
@@ -71,7 +72,9 @@ action-conditioned environment-row control with the explicit inverse-floor
 factor.  For finite state-based Markov target policies, it exports a stationary
 target-policy OPE endpoint under a known environment and behavior policy,
 supplied invariant target laws and exact Poisson potentials, and declared
-overlap and span bounds.  It
+overlap and span bounds.  It also exports the deterministic robust-candidate
+bridge from action-conditioned environment-row total variation to induced
+target-policy drift and stationary-residual envelopes.  It
 also exports encountered-prefix dynamic comparators for finite catalogs of
 history-dependent target policies, including a known prefix/time-dependent
 environment kernel.  For a supplied target policy, it also exports an exact
