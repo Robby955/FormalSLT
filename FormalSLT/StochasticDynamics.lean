@@ -22,6 +22,7 @@ import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
 import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
+import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidenceCountable
 import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog
 import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness
@@ -52,7 +53,9 @@ It also exposes the robust fixed-candidate Poisson bridge under an explicit
 row-wise total-variation misspecification budget, together with the induced
 Dobrushin perturbation certificate and uniqueness of supplied invariant laws.
 It additionally exposes time-uniform empirical transition-coordinate and
-row-total-variation confidence certificates for unknown finite kernels.
+row-total-variation confidence certificates for unknown finite kernels,
+including countably allocated geometric tilt selection with vanishing
+statistical radii under positive limiting row-visit frequencies.
 Finite-simplex Cesaro compactness constructs an invariant PMF for every
 nonempty finite kernel; strict Dobrushin or candidate row-TV certificates
 upgrade existence to uniqueness.

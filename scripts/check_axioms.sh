@@ -385,6 +385,18 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_selectedEmpiricalCandidateRowTotalVariation_event"
   "FormalSLT.StochasticDynamics.exists_empiricalCandidateKernelTV_event"
   "FormalSLT.StochasticDynamics.exists_selectedEmpiricalKernelContraction_event"
+  "FormalSLT.StochasticDynamics.countableTransitionCoordinateBoundary_selected_tendsto_zero"
+  "FormalSLT.StochasticDynamics.countableTransitionCoordinateRadius_selected_tendsto_zero_of_visitFrequency"
+  "FormalSLT.StochasticDynamics.countableEmpiricalTransitionRowRadius_selected_tendsto_zero_of_visitFrequency"
+  "FormalSLT.StochasticDynamics.countableEmpiricalCandidateKernelTVBudget_selected_tendsto_zero"
+  "FormalSLT.StochasticDynamics.exists_countableEmpiricalTransitionCoordinate_event"
+  "FormalSLT.StochasticDynamics.exists_countableEmpiricalTransitionFrequency_event"
+  "FormalSLT.StochasticDynamics.exists_countableEmpiricalCandidateRowTotalVariation_event"
+  "FormalSLT.StochasticDynamics.exists_selectedCountableEmpiricalCandidateRowTotalVariation_event"
+  "FormalSLT.StochasticDynamics.exists_countableEmpiricalCandidateKernelTV_event"
+  "FormalSLT.StochasticDynamics.exists_selectedCountableEmpiricalCandidateKernelTV_event"
+  "FormalSLT.StochasticDynamics.exists_countableEmpiricalTransitionGeometric_event"
+  "FormalSLT.StochasticDynamics.exists_selectedCountableEmpiricalCandidateKernelTVGeometric_event"
   "FormalSLT.StochasticDynamics.depthTiltPolynomial_log_cost"
   "FormalSLT.StochasticDynamics.stationaryPoissonDepthSelectionBoundary_eq_explicit"
   "FormalSLT.StochasticDynamics.finiteDepthPoissonCorrectedTrajectoryScoreCatalog_mem_Icc"
@@ -777,6 +789,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant"
   echo "import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence"
+  echo "import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidenceCountable"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection"
   echo "import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog"
   echo "import FormalSLT.Applications"
@@ -855,6 +868,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate \
   FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant \
   FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence \
+  FormalSLT.StochasticDynamics.EmpiricalTransitionConfidenceCountable \
   FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection \
   FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog \
   FormalSLT.Applications \
