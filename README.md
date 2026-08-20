@@ -22,10 +22,12 @@ Poisson equations, contraction, and empirical transition certificates.
 [Browse declaration docs](https://robby955.github.io/FormalSLT/search.html) ·
 [Read the theorem map](./docs/theorem-map.md)
 
-FormalSLT v0.1.0 was released on May 8, 2026. The larger theorem program is now
-integrated in the v0.2 release candidate; the public API and release artifact
-are being prepared. Until the v0.2 tag exists, pin an exact commit rather than
-treating <code>main</code> as a compatibility promise.
+FormalSLT v0.1.0 was tagged on May 8, 2026; no GitHub Release or DOI was issued
+for that version. The larger theorem program is now integrated in the v0.2
+release candidate, while the public release artifact is being prepared. See
+the [changelog](./CHANGELOG.md) and [v0.2.0 candidate
+record](./docs/releases/v0.2.0.md). Until the v0.2 tag exists, pin an exact
+commit rather than treating <code>main</code> as a compatibility promise.
 
 ## Classification
 
