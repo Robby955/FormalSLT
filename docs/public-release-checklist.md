@@ -7,9 +7,17 @@ Use this before cutting a release candidate tag or public artifact snapshot.
 - Default branch is clear, normally `main`.
 - Default branch is protected before public launch:
   - require PRs before merging;
+  - require at least one approving review;
   - require CI to pass;
   - block force-pushes;
   - restrict direct pushes to maintainers if needed.
+- Enable immutable releases and a tag ruleset that blocks updates and deletion
+  of `v*` tags before creating `v0.2.0`. The resolver-bound smoke detects moves
+  during its run, but repository governance must prevent later mutation.
+- External governance status on 2026-08-20: immutable releases were disabled,
+  the repository had no rulesets, and branch protection required no approving
+  review. These are open publication gates; local source changes do not satisfy
+  them.
 - Repository "About" description matches proved scope. Recommended text:
 
   > Lean 4 formalizations of statistical learning theory and sequential
@@ -104,24 +112,55 @@ Do not run the release-tag smoke as a substitute for the pre-tag checks above.
 After the target tag exists on the public remote, confirm the automatically
 triggered **Release tag install smoke** workflow passes for both operating
 systems. The workflow also retains manual dispatch for a named existing tag.
-To run the checks locally:
+To run the identity checks locally, use a clean checkout at the resolved commit:
 
 ```bash
-bash scripts/check_tag_install.sh v0.2.0
+python3 scripts/release_tag_identity.py resolve \
+  --tag v0.2.0 \
+  --output formalslt-v0.2.0-resolution.json
+read -r tag_object resolved_commit < <(
+  python3 -c 'import json; x=json.load(open("formalslt-v0.2.0-resolution.json")); print(x["tag_object"], x["resolved_commit"])'
+)
+bash scripts/check_tag_install.sh \
+  v0.2.0 "$tag_object" "$resolved_commit"
 python3 scripts/generate_release_receipt.py \
   --tag v0.2.0 \
+  --expected-tag-object "$tag_object" \
+  --expected-commit "$resolved_commit" \
   --output formalslt-v0.2.0-exact-tag.json
 ```
 
-The script verifies the exact remote tag before creating a fresh downstream
-Lake package. It fails if the tag is absent or ambiguous, if Lake resolves a
-different commit, or if any of the four supported topic imports does not build.
-The receipt generator independently refuses a missing or malformed remote tag,
-a checkout at another commit, tracked changes, an unreadable Lean toolchain, or
-an unpinned Mathlib revision. Each hosted operating-system job uploads its JSON
-receipt only after the downstream build succeeds. The receipt itself asserts
-only tag identity and source-environment metadata; it does not assert that CI
-passed, a GitHub Release exists, or a DOI exists.
+The hosted workflow first resolves one tag object and peeled commit. For an
+automatic tag-push run, that commit must also equal the push event's exact
+`GITHUB_SHA`, preventing a move before the resolver starts from redefining the
+triggered release. Manual dispatch deliberately performs one live resolution
+of the named existing tag. Both operating-system jobs checkout the resolver
+commit and compare every later remote lookup and Lake installation against the
+resolver outputs. The final aggregate job requires one Linux and one macOS
+receipt with the same tag, object, commit, tree, Lean toolchain, and Mathlib
+revision, then checks the current remote once more. Missing, malformed, moved,
+or ambiguous tags; mismatched checkouts; tracked changes; unreadable
+toolchains; and unpinned Mathlib revisions are hard failures. The Elan
+installer URL is pinned to an exact upstream commit.
+
+Each operating-system job uploads its JSON receipt only after the downstream
+build succeeds. The receipt itself asserts only resolver-bound tag identity and
+source-environment metadata; CI success is established by the hosted job, not
+by a field in the receipt. Neither a receipt nor a green workflow asserts that
+a GitHub Release or DOI exists.
+
+## Citation and publication ordering
+
+- If `CITATION.cff` in the tagged artifact must contain the v0.2 DOI, first
+  reserve that DOI in an unpublished archival deposit. Do not publish the
+  deposit yet.
+- Commit the reserved DOI and version to `CITATION.cff`, review that final
+  metadata commit, and rerun the exact-SHA release gates before tagging.
+- Create the protected tag, require the matched Linux/macOS receipt workflow,
+  then publish the GitHub Release and archival deposit. Finally verify that the
+  now-public DOI resolves to the same version, tag, commit, and tree.
+- Merely reserving a DOI is not a release and must not be described as minted,
+  published, or resolving.
 
 In a fresh checkout or worktree, run `lake exe cache get` before the first
 build. If `lake` is not on `PATH`, use `~/.elan/bin/lake`. A cold Mathlib

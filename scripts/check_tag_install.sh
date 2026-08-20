@@ -1,21 +1,25 @@
 #!/usr/bin/env bash
 # Install an existing FormalSLT release tag into a fresh downstream Lake
-# package and build all four supported topic imports. Missing or ambiguous
-# remote tags are hard failures; this script never falls back to a branch.
+# package and build all four supported topic imports. The expected tag object
+# and peeled commit come from one prior resolver; later lookups only detect
+# mutation and never silently establish a new identity.
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 <release-tag>" >&2
+  echo "usage: $0 <release-tag> <expected-tag-object> <expected-commit>" >&2
 }
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 3 ]; then
   usage
   exit 64
 fi
 
 TAG="$1"
+EXPECTED_TAG_OBJECT="$2"
+EXPECTED_COMMIT="$3"
 REPOSITORY_URL="${FORMALSLT_REPOSITORY_URL:-https://github.com/Robby955/FormalSLT.git}"
 LAKE="${LAKE:-$HOME/.elan/bin/lake}"
+ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 
 if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
   echo "ERROR: release tag must be an exact semver-style tag such as v0.2.0: $TAG" >&2
@@ -27,55 +31,37 @@ if [[ ! "$REPOSITORY_URL" =~ ^[0-9A-Za-z._:/@+-]+$ ]]; then
   exit 64
 fi
 
+if [[ ! "$EXPECTED_TAG_OBJECT" =~ ^[0-9a-f]{40}$ ]]; then
+  echo "ERROR: expected tag object must be one full SHA-1 object id" >&2
+  exit 64
+fi
+
+if [[ ! "$EXPECTED_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+  echo "ERROR: expected commit must be one full SHA-1 commit id" >&2
+  exit 64
+fi
+
 if ! command -v "$LAKE" >/dev/null 2>&1; then
   echo "ERROR: Lake executable not found at $LAKE" >&2
   exit 69
 fi
 
-set +e
-tag_query="$(git ls-remote --refs "$REPOSITORY_URL" "refs/tags/$TAG" 2>&1)"
-tag_query_status=$?
-set -e
-if [ "$tag_query_status" -ne 0 ]; then
-  echo "ERROR: unable to query $REPOSITORY_URL for $TAG" >&2
-  printf '%s\n' "$tag_query" >&2
-  exit 2
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "ERROR: python3 is required for exact tag-identity checks" >&2
+  exit 69
 fi
 
-if [ -z "$tag_query" ]; then
-  echo "ERROR: remote tag $TAG does not exist at $REPOSITORY_URL" >&2
-  exit 3
-fi
+verify_remote_identity() {
+  python3 "$ROOT/scripts/release_tag_identity.py" verify \
+    --tag "$TAG" \
+    --repository-url "$REPOSITORY_URL" \
+    --expected-tag-object "$EXPECTED_TAG_OBJECT" \
+    --expected-commit "$EXPECTED_COMMIT"
+}
 
-tag_lines="$(printf '%s\n' "$tag_query" | wc -l | tr -d '[:space:]')"
-tag_object="$(printf '%s\n' "$tag_query" | awk -v ref="refs/tags/$TAG" '$2 == ref {print $1}')"
-if [ "$tag_lines" -ne 1 ] || [ -z "$tag_object" ]; then
-  echo "ERROR: remote tag query for $TAG was ambiguous" >&2
-  printf '%s\n' "$tag_query" >&2
-  exit 4
-fi
+# Detect a move after the resolver job and before dependency installation.
+verify_remote_identity
 
-set +e
-peeled_query="$(git ls-remote "$REPOSITORY_URL" "refs/tags/$TAG^{}" 2>&1)"
-peeled_query_status=$?
-set -e
-if [ "$peeled_query_status" -ne 0 ]; then
-  echo "ERROR: unable to resolve remote tag $TAG" >&2
-  printf '%s\n' "$peeled_query" >&2
-  exit 2
-fi
-
-if [ -n "$peeled_query" ]; then
-  expected_commit="$(printf '%s\n' "$peeled_query" | awk -v ref="refs/tags/$TAG^{}" '$2 == ref {print $1}')"
-else
-  expected_commit="$tag_object"
-fi
-if [[ ! "$expected_commit" =~ ^[0-9a-f]{40}$ ]]; then
-  echo "ERROR: remote tag $TAG did not resolve to one commit" >&2
-  exit 4
-fi
-
-ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 WORKDIR="$(mktemp -d "${TMPDIR:-/tmp}/formalslt-tag-install.XXXXXX")"
 trap 'rm -rf "$WORKDIR"' EXIT
 
@@ -110,12 +96,15 @@ if [ ! -d "$PACKAGE_DIR/.git" ]; then
 fi
 
 actual_commit="$(git -C "$PACKAGE_DIR" rev-parse HEAD)"
-if [ "$actual_commit" != "$expected_commit" ]; then
-  echo "ERROR: Lake installed $actual_commit, but $TAG resolves to $expected_commit" >&2
+if [ "$actual_commit" != "$EXPECTED_COMMIT" ]; then
+  echo "ERROR: Lake installed $actual_commit, but resolver fixed $EXPECTED_COMMIT" >&2
   exit 5
 fi
 
 "$LAKE" exe cache get
 "$LAKE" build Downstream
 
-echo "tag install smoke passed: $TAG -> $actual_commit"
+# Detect a move during dependency installation or the downstream build.
+verify_remote_identity
+
+echo "tag install smoke passed: $TAG ($EXPECTED_TAG_OBJECT) -> $actual_commit"

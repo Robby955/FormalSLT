@@ -240,8 +240,9 @@ For the pre-release base snapshot that began the v0.2 freeze:
         "e60b582fb2194bd09f74ca0ae839909cce68e36e"
 
 Then import one of the topic umbrellas above. The exact v0.2 tag will replace
-the snapshot instruction after the release gates, downstream builds, and DOI
-artifact are complete.
+the snapshot instruction only after protected-tag gates, downstream builds,
+matched identity receipts, the GitHub Release, and DOI publication are
+complete.
 
 ### Supported topic imports
 
@@ -342,9 +343,11 @@ repository verification gates.
 
 ## Citation
 
-Use [CITATION.cff](./CITATION.cff) for the current software citation. A
-versioned v0.2 citation and Zenodo DOI will be added only when the tagged
-release artifact exists.
+Use [CITATION.cff](./CITATION.cff) for the current software citation. If the
+tagged v0.2 file is to contain its DOI, that DOI will first be reserved in an
+unpublished archival deposit and added to the final reviewed source commit.
+The DOI is citable only after the deposit and GitHub Release are published and
+the DOI resolves to the exact tagged artifact.
 
 ## License
 

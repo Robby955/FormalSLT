@@ -16,11 +16,45 @@ permissions:
   contents: read
 
 jobs:
-  tag-install:
-    name: tag install (${{ matrix.os }})
+  resolve_tag:
+    name: resolve exact tag identity
+    runs-on: ubuntu-latest
     env:
       FORMALSLT_RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
       FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
+    outputs:
+      release_tag: ${{ steps.resolve.outputs.release_tag }}
+      tag_object: ${{ steps.resolve.outputs.tag_object }}
+      resolved_commit: ${{ steps.resolve.outputs.resolved_commit }}
+    steps:
+      # Load the resolver from the immutable event/workflow commit, not from a
+      # mutable tag lookup. Later jobs checkout only the resolved commit output.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Resolve requested tag once
+        id: resolve
+        run: |
+          resolver_args=(
+            resolve
+            --tag "$FORMALSLT_RELEASE_TAG"
+            --repository-url "$FORMALSLT_REPOSITORY_URL"
+            --github-output "$GITHUB_OUTPUT"
+          )
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            resolver_args+=(--expected-commit "$GITHUB_SHA")
+          fi
+          python3 scripts/release_tag_identity.py "${resolver_args[@]}"
+
+  tag_install:
+    name: tag install (${{ matrix.os }})
+    needs: resolve_tag
+    env:
+      FORMALSLT_RELEASE_TAG: ${{ needs.resolve_tag.outputs.release_tag }}
+      FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
+      FORMALSLT_EXPECTED_TAG_OBJECT: ${{ needs.resolve_tag.outputs.tag_object }}
+      FORMALSLT_EXPECTED_COMMIT: ${{ needs.resolve_tag.outputs.resolved_commit }}
     strategy:
       fail-fast: false
       matrix:
@@ -29,16 +63,20 @@ jobs:
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+          ref: ${{ needs.resolve_tag.outputs.resolved_commit }}
           fetch-depth: 0
 
       - name: Install elan
         run: |
-          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Install and build the tagged release downstream
-        run: bash scripts/check_tag_install.sh "$FORMALSLT_RELEASE_TAG"
+        run: |
+          bash scripts/check_tag_install.sh \
+            "$FORMALSLT_RELEASE_TAG" \
+            "$FORMALSLT_EXPECTED_TAG_OBJECT" \
+            "$FORMALSLT_EXPECTED_COMMIT"
 
       - name: Write exact-tag identity receipt
         id: receipt
@@ -48,6 +86,8 @@ jobs:
           python3 scripts/generate_release_receipt.py \
             --tag "$FORMALSLT_RELEASE_TAG" \
             --repository-url "$FORMALSLT_REPOSITORY_URL" \
+            --expected-tag-object "$FORMALSLT_EXPECTED_TAG_OBJECT" \
+            --expected-commit "$FORMALSLT_EXPECTED_COMMIT" \
             --output "$receipt_path"
           echo "path=$receipt_path" >> "$GITHUB_OUTPUT"
 
@@ -58,3 +98,33 @@ jobs:
           path: ${{ steps.receipt.outputs.path }}
           if-no-files-found: error
           retention-days: 90
+
+  verify_receipts:
+    name: verify matched receipt pair
+    needs: [resolve_tag, tag_install]
+    runs-on: ubuntu-latest
+    env:
+      FORMALSLT_RELEASE_TAG: ${{ needs.resolve_tag.outputs.release_tag }}
+      FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
+      FORMALSLT_EXPECTED_TAG_OBJECT: ${{ needs.resolve_tag.outputs.tag_object }}
+      FORMALSLT_EXPECTED_COMMIT: ${{ needs.resolve_tag.outputs.resolved_commit }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ needs.resolve_tag.outputs.resolved_commit }}
+
+      - name: Download both operating-system receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: formalslt-${{ needs.resolve_tag.outputs.release_tag }}-exact-tag-*
+          path: ${{ runner.temp }}/formalslt-release-receipts
+          merge-multiple: true
+
+      - name: Verify receipt agreement and final remote identity
+        run: |
+          python3 scripts/verify_release_receipts.py \
+            --receipt-dir "$RUNNER_TEMP/formalslt-release-receipts" \
+            --tag "$FORMALSLT_RELEASE_TAG" \
+            --repository-url "$FORMALSLT_REPOSITORY_URL" \
+            --expected-tag-object "$FORMALSLT_EXPECTED_TAG_OBJECT" \
+            --expected-commit "$FORMALSLT_EXPECTED_COMMIT"

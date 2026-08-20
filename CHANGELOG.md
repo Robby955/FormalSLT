@@ -38,9 +38,13 @@ v0.2 release, and no DOI is attached to them yet.
   literature ledger, and explicit proof-status and literature-fidelity labels.
 - Fail-closed statement-fidelity, witness-quality, transitive-axiom,
   module-reachability, API-snapshot, and tagged-install gates.
-- Fail-closed exact-tag identity receipts recording the resolved commit and
+- Resolver-bound exact-tag receipts recording the tag object, peeled commit,
   tree, Lean toolchain, pinned Mathlib revision, operating system, timestamp,
-  and hosted run URL without asserting a Release or DOI.
+  and hosted run URL. Automatic runs bind the initial resolution to the tag
+  push event commit; a final gate requires matching Linux/macOS receipts and
+  rechecks the remote without asserting a Release or DOI.
+- GitHub workflows fetch the Elan installer from exact upstream commit
+  `464c9d28395000a2a0128e07081e4956d50eced2` rather than a moving branch.
 - Candidate release notes and a publication checklist in
   [`docs/releases/v0.2.0.md`](docs/releases/v0.2.0.md).
 

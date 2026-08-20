@@ -11,71 +11,19 @@ import argparse
 import json
 import os
 import platform
-import re
-import subprocess
 import sys
 import tempfile
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
-
-TAG_RE = re.compile(r"^v[0-9]+\.[0-9]+\.[0-9]+(?:[.-][0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$")
-SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-DEFAULT_REPOSITORY_URL = "https://github.com/Robby955/FormalSLT.git"
-
-
-class ReceiptError(RuntimeError):
-    """A condition that prevents an exact-tag receipt from being issued."""
-
-
-def run(command: Sequence[str], *, cwd: Path | None = None) -> str:
-    completed = subprocess.run(
-        command,
-        cwd=cwd,
-        check=False,
-        capture_output=True,
-        text=True,
-    )
-    if completed.returncode != 0:
-        detail = completed.stderr.strip() or completed.stdout.strip()
-        suffix = f": {detail}" if detail else ""
-        raise ReceiptError(f"command failed ({' '.join(command)}){suffix}")
-    return completed.stdout.strip()
-
-
-def validate_sha(value: str, description: str) -> str:
-    if not SHA_RE.fullmatch(value):
-        raise ReceiptError(f"{description} is not one full SHA-1 commit/object id: {value!r}")
-    return value
-
-
-def resolve_remote_tag(repository_url: str, tag: str) -> tuple[str, str]:
-    tag_ref = f"refs/tags/{tag}"
-    peeled_ref = f"{tag_ref}^{{}}"
-    output = run(["git", "ls-remote", repository_url, tag_ref, peeled_ref])
-
-    rows: dict[str, list[str]] = {}
-    for line in output.splitlines():
-        fields = line.split()
-        if len(fields) != 2:
-            raise ReceiptError(f"malformed remote-tag row: {line!r}")
-        sha, ref = fields
-        if ref not in {tag_ref, peeled_ref}:
-            raise ReceiptError(f"unexpected remote-tag ref: {ref}")
-        rows.setdefault(ref, []).append(validate_sha(sha, f"object for {ref}"))
-
-    tag_objects = rows.get(tag_ref, [])
-    if not tag_objects:
-        raise ReceiptError(f"remote tag {tag} does not exist at {repository_url}")
-    if len(tag_objects) != 1:
-        raise ReceiptError(f"remote tag query for {tag} was ambiguous")
-
-    peeled_objects = rows.get(peeled_ref, [])
-    if len(peeled_objects) > 1:
-        raise ReceiptError(f"peeled remote tag query for {tag} was ambiguous")
-    resolved_commit = peeled_objects[0] if peeled_objects else tag_objects[0]
-    return tag_objects[0], resolved_commit
+from release_tag_identity import (
+    DEFAULT_REPOSITORY_URL,
+    ReceiptError,
+    run,
+    utc_timestamp,
+    validate_sha,
+    verify_expected_remote,
+)
 
 
 def read_toolchain(checkout: Path) -> str:
@@ -132,33 +80,32 @@ def infer_run_url(environment: dict[str, str]) -> str | None:
     return None
 
 
-def utc_timestamp() -> str:
-    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
-
-
 def build_receipt(
     *,
     checkout: Path,
     repository_url: str,
     tag: str,
+    expected_tag_object: str,
+    expected_commit: str,
     environment: dict[str, str],
 ) -> dict[str, Any]:
-    if not TAG_RE.fullmatch(tag):
-        raise ReceiptError(f"release tag is not exact semver-style syntax: {tag!r}")
-    if not repository_url:
-        raise ReceiptError("repository URL must not be empty")
     if not (checkout / ".git").exists():
         # Worktrees use a .git file; ordinary clones use a .git directory.
         raise ReceiptError(f"checkout is not a Git worktree: {checkout}")
 
-    tag_object, resolved_commit = resolve_remote_tag(repository_url, tag)
+    identity = verify_expected_remote(
+        repository_url,
+        tag,
+        expected_tag_object,
+        expected_commit,
+    )
     checkout_commit = validate_sha(
         run(["git", "rev-parse", "--verify", "HEAD^{commit}"], cwd=checkout),
         "checkout commit",
     )
-    if checkout_commit != resolved_commit:
+    if checkout_commit != expected_commit:
         raise ReceiptError(
-            f"checkout mismatch: {tag} resolves to {resolved_commit}, but HEAD is {checkout_commit}"
+            f"checkout mismatch: resolver fixed {expected_commit}, but HEAD is {checkout_commit}"
         )
 
     tracked_changes = run(
@@ -184,12 +131,12 @@ def build_receipt(
         operating_system["runner_os"] = runner_os
 
     return {
-        "schema": "formalslt.exact-tag-verification-receipt.v1",
-        "verification_scope": "tag_identity_and_source_environment_only",
+        "schema": "formalslt.exact-tag-verification-receipt.v2",
+        "verification_scope": "resolver_bound_tag_identity_and_source_environment_only",
         "tag": tag,
         "repository_url": repository_url,
-        "tag_object": tag_object,
-        "resolved_commit": resolved_commit,
+        "tag_object": identity.tag_object,
+        "resolved_commit": identity.resolved_commit,
         "resolved_tree": checkout_tree,
         "lean_toolchain": toolchain,
         "mathlib": {
@@ -231,6 +178,8 @@ def parse_args(argv: Sequence[str]) -> argparse.Namespace:
     parser.add_argument(
         "--checkout", type=Path, default=Path.cwd(), help="checkout expected at the tag commit"
     )
+    parser.add_argument("--expected-tag-object", required=True)
+    parser.add_argument("--expected-commit", required=True)
     parser.add_argument("--output", type=Path, required=True, help="JSON receipt path")
     return parser.parse_args(argv)
 
@@ -242,6 +191,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             checkout=args.checkout.resolve(),
             repository_url=args.repository_url,
             tag=args.tag,
+            expected_tag_object=args.expected_tag_object,
+            expected_commit=args.expected_commit,
             environment=dict(os.environ),
         )
         write_receipt(args.output, receipt)
