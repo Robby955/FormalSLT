@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-3%2C990-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-258-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-134%2C599-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C016-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-259-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-135%2C345-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -1592,6 +1592,34 @@ If `lake` is not on the shell path:
 The first command downloads the prebuilt Mathlib cache; later builds are
 incremental.
 
+### Supported topic imports
+
+The candidate v0.2 public boundaries are:
+
+- `FormalSLT.PACBayes`
+- `FormalSLT.Sequential`
+- `FormalSLT.StochasticDynamics`
+- `FormalSLT.VC`
+
+The 19 endorsed declarations and compatibility rules are documented in
+[Public API stability](./docs/api-stability.md). The rest of the transitive
+namespace remains available but is not covered by the v0.2 compatibility
+promise.
+
+Until the `v0.2.0` release exists, pin an exact tested commit instead of moving
+`main`. For example, the integrated theorem snapshot used to start the v0.2
+freeze can be consumed from another Lake package with:
+
+```lean
+require «formal-slt» from git
+  "https://github.com/Robby955/FormalSLT.git" @
+  "e60b582fb2194bd09f74ca0ae839909cce68e36e"
+```
+
+The compatibility commitment starts at the `v0.2.0` tag. The repository also
+contains a separate path-dependent consumer under `tests/downstream/`; it
+builds one concrete module through each public topic import.
+
 ## Audit commands
 
 Run the complete release check from the repository root:
@@ -1601,6 +1629,10 @@ lake exe cache get
 lake build FormalSLT
 make examples
 make tutorials
+make api
+make downstream
+python3 -m pip install -r requirements-dev.txt
+make python-tests
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
@@ -1613,7 +1645,9 @@ git diff --check
 
 Expected results:
 
-- the root build, recursive example sweep, and tutorials finish successfully;
+- the root build, recursive example sweep, tutorials, public API snapshot,
+  v0.1 replay, downstream consumer, and repository-tool self-tests finish
+  successfully;
 - public checkers print only standard Lean/Mathlib axioms;
 - the proof-debt scans find no executable `sorry`, `admit`, or custom axiom;
 - generated proof-frontier, badge, and documentation anchors are current; and

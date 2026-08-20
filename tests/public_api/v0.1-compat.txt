@@ -1,0 +1,40 @@
+FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant.{u_1, u_2} {ι : Type u_1} {Z : Type u_2}
+  [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z] {μ : MeasureTheory.Measure Z}
+  [MeasureTheory.IsProbabilityMeasure μ] {n : ℕ} (hn : 0 < n) {A : (Fin n → Z) → ι} {ℓ : ι → Z → ℝ} {β B : ℝ}
+  (hβ : 0 ≤ β) (hB : 0 < B) (hstab : FormalSLT.AlgorithmicStability.UniformStability A ℓ β)
+  (hℓ_bdd : ∀ (i : ι) (z : Z), |ℓ i z| ≤ B) (hℓ_int : ∀ (i : ι), MeasureTheory.Integrable (ℓ i) μ)
+  (hF_meas :
+    MeasureTheory.StronglyMeasurable fun S =>
+      ∫ (z : Z), ℓ (A S) z ∂μ - FormalSLT.AlgorithmicStability.trainingLoss A ℓ S)
+  (hF_int :
+    MeasureTheory.Integrable (fun S => ∫ (z : Z), ℓ (A S) z ∂μ - FormalSLT.AlgorithmicStability.trainingLoss A ℓ S)
+      (MeasureTheory.Measure.pi fun x => μ))
+  (h_expected_gap :
+    (∫ (s : Fin n → Z),
+        ∫ (z : Z), ℓ (A s) z ∂μ -
+          FormalSLT.AlgorithmicStability.trainingLoss A ℓ s ∂MeasureTheory.Measure.pi fun x => μ) ≤
+      β)
+  {δ : ℝ} (hδ_pos : 0 < δ) (hδ_le : δ ≤ 1) :
+  (MeasureTheory.Measure.pi fun x => μ).real
+      {S |
+        β + (2 * β + 2 * B / ↑n) * √(-2 * ↑n * Real.log δ) ≤
+          ∫ (z : Z), ℓ (A S) z ∂μ - FormalSLT.AlgorithmicStability.trainingLoss A ℓ S} ≤
+    δ
+'FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss.{u_1, u_2} {ι : Type u_1}
+  {Z : Type u_2} [Fintype ι] [MeasurableSpace ι] [MeasurableSingletonClass ι] [Nonempty Z] [MeasurableSpace Z]
+  [StandardBorelSpace Z] {μ : MeasureTheory.Measure Z} [MeasureTheory.IsProbabilityMeasure μ] {n : ℕ} (hn : 0 < n)
+  {A : (Fin n → Z) → ι} {ℓ : ι → Z → ℝ} {β B : ℝ} (hβ : 0 ≤ β) (hB : 0 < B)
+  (hstab : FormalSLT.AlgorithmicStability.UniformStability A ℓ β) (hA : Measurable A)
+  (hℓ_meas : ∀ (i : ι), Measurable (ℓ i)) (hℓ_bdd : ∀ (i : ι) (z : Z), |ℓ i z| ≤ B) {δ : ℝ} (hδ_pos : 0 < δ)
+  (hδ_le : δ ≤ 1) :
+  (MeasureTheory.Measure.pi fun x => μ).real
+      {S |
+        β + (2 * β + 2 * B / ↑n) * √(-2 * ↑n * Real.log δ) ≤
+          ∫ (z : Z), ℓ (A S) z ∂μ - FormalSLT.AlgorithmicStability.trainingLoss A ℓ S} ≤
+    δ
+'FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

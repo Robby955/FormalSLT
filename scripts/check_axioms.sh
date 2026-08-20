@@ -19,6 +19,11 @@ LAKE="${LAKE:-$HOME/.elan/bin/lake}"
 
 # Flagship public theorems to audit (fully qualified).
 THEOREMS=(
+  "FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant"
+  "FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant"
+  "FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant_of_boundedLoss"
+  "FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss"
+  "FormalSLT.AnytimeValid.eProcess_typeI_control"
   "FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily"
   "FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective"
   "FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail"
@@ -693,6 +698,8 @@ trap 'rm -rf "$WORK"' EXIT
 CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
+  echo "import FormalSLT.Stability.BousquetElisseeff"
+  echo "import FormalSLT.AnytimeValid.EProcess"
   echo "import FormalSLT.VC"
   echo "import FormalSLT.PACBayes.FinitePMFBridge"
   echo "import FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly"
@@ -769,6 +776,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 echo "== building flagship modules =="
 "$LAKE" build \
+  FormalSLT.Stability.BousquetElisseeff \
+  FormalSLT.AnytimeValid.EProcess \
   FormalSLT.VC \
   FormalSLT.PACBayes.FinitePMFBridge \
   FormalSLT.TestTimeMeta.FlagshipFourComponentAssembly \

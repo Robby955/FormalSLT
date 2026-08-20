@@ -85,6 +85,15 @@ lake build FormalSLT
 # Run the v0.1 theorem and axiom checker:
 lake env lean examples/CheckV01Usability.lean
 
+# Check the candidate public API, tagged-example compatibility, and a separate
+# downstream Lake consumer:
+make api
+make downstream
+
+# Run self-tests for the repository audit scripts:
+python3 -m pip install -r requirements-dev.txt
+make python-tests
+
 # Verify axioms for a specific theorem:
 printf 'import FormalSLT\n#print axioms FormalSLT.VC.SampleComplexity.vc_erm_excessRisk_tail\n' | lake env lean --stdin
 
@@ -100,10 +109,11 @@ If `lake` is not on your shell path, use `~/.elan/bin/lake` for the same
 commands. Avoid starting a cold Mathlib source build; it is slow, disk-heavy,
 and usually means the cache step was skipped.
 
-The current test surface is Lean-native: full library builds, example checker
-files, `#check` / `#print axioms` audits, and CI scans for proof debt. There is
-no JavaScript or Python test suite in this repo because the library itself is a
-Lean 4 formalization.
+The main test surface is Lean-native: full library builds, example checker
+files, exact public-signature snapshots, tagged-example replay, downstream
+package builds, `#check` / `#print axioms` audits, and CI scans for proof debt.
+Small Python unit tests cover the repository audit scripts; there is no
+JavaScript application test suite.
 
 ## What we are looking for
 

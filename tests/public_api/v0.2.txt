@@ -1,0 +1,445 @@
+== examples/stable_imports/CheckPACBayesV02.lean ==
+FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event.{u_1,
+    u_2}
+  {Θ : Type u_1} {Z : Type u_2} [MeasurableSpace Θ] [MeasurableSpace Z] [Fintype Z] [DecidableEq Z]
+  [MeasurableSingletonClass Z] (p : Z → ℝ) (hp : FormalSLT.PACBayesKL.IsPMF p) (prior : MeasureTheory.Measure Θ)
+  [MeasureTheory.IsProbabilityMeasure prior] (ell : Θ → Z → ℝ)
+  (hell_meas : ∀ (z : Z), MeasureTheory.StronglyMeasurable fun θ => ell θ z)
+  (hell : ∀ (θ : Θ) (z : Z), ell θ z ∈ Set.Icc 0 1) {delta : ℝ} (hdelta : 0 < delta) (hdelta_one : delta < 1) :
+  ∃ E,
+    MeasurableSet E ∧
+      (MeasureTheory.Measure.infinitePi fun x => hp.toPMF.toMeasure) E ≤ ENNReal.ofReal delta ∧
+        ∀ x ∉ E,
+          ∀ (n : ℕ),
+            2 ≤ n →
+              ∀ (posterior : MeasureTheory.Measure Θ),
+                MeasureTheory.IsProbabilityMeasure posterior →
+                  posterior.AbsolutelyContinuous prior →
+                    MeasureTheory.Integrable (MeasureTheory.llr posterior prior) posterior →
+                      ∫ (θ : Θ), FormalSLT.PACBayesFiniteProductMGF.finitePopulationRisk p ell θ ∂posterior <
+                        ∫ (θ : Θ),
+                              FormalSLT.PACBayesFiniteProductMGF.finiteEmpiricalRisk ell θ
+                                (FormalSLT.PACBayes.InfiniteProductMeasureBridge.natSamplePrefix n x) ∂posterior +
+                            5 / 2 *
+                              √((∫ (θ : Θ),
+                                      FormalSLT.PACBayes.FiniteEmpiricalVariance.finiteEmpiricalVariance ell θ
+                                        (FormalSLT.PACBayes.InfiniteProductMeasureBridge.natSamplePrefix n
+                                          x) ∂posterior) *
+                                    FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.continuousInfiniteEmpiricalBernsteinComplexity
+                                      n delta prior posterior /
+                                  ↑n) +
+                          5 *
+                              FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.continuousInfiniteEmpiricalBernsteinComplexity
+                                n delta prior posterior /
+                            ↑n
+FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.exists_continuousForwardPredictableMeanBesselPACBayes_event.{u_1,
+    u_2, u_3}
+  {Theta : Type u_1} {Tau : Type u_2} {Omega : Type u_3} [MeasurableSpace Theta] [Fintype Tau] [DecidableEq Tau]
+  {mOmega : MeasurableSpace Omega} {mu : MeasureTheory.Measure Omega} {F : MeasureTheory.Filtration ℕ mOmega}
+  [MeasureTheory.IsProbabilityMeasure mu] (prior : MeasureTheory.Measure Theta)
+  [MeasureTheory.IsProbabilityMeasure prior] {weight : Tau → ℝ} (hweight_pos : ∀ (j : Tau), 0 < weight j)
+  (hweight_sum : ∑ j, weight j = 1) {X mean : Theta → ℕ → Omega → ℝ} {lam : Tau → ℝ} {delta : ℝ} (hdelta : 0 < delta)
+  (hlam : ∀ (j : Tau), 0 < lam j) (hlam_one : ∀ (j : Tau), lam j < 1)
+  (hX_adapted : ∀ (theta : Theta), FormalSLT.AnytimeValid.IncrementAdapted F (X theta))
+  (hmean_adapted : ∀ (theta : Theta), MeasureTheory.StronglyAdapted F (mean theta))
+  (hX_unit : ∀ (theta : Theta) (k : ℕ) (omega : Omega), X theta k omega ∈ Set.Icc 0 1)
+  (hmean_unit : ∀ (theta : Theta) (k : ℕ) (omega : Omega), mean theta k omega ∈ Set.Icc 0 1)
+  (hmean : ∀ (theta : Theta) (k : ℕ), mu[X theta k | ↑F k] =ᵐ[mu] mean theta k)
+  (hX_parameter : ∀ (k : ℕ) (omega : Omega), MeasureTheory.StronglyMeasurable fun theta => X theta k omega)
+  (hmean_parameter : ∀ (k : ℕ) (omega : Omega), MeasureTheory.StronglyMeasurable fun theta => mean theta k omega)
+  (hjoint_ambient :
+    ∀ (j : Tau) (n : ℕ),
+      MeasureTheory.StronglyMeasurable fun q =>
+        FormalSLT.AnytimeValid.forwardPredictableMeanEmpiricalBernsteinLowerProcess (X q.2) (mean q.2) (lam j) n q.1)
+  (hjoint_filtered :
+    ∀ (j : Tau) (n : ℕ),
+      MeasureTheory.StronglyMeasurable fun q =>
+        FormalSLT.AnytimeValid.forwardPredictableMeanEmpiricalBernsteinLowerProcess (X q.2) (mean q.2) (lam j) n q.1) :
+  ∃ goodEvent,
+    mu.real goodEventᶜ ≤ delta ∧
+      ∀ omega ∈ goodEvent,
+        ∀ (j : Tau) (posterior : MeasureTheory.Measure Theta),
+          MeasureTheory.IsProbabilityMeasure posterior →
+            posterior.AbsolutelyContinuous prior →
+              MeasureTheory.Integrable (MeasureTheory.llr posterior prior) posterior →
+                ∀ (n : ℕ),
+                  2 ≤ n →
+                    ∫ (theta : Theta),
+                        FormalSLT.AnytimeValid.forwardPrefixMean (fun k => mean theta k omega) n ∂posterior <
+                      ∫ (theta : Theta),
+                          FormalSLT.AnytimeValid.forwardPrefixMean (fun k => X theta k omega) n ∂posterior +
+                        FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.continuousForwardPredictableMeanBesselBoundary
+                          prior weight lam X posterior delta j n omega
+FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event.{u_1, u_2} {ι : Type u_1}
+  {Ω : Type u_2} [Fintype ι] [DecidableEq ι] [Nonempty ι] {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω}
+  {ℱ : MeasureTheory.Filtration ℕ mΩ} [MeasureTheory.IsProbabilityMeasure μ] {prior : ι → ℝ}
+  (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {weight : ℕ → ℝ} (hweight_pos : ∀ (j : ℕ), 0 < weight j)
+  (hweight_sum_one : HasSum weight 1) {X : ι → ℕ → Ω → ℝ} {mean : ι → ℝ} {lam : ℕ → ℝ} {delta : ℝ} (hdelta : 0 < delta)
+  (hlam : ∀ (j : ℕ), 0 < lam j) (hlam1 : ∀ (j : ℕ), lam j < 1)
+  (hX_adapted : ∀ (i : ι), FormalSLT.AnytimeValid.IncrementAdapted ℱ (X i))
+  (hX_unit : ∀ (i : ι) (k : ℕ) (ω : Ω), 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+  (hmean : ∀ (i : ι) (k : ℕ), μ[X i k | ↑ℱ k] =ᵐ[μ] fun x => mean i) :
+  ∃ goodEvent,
+    μ.real goodEventᶜ ≤ delta ∧
+      ∀ ω ∈ goodEvent,
+        ∀ (j : ℕ) (posterior : ι → ℝ),
+          FormalSLT.PACBayesKL.IsPMF posterior →
+            ∀ (n : ℕ),
+              2 ≤ n →
+                FormalSLT.PACBayesKL.posteriorAverage posterior mean <
+                  (FormalSLT.PACBayesKL.posteriorAverage posterior fun i =>
+                      FormalSLT.AnytimeValid.forwardPrefixMean (fun k => X i k ω) n) +
+                    FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesBoundary prior
+                      weight lam X posterior delta j n ω
+FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event.{u_1,
+    u_2}
+  {ι : Type u_1} {Ω : Type u_2} [Fintype ι] [DecidableEq ι] [Nonempty ι] {mΩ : MeasurableSpace Ω}
+  {μ : MeasureTheory.Measure Ω} {ℱ : MeasureTheory.Filtration ℕ mΩ} [MeasureTheory.IsProbabilityMeasure μ]
+  {prior : ι → ℝ} (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {X : ι → ℕ → Ω → ℝ} {mean : ι → ℝ} {delta : ℝ}
+  (hdelta : 0 < delta) (hdelta1 : delta ≤ 1) (hX_adapted : ∀ (i : ι), FormalSLT.AnytimeValid.IncrementAdapted ℱ (X i))
+  (hX_unit : ∀ (i : ι) (k : ℕ) (ω : Ω), 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+  (hmean : ∀ (i : ι) (k : ℕ), μ[X i k | ↑ℱ k] =ᵐ[μ] fun x => mean i) (posterior : Ω → ℕ → ι → ℝ)
+  (hposterior : ∀ (ω : Ω) (n : ℕ), FormalSLT.PACBayesKL.IsPMF (posterior ω n)) :
+  ∃ goodEvent,
+    μ.real goodEventᶜ ≤ delta ∧
+      (∀ ω ∈ goodEvent,
+          ∀ (n : ℕ),
+            2 ≤ n →
+              FormalSLT.PACBayesKL.posteriorAverage (posterior ω n) mean <
+                (FormalSLT.PACBayesKL.posteriorAverage (posterior ω n) fun i =>
+                    FormalSLT.AnytimeValid.forwardPrefixMean (fun k => X i k ω) n) +
+                  FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesBoundary prior
+                    FormalSLT.PACBayes.ForwardBesselPACBayesCountable.polynomialForwardTiltWeight
+                    FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTilt X (posterior ω n) delta
+                    (FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTiltIndex n) n ω) ∧
+        ∀ ω ∈ goodEvent,
+          Filter.Tendsto
+            (fun n =>
+              FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesBoundary prior
+                FormalSLT.PACBayes.ForwardBesselPACBayesCountable.polynomialForwardTiltWeight
+                FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTilt X (posterior ω n) delta
+                (FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTiltIndex n) n ω)
+            Filter.atTop (nhds 0)
+FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_allPosteriors_bound.{u_1, u_2, u_3} {ι : Type u_1}
+  {κ : Type u_2} {Ω : Type u_3} [Fintype ι] [Nonempty ι] [Fintype κ] {mΩ : MeasurableSpace Ω}
+  {μ : MeasureTheory.Measure Ω} {ℱ : MeasureTheory.Filtration ℕ mΩ} [MeasureTheory.IsProbabilityMeasure μ]
+  {prior : ι → ℝ} (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {weight : κ → ℝ}
+  (hweight : FormalSLT.PACBayesKL.IsFullSupportPMF weight) {X : ι → ℕ → Ω → ℝ} {sigma2 b : ℝ} {lam : κ → ℝ} {delta : ℝ}
+  (hδ : 0 < delta) (hb : 0 < b) (hσ : 0 ≤ sigma2) (hlam : ∀ (j : κ), 0 < lam j) (hblam : ∀ (j : κ), b * lam j < 3)
+  (hX_meas : ∀ (i : ι) (k : ℕ), Measurable (X i k)) (hX_int : ∀ (i : ι) (k : ℕ), MeasureTheory.Integrable (X i k) μ)
+  (hX_adapted : ∀ (i : ι), FormalSLT.AnytimeValid.IncrementAdapted ℱ (X i))
+  (h_integrable :
+    ∀ (i : ι) (j : κ) (n : ℕ),
+      MeasureTheory.Integrable (FormalSLT.AnytimeValid.subGammaExponentialProcess (X i) sigma2 b (lam j) n) μ)
+  (hbound : ∀ (i : ι) (k : ℕ), ∀ᵐ (ω : Ω) ∂μ, |X i k ω| ≤ b) (hcenter : ∀ (i : ι) (k : ℕ), μ[X i k | ↑ℱ k] =ᵐ[μ] 0)
+  (hvar : ∀ (i : ι) (k : ℕ), μ[fun ω => X i k ω ^ 2 | ↑ℱ k] ≤ᵐ[μ] fun x => sigma2) :
+  μ.real
+      (FormalSLT.PACBayes.TimeUniform.timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure prior weight X sigma2 b lam
+        delta) ≤
+    delta
+'FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.exists_continuousForwardPredictableMeanBesselPACBayes_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_allPosteriors_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+== examples/stable_imports/CheckSequentialV02.lean ==
+FormalSLT.AnytimeValid.eProcess_typeI_control.{u_1} {Ω : Type u_1} {m0 : MeasurableSpace Ω}
+  {μ : MeasureTheory.Measure Ω} {𝒢 : MeasureTheory.Filtration ℕ m0} [MeasureTheory.IsProbabilityMeasure μ]
+  {E : ℕ → Ω → ℝ} (hE : FormalSLT.AnytimeValid.EProcess μ 𝒢 E) {α : ℝ} (hα : 0 < α) (n : ℕ) :
+  μ.real {ω | 1 / α ≤ FormalSLT.AnytimeValid.finiteRunningMax E n ω} ≤ α
+FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event.{u_1, u_2} {κ : Type u_1}
+  {Ω : Type u_2} [Fintype κ] [DecidableEq κ] [mΩ : MeasurableSpace Ω] {μ : MeasureTheory.Measure Ω}
+  [MeasureTheory.IsProbabilityMeasure μ] {ℱ : MeasureTheory.Filtration ℕ mΩ} {weight lam : κ → ℝ} {X : ℕ → Ω → ℝ}
+  {mean delta : ℝ} (hδ : 0 < delta) (hweight_pos : ∀ (j : κ), 0 < weight j) (hweight_sum_one : ∑ j, weight j = 1)
+  (hlam : ∀ (j : κ), 0 < lam j) (hlam1 : ∀ (j : κ), lam j < 1)
+  (hX_adapted : FormalSLT.AnytimeValid.IncrementAdapted ℱ X) (hX_unit : ∀ (k : ℕ) (ω : Ω), 0 ≤ X k ω ∧ X k ω ≤ 1)
+  (hmean : ∀ (k : ℕ), μ[X k | ↑ℱ k] =ᵐ[μ] fun x => mean) (select : Ω → ℕ → κ) :
+  ∃ goodEvent,
+    μ.real goodEventᶜ ≤ delta ∧
+      ∀ ω ∈ goodEvent,
+        ∀ (n : ℕ),
+          2 ≤ n →
+            mean <
+              FormalSLT.AnytimeValid.forwardPrefixMean (fun k => X k ω) n +
+                FormalSLT.AnytimeValid.forwardEmpiricalBernsteinTiltCatalogBoundary weight lam X delta (select ω n) n ω
+FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore_expectation_le_one.{u_1, u_2} {Omega : Type u_1}
+  {I : Type u_2} [Fintype Omega] [Fintype I] (p : Omega → ℝ) (hp : FormalSLT.PACBayesKL.IsPMF p) (weight : I → ℝ)
+  (hweight_nonneg : ∀ (i : I), 0 ≤ weight i) (hweight_sum : ∑ i, weight i ≤ 1) (score : I → Omega → ℝ)
+  (hscore_nonneg : ∀ (i : I) (omega : Omega), 0 ≤ score i omega)
+  (hscore_mean : ∀ (i : I), FormalSLT.AnytimeValid.SelectionCost.finiteExpectation p (score i) ≤ 1)
+  (select : Omega → I) :
+  FormalSLT.AnytimeValid.SelectionCost.finiteExpectation p
+      (FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore weight score select) ≤
+    1
+FormalSLT.AnytimeValid.AllocationLogLog.frequently_geometricEpoch_loglogCost (weight : ℕ → ℝ)
+  (hweight_pos : ∀ (k : ℕ), 0 < weight k) (hweight_summable : Summable weight)
+  (hweight_total : ∑' (k : ℕ), weight k ≤ 1) :
+  ∃ᶠ (k : ℕ) in Filter.atTop,
+    FormalSLT.AnytimeValid.AllocationLogLog.geometricEpochIteratedLog k - (Real.log 2 + Real.log (Real.log 4)) ≤
+      Real.log (1 / weight k)
+FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSign_anytimeBoundary_frequently_ge_mul_sqrt (boundary : ℕ → ℝ)
+  {delta : ENNReal}
+  (hvalid :
+    FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSignPathLaw
+        (FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.oneSidedCrossingEvent
+          FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSignSum boundary) ≤
+      delta)
+  (hdelta : delta < 1) (C : ℝ) (hC : 0 ≤ C) : ∃ᶠ (n : ℕ) in Filter.atTop, C * √↑n ≤ boundary n
+'FormalSLT.AnytimeValid.eProcess_typeI_control' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore_expectation_le_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.AnytimeValid.AllocationLogLog.frequently_geometricEpoch_loglogCost' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSign_anytimeBoundary_frequently_ge_mul_sqrt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+== examples/stable_imports/CheckStochasticDynamicsV02.lean ==
+FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event.{u_1, u_2}
+  {ι : Type u_1} {Z : Type u_2} [Fintype ι] [DecidableEq ι] [Nonempty ι] [Fintype Z] [MeasurableSpace Z]
+  [MeasurableSingletonClass Z] (K : (n : ℕ) → ProbabilityTheory.Kernel (↥(Finset.Iic n) → Z) Z)
+  [∀ (n : ℕ), ProbabilityTheory.IsMarkovKernel (K n)] (x0 : Z)
+  {score : ι → FormalSLT.StochasticDynamics.TrajectoryScore Z}
+  (hscore : ∀ (i : ι) (n : ℕ) (u : ↥(Finset.Iic n) → Z) (y : Z), score i n u y ∈ Set.Icc 0 1) {prior : ι → ℝ}
+  (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {delta : ℝ} (hdelta : 0 < delta) (hdelta1 : delta ≤ 1)
+  (posterior : (ℕ → Z) → ℕ → ι → ℝ) (hposterior : ∀ (x : ℕ → Z) (n : ℕ), FormalSLT.PACBayesKL.IsPMF (posterior x n)) :
+  ∃ goodEvent,
+    (FormalSLT.StochasticDynamics.trajectoryMeasure K x0).real goodEventᶜ ≤ delta ∧
+      (∀ x ∈ goodEvent,
+          ∀ (n : ℕ),
+            2 ≤ n →
+              FormalSLT.StochasticDynamics.trajectoryPosteriorAverageConditionalRisk K score (posterior x n) n x <
+                FormalSLT.StochasticDynamics.trajectoryPosteriorEmpiricalPrequentialRisk score (posterior x n) n x +
+                  FormalSLT.StochasticDynamics.trajectoryCountableEmpiricalBernsteinPACBayesBoundary prior score
+                    (posterior x n) delta
+                    (FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTiltIndex n) n x) ∧
+        ∀ x ∈ goodEvent,
+          Filter.Tendsto
+            (fun n =>
+              FormalSLT.StochasticDynamics.trajectoryCountableEmpiricalBernsteinPACBayesBoundary prior score
+                (posterior x n) delta (FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTiltIndex n) n
+                x)
+            Filter.atTop (nhds 0)
+FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event.{u_1, u_2} {ι : Type u_1}
+  {Z : Type u_2} [Fintype ι] [DecidableEq ι] [Nonempty ι] [Fintype Z] [Nonempty Z] [MeasurableSpace Z]
+  [MeasurableSingletonClass Z] (P : Z → PMF Z) (stationary : PMF Z)
+  (hstationary : FormalSLT.StochasticDynamics.IsInvariantPMF P stationary) (x0 : Z)
+  {score : ι → FormalSLT.StochasticDynamics.MarkovTransitionScore Z}
+  (hscore : ∀ (i : ι) (x y : Z), score i x y ∈ Set.Icc 0 1) {alpha D : ℝ} (halpha : 0 ≤ alpha) (halpha1 : alpha < 1)
+  (hDnonneg : 0 ≤ D) (hcontract : FormalSLT.StochasticDynamics.IsOscillationContraction P alpha)
+  (hD :
+    ∀ (i : ι),
+      FormalSLT.StochasticDynamics.finiteOscillation
+          (FormalSLT.StochasticDynamics.centeredMarkovRowRisk P stationary (score i)) ≤
+        D)
+  {prior : ι → ℝ} (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {delta : ℝ} (hdelta : 0 < delta)
+  (hdelta1 : delta ≤ 1) (posterior : (ℕ → Z) → ℕ → ι → ℝ)
+  (hposterior : ∀ (x : ℕ → Z) (n : ℕ), FormalSLT.PACBayesKL.IsPMF (posterior x n)) :
+  ∃ goodEvent,
+    (FormalSLT.StochasticDynamics.markovPathMeasure P x0).real goodEventᶜ ≤ delta ∧
+      (∀ x ∈ goodEvent,
+          ∀ (n : ℕ),
+            2 ≤ n →
+              FormalSLT.StochasticDynamics.stationaryPosteriorMarkovRisk P stationary score (posterior x n) <
+                FormalSLT.StochasticDynamics.empiricalTransitionPosteriorRisk score (posterior x n) n x +
+                  FormalSLT.StochasticDynamics.stationaryPoissonDepthSelectionBoundary P stationary score alpha D prior
+                    (posterior x n) delta (FormalSLT.StochasticDynamics.logarithmicPoissonDepth n)
+                    (FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTiltIndex n) n x) ∧
+        ∀ x ∈ goodEvent,
+          Filter.Tendsto
+            (fun n =>
+              FormalSLT.StochasticDynamics.stationaryPoissonDepthSelectionBoundary P stationary score alpha D prior
+                (posterior x n) delta (FormalSLT.StochasticDynamics.logarithmicPoissonDepth n)
+                (FormalSLT.PACBayes.ForwardBesselPACBayesCountable.geometricForwardTiltIndex n) n x)
+            Filter.atTop (nhds 0)
+FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event.{u_1, u_2, u_3, u_4}
+  {C : Type u_1} {I : Type u_2} {Z : Type u_3} {Tau : Type u_4} [Fintype C] [Fintype I] [DecidableEq I] [Nonempty I]
+  [Fintype Z] [Nonempty Z] [MeasurableSpace Z] [MeasurableSingletonClass Z] [Fintype Tau] [DecidableEq Tau]
+  (P : Z → PMF Z) (x0 : Z) (Q : C → Z → PMF Z) (reference : C → PMF Z)
+  {score : I → FormalSLT.StochasticDynamics.MarkovTransitionScore Z}
+  (hscore : ∀ (i : I) (x y : Z), score i x y ∈ Set.Icc 0 1) {D : C → ℝ} (hDnonneg : ∀ (c : C), 0 ≤ D c)
+  (hcoefficient : ∀ (c : C), FormalSLT.StochasticDynamics.finiteDobrushinCoefficient (Q c) < 1)
+  (hD :
+    ∀ (c : C) (i : I),
+      FormalSLT.StochasticDynamics.finiteOscillation
+          (FormalSLT.StochasticDynamics.centeredMarkovRowRisk (Q c) (reference c) (score i)) ≤
+        D c)
+  {candidateWeight : C → ℝ} (hcandidateWeight : FormalSLT.PACBayesKL.IsFullSupportPMF candidateWeight) {prior : I → ℝ}
+  (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior)
+  {transitionPrior : FormalSLT.StochasticDynamics.TransitionCoordinate Z → ℝ}
+  (htransitionPrior : FormalSLT.PACBayesKL.IsFullSupportPMF transitionPrior) {transitionWeight : Tau → ℝ}
+  (htransitionWeight : FormalSLT.PACBayesKL.IsFullSupportPMF transitionWeight) {transitionLam : Tau → ℝ}
+  (htransitionLam : ∀ (k : Tau), 0 < transitionLam k) (htransitionLam_one : ∀ (k : Tau), transitionLam k < 1)
+  {deltaRisk deltaTransition : ℝ} (hdeltaRisk : 0 < deltaRisk) (hdeltaTransition : 0 < deltaTransition)
+  (selectCandidate : (ℕ → Z) → ℕ → C) (selectDepth selectRiskTilt : (ℕ → Z) → ℕ → ℕ)
+  (selectTransitionTilt : (ℕ → Z) → ℕ → Tau) (selectPosterior : (ℕ → Z) → ℕ → I → ℝ)
+  (hselectPosterior : ∀ (x : ℕ → Z) (n : ℕ), FormalSLT.PACBayesKL.IsPMF (selectPosterior x n)) :
+  ∃ goodEvent,
+    (FormalSLT.StochasticDynamics.markovPathMeasure P x0).real goodEventᶜ ≤ deltaRisk + deltaTransition ∧
+      ∀ x ∈ goodEvent,
+        ∀ (n : ℕ),
+          2 ≤ n →
+            (∀ (z : Z), 0 < FormalSLT.StochasticDynamics.transitionVisitMass z n x) →
+              have c := selectCandidate x n;
+              have m := selectDepth x n;
+              have j := selectRiskTilt x n;
+              have k := selectTransitionTilt x n;
+              have posterior := selectPosterior x n;
+              have eta :=
+                FormalSLT.StochasticDynamics.empiricalCandidateKernelTVBudget (Q c) transitionPrior transitionWeight
+                  transitionLam deltaTransition k n x;
+              FormalSLT.StochasticDynamics.stationaryPosteriorMarkovRisk P
+                    (FormalSLT.StochasticDynamics.finiteInvariantPMF P) score posterior <
+                  FormalSLT.StochasticDynamics.empiricalTransitionPosteriorRisk score posterior n x +
+                    FormalSLT.StochasticDynamics.empiricalStationaryCatalogBoundary Q reference score D candidateWeight
+                      prior posterior deltaRisk eta c m j n x ∧
+                FormalSLT.StochasticDynamics.finiteDobrushinCoefficient P ≤
+                    FormalSLT.StochasticDynamics.finiteDobrushinCoefficient (Q c) + 2 * eta ∧
+                  FormalSLT.StochasticDynamics.IsOscillationContraction P
+                      (FormalSLT.StochasticDynamics.finiteDobrushinCoefficient (Q c) + 2 * eta) ∧
+                    (FormalSLT.StochasticDynamics.finiteDobrushinCoefficient (Q c) + 2 * eta < 1 →
+                      ∀ (stationaryOne stationaryTwo : PMF Z),
+                        FormalSLT.StochasticDynamics.IsInvariantPMF P stationaryOne →
+                          FormalSLT.StochasticDynamics.IsInvariantPMF P stationaryTwo → stationaryOne = stationaryTwo)
+FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event.{u_1, u_2, u_3, u_4} {Z : Type u_1} {A : Type u_2}
+  {ι : Type u_3} {τ : Type u_4} [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z] [Fintype A]
+  [MeasurableSpace A] [MeasurableSingletonClass A] [Fintype ι] [DecidableEq ι] [Nonempty ι] [Fintype τ] [DecidableEq τ]
+  [Nonempty τ] (P : Z → A → PMF Z) (β : FormalSLT.StochasticDynamics.BehaviorPolicy Z A)
+  (initial : FormalSLT.StochasticDynamics.ControlledObservation Z A)
+  (π : ι → FormalSLT.StochasticDynamics.MarkovTargetPolicy Z A) (stationary : ι → PMF Z)
+  (hinvariant :
+    ∀ (i : ι),
+      FormalSLT.StochasticDynamics.IsInvariantPMF (FormalSLT.StochasticDynamics.targetPolicyKernel P (π i))
+        (stationary i))
+  (score : ι → FormalSLT.StochasticDynamics.TargetPolicyTransitionScore Z A)
+  (hscore : ∀ (i : ι) (z : Z) (a : A) (y : Z), score i z a y ∈ Set.Icc 0 1) (potential : ι → Z → ℝ) {B C : ℝ}
+  (hB : 0 ≤ B) (hC : 0 < C) (hspan : ∀ (i : ι) (z y : Z), |potential i y - potential i z| ≤ B)
+  (hpoisson :
+    ∀ (i : ι),
+      FormalSLT.StochasticDynamics.IsExactTargetPolicyPoissonSolution P (π i) (stationary i) (score i) (potential i))
+  (hoverlap :
+    ∀ (i : ι),
+      FormalSLT.StochasticDynamics.ControlledPolicyOverlap β
+        (FormalSLT.StochasticDynamics.markovTargetPolicyAsHistory (π i)))
+  (hratio :
+    ∀ (i : ι),
+      FormalSLT.StochasticDynamics.ControlledPolicyRatioBound β
+        (FormalSLT.StochasticDynamics.markovTargetPolicyAsHistory (π i)) C)
+  {prior : ι → ℝ} (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {weight : τ → ℝ}
+  (hweight : FormalSLT.PACBayesKL.IsFullSupportPMF weight) {lam : τ → ℝ} {delta : ℝ} (hdelta : 0 < delta)
+  (hlam : ∀ (j : τ), 0 < lam j) (hlam_one : ∀ (j : τ), lam j < 1) :
+  ∃ goodEvent,
+    (FormalSLT.StochasticDynamics.controlledTrajectoryMeasure P β initial).real goodEventᶜ ≤ delta ∧
+      ∀ x ∈ goodEvent,
+        ∀ (j : τ) (posterior : ι → ℝ),
+          FormalSLT.PACBayesKL.IsPMF posterior →
+            ∀ (n : ℕ),
+              2 ≤ n →
+                FormalSLT.StochasticDynamics.stationaryTargetPolicyPosteriorRisk P π stationary score posterior <
+                  FormalSLT.StochasticDynamics.stationaryTargetPolicyOPEBoundary prior weight lam β π score potential B
+                    C posterior delta j n x
+FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event.{u_1, u_2, u_3}
+  {Theta : Type u_1} {Tau : Type u_2} {Z : Type u_3} [MeasurableSpace Theta] [MeasurableSpace Z] [Fintype Tau]
+  [DecidableEq Tau] (K : (n : ℕ) → ProbabilityTheory.Kernel (↥(Finset.Iic n) → Z) Z)
+  [∀ (n : ℕ), ProbabilityTheory.IsMarkovKernel (K n)] (x0 : Z)
+  (score : Theta → FormalSLT.StochasticDynamics.TrajectoryScore Z)
+  (hscore_unit : ∀ (theta : Theta) (n : ℕ) (u : ↥(Finset.Iic n) → Z) (y : Z), score theta n u y ∈ Set.Icc 0 1)
+  (hscore_joint : FormalSLT.StochasticDynamics.JointlyStronglyMeasurableParameterizedTrajectoryScore score)
+  (prior : MeasureTheory.Measure Theta) [MeasureTheory.IsProbabilityMeasure prior] {weight : Tau → ℝ}
+  (hweight_pos : ∀ (j : Tau), 0 < weight j) (hweight_sum : ∑ j, weight j = 1) {lam : Tau → ℝ} {delta : ℝ}
+  (hdelta : 0 < delta) (hlam : ∀ (j : Tau), 0 < lam j) (hlam_one : ∀ (j : Tau), lam j < 1) :
+  ∃ goodEvent,
+    (FormalSLT.StochasticDynamics.trajectoryMeasure K x0).real goodEventᶜ ≤ delta ∧
+      ∀ x ∈ goodEvent,
+        ∀ (j : Tau) (posterior : MeasureTheory.Measure Theta),
+          MeasureTheory.IsProbabilityMeasure posterior →
+            posterior.AbsolutelyContinuous prior →
+              MeasureTheory.Integrable (MeasureTheory.llr posterior prior) posterior →
+                ∀ (n : ℕ),
+                  2 ≤ n →
+                    FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorAverageConditionalRisk K score posterior n
+                        x <
+                      FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorEmpiricalPrequentialRisk score posterior
+                          n x +
+                        FormalSLT.StochasticDynamics.continuousTrajectoryEmpiricalBernsteinPACBayesBoundary prior weight
+                          lam score posterior delta j n x
+FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw.{u_1, u_2, u_3}
+  {ι : Type u_1} {κ : Type u_2} {Z : Type u_3} [Fintype ι] [Nonempty ι] [Fintype κ] [Fintype Z] [MeasurableSpace Z]
+  [MeasurableSingletonClass Z] (P : Z → PMF Z) (initial : PMF Z) {f : Z → ℝ} {q : ι → Z → ℝ}
+  (hf : ∀ (z : Z), f z ∈ Set.Icc 0 1) (hq : ∀ (i : ι) (z : Z), q i z ∈ Set.Icc 0 1) {prior : ι → ℝ}
+  (hprior : FormalSLT.PACBayesKL.IsFullSupportPMF prior) {weight : κ → ℝ}
+  (hweight : FormalSLT.PACBayesKL.IsFullSupportPMF weight) {lam : κ → ℝ} {delta : ℝ} (hdelta : 0 < delta)
+  (hlam : ∀ (j : κ), 0 < lam j) (hlam_three : ∀ (j : κ), lam j < 3) :
+  ∃ E,
+    MeasurableSet E ∧
+      (FormalSLT.StochasticDynamics.markovPathMeasureInitial P initial).real E ≤ delta ∧
+        ∀ x ∉ E,
+          ∀ (j : κ) (posterior : ι → ℝ),
+            FormalSLT.PACBayesKL.IsPMF posterior →
+              ∀ (n : ℕ),
+                0 < n →
+                  FormalSLT.StochasticDynamics.markovPosteriorAverageConditionalRisk P f q posterior n x <
+                    FormalSLT.StochasticDynamics.markovPosteriorEmpiricalPrequentialRisk f q posterior n x +
+                        lam j / (8 * (1 - lam j / 3)) +
+                      (FormalSLT.PACBayesKL.klDiv posterior prior + Real.log (1 / (delta * weight j))) / (↑n * lam j)
+'FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+== examples/stable_imports/CheckVCV02.lean ==
+FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily.{u_1} {α : Type u_1} [DecidableEq α] [Fintype α]
+  (𝒜 : Finset (Finset α)) : 𝒜.card ≤ ∑ k ∈ Finset.Iic 𝒜.vcDim, (Fintype.card α).choose k
+FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective.{u_1, u_2} {ι : Type u_1} {Z : Type u_2}
+  [Fintype ι] [Nonempty ι] {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 < B) (hℓ_bdd : ∀ (i : ι) (z : Z), |ℓ i z| ≤ B) {n : ℕ}
+  (z : Fin n → Z) (hn : 0 < n) (hEffCard : 1 < (FormalSLT.VC.Rademacher.effectiveClass ℓ z).card) :
+  FormalSLT.Rademacher.FiniteSample.empiricalRademacherComplexity ℓ z ≤
+    B * √(2 * Real.log ↑(FormalSLT.VC.Rademacher.effectiveClass ℓ z).card / ↑n)
+FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail.{u_1, u_2} {ι : Type u_1} {Z : Type u_2} [Fintype ι] [Nonempty ι]
+  [MeasurableSpace Z] [Nonempty Z] [StandardBorelSpace Z] {μ : MeasureTheory.Measure Z}
+  [MeasureTheory.IsProbabilityMeasure μ] {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 < B) (hℓ_meas : ∀ (i : ι), Measurable (ℓ i))
+  (hℓ_bdd : ∀ (i : ι) (z : Z), |ℓ i z| ≤ B) {n d : ℕ} (hn : 0 < n) (hd : 0 < d) (hdn : d ≤ n)
+  (hGrowth_uniform :
+    ∀ (z : Fin n → Z), (FormalSLT.VC.Rademacher.effectiveClass ℓ z).card ≤ ∑ k ∈ Finset.range (d + 1), n.choose k)
+  (hGrowth_neg :
+    ∀ (z : Fin n → Z),
+      (FormalSLT.VC.Rademacher.effectiveClass (fun i w => -ℓ i w) z).card ≤ ∑ k ∈ Finset.range (d + 1), n.choose k)
+  (hhat : (Fin n → Z) → ι) (hERM : ∀ (S : Fin n → Z), FormalSLT.ERM.IsERM (FormalSLT.Risk.empiricalRisk S ℓ) (hhat S))
+  (i_star : ι) {ε : ℝ} (hε : 0 ≤ ε) :
+  (FormalSLT.GhostSample.piMeasure μ n).real
+      {S |
+        FormalSLT.Risk.risk μ ℓ i_star + 4 * B * √(2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / ↑n) + 2 * ε ≤
+          FormalSLT.Risk.risk μ ℓ (hhat S)} ≤
+    2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2))
+'FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail' depends on axioms: [propext, Classical.choice, Quot.sound]

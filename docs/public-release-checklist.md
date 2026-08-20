@@ -36,6 +36,10 @@ Use this before cutting a release candidate tag or public artifact snapshot.
 ```bash
 lake exe cache get
 lake build FormalSLT
+make api
+make downstream
+python3 -m pip install -r requirements-dev.txt
+make python-tests
 lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
@@ -48,6 +52,15 @@ git diff --check
 Expected result:
 
 - full Lean build passes;
+- the 19 allowlisted v0.2 declaration types and axiom reports match their
+  committed snapshot;
+- the two retained v0.1 compatibility declaration types match their committed
+  snapshot;
+- all exact Lean examples from the annotated v0.1.0 tag compile against the
+  current library;
+- the independent downstream Lake package builds through all four supported
+  topic imports;
+- repository-tool Python self-tests pass;
 - public theorem checker prints only the standard Lean/Mathlib axioms for the public
   spine;
 - conditional sub-Gamma and unit-interval Dudley checkers print only the
@@ -69,15 +82,17 @@ source build is not part of the release checklist.
 - Public summaries state only checked theorem facts and explicit non-claims;
   keep internal process notes, private branches, and unverifiable attribution
   out of release copy.
-- Claims about continuous Dudley, infinite classes, separability, sharp
-  McDiarmid, and continuous-posterior PAC-Bayes remain future work unless the
-  exact theorem is proved.
+- Public summaries distinguish the checked sharp McDiarmid and
+  continuous-posterior endpoints from open full continuous-Dudley,
+  separability, all-real-tilt, and unrestricted stationary/mixing claims.
 - Contributing guide mentions contribution responsibility, branch flow,
   required checks, and good first issues.
 - README and public docs use exact human-readable line counts after the count
   command has been rerun on the launch snapshot.
 - External references point readers to a tag or exact commit SHA, not a moving
   branch.
+- `docs/api-stability.md` names the exact supported imports and declarations;
+  release notes list every deprecation or intentional signature change.
 
 ## Artifact split
 

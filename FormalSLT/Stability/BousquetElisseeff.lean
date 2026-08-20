@@ -393,6 +393,65 @@ theorem bousquet_elisseeff_expectedGap_variant
   -- Apply monotonicity of measure under set inclusion.
   exact le_trans (measureReal_mono h_set_subset (measure_ne_top _ _)) h_centered
 
+/-- Compatibility form of `bousquet_elisseeff_expectedGap_variant` with the
+larger Azuma-style threshold used by FormalSLT v0.1.
+
+The statement is retained for source compatibility. New code should use the
+sharper McDiarmid endpoint `bousquet_elisseeff_expectedGap_variant`. -/
+@[deprecated bousquet_elisseeff_expectedGap_variant (since := "2026-08-19")]
+theorem bousquet_elisseeff_azuma_expectedGap_variant
+    [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
+    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {n : ℕ} (hn : 0 < n)
+    {A : (Fin n → Z) → ι} {ℓ : ι → Z → ℝ} {β B : ℝ}
+    (hβ : 0 ≤ β) (hB : 0 < B)
+    (hstab : UniformStability A ℓ β)
+    (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    (hℓ_int : ∀ i, Integrable (ℓ i) μ)
+    (hF_meas : StronglyMeasurable (fun S : Fin n → Z =>
+        ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S))
+    (hF_int : Integrable (fun S : Fin n → Z =>
+        ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S)
+      (Measure.pi (fun _ : Fin n => μ)))
+    (h_expected_gap :
+      ∫ s, (∫ z, ℓ (A s) z ∂μ - trainingLoss A ℓ s)
+        ∂(Measure.pi (fun _ : Fin n => μ)) ≤ β)
+    {δ : ℝ} (hδ_pos : 0 < δ) (hδ_le : δ ≤ 1) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | β + (2 * β + 2 * B / n) *
+                Real.sqrt (- 2 * (n : ℝ) * Real.log δ)
+              ≤ ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S}
+      ≤ δ := by
+  have hsharp := bousquet_elisseeff_expectedGap_variant
+    hn hβ hB hstab hℓ_bdd hℓ_int hF_meas hF_int h_expected_gap hδ_pos hδ_le
+  have hn_real : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  have hlog : Real.log δ ≤ 0 := Real.log_nonpos hδ_pos.le hδ_le
+  have hinner :
+      - (n : ℝ) * Real.log δ / 2 ≤ - 2 * (n : ℝ) * Real.log δ := by
+    nlinarith
+  have hsqrt :
+      Real.sqrt (- (n : ℝ) * Real.log δ / 2) ≤
+        Real.sqrt (- 2 * (n : ℝ) * Real.log δ) :=
+    Real.sqrt_le_sqrt hinner
+  have hcoeff : 0 ≤ 2 * β + 2 * B / (n : ℝ) := by positivity
+  have hthreshold :
+      β + (2 * β + 2 * B / n) *
+          Real.sqrt (- (n : ℝ) * Real.log δ / 2) ≤
+        β + (2 * β + 2 * B / n) *
+          Real.sqrt (- 2 * (n : ℝ) * Real.log δ) := by
+    simpa [add_comm] using
+      (add_le_add_left (mul_le_mul_of_nonneg_left hsqrt hcoeff) β)
+  have hsubset :
+      {S : Fin n → Z | β + (2 * β + 2 * B / n) *
+              Real.sqrt (- 2 * (n : ℝ) * Real.log δ)
+            ≤ ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S} ⊆
+        {S | β + (2 * β + 2 * B / n) *
+              Real.sqrt (- (n : ℝ) * Real.log δ / 2)
+            ≤ ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S} := by
+    intro S hS
+    exact hthreshold.trans hS
+  exact le_trans (measureReal_mono hsubset (measure_ne_top _ _)) hsharp
+
 /-! ### Step 4b: Bounded-loss high-probability wrappers -/
 
 /-- A bounded measurable hypothesis loss is integrable under a probability
@@ -553,6 +612,61 @@ theorem bousquet_elisseeff_expectedGap_variant_of_boundedLoss
   exact bousquet_elisseeff_expectedGap_variant
     hn hβ hB hstab hℓ_bdd hℓ_int hF_meas hF_int h_expected_gap
     hδ_pos hδ_le
+
+/-- Compatibility bounded-loss wrapper with the larger Azuma-style threshold
+used by FormalSLT v0.1.
+
+The statement is retained for source compatibility. New code should use the
+sharper `bousquet_elisseeff_expectedGap_variant_of_boundedLoss`. -/
+@[deprecated bousquet_elisseeff_expectedGap_variant_of_boundedLoss
+  (since := "2026-08-19")]
+theorem bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss
+    [Fintype ι] [MeasurableSpace ι] [MeasurableSingletonClass ι]
+    [Nonempty Z] [MeasurableSpace Z] [StandardBorelSpace Z]
+    {μ : Measure Z} [IsProbabilityMeasure μ]
+    {n : ℕ} (hn : 0 < n)
+    {A : (Fin n → Z) → ι} {ℓ : ι → Z → ℝ} {β B : ℝ}
+    (hβ : 0 ≤ β) (hB : 0 < B)
+    (hstab : UniformStability A ℓ β)
+    (hA : Measurable A)
+    (hℓ_meas : ∀ i, Measurable (ℓ i))
+    (hℓ_bdd : ∀ i z, |ℓ i z| ≤ B)
+    {δ : ℝ} (hδ_pos : 0 < δ) (hδ_le : δ ≤ 1) :
+    (Measure.pi (fun _ : Fin n => μ)).real
+        {S | β + (2 * β + 2 * B / n) *
+                Real.sqrt (- 2 * (n : ℝ) * Real.log δ)
+              ≤ ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S}
+      ≤ δ := by
+  have hsharp := bousquet_elisseeff_expectedGap_variant_of_boundedLoss
+    (ι := ι) (Z := Z) (μ := μ)
+    hn hβ hB hstab hA hℓ_meas hℓ_bdd hδ_pos hδ_le
+  have hn_real : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn
+  have hlog : Real.log δ ≤ 0 := Real.log_nonpos hδ_pos.le hδ_le
+  have hinner :
+      - (n : ℝ) * Real.log δ / 2 ≤ - 2 * (n : ℝ) * Real.log δ := by
+    nlinarith
+  have hsqrt :
+      Real.sqrt (- (n : ℝ) * Real.log δ / 2) ≤
+        Real.sqrt (- 2 * (n : ℝ) * Real.log δ) :=
+    Real.sqrt_le_sqrt hinner
+  have hcoeff : 0 ≤ 2 * β + 2 * B / (n : ℝ) := by positivity
+  have hthreshold :
+      β + (2 * β + 2 * B / n) *
+          Real.sqrt (- (n : ℝ) * Real.log δ / 2) ≤
+        β + (2 * β + 2 * B / n) *
+          Real.sqrt (- 2 * (n : ℝ) * Real.log δ) := by
+    simpa [add_comm] using
+      (add_le_add_left (mul_le_mul_of_nonneg_left hsqrt hcoeff) β)
+  have hsubset :
+      {S : Fin n → Z | β + (2 * β + 2 * B / n) *
+              Real.sqrt (- 2 * (n : ℝ) * Real.log δ)
+            ≤ ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S} ⊆
+        {S | β + (2 * β + 2 * B / n) *
+              Real.sqrt (- (n : ℝ) * Real.log δ / 2)
+            ≤ ∫ z, ℓ (A S) z ∂μ - trainingLoss A ℓ S} := by
+    intro S hS
+    exact hthreshold.trans hS
+  exact le_trans (measureReal_mono hsubset (measure_ne_top _ _)) hsharp
 
 /-! ### Step 5: ERM corollary (uniform stability `β = c₀ / n`) -/
 

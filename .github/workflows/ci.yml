@@ -11,11 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Install elan
         run: |
           curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
-          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Get Mathlib cache
         run: lake exe cache get
@@ -32,6 +34,15 @@ jobs:
             echo "$f"
             lake env lean "$f"
           done
+
+      - name: Verify public API and v0.1 compatibility
+        run: make api
+
+      - name: Install repository-tool test dependency
+        run: python3 -m pip install -r requirements-dev.txt
+
+      - name: Run repository-tool self-tests
+        run: make python-tests
 
       - name: Verify documentation source anchors
         run: |
@@ -112,3 +123,21 @@ jobs:
           find FormalSLT/ -name '*.lean' -exec cat {} + | wc -l
           echo "Module count:"
           find FormalSLT/ -name '*.lean' | wc -l
+
+  downstream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Get downstream Mathlib cache
+        working-directory: tests/downstream
+        run: lake exe cache get
+
+      - name: Build downstream consumer
+        working-directory: tests/downstream
+        run: lake build Downstream

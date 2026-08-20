@@ -234,6 +234,10 @@ lake env lean examples/CheckShowcaseTheorems.lean
 #check FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant
 #print axioms FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant
 
+-- v0.1 compatibility: exact weaker Azuma-threshold statement.
+#check FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant
+#print axioms FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant
+
 #check FormalSLT.AlgorithmicStability.boundedLoss_hypothesisLoss_integrable
 #print axioms FormalSLT.AlgorithmicStability.boundedLoss_hypothesisLoss_integrable
 
@@ -248,6 +252,10 @@ lake env lean examples/CheckShowcaseTheorems.lean
 
 #check FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant_of_boundedLoss
 #print axioms FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant_of_boundedLoss
+
+-- v0.1 compatibility: exact weaker bounded-loss statement.
+#check FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss
+#print axioms FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss
 
 #check FormalSLT.AlgorithmicStability.bousquet_elisseeff_uniform_stability_corollary
 #print axioms FormalSLT.AlgorithmicStability.bousquet_elisseeff_uniform_stability_corollary

@@ -39,4 +39,19 @@ index:
 	python3 scripts/generate_proof_frontier_manifest.py
 	python3 scripts/generate_theorem_index.py
 
-.PHONY: sweep build examples tutorials verify-random-refresh-load index
+# Check the candidate v0.2 signatures and exact v0.1 example compatibility.
+api:
+	bash scripts/check_public_api_snapshot.sh
+	lake env lean examples/CheckShowcaseTheorems.lean
+	lake env lean examples/CheckV01Usability.lean
+	bash scripts/check_v01_tag_examples.sh
+
+# Build a separate Lake package that consumes the four public topic imports.
+downstream:
+	cd tests/downstream && lake exe cache get && lake build Downstream
+
+# Run the Python self-tests for repository audit tooling.
+python-tests:
+	python3 -m pytest -q tests
+
+.PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests

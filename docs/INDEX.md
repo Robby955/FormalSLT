@@ -657,9 +657,9 @@ filter box, open `docs/INDEX.html`.
 | stability | `boundedLoss_selectedLoss_integrable` | theorem | `FormalSLT/AlgorithmicStability.lean:843` | Bounded finite-class selected loss is integrable under μⁿ × μ |
 | stability | `boundedLoss_updateSelectedLoss_integrable` | theorem | `FormalSLT/AlgorithmicStability.lean:868` | Bounded coordinate-updated selected loss is integrable under μⁿ × μ |
 | stability | `bousquet_elisseeff_expectedGap_variant` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:348` | Stability high-probability bound with explicit expected-gap and measurability hypotheses |
-| stability | `bousquet_elisseeff_expectedGap_variant_of_boundedLoss` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:519` | Bounded-loss finite-class wrapper for the sharp stability high-probability theorem |
-| stability | `bousquet_elisseeff_uniform_stability_corollary` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:577` | β = c0 / n stability corollary for the sharp variant |
-| stability | `bousquet_elisseeff_uniform_stability_corollary_of_boundedLoss` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:611` | Bounded-loss finite-class β = c0 / n high-probability stability corollary |
+| stability | `bousquet_elisseeff_expectedGap_variant_of_boundedLoss` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:578` | Bounded-loss finite-class wrapper for the sharp stability high-probability theorem |
+| stability | `bousquet_elisseeff_uniform_stability_corollary` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:691` | β = c0 / n stability corollary for the sharp variant |
+| stability | `bousquet_elisseeff_uniform_stability_corollary_of_boundedLoss` | theorem | `FormalSLT/Stability/BousquetElisseeff.lean:725` | Bounded-loss finite-class β = c0 / n high-probability stability corollary |
 | PAC-Bayes | `catoni_fixedLambda_budget_eq_sqrt` | theorem | `FormalSLT/PACBayesBoundedLoss.lean:469` | Fixed-λ Catoni penalty optimized to a square-root budget |
 | Bernstein, Rademacher | `centeredSecondMoment_le_of_bernstein_localized` | theorem | `FormalSLT/Rademacher/Localized.lean:2126` | Variance proxy for the centered excess-loss deviation is bounded by c * r on the localized class |
 | PAC-Bayes, exponential tilting | `continuousPriorPosterior_certificate_derived` | theorem | `FormalSLT/PACBayes/ContinuousPriorPosterior.lean:68` | Continuous prior/posterior certificate with the PAC gate derived by change of measure |
