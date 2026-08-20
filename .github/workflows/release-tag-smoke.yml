@@ -1,6 +1,9 @@
 name: Release tag install smoke
 
 on:
+  push:
+    tags:
+      - "v*.*.*"
   workflow_dispatch:
     inputs:
       release_tag:
@@ -15,6 +18,9 @@ permissions:
 jobs:
   tag-install:
     name: tag install (${{ matrix.os }})
+    env:
+      FORMALSLT_RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+      FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
     strategy:
       fail-fast: false
       matrix:
@@ -23,7 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          ref: ${{ inputs.release_tag }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || github.ref_name }}
+          fetch-depth: 0
 
       - name: Install elan
         run: |
@@ -31,6 +38,23 @@ jobs:
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Install and build the tagged release downstream
-        env:
-          FORMALSLT_RELEASE_TAG: ${{ inputs.release_tag }}
         run: bash scripts/check_tag_install.sh "$FORMALSLT_RELEASE_TAG"
+
+      - name: Write exact-tag identity receipt
+        id: receipt
+        run: |
+          receipt_dir="$RUNNER_TEMP/formalslt-release-receipts"
+          receipt_path="$receipt_dir/formalslt-${FORMALSLT_RELEASE_TAG}-${RUNNER_OS}.json"
+          python3 scripts/generate_release_receipt.py \
+            --tag "$FORMALSLT_RELEASE_TAG" \
+            --repository-url "$FORMALSLT_REPOSITORY_URL" \
+            --output "$receipt_path"
+          echo "path=$receipt_path" >> "$GITHUB_OUTPUT"
+
+      - name: Upload exact-tag identity receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: formalslt-${{ env.FORMALSLT_RELEASE_TAG }}-exact-tag-${{ runner.os }}
+          path: ${{ steps.receipt.outputs.path }}
+          if-no-files-found: error
+          retention-days: 90

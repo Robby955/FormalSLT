@@ -38,6 +38,9 @@ v0.2 release, and no DOI is attached to them yet.
   literature ledger, and explicit proof-status and literature-fidelity labels.
 - Fail-closed statement-fidelity, witness-quality, transitive-axiom,
   module-reachability, API-snapshot, and tagged-install gates.
+- Fail-closed exact-tag identity receipts recording the resolved commit and
+  tree, Lean toolchain, pinned Mathlib revision, operating system, timestamp,
+  and hosted run URL without asserting a Release or DOI.
 - Candidate release notes and a publication checklist in
   [`docs/releases/v0.2.0.md`](docs/releases/v0.2.0.md).
 

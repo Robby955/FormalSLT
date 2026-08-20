@@ -101,16 +101,27 @@ Expected result:
 ## Post-tag installation check
 
 Do not run the release-tag smoke as a substitute for the pre-tag checks above.
-After the target tag exists on the public remote, run the manual **Release tag
-install smoke** workflow for both operating systems, or run locally:
+After the target tag exists on the public remote, confirm the automatically
+triggered **Release tag install smoke** workflow passes for both operating
+systems. The workflow also retains manual dispatch for a named existing tag.
+To run the checks locally:
 
 ```bash
 bash scripts/check_tag_install.sh v0.2.0
+python3 scripts/generate_release_receipt.py \
+  --tag v0.2.0 \
+  --output formalslt-v0.2.0-exact-tag.json
 ```
 
 The script verifies the exact remote tag before creating a fresh downstream
 Lake package. It fails if the tag is absent or ambiguous, if Lake resolves a
 different commit, or if any of the four supported topic imports does not build.
+The receipt generator independently refuses a missing or malformed remote tag,
+a checkout at another commit, tracked changes, an unreadable Lean toolchain, or
+an unpinned Mathlib revision. Each hosted operating-system job uploads its JSON
+receipt only after the downstream build succeeds. The receipt itself asserts
+only tag identity and source-environment metadata; it does not assert that CI
+passed, a GitHub Release exists, or a DOI exists.
 
 In a fresh checkout or worktree, run `lake exe cache get` before the first
 build. If `lake` is not on `PATH`, use `~/.elan/bin/lake`. A cold Mathlib
