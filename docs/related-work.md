@@ -12,7 +12,7 @@ papers are mapped to FormalSLT's theorem families in
 
 | Project | Scope | Relation to FormalSLT |
 |---|---|---|
-| [Lean-MoDS/StatsMLlib](https://github.com/Lean-MoDS/StatsMLlib) | Subject-organized probability, statistics, and machine-learning library consolidating Gaussian concentration, empirical-process, Rademacher/Dudley, localized least-squares, and random-matrix developments associated with the Zhang--Lee--Liu and Sonoda lines of work. | Broader foundational and continuous empirical-process coverage. FormalSLT provides a complementary audited layer for finite-sample PAC-Bayes, VC, stability, and anytime-valid inference. |
+| [Lean-MoDS/StatsMLlib](https://github.com/Lean-MoDS/StatsMLlib) | Subject-organized probability, statistics, and machine-learning library consolidating Gaussian concentration, empirical-process, Rademacher/Dudley, localized least-squares, and random-matrix developments associated with the Zhang--Lee--Liu and Sonoda lines of work. | Broader foundational and continuous empirical-process coverage. FormalSLT provides a complementary audited layer for PAC-Bayes, sequential inference, finite-class learning, and explicitly scoped dependent trajectories. |
 | [YuanheZ/lean-stat-learning-theory](https://github.com/YuanheZ/lean-stat-learning-theory) / [arXiv:2602.02285](https://arxiv.org/abs/2602.02285) | Empirical-process formalization: Gaussian Lipschitz concentration, Dudley's entropy integral for sub-Gaussian processes, localized Gaussian complexity, critical radii, and least-squares rates. | Strong adjacent prior art for localized SLT formalization. FormalSLT's finite Bernstein/localization route is a different bounded-excess-loss path. |
 | [auto-res/lean-rademacher](https://github.com/auto-res/lean-rademacher) / [arXiv:2503.19605](https://arxiv.org/abs/2503.19605) | Rademacher-complexity generalization bounds, symmetrization, McDiarmid/Hoeffding-style concentration, and Dudley/Rademacher infrastructure. | Prior Lean infrastructure for Rademacher and Dudley-style generalization. FormalSLT overlaps in theme but keeps a finite-class theorem spine. |
 | [formal-learning-theory-kernel at `7511199`](https://github.com/Zetetic-Dhruv/formal-learning-theory-kernel/tree/7511199db276505a464fb8548e9369fc6cbc2209) | PAC/VC characterization, compression, learning paradigms, and finite-support machinery. [`pac_bayes_finite`](https://github.com/Zetetic-Dhruv/formal-learning-theory-kernel/blob/7511199db276505a464fb8548e9369fc6cbc2209/FLT_Proofs/Theorem/PACBayes.lean#L450-L490) is a proved finite-class McAllester-style union-bound theorem whose complexity is `crossEntropyFinitePMF Q P`. The source identifies the tighter `klDivFinitePMF` change-of-measure form as future work. | Direct finite-class PAC-Bayes prior art, but not the KL change-of-measure, empirical-variance, all-time, or trajectory theorem used in FormalSLT's flagship lanes. `crossEntropyFinitePMF Q P = KL(Q, P) + H(Q)` is materially different from a single KL penalty. |
@@ -87,20 +87,30 @@ May 8, 2026, after the first public release of
 repository. Repository dates do not supersede the dates of the underlying
 papers or predecessor artifacts.
 
-The current library is scoped more narrowly:
+The current library is scoped theorem by theorem. Its three headline families
+are:
 
-```text
-audited finite-sample empirical-risk, Rademacher/VC/PAC-Bayes, stability,
-sequential-inference, and finite stochastic-dynamics infrastructure, including
-time-uniform PAC-Bayes bounds, stationary Poisson correction, finite invariant
-laws, and one-trajectory empirical transition confidence under explicit gates.
-```
+- an offline all-sample-size empirical-Bernstein PAC-Bayes bound for
+  finite-valued IID observations and arbitrary measurable hypothesis spaces;
+- forward PAC-Bayes inference for prefix-dependent trajectories, with separate
+  finite-state countable-allocation and arbitrary-measurable-state endpoints;
+- finite-state stationary-risk certificates built from Poisson corrections,
+  including finite-depth contraction and same-trajectory confidence for a
+  predeclared candidate-kernel catalog.
 
-The localized Bernstein theorem should be cited alongside the projects above:
-Sonoda et al. for Rademacher/Dudley infrastructure, Zhang et al. for localized
-empirical-process and Gaussian/Dudley machinery, and
+The library also retains its finite-sample Rademacher, VC, stability,
+localization, chaining, and classical PAC-Bayes foundations. These statements
+do not imply unrestricted measurable-supremum theory, continuous-observation
+empirical-Bernstein bounds, continuous-state stationary risk, or validity for
+models invented after observing the outcomes on which they are scored.
+
+The classical localized Bernstein lane should be cited alongside the projects
+above: Sonoda et al. for Rademacher/Dudley infrastructure, Zhang et al. for
+localized empirical-process and Gaussian/Dudley machinery, and
 `formal-learning-theory-kernel` for PAC/VC/PAC-Bayes and measurability
-infrastructure.
+infrastructure. This page records adjacent Lean projects already reviewed; it
+does not establish novelty or priority for the trajectory or stationary
+Poisson endpoints.
 
 ## Complementary, Not Competitive
 
@@ -121,9 +131,9 @@ comparison is by scope:
   existence by different fixed-point or Perron--Frobenius routes.
 - CertRL develops contraction-based finite-MDP convergence in Coq.
 - FormalSLT emphasizes finite-sample PAC-Bayes, VC, stability, and
-  anytime-valid theorem spines plus finite stationary/transition layers with
-  explicit assumptions, concrete witnesses, theorem maps, and published axiom
-  audits.
+  anytime-valid theorem spines, adaptive trajectories, and finite
+  stationary/transition layers with explicit assumptions, concrete receipts,
+  theorem maps, and published axiom audits.
 
 FormalSLT does not import any of these repositories. Mathematical influence and
 overlap are recorded here as prior work; the implementations remain separate

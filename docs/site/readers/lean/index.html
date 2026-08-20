@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Lean-user route through the FormalSLT public API.">
+  <title>FormalSLT for Lean users</title>
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="../../" aria-label="FormalSLT home">FormalSLT</a>
+    <nav aria-label="Primary navigation">
+      <a href="../../#endpoints">Results</a>
+      <a href="../../theorems/">Theorem index</a>
+      <a href="../../search.html">API search</a>
+      <a href="../../api.html">Lean docs</a>
+    </nav>
+  </header>
+  <main id="content">
+    <section class="reader-hero">
+      <p class="eyebrow">Reader route · Lean</p>
+      <h1>Import a topic, then narrow to a theorem.</h1>
+      <p>The candidate v0.2 API is organized around four topic umbrellas. They are the supported discovery surface; individual implementation modules remain available when a downstream proof needs a smaller import.</p>
+    </section>
+
+    <section class="reader-intro" aria-labelledby="lean-imports">
+      <h2 id="lean-imports">Topic imports</h2>
+      <div class="reading">
+        <ul class="route-list">
+          <li><a href="../../FormalSLT/PACBayes.html"><code>import FormalSLT.PACBayes</code></a><p>PAC-Bayes change of measure, empirical-Bernstein bounds, and posterior-risk endpoints.</p></li>
+          <li><a href="../../FormalSLT/Sequential.html"><code>import FormalSLT.Sequential</code></a><p>Sequential processes, filtrations, conditional means, and anytime-valid components.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics.html"><code>import FormalSLT.StochasticDynamics</code></a><p>History-dependent trajectories, Markov risk, Poisson corrections, and empirical kernels.</p></li>
+          <li><a href="../../FormalSLT/VC.html"><code>import FormalSLT.VC</code></a><p>VC dimension, growth functions, and finite-class learning bounds.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="reader-section" aria-labelledby="lean-reuse">
+      <h2 id="lean-reuse">Reuse discipline</h2>
+      <div class="reading">
+        <ul>
+          <li>Start from the fully qualified declaration shown in doc-gen. Long names are deliberate: they carry the scope and mechanism.</li>
+          <li>Check the theorem’s type before relying on prose. Finiteness, measurability, adaptation, boundedness, and positivity premises remain explicit arguments or typeclass assumptions.</li>
+          <li>Use the stable-import examples as executable API receipts for the four umbrellas.</li>
+          <li>For flagship endpoints, inspect the associated <code>#print axioms</code> receipt. The intended public profile is <code>[propext, Classical.choice, Quot.sound]</code>.</li>
+        </ul>
+        <div class="callout"><p><strong>Candidate API means reviewable, not immutable.</strong> The release tag and API stability policy govern compatibility. A green documentation build does not create a release by itself.</p></div>
+      </div>
+    </section>
+
+    <section class="reader-section" aria-labelledby="lean-tools">
+      <h2 id="lean-tools">Inspection tools</h2>
+      <div class="reading">
+        <ul class="route-list">
+          <li><a href="../../search.html">Declaration search</a><p>Search the generated Lean API by declaration or module name.</p></li>
+          <li><a href="../../theorems/">Concept-keyed theorem index</a><p>Find declarations by mathematical vocabulary, with every source link pinned to this build.</p></li>
+          <li><a href="../../FormalSLT.html">Module tree</a><p>Traverse the generated namespace and import hierarchy.</p></li>
+          <li><a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__/examples/stable_imports">Stable-import receipts</a><p>Concrete compile targets that import one public topic umbrella at a time.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="reader-next">
+      <p class="eyebrow">Next step</p>
+      <h2>Open one umbrella and check one endpoint.</h2>
+      <p>The API search is the authoritative generated surface for this exact documentation build.</p>
+      <div class="actions">
+        <a class="button button-primary" href="../../api.html">Browse Lean docs</a>
+        <a class="button button-secondary" href="../../#endpoints">Choose an endpoint</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p><strong>FormalSLT</strong> · Lean route.</p>
+    <p>Exact source: <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__"><code>__FORMALSLT_SOURCE_REF__</code></a>.</p>
+  </footer>
+</body>
+</html>

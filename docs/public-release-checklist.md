@@ -12,11 +12,11 @@ Use this before cutting a release candidate tag or public artifact snapshot.
   - restrict direct pushes to maintainers if needed.
 - Repository "About" description matches proved scope. Recommended text:
 
-  > Lean 4 formalizations of statistical learning theory: ERM, Rademacher
-  > symmetrization, Massart, binary VC bounds, contraction, linear predictors,
-  > finite chaining, stability, PAC-Bayes, and Dudley bridge infrastructure.
+  > Lean 4 formalizations of statistical learning theory and sequential
+  > inference: empirical-Bernstein PAC-Bayes, adaptive trajectories,
+  > finite-state stationary certification, Rademacher, VC, and stability.
 
-- Release tag exists for the snapshot, for example `v0.1.0`.
+- Release tag exists for the snapshot, for example `v0.2.0`.
 - Stale draft PRs and local worktree branches are not part of the release
   artifact.
 - CI badge branch matches the public default branch.
@@ -36,6 +36,8 @@ Use this before cutting a release candidate tag or public artifact snapshot.
 ```bash
 lake exe cache get
 lake build FormalSLT
+make examples
+make tutorials
 make api
 make downstream
 python3 -m pip install -r requirements-dev.txt
@@ -43,7 +45,14 @@ make python-tests
 lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
+bash scripts/check_axioms.sh
+bash scripts/check_witness_quality.sh
 python3 scripts/generate_proof_frontier_manifest.py --check
+python3 scripts/generate_theorem_index.py --check
+python3 scripts/generate_badge_counts.py --check
+python3 scripts/check_doc_anchors.py --self-test
+git ls-files -z -- '*.md' '*.mdx' | \
+  xargs -0 python3 scripts/check_doc_anchors.py
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 git diff --check
@@ -52,6 +61,7 @@ git diff --check
 Expected result:
 
 - full Lean build passes;
+- every example, isolated stable-import checker, and tutorial type-checks;
 - the 19 allowlisted v0.2 declaration types and axiom reports match their
   committed snapshot;
 - the two retained v0.1 compatibility declaration types match their committed
@@ -66,6 +76,8 @@ Expected result:
 - conditional sub-Gamma and unit-interval Dudley checkers print only the
   standard Lean/Mathlib axioms for their public theorem surfaces;
 - proof-frontier manifest is in sync with the theorem map and source counts;
+- generated proof-frontier, theorem-index, badge, and documentation-anchor
+  artifacts are current;
 - no executable `sorry`, no executable `admit`, no custom axioms, and no custom
   constants are found;
 - whitespace check passes.
@@ -85,6 +97,15 @@ source build is not part of the release checklist.
 - Public summaries distinguish the checked sharp McDiarmid and
   continuous-posterior endpoints from open full continuous-Dudley,
   separability, all-real-tilt, and unrestricted stationary/mixing claims.
+- Distinguish proof status (`PROVED`, `CONDITIONAL`, `OPEN`) from literature
+  fidelity (`REPRODUCTION`, `SPECIALIZATION`, `DERIVED VARIANT`).
+- Do not present the supplied-certificate continuous Dudley interfaces as an
+  unrestricted measurable-supremum theorem.
+- Do not turn the checked measurable-hypothesis empirical-Bernstein theorem
+  into a continuous-observation or optional-stopping claim.
+- Keep continuous-state stationary risk, post-outcome catalog construction,
+  predictable or all-real tilt optimization, and general prefix-dependent
+  random starts open unless an exact checked endpoint closes them.
 - Contributing guide mentions contribution responsibility, branch flow,
   required checks, and good first issues.
 - README and public docs use exact human-readable line counts after the count

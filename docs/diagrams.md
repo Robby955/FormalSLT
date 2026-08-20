@@ -119,7 +119,11 @@ catalog-weighted confidence allocation. Those routes are fixed-sample and
 finite-IID. The separate reverse-exchangeability route turns prefix means and
 Bessel variances into reverse martingales, controls every prefix in each
 dyadic epoch, and stitches the epochs into one infinite-IID event valid for
-every `n >= 2`. All catalogs are declared before the sample is observed.
+every `n >= 2`. A parallel forward route uses predictable-residual
+e-processes and a genuine countable weighted tilt master to obtain an all-time
+finite-hypothesis endpoint with vanishing selected width. The reverse stitch
+is not an input to that forward route. All catalogs are declared before the
+sample is observed.
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 42, 'nodeSpacing': 26}}}%%
@@ -150,7 +154,9 @@ flowchart TD
     stitched["All-sample-size empirical-Bernstein event<br/>5/2 square-root + 5 linear constants"]
     allreal["All-real tilt optimization (open)"]
     continuousEB["Measurable-hypothesis all-sample-size EB<br/>finite-valued observations"]
-    forwardEB["Forward exact-Bessel e-process +<br/>optional-stopping API (open)"]
+    forwardres["Forward predictable-residual<br/>e-process"]
+    forwardmaster["Countable weighted forward tilt master<br/>one common Ville event"]
+    forwardEB["Geometric forward exact-Bessel PAC-Bayes<br/>all-time selected width tends to zero"]
 
     kl --> pmgf
     pmgf --> catoni
@@ -178,14 +184,15 @@ flowchart TD
     reversegrid --> stitched
     jointcat -.-> allreal
     stitched --> continuousEB
-    stitched -.-> forwardEB
+    forwardres --> forwardmaster
+    forwardmaster --> forwardEB
 
     classDef checked fill:#ecfdf5,stroke:#0f766e,color:#134e4a;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
-    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster,countableposterior,reversebessel,reversejoint checked;
-    class mcallester,ebrisk,zerores,xires,sqrtbound,reversegrid,stitched,continuousEB endpointNode;
-    class allreal,forwardEB open;
+    class kl,pmgf,catoni,bern,bessel,matching,varevent,riskevent,tilt,jointmgf,jointcat,countablemaster,countableposterior,reversebessel,reversejoint,forwardres,forwardmaster checked;
+    class mcallester,ebrisk,zerores,xires,sqrtbound,reversegrid,stitched,continuousEB,forwardEB endpointNode;
+    class allreal open;
 ```
 
 The finite joint route thresholds one prior-and-catalog master mixture, so the
@@ -203,13 +210,18 @@ e-process or optional-stopping result. A continuous-prior mixture and the same
 stitch extend that endpoint to arbitrary measurable hypothesis spaces while
 retaining finite-valued observations. The variance events
 bound the posterior average of per-hypothesis variances; they do not bound the
-variance of the posterior-averaged loss.
+variance of the posterior-averaged loss. In the parallel forward route, the
+countable weighted tilt master is an e-process, while the selected
+hybrid-Bessel envelope is a boundary extracted from it and is not itself an
+e-process.
 
-## D. Anytime-valid, Markov, and composition
+## D. Anytime-valid, adaptive trajectories, stationary inference, and composition
 
-The sequential lane, the finite Markov lane, and the composition surfaces.
-The empirical-Bernstein confidence sequence uses a predictable
-conditional-variance proxy, not the exact Bessel sample variance.
+The sequential lane, the full-prefix trajectory lane, the finite-state
+stationary lane, and the composition surfaces. The generic
+empirical-Bernstein confidence sequence uses a predictable
+conditional-variance proxy, while the forward exact-Bessel route is a
+separate checked construction.
 
 ```mermaid
 %%{init: {'theme': 'neutral', 'flowchart': {'rankSpacing': 42, 'nodeSpacing': 26}}}%%
@@ -219,57 +231,98 @@ flowchart TD
     ville["Ville maximal inequality"]
     eproc["e-processes<br/>Type-I control, optional continuation"]
     cs["Confidence sequences<br/>mixture, optimized-λ, dyadic-epoch, betting,<br/>empirical-Bernstein (predictable proxy)"]
+    forwardmaster["[PROVED] Countable weighted forward tilt master<br/>actual e-process; fixed conditional means"]
+    forwardcap["[PROVED COMPOSITION] Geometric forward exact-Bessel endpoint<br/>selected width tends to zero"]
     score["Score e-process + prior mixture"]
     tiltmix["Finite weighted hypothesis--tilt master<br/>one Ville event, selected atom"]
     pathwise["Pathwise PAC-Bayes compiler<br/>one event, all posteriors, all times"]
     tu["Time-uniform PAC-Bayes endpoints<br/>process-level finite tilt + finite-class IID<br/>+ spherical Gaussian"]
-    pathlaw["Finite transition PMFs<br/>Ionescu–Tulcea path laws"]
-    markovrisk["Trajectory conditional-risk semantics<br/>arbitrary state under a joint score; sharp 1/4 proxy"]
-    markovpb["Trajectory and Markov PAC-Bayes<br/>arbitrary hypotheses/state + finite specializations"]
+    pathlaw["[PROVED] Full-prefix trajectory law<br/>prefix-dependent kernels; deterministic start"]
+    trajectoryrisk["[PROVED] Trajectory conditional-risk semantics<br/>bounded predeclared full-prefix scores"]
+    trajectoryadapter["[PROVED COMPOSITION] Predictable-mean adapter"]
+    trajectoryallocation["[PROVED COMPOSITION] Countable confidence allocation<br/>not a countable master e-process"]
+    trajectorycap["[PROVED COMPOSITION] All-time trajectory PAC-Bayes<br/>selected exact width tends to zero"]
+    knowncert["[CONDITIONAL] Known finite P + supplied invariant PMF<br/>strict oscillation contraction 0 ≤ α &lt; 1"]
+    poisson["[PROVED] Finite-depth Poisson potential<br/>span and residual bounds"]
+    depthallocation["[PROVED COMPOSITION] Depth + tilt confidence allocation"]
+    stationarycap["[PROVED / CONDITIONAL APPLICATION] Known-kernel stationary<br/>selected exact width tends to zero"]
+    transition["[PROVED COMPOSITION] Transition-coordinate confidence<br/>all source rows visited"]
+    invariant["[PROVED] Finite invariant-law existence<br/>canonical finiteInvariantPMF"]
+    candidatecatalog["[PROVED COMPOSITION] Finite predeclared<br/>kernel/reference/score catalog"]
+    catalogcap["[PROVED COMPOSITION] Unknown-kernel stationary catalog<br/>same path; deltaRisk + deltaTransition"]
     otp["Online-to-PAC conversion<br/>explicit regret + deviation hypotheses"]
     stats["Statistics interfaces<br/>estimation, Fisher information,<br/>Cramér–Rao, exponential families"]
     pbc["Fixed-sample PAC-Bayes components<br/>(diagram C)"]
     prefix["Prefix-kernel deviation<br/>sharp McDiarmid"]
     ttm["TestTimeMeta five-slot composition<br/>McAllester · online/IID · Bernstein/Gaussian<br/>anytime/Ville · prefix-kernel"]
-    markovopen1["Same-trajectory-trained or predictable<br/>Markov learners (open)"]
-    markovopen2["Random initial laws, atomless receipts,<br/>stationary or mixing risk (open)"]
+    trajectoryopen["Data-created score/catalog member<br/>after observing scored outcomes (open)"]
+    stationaryopen["Computable invariant solver,<br/>irreducibility or mixing rate (open)"]
     otpopen["Algorithm-specific online<br/>regret theorem (open)"]
 
     condmgf --> supermart
     supermart --> ville
     ville --> eproc
     ville --> cs
+    eproc --> forwardmaster
+    forwardmaster --> forwardcap
     eproc --> score
     eproc --> tiltmix
     score --> pathwise
     tiltmix --> pathwise
     ville --> pathwise
     pathwise --> tu
-    pathlaw --> markovrisk
-    cs --> markovrisk
-    markovrisk --> markovpb
-    tu --> markovpb
+    pathlaw --> trajectoryrisk
+    trajectoryrisk --> trajectoryadapter
+    trajectoryadapter --> trajectoryallocation
+    trajectoryallocation --> trajectorycap
+    knowncert --> poisson
+    poisson --> depthallocation
+    depthallocation --> stationarycap
+    transition --> catalogcap
+    invariant --> catalogcap
+    candidatecatalog --> catalogcap
     otp --> ttm
     cs --> ttm
     pbc --> ttm
     prefix --> ttm
-    markovpb -.-> markovopen1
-    markovpb -.-> markovopen2
+    trajectorycap -.-> trajectoryopen
+    catalogcap -.-> stationaryopen
     otp -.-> otpopen
 
     classDef checked fill:#ecfdf5,stroke:#0f766e,color:#134e4a;
     classDef sequential fill:#f5f3ff,stroke:#6d28d9,color:#4c1d95;
     classDef endpointNode fill:#fffbeb,stroke:#b45309,color:#78350f;
     classDef open fill:#f8fafc,stroke:#64748b,color:#334155,stroke-dasharray:6 4;
-    class condmgf,pathlaw,markovrisk,otp,stats,pbc,prefix checked;
-    class supermart,ville,eproc,cs,score,tiltmix,pathwise sequential;
-    class tu,markovpb,ttm endpointNode;
-    class markovopen1,markovopen2,otpopen open;
+    class condmgf,pathlaw,trajectoryrisk,poisson,invariant,otp,stats,pbc,prefix checked;
+    class supermart,ville,eproc,cs,score,tiltmix,pathwise,forwardmaster sequential;
+    class forwardcap,tu,trajectoryadapter,trajectoryallocation,trajectorycap,depthallocation,stationarycap,transition,candidatecatalog,catalogcap,ttm endpointNode;
+    class knowncert endpointNode;
+    class trajectoryopen,stationaryopen,otpopen open;
 ```
 
 The statistics interfaces preserve the hypotheses of the Mathlib results they
 expose; they are shown without arrows because no theorem family above depends
 on them.
+
+The full-prefix trajectory capstone permits a score to encode a
+fixed-in-advance online update rule: the rule sees the prefix before assigning
+the next bounded score. Its countable tilt family is controlled by confidence
+allocation across singleton events, not by claiming that the resulting sum is
+an e-process. The known-kernel stationary capstone additionally assumes a
+supplied invariant PMF and a strict oscillation-contraction certificate. The
+unknown-kernel catalog combines, on the same trajectory, a transition
+confidence event, a finite predeclared candidate/reference/score catalog, and
+finite-state invariant-law existence. It pays
+`deltaRisk + deltaTransition`; it does not assume a sample split or
+independence between those events.
+
+The five displayed capstones are replayed by
+[`CheckContinuousInfiniteEmpiricalBernsteinStitch.lean`](../examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean),
+[`CheckForwardBesselPACBayesCountable.lean`](../examples/CheckForwardBesselPACBayesCountable.lean),
+[`CheckTrajectoryEmpiricalBernsteinPACBayesCountable.lean`](../examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountable.lean),
+[`CheckStationaryPoissonDepthSelection.lean`](../examples/CheckStationaryPoissonDepthSelection.lean),
+and
+[`CheckEmpiricalStationaryCatalog.lean`](../examples/CheckEmpiricalStationaryCatalog.lean).
 
 The five TestTimeMeta slots are McAllester, online/IID, Bernstein/Gaussian,
 anytime/Ville, and the sharp-McDiarmid prefix-kernel deviation.
@@ -289,11 +342,14 @@ These diagrams do not claim more than the theorem signatures state:
 - The finite time-uniform tilt master selects one declared atom; it is not a
   countable mixture, an arbitrary joint hypothesis--tilt posterior, an all-real
   tilt optimizer, or an i.i.d. loss specialization.
-- The generic forward time-uniform PAC-Bayes endpoints do not imply the
-  exact-Bessel result. The checked exact-Bessel all-sample-size theorem instead
-  uses offline reverse epochs, is posterior-uniform over arbitrary measurable
-  hypothesis spaces under its explicit finite-observation assumptions, and does
-  not provide optional-stopping semantics.
+- The reverse exact-Bessel theorem and the forward predictable-residual route
+  are separate checked constructions. The reverse theorem uses offline epochs,
+  is posterior-uniform over arbitrary measurable hypotheses under its finite-
+  observation assumptions, and has no optional-stopping semantics. The forward
+  route has an actual countable tilt master e-process for finite hypotheses and
+  fixed conditional means; its selected hybrid-Bessel envelope is not itself
+  an e-process. Neither route supplies an all-real or data-chosen tilt
+  optimizer.
 - The posterior average of per-hypothesis variances is not the variance of
   the posterior-averaged loss.
 - The checked Dudley boundary adapters are not an unrestricted
@@ -301,12 +357,23 @@ These diagrams do not claim more than the theorem signatures state:
 - The Gaussian time-uniform endpoints cover fixed spherical-Gaussian
   prior/posterior pairs and finite declared catalogs, not every posterior or
   every real tilt.
-- The finite homogeneous-Markov certificates do not cover same-trajectory
-  training, random initial laws, continuous state spaces, or stationary/mixing
-  risk unless a theorem explicitly says so. The separate full-prefix adapter
-  covers arbitrary measurable state and hypothesis spaces under a supplied
-  jointly measurable score and deterministic start; its current `Real` receipt
-  has only two transition atoms.
+- The finite full-prefix trajectory capstone allows a predeclared score family,
+  including a fixed-in-advance online update rule that uses the prefix before
+  the next outcome. It does not allow a score or catalog member to be invented
+  after observing the outcomes it scores. Its path- and time-dependent
+  posterior is substituted into a common event; no measurability claim for the
+  posterior selector is needed or made.
+- The known-kernel stationary capstone assumes a finite kernel, supplied
+  invariant PMF, deterministic start, finite score family, and strict
+  `0 <= alpha < 1` oscillation contraction. The selected depth/tilt boundary is
+  obtained by confidence allocation, not as an e-process.
+- The unknown-kernel stationary catalog is finite and predeclared, and its
+  normalized transition step requires positive visit mass for every source
+  row. `finiteInvariantPMF` is a noncomputable chosen invariant law. Uniqueness
+  is concluded only when the selected
+  `finiteDobrushinCoefficient (Q c) + 2 * eta` is strictly below one. No
+  computable invariant-law solver, irreducibility theorem, mixing rate, or
+  separate measurability theorem for the selected outer event is claimed.
 - No diagram on this page makes a novelty or priority claim; adjacent work is
   surveyed in [`related-work.md`](./related-work.md).
 

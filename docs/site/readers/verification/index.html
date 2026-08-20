@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A verification and audit route through FormalSLT.">
+  <title>FormalSLT for verification</title>
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="../../" aria-label="FormalSLT home">FormalSLT</a>
+    <nav aria-label="Primary navigation">
+      <a href="../../#endpoints">Results</a>
+      <a href="../../theorems/">Theorem index</a>
+      <a href="../../search.html">API search</a>
+      <a href="../../api.html">Lean docs</a>
+    </nav>
+  </header>
+  <main id="content">
+    <section class="reader-hero">
+      <p class="eyebrow">Reader route · verification</p>
+      <h1>Audit the claim, theorem, and dependency separately.</h1>
+      <p>FormalSLT treats public prose as a map to checked declarations, not as a substitute for them. This route makes the proof boundary and publication boundary explicit.</p>
+    </section>
+
+    <section class="reader-intro" aria-labelledby="verification-contract">
+      <h2 id="verification-contract">Claim contract</h2>
+      <div class="reading">
+        <dl>
+          <dt><strong>Proved</strong></dt><dd>A theorem elaborated by Lean in the referenced build.</dd>
+          <dt><strong>Proved composition</strong></dt><dd>A proved public capstone composed from checked mechanisms, with its assumptions still visible in the theorem type. This is a proof-role description, not a literature-fidelity label.</dd>
+          <dt><strong>Conditional</strong></dt><dd>A public application claim that materially relies on a supplied certificate or explicitly unproved proposition, not merely an ordinary theorem hypothesis.</dd>
+          <dt><strong>Open</strong></dt><dd>A generalization or desired endpoint that is not claimed as complete.</dd>
+          <dt><strong>Literature fidelity</strong></dt><dd><code>REPRODUCTION</code>, <code>SPECIALIZATION</code>, and <code>DERIVED VARIANT</code> are tracked independently in the <a href="https://github.com/Robby955/FormalSLT/blob/__FORMALSLT_SOURCE_REF__/docs/LITERATURE.md">literature ledger</a>.</dd>
+        </dl>
+        <div class="callout"><p>A compiled finite checker, numerical receipt, or polished paper is evidence for its own proposition only. None is silently promoted to theorem closure, novelty, or a public release.</p></div>
+      </div>
+    </section>
+
+    <section class="reader-section" aria-labelledby="verification-audit">
+      <h2 id="verification-audit">Audit sequence</h2>
+      <div class="reading">
+        <ol>
+          <li>Open the exact endpoint in generated documentation.</li>
+          <li>Read every explicit argument and inherited typeclass assumption.</li>
+          <li>Follow the source link pinned to the commit in this deployment.</li>
+          <li>Check the example receipt containing <code>#check</code> and <code>#print axioms</code>.</li>
+          <li>Separate theorem status from release, paper, and prior-art status.</li>
+        </ol>
+        <p>The flagship public axiom audit is intended to report only <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>. That profile concerns logical dependencies; it does not remove the mathematical premises in a theorem type.</p>
+      </div>
+    </section>
+
+    <section class="reader-section" aria-labelledby="verification-pressure">
+      <h2 id="verification-pressure">Pressure points</h2>
+      <div class="reading">
+        <ul class="route-list">
+          <li><a href="../../FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.html">Simultaneous is not automatically sequential</a><p>The IID endpoint shares an event across sample sizes, but its proof route and claim are distinct from the forward e-process endpoint.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.html">Adaptive selection has a catalog boundary</a><p>Posterior and atom selection occur within a common event; new score families learned from outcomes are outside this endpoint.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html">Stationarity uses explicit contraction data</a><p>The finite-depth correction assumes a known finite-state kernel, invariant PMF, and oscillation bound.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.html">Invariant-law uniqueness is conditional</a><p>Finite-state existence supplies a canonical invariant PMF. Uniqueness follows only if the selected transferred contraction coefficient is strictly below one.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="reader-next">
+      <p class="eyebrow">Next step</p>
+      <h2>Use the exact source, not a floating branch.</h2>
+      <p>The deployed theorem index rewrites every source location to the full commit SHA that generated this site.</p>
+      <div class="actions">
+        <a class="button button-primary" href="../../theorems/">Open pinned source links</a>
+        <a class="button button-secondary" href="../../search.html">Search checked declarations</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p><strong>FormalSLT</strong> · verification route.</p>
+    <p>Exact source: <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__"><code>__FORMALSLT_SOURCE_REF__</code></a>.</p>
+  </footer>
+</body>
+</html>

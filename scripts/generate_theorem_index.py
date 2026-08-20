@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the FormalSLT concept-keyed searchable theorem index.
 
-The proof-frontier manifest already records the public theorem spine
+The proof-frontier manifest already records the curated theorem spine
 (concept family -> declaration -> module -> one-line role). This script projects
 that data into a *human-searchable* index: it resolves each declaration to a
 `file:line`, tags it with the mathematical concepts it touches (Bernstein,
@@ -53,6 +53,109 @@ REPO_URL = "https://github.com/Robby955/FormalSLT/blob/main"
 # declaration in the table.
 CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "Markov": ["markov"],
+    "adaptive trajectory": [
+        "trajectory",
+        "prequential",
+        "full-prefix",
+        "full prefix",
+        "prefix-dependent",
+        "prefix dependent",
+        "controlledtrajectory",
+        "controlled trajectory",
+        "controlledobserved",
+        "controlledimportance",
+        "controlledtarget",
+        "controlledcontinuation",
+        "controlledfinite",
+        "prefixcontrolled",
+        "targetpolicy",
+        "target policy",
+        "dynamictargetpolicy",
+    ],
+    "stationary / invariant law": [
+        "stationaryrisk",
+        "stationary risk",
+        "stationary-risk",
+        "stationarymarkov",
+        "stationary markov",
+        "empiricalstationary",
+        "empirical stationary",
+        "stationarypoisson",
+        "stationary poisson",
+        "stationarytarget",
+        "stationary target",
+        "invariantpmf",
+        "invariant pmf",
+        "invariant law",
+        "invariant distribution",
+        "dobrushin",
+    ],
+    "Poisson equation": [
+        "empiricalstationary",
+        "empirical stationary",
+        "stationarypoisson",
+        "stationary_poisson",
+        "poissonpotential",
+        "poisson_potential",
+        "poisson potential",
+        "poissonresidual",
+        "poisson_residual",
+        "poisson residual",
+        "poissoncorrect",
+        "poisson_correct",
+        "poisson-correct",
+        "poisson equation",
+        "poissondrift",
+        "poisson_drift",
+        "poisson drift",
+        "poisson_depth",
+        "poisson depth",
+        "exactpoisson",
+        "exact_poisson",
+        "finitedepthpoisson",
+        "finite-depth poisson",
+        "finite depth poisson",
+    ],
+    "transition kernel": [
+        "empiricalstationary",
+        "empirical stationary",
+        "stationarypoisson",
+        "stationary poisson",
+        "transitioncoordinate",
+        "transition coordinate",
+        "transitionfrequency",
+        "transition frequency",
+        "transitionrow",
+        "transition row",
+        "transitionedge",
+        "transition edge",
+        "transitionvisit",
+        "transition visit",
+        "transitionkernel",
+        "transition_kernel",
+        "transition kernel",
+        "candidatekernel",
+        "candidate kernel",
+        "markov kernel",
+        "environment kernel",
+        "transition pmf",
+        "transition matrix",
+        "kernelpush",
+        "kernel push",
+        "finitekernel",
+        "finite kernel",
+        "prefixkernel",
+        "prefix kernel",
+        "inducedkernel",
+        "induced kernel",
+        "candidaterow",
+        "candidate row",
+        "rowtotalvariation",
+        "row total variation",
+        "row-tv",
+        "rowtv",
+        "dobrushin",
+    ],
     "Chebyshev": ["chebyshev"],
     "Hoeffding": ["hoeffding"],
     "Bernstein": ["bernstein"],
@@ -252,6 +355,7 @@ def render_md(rows: list[dict[str, Any]]) -> str:
         "`docs/proof-frontier-manifest.json` plus the Lean sources by",
         "`scripts/generate_theorem_index.py`. For a searchable version with a live",
         "filter box, open `docs/INDEX.html`.",
+        "This is a discovery index, not an API compatibility promise.",
         "",
         f"{len(rows)} declarations, {n_resolved} resolved to a `file:line`.",
         "",
@@ -351,8 +455,8 @@ main {{ padding:14px 20px 60px; }}
 <body>
 <header>
   <h1>FormalSLT theorem index</h1>
-  <div class="sub">{len(rows)} public declarations &middot; {n_resolved} linked to source &middot; search by concept or name</div>
-  <input id="q" type="search" aria-label="Search the theorem index" placeholder="Search: Bernstein, sample mean, PAC-Bayes, confidence sequence, ...">
+  <div class="sub">{len(rows)} indexed declarations &middot; {n_resolved} linked to source &middot; discovery surface, not an API compatibility promise</div>
+  <input id="q" type="search" aria-label="Search the theorem index" placeholder="Search: empirical Bernstein, adaptive trajectory, Poisson equation, transition kernel, ...">
   <div class="concepts">{concept_buttons}</div>
 </header>
 <main>
@@ -463,6 +567,67 @@ def main() -> int:
                 "",
             )
         )
+        assert "adaptive trajectory" in concepts_for(
+            "exists_trajectoryCountableEmpiricalBernsteinPACBayes_event", "", ""
+        )
+        assert "adaptive trajectory" in concepts_for(
+            "markovPACBayes_prequentialRisk_certificate", "", ""
+        )
+        assert "adaptive trajectory" in concepts_for(
+            "controlledObservedImportanceScore_condExp", "", ""
+        )
+        assert {
+            "Poisson equation", "stationary / invariant law", "transition kernel"
+        }.issubset(
+            concepts_for(
+                "exists_selectedCanonicalEmpiricalStationaryCatalog_event", "", ""
+            )
+        )
+        assert "stationary / invariant law" in concepts_for(
+            "finiteInvariantPMF_isInvariant", "", ""
+        )
+        assert "Poisson equation" in concepts_for(
+            "finiteDepthPoisson_residual_identity", "", ""
+        )
+        assert "Poisson equation" in concepts_for(
+            "finiteDepthPoissonSpanBound_closed", "", ""
+        )
+        assert "transition kernel" in concepts_for(
+            "exists_empiricalCandidateKernelTV_event", "", ""
+        )
+        assert "transition kernel" in concepts_for(
+            "finiteDobrushinCoefficient",
+            "Maximum row distance for a finite transition kernel",
+            "",
+        )
+        assert {
+            "stationary / invariant law", "transition kernel"
+        }.issubset(concepts_for("finiteDobrushinCoefficient", "", ""))
+        assert "stationary / invariant law" not in concepts_for(
+            "finiteJointMeanVarianceXi_eq_interior_of_lt",
+            "The interior stationary point is the maximizer",
+            "",
+        )
+        assert "Poisson equation" not in concepts_for(
+            "poissonDistribution_pmf", "Poisson count distribution", ""
+        )
+        assert "transition kernel" not in concepts_for(
+            "kernelizedLoss", "RKHS kernel risk bound", ""
+        )
+        assert "adaptive trajectory" not in concepts_for(
+            "boundedRisk", "Risk is controlled by a deterministic bound", ""
+        )
+        family_only_tags = concepts_for(
+            "plainBound",
+            "A declaration-local summary",
+            "Adaptive trajectory, stationary Poisson, and transition kernels",
+        )
+        assert not {
+            "adaptive trajectory",
+            "stationary / invariant law",
+            "Poisson equation",
+            "transition kernel",
+        }.intersection(family_only_tags)
         filter_fixture = render_html([
             {
                 "name": "notCramerRao",
@@ -477,6 +642,9 @@ def main() -> int:
         ])
         assert 'data-concepts="[&quot;Fisher information&quot;]"' in filter_fixture
         assert "concepts.includes(activeConcept)" in filter_fixture
+        assert "1 indexed declarations" in filter_fixture
+        assert "discovery surface, not an API compatibility promise" in filter_fixture
+        assert "public declarations" not in filter_fixture
         print("theorem-index self-test passed")
         return 0
 
