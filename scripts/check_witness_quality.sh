@@ -11,9 +11,8 @@
 # This gate scans the curated list of headline witness files (the concrete
 # non-vacuity witnesses built for the 2026-06-23 soundness audit) and FAILS if
 # any of them degenerates into a check-only file. It then runs a fixture pair:
-# a synthetic check-only file MUST be detected as fake (gate would fail), and a
-# synthetic concrete-witness file MUST pass. This proves the detector itself
-# works, so a future regression that turns a witness into `#check`-only is caught.
+# synthetic check-only, comment-only, and unrelated-trivial-declaration file
+# MUST be detected as fake, while a linked concrete-witness file MUST pass.
 #
 # Run from CI alongside the example loop and the axiom gate.
 set -euo pipefail
@@ -21,29 +20,24 @@ set -euo pipefail
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
 
-# A file is a CONCRETE witness if it has at least one top-level declaration that
-# instantiates the theorem on explicit data. A FAKE witness has `#check`/`#print`
-# lines but ZERO such declarations.
-DECL_PATTERN='^[[:space:]]*(noncomputable[[:space:]]+)?(def|example|theorem|lemma|instance|abbrev|structure)[[:space:]]'
-CHECK_PATTERN='#check|#print'
+# The parser blanks nested Lean comments and strings before inspecting commands.
+# A CONCRETE file needs a top-level theorem/lemma/example/def that applies an
+# independently audited target or a distinctive imported project declaration.
+# This rejects keyword hits in prose and unrelated arithmetic declarations.
+CHECKER="$ROOT/scripts/witness_quality_check.py"
+if [ ! -f "$CHECKER" ]; then
+  echo "FAIL: $CHECKER not found" >&2
+  exit 1
+fi
 
-# Returns 0 (concrete) / 1 (fake) / 2 (not-a-witness: no checks at all).
+# Prints CONCRETE / FAKE / NONE / MISSING as its final line.
 classify_witness() {
   local f="$1"
   if [ ! -f "$f" ]; then
     echo "MISSING"
     return 0
   fi
-  local decls checks
-  decls="$(grep -cE "$DECL_PATTERN" -- "$f" || true)"
-  checks="$(grep -cE "$CHECK_PATTERN" -- "$f" || true)"
-  if [ "$decls" -ge 1 ]; then
-    echo "CONCRETE"
-  elif [ "$checks" -ge 1 ]; then
-    echo "FAKE"
-  else
-    echo "NONE"
-  fi
+  python3 "$CHECKER" "$f" 2>/dev/null | tail -n 1 || true
 }
 
 # Curated headline witnesses: every theorem the paper cites as witnessed must
@@ -332,11 +326,15 @@ for f in "${HEADLINE_WITNESSES[@]}"; do
       echo "  FAIL (empty)      $f  (no #check and no concrete decl)" >&2
       fail=1
       ;;
+    *)
+      echo "  FAIL (parser)     $f  (unexpected verdict: $verdict)" >&2
+      fail=1
+      ;;
   esac
 done
 
-# --- Fixture pair: prove the detector actually discriminates. -----------------
-echo "== detector fixture pair =="
+# --- Fixtures: prove the detector actually discriminates. --------------------
+echo "== detector fixtures =="
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
 
@@ -347,20 +345,50 @@ FAKE_FIX="$WORK/FixtureFake.lean"
   echo "#print axioms Nat.add_comm"
 } > "$FAKE_FIX"
 
+COMMENT_ONLY_FIX="$WORK/FixtureCommentOnly.lean"
+{
+  echo "#check Demo.target"
+  echo "-- theorem fake_receipt : Demo.Target := Demo.target"
+  echo "/- def also_fake := Demo.target -/"
+} > "$COMMENT_ONLY_FIX"
+
+TRIVIAL_FIX="$WORK/FixtureTrivial.lean"
+{
+  echo "#check Demo.target"
+  echo "theorem unrelated_arithmetic : (1 : Nat) + 1 = 2 := rfl"
+  echo "#print axioms unrelated_arithmetic"
+} > "$TRIVIAL_FIX"
+
 CONCRETE_FIX="$WORK/FixtureConcrete.lean"
 {
-  echo "-- A concrete witness: instantiates on explicit data, must be CONCRETE."
-  echo "theorem fixture_witness : (1 : Nat) + 1 = 2 := rfl"
-  echo "#print axioms fixture_witness"
+  echo "#check Demo.target"
+  echo "-- A linked receipt: applies the independently audited target."
+  echo "example : Demo.Target := Demo.target"
 } > "$CONCRETE_FIX"
 
 fake_verdict="$(classify_witness "$FAKE_FIX")"
+comment_only_verdict="$(classify_witness "$COMMENT_ONLY_FIX")"
+trivial_verdict="$(classify_witness "$TRIVIAL_FIX")"
 concrete_verdict="$(classify_witness "$CONCRETE_FIX")"
 
 if [ "$fake_verdict" = "FAKE" ]; then
   echo "  ok   check-only fixture detected as FAKE"
 else
   echo "  FAIL check-only fixture classified $fake_verdict (expected FAKE)" >&2
+  fail=1
+fi
+
+if [ "$comment_only_verdict" = "FAKE" ]; then
+  echo "  ok   comment-only declaration fixture detected as FAKE"
+else
+  echo "  FAIL comment-only fixture classified $comment_only_verdict (expected FAKE)" >&2
+  fail=1
+fi
+
+if [ "$trivial_verdict" = "FAKE" ]; then
+  echo "  ok   unrelated trivial theorem fixture detected as FAKE"
+else
+  echo "  FAIL trivial theorem fixture classified $trivial_verdict (expected FAKE)" >&2
   fail=1
 fi
 
@@ -376,4 +404,4 @@ if [ "$fail" -ne 0 ]; then
   exit 1
 fi
 
-echo "witness-quality gate passed: all headline witnesses are concrete, detector verified"
+echo "witness-quality gate passed: all headline witnesses have linked executable receipts"

@@ -25,7 +25,9 @@ jobs:
       - name: Build
         run: lake build FormalSLT
 
-      - name: Verify no orphaned Lean modules
+      # Applications are rooted through their own optional umbrella; the
+      # default FormalSLT umbrella must not reach them.
+      - name: Verify module reachability and opt-in applications
         run: python3 scripts/check_no_orphan_lean_modules.py
 
       - name: Check examples and tutorials
@@ -92,10 +94,10 @@ jobs:
 
       # A `#check` cannot fail on a vacuous theorem, so it certifies typing and
       # axiom-cleanliness, not satisfiability. This gate fails if any headline
-      # witness file degenerates to `#check`/`#print`-only with no concrete
-      # instantiation, and self-tests its detector against a check-only /
-      # concrete fixture pair.
-      - name: Verify witness quality (ban fake check-only witnesses)
+      # witness file lacks an executable declaration linked to the audited
+      # project surface. The parser ignores comments and rejects check-only or
+      # unrelated-trivial declarations in its self-tests.
+      - name: Verify witness quality (ban fake receipt files)
         run: bash scripts/check_witness_quality.sh
 
       # Statement-level non-vacuity: lints the .lean files CHANGED by this PR

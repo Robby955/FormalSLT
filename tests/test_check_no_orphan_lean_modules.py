@@ -41,3 +41,35 @@ def test_find_orphan_modules_accepts_all_root_reachable_files(tmp_path: Path) ->
     module = load_script()
 
     assert module.find_orphan_modules(tmp_path) == []
+
+
+def test_applications_umbrella_is_independent_reachability_root(tmp_path: Path) -> None:
+    write(tmp_path / "FormalSLT.lean", "import FormalSLT.Core\n")
+    write(tmp_path / "FormalSLT" / "Core.lean", "")
+    write(
+        tmp_path / "FormalSLT" / "Applications.lean",
+        "import FormalSLT.Applications.WorkedExample\n",
+    )
+    write(tmp_path / "FormalSLT" / "Applications" / "WorkedExample.lean", "")
+
+    module = load_script()
+
+    assert module.find_orphan_modules(tmp_path) == []
+    assert module.find_core_application_imports(tmp_path) == []
+
+
+def test_default_umbrella_must_not_import_applications(tmp_path: Path) -> None:
+    write(tmp_path / "FormalSLT.lean", "import FormalSLT.Applications\n")
+    write(
+        tmp_path / "FormalSLT" / "Applications.lean",
+        "import FormalSLT.Applications.WorkedExample\n",
+    )
+    write(tmp_path / "FormalSLT" / "Applications" / "WorkedExample.lean", "")
+
+    module = load_script()
+
+    assert module.find_orphan_modules(tmp_path) == []
+    assert module.find_core_application_imports(tmp_path) == [
+        "FormalSLT.Applications",
+        "FormalSLT.Applications.WorkedExample",
+    ]

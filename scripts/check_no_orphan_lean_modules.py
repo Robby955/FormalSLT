@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Fail when tracked FormalSLT modules are not reachable from FormalSLT.lean."""
+"""Fail on orphaned FormalSLT modules or core-to-application import leaks.
+
+The core umbrella is ``FormalSLT.lean``. If present, the separately imported
+``FormalSLT/Applications.lean`` umbrella is a second reachability root. This
+keeps worked applications covered by the orphan gate without making them part
+of the default ``import FormalSLT`` surface.
+"""
 
 from __future__ import annotations
 
@@ -41,9 +47,16 @@ def imported_formalslt_modules(path: Path) -> list[str]:
     return imports
 
 
-def reachable_modules(root: Path) -> set[str]:
+def umbrella_roots(root: Path) -> list[str]:
+    roots = ["FormalSLT"]
+    if module_to_path(root, "FormalSLT.Applications").is_file():
+        roots.append("FormalSLT.Applications")
+    return roots
+
+
+def reachable_modules(root: Path, roots: list[str] | None = None) -> set[str]:
     seen: set[str] = set()
-    stack = ["FormalSLT"]
+    stack = list(roots if roots is not None else umbrella_roots(root))
     while stack:
         module = stack.pop()
         if module in seen:
@@ -61,15 +74,32 @@ def find_orphan_modules(root: Path) -> list[str]:
     return sorted(mod for mod in modules - reachable if mod != "FormalSLT")
 
 
+def find_core_application_imports(root: Path) -> list[str]:
+    """Report application modules reachable from the default core umbrella."""
+
+    return sorted(
+        module
+        for module in reachable_modules(root, ["FormalSLT"])
+        if module == "FormalSLT.Applications"
+        or module.startswith("FormalSLT.Applications.")
+    )
+
+
 def main() -> int:
     root = Path.cwd()
+    application_imports = find_core_application_imports(root)
     orphans = find_orphan_modules(root)
-    if not orphans:
-        print("no orphaned FormalSLT modules")
+    if not application_imports and not orphans:
+        print("no orphaned FormalSLT modules; Applications remains opt-in")
         return 0
-    print("orphaned FormalSLT modules:")
-    for module in orphans:
-        print(f"  {module} ({module_to_path(root, module).relative_to(root)})")
+    if application_imports:
+        print("FormalSLT.lean reaches opt-in application modules:")
+        for module in application_imports:
+            print(f"  {module} ({module_to_path(root, module).relative_to(root)})")
+    if orphans:
+        print("orphaned FormalSLT modules:")
+        for module in orphans:
+            print(f"  {module} ({module_to_path(root, module).relative_to(root)})")
     return 1
 
 

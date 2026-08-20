@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 THEOREM_MAP = ROOT / "docs" / "theorem-map.md"
 OUTPUT = ROOT / "docs" / "proof-frontier-manifest.json"
 
-EXPECTED_PUBLIC_AXIOMS = ["propext", "Classical.choice", "Quot.sound"]
+ALLOWED_TRANSITIVE_AXIOMS = ["propext", "Classical.choice", "Quot.sound"]
 
 LEAN_DECLARATION_KINDS = {
     "theorem": "theorem",
@@ -772,7 +772,18 @@ def build_manifest() -> dict[str, Any]:
             "theorem_map_entries": sum(len(family["entries"]) for family in theorem_families),
         },
         "audit": {
-            "expected_public_axioms": EXPECTED_PUBLIC_AXIOMS,
+            "transitive_axiom_policy": {
+                "allowed": ALLOWED_TRANSITIVE_AXIOMS,
+                "command": "bash scripts/check_axioms.sh",
+                "coverage": "curated public theorem allowlist in scripts/check_axioms.sh",
+                "mechanism": "live Lean #print axioms with fail-closed target accounting",
+                "result_embedded": False,
+                "result_note": (
+                    "The manifest records policy, not a cached pass result. CI queries every "
+                    "allowlisted theorem and rejects missing reports or axioms outside the "
+                    "allowed set."
+                ),
+            },
             **audit,
         },
         "theorem_families": theorem_families,
@@ -790,6 +801,7 @@ def build_manifest() -> dict[str, Any]:
                 "docs/open-formalization-problems.md",
                 "lakefile.lean",
                 "lean-toolchain",
+                "scripts/check_axioms.sh",
             ],
         },
     }

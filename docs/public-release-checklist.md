@@ -53,6 +53,7 @@ python3 scripts/generate_badge_counts.py --check
 python3 scripts/check_doc_anchors.py --self-test
 git ls-files -z -- '*.md' '*.mdx' | \
   xargs -0 python3 scripts/check_doc_anchors.py
+python3 scripts/check_no_orphan_lean_modules.py
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 git diff --check
@@ -70,6 +71,9 @@ Expected result:
   current library;
 - the independent downstream Lake package builds through all four supported
   topic imports;
+- every tracked Lean module is reachable from the core umbrella or the optional
+  applications umbrella, while `FormalSLT.lean` reaches no
+  `FormalSLT.Applications` module;
 - repository-tool Python self-tests pass;
 - public theorem checker prints only the standard Lean/Mathlib axioms for the public
   spine;
@@ -78,6 +82,10 @@ Expected result:
 - proof-frontier manifest is in sync with the theorem map and source counts;
 - generated proof-frontier, theorem-index, badge, and documentation-anchor
   artifacts are current;
+- the manifest records the transitive-axiom policy and live gate command, not a
+  hard-coded pass result; `scripts/check_axioms.sh` obtains `#print axioms`
+  reports from Lean for every curated theorem, fails if a report is missing,
+  and permits only `propext`, `Classical.choice`, and `Quot.sound`;
 - no executable `sorry`, no executable `admit`, no custom axioms, and no custom
   constants are found;
 - whitespace check passes.

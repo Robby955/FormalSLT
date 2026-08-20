@@ -115,3 +115,62 @@ theorem signed_fidelity {t : ℝ} (f g : ℝ → ℝ) :
 
     assert result.returncode == 0
     assert "ok(signed) QUANTIFIER-INVERSION" in result.stdout
+
+
+def test_long_declaration_is_scanned_past_old_byte_cap(tmp_path: Path) -> None:
+    binders = "\n".join(f"    (x{i} : ℕ)" for i in range(220))
+    result = run_checker(
+        tmp_path,
+        f"""
+theorem long_trivial
+{binders} :
+    True := by
+  trivial
+""",
+    )
+
+    assert result.returncode == 1
+    assert "TRIVIAL-CONCLUSION" in result.stdout
+    assert "long_trivial" in result.stdout
+
+
+def test_declaration_without_proof_delimiter_fails_closed(tmp_path: Path) -> None:
+    result = run_checker(
+        tmp_path,
+        """
+theorem incomplete_receipt (n : ℕ) : n = n
+""",
+    )
+
+    assert result.returncode == 1
+    assert "UNPARSED-DECLARATION" in result.stdout
+
+
+def test_incomplete_theorem_cannot_steal_following_definition_delimiter(
+    tmp_path: Path,
+) -> None:
+    result = run_checker(
+        tmp_path,
+        """
+theorem incomplete_before_def (n : ℕ) : n = n
+def followingDefinition : ℕ := 0
+""",
+    )
+
+    assert result.returncode == 1
+    assert "UNPARSED-DECLARATION" in result.stdout
+    assert "incomplete_before_def" in result.stdout
+
+
+def test_commented_declaration_is_ignored(tmp_path: Path) -> None:
+    result = run_checker(
+        tmp_path,
+        """
+-- theorem line_comment : True := by trivial
+/- theorem block_comment : True := by trivial -/
+theorem real_statement : 1 = 1 := by rfl
+""",
+    )
+
+    assert result.returncode == 0
+    assert "--- checked 1 decl(s), 0 flag(s)" in result.stdout
