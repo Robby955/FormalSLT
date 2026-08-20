@@ -47,6 +47,7 @@ lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
 bash scripts/check_axioms.sh
 bash scripts/check_witness_quality.sh
+FIDELITY_BASE_REF=origin/main bash scripts/check_statement_fidelity.sh
 python3 scripts/generate_proof_frontier_manifest.py --check
 python3 scripts/generate_theorem_index.py --check
 python3 scripts/generate_badge_counts.py --check
@@ -54,6 +55,9 @@ python3 scripts/check_doc_anchors.py --self-test
 git ls-files -z -- '*.md' '*.mdx' | \
   xargs -0 python3 scripts/check_doc_anchors.py
 python3 scripts/check_no_orphan_lean_modules.py
+python3 scripts/stage_docs_site.py --self-test
+python3 scripts/stage_docs_site.py --check-source
+lake -Kenv=dev build FormalSLT:docs
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 git diff --check
@@ -75,6 +79,8 @@ Expected result:
   applications umbrella, while `FormalSLT.lean` reaches no
   `FormalSLT.Applications` module;
 - repository-tool Python self-tests pass;
+- changed theorem statements pass the fail-closed fidelity scan against the
+  exact release base;
 - public theorem checker prints only the standard Lean/Mathlib axioms for the public
   spine;
 - conditional sub-Gamma and unit-interval Dudley checkers print only the
@@ -82,6 +88,8 @@ Expected result:
 - proof-frontier manifest is in sync with the theorem map and source counts;
 - generated proof-frontier, theorem-index, badge, and documentation-anchor
   artifacts are current;
+- the static Pages source passes its self-test and source check, and the full
+  documentation target builds;
 - the manifest records the transitive-axiom policy and live gate command, not a
   hard-coded pass result; `scripts/check_axioms.sh` obtains `#print axioms`
   reports from Lean for every curated theorem, fails if a report is missing,

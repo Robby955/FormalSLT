@@ -88,6 +88,14 @@ These theorems do not supply continuous-state stationary risk, a mixing-time
 bound, or validity for a candidate constructed after seeing its scored
 trajectory.
 
+The countable transition-confidence extension removes the fixed finite tilt
+grid from the transition-radius layer. Its geometric sample-size selector has
+vanishing coordinate boundaries. To turn that into a vanishing row radius, a
+row must keep receiving a positive fraction of visits. To turn it into a
+vanishing candidate-kernel budget, the selected candidate must also approach
+the empirical transition table. The theorem deliberately exposes both
+requirements rather than calling the estimator consistent for free.
+
 ---
 
 ## Generalization gap

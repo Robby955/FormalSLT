@@ -65,7 +65,9 @@ For the oracle posterior at horizon `200,000`, Lean checks:
 This numerical receipt evaluates the fixed nominal-kernel, depth-five,
 risk-tilt-five, oracle-posterior atom inside the simultaneous catalog. The
 path-dependent selector theorem below is a separate result and is not used to
-produce these displayed numbers.
+produce these displayed numbers. The application also retains one fixed
+transition-confidence atom; the separate countable transition extension is
+not instantiated by this numerical receipt.
 
 The transferred Dobrushin coefficient is strictly below one. One theorem gives
 a common event whose complement has real outer mass at most `1/20`, supporting

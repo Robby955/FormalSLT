@@ -17,7 +17,7 @@
   },
   "frontier_lanes": [
     {
-      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes or supply arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, multistep prediction, or optional stopping. The separate stationary theorem uses an invariant PMF. Finite-state existence constructs a noncomputable chosen invariant target; uniqueness still requires a strict contraction certificate. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The combined empirical catalog event permits same-path selection only within a finite predeclared candidate family and only after every required row is visited; it does not validate a newly path-fitted Poisson score, establish a mixing time, cover continuous-state stationary risk, or provide a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials. The dynamic comparators allow history-dependent targets and a known prefix/time-dependent environment, but control one-step risks only at behavior-realized prefixes. The separate target-path change-of-measure theorem is exact at each fixed finite horizon and exposes worst-case weight range C ^ n; it is not an anytime-valid cumulative-weight boundary. No controlled lane is a learned-nuisance or unknown-kernel result. The arbitrary-state endpoint requires a supplied jointly measurable score and does not construct a measurable posterior selector or selected process. The basic Real checker uses a two-atom transition law and proves positive conditional variance without evaluating the PAC-Bayes boundary. The separate Gaussian/fair-Boolean receipt has posterior finite-set mass zero, KL = 1/32, and boundary at most 489/1024 on theorem-produced good paths in both mass-1/4 sign-flip branches. It fixes the posterior and tilt and still uses two-atom dynamics. The finite-hypothesis forward layer has a normalized countable master e-process, while the finite-state trajectory layer obtains its countable result by confidence allocation rather than a countable master-process claim. These results do not cover random starts for the general prefix-dependent or measurable-state layers, atomless-dynamics evidence, arbitrary joint predictor--tilt posteriors, countable tilts for the continuous-prior or arbitrary-state layers, all-real tilt control, multistep prediction, optional stopping, matched boundary comparison, or stationary long-run risk. Random initial laws are checked only for the homogeneous finite-state Markov weighted-tilt certificate.",
+      "boundary": "TrajectoryRisk alone is a path-semantics and conditional-expectation bridge. TrajectoryPACBayes adds one measurable confidence event for finite predeclared catalogs, including fixed-in-advance online update rules; the posterior and one finite tilt atom may be selected after the path. The theorem does not validate creating catalog members after observing their scored outcomes or supply arbitrary joint predictor--tilt posteriors, unrestricted all-real tilt control, multistep prediction, or optional stopping. The separate stationary theorem uses an invariant PMF. Finite-state existence constructs a noncomputable chosen invariant target; uniqueness still requires a strict contraction certificate. Finite-depth potentials and known-kernel contraction are constructed, and a fixed candidate transfers under a deterministic row-TV envelope. The combined empirical catalog event permits same-path selection only within a finite predeclared candidate family and only after every required row is visited. A separate countable geometric transition-confidence event has selected coordinate boundaries tending to zero; normalized row radii additionally require positive limiting visit frequencies, and its selected kernel budget vanishes only when empirical candidate discrepancies do. Neither layer validates a newly path-fitted Poisson score, establishes a mixing time, covers continuous-state stationary risk, or provides a measurable-event theorem. The controlled semantic layer by itself is behavior-law and one-step. The separate stationary target-policy OPE theorem requires known dynamics and behavior propensities plus supplied invariant laws and exact bounded potentials. The dynamic comparators allow history-dependent targets and a known prefix/time-dependent environment, but control one-step risks only at behavior-realized prefixes. The separate target-path change-of-measure theorem is exact at each fixed finite horizon and exposes worst-case weight range C ^ n; it is not an anytime-valid cumulative-weight boundary. No controlled lane is a learned-nuisance or unknown-kernel result. The arbitrary-state endpoint requires a supplied jointly measurable score and does not construct a measurable posterior selector or selected process. The basic Real checker uses a two-atom transition law and proves positive conditional variance without evaluating the PAC-Bayes boundary. The separate Gaussian/fair-Boolean receipt has posterior finite-set mass zero, KL = 1/32, and boundary at most 489/1024 on theorem-produced good paths in both mass-1/4 sign-flip branches. It fixes the posterior and tilt and still uses two-atom dynamics. The finite-hypothesis forward layer has a normalized countable master e-process, while the finite-state trajectory layer obtains its countable result by confidence allocation rather than a countable master-process claim. These results do not cover random starts for the general prefix-dependent or measurable-state layers, atomless-dynamics evidence, arbitrary joint predictor--tilt posteriors, countable tilts for the continuous-prior or arbitrary-state layers, all-real tilt control, multistep prediction, optional stopping, matched boundary comparison, or stationary long-run risk. Random initial laws are checked only for the homogeneous finite-state Markov weighted-tilt certificate.",
       "difficulty": "medium",
       "id": "finite-markov-prequential-risk",
       "next_step": "Handle candidates fitted outside the finite predeclared catalog using an independently uniform construction or auxiliary data/sample splitting. Extend random starts beyond the homogeneous finite-state Markov endpoint to the general prefix-dependent, measurable-state, and controlled layers. Add unvisited-row and quantitative mixing interfaces, an anytime-valid cumulative-weight or target-policy value theorem, countable control for the continuous-prior and arbitrary-state layers, predictable or all-real tilts, and stronger multistate and atomless evidence.",
@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 216,
-    "library_and_example_lean_lines": 135349,
-    "library_lean_lines": 106509,
-    "library_modules": 259,
-    "theorem_map_entries": 1013
+    "example_lean_files": 217,
+    "library_and_example_lean_lines": 135902,
+    "library_lean_lines": 107027,
+    "library_modules": 260,
+    "theorem_map_entries": 1029
   },
   "theorem_families": [
     {
@@ -5641,6 +5641,102 @@
           "module": "StochasticDynamics.EmpiricalTransitionConfidence",
           "name": "exists_selectedEmpiricalKernelContraction_event",
           "summary": "Combines a selected candidate's empirical row-TV budget with Dobrushin perturbation, true-kernel contraction, and uniqueness among supplied invariant PMFs"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableTransitionCoordinateBoundary",
+          "summary": "Direct or complement coordinate boundary for one natural-number geometric tilt atom"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableTransitionCoordinateRadius",
+          "summary": "Two-sided countable-catalog coordinate radius normalized by source visits"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableEmpiricalTransitionRowRadius",
+          "summary": "Countable-catalog row radius in total-variation scale"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableEmpiricalCandidateKernelTVBudget",
+          "summary": "Maximum candidate discrepancy plus countable-catalog row radius"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableTransitionCoordinateBoundary_selected_tendsto_zero",
+          "summary": "Explicit geometric-atom coordinate boundary tends to zero along every path"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableTransitionCoordinateRadius_selected_tendsto_zero_of_visitFrequency",
+          "summary": "Normalized coordinate radius vanishes under positive limiting source frequency"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableEmpiricalTransitionRowRadius_selected_tendsto_zero_of_visitFrequency",
+          "summary": "Complete row-TV statistical radius vanishes under the same visit-frequency condition"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "countableEmpiricalCandidateKernelTVBudget_selected_tendsto_zero",
+          "summary": "Kernel budget vanishes only with positive row frequencies and vanishing candidate discrepancies"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_countableEmpiricalTransitionCoordinate_event",
+          "summary": "One outer-mass event controls all times, coordinates, and natural-number tilt atoms"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_countableEmpiricalTransitionFrequency_event",
+          "summary": "Gives every visited row a normalized countable-catalog frequency band"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_countableEmpiricalCandidateRowTotalVariation_event",
+          "summary": "Certifies every candidate row on the same countable event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_selectedCountableEmpiricalCandidateRowTotalVariation_event",
+          "summary": "Substitutes a path- and time-selected candidate row without a new event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_countableEmpiricalCandidateKernelTV_event",
+          "summary": "Gives a kernel-wide candidate TV budget when every row is visited"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_selectedCountableEmpiricalCandidateKernelTV_event",
+          "summary": "Substitutes a selected candidate kernel inside the common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_countableEmpiricalTransitionGeometric_event",
+          "summary": "Selects the explicit sample-size geometric atom and retains coordinate-boundary convergence"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.EmpiricalTransitionConfidenceCountable",
+          "name": "exists_selectedCountableEmpiricalCandidateKernelTVGeometric_event",
+          "summary": "Combines selected kernel validity with conditional vanishing of its countable TV budget"
         }
       ],
       "name": "Empirical transition confidence for unknown finite kernels"

@@ -1107,6 +1107,22 @@ event, continuous-state validity, or unrestricted real-tilt selection.
 | `exists_selectedEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Explicit path- and time-selected candidate specialization with no additional selection cost |
 | `exists_empiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Gives one uniform candidate-kernel row-TV budget when every source row has been visited |
 | `exists_selectedEmpiricalKernelContraction_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Combines a selected candidate's empirical row-TV budget with Dobrushin perturbation, true-kernel contraction, and uniqueness among supplied invariant PMFs |
+| `countableTransitionCoordinateBoundary` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Direct or complement coordinate boundary for one natural-number geometric tilt atom |
+| `countableTransitionCoordinateRadius` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Two-sided countable-catalog coordinate radius normalized by source visits |
+| `countableEmpiricalTransitionRowRadius` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Countable-catalog row radius in total-variation scale |
+| `countableEmpiricalCandidateKernelTVBudget` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Maximum candidate discrepancy plus countable-catalog row radius |
+| `countableTransitionCoordinateBoundary_selected_tendsto_zero` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Explicit geometric-atom coordinate boundary tends to zero along every path |
+| `countableTransitionCoordinateRadius_selected_tendsto_zero_of_visitFrequency` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Normalized coordinate radius vanishes under positive limiting source frequency |
+| `countableEmpiricalTransitionRowRadius_selected_tendsto_zero_of_visitFrequency` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Complete row-TV statistical radius vanishes under the same visit-frequency condition |
+| `countableEmpiricalCandidateKernelTVBudget_selected_tendsto_zero` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Kernel budget vanishes only with positive row frequencies and vanishing candidate discrepancies |
+| `exists_countableEmpiricalTransitionCoordinate_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | One outer-mass event controls all times, coordinates, and natural-number tilt atoms |
+| `exists_countableEmpiricalTransitionFrequency_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Gives every visited row a normalized countable-catalog frequency band |
+| `exists_countableEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Certifies every candidate row on the same countable event |
+| `exists_selectedCountableEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Substitutes a path- and time-selected candidate row without a new event |
+| `exists_countableEmpiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Gives a kernel-wide candidate TV budget when every row is visited |
+| `exists_selectedCountableEmpiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Substitutes a selected candidate kernel inside the common event |
+| `exists_countableEmpiricalTransitionGeometric_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Selects the explicit sample-size geometric atom and retains coordinate-boundary convergence |
+| `exists_selectedCountableEmpiricalCandidateKernelTVGeometric_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Combines selected kernel validity with conditional vanishing of its countable TV budget |
 
 The normalized row statements require positive source visit mass, and the
 uniform kernel statement requires every row to have been visited. Candidate

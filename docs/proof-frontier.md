@@ -42,7 +42,11 @@ files.
   row-TV error, estimates visited-row transition error, selects within a finite
   predeclared candidate--depth catalog, and constructs an invariant PMF for
   every nonempty finite kernel. Uniqueness requires a strict contraction
-  certificate. The controlled layer proves one-step behavior-law semantics,
+  certificate. A separate countable geometric transition-confidence event has
+  a selected coordinate boundary tending to zero; normalized row radii require
+  positive limiting visit frequencies, and the selected kernel budget tends to
+  zero only when empirical candidate discrepancies do. The controlled layer
+  proves one-step behavior-law semantics,
   stationary state-Markov OPE with supplied nuisance objects, encountered-
   prefix dynamic comparators, and exact fixed-horizon path-law change of
   measure with worst-case `C ^ n` weights.

@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C016-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-259-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-135%2C349-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C025-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-260-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-135%2C902-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -54,7 +54,7 @@ versioned literature audit.
 | Stationary risk for a known contracting finite kernel | <code>FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event</code> | Supplied invariant law, strict contraction, and a uniform centered row-risk oscillation bound | **PROVED · CONDITIONAL INPUTS · LITERATURE AUDIT PENDING** |
 | Same-trajectory certification with an unknown finite kernel | <code>FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event</code> | Predeclared finite candidates; every source row visited; strict selected contraction for uniqueness | **PROVED · LITERATURE AUDIT PENDING** |
 
-The complete catalog is in the
+The curated discovery catalog is in the
 [concept index](./docs/INDEX.md) and [theorem map](./docs/theorem-map.md).
 The [scope ledger](./docs/assumptions-and-nonclaims.md) is authoritative for
 boundaries that do not fit in this table.
@@ -124,12 +124,23 @@ existence, robust candidate transfer, and a same-trajectory finite
 candidate/depth catalog. Candidate choice can occur after the path only within
 the catalog fixed before scoring.
 
+A separate countable geometric transition-tilt extension gives one
+outer-mass event over every natural-number atom and an explicit selected
+coordinate boundary tending to zero. Normalized row radii additionally require
+positive limiting row-visit frequencies. A selected candidate-kernel budget
+tends to zero only when its empirical row discrepancies also tend to zero; the
+theorem is not an unconditional kernel-consistency claim.
+
 - Known-kernel depth selection:
   [StationaryPoissonDepthSelection.lean](./FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean)
 - Known-kernel checker:
   [CheckStationaryPoissonDepthSelection.lean](./examples/CheckStationaryPoissonDepthSelection.lean)
 - Empirical transition confidence:
   [EmpiricalTransitionConfidence.lean](./FormalSLT/StochasticDynamics/EmpiricalTransitionConfidence.lean)
+- Countable transition confidence:
+  [EmpiricalTransitionConfidenceCountable.lean](./FormalSLT/StochasticDynamics/EmpiricalTransitionConfidenceCountable.lean)
+- Countable transition checker:
+  [CheckEmpiricalTransitionConfidenceCountable.lean](./examples/CheckEmpiricalTransitionConfidenceCountable.lean)
 - Unknown-kernel stationary catalog:
   [EmpiricalStationaryCatalog.lean](./FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean)
 - Statement and axiom checker:
@@ -206,6 +217,11 @@ Supporting families include:
 - <code>FormalSLT.Stability</code>, <code>OnlineToPAC</code>, and
   <code>Statistics</code>
 
+The checked [20-state random-refresh load application](./docs/random-refresh-load-application.md)
+is available through the opt-in <code>import FormalSLT.Applications</code>
+umbrella. Its application-specific declarations are not part of the 19-name
+v0.2 compatibility promise.
+
 ## Installation
 
 FormalSLT uses Lean 4.32.2 and Mathlib 4.32.2.
@@ -268,6 +284,7 @@ python3 -m pip install -r requirements-dev.txt
 make python-tests
 bash scripts/check_axioms.sh
 bash scripts/check_witness_quality.sh
+FIDELITY_BASE_REF=origin/main bash scripts/check_statement_fidelity.sh
 rg -n --pcre2 '^\s*(?:by\s+)?(?:sorry|admit)\b|:=\s*(?:by\s+)?(?:sorry|admit)\b' FormalSLT examples
 rg -n --pcre2 '^\s*(?:axiom|constant)\s+[A-Za-z_]' FormalSLT examples
 python3 scripts/generate_proof_frontier_manifest.py --check
@@ -286,6 +303,8 @@ The public axiom gate reports only
 - the root build, recursive example sweep, tutorials, public API snapshot,
   v0.1 replay, downstream consumer, and repository-tool self-tests finish
   successfully;
+- changed theorem statements pass the fail-closed fidelity scan against the
+  selected base revision;
 - the proof-debt scans find no executable `sorry`, `admit`, or custom axiom;
 - generated proof-frontier, badge, and documentation anchors are current; and
 - `git diff --check` reports no whitespace errors.

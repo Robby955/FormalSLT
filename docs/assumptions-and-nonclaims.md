@@ -263,6 +263,19 @@ score from the same data without a predeclared uniform catalog, auxiliary data,
 or sample splitting. The common confidence set is an outer-mass package; no
 separate measurability theorem is claimed.
 
+`StochasticDynamics.EmpiricalTransitionConfidenceCountable` replaces the
+finite transition-tilt catalog in this confidence layer with the predeclared
+natural-number geometric catalog. One outer-mass event is simultaneous over
+all atoms, times `n >= 2`, and transition coordinates. The explicit geometric
+atom has an unnormalized coordinate boundary tending to zero along every path.
+Normalized coordinate and row radii tend to zero only under a positive
+limiting visit frequency for the source row. The maximum selected
+candidate-kernel budget tends to zero only if those frequency assumptions hold
+for every row and the selected candidate's empirical row discrepancies tend to
+zero. These are supplied pathwise hypotheses, not a generic consistency or
+ergodicity theorem. The application-level finite catalog continues to use its
+own fixed transition atom unless it explicitly imports this extension.
+
 ### Same-trajectory empirical stationary catalogs
 
 `StochasticDynamics.EmpiricalStationaryCatalog` supplies the predeclared
