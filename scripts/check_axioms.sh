@@ -609,6 +609,10 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.mul_ratio_eq_of_zero_imp_zero"
   "FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp"
   "FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces"
+  "FormalSLT.StochasticDynamics.augmentedBehaviorKernel_apply"
+  "FormalSLT.StochasticDynamics.controlledContinuationPMF_markovBehaviorPolicy"
+  "FormalSLT.StochasticDynamics.controlledPrefixKernel_markovBehaviorPolicy"
+  "FormalSLT.StochasticDynamics.controlledTrajectoryMeasure_markovBehaviorPolicy"
   "FormalSLT.StochasticDynamics.controlledTargetConditionalMean_eq_encounteredRisk_div"
   "FormalSLT.StochasticDynamics.forwardPrefixMean_div"
   "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_controlledTargetConditionalMean"
@@ -793,6 +797,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
+  echo "import FormalSLT.StochasticDynamics.ControlledMarkovization"
   echo "import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator"
   echo "import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator"
   echo "import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure"
@@ -873,6 +878,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE \
   FormalSLT.StochasticDynamics.ControlledTrajectory \
+  FormalSLT.StochasticDynamics.ControlledMarkovization \
   FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator \
   FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator \
   FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure \

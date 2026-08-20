@@ -8,6 +8,7 @@ import FormalSLT.StochasticDynamics.MarkovRisk
 import FormalSLT.StochasticDynamics.TrajectoryRisk
 import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk
 import FormalSLT.StochasticDynamics.ControlledTrajectory
+import FormalSLT.StochasticDynamics.ControlledMarkovization
 import FormalSLT.StochasticDynamics.MarkovPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
@@ -62,8 +63,10 @@ upgrade existence to uniqueness.
 
 It additionally exports finite state--action behavior-law semantics and
 normalized one-step importance-weighting interfaces.  For finite state-based
-Markov target policies, it exports a stationary target-policy OPE endpoint
-under a known environment and behavior policy, supplied invariant target
+behavior policies, the controlled prefix kernel and path law are identified
+exactly with the ordinary Markov law on action--state pairs.  For finite
+state-based Markov target policies, it exports a stationary target-policy OPE
+endpoint under a known environment and behavior policy, supplied invariant target
 laws and exact Poisson potentials, and declared overlap and span bounds.  It
 also exports encountered-prefix dynamic comparators for finite catalogs of
 history-dependent target policies, including a known prefix/time-dependent
