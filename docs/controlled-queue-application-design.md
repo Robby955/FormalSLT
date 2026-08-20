@@ -2,8 +2,13 @@
 
 Status: **MODEL AND TRACE/PREPROCESSING IMPLEMENTED / CERTIFICATE OPEN**
 
-Design base: FormalSLT release-candidate commit
+Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
+
+Checked adapter snapshot: local commit
+`e16265e60a436db3227469cf97a99e7106b4dc94` (tree
+`49a236aaf1b2baccc9b171220155e76c598f7392`). This snapshot is local and is
+not yet part of public `main` or draft PR #99.
 
 This packet specifies the smallest controlled finite-state application that can
 serve as a journal-grade demonstration of FormalSLT's trajectory, stationary,
@@ -102,6 +107,9 @@ The following pieces are already proved on the design base.
 | Requirement | Existing module | Supported scope |
 |---|---|---|
 | Controlled behavior paths, overlap, bounded importance scores | `StochasticDynamics.ControlledTrajectory` | Finite controlled trajectories and exact score identities |
+| Markov behavior-law reduction | `StochasticDynamics.ControlledMarkovization` | Exact controlled-prefix and path-law equality with the homogeneous chain on `Action × State` |
+| Action-conditioned TV transfer | `StochasticDynamics.ControlledKernelTV` | Exact shared-behavior TV decomposition; positive behavior mass gives the sharp inverse-probability row bound |
+| Generated queue row ordering | `Applications.ControlledQueueReindex` | Exact state-major/action-minor indexing and the `(S_t, A_t)` row selected by a controlled edge |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Fixed and history-dependent score comparison | `StochasticDynamics.DynamicTargetPolicyComparator` | Behavior-encountered histories |
 | Finite-depth Poisson selection | `StochasticDynamics.StationaryPoissonDepthSelection` | Ordinary finite-state Markov scores |
@@ -113,12 +121,15 @@ into unknown-dynamics controlled OPE.
 
 ## Missing theorem and API work
 
-The following items are **OPEN**.
+The generic Markovization and action-conditioned TV bridges are checked. The
+following application and composition items remain **OPEN**.
 
-1. Markovization bridge: identify a stationary Markov behavior policy's
-   controlled trajectory with the homogeneous 48-state augmented kernel.
-2. Action-conditioned confidence bridge: turn augmented behavior-kernel TV
-   confidence into bounds for each physical environment row `P(z, a)`.
+1. Typed queue-table instantiation: turn the generated rational kernel and
+   policy tables into checked `PMF`-valued environment and behavior/target
+   policies, and prove that their masses equal the frozen table entries.
+2. Concrete empirical-confidence composition: instantiate the augmented
+   transition-confidence endpoint with those typed queue kernels, then use the
+   behavior mass `1/2` to obtain the sharp physical-row bound `2 * eta`.
 3. Unknown-dynamics stationary target-policy OPE. The current OPE layer
    assumes the environment, invariant laws, and Poisson solutions are supplied
    exactly.
@@ -133,8 +144,8 @@ The first implementable paper slice should therefore contain:
 - known-kernel stationary OPE for fixed policy/cost atoms;
 - known-kernel dynamic comparison of fixed and causal Brier predictors;
 - empirical-kernel certification of the 48-state behavior chain after the
-  Markovization bridge;
-- no claim of unified unknown-kernel target-policy OPE until items 2--4 are
+  typed table instantiation;
+- no claim of unified unknown-kernel target-policy OPE until items 1--4 are
   proved.
 
 ## Frozen input and generator contract
@@ -213,8 +224,10 @@ below its transition index.
 
 The binary stores physical states and actions as separate arrays. FormalSLT's
 `ControlledObservation Z A` is `A × Z`, while the generated augmented-kernel
-rows use state-major `(Z, A)` indexing. A future Lean bridge must prove the swap
-and index equivalence; preprocessing does not imply direct tuple identity.
+rows use state-major `(Z, A)` indexing. `ControlledQueueReindex` now proves the
+swap, index equivalence, and controlled-edge row selection. The generated
+rational tables still require a separate checked conversion into typed PMFs;
+preprocessing does not imply stochastic semantics by itself.
 The causal Beta predictors remain dynamic behavior-encountered scores. They
 are not fixed stationary target-policy scores without augmenting the state by
 learner memory and proving the corresponding stationary theorem.
