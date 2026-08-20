@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 222,
-    "library_and_example_lean_lines": 146240,
-    "library_lean_lines": 116952,
-    "library_modules": 266,
-    "theorem_map_entries": 1030
+    "example_lean_files": 223,
+    "library_and_example_lean_lines": 146590,
+    "library_lean_lines": 117261,
+    "library_modules": 267,
+    "theorem_map_entries": 1035
   },
   "theorem_families": [
     {
@@ -4852,6 +4852,41 @@
         }
       ],
       "name": "Stationary target-policy off-policy evaluation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyOPE",
+          "name": "stationaryTargetPolicyPredictableMean_eq_drift",
+          "summary": "Exposes the raw behavior-law predictable mean as the normalized target-policy Poisson drift at the current observed state, before any exact-Poisson flattening"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
+          "name": "stationaryTargetPolicyPosteriorResidualAverage",
+          "summary": "Averages the true induced-kernel approximate-Poisson residual over the first n encountered states and a posterior PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
+          "name": "posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean_approximate",
+          "summary": "Identifies the posterior predictable-mean prefix average with (posterior stationary risk + posterior residual average + B) / (C * (1 + 2 * B))"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
+          "name": "neg_stationaryTargetPolicyPosteriorResidualAverage_le",
+          "summary": "Converts a fixed pointwise absolute residual envelope into exactly posteriorAverage posterior residualEnvelope, with no extra importance-ratio, span, horizon, or factor-two multiplier"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
+          "name": "exists_stationaryApproximateTargetPolicyOPE_event",
+          "summary": "Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every n >= 2, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus posteriorAverage posterior residualEnvelope"
+        }
+      ],
+      "name": "Approximate-Poisson stationary target-policy off-policy evaluation"
     },
     {
       "entries": [

@@ -907,6 +907,30 @@ potentials, overlap, and ratio cap are inputs. This section uses one-step action
 importance ratios and does not establish target-occupancy change of measure,
 learn nuisance quantities, or handle unknown dynamics.
 
+## Approximate-Poisson stationary target-policy off-policy evaluation
+
+| Declaration | Module | Role |
+|---|---|---|
+| `stationaryTargetPolicyPredictableMean_eq_drift` | `StochasticDynamics.StationaryTargetPolicyOPE` | Exposes the raw behavior-law predictable mean as the normalized target-policy Poisson drift at the current observed state, before any exact-Poisson flattening |
+| `stationaryTargetPolicyPosteriorResidualAverage` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Averages the true induced-kernel approximate-Poisson residual over the first `n` encountered states and a posterior PMF |
+| `posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean_approximate` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Identifies the posterior predictable-mean prefix average with `(posterior stationary risk + posterior residual average + B) / (C * (1 + 2 * B))` |
+| `neg_stationaryTargetPolicyPosteriorResidualAverage_le` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Converts a fixed pointwise absolute residual envelope into exactly `posteriorAverage posterior residualEnvelope`, with no extra importance-ratio, span, horizon, or factor-two multiplier |
+| `exists_stationaryApproximateTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every `n >= 2`, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus `posteriorAverage posterior residualEnvelope` |
+
+The environment `P`, behavior policy `beta`, target-policy catalog `pi`,
+invariant PMFs, potentials, and pointwise residual envelopes are fixed before
+the event. The theorem assumes true induced-kernel invariance, `[0,1]`
+transition scores, a common potential-span bound, overlap, a positive
+importance-ratio cap, full-support hypothesis and tilt weights, positive
+declared tilts below one, and a positive failure budget. The event is fixed
+before the realized path `x`, tilt atom, posterior, and time are quantified, so
+those choices may be made after observing the path only within the fixed
+catalogs and envelope contract. The result does not construct finite-depth
+potentials, candidate kernels, transition-confidence events, event
+intersections, invariant laws, or data-dependent residual envelopes. It also
+does not provide full-trajectory importance sampling or a two-sided confidence
+interval.
+
 ## Stationary target-policy robust-candidate bridge
 
 | Declaration | Module | Role |

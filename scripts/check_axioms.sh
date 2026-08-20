@@ -623,6 +623,7 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.existsUnique_invariantPMF_of_candidate_rowTV"
   "FormalSLT.StochasticDynamics.targetPolicyPotentialMean_eq_inducedKernel"
   "FormalSLT.StochasticDynamics.targetPolicyPoissonControlledScore_mem_Icc"
+  "FormalSLT.StochasticDynamics.stationaryTargetPolicyPredictableMean_eq_drift"
   "FormalSLT.StochasticDynamics.stationaryTargetPolicyPredictableMean_eq"
   "FormalSLT.StochasticDynamics.stationaryTargetPolicyObservedScore_condExp"
   "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean"
@@ -637,6 +638,9 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.finitePMFTotalVariation_targetPolicyKernel_le_environmentRadius"
   "FormalSLT.StochasticDynamics.abs_targetPolicyPoissonDrift_sub_candidate_le"
   "FormalSLT.StochasticDynamics.abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation"
+  "FormalSLT.StochasticDynamics.posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean_approximate"
+  "FormalSLT.StochasticDynamics.neg_stationaryTargetPolicyPosteriorResidualAverage_le"
+  "FormalSLT.StochasticDynamics.exists_stationaryApproximateTargetPolicyOPE_event"
   "FormalSLT.StochasticDynamics.mul_ratio_eq_of_zero_imp_zero"
   "FormalSLT.StochasticDynamics.controlledObservedImportanceScore_condExp"
   "FormalSLT.StochasticDynamics.controlledImportanceCatalog_predictableMean_interfaces"
@@ -834,6 +838,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate"
+  echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
   echo "import FormalSLT.StochasticDynamics.ControlledMarkovization"
   echo "import FormalSLT.StochasticDynamics.ControlledKernelTV"
@@ -919,6 +924,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate \
+  FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE \
   FormalSLT.StochasticDynamics.ControlledTrajectory \
   FormalSLT.StochasticDynamics.ControlledMarkovization \
   FormalSLT.StochasticDynamics.ControlledKernelTV \
