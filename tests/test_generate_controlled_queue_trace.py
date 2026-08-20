@@ -61,6 +61,17 @@ def _verifier_arguments(paths: dict[str, Path]) -> list[str]:
     ]
 
 
+def _rewrite_manifest_hash(paths: dict[str, Path], role: str, raw: bytes) -> None:
+    manifest = json.loads(paths["manifest"].read_bytes())
+    item = next(row for row in manifest["files"] if row["role"] == role)
+    item["sha256"] = hashlib.sha256(raw).hexdigest()
+    if role.endswith("output"):
+        item["bytes"] = len(raw)
+    paths["manifest"].write_text(
+        json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    )
+
+
 def _decode_prediction_arrays(
     raw: bytes, horizon: int
 ) -> tuple[bytes, bytes, tuple[int, ...], tuple[int, ...], tuple[int, ...], tuple[int, ...]]:
@@ -228,6 +239,56 @@ def test_independent_verifier_fails_on_tampered_trace(tmp_path: Path) -> None:
     raw = bytearray(paths["trace"].read_bytes())
     raw[generator.BINARY_HEADER.size + 17] ^= 1
     paths["trace"].write_bytes(raw)
+    assert verifier.main(_verifier_arguments(paths)) == 1
+
+
+def test_independent_verifier_rejects_manifest_parameter_tamper(tmp_path: Path) -> None:
+    arguments, paths = _temp_arguments(tmp_path)
+    assert generator.main(arguments) == 0
+    manifest = json.loads(paths["manifest"].read_bytes())
+    manifest["parameters"]["horizon"] -= 1
+    paths["manifest"].write_text(
+        json.dumps(manifest, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    )
+    assert verifier.main(_verifier_arguments(paths)) == 1
+
+
+def test_independent_replay_rejects_trace_tamper_after_rehash(tmp_path: Path) -> None:
+    arguments, paths = _temp_arguments(tmp_path)
+    assert generator.main(arguments) == 0
+    raw = bytearray(paths["trace"].read_bytes())
+    raw[generator.BINARY_HEADER.size + 17] ^= 1
+    tampered = bytes(raw)
+    paths["trace"].write_bytes(tampered)
+    _rewrite_manifest_hash(paths, "raw_trace_output", tampered)
+    assert verifier.main(_verifier_arguments(paths)) == 1
+
+
+def test_independent_replay_rejects_prediction_tamper_after_rehash(
+    tmp_path: Path,
+) -> None:
+    arguments, paths = _temp_arguments(tmp_path)
+    assert generator.main(arguments) == 0
+    raw = bytearray(paths["trace"].read_bytes())
+    horizon = 200000
+    global_numerator_offset = generator.BINARY_HEADER.size + (horizon + 1) + horizon
+    raw[global_numerator_offset + 3] ^= 1
+    tampered = bytes(raw)
+    paths["trace"].write_bytes(tampered)
+    _rewrite_manifest_hash(paths, "raw_trace_output", tampered)
+    assert verifier.main(_verifier_arguments(paths)) == 1
+
+
+def test_independent_replay_rejects_count_tamper_after_rehash(tmp_path: Path) -> None:
+    arguments, paths = _temp_arguments(tmp_path)
+    assert generator.main(arguments) == 0
+    counts = json.loads(paths["counts"].read_bytes())
+    counts["counts"]["action_counts"][0] -= 1
+    tampered = (
+        json.dumps(counts, indent=2, sort_keys=True, ensure_ascii=True) + "\n"
+    ).encode()
+    paths["counts"].write_bytes(tampered)
+    _rewrite_manifest_hash(paths, "counts_output", tampered)
     assert verifier.main(_verifier_arguments(paths)) == 1
 
 

@@ -114,6 +114,10 @@ def _exact(actual: Any, expected: Any, where: str) -> None:
         raise VerificationError(f"{where} mismatch: expected {expected!r}, got {actual!r}")
 
 
+def _exact_keys(actual: dict[str, Any], expected: set[str], where: str) -> None:
+    _exact(set(actual), expected, f"{where} keys")
+
+
 def _sha(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
@@ -391,6 +395,7 @@ def _verify_trace_contract(trace: dict[str, Any], model: dict[str, Any], model_r
 
 def _verify_manifest(
     manifest: dict[str, Any],
+    trace_spec: dict[str, Any],
     trace_input: Path,
     trace_input_raw: bytes,
     model_input: Path,
@@ -400,19 +405,75 @@ def _verify_manifest(
     counts_path: Path,
     counts_raw: bytes,
 ) -> None:
+    _exact_keys(
+        manifest,
+        {
+            "artifact_status",
+            "files",
+            "generator",
+            "generator_dependencies",
+            "independent_verifier",
+            "manifest_note",
+            "nonclaims",
+            "parameters",
+            "schema_version",
+            "trace_version",
+        },
+        "manifest",
+    )
     _exact(manifest.get("artifact_status"), ARTIFACT_STATUS, "manifest status")
     _exact(manifest.get("schema_version"), SCHEMA_VERSION, "manifest schema")
     _exact(manifest.get("trace_version"), TRACE_VERSION, "manifest trace version")
+    _exact(
+        manifest.get("manifest_note"),
+        "the manifest is canonical JSON and is not recursively self-hashed",
+        "manifest note",
+    )
+    _exact(manifest.get("nonclaims"), trace_spec["nonclaims"], "manifest nonclaims")
+
+    parameters = _object(manifest.get("parameters"), "manifest parameters")
+    _exact_keys(
+        parameters,
+        {
+            "behavior_policy",
+            "binary_layout",
+            "binary_version",
+            "horizon",
+            "initial_state",
+            "prng_version",
+            "sampling_version",
+            "source_candidate",
+        },
+        "manifest parameters",
+    )
+    _exact(
+        parameters,
+        {
+            "horizon": trace_spec["trace_parameters"]["horizon"],
+            "initial_state": trace_spec["trace_parameters"]["initial_state"],
+            "source_candidate": trace_spec["trace_parameters"]["source_candidate"],
+            "behavior_policy": trace_spec["trace_parameters"]["behavior_policy"],
+            "prng_version": trace_spec["prng_contract"]["version"],
+            "sampling_version": trace_spec["sampling_contract"]["version"],
+            "binary_version": trace_spec["binary_contract"]["version"],
+            "binary_layout": trace_spec["binary_contract"],
+        },
+        "manifest parameters",
+    )
+
     generator = _object(manifest.get("generator"), "manifest generator")
+    _exact_keys(generator, {"path", "revision", "sha256"}, "manifest generator")
     _exact(generator.get("path"), _display(TRACE_GENERATOR), "trace generator path")
     _exact(generator.get("revision"), GENERATOR_REVISION, "trace generator revision")
     _exact(generator.get("sha256"), _sha(TRACE_GENERATOR.read_bytes()), "trace generator hash")
     dependencies = _list(manifest.get("generator_dependencies"), "generator dependencies")
     _exact(len(dependencies), 1, "generator dependency count")
     dependency = _object(dependencies[0], "model generator dependency")
+    _exact_keys(dependency, {"path", "sha256"}, "model generator dependency")
     _exact(dependency.get("path"), _display(MODEL_GENERATOR), "model generator path")
     _exact(dependency.get("sha256"), _sha(MODEL_GENERATOR.read_bytes()), "model generator hash")
     verifier = _object(manifest.get("independent_verifier"), "independent verifier")
+    _exact_keys(verifier, {"path", "sha256"}, "independent verifier")
     verifier_path = Path(__file__).resolve()
     _exact(verifier.get("path"), _display(verifier_path), "verifier path")
     _exact(verifier.get("sha256"), _sha(verifier_path.read_bytes()), "verifier hash")
@@ -427,6 +488,10 @@ def _verify_manifest(
     _exact(len(files), len(expected_files), "manifest file count")
     for row, (role, path, raw) in zip(files, expected_files, strict=True):
         item = _object(row, f"manifest file {role}")
+        expected_keys = {"path", "role", "sha256"}
+        if role.endswith("output"):
+            expected_keys.add("bytes")
+        _exact_keys(item, expected_keys, f"manifest file {role}")
         _exact(item.get("role"), role, f"{role} role")
         _exact(item.get("path"), _display(path), f"{role} path")
         _exact(item.get("sha256"), _sha(raw), f"{role} hash")
@@ -645,6 +710,7 @@ def verify_paths(
     _verify_trace_contract(trace_spec, model, model_input_raw)
     _verify_manifest(
         manifest,
+        trace_spec,
         trace_input,
         trace_input_raw,
         model_input,

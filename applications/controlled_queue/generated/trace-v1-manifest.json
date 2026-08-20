@@ -37,7 +37,7 @@
   ],
   "independent_verifier": {
     "path": "scripts/verify_controlled_queue_trace.py",
-    "sha256": "902d04377c6ffe41882159cefc2745866c5a668360b0cfa82408d8a4571810d2"
+    "sha256": "0e582682683c98735dd70983d088aac5a4c333b2acdacecfc702933e67f91b77"
   },
   "manifest_note": "the manifest is canonical JSON and is not recursively self-hashed",
   "nonclaims": [
