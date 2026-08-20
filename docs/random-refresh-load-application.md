@@ -75,21 +75,23 @@ no worse than the fixed `(5, 5)` choice. It is noncomputable and its exact
 argmin is not identified. The selector theorem substitutes these functions
 into a simultaneous event; it does not construct a selected e-process.
 
-## Separate-event baselines
+## Confidence-matched, separate-event baselines
 
-The three baselines use different exceptional events or confidence
-allocations, so the numerical rows are not same-event comparisons:
+The three baselines use distinct exceptional events, but every risk event has
+the same failure budget `1/40`. The numerical widths are therefore matched in
+confidence level, although they are not same-event comparisons:
 
 | Construction | Empirical-risk plus width |
 |---|---:|
 | Primary variance-adaptive, selected depth/tilt | below `0.1607` |
 | Fixed unit-range Poisson construction | below `0.1749` |
-| Fixed depth five, without depth-allocation price | below `0.1584` |
-| Fixed-tilt non-variance-adaptive construction | below `0.1625` |
+| Fixed depth five, without depth-allocation price | below `0.158` |
+| Fixed-tilt non-variance-adaptive construction | below `0.157` |
 
-The fixed-depth number is smaller than the primary number because it removes
-the post-data depth-allocation cost and uses its own event. It is not evidence
-that the selected construction is uniformly worse.
+On this instance, the proved numerical upper thresholds for both fixed
+baselines are smaller than the corresponding proved threshold for the selected
+empirical-Bernstein construction. The checked results do not prove the exact
+width ordering or any uniform dominance theorem.
 
 ## Verification
 

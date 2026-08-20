@@ -17,8 +17,9 @@ receipt:
   selection; and
 * a non-variance-adaptive fixed-tilt construction.
 
-The three constructions use different corrected-score catalogs or confidence
-allocations.  Their exceptional events are therefore declared separately.
+The three constructions use different corrected-score catalogs, so their
+exceptional events are declared separately.  Each risk event has the same
+failure budget `1/40`; the displayed widths are therefore confidence-matched.
 No theorem in this file calls them same-event comparisons, and no theorem
 asserts that the deterministic balanced path belongs to any good event.
 -/
@@ -427,37 +428,37 @@ theorem primaryPotential_residual (i : Predictor) (z : State) :
   simpa [primaryPotential, empiricalStationaryCatalogPotential,
     candidateReference] using h
 
-/-- Removing only the depth allocation leaves candidate confidence `1/120`. -/
+/-- The fixed-depth baseline uses the same `1/40` risk-event budget as the
+primary and fixed-range constructions.  Candidate and depth are fixed before
+the event is formed, so no candidate or depth allocation is charged. -/
 def fixedDepthRiskDelta : ℝ :=
-  riskFailureBudget * candidateWeight Candidate.nominal
+  riskFailureBudget
 
-theorem fixedDepthRiskDelta_eq : fixedDepthRiskDelta = 1 / 120 := by
-  have hcandidate : Fintype.card Candidate = 3 := by decide
-  norm_num [fixedDepthRiskDelta, riskFailureBudget, candidateWeight,
-    finiteUniformRealPMF, hcandidate]
+theorem fixedDepthRiskDelta_eq : fixedDepthRiskDelta = 1 / 40 := by
+  norm_num [fixedDepthRiskDelta, riskFailureBudget]
 
 private theorem baseline_log_two_le_one : Real.log 2 ≤ 1 := by
   have h := Real.log_le_sub_one_of_pos (show (0 : ℝ) < 2 by norm_num)
   norm_num at h ⊢
   exact h
 
-/-- Fixing the depth removes the polynomial depth-allocation price; the
-remaining KL plus candidate and geometric-tilt cost is at most `15`. -/
-theorem fixedDepthRiskLogCost_le_fifteen :
+/-- Fixing the candidate and depth removes both allocation prices; the
+remaining KL plus geometric-tilt cost is at most `13`. -/
+theorem fixedDepthRiskLogCost_le_thirteen :
     klDiv oraclePosterior predictorPrior +
         Real.log
           ((((5 : ℝ) + 1) * ((5 : ℝ) + 2)) /
-            fixedDepthRiskDelta) ≤ 15 := by
+            fixedDepthRiskDelta) ≤ 13 := by
   have hlog4 : Real.log (4 : ℝ) ≤ 2 := by
     have hpow : Real.log (4 : ℝ) = 2 * Real.log 2 := by
       convert Real.log_pow (2 : ℝ) 2 using 1 <;> norm_num
     rw [hpow]
     linarith [baseline_log_two_le_one]
-  have hlog5040 : Real.log (5040 : ℝ) ≤ 13 := by
-    have hmono : Real.log (5040 : ℝ) ≤ Real.log (8192 : ℝ) :=
+  have hlog1680 : Real.log (1680 : ℝ) ≤ 11 := by
+    have hmono : Real.log (1680 : ℝ) ≤ Real.log (2048 : ℝ) :=
       Real.log_le_log (by norm_num) (by norm_num)
-    have hpow : Real.log (8192 : ℝ) = 13 * Real.log 2 := by
-      convert Real.log_pow (2 : ℝ) 13 using 1 <;> norm_num
+    have hpow : Real.log (2048 : ℝ) = 11 * Real.log 2 := by
+      convert Real.log_pow (2 : ℝ) 11 using 1 <;> norm_num
     rw [hpow] at hmono
     linarith [baseline_log_two_le_one]
   rw [show predictorPrior = finiteUniformRealPMF Predictor by rfl]
@@ -466,7 +467,7 @@ theorem fixedDepthRiskLogCost_le_fifteen :
   have hpredictor : Fintype.card Predictor = 4 := by decide
   rw [hpredictor, fixedDepthRiskDelta_eq]
   norm_num
-  nlinarith
+  nlinarith [hlog1680]
 
 /-- Fixed-depth empirical-Bernstein event.  It is not the primary catalog
 event because the depth-allocation factor has been removed. -/
@@ -498,7 +499,7 @@ def fixedDepthBoundary (n : ℕ) (x : ℕ → State) : ℝ :=
 
 theorem balancedPath_fixedDepthTrajectoryBoundary_le :
     fixedDepthTrajectoryBoundary receiptHorizon balancedPath ≤
-      15802087143053 / 2840294469600000 := by
+      13984298682509 / 2840294469600000 := by
   unfold fixedDepthTrajectoryBoundary
   rw [trajectoryCountableEmpiricalBernsteinPACBayesBoundary_eq_explicit
     predictorPrior receiptCorrectedScore oraclePosterior
@@ -528,13 +529,13 @@ theorem balancedPath_fixedDepthTrajectoryBoundary_le :
           rw [hlam]
           exact receiptPsi_one_sixtyFour_le
         · norm_num
-  have hcost := fixedDepthRiskLogCost_le_fifteen
+  have hcost := fixedDepthRiskLogCost_le_thirteen
   norm_num [geometricForwardTilt, receiptHorizon] at hproduct ⊢
   nlinarith
 
 theorem balancedPath_fixedDepthBoundary_le :
     fixedDepthBoundary receiptHorizon balancedPath ≤
-      16135403663387 / 1937166336000000 := by
+      14317615202843 / 1937166336000000 := by
   have htrajectory := balancedPath_fixedDepthTrajectoryBoundary_le
   unfold fixedDepthBoundary
   norm_num [receiptHorizon] at htrajectory ⊢
@@ -544,7 +545,7 @@ theorem balancedPath_fixedDepthRightHandSide_lt :
     empiricalTransitionPosteriorRisk brierScore oraclePosterior
           receiptHorizon balancedPath +
         fixedDepthBoundary receiptHorizon balancedPath <
-      1584 / 10000 := by
+      158 / 1000 := by
   rw [balancedPath_oracle_empiricalRisk]
   nlinarith [balancedPath_fixedDepthBoundary_le]
 
@@ -596,35 +597,45 @@ theorem nonVarianceTilt_lt_three (u : Unit) : nonVarianceTilt u < 3 := by
   cases u
   norm_num [nonVarianceTilt]
 
-/-- The fixed-tilt event is charged the same candidate, depth, and selected
-geometric-tilt atom as the primary receipt.  Unlike the empirical-Bernstein
-event, it contains no countable tilt union. -/
+/-- The fixed-tilt baseline uses the same `1/40` risk-event budget as the
+empirical-Bernstein constructions.  Candidate, depth, and the singleton tilt
+are fixed before the event is formed, so no selection allocation is charged. -/
 def nonVarianceRiskDelta : ℝ :=
-  riskFailureBudget * candidateWeight Candidate.nominal *
-    polynomialForwardTiltWeight 5 * polynomialForwardTiltWeight 5
+  riskFailureBudget
+
+theorem nonVarianceRiskDelta_eq : nonVarianceRiskDelta = 1 / 40 := by
+  norm_num [nonVarianceRiskDelta, riskFailureBudget]
 
 theorem nonVarianceRiskDelta_pos : 0 < nonVarianceRiskDelta := by
-  unfold nonVarianceRiskDelta
-  exact mul_pos
-    (mul_pos
-      (mul_pos riskFailureBudget_pos
-        (candidateWeight_isFullSupport.pos Candidate.nominal))
-      (polynomialForwardTiltWeight_pos 5))
-    (polynomialForwardTiltWeight_pos 5)
+  rw [nonVarianceRiskDelta_eq]
+  norm_num
 
-/-- The fixed-tilt logarithmic term is exactly the selected atom cost already
-bounded in the primary receipt. -/
-theorem nonVarianceRiskLogCost_le_twenty :
+/-- The KL plus confidence cost of the matched fixed-tilt baseline is at most
+`8`. -/
+theorem nonVarianceRiskLogCost_le_eight :
     klDiv oraclePosterior predictorPrior +
         Real.log
-      (1 / (nonVarianceRiskDelta * nonVarianceWeight ())) ≤ 20 := by
-  have h := receiptRiskLogCost_le_twenty
-  have hcandidate : Fintype.card Candidate = 3 := by decide
-  convert h using 1
-  · norm_num [nonVarianceRiskDelta, nonVarianceWeight,
-      riskFailureBudget, candidateWeight, finiteUniformRealPMF, hcandidate,
-      polynomialForwardTiltWeight,
-      FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.reverseDyadicEpochWeight]
+      (1 / (nonVarianceRiskDelta * nonVarianceWeight ())) ≤ 8 := by
+  have hlog4 : Real.log (4 : ℝ) ≤ 2 := by
+    have hpow : Real.log (4 : ℝ) = 2 * Real.log 2 := by
+      convert Real.log_pow (2 : ℝ) 2 using 1 <;> norm_num
+    rw [hpow]
+    linarith [baseline_log_two_le_one]
+  have hlog40 : Real.log (40 : ℝ) ≤ 6 := by
+    have hmono : Real.log (40 : ℝ) ≤ Real.log (64 : ℝ) :=
+      Real.log_le_log (by norm_num) (by norm_num)
+    have hpow : Real.log (64 : ℝ) = 6 * Real.log 2 := by
+      convert Real.log_pow (2 : ℝ) 6 using 1 <;> norm_num
+    rw [hpow] at hmono
+    linarith [baseline_log_two_le_one]
+  rw [show predictorPrior = finiteUniformRealPMF Predictor by rfl]
+  unfold oraclePosterior
+  rw [klDiv_dirac_finiteUniformRealPMF]
+  have hpredictor : Fintype.card Predictor = 4 := by decide
+  have hunit : Fintype.card Unit = 1 := by decide
+  rw [hpredictor, nonVarianceRiskDelta_eq]
+  norm_num [nonVarianceWeight, finiteUniformRealPMF, hunit]
+  nlinarith
 
 theorem nonVarianceSubGamma_eq :
     nonVarianceTilt () / (8 * (1 - nonVarianceTilt () / 3)) = 3 / 1528 := by
@@ -644,8 +655,8 @@ def nonVarianceBoundary (n : ℕ) : ℝ :=
 
 theorem balancedPath_nonVarianceBoundary_le :
     nonVarianceBoundary receiptHorizon ≤
-      4863978637 / 391168000000 := by
-  have hcost := nonVarianceRiskLogCost_le_twenty
+      532321001 / 78233600000 := by
+  have hcost := nonVarianceRiskLogCost_le_eight
   unfold nonVarianceBoundary
   rw [nonVarianceSubGamma_eq]
   norm_num [receiptHorizon, nonVarianceTilt] at hcost ⊢
@@ -655,7 +666,7 @@ theorem balancedPath_nonVarianceRightHandSide_lt :
     empiricalTransitionPosteriorRisk brierScore oraclePosterior
           receiptHorizon balancedPath +
         nonVarianceBoundary receiptHorizon <
-      1625 / 10000 := by
+      157 / 1000 := by
   rw [balancedPath_oracle_empiricalRisk]
   nlinarith [balancedPath_nonVarianceBoundary_le]
 

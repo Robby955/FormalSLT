@@ -33,7 +33,7 @@ namespace FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines
 
 #check fixedDepthRiskDelta
 #check fixedDepthRiskDelta_eq
-#check fixedDepthRiskLogCost_le_fifteen
+#check fixedDepthRiskLogCost_le_thirteen
 #check fixedDepthExceptionalEvent
 #check fixedDepthExceptionalEvent_mass_le
 #check fixedDepthTrajectoryBoundary
@@ -49,8 +49,9 @@ namespace FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines
 #check nonVarianceTilt_pos
 #check nonVarianceTilt_lt_three
 #check nonVarianceRiskDelta
+#check nonVarianceRiskDelta_eq
 #check nonVarianceRiskDelta_pos
-#check nonVarianceRiskLogCost_le_twenty
+#check nonVarianceRiskLogCost_le_eight
 #check nonVarianceSubGamma_eq
 #check nonVarianceBoundary
 #check balancedPath_nonVarianceBoundary_le
@@ -75,7 +76,7 @@ namespace FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines
 #print axioms primaryPotential_span
 #print axioms primaryPotential_residual
 #print axioms fixedDepthRiskDelta_eq
-#print axioms fixedDepthRiskLogCost_le_fifteen
+#print axioms fixedDepthRiskLogCost_le_thirteen
 #print axioms fixedDepthExceptionalEvent_mass_le
 #print axioms balancedPath_fixedDepthTrajectoryBoundary_le
 #print axioms balancedPath_fixedDepthBoundary_le
@@ -84,8 +85,9 @@ namespace FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines
 #print axioms nonVarianceWeight_isFullSupport
 #print axioms nonVarianceTilt_pos
 #print axioms nonVarianceTilt_lt_three
+#print axioms nonVarianceRiskDelta_eq
 #print axioms nonVarianceRiskDelta_pos
-#print axioms nonVarianceRiskLogCost_le_twenty
+#print axioms nonVarianceRiskLogCost_le_eight
 #print axioms nonVarianceSubGamma_eq
 #print axioms balancedPath_nonVarianceBoundary_le
 #print axioms balancedPath_nonVarianceRightHandSide_lt
