@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 226,
-    "library_and_example_lean_lines": 147440,
-    "library_lean_lines": 118038,
-    "library_modules": 270,
-    "theorem_map_entries": 1045
+    "example_lean_files": 227,
+    "library_and_example_lean_lines": 147793,
+    "library_lean_lines": 118341,
+    "library_modules": 271,
+    "theorem_map_entries": 1052
   },
   "theorem_families": [
     {
@@ -4978,6 +4978,35 @@
       "entries": [
         {
           "kind": "theorem",
+          "module": "Applications.ControlledQueueTypedModel",
+          "name": "candidateRefreshBase_le_candidateKernelTableMass",
+          "summary": "Checks once per generated candidate that every literal kernel cell contains the declared common uniform-refresh mass"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueContraction",
+          "name": "candidateTargetPolicyKernel_common_minorization",
+          "summary": "Lifts the environment-cell floor through an arbitrary state-Markov target policy to a common uniform minorization of every induced state-kernel row"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueContraction",
+          "name": "candidateTargetPolicyKernel_dobrushin_le_gamma",
+          "summary": "Bounds the induced target-policy kernel's finite Dobrushin coefficient by the generated candidate weight 5/8, 3/4, or 7/8"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueContraction",
+          "name": "candidateTargetPolicyKernel_isOscillationContraction",
+          "summary": "Supplies the oscillation-contraction premise used by finite-depth target-policy OPE for every state-Markov target policy"
+        }
+      ],
+      "name": "Controlled-queue candidate contraction"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
           "module": "StochasticDynamics.DynamicTargetPolicyComparator",
           "name": "controlledTargetConditionalMean_eq_encounteredRisk_div",
           "summary": "Identifies the normalized behavior-law predictable mean with target one-step conditional risk at the encountered prefix"
@@ -5533,8 +5562,26 @@
         {
           "kind": "theorem",
           "module": "StochasticDynamics.StationaryPoissonDobrushin",
+          "name": "finitePMFTotalVariation_le_of_common_minorization",
+          "summary": "Bounds TV by alpha when two finite PMFs share the subprobability mass (1 - alpha) times a common reference PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDobrushin",
+          "name": "finiteDobrushinCoefficient_le_of_common_minorization",
+          "summary": "Lifts a common row minorization to a finite-kernel Dobrushin upper bound"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDobrushin",
           "name": "finiteDobrushinCoefficient_isOscillationContraction",
           "summary": "Derives oscillation contraction directly from the computed finite Dobrushin coefficient"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonDobrushin",
+          "name": "isOscillationContraction_of_finiteDobrushinCoefficient_le",
+          "summary": "Turns any certified Dobrushin upper bound into an oscillation-contraction factor"
         },
         {
           "kind": "theorem",

@@ -979,10 +979,26 @@ queue-specific contraction, invariant, or numerical certificates.
 | `behavior_targetPolicy_overlap` | `Applications.ControlledQueueTargetPolicyScores` | Lifts exact uniform behavior mass `1/2` to pointwise history-interface overlap for all four generated target policies |
 | `behavior_targetPolicy_ratioBound_three_halves` | `Applications.ControlledQueueTargetPolicyScores` | Lifts the generated target-policy mass bound `3/4` to the exact controlled importance-ratio cap `3/2` |
 
-These are deterministic model certificates, not a confidence statement. They
-do not construct invariant PMFs, prove candidate target-kernel contraction,
-import the frozen trace, or establish membership of any path in a statistical
-good event.
+These score and policy results are deterministic model certificates, not a
+confidence statement. They do not themselves construct invariant PMFs, import
+the frozen trace, or establish membership of any path in a statistical good
+event. They sit alongside the independent contraction layer below; a later
+fixed-catalog instantiation can combine the two layers.
+
+## Controlled-queue candidate contraction
+
+| Declaration | Module | Role |
+|---|---|---|
+| `candidateRefreshBase_le_candidateKernelTableMass` | `Applications.ControlledQueueTypedModel` | Checks once per generated candidate that every literal kernel cell contains the declared common uniform-refresh mass |
+| `candidateTargetPolicyKernel_common_minorization` | `Applications.ControlledQueueContraction` | Lifts the environment-cell floor through an arbitrary state-Markov target policy to a common uniform minorization of every induced state-kernel row |
+| `candidateTargetPolicyKernel_dobrushin_le_gamma` | `Applications.ControlledQueueContraction` | Bounds the induced target-policy kernel's finite Dobrushin coefficient by the generated candidate weight `5/8`, `3/4`, or `7/8` |
+| `candidateTargetPolicyKernel_isOscillationContraction` | `Applications.ControlledQueueContraction` | Supplies the oscillation-contraction premise used by finite-depth target-policy OPE for every state-Markov target policy |
+
+The result is an upper bound, not a claimed exact coefficient: policy mixing
+can make the induced coefficient smaller. `uniformStateReference` is a valid
+finite-depth Poisson reference but is not claimed invariant for an arbitrary
+target policy. These deterministic certificates do not identify the true
+environment, construct a true invariant PMF, or certify the frozen trace.
 
 ## Dynamic target-policy comparators
 
@@ -1127,7 +1143,10 @@ library theorem index.
 | `finitePMFTotalVariation` | `StochasticDynamics.StationaryPoissonDobrushin` | Finite-PMF total variation using the probabilists' `L1 / 2` convention |
 | `finiteDobrushinCoefficient` | `StochasticDynamics.StationaryPoissonDobrushin` | Maximum pairwise total variation between rows of a known finite transition kernel |
 | `abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation` | `StochasticDynamics.StationaryPoissonDobrushin` | Sharp finite-PMF expectation duality with no extra factor two under the `L1 / 2` convention |
+| `finitePMFTotalVariation_le_of_common_minorization` | `StochasticDynamics.StationaryPoissonDobrushin` | Bounds TV by `alpha` when two finite PMFs share the subprobability mass `(1 - alpha)` times a common reference PMF |
+| `finiteDobrushinCoefficient_le_of_common_minorization` | `StochasticDynamics.StationaryPoissonDobrushin` | Lifts a common row minorization to a finite-kernel Dobrushin upper bound |
 | `finiteDobrushinCoefficient_isOscillationContraction` | `StochasticDynamics.StationaryPoissonDobrushin` | Derives oscillation contraction directly from the computed finite Dobrushin coefficient |
+| `isOscillationContraction_of_finiteDobrushinCoefficient_le` | `StochasticDynamics.StationaryPoissonDobrushin` | Turns any certified Dobrushin upper bound into an oscillation-contraction factor |
 | `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event` | `StochasticDynamics.StationaryPoissonDobrushin` | Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel |
 | `depthTiltPolynomial_log_cost` | `StochasticDynamics.StationaryPoissonDepthSelection` | Expands the nested depth and geometric-tilt allocation to the exact joint logarithmic price |
 | `stationaryPoissonDepthSelectionBoundary_eq_explicit` | `StochasticDynamics.StationaryPoissonDepthSelection` | Displays the complete selected-depth width, including observed hybrid-Bessel, endpoint, and residual terms |

@@ -75,6 +75,46 @@ lemma finitePMFTotalVariation_le_one (p q : PMF Z) :
   nlinarith
 
 omit [Nonempty Z] in
+/-- Two finite PMFs that share the subprobability mass
+`(1 - alpha) * reference` are within `alpha` in total variation. -/
+theorem finitePMFTotalVariation_le_of_common_minorization
+    (p q reference : PMF Z) {alpha : ℝ}
+    (hp : ∀ z,
+      (1 - alpha) * (reference z).toReal ≤ (p z).toReal)
+    (hq : ∀ z,
+      (1 - alpha) * (reference z).toReal ≤ (q z).toReal) :
+    finitePMFTotalVariation p q ≤ alpha := by
+  let base : Z → ℝ :=
+    fun z ↦ (1 - alpha) * (reference z).toReal
+  have hpointwise (z : Z) :
+      |(p z).toReal - (q z).toReal| ≤
+        ((p z).toReal - base z) + ((q z).toReal - base z) := by
+    have hpz : 0 ≤ (p z).toReal - base z := sub_nonneg.mpr (hp z)
+    have hqz : 0 ≤ (q z).toReal - base z := sub_nonneg.mpr (hq z)
+    calc
+      |(p z).toReal - (q z).toReal| =
+          |((p z).toReal - base z) - ((q z).toReal - base z)| := by
+            ring_nf
+      _ ≤ |(p z).toReal - base z| + |(q z).toReal - base z| :=
+        abs_sub _ _
+      _ = ((p z).toReal - base z) + ((q z).toReal - base z) := by
+        rw [abs_of_nonneg hpz, abs_of_nonneg hqz]
+  have hbase : ∑ z : Z, base z = 1 - alpha := by
+    simp only [base, ← Finset.mul_sum, finitePMF_real_mass_sum, mul_one]
+  unfold finitePMFTotalVariation
+  calc
+    (1 / 2 : ℝ) * ∑ z : Z, |(p z).toReal - (q z).toReal| ≤
+        (1 / 2 : ℝ) * ∑ z : Z,
+          (((p z).toReal - base z) + ((q z).toReal - base z)) := by
+      exact mul_le_mul_of_nonneg_left
+        (Finset.sum_le_sum fun z _hz ↦ hpointwise z) (by norm_num)
+    _ = alpha := by
+      rw [Finset.sum_add_distrib, Finset.sum_sub_distrib,
+        Finset.sum_sub_distrib, finitePMF_real_mass_sum,
+        finitePMF_real_mass_sum, hbase]
+      ring
+
+omit [Nonempty Z] in
 lemma finitePMFTotalVariation_mem_Icc (p q : PMF Z) :
     finitePMFTotalVariation p q ∈ Set.Icc (0 : ℝ) 1 :=
   ⟨finitePMFTotalVariation_nonneg p q,
@@ -171,6 +211,20 @@ def finiteDobrushinCoefficient (P : Z → PMF Z) : ℝ :=
     (Finset.univ : Finset Z).sup' Finset.univ_nonempty fun y ↦
       finitePMFTotalVariation (P x) (P y)
 
+/-- A common row minorization bounds the finite Dobrushin coefficient. -/
+theorem finiteDobrushinCoefficient_le_of_common_minorization
+    (P : Z → PMF Z) (reference : PMF Z) {alpha : ℝ}
+    (hminor : ∀ x z,
+      (1 - alpha) * (reference z).toReal ≤ (P x z).toReal) :
+    finiteDobrushinCoefficient P ≤ alpha := by
+  unfold finiteDobrushinCoefficient
+  refine Finset.sup'_le Finset.univ_nonempty _ ?_
+  intro x _hx
+  refine Finset.sup'_le Finset.univ_nonempty _ ?_
+  intro y _hy
+  exact finitePMFTotalVariation_le_of_common_minorization
+    (P x) (P y) reference (hminor x) (hminor y)
+
 omit [MeasurableSpace Z] [MeasurableSingletonClass Z] in
 lemma finitePMFTotalVariation_le_finiteDobrushinCoefficient
     (P : Z → PMF Z) (x y : Z) :
@@ -219,6 +273,21 @@ theorem finiteDobrushinCoefficient_isOscillationContraction
     _ ≤ finiteDobrushinCoefficient P * finiteOscillation f :=
       mul_le_mul_of_nonneg_right
         (finitePMFTotalVariation_le_finiteDobrushinCoefficient P y x)
+        (finiteOscillation_nonneg f)
+
+/-- Any upper bound on the finite Dobrushin coefficient is an oscillation
+contraction factor. -/
+theorem isOscillationContraction_of_finiteDobrushinCoefficient_le
+    (P : Z → PMF Z) {alpha : ℝ}
+    (hcoefficient : finiteDobrushinCoefficient P ≤ alpha) :
+    IsOscillationContraction P alpha := by
+  intro f
+  calc
+    finiteOscillation (markovPotentialMean P f) ≤
+        finiteDobrushinCoefficient P * finiteOscillation f :=
+      finiteDobrushinCoefficient_isOscillationContraction P f
+    _ ≤ alpha * finiteOscillation f :=
+      mul_le_mul_of_nonneg_right hcoefficient
         (finiteOscillation_nonneg f)
 
 variable {I T : Type*}

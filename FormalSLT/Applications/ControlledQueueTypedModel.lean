@@ -46,6 +46,18 @@ noncomputable section
 /-- Indices of the three generated candidate environments. -/
 abbrev CandidateIndex := Fin 3
 
+private theorem candidateGammaTable_length :
+    candidateGammaTable.length = 3 := rfl
+
+/-- Exact persistence weight of a generated candidate environment. -/
+def candidateGamma (candidate : CandidateIndex) : ℝ :=
+  (candidateGammaTable.get
+    (Fin.cast candidateGammaTable_length.symm candidate) : ℝ)
+
+/-- Common uniform-refresh mass in every next-state cell of a candidate. -/
+def candidateRefreshBase (candidate : CandidateIndex) : ℝ :=
+  (1 - candidateGamma candidate) / 24
+
 /-- Indices of the generated behavior policy followed by four target policies. -/
 abbrev PolicyIndex := Fin 5
 
@@ -135,6 +147,21 @@ private theorem candidateRows_all_pos
   · exact candidateRows_all_pos_1
   · exact candidateRows_all_pos_2
 
+private theorem candidateRows_ge_refreshBase_0 :
+    ∀ row ∈ candidateRows (0 : CandidateIndex),
+      ∀ mass ∈ row, (1 / 64 : ℚ) ≤ mass := by
+  norm_num [candidateRows, candidateKernelTable]
+
+private theorem candidateRows_ge_refreshBase_1 :
+    ∀ row ∈ candidateRows (1 : CandidateIndex),
+      ∀ mass ∈ row, (1 / 96 : ℚ) ≤ mass := by
+  norm_num [candidateRows, candidateKernelTable]
+
+private theorem candidateRows_ge_refreshBase_2 :
+    ∀ row ∈ candidateRows (2 : CandidateIndex),
+      ∀ mass ∈ row, (1 / 192 : ℚ) ≤ mass := by
+  norm_num [candidateRows, candidateKernelTable]
+
 /-- Every generated candidate-kernel entry is strictly positive. -/
 theorem candidateKernelTableMass_pos
     (candidate : CandidateIndex) (row : Fin 48)
@@ -143,6 +170,59 @@ theorem candidateKernelTableMass_pos
   exact candidateRows_all_pos candidate
     (candidateRow candidate row) (List.get_mem _ _)
     (candidateKernelTableMass candidate row nextState) (List.get_mem _ _)
+
+/-- Every generated candidate cell contains at least its common uniform-refresh
+mass.  This table-wide certificate is the application-side input to the
+Dobrushin contraction proof. -/
+theorem candidateRefreshBase_le_candidateKernelTableMass
+    (candidate : CandidateIndex) (row : Fin 48)
+    (nextState : PhysicalState) :
+    candidateRefreshBase candidate ≤
+      (candidateKernelTableMass candidate row nextState : ℝ) := by
+  fin_cases candidate
+  · have hrat : (1 / 64 : ℚ) ≤
+        candidateKernelTableMass (0 : CandidateIndex) row nextState :=
+      candidateRows_ge_refreshBase_0
+        (candidateRow (0 : CandidateIndex) row) (List.get_mem _ _)
+        (candidateKernelTableMass (0 : CandidateIndex) row nextState)
+        (List.get_mem _ _)
+    have hreal : ((1 / 64 : ℚ) : ℝ) ≤
+        (candidateKernelTableMass (0 : CandidateIndex) row nextState : ℝ) := by
+      exact_mod_cast hrat
+    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable] at ⊢
+    norm_num at hreal
+    exact hreal
+  · have hrat : (1 / 96 : ℚ) ≤
+        candidateKernelTableMass (1 : CandidateIndex) row nextState :=
+      candidateRows_ge_refreshBase_1
+        (candidateRow (1 : CandidateIndex) row) (List.get_mem _ _)
+        (candidateKernelTableMass (1 : CandidateIndex) row nextState)
+        (List.get_mem _ _)
+    have hreal : ((1 / 96 : ℚ) : ℝ) ≤
+        (candidateKernelTableMass (1 : CandidateIndex) row nextState : ℝ) := by
+      exact_mod_cast hrat
+    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable] at ⊢
+    norm_num at hreal
+    exact hreal
+  · have hrat : (1 / 192 : ℚ) ≤
+        candidateKernelTableMass (2 : CandidateIndex) row nextState :=
+      candidateRows_ge_refreshBase_2
+        (candidateRow (2 : CandidateIndex) row) (List.get_mem _ _)
+        (candidateKernelTableMass (2 : CandidateIndex) row nextState)
+        (List.get_mem _ _)
+    have hreal : ((1 / 192 : ℚ) : ℝ) ≤
+        (candidateKernelTableMass (2 : CandidateIndex) row nextState : ℝ) := by
+      exact_mod_cast hrat
+    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable] at ⊢
+    norm_num at hreal
+    exact hreal
+
+/-- The persistence weight and total common uniform-refresh mass partition one row. -/
+theorem twentyFour_mul_candidateRefreshBase_add_gamma
+    (candidate : CandidateIndex) :
+    24 * candidateRefreshBase candidate + candidateGamma candidate = 1 := by
+  fin_cases candidate <;>
+    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable]
 
 private theorem candidateRows_sum_one_0 :
     ∀ row ∈ candidateRows (0 : CandidateIndex), row.sum = 1 := by

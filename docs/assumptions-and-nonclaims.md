@@ -1076,11 +1076,17 @@ objects, deterministic candidate-environment robustness, and fixed-candidate
 finite-depth robust OPE. A separate fixed-candidate theorem intersects its
 signed-residual OPE event with augmented empirical-transition confidence on the
 same controlled path, under all-row visitation and exact behavior mass `1/2`.
+For the generated controlled-queue candidates, a table-backed common uniform
+minorization gives target-policy Dobrushin upper bounds `5/8`, `3/4`, and
+`7/8` for every state-Markov target policy. These are contraction upper bounds,
+not exact-coefficient claims, and the uniform reference used in the proof is
+not claimed invariant for an arbitrary target policy.
 The controlled layer also supplies encountered-prefix comparators for
 history-dependent targets and exact fixed-horizon target-path change of
-measure. These results do not construct queue-specific certificates, license
-data-dependent candidates or depths without a common event, estimate nuisance
-quantities, or give an anytime-valid cumulative-likelihood target-value
+measure. These results do not construct the remaining queue-specific true
+invariant, stationary-risk, numerical, or trace certificates; license
+data-dependent candidates or depths without a common event; estimate nuisance
+quantities; or give an anytime-valid cumulative-likelihood target-value
 boundary.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path

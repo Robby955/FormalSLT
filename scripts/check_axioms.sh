@@ -332,7 +332,10 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.finiteDepthPoissonResidual_le"
   "FormalSLT.StochasticDynamics.exists_stationaryFiniteDepthPoissonEmpiricalBernsteinPACBayes_closed_event"
   "FormalSLT.StochasticDynamics.abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation"
+  "FormalSLT.StochasticDynamics.finitePMFTotalVariation_le_of_common_minorization"
+  "FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_le_of_common_minorization"
   "FormalSLT.StochasticDynamics.finiteDobrushinCoefficient_isOscillationContraction"
+  "FormalSLT.StochasticDynamics.isOscillationContraction_of_finiteDobrushinCoefficient_le"
   "FormalSLT.StochasticDynamics.exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_closed_event"
   "FormalSLT.StochasticDynamics.abs_markovPoissonDrift_sub_candidate_le"
   "FormalSLT.StochasticDynamics.abs_stationaryPoissonResidual_le_candidateOscillation"
@@ -456,6 +459,14 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.controlCostScore_mem_Icc"
   "FormalSLT.Applications.ControlledQueue.behavior_targetPolicy_overlap"
   "FormalSLT.Applications.ControlledQueue.behavior_targetPolicy_ratioBound_three_halves"
+  "FormalSLT.Applications.ControlledQueue.candidateRefreshBase_le_candidateKernelTableMass"
+  "FormalSLT.Applications.ControlledQueue.twentyFour_mul_candidateRefreshBase_add_gamma"
+  "FormalSLT.Applications.ControlledQueue.uniformStateReference_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.candidateTargetPolicyKernel_common_minorization"
+  "FormalSLT.Applications.ControlledQueue.candidateTargetPolicyKernel_rowTV_le_gamma"
+  "FormalSLT.Applications.ControlledQueue.candidateTargetPolicyKernel_dobrushin_le_gamma"
+  "FormalSLT.Applications.ControlledQueue.candidateTargetPolicyKernel_isOscillationContraction"
+  "FormalSLT.Applications.ControlledQueue.candidateGamma_mem_Ico"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -846,6 +857,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueReindex"
   echo "import FormalSLT.Applications.ControlledQueueTypedModel"
   echo "import FormalSLT.Applications.ControlledQueueTargetPolicyScores"
+  echo "import FormalSLT.Applications.ControlledQueueContraction"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -934,6 +946,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueReindex \
   FormalSLT.Applications.ControlledQueueTypedModel \
   FormalSLT.Applications.ControlledQueueTargetPolicyScores \
+  FormalSLT.Applications.ControlledQueueContraction \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

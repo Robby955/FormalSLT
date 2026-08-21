@@ -330,9 +330,12 @@
       row visited, the checked endpoint uses `etaEnv = 2 * etaAug`, residual
       `alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`, and failure budget
       `deltaRisk + deltaTransition`.
-    - [ ] Add executable invariant, potential, score, and numerical
-      certificates plus the initial-offset bridge, compact trace witnesses, and
-      any claimed good-event alignment.
+    - [x] Bind the generated fixed Brier/control-cost scores, overlap and
+      `3/2` ratio cap, and certify each candidate target-kernel contraction
+      from its common uniform minorization.
+    - [ ] Add executable true-invariant, centered-risk, catalog, and numerical
+      certificates plus the initial-offset bridge, compact trace witnesses,
+      and any claimed good-event alignment.
     - [ ] Add a common event or preallocated catalog before selecting the
       candidate or depth from the scored path; the checked empirical theorem
       fixes both, together with its reference, score, and contraction

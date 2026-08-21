@@ -27,6 +27,10 @@ of unknown-kernel target-policy OPE.
   checked fixed Brier and control-cost scores, unit-range bounds, target-policy
   overlap, and the exact `3/2` ratio cap. The two causal Beta predictors remain
   outside this stationary-score interface.
+- `../../FormalSLT/Applications/ControlledQueueContraction.lean`: checked
+  candidate cell minorization, uniform physical-state reference, Dobrushin
+  upper bounds `5/8`, `3/4`, and `7/8`, and target-policy oscillation
+  contraction. The coefficient is bounded above, not claimed exact.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -71,8 +75,10 @@ controlled-edge row selection. `ControlledQueueTypedModel` reads the generated
 kernel and policy tables into typed PMFs with exact mass identities.
 `ControlledQueueTargetPolicyScores` reconstructs the three fixed Brier scores
 from the generated forecast and outcome tables and types the generated
-control-cost score. None of these bridges imports the frozen trace or supplies
-an empirical confidence event.
+control-cost score. `ControlledQueueContraction` lifts each generated
+candidate's common cell floor through every state-Markov target policy. None of
+these bridges imports the frozen trace, supplies a true invariant PMF, or
+supplies an empirical confidence event.
 The generic empirical finite-depth theorem separately intersects its risk and
 transition events with failure cost `deltaRisk + deltaTransition`. Under exact
 behavior mass `1/2` and positive visit mass for every augmented source row, it

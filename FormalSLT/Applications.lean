@@ -15,6 +15,7 @@ import FormalSLT.Applications.ControlledQueueData
 import FormalSLT.Applications.ControlledQueueReindex
 import FormalSLT.Applications.ControlledQueueTypedModel
 import FormalSLT.Applications.ControlledQueueTargetPolicyScores
+import FormalSLT.Applications.ControlledQueueContraction
 
 /-!
 # FormalSLT applications
@@ -29,6 +30,8 @@ observations, and `ControlledQueueTypedModel` turns the exact rational kernel
 and policy tables into typed PMFs.  `ControlledQueueTargetPolicyScores`
 reconstructs fixed Brier scores from the generated forecast and outcome tables,
 binds the generated control-cost table, and discharges the static overlap and
-ratio-cap assumptions.  These modules do not identify a candidate with the
-true environment or make a theorem-produced good-path claim.
+ratio-cap assumptions. `ControlledQueueContraction` certifies each candidate's
+uniform minorization and target-policy contraction factor. These modules do
+not identify a candidate with the true environment or make a theorem-produced
+good-path claim.
 -/

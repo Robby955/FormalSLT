@@ -131,6 +131,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Generated queue row ordering | `Applications.ControlledQueueReindex` | Exact state-major/action-minor indexing and the `(S_t, A_t)` row selected by a controlled edge |
 | Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
 | Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
+| Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
 | Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
@@ -150,13 +151,16 @@ compatibility allowlist.
 ## Remaining theorem and application work
 
 The typed queue-table instantiation, sharp factor-two deterministic row-TV
-transfer, target-policy robustness, approximate and finite-depth OPE, and the
-generic same-path empirical-event intersection are checked. The following
+transfer, target-policy scores and overlap, candidate target-kernel
+contraction, target-policy robustness, approximate and finite-depth OPE, and
+the generic same-path empirical-event intersection are checked. The following
 application items remain **OPEN**.
 
 1. Executable queue certificates: check exact rational true invariant and
-   candidate reference PMFs, target-kernel contraction and centered-risk
-   bounds, fixed-only prior/posterior atoms, and final numerical arithmetic.
+   stationary-risk witnesses, centered-risk bounds, fixed-only
+   prior/posterior atoms, and final numerical arithmetic. The checked uniform
+   reference already suffices for finite-depth potentials and need not be
+   invariant.
 2. Trace-to-theorem instantiation: resolve the initial-observation offset,
    encode compact trace and all-row-visit witnesses, and separately prove any
    claimed good-event membership.
@@ -204,8 +208,9 @@ row ordering, table normalization and positivity, typed-PMF conversion, and
 the static probability and TV transfers. The generic same-path theorem now
 composes the risk and empirical augmented-transition events. Later application
 slices must still provide compact witnesses for counts and all-row visits,
-invariant and reference laws, score and contraction certificates, trace/event
-alignment, selected grid membership, and final arithmetic.
+true invariant laws and stationary risks, centered row-risk and catalog
+certificates, trace/event alignment, selected grid membership, and final
+numerical arithmetic.
 
 ### Implemented preprocessing slice
 
@@ -253,7 +258,9 @@ swap, index equivalence, and controlled-edge row selection.
 typed PMFs with exact mass identities. `ControlledQueueTargetPolicyScores`
 turns the three fixed predictors and the generated control cost into bounded
 target-policy scores and closes the static overlap and `3/2` ratio premises.
-None of these bridges imports the frozen trace or supplies an empirical
+`ControlledQueueContraction` checks the candidate cell floors and turns them
+into target-policy contraction factors. None of these bridges imports the
+frozen trace, constructs a true invariant PMF, or supplies an empirical
 confidence event.
 The causal Beta predictors remain dynamic behavior-encountered scores. They
 are not fixed stationary target-policy scores without augmenting the state by
@@ -267,9 +274,9 @@ A future use must therefore condition on and score an explicitly indexed
 suffix beginning at the realized first pair, or prove a random-initial
 controlled-law bridge. No direct full-trace horizon alignment is claimed.
 
-This slice still does not check invariant laws, Poisson identities, selected
-grids, final bounds, or good-event membership. Those are later model-to-theorem
-and certificate slices, not preprocessing claims.
+This slice still does not check a concrete true invariant law, selected grids,
+final bounds, or good-event membership. Those are later model-to-theorem and
+certificate slices, not preprocessing claims.
 
 ## Matched comparison contract
 
