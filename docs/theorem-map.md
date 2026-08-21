@@ -993,6 +993,37 @@ Because the statistic has the same conditional mean in every row, this route
 does not require the all-source-row visitation premise of the general
 4,608-coordinate transition-confidence construction.
 
+## Controlled-queue structured adaptive OPE
+
+| Declaration | Module | Role |
+|---|---|---|
+| `queueCandidateFiniteDepthPotential_span` | `Applications.ControlledQueueStructuredOPE` | Gives each generated candidate and finite depth its own closed Poisson-potential span using that candidate's checked persistence contraction and the universal fixed-Brier row-risk envelope `D = 1` |
+| `exists_structuredControlledQueueFiniteCatalogOPE_event` | `Applications.ControlledQueueStructuredOPE` | Allocates risk confidence over an arbitrary finite predeclared candidate--depth catalog, intersects those signed-residual OPE events with scalar persistence confidence on the same path, and permits catalog atom, two tilt atoms, posterior, and time selection inside the common event |
+| `queueCandidateDepthWeight_apply` | `Applications.ControlledQueueStructuredOPE` | Checks the fresh uniform `1/21` Lean allocation over all three generated candidates crossed with generated depths `[0,1,2,3,5,8,12]` |
+| `queueStructuredTilt_pos` | `Applications.ControlledQueueStructuredOPE` | Binds the admissible generated tilt prefix `[1/16,1/8,1/4,1/2]` and proves positivity; the generated terminal atom `1` is excluded |
+| `queueStructuredTilt_lt_one` | `Applications.ControlledQueueStructuredOPE` | Proves every admitted risk and persistence tilt satisfies the strict `< 1` event premise |
+| `exists_controlledQueueStructuredAdaptiveOPE_event` | `Applications.ControlledQueueStructuredOPE` | Specializes the adaptive-trajectory risk event to the predeclared 21 candidate--depth atoms, fresh uniform four-tilt allocations, separate `1/40` budgets, and one outer complement of mass at most `1/20` |
+| `exists_selectedControlledQueueStructuredAdaptiveOPE_event` | `Applications.ControlledQueueStructuredOPE` | Makes path/time-dependent substitution explicit for candidate--depth atom, risk tilt, persistence tilt, and posterior PMF, all restricted to catalogs fixed before the event |
+
+For selected candidate `c`, depth `m`, and path-dependent scalar physical-row
+budget `eta_c`, the added robust term is
+`gamma_c^m + 2 * ((1 + B_c,m) * eta_c)`. There is no behavior-probability
+conversion, so the coefficient is `2` rather than the `4` in the generic
+augmented-row queue specialization. The ratio cap `3/2` stays inside the OPE
+boundary and does not multiply this residual.
+
+The true `gamma`, initial observation, catalogs, weights, tilts, and confidence
+budgets are fixed before the event. This is pointwise structured
+refresh-family inference, not a family-membership test or arbitrary-kernel
+certificate. The supports are bound to generated tables, while the uniform
+`1/21` and `1/4` weights are fresh checked Lean allocations. The stationary
+laws are chosen finite invariant witnesses; no arbitrary-`gamma` uniqueness is
+claimed. The selectors are pointwise substitutions, not a measurable selected
+process or selected e-process. The theorem does not license a path-fitted
+candidate, depth, potential, or causal predictor; prove named-path membership
+or random-initial coverage; or provide a prospective numerical endpoint or
+matched baseline comparison.
+
 ## Controlled-queue twelve-atom OPE catalog
 
 | Declaration | Module | Role |

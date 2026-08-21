@@ -64,7 +64,8 @@ generate-controlled-queue-model:
 check-controlled-queue-model:
 	python3 scripts/generate_controlled_queue_model.py --check
 
-# Check the stale-artifact gate, exact arithmetic tests, and generated Lean module.
+# Check generated-model freshness and arithmetic, then build and audit the
+# controlled-queue model, score, contraction, confidence, OPE, and risk chain.
 verify-controlled-queue-model: check-controlled-queue-model
 	python3 -m pytest -q tests/test_generate_controlled_queue_model.py
 	lake build FormalSLT.Applications.ControlledQueueData
@@ -74,6 +75,7 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake build FormalSLT.Applications.ControlledQueueContraction
 	lake build FormalSLT.Applications.ControlledQueuePersistenceConfidence
 	lake build FormalSLT.Applications.ControlledQueueOPECatalog
+	lake build FormalSLT.Applications.ControlledQueueStructuredOPE
 	lake build FormalSLT.Applications.ControlledQueueInvariantRisk
 	lake env lean examples/CheckControlledQueueReindex.lean
 	lake env lean examples/CheckControlledQueueTypedModel.lean
@@ -81,6 +83,7 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake env lean examples/CheckControlledQueueContraction.lean
 	lake env lean examples/CheckControlledQueuePersistenceConfidence.lean
 	lake env lean examples/CheckControlledQueueOPECatalog.lean
+	lake env lean examples/CheckControlledQueueStructuredOPE.lean
 	lake env lean examples/CheckControlledQueueInvariantRisk.lean
 
 # Regenerate the deterministic trace, counts, and trace SHA-256 manifest.

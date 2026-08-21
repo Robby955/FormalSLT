@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C185-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-286-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-151%2C151-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C199-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-287-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-151%2C853-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -247,9 +247,11 @@ unconditional coverage for the simulator's random first observation. The
 empirical-kernel event uses a fresh full-support transition-coordinate prior,
 requires every augmented row to be visited, and is numerically vacuous on the
 current trace. The structured scalar event avoids that 4,608-coordinate
-allocation, but its OPE composition, prospective trace evaluation, useful
-unknown-dynamics numerical endpoint, and candidate/depth-selected OPE remain
-open.
+allocation. Its OPE composition now preallocates all `3 x 7` candidate--depth
+atoms and permits pathwise candidate, depth, risk-tilt, persistence-tilt,
+posterior, and time selection inside a single `19/20` outer-mass event.
+Prospective trace evaluation, a useful unknown-dynamics numerical endpoint,
+and matched comparisons remain open.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 

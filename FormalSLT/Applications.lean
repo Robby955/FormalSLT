@@ -18,6 +18,7 @@ import FormalSLT.Applications.ControlledQueuePersistenceConfidence
 import FormalSLT.Applications.ControlledQueueTargetPolicyScores
 import FormalSLT.Applications.ControlledQueueContraction
 import FormalSLT.Applications.ControlledQueueOPECatalog
+import FormalSLT.Applications.ControlledQueueStructuredOPE
 import FormalSLT.Applications.ControlledQueueInvariantRisk
 import FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 
@@ -44,13 +45,18 @@ event whose hit-probability discrepancy is exactly every physical-row TV
 discrepancy.
 `ControlledQueueOPECatalog` combines the earlier deterministic receipts into a
 twelve-atom, fixed-nominal-candidate event for any depth fixed before the event.
+`ControlledQueueStructuredOPE` intersects preallocated candidate--depth OPE
+events with the scalar persistence event. Its common outer-mass event permits
+pathwise selection from all three candidates, seven generated depths, four
+admissible risk tilts, four admissible persistence tilts, and arbitrary
+twelve-hypothesis posterior PMFs.
 `ControlledQueueInvariantRisk` supplies one explicit invariant PMF, identifies
 it with the catalog's canonical witness by contraction uniqueness, and evaluates
 one exact stationary Brier risk. These modules culminate in
 `ControlledQueueKnownKernelReceipt`: a fixed-initial failure-mass theorem and
 an exact `< 0.07` selected-risk endpoint conditional on both the aligned
 suffix-histogram premise and the theorem-produced event inequality. They do not
-prove that the named trace satisfies the good event or yet compose the
-structured row-TV event with candidate/depth selection into a useful
-unknown-kernel OPE endpoint.
+prove that the named trace satisfies the good event or yet evaluate the
+structured adaptive event on a prospectively frozen trace with a useful
+unknown-dynamics numerical endpoint.
 -/

@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 231,
-    "library_and_example_lean_lines": 151151,
-    "library_lean_lines": 121282,
-    "library_modules": 286,
-    "theorem_map_entries": 1079
+    "example_lean_files": 232,
+    "library_and_example_lean_lines": 151853,
+    "library_lean_lines": 121839,
+    "library_modules": 287,
+    "theorem_map_entries": 1086
   },
   "theorem_families": [
     {
@@ -4991,6 +4991,53 @@
         }
       ],
       "name": "Controlled-queue structured persistence confidence"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "queueCandidateFiniteDepthPotential_span",
+          "summary": "Gives each generated candidate and finite depth its own closed Poisson-potential span using that candidate's checked persistence contraction and the universal fixed-Brier row-risk envelope D = 1"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "exists_structuredControlledQueueFiniteCatalogOPE_event",
+          "summary": "Allocates risk confidence over an arbitrary finite predeclared candidate--depth catalog, intersects those signed-residual OPE events with scalar persistence confidence on the same path, and permits catalog atom, two tilt atoms, posterior, and time selection inside the common event"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "queueCandidateDepthWeight_apply",
+          "summary": "Checks the fresh uniform 1/21 Lean allocation over all three generated candidates crossed with generated depths [0,1,2,3,5,8,12]"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "queueStructuredTilt_pos",
+          "summary": "Binds the admissible generated tilt prefix [1/16,1/8,1/4,1/2] and proves positivity; the generated terminal atom 1 is excluded"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "queueStructuredTilt_lt_one",
+          "summary": "Proves every admitted risk and persistence tilt satisfies the strict < 1 event premise"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "exists_controlledQueueStructuredAdaptiveOPE_event",
+          "summary": "Specializes the adaptive-trajectory risk event to the predeclared 21 candidate--depth atoms, fresh uniform four-tilt allocations, separate 1/40 budgets, and one outer complement of mass at most 1/20"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueStructuredOPE",
+          "name": "exists_selectedControlledQueueStructuredAdaptiveOPE_event",
+          "summary": "Makes path/time-dependent substitution explicit for candidate--depth atom, risk tilt, persistence tilt, and posterior PMF, all restricted to catalogs fixed before the event"
+        }
+      ],
+      "name": "Controlled-queue structured adaptive OPE"
     },
     {
       "entries": [

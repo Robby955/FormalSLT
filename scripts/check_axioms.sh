@@ -479,6 +479,17 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.exists_persistenceHitConfidence_event"
   "FormalSLT.Applications.ControlledQueue.refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy"
   "FormalSLT.Applications.ControlledQueue.exists_structuredCandidateTVConfidence_event"
+  "FormalSLT.Applications.ControlledQueue.queueCandidateFiniteDepthPotential_span"
+  "FormalSLT.Applications.ControlledQueue.exists_structuredControlledQueueFiniteCatalogOPE_event"
+  "FormalSLT.Applications.ControlledQueue.queueCandidateDepth_card"
+  "FormalSLT.Applications.ControlledQueue.queueCandidateDepthWeight_apply"
+  "FormalSLT.Applications.ControlledQueue.queueCandidateDepthWeight_isFullSupport"
+  "FormalSLT.Applications.ControlledQueue.queueStructuredTiltWeight_apply"
+  "FormalSLT.Applications.ControlledQueue.queueStructuredTiltWeight_isFullSupport"
+  "FormalSLT.Applications.ControlledQueue.queueStructuredTilt_pos"
+  "FormalSLT.Applications.ControlledQueue.queueStructuredTilt_lt_one"
+  "FormalSLT.Applications.ControlledQueue.exists_controlledQueueStructuredAdaptiveOPE_event"
+  "FormalSLT.Applications.ControlledQueue.exists_selectedControlledQueueStructuredAdaptiveOPE_event"
   "FormalSLT.Applications.ControlledQueue.nominalCandidateGamma_eq_three_fourths"
   "FormalSLT.Applications.ControlledQueue.queueHypothesis_card"
   "FormalSLT.Applications.ControlledQueue.queueHypothesisPrior_apply"
@@ -939,6 +950,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueContraction"
   echo "import FormalSLT.Applications.ControlledQueuePersistenceConfidence"
   echo "import FormalSLT.Applications.ControlledQueueOPECatalog"
+  echo "import FormalSLT.Applications.ControlledQueueStructuredOPE"
   echo "import FormalSLT.Applications.ControlledQueueInvariantRisk"
   echo "import FormalSLT.Applications.ControlledQueueKnownKernelReceipt"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
@@ -1032,6 +1044,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueContraction \
   FormalSLT.Applications.ControlledQueuePersistenceConfidence \
   FormalSLT.Applications.ControlledQueueOPECatalog \
+  FormalSLT.Applications.ControlledQueueStructuredOPE \
   FormalSLT.Applications.ControlledQueueInvariantRisk \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \

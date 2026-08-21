@@ -313,6 +313,41 @@ frozen trace, or supply a useful unknown-dynamics numerical endpoint. Since
 the scored mean is row-independent, this route needs no all-source-row
 visitation premise.
 
+### Structured controlled-queue adaptive OPE event
+
+`Applications.ControlledQueueStructuredOPE` preallocates the risk budget over
+all `21 = 3 x 7` generated candidate--depth atoms and intersects their
+signed-residual OPE events with the scalar persistence event on the same path.
+With risk and persistence budgets `1/40`, the common outer complement has real
+mass at most `1/20`; no independence or sample split is assumed. The four
+admissible tilts are the generated prefix `[1/16, 1/8, 1/4, 1/2]`. The
+generated terminal tilt `1` is excluded because both event APIs require a
+strict tilt below one.
+The candidate/depth and tilt supports are generated, but the uniform `1/21`
+candidate--depth and `1/4` tilt weights are fresh checked Lean confidence
+allocations, not fields of the frozen model input.
+
+Inside the common event, candidate, depth, risk tilt, persistence tilt,
+posterior PMF on the twelve fixed policy--predictor atoms, and time may be
+selected from their predeclared catalogs. The true `gamma`, initial
+observation, catalogs, weights, and confidence allocations remain fixed before
+the event. The initial observation is deterministic, and the stationary laws
+are chosen finite invariant witnesses; this theorem does not establish
+arbitrary-`gamma` uniqueness of those witnesses. Candidate `c` at depth `m`
+receives the physical-row residual
+`gamma_c^m + 2 * ((1 + B_c,m) * eta_c)`. The coefficient is `2`, not `4`,
+because the scalar event directly controls physical action-conditioned rows;
+the policy ratio cap `3/2` remains inside the OPE boundary and does not
+multiply the robust residual.
+
+This is structured refresh-family unknown dynamics only. It is pointwise in
+the fixed true parameter, does not test family membership, does not authorize
+a path-fitted catalog atom or causal predictor, does not prove arbitrary-kernel
+confidence, and does not establish named-path event membership, unconditional
+random-initial coverage, or a useful prospective numerical endpoint. Its
+selectors are pointwise substitutions into the common event, not a measurable
+selected process or selected e-process.
+
 ### Fixed controlled-queue OPE catalog
 
 `Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian
@@ -1170,9 +1205,10 @@ history-dependent targets and exact fixed-horizon target-path change of
 measure. These results do not construct a useful queue-specific unknown-kernel
 numerical certificate. The structured persistence lane does give a
 time-uniform physical-row TV budget for an arbitrary fixed parameter in the
-frozen refresh family, but it is not yet composed with the queue OPE theorem or
-evaluated prospectively. The controlled results do not license data-dependent
-candidates or depths without a common event; estimate general nuisance
+frozen refresh family. Its finite-catalog OPE composition is checked, but it is
+not yet evaluated prospectively. The controlled results do not license
+data-dependent candidates or depths outside that common predeclared event;
+estimate general nuisance
 quantities; prove named-path event membership; or give an anytime-valid
 cumulative-likelihood target-value boundary. Except for the one explicit atom
 above, the application-level invariant witnesses remain noncomputable choices

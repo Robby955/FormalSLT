@@ -1,9 +1,9 @@
 # Controlled queue application design
 
-Status: **STRUCTURED ROW-TV CONFIDENCE, FIXED 12-ATOM QUEUE OPE EVENT, ONE EXACT
-INVARIANT/RISK ATOM, AND AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED
-LOCALLY** / **STRUCTURED OPE COMPOSITION, NAMED-PATH EVENT MEMBERSHIP, AND
-UNKNOWN-DYNAMICS NUMERICAL CERTIFICATE OPEN**
+Status: **STRUCTURED ADAPTIVE QUEUE OPE EVENT, ONE EXACT INVARIANT/RISK ATOM,
+AND AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED LOCALLY** /
+**PROSPECTIVE UNKNOWN-DYNAMICS NUMERICAL CERTIFICATE, MATCHED BASELINES, AND
+NAMED-PATH EVENT MEMBERSHIP OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -60,7 +60,11 @@ selected boundary-plus-residual endpoint below `7/100`. The named trace is not
 proved to belong to the theorem-produced good event. A separate structured
 module now embeds the three candidates in the arbitrary-parameter refresh
 family and obtains simultaneous time-uniform physical-row TV budgets from one
-scalar hit statistic. Its OPE composition and numerical endpoint remain open.
+scalar hit statistic. A further checked module intersects preallocated OPE
+events for the `3 x 7` generated candidate--depth catalog with that scalar
+event. Candidate, depth, two admissible tilt atoms, posterior, and time may be
+selected inside its common `19/20` outer-mass event. Its prospective numerical
+endpoint and matched baselines remain open.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -158,7 +162,8 @@ The generic modules do not by themselves instantiate the queue application.
 | Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
 | Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, universal centered row-risk envelope `D = 1`, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
-| Structured queue persistence confidence | `Applications.ControlledQueuePersistenceConfidence` | Arbitrary fixed `gamma in [0,1)` in the generated refresh family; one direct/complement hit outer-mass event; exact all-row TV identity; simultaneous budgets for all three candidates, but no family-membership test or OPE composition |
+| Structured queue persistence confidence | `Applications.ControlledQueuePersistenceConfidence` | Arbitrary fixed `gamma in [0,1)` in the generated refresh family; one direct/complement hit outer-mass event; exact all-row TV identity; simultaneous budgets for all three candidates, but no family-membership test |
+| Structured adaptive queue OPE | `Applications.ControlledQueueStructuredOPE` | Same-path finite union over all three candidates and generated depths `[0,1,2,3,5,8,12]`, intersected with scalar persistence confidence; candidate, depth, two four-atom tilt choices, posterior, and time are selectable inside one event of complement mass at most `1/20` |
 | Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
 | Explicit queue invariant/risk atom | `Applications.ControlledQueueInvariantRisk` | Explicit 24-state rational invariant PMF for nominal `Q` and target-policy index `1`, equality to the canonical catalog witness by strict-contraction uniqueness, exact row risks for fixed-predictor index `2`, and stationary Brier risk `4338268437 / 67816493056 < 13 / 200` |
 | Known-kernel aligned numerical receipt | `Applications.ControlledQueueKnownKernelReceipt` | Fixed-initial `39/40` event, exact depth-twelve potential/residual, aligned `24 x 2 x 24` suffix-histogram bridge, and selected risk endpoint below `7/100`, conditional on the histogram and event inequality |
@@ -173,8 +178,8 @@ The generic modules do not by themselves instantiate the queue application.
 | Same-path stationary candidate selection | `StochasticDynamics.EmpiricalStationaryCatalog` | Candidate, posterior, depth, and tilt catalogs |
 
 These modules now provide both the generic empirical-transition/OPE event
-intersection and its fixed 12-atom queue specialization. The specialization
-does not license data-dependent candidate or depth selection. The new
+intersection, its fixed 12-atom queue specialization, and the structured
+refresh-family event with preallocated candidate--depth selection. The new
 declarations are outside the 19-name v0.2 compatibility allowlist.
 
 ## Remaining theorem and application work
@@ -190,24 +195,23 @@ witness, and its stationary Brier risk is exactly
 proves the selected endpoint below `7/100` from the suffix histogram and event
 inequality. The following application items remain **OPEN**.
 
-1. Structured unknown-dynamics OPE and matched baselines: the fresh
+1. Prospective structured unknown-dynamics receipt and matched baselines: the fresh
    4,608-coordinate empirical-transition allocation is vacuous on the current
-   trace. The scalar persistence module now avoids that allocation and gives
-   candidate-simultaneous physical-row TV budgets within the refresh family,
-   but it still must be composed with the OPE catalog, frozen under a
-   prospective protocol, and evaluated against matched baselines before any
-   useful unknown-dynamics OPE claim.
+   trace. The scalar persistence module and its adaptive OPE composition now
+   avoid that allocation within the refresh family, but a protocol must be
+   frozen before a fresh trace and evaluated against matched baselines before
+   any useful numerical unknown-dynamics claim.
 2. Probabilistic trace interpretation: the known-kernel receipt resolves the
    deterministic initial-offset and histogram alignment for the realized
    suffix, but does not prove named-path good-event membership or unconditional
    coverage for the upstream random first observation. Those require a
    separate membership witness or random-initial mixture/conditioning bridge.
-3. Candidate/depth-selected OPE: the structured row-TV event permits choosing
-   one of the three candidates after that event, but the checked OPE theorem
-   still fixes `Q`, `m`, reference PMFs, scores, and contraction certificates
-   beforehand. A composed common event or preallocated candidate-by-depth
-   catalog is required before making the same post-path choice in the OPE
-   conclusion.
+3. Broader selection remains outside this result: candidates and depths may be
+   selected only from the predeclared `3 x 7` catalog, tilts only from its four
+   admissible atoms, and scores only through posterior PMFs on the twelve fixed
+   policy--predictor hypotheses. No path-fitted kernel, depth, potential, or
+   causal predictor is licensed. These are pointwise substitutions into one
+   common event, not a measurable selected process or selected e-process.
 
 Until those steps close, the known-kernel result is a checked retrospective
 receipt: it demonstrates the exact theorem-to-histogram arithmetic, but no
@@ -216,7 +220,7 @@ selected before this trace was inspected. It is therefore not presented as a
 prospectively calibrated report for the already-observed trace. The controlled
 queue's end-to-end unknown-dynamics numerical certificate remains open. No
 named-path good-event membership, histogram-conditioned coverage,
-unconditional simulator coverage, or data-selected candidate or depth is
+unconditional simulator coverage, or useful prospective numerical endpoint is
 claimed.
 
 ## Frozen input and generator contract
@@ -266,8 +270,11 @@ the risk and empirical augmented-transition events for the fixed 12-atom
 catalog and uses canonical noncomputable true invariant witnesses. That general
 4,608-coordinate route still requires compact count and all-row-visit witnesses.
 The structured persistence route instead scores one row-independent statistic
-and needs no all-row-visit premise, but it has not yet been composed with OPE or
-evaluated on a prospectively frozen trace. Later application slices must still
+and needs no all-row-visit premise. Its checked adaptive OPE composition uses
+the generated candidate/depth and admissible-tilt supports, together with new
+uniform `1/21` and `1/4` Lean confidence allocations that are not generated
+model fields. It has not yet been evaluated on a prospectively frozen trace.
+Later application slices must still
 provide any further invariant/risk receipts needed for reported atoms,
 trace/event alignment, and final numerical confidence arithmetic. One explicit
 invariant law and stationary risk is now checked for the queue-threshold/
@@ -301,7 +308,8 @@ The first slice freezes the model before any trajectory is sampled:
 Run `make generate-controlled-queue-model` and
 `make generate-controlled-queue-trace` to regenerate. After obtaining the
 pinned Mathlib cache, run `make verify-controlled-queue-model` to exercise the
-model arithmetic tests and compile the generated Lean module. Run
+model arithmetic tests and build the controlled-queue model, score,
+contraction, confidence, OPE, and invariant-risk module/checker chain. Run
 `make verify-controlled-queue-trace` for byte-staleness checks, the independent
 full replay, and the trace-specific tests; that target does not invoke Lean.
 

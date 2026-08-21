@@ -359,20 +359,19 @@
       event whose hit-probability discrepancy equals every physical-row TV
       discrepancy. The true parameter is fixed before the event; candidate,
       tilt, and time are simultaneous afterward.
+    - [x] Compose the structured scalar event with preallocated OPE risk events
+      for all three candidates and generated depths `[0,1,2,3,5,8,12]`.
+      Candidate, depth, two four-atom admissible tilt choices, posterior, and
+      time are selectable inside one common event of complement mass at most
+      `1/20`; the residual is `gamma_c^m + 2 (1+B_c,m) eta_c`.
     - [ ] Add a useful unknown-kernel numerical certificate and matched
       baselines. The present fresh 4,608-coordinate transition allocation is
-      vacuous on this trace. First compose the structured scalar TV event with
-      the queue OPE catalog and preallocated candidate/depth selectors, then
-      evaluate it under a protocol frozen before a fresh trace. The old frozen
+      vacuous on this trace. Evaluate the structured adaptive event under a
+      protocol frozen before a fresh trace. The old frozen
       config has only 48 coordinate weights, includes tilt `1`, and uses a
       five-predictor prior with causal predictors and no target-policy factor.
     - [ ] Add any claimed named-path good-event witness or a random-initial
       mixture/conditioning bridge for unconditional simulator coverage.
-    - [ ] Add a composed OPE event or preallocated catalog before selecting the
-      candidate or depth in the final risk conclusion. The scalar TV theorem is
-      candidate-simultaneous, but the checked empirical OPE theorem fixes both
-      candidate and depth, together with its reference, score, and contraction
-      certificates, before the event.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
     stationary risk, multistep conclusions, and atomless transition evidence
     as separate later theorem families.

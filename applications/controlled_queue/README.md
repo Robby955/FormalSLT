@@ -1,9 +1,9 @@
 # Controlled queue preprocessing
 
-Status: **PREPROCESSING, STRUCTURED ROW-TV CONFIDENCE, FIXED-CATALOG EVENT, ONE
-EXACT INVARIANT/RISK ATOM, AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** /
-**STRUCTURED OPE COMPOSITION, NAMED-PATH EVENT MEMBERSHIP, AND UNKNOWN-DYNAMICS
-NUMERICAL CERTIFICATE OPEN**
+Status: **PREPROCESSING, STRUCTURED ADAPTIVE OPE EVENT, ONE EXACT INVARIANT/RISK
+ATOM, AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** / **PROSPECTIVE
+UNKNOWN-DYNAMICS NUMERICAL CERTIFICATE, MATCHED BASELINES, AND NAMED-PATH EVENT
+MEMBERSHIP OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -44,6 +44,11 @@ of unknown-kernel target-policy OPE.
   checked 12-atom catalog obtained from four fixed target policies and three
   fixed Brier predictors, together with its fixed-nominal-candidate empirical
   finite-depth OPE event.
+- `../../FormalSLT/Applications/ControlledQueueStructuredOPE.lean`: checked
+  same-path intersection of preallocated risk events and scalar persistence
+  confidence. Its `21 = 3 x 7` candidate--depth catalog, four admissible risk
+  tilts, four admissible persistence tilts, posterior PMFs, and times are all
+  selectable inside one outer-mass event.
 - `../../FormalSLT/Applications/ControlledQueueInvariantRisk.lean`: locally
   checked explicit 24-state invariant PMF for the nominal environment and
   queue-threshold target policy, its equality to the catalog's canonical
@@ -88,10 +93,11 @@ make verify-controlled-queue-known-kernel-receipt
 ```
 
 The model verification target fails if any generated model byte or manifest
-hash is stale, runs the narrow arithmetic/schema tests, and compiles only the
-generated Lean data module. The trace target separately regenerates the full
-byte stream, then an implementation-independent verifier replays every random
-draw, transition, count, and causal update. It also runs tamper, rejection,
+hash is stale, runs the narrow arithmetic/schema tests, and builds the full
+controlled-queue model, score, contraction, confidence, OPE, and invariant-risk
+module/checker chain. The trace target separately regenerates the full byte
+stream, then an implementation-independent verifier replays every random draw,
+transition, count, and causal update. It also runs tamper, rejection,
 no-look-ahead, and stale-artifact tests. The known-kernel receipt target runs a
 second independent arithmetic implementation, adversarial schema/provenance
 tests, the memory-bounded Lean receipt build, and its public theorem checker.
@@ -115,7 +121,25 @@ uniform refresh to the step state, so its mean is `(1 + 23 * gamma) / 24`, not
 `gamma`. One outer-mass event is simultaneous over declared tilts and times,
 and after that event the candidate may be chosen from the three generated
 values. The result is not uniform over `gamma`, does not test family membership,
-and is not yet composed with target-policy OPE or a frozen path.
+and does not by itself certify a frozen path.
+`ControlledQueueStructuredOPE` composes that scalar row-TV event with the
+signed-residual target-policy OPE event. It allocates risk confidence uniformly
+over all three generated candidates crossed with generated depths
+`[0, 1, 2, 3, 5, 8, 12]`, and uses the admissible generated tilt prefix
+`[1/16, 1/8, 1/4, 1/2]`; the terminal generated tilt `1` is excluded because
+the event theorem requires a strict tilt below one. With risk and persistence
+budgets `1/40` each, one event has complement mass at most `1/20`. On that
+event, candidate, depth, both tilt atoms, posterior, and time may be selected
+from their predeclared typed catalogs. For candidate `c`, depth `m`, and scalar
+physical row-TV budget `eta`, the added residual is exactly
+`gamma_c^m + 2 * (1 + B_c,m) * eta`. No all-row visitation premise or behavior
+mass factor is used in this structured transfer.
+The candidate/depth and tilt supports are bound to generated tables, while the
+uniform `1/21` and `1/4` confidence weights are new checked Lean allocations;
+they are not claimed to be the still-open next-trace weight contract in the
+model input.
+These selectors are pointwise substitutions into the common event, not a
+measurable selected process or selected e-process.
 `ControlledQueueOPECatalog` then fixes the nominal candidate `Q`, the uniform
 finite-depth reference, contraction upper bound `alpha = 3/4`, centered
 row-risk envelope `D = 1`, and ratio cap `C = 3/2`. For an arbitrary true
@@ -128,11 +152,11 @@ complement mass at most `1/20`. The event is simultaneous over every posterior
 PMF and time `n >= 2`; its normalized bound at the displayed time assumes all
 48 augmented source rows were visited.
 
-The uniform reference is not asserted invariant, and `alpha = 3/4` is an upper
-bound rather than an exact Dobrushin coefficient. The catalog event theorem
-does not prove named-trace or good-event membership, resolve the
-initial-observation offset, select the candidate or depth from data, or
-establish a numerically useful confidence endpoint.
+The uniform reference is not asserted invariant, and each candidate's
+persistence weight is a contraction upper bound rather than an asserted exact
+Dobrushin coefficient. Neither catalog event proves named-trace or good-event
+membership, resolves the initial-observation offset for an arbitrary upstream
+trace, or establishes a prospectively selected useful numerical endpoint.
 
 Separately, `ControlledQueueInvariantRisk` fixes target-policy index `1`
 (queue-threshold) and fixed-predictor index `2` (nominal-model overload) under
