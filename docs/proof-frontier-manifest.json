@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 232,
-    "library_and_example_lean_lines": 151853,
-    "library_lean_lines": 121839,
-    "library_modules": 287,
-    "theorem_map_entries": 1086
+    "example_lean_files": 233,
+    "library_and_example_lean_lines": 152813,
+    "library_lean_lines": 122700,
+    "library_modules": 289,
+    "theorem_map_entries": 1097
   },
   "theorem_families": [
     {
@@ -4341,6 +4341,12 @@
         {
           "kind": "theorem",
           "module": "AnytimeValid.ForwardBesselProcess",
+          "name": "forwardEmpiricalBernsteinPsi_le_quadratic",
+          "summary": "For 0 <= lam < 1, bounds the forward empirical-Bernstein cumulant by lam^2 / (2 * (1 - lam)); the sharp queue slice uses it to certify the fixed 1/16 and 1/64 tilt costs"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.ForwardBesselProcess",
           "name": "forwardPredictableQuadratic_le_hybrid_bessel",
           "summary": "Bounds the predictable squared-residual penalty by the smaller of two checked Bessel envelopes for every bounded path and n >= 2"
         },
@@ -4919,6 +4925,12 @@
           "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
           "name": "abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation",
           "summary": "Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in [0,1], potential span B, and a nonnegative uniform action-conditioned environment-row TV radius etaEnv, deterministically bounds the true stationary residual by finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv); it supplies no confidence event, OPE theorem, or selection license"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
+          "name": "abs_approximateTargetPolicyPoissonResidual_le_affineDrift",
+          "summary": "Given the exact affine decomposition true drift = candidate drift + coefficient * sensitivity, oscillation bounds epsilon and L, and abs coefficient <= eta, bounds the stationary residual by epsilon + L * eta; it supplies no event or model-family certificate"
         }
       ],
       "name": "Stationary target-policy robust-candidate bridge"
@@ -5038,6 +5050,59 @@
         }
       ],
       "name": "Controlled-queue structured adaptive OPE"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "Applications.ControlledQueueRefreshSensitivity",
+          "name": "refreshTargetPolicyPoissonDriftSensitivity",
+          "summary": "Defines the exact target-policy Poisson-drift slope in the observable persistence-hit coordinate, including the 24/23 conversion from the latent refresh parameter"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueRefreshSensitivity",
+          "name": "targetPolicyPoissonDrift_refresh_sub_candidate_eq",
+          "summary": "Identifies true refresh-family drift minus generated-candidate drift exactly as hit-probability discrepancy times the normalized sensitivity, with no TV factor two"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueRefreshSensitivity",
+          "name": "abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity",
+          "summary": "Combines candidate-drift oscillation, sensitivity oscillation, and a hit-discrepancy budget eta into the residual epsilon + sensitivityBound * eta, with no extra 2 * (1 + B) multiplier"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredOPE",
+          "name": "knownKernelSelectedCandidateDrift_finiteOscillation_le",
+          "summary": "Certifies the exact rational upper bound 58989951 / 9007199254740992 for the nominal selected candidate drift using the supplied shifted depth-twelve potential"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredOPE",
+          "name": "knownKernelSelectedRefreshSensitivity_finiteOscillation_le",
+          "summary": "Certifies the exact rational upper bound 831542406207231 / 3236962232172544 for the selected normalized refresh sensitivity"
+        },
+        {
+          "kind": "definition",
+          "module": "Applications.ControlledQueueSharpStructuredOPE",
+          "name": "sharpStructuredResidual",
+          "summary": "Defines the pathwise sharp residual as the two checked oscillation bounds combined with the nominal candidate's scalar persistence budget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredOPE",
+          "name": "exists_controlledQueueSharpStructuredOPE_event",
+          "summary": "For any true refresh parameter and deterministic initial observation fixed beforehand, intersects the fixed selected-atom risk and persistence events and bounds the stationary target-policy risk on one adaptive-trajectory outer event of complement mass at most 1/20 at every n >= 2"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredOPE",
+          "name": "exists_controlledQueueSharpStructuredReceipt_event",
+          "summary": "Freezes true gamma = 149/200, initial observation (eco, state 0), horizon 200000, nominal candidate, supplied shifted depth-twelve potential, and queue-threshold/nominal-model Dirac posterior for the stationary target-policy risk on an adaptive trajectory; it is an event theorem, not a trace or numerical receipt"
+        }
+      ],
+      "name": "Controlled-queue refresh sensitivity and fixed sharp OPE"
     },
     {
       "entries": [
@@ -5733,6 +5798,12 @@
           "module": "StochasticDynamics.StationaryPoissonPACBayes",
           "name": "exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event",
           "summary": "Exact-Poisson stationary-risk certificate with only the simple B / n endpoint price"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryPoissonContraction",
+          "name": "finiteOscillation_add_const_mul_le",
+          "summary": "Bounds the oscillation of f + coefficient * g by epsilon + L * eta from oscillation bounds on f and g and abs coefficient <= eta"
         },
         {
           "kind": "theorem",

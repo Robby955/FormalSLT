@@ -1,9 +1,10 @@
 # Controlled queue application design
 
-Status: **STRUCTURED ADAPTIVE QUEUE OPE EVENT, ONE EXACT INVARIANT/RISK ATOM,
-AND AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED LOCALLY** /
-**PROSPECTIVE PROTOCOL FROZEN LOCALLY; PUBLIC TIMESTAMP, SHARP THEOREM, CODE
-FREEZE, FRESH UNKNOWN-DYNAMICS RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT
+Status: **STRUCTURED ADAPTIVE QUEUE OPE EVENT, FIXED SHARP UNKNOWN-DYNAMICS
+EVENT, ONE EXACT INVARIANT/RISK ATOM, AND AN ALIGNED KNOWN-KERNEL `< 0.07`
+RECEIPT CHECKED LOCALLY** / **PROSPECTIVE PROTOCOL FROZEN LOCALLY; PUBLIC
+PREREGISTRATION, INDEPENDENT GENERATOR/VERIFIER FREEZE, FRESH TRACE AND
+HISTOGRAM, NUMERICAL `< 0.10` RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT
 MEMBERSHIP OPEN**
 
 Original design base: FormalSLT release-candidate commit
@@ -70,7 +71,15 @@ protocol now freezes an independent off-grid refresh parameter, fixed initial
 observation, future-public-beacon seed rule, sharp selected-potential primary,
 adaptive secondary, comparison rows, and publish-regardless rule. It has not
 yet received a public immutable timestamp and contains no fresh trace or
-result.
+result. The sharp analytic lane is now checked locally: an exact affine
+refresh-family identity replaces the generic TV transfer by candidate-drift
+oscillation plus sensitivity oscillation times the path-dependent scalar
+persistence budget. Its fixed wrapper uses the nominal candidate, supplied
+shifted depth-twelve potential, queue-threshold/nominal-model Dirac posterior,
+true `gamma = 149/200`, initial observation `(eco, state 0)`, and horizon
+`200000`, with outer complement mass at most `1/20`. It does not provide the
+still-absent fresh histogram, good-event membership, or numerical `< 0.10`
+receipt.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -170,6 +179,8 @@ The generic modules do not by themselves instantiate the queue application.
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
 | Structured queue persistence confidence | `Applications.ControlledQueuePersistenceConfidence` | Arbitrary fixed `gamma in [0,1)` in the generated refresh family; one direct/complement hit outer-mass event; exact all-row TV identity; simultaneous budgets for all three candidates, but no family-membership test |
 | Structured adaptive queue OPE | `Applications.ControlledQueueStructuredOPE` | Same-path finite union over all three candidates and generated depths `[0,1,2,3,5,8,12]`, intersected with scalar persistence confidence; candidate, depth, two four-atom tilt choices, posterior, and time are selectable inside one event of complement mass at most `1/20` |
+| Refresh-family drift sensitivity | `Applications.ControlledQueueRefreshSensitivity` | Exact true-minus-candidate Poisson-drift identity in the observable hit-probability coordinate, and residual bound `candidate drift oscillation + sensitivity oscillation * hit-discrepancy budget`, without the generic `2 * (1 + B)` TV factor |
+| Fixed sharp structured queue OPE | `Applications.ControlledQueueSharpStructuredOPE` | Nominal candidate, supplied shifted depth-twelve potential, queue-threshold/nominal-model Dirac posterior, risk tilt `1/16`, persistence tilt `1/64`, and two `1/40` budgets; the frozen `gamma = 149/200`, `(eco, state 0)`, horizon-`200000` wrapper has outer complement mass at most `1/20`, but no trace or numerical receipt |
 | Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
 | Explicit queue invariant/risk atom | `Applications.ControlledQueueInvariantRisk` | Explicit 24-state rational invariant PMF for nominal `Q` and target-policy index `1`, equality to the canonical catalog witness by strict-contraction uniqueness, exact row risks for fixed-predictor index `2`, and stationary Brier risk `4338268437 / 67816493056 < 13 / 200` |
 | Known-kernel aligned numerical receipt | `Applications.ControlledQueueKnownKernelReceipt` | Fixed-initial `39/40` event, exact depth-twelve potential/residual, aligned `24 x 2 x 24` suffix-histogram bridge, and selected risk endpoint below `7/100`, conditional on the histogram and event inequality |
@@ -201,15 +212,17 @@ witness, and its stationary Brier risk is exactly
 proves the selected endpoint below `7/100` from the suffix histogram and event
 inequality. The following application items remain **OPEN**.
 
-1. Prospective structured unknown-dynamics receipt and matched baselines: the fresh
-   4,608-coordinate empirical-transition allocation is vacuous on the current
-   trace. The scalar persistence module and its adaptive OPE composition now
-   avoid that allocation within the refresh family. The local v1 protocol now
-   freezes the primary and comparisons, but the sharp drift-sensitivity theorem
-   and independent generator/verifier code must be frozen and one public OSF
-   registration must bind both commits before the formula-selected future
-   beacon round is read or a fresh trace is generated. Every comparison must
-   then be reported before any useful numerical unknown-dynamics claim.
+1. Prospective structured unknown-dynamics receipt and matched baselines: the
+   fresh 4,608-coordinate empirical-transition allocation is vacuous on the
+   current trace. The scalar persistence route and its checked sharp
+   drift-sensitivity composition avoid that allocation within the refresh
+   family. The local v1 protocol freezes the primary and comparisons, but the
+   independent generator/verifier code must be completed and frozen, and one
+   public OSF registration must bind the protocol and code-freeze commits,
+   before the formula-selected future beacon round is read or a fresh trace is
+   generated. The resulting trace, histogram, selected numerical `< 0.10`
+   receipt, and every matched comparison must then be reported whether the
+   primary succeeds or fails.
 2. Probabilistic trace interpretation: the known-kernel receipt resolves the
    deterministic initial-offset and histogram alignment for the realized
    suffix, but does not prove named-path good-event membership or unconditional
@@ -283,7 +296,11 @@ The structured persistence route instead scores one row-independent statistic
 and needs no all-row-visit premise. Its checked adaptive OPE composition uses
 the generated candidate/depth and admissible-tilt supports, together with new
 uniform `1/21` and `1/4` Lean confidence allocations that are not generated
-model fields. It has not yet been evaluated on a prospectively frozen trace.
+model fields. The fixed sharp route further checks the selected nominal
+depth-twelve residual as candidate-drift oscillation plus refresh-sensitivity
+oscillation times a path-dependent persistence budget; it has no extra
+`2 * (1 + B)` factor. It has not yet been evaluated on a fresh prospectively
+generated trace.
 Later application slices must still
 provide any further invariant/risk receipts needed for reported atoms,
 trace/event alignment, and final numerical confidence arithmetic. One explicit
@@ -367,9 +384,11 @@ controlled-law bridge. No direct full-trace horizon alignment is claimed.
 The application now checks one explicit true invariant law and stationary risk
 for the nominal queue-threshold/nominal-model atom and one trace-aligned
 known-kernel bound conditional on the aligned suffix histogram and event
-inequality. It still does not check a useful unknown-dynamics trace-aligned
-final bound or named-path good-event membership. Those remain later
-model-to-theorem and certificate slices, not preprocessing claims.
+inequality. It also checks the fixed sharp unknown-dynamics event for true
+`gamma = 149/200`, fixed initial observation, and horizon `200000`, but still
+does not check a fresh unknown-dynamics histogram, trace-aligned numerical
+bound, or named-path good-event membership. Those remain later certificate
+slices, not preprocessing claims.
 
 ## Matched comparison contract
 

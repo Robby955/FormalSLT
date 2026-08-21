@@ -364,6 +364,14 @@
       Candidate, depth, two four-atom admissible tilt choices, posterior, and
       time are selectable inside one common event of complement mass at most
       `1/20`; the residual is `gamma_c^m + 2 (1+B_c,m) eta_c`.
+    - [x] Check the exact affine refresh-family drift sensitivity and the fixed
+      prospective sharp event for the nominal candidate, supplied shifted
+      depth-twelve potential, and queue-threshold/nominal-model Dirac atom.
+      The residual is candidate-drift oscillation plus sensitivity oscillation
+      times the path-dependent persistence budget, with no extra
+      `2 * (1 + B)` factor. Risk tilt `1/16`, persistence tilt `1/64`, and two
+      `1/40` budgets give outer complement mass at most `1/20` for fixed true
+      `gamma` and fixed initial observation.
     - [x] Freeze a local prospective protocol input for an independent
       `gamma = 149/200`, 200,000-transition trace: fixed full-horizon initial
       observation, future drand-beacon seed rule, selected depth-12 sharp
@@ -371,15 +379,17 @@
       publish-regardless rule. This is protocol-only and has no public
       timestamp, trace, result, or confidence receipt yet.
     - [ ] Add a useful unknown-kernel numerical certificate and matched
-      baselines. Register the protocol and independent generator/verifier code
-      freeze together in one immutable public OSF registration before selecting
-      its formula-determined beacon round. Add
-      the sharp refresh-family drift-sensitivity theorem required by the fixed
-      primary, then generate once and report every declared comparison. The
+      baselines. Complete and freeze the independent generator/verifier code,
+      then bind that code freeze and the protocol commit in one immutable
+      public OSF registration before selecting the formula-determined beacon
+      round. Generate the fresh trace once and report its histogram, selected
+      endpoint, `< 0.10` threshold outcome, and every declared comparison
+      whether the primary succeeds or fails. No fresh trace, histogram,
+      good-event membership proof, or numerical receipt exists yet. The
       present 4,608-coordinate transition allocation is vacuous on the pilot
-      trace. The old frozen
-      config has only 48 coordinate weights, includes tilt `1`, and uses a
-      five-predictor prior with causal predictors and no target-policy factor.
+      trace. The old frozen config has only 48 coordinate weights, includes
+      tilt `1`, and uses a five-predictor prior with causal predictors and no
+      target-policy factor.
     - [ ] Add any claimed named-path good-event witness or a random-initial
       mixture/conditioning bridge for unconditional simulator coverage.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state

@@ -1,10 +1,11 @@
 # Controlled queue preprocessing
 
-Status: **PREPROCESSING, STRUCTURED ADAPTIVE OPE EVENT, ONE EXACT INVARIANT/RISK
-ATOM, AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** / **PROSPECTIVE
-UNKNOWN-DYNAMICS PROTOCOL FROZEN LOCALLY; PUBLIC TIMESTAMP, SHARP THEOREM,
-CODE FREEZE, FRESH TRACE, MATCHED RECEIPTS, AND NAMED-PATH EVENT MEMBERSHIP
-OPEN**
+Status: **PREPROCESSING, STRUCTURED ADAPTIVE OPE EVENT, FIXED SHARP
+UNKNOWN-DYNAMICS EVENT, ONE EXACT INVARIANT/RISK ATOM, AND AN ALIGNED
+KNOWN-KERNEL RECEIPT CHECKED** / **PROSPECTIVE PROTOCOL FROZEN LOCALLY;
+PUBLIC PREREGISTRATION, INDEPENDENT GENERATOR/VERIFIER FREEZE, FRESH TRACE,
+HISTOGRAM, NUMERICAL `< 0.10` RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT
+MEMBERSHIP OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -50,6 +51,15 @@ of unknown-kernel target-policy OPE.
   confidence. Its `21 = 3 x 7` candidate--depth catalog, four admissible risk
   tilts, four admissible persistence tilts, posterior PMFs, and times are all
   selectable inside one outer-mass event.
+- `../../FormalSLT/Applications/ControlledQueueRefreshSensitivity.lean`:
+  checked exact affine identity for refresh-family target-policy Poisson drift
+  and its residual transfer from candidate-drift and normalized-sensitivity
+  oscillation certificates.
+- `../../FormalSLT/Applications/ControlledQueueSharpStructuredOPE.lean`:
+  checked fixed selected-atom sharp event using the nominal candidate, supplied
+  shifted depth-twelve potential, and queue-threshold/nominal-model Dirac
+  posterior. Its prospectively frozen wrapper fixes true `gamma = 149/200`,
+  initial observation `(eco, state 0)`, and horizon `200000`.
 - `../../FormalSLT/Applications/ControlledQueueInvariantRisk.lean`: locally
   checked explicit 24-state invariant PMF for the nominal environment and
   queue-threshold target policy, its equality to the catalog's canonical
@@ -155,6 +165,30 @@ they are not claimed to be the still-open next-trace weight contract in the
 model input.
 These selectors are pointwise substitutions into the common event, not a
 measurable selected process or selected e-process.
+`ControlledQueueRefreshSensitivity` uses the affine refresh-family structure
+to identify the true-minus-candidate drift exactly as the observable
+persistence-hit discrepancy times a normalized sensitivity. Consequently its
+residual transfer is
+
+```text
+candidate drift oscillation
+  + sensitivity oscillation * persistence-hit discrepancy budget,
+```
+
+with no extra total-variation factor `2 * (1 + B)`. The fixed sharp module
+instantiates this formula with the nominal candidate, the supplied shifted
+depth-twelve potential, the queue-threshold/nominal-model Dirac atom, risk tilt
+`1/16`, persistence tilt `1/64`, and two failure budgets `1/40`. For the fixed
+true parameter and fixed initial observation, its prospective wrapper gives an
+outer event with complement mass at most `1/20` and evaluates the bound at
+horizon `200000`.
+
+That theorem is not an empirical receipt. No fresh prospective trace or
+histogram has been generated, no named path has been proved to lie in the good
+event, and no numerical endpoint below the protocol threshold `< 0.10` has
+been checked. The local protocol is not publicly preregistered; public
+registration must bind the protocol and completed independent
+generator/verifier code freeze before its future-beacon seed is read.
 `ControlledQueueOPECatalog` then fixes the nominal candidate `Q`, the uniform
 finite-depth reference, contraction upper bound `alpha = 3/4`, centered
 row-risk envelope `D = 1`, and ratio cap `C = 3/2`. For an arbitrary true

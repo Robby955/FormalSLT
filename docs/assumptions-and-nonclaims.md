@@ -348,14 +348,48 @@ random-initial coverage, or a useful prospective numerical endpoint. Its
 selectors are pointwise substitutions into the common event, not a measurable
 selected process or selected e-process.
 
+### Fixed sharp structured controlled-queue OPE event
+
+`Applications.ControlledQueueRefreshSensitivity` exploits the affine
+one-parameter refresh family. It identifies the true target-policy Poisson
+drift minus the generated-candidate drift exactly as the persistence-hit
+probability discrepancy times a normalized sensitivity. Given an oscillation
+bound for the candidate drift, an oscillation bound for that sensitivity, and
+a bound `eta` on the hit-probability discrepancy, the resulting pointwise
+stationary residual is bounded by
+
+`candidate drift oscillation + sensitivity oscillation * eta`.
+
+This formula has no extra total-variation multiplier `2 * (1 + B)`. It depends
+essentially on the asserted refresh-family model and is not an
+arbitrary-kernel robustness theorem.
+
+`Applications.ControlledQueueSharpStructuredOPE` instantiates the formula with
+the nominal candidate, the supplied shifted depth-twelve potential, and the
+Dirac posterior on the queue-threshold target policy paired with the
+nominal-model fixed predictor. It intersects risk tilt `1/16` and persistence
+tilt `1/64` events with failure budgets `1/40` each. For any true `gamma` and
+deterministic initial controlled observation fixed before the event, the outer
+complement has real mass at most `1/20`. The frozen prospective wrapper fixes
+true `gamma = 149/200`, initial observation `(eco, state 0)`, and evaluation
+horizon `200000`.
+
+The wrapper is an event theorem, not a numerical receipt. It does not generate
+or import a fresh trace or histogram, prove that a named path lies in the good
+event, establish histogram-conditioned or random-initial coverage, or show
+that the selected numerical endpoint is below `< 0.10`. The potential and
+Dirac atom are supplied fixed objects; the theorem does not license fitting
+either object to the prospective path.
+
 The separate `structured-ope-protocol-v1.json` is a local prospective protocol
 input, not a theorem or result. It freezes an off-grid true refresh parameter,
 fixed selected-potential primary, future-public-beacon seed rule, adaptive
 secondary, matched comparisons, and publish-regardless chronology before an
-independent trace. The primary requires a sharper refresh-family
-drift-sensitivity transfer that is not yet checked. Until both protocol and
-generator/verifier code are bound by one immutable public OSF registration, no
-public preregistration or prospective numerical claim is made.
+independent trace. The required sharp drift-sensitivity event is checked
+locally, but the protocol has not been publicly preregistered and the
+independent generator/verifier freeze is incomplete. Until the protocol and
+completed code freeze are bound by one immutable public OSF registration, no
+future-beacon seed may be read and no prospective numerical claim is made.
 
 ### Fixed controlled-queue OPE catalog
 
@@ -1215,7 +1249,12 @@ measure. These results do not construct a useful queue-specific unknown-kernel
 numerical certificate. The structured persistence lane does give a
 time-uniform physical-row TV budget for an arbitrary fixed parameter in the
 frozen refresh family. Its finite-catalog OPE composition is checked, but it is
-not yet evaluated prospectively. The controlled results do not license
+not yet evaluated on a fresh prospective trace. A fixed sharp event for the
+nominal selected atom is also checked, with residual equal to candidate-drift
+oscillation plus sensitivity oscillation times its path-dependent persistence
+budget and outer complement mass at most `1/20`. It supplies no fresh
+histogram, named-path good-event membership, or numerical `< 0.10` receipt.
+The controlled results do not license
 data-dependent candidates or depths outside that common predeclared event;
 estimate general nuisance
 quantities; prove named-path event membership; or give an anytime-valid

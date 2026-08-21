@@ -783,6 +783,7 @@ declarations; modules are relative to `FormalSLT`.
 
 | Declaration | Module | Role |
 |---|---|---|
+| `forwardEmpiricalBernsteinPsi_le_quadratic` | `AnytimeValid.ForwardBesselProcess` | For `0 <= lam < 1`, bounds the forward empirical-Bernstein cumulant by `lam^2 / (2 * (1 - lam))`; the sharp queue slice uses it to certify the fixed `1/16` and `1/64` tilt costs |
 | `forwardPredictableQuadratic_le_hybrid_bessel` | `AnytimeValid.ForwardBesselProcess` | Bounds the predictable squared-residual penalty by the smaller of two checked Bessel envelopes for every bounded path and `n >= 2` |
 | `forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded` | `AnytimeValid.ForwardBesselProcess` | Packages the actual lower-tail predictable-residual exponential process as an e-process under boundedness, adaptedness, and the conditional-mean model |
 | `forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess` | `AnytimeValid.ForwardBesselProcess` | Makes the stochastic distinction explicit: the hybrid Bessel exponential expression is a pointwise lower envelope of the actual e-process |
@@ -940,6 +941,7 @@ interval.
 | `targetPolicyRowScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Transfers the unit-range certificate to the constant-next-state Markov row-score adapter |
 | `centered_targetPolicyRowScore_finiteOscillation_le_one` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Supplies the generic centered row-risk oscillation envelope `D = 1` for any reference PMF and any `[0,1]` target-policy score |
 | `abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in `[0,1]`, potential span `B`, and a nonnegative uniform action-conditioned environment-row TV radius `etaEnv`, deterministically bounds the true stationary residual by `finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`; it supplies no confidence event, OPE theorem, or selection license |
+| `abs_approximateTargetPolicyPoissonResidual_le_affineDrift` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given the exact affine decomposition `true drift = candidate drift + coefficient * sensitivity`, oscillation bounds `epsilon` and `L`, and `abs coefficient <= eta`, bounds the stationary residual by `epsilon + L * eta`; it supplies no event or model-family certificate |
 
 ## Fixed-candidate finite-depth robust target-policy off-policy evaluation
 
@@ -1023,6 +1025,27 @@ process or selected e-process. The theorem does not license a path-fitted
 candidate, depth, potential, or causal predictor; prove named-path membership
 or random-initial coverage; or provide a prospective numerical endpoint or
 matched baseline comparison.
+
+## Controlled-queue refresh sensitivity and fixed sharp OPE
+
+| Declaration | Module | Role |
+|---|---|---|
+| `refreshTargetPolicyPoissonDriftSensitivity` | `Applications.ControlledQueueRefreshSensitivity` | Defines the exact target-policy Poisson-drift slope in the observable persistence-hit coordinate, including the `24/23` conversion from the latent refresh parameter |
+| `targetPolicyPoissonDrift_refresh_sub_candidate_eq` | `Applications.ControlledQueueRefreshSensitivity` | Identifies true refresh-family drift minus generated-candidate drift exactly as hit-probability discrepancy times the normalized sensitivity, with no TV factor two |
+| `abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity` | `Applications.ControlledQueueRefreshSensitivity` | Combines candidate-drift oscillation, sensitivity oscillation, and a hit-discrepancy budget `eta` into the residual `epsilon + sensitivityBound * eta`, with no extra `2 * (1 + B)` multiplier |
+| `knownKernelSelectedCandidateDrift_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `58989951 / 9007199254740992` for the nominal selected candidate drift using the supplied shifted depth-twelve potential |
+| `knownKernelSelectedRefreshSensitivity_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `831542406207231 / 3236962232172544` for the selected normalized refresh sensitivity |
+| `sharpStructuredResidual` | `Applications.ControlledQueueSharpStructuredOPE` | Defines the pathwise sharp residual as the two checked oscillation bounds combined with the nominal candidate's scalar persistence budget |
+| `exists_controlledQueueSharpStructuredOPE_event` | `Applications.ControlledQueueSharpStructuredOPE` | For any true refresh parameter and deterministic initial observation fixed beforehand, intersects the fixed selected-atom risk and persistence events and bounds the stationary target-policy risk on one adaptive-trajectory outer event of complement mass at most `1/20` at every `n >= 2` |
+| `exists_controlledQueueSharpStructuredReceipt_event` | `Applications.ControlledQueueSharpStructuredOPE` | Freezes true `gamma = 149/200`, initial observation `(eco, state 0)`, horizon `200000`, nominal candidate, supplied shifted depth-twelve potential, and queue-threshold/nominal-model Dirac posterior for the stationary target-policy risk on an adaptive trajectory; it is an event theorem, not a trace or numerical receipt |
+
+The fixed slice uses risk tilt `1/16`, persistence tilt `1/64`, and separate
+failure budgets `1/40`. It has no fresh prospective trace or histogram, no
+named-path good-event membership theorem, and no checked numerical endpoint
+below the protocol threshold `< 0.10`. Its local protocol has not been
+publicly preregistered, and the independent generator/verifier code freeze
+still must be completed and publicly bound before the future-beacon seed is
+read.
 
 ## Controlled-queue twelve-atom OPE catalog
 
@@ -1254,6 +1277,7 @@ library theorem index.
 | `exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Replaces the signed path residual and endpoint by supplied posterior residual envelopes and `B / n` |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson specialization with zero residual and the exact telescoping endpoint term |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson stationary-risk certificate with only the simple `B / n` endpoint price |
+| `finiteOscillation_add_const_mul_le` | `StochasticDynamics.StationaryPoissonContraction` | Bounds the oscillation of `f + coefficient * g` by `epsilon + L * eta` from oscillation bounds on `f` and `g` and `abs coefficient <= eta` |
 | `finiteDepthPoisson_residual_identity` | `StochasticDynamics.StationaryPoissonContraction` | Identifies the truncated Neumann potential's exact Poisson residual with `T^m (g - R)` |
 | `iteratedMarkovPotentialMean_oscillation_le` | `StochasticDynamics.StationaryPoissonContraction` | Iterates a supplied oscillation contraction to the geometric factor `alpha^t` |
 | `finiteDepthPoissonPotential_span` | `StochasticDynamics.StationaryPoissonContraction` | Bounds the depth-`m` potential span by the finite geometric sum times the centered-risk oscillation envelope |

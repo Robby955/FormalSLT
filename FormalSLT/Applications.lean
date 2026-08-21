@@ -21,6 +21,8 @@ import FormalSLT.Applications.ControlledQueueOPECatalog
 import FormalSLT.Applications.ControlledQueueStructuredOPE
 import FormalSLT.Applications.ControlledQueueInvariantRisk
 import FormalSLT.Applications.ControlledQueueKnownKernelReceipt
+import FormalSLT.Applications.ControlledQueueRefreshSensitivity
+import FormalSLT.Applications.ControlledQueueSharpStructuredOPE
 
 /-!
 # FormalSLT applications
@@ -52,11 +54,13 @@ admissible risk tilts, four admissible persistence tilts, and arbitrary
 twelve-hypothesis posterior PMFs.
 `ControlledQueueInvariantRisk` supplies one explicit invariant PMF, identifies
 it with the catalog's canonical witness by contraction uniqueness, and evaluates
-one exact stationary Brier risk. These modules culminate in
-`ControlledQueueKnownKernelReceipt`: a fixed-initial failure-mass theorem and
-an exact `< 0.07` selected-risk endpoint conditional on both the aligned
-suffix-histogram premise and the theorem-produced event inequality. They do not
-prove that the named trace satisfies the good event or yet evaluate the
-structured adaptive event on a prospectively frozen trace with a useful
-unknown-dynamics numerical endpoint.
+one exact stationary Brier risk. `ControlledQueueKnownKernelReceipt` gives a
+fixed-initial failure-mass theorem and an exact `< 0.07` selected-risk endpoint
+conditional on both the aligned suffix-histogram premise and the
+theorem-produced event inequality. `ControlledQueueRefreshSensitivity` proves
+the exact affine drift identity for the queue refresh family, and
+`ControlledQueueSharpStructuredOPE` combines it with the risk and persistence
+events under the prospectively frozen constants. These modules do not prove
+that any named trace satisfies the good event or evaluate the prospective
+sharp endpoint on fresh data.
 -/

@@ -562,6 +562,67 @@ lemma forwardEmpiricalBernsteinPsi_nonneg
   unfold forwardEmpiricalBernsteinPsi
   linarith
 
+/-- Sharp quadratic upper bound on the empirical-Bernstein cumulant over its
+admissible nonnegative tilt range. -/
+theorem forwardEmpiricalBernsteinPsi_le_quadratic
+    {lam : ℝ} (hlam0 : 0 ≤ lam) (hlam1 : lam < 1) :
+    forwardEmpiricalBernsteinPsi lam ≤ lam ^ 2 / (2 * (1 - lam)) := by
+  let F : ℝ → ℝ := fun t ↦
+    t ^ 2 / (2 * (1 - t)) - forwardEmpiricalBernsteinPsi t
+  let dF : ℝ → ℝ := fun t ↦ t ^ 2 / (2 * (1 - t) ^ 2)
+  have hpos (t : ℝ) (ht : t ∈ Set.Icc 0 lam) : 0 < 1 - t := by
+    linarith [ht.2]
+  have hderiv (t : ℝ) (ht : t ∈ Set.Icc 0 lam) : HasDerivAt F (dF t) t := by
+    have hp := hpos t ht
+    have honeSub : HasDerivAt (fun s : ℝ ↦ 1 - s) (-1) t := by
+      have h := (hasDerivAt_const t (1 : ℝ)).sub (hasDerivAt_id t)
+      exact (h.congr_deriv (by ring)).congr_of_eventuallyEq
+        (Filter.Eventually.of_forall fun _ ↦ rfl)
+    have hden : HasDerivAt (fun s : ℝ ↦ 2 * (1 - s)) (-2) t := by
+      have h := honeSub.const_mul (2 : ℝ)
+      exact (h.congr_deriv (by ring)).congr_of_eventuallyEq
+        (Filter.Eventually.of_forall fun _ ↦ rfl)
+    have hquad : HasDerivAt (fun s : ℝ ↦ s ^ 2 / (2 * (1 - s)))
+        (((2 * t) * (2 * (1 - t)) - t ^ 2 * (-2)) /
+          (2 * (1 - t)) ^ 2) t := by
+      have h := ((hasDerivAt_id t).pow 2).div hden
+        (mul_ne_zero (by norm_num) hp.ne')
+      exact (h.congr_deriv (by simp [id_eq])).congr_of_eventuallyEq
+        (Filter.Eventually.of_forall fun _ ↦ rfl)
+    have hpsi :
+        HasDerivAt forwardEmpiricalBernsteinPsi (1 / (1 - t) - 1) t := by
+      unfold forwardEmpiricalBernsteinPsi
+      have h := (honeSub.log hp.ne').neg.sub (hasDerivAt_id t)
+      apply (h.congr_deriv ?_).congr_of_eventuallyEq
+        (Filter.Eventually.of_forall fun _ ↦ rfl)
+      field_simp [hp.ne']
+    have hraw := hquad.sub hpsi
+    apply (hraw.congr_deriv ?_).congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun _ ↦ rfl)
+    dsimp [dF]
+    field_simp [hp.ne']
+    ring
+  have hcont : ContinuousOn F (Set.Icc 0 lam) := by
+    intro t ht
+    exact (hderiv t ht).continuousAt.continuousWithinAt
+  have hmono : MonotoneOn F (Set.Icc 0 lam) := by
+    refine monotoneOn_of_hasDerivWithinAt_nonneg (f' := dF)
+      (convex_Icc 0 lam) hcont ?_ ?_
+    · intro t ht
+      exact (hderiv t (interior_subset ht)).hasDerivWithinAt
+    · intro t ht
+      have ht' : t ∈ Set.Icc 0 lam := interior_subset ht
+      have hp := hpos t ht'
+      dsimp [dF]
+      positivity
+  have hgap := hmono
+    (show 0 ∈ Set.Icc (0 : ℝ) lam by exact ⟨le_rfl, hlam0⟩)
+    (show lam ∈ Set.Icc (0 : ℝ) lam by exact ⟨hlam0, le_rfl⟩) hlam0
+  dsimp [F] at hgap
+  simp [forwardEmpiricalBernsteinPsi] at hgap
+  unfold forwardEmpiricalBernsteinPsi
+  linarith
+
 /-- Random predictable prefix-mean predictor induced by an observation process. -/
 def forwardPredictorProcess {Ω : Type*}
     (X : ℕ → Ω → ℝ) (k : ℕ) (ω : Ω) : ℝ :=

@@ -465,6 +465,54 @@ theorem abs_targetPolicyPoissonDrift_sub_candidate_le
     _ ≤ etaEnv + etaEnv * B := add_le_add hrow hpotential
     _ = (1 + B) * etaEnv := by ring
 
+omit [MeasurableSpace A] [MeasurableSingletonClass A] in
+/-- Sharp stationary residual transfer when the true drift is an exact affine
+perturbation of a candidate drift.  Unlike a two-sided pointwise perturbation
+argument, centering removes constants and pays only the oscillation of the
+sensitivity, with no extra factor of two. -/
+theorem abs_approximateTargetPolicyPoissonResidual_le_affineDrift
+    (P Q : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
+    (stationary : PMF Z)
+    (hstationary : IsInvariantPMF (targetPolicyKernel P π) stationary)
+    {score : TargetPolicyTransitionScore Z A} {potential : Z → ℝ}
+    (sensitivity : Z → ℝ) {coefficient ε L η : ℝ}
+    (hdrift : ∀ state,
+      targetPolicyPoissonDrift P π score potential state =
+        targetPolicyPoissonDrift Q π score potential state +
+          coefficient * sensitivity state)
+    (hcandidate :
+      finiteOscillation (targetPolicyPoissonDrift Q π score potential) ≤ ε)
+    (hsensitivity : finiteOscillation sensitivity ≤ L)
+    (hcoefficient : |coefficient| ≤ η)
+    (state : Z) :
+    |approximateTargetPolicyPoissonResidual
+        P π stationary score potential state| ≤ ε + L * η := by
+  have hdriftFunction :
+      targetPolicyPoissonDrift P π score potential =
+        fun nextState ↦
+          targetPolicyPoissonDrift Q π score potential nextState +
+            coefficient * sensitivity nextState := by
+    funext nextState
+    exact hdrift nextState
+  have htrueOscillation :
+      finiteOscillation (targetPolicyPoissonDrift P π score potential) ≤
+        ε + L * η := by
+    rw [hdriftFunction]
+    exact finiteOscillation_add_const_mul_le
+      (targetPolicyPoissonDrift Q π score potential) sensitivity coefficient
+      hcandidate hsensitivity hcoefficient
+  have hcentered :
+      |targetPolicyPoissonDrift P π score potential state -
+          ∫ nextState, targetPolicyPoissonDrift P π score potential nextState
+            ∂stationary.toMeasure| ≤
+        finiteOscillation (targetPolicyPoissonDrift P π score potential) :=
+    abs_sub_pmfIntegral_le_finiteOscillation stationary
+      (targetPolicyPoissonDrift P π score potential) state
+  unfold approximateTargetPolicyPoissonResidual
+  rw [← targetPolicyPoissonDrift_stationary_mean
+    P π stationary hstationary score potential]
+  exact hcentered.trans htrueOscillation
+
 /-- Stationary residual envelope for a target policy evaluated with a fixed
 candidate environment.  The true target-policy kernel's invariant law is an
 explicit premise, and `etaEnv` is the action-conditioned environment radius. -/
