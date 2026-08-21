@@ -1134,15 +1134,22 @@ For one predeclared atom, `ControlledQueueInvariantRisk` additionally supplies
 an explicit 24-state invariant PMF, proves equality to the canonical catalog
 witness by strict-contraction uniqueness, and evaluates its exact stationary
 Brier risk as `4338268437 / 67816493056 < 13 / 200`.
+`ControlledQueueKnownKernelReceipt` fixes that atom, depth `12`, the realized
+initial observation `(1, 1)`, a twelve-way prior, tilt `1/16`, and a `1/40`
+failure budget. An independently reconstructed `24 x 2 x 24` suffix histogram
+implies exact score moments in Lean, and the selected boundary plus residual is
+below `7/100`. The corresponding risk theorem still assumes both the histogram
+and the theorem-event inequality; it does not prove that the named path belongs
+to the event or give unconditional coverage for the upstream random first
+observation.
 The controlled layer also supplies encountered-prefix comparators for
 history-dependent targets and exact fixed-horizon target-path change of
-measure. These results do not construct the remaining queue-specific explicit
-stationary-risk, numerical-confidence, or trace certificates; license
-data-dependent candidates or depths without a common event; estimate nuisance
-quantities; or give an anytime-valid cumulative-likelihood target-value
-boundary. Except for the one explicit atom above, the application-level
-invariant witnesses remain noncomputable choices rather than explicit queue
-stationary laws.
+measure. These results do not construct a useful queue-specific unknown-kernel
+numerical certificate; license data-dependent candidates or depths without a
+common event; estimate nuisance quantities; prove named-path event membership;
+or give an anytime-valid cumulative-likelihood target-value boundary. Except
+for the one explicit atom above, the application-level invariant witnesses
+remain noncomputable choices rather than explicit queue stationary laws.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and

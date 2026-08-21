@@ -45,6 +45,9 @@ jobs:
       - name: Verify controlled-queue trace preprocessing
         run: make check-controlled-queue-trace
 
+      - name: Verify controlled-queue known-kernel receipt
+        run: make check-controlled-queue-known-kernel-receipt
+
       - name: Run repository-tool self-tests
         run: make python-tests
 

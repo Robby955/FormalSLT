@@ -94,6 +94,24 @@ check-controlled-queue-trace:
 verify-controlled-queue-trace: check-controlled-queue-trace
 	python3 -m pytest -q tests/test_generate_controlled_queue_trace.py
 
+# Regenerate the aligned known-kernel OPE receipt and generated Lean data.
+generate-controlled-queue-known-kernel-receipt:
+	python3 scripts/generate_controlled_queue_known_kernel_receipt.py
+
+# Check exact bytes, provenance, independent arithmetic, and generated Lean.
+check-controlled-queue-known-kernel-receipt:
+	python3 scripts/generate_controlled_queue_known_kernel_receipt.py --check
+	python3 scripts/verify_controlled_queue_known_kernel_receipt.py --check
+
+# Run adversarial preprocessing tests and the checked Lean endpoint.
+verify-controlled-queue-known-kernel-receipt: check-controlled-queue-known-kernel-receipt
+	python3 -m pytest -q tests/test_generate_controlled_queue_known_kernel_receipt.py
+	lake build FormalSLT.Applications.ControlledQueueKnownKernelReceipt
+	lake env lean examples/CheckControlledQueueKnownKernelReceipt.lean
+
 .PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests \
 	generate-controlled-queue-model check-controlled-queue-model verify-controlled-queue-model \
-	generate-controlled-queue-trace check-controlled-queue-trace verify-controlled-queue-trace
+	generate-controlled-queue-trace check-controlled-queue-trace verify-controlled-queue-trace \
+	generate-controlled-queue-known-kernel-receipt \
+	check-controlled-queue-known-kernel-receipt \
+	verify-controlled-queue-known-kernel-receipt

@@ -1,7 +1,8 @@
 # Controlled queue application design
 
-Status: **FIXED 12-ATOM QUEUE OPE EVENT AND ONE EXACT INVARIANT/RISK ATOM
-CHECKED LOCALLY** / **TRACE-ALIGNED CONFIDENCE CERTIFICATE OPEN**
+Status: **FIXED 12-ATOM QUEUE OPE EVENT, ONE EXACT INVARIANT/RISK ATOM, AND
+AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED LOCALLY** / **NAMED-PATH
+EVENT MEMBERSHIP AND UNKNOWN-KERNEL NUMERICAL CERTIFICATE OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -50,9 +51,13 @@ fixed-predictor index `2` (nominal-model overload) under the nominal candidate.
 It constructs an explicit 24-state rational invariant PMF, identifies it with
 the corresponding catalog witness by strict-contraction uniqueness, and proves
 the exact stationary Brier risk
-`4338268437 / 67816493056 < 13 / 200`. The frozen trace is still preprocessing:
-it is not a theorem-produced good path, Lean-verified trace, or confidence
-certificate.
+`4338268437 / 67816493056 < 13 / 200`. A further known-kernel receipt fixes the
+realized initial observation `(1, 1)`, depth `12`, tilt `1/16`, and the aligned
+199,999-score suffix. Python independently reconstructs the exact suffix
+histogram from the raw bytes; Lean proves histogram-to-score arithmetic and a
+selected boundary-plus-residual endpoint below `7/100`. The named trace is not
+proved to belong to the theorem-produced good event, and the unknown-kernel
+endpoint remains open.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -152,6 +157,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
 | Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
 | Explicit queue invariant/risk atom | `Applications.ControlledQueueInvariantRisk` | Explicit 24-state rational invariant PMF for nominal `Q` and target-policy index `1`, equality to the canonical catalog witness by strict-contraction uniqueness, exact row risks for fixed-predictor index `2`, and stationary Brier risk `4338268437 / 67816493056 < 13 / 200` |
+| Known-kernel aligned numerical receipt | `Applications.ControlledQueueKnownKernelReceipt` | Fixed-initial `39/40` event, exact depth-twelve potential/residual, aligned `24 x 2 x 24` suffix-histogram bridge, and selected risk endpoint below `7/100`, conditional on the histogram and event inequality |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
 | Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
@@ -176,28 +182,34 @@ generic same-path empirical-event intersection, and fixed 12-atom queue event
 are checked. One executable known-model atom is also checked: the explicit
 queue-threshold/nominal-model invariant law equals its canonical catalog
 witness, and its stationary Brier risk is exactly
-`4338268437 / 67816493056 < 13 / 200`. The following application items remain
-**OPEN**.
+`4338268437 / 67816493056 < 13 / 200`. The aligned known-kernel receipt now
+proves the selected endpoint below `7/100` from the suffix histogram and event
+inequality. The following application items remain **OPEN**.
 
-1. Final numerical confidence certificates and matched baselines: instantiate
-   a useful known-kernel theorem endpoint and determine whether any empirical-
-   kernel endpoint is informative on the same declared inputs. The exact model
-   risk above is not itself a confidence bound. Additional explicit invariant
-   laws or risks are needed only for other catalog atoms that are reported.
-2. Trace-to-theorem instantiation: resolve the initial-observation offset,
-   encode compact trace and all-row-visit witnesses, and separately prove any
-   claimed good-event membership.
+1. Unknown-kernel numerical certificate and matched baselines: the fresh
+   4,608-coordinate empirical-transition allocation is vacuous on the current
+   trace, so changing only its tilt or weights is not enough. A stronger
+   transition-confidence construction or a better-designed trace/model is
+   required before claiming useful unknown-dynamics OPE.
+2. Probabilistic trace interpretation: the known-kernel receipt resolves the
+   deterministic initial-offset and histogram alignment for the realized
+   suffix, but does not prove named-path good-event membership or unconditional
+   coverage for the upstream random first observation. Those require a
+   separate membership witness or random-initial mixture/conditioning bridge.
 3. Data-dependent candidate or depth selection: the checked empirical theorem
    fixes `Q`, `m`, reference PMFs, scores, and contraction certificates before
    its outer event. A new common event or preallocated catalog is required to
    choose a candidate or depth from the scored path.
 
-Until those steps close, the fixed queue event is checked but the controlled
+Until those steps close, the known-kernel result is a checked retrospective
+receipt: it demonstrates the exact theorem-to-histogram arithmetic, but no
+external record currently establishes that the depth, tilt, and potential were
+selected before this trace was inspected. It is therefore not presented as a
+prospectively calibrated report for the already-observed trace. The controlled
 queue's end-to-end unknown-dynamics numerical certificate remains open. No
-named path or good-event membership, initial-offset bridge, data-selected
-candidate or depth, or numerical confidence usefulness is claimed. The one
-explicit invariant/risk atom is a deterministic known-model theorem and is not
-evidence for any of those claims.
+named-path good-event membership, histogram-conditioned coverage,
+unconditional simulator coverage, or data-selected candidate or depth is
+claimed.
 
 ## Frozen input and generator contract
 

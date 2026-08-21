@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C138-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-273-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-146%2C200-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C173-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-285-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-150%2C451-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -235,10 +235,15 @@ OPE event. For the nominal environment, queue-threshold target-policy index `1`,
 and nominal-model fixed-predictor index `2`, a separate checked module gives an
 explicit 24-state invariant PMF, proves equality to the canonical catalog
 witness, and evaluates stationary Brier risk exactly as
-`4338268437 / 67816493056 < 13 / 200`. The event theorem uses a fresh
-full-support transition-coordinate prior and requires every augmented row to
-be visited; frozen-trace membership, trace alignment, candidate/depth
-selection, and a final numerical confidence certificate remain open.
+`4338268437 / 67816493056 < 13 / 200`. The aligned known-kernel receipt fixes
+depth `12`, tilt `1/16`, and the realized initial observation `(1, 1)`; its
+independently reconstructed suffix histogram yields a selected endpoint below
+`7/100` in Lean. The theorem does not prove named-path good-event membership or
+unconditional coverage for the simulator's random first observation. The
+empirical-kernel event uses a fresh full-support transition-coordinate prior,
+requires every augmented row to be visited, and is numerically vacuous on the
+current trace; useful unknown-kernel certification and candidate/depth
+selection remain open.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 
@@ -305,6 +310,7 @@ python3 -m pip install -r requirements-dev.txt
 make python-tests
 make check-controlled-queue-model
 make check-controlled-queue-trace
+make check-controlled-queue-known-kernel-receipt
 bash scripts/check_axioms.sh
 bash scripts/check_witness_quality.sh
 FIDELITY_BASE_REF=origin/main bash scripts/check_statement_fidelity.sh

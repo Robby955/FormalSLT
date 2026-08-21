@@ -1,0 +1,122 @@
+{
+  "artifact_status": "DETERMINISTIC KNOWN-KERNEL RECEIPT INPUT",
+  "bindings": {
+    "model_input": {
+      "path": "applications/controlled_queue/model-v1.json",
+      "sha256": "4e92a71ddf07e04e202c901d8c7a682cdf306754a69a0e219fca8ef75abee5a0"
+    },
+    "model_manifest": {
+      "path": "applications/controlled_queue/generated/model-v1-manifest.json",
+      "sha256": "25c4a3ae364023b68a1de77ceff30d9e812f2e7173e36a3142ad0deec3d4a289"
+    },
+    "model_tables": {
+      "path": "applications/controlled_queue/generated/model-v1-tables.json",
+      "sha256": "7d8cf4d970f6e41413ccdf7d62b13bc77418076836505d06ebb4a606493ab724"
+    },
+    "trace_binary": {
+      "path": "applications/controlled_queue/generated/trace-v1.bin",
+      "sha256": "f2f63274f5454d94a6a45408fb9c85d4b3ee667f826aa10ccd5ec60659bfc1af"
+    },
+    "trace_counts": {
+      "path": "applications/controlled_queue/generated/trace-v1-counts.json",
+      "sha256": "a4941d7a9b4c21389c04c3ed9bea306c4da680ea71a9d2dabc0db3ab10cfd702"
+    },
+    "trace_input": {
+      "path": "applications/controlled_queue/trace-v1.json",
+      "sha256": "64971dad11cba1ffc386903747d0c8977baae860bc68381cca44bd7ec8207050"
+    },
+    "trace_manifest": {
+      "path": "applications/controlled_queue/generated/trace-v1-manifest.json",
+      "sha256": "140a9fc72b763bdb34574f72152dfc1aa6fc3791f482a3653dab70b7d0f272ec"
+    }
+  },
+  "confidence_contract": {
+    "failure_budget": "1/40",
+    "importance_ratio_cap": "3/2",
+    "posterior": "dirac_queue_threshold_nominal_model_overload",
+    "risk_tilt": "1/16",
+    "risk_tilt_weight": "1",
+    "twelve_hypothesis_prior_mass": "1/12"
+  },
+  "edge_histogram_contract": {
+    "axes": [
+      "current_state",
+      "action",
+      "next_state"
+    ],
+    "encoded_bytes": 9216,
+    "flat_index": "((current_state * 2 + action) * 24 + next_state)",
+    "positive_cells": 1152,
+    "sha256": "2a484e76850d41fa40e16bdb988bb24131a355800e503e283a26ad22b9d8a874",
+    "shape": [
+      24,
+      2,
+      24
+    ],
+    "total": 199999,
+    "word_encoding": "unsigned 64-bit big-endian"
+  },
+  "expected_receipt": {
+    "bessel_q": "16213878001574677328676403594685083831810/4137255861638925308385222839580194439",
+    "certified_upper_bound": "75231690041981552891493931593409127933731659172633/1085233190069757958790206002751859712410665479045120",
+    "hybrid_first_branch_upper": "16215257086861890303779198668964943896623/2758170574425950205590148559720129626",
+    "potential_span": "390176269054599/2251799813685248",
+    "residual_envelope": "7669459585815921/1193040362720997771575296",
+    "score_sum": "213634985985013880413/9096457055383338",
+    "score_sum_squares": "552479858614872006453052548237822191/82745530960433308334246128022244",
+    "stationary_risk": "4338268437/67816493056"
+  },
+  "nonclaims": [
+    "not a proof that the frozen trace belongs to the theorem-produced good event",
+    "not a confidence guarantee conditional on this particular frozen trace",
+    "not an unknown-kernel certificate",
+    "not a data-selected candidate, potential depth, or potential catalog",
+    "not a Lean decoder or SHA-256 verification of the raw trace bytes"
+  ],
+  "potential_contract": {
+    "centering_reference": "uniform_physical_state_reference",
+    "depth": 12,
+    "selected_potential_shift": {
+      "anchor_state": 0,
+      "definition": "h_shift(z) = h_raw(z) - h_raw(0)"
+    },
+    "unselected_potential": "zero",
+    "unselected_residual_envelope": "1"
+  },
+  "schema_version": "controlled-queue-known-kernel-receipt-input-v1",
+  "selection": {
+    "candidate_id": "nominal",
+    "candidate_index": 1,
+    "predictor_id": "nominal_model_overload",
+    "predictor_index": 2,
+    "target_policy_id": "queue_threshold",
+    "target_policy_index": 1
+  },
+  "trace_alignment": {
+    "controlled_observation": "x_k = (A_k, S_{k+1})",
+    "controlled_observation_range": {
+      "start_inclusive": 0,
+      "stop_exclusive": 200000
+    },
+    "excluded_transition": {
+      "action": 1,
+      "current_state": 0,
+      "next_state": 1,
+      "physical_index": 0
+    },
+    "initial_controlled_observation": {
+      "action_index": 1,
+      "physical_state_index": 1
+    },
+    "physical_transition_range": {
+      "start_inclusive": 1,
+      "stop_exclusive": 200000
+    },
+    "score_count": 199999,
+    "score_index_range": {
+      "start_inclusive": 0,
+      "stop_exclusive": 199999
+    },
+    "source_horizon": 200000
+  }
+}

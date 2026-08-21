@@ -1,7 +1,8 @@
 # Controlled queue preprocessing
 
-Status: **PREPROCESSING, LOCAL FIXED-CATALOG EVENT, AND ONE EXACT
-INVARIANT/RISK ATOM CHECKED** / **TRACE-ALIGNED CONFIDENCE CERTIFICATE OPEN**
+Status: **PREPROCESSING, FIXED-CATALOG EVENT, ONE EXACT INVARIANT/RISK ATOM,
+AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** / **NAMED-PATH EVENT MEMBERSHIP
+AND UNKNOWN-KERNEL NUMERICAL CERTIFICATE OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -41,6 +42,14 @@ of unknown-kernel target-policy OPE.
   checked explicit 24-state invariant PMF for the nominal environment and
   queue-threshold target policy, its equality to the catalog's canonical
   invariant witness, and the exact nominal-model overload Brier risk.
+- `../../FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean`:
+  checked fixed-initial `39/40` known-kernel OPE event and exact selected
+  `< 7/100` endpoint conditional on the aligned suffix histogram and event
+  inequality.
+- `known-kernel-receipt-v1.json` and the generated receipt/manifest/Lean data:
+  exact depth-twelve potential, suffix histogram, score moments, residual, and
+  rational endpoint bound, independently reconstructed from the model tables
+  and raw trace.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -65,9 +74,11 @@ only the Python standard library.
 ```bash
 make generate-controlled-queue-model
 make generate-controlled-queue-trace
+make generate-controlled-queue-known-kernel-receipt
 ~/.elan/bin/lake exe cache get
 make verify-controlled-queue-model
 make verify-controlled-queue-trace
+make verify-controlled-queue-known-kernel-receipt
 ```
 
 The model verification target fails if any generated model byte or manifest
@@ -75,7 +86,9 @@ hash is stale, runs the narrow arithmetic/schema tests, and compiles only the
 generated Lean data module. The trace target separately regenerates the full
 byte stream, then an implementation-independent verifier replays every random
 draw, transition, count, and causal update. It also runs tamper, rejection,
-no-look-ahead, and stale-artifact tests.
+no-look-ahead, and stale-artifact tests. The known-kernel receipt target runs a
+second independent arithmetic implementation, adversarial schema/provenance
+tests, the memory-bounded Lean receipt build, and its public theorem checker.
 
 The binary stores `state_t` and `action_t` separately. FormalSLT's
 `ControlledObservation Z A` is represented as `A × Z`, while the generated
@@ -123,8 +136,26 @@ the frozen trace and is not a confidence bound, a good-event membership proof,
 an unknown-kernel result, or permission for post-data policy, predictor,
 candidate, or depth selection.
 
+`ControlledQueueKnownKernelReceipt` then fixes the same catalog atom, depth
+`12`, ratio cap `3/2`, a uniform twelve-atom prior, tilt `1/16`, and failure
+budget `1/40`. The aligned physical suffix uses transitions `1` through
+`199999`, hence `199999` controlled scores and fixed initial observation
+`(action = 1, state = 1)`. The generated `24 x 2 x 24` histogram determines
+the exact score and squared-score sums in Lean; those give a conservative
+rational boundary-plus-residual endpoint below `7/100`. Scalar moments alone
+are intentionally insufficient because the adjacent wrong slice has the same
+two moments but a different histogram.
+
+The theorem does not prove that the named trace belongs to its probabilistic
+good event. It separately proves the event mass statement and the deterministic
+histogram-to-endpoint statement, and a final corollary accepts both premises.
+In particular, it does not prove `39/40` coverage conditional on observing the
+receipt histogram: the mass bound is for the fixed-initial path law, while the
+histogram is a separate deterministic premise for the endpoint calculation.
+It is a known-kernel result, not the empirical-transition certificate.
+
 The theorem deliberately does not instantiate the weight tables in
-`trace-v1.json`: that file supplies only 48 coordinate weights, while the
+`trace-v1.json` for the empirical-kernel event: that file supplies only 48 coordinate weights, while the
 transition-coordinate prior here needs 4,608 atoms; its tilt grid includes `1`,
 which violates the theorem's strict `< 1` premise; and its five-predictor prior
 includes the causal predictors and has no target-policy factor. The fresh
@@ -137,8 +168,8 @@ corresponding theorem is proved.
 
 The stored path is `S_0, A_0, S_1, ..., A_{H-1}, S_H`. The current
 deterministic-initial `controlledTrajectoryMeasure` instead fixes an initial
-controlled observation `(A_0, S_1)`. Because this generator samples that first
-pair, a future theorem instantiation must either condition on and use the
-suffix beginning at the realized `(A_0, S_1)`, with its explicit horizon
-offset, or prove a random-initial controlled-law bridge. The full trace is
-preserved here, but direct horizon/index alignment is not claimed.
+controlled observation `(A_0, S_1)`. The known-kernel receipt explicitly uses
+the realized fixed pair `(1, 1)` and the aligned suffix. This gives
+fixed-initial-law coverage, not histogram-conditioned coverage; an
+unconditional statement for the upstream simulator still requires a
+random-initial mixture or conditioning bridge.

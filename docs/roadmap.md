@@ -348,13 +348,19 @@
       witness by strict-contraction uniqueness, evaluate the exact row risks,
       and prove stationary Brier risk
       `4338268437 / 67816493056 < 13 / 200`.
-    - [ ] Add the final numerical confidence certificates and matched
-      baselines, the initial-offset bridge, compact trace witnesses, and any
-      claimed good-event alignment. The frozen config is not instantiated: it
-      has only 48 coordinate weights, includes tilt `1`, and uses a five-
-      predictor prior with causal predictors and no target-policy factor. The
-      checked exact model risk is not a confidence endpoint or evidence of
-      frozen-path event membership.
+    - [x] Add an aligned known-kernel receipt for the same atom: fixed initial
+      observation `(1, 1)`, depth `12`, twelve-way prior, tilt `1/16`, exact
+      suffix histogram and score moments, `1/40` failure mass, and a selected
+      endpoint below `7/100`. The pathwise conclusion remains conditional on
+      the histogram and theorem-event inequality; named-path event membership
+      is not claimed.
+    - [ ] Add a useful unknown-kernel numerical certificate and matched
+      baselines. The present fresh 4,608-coordinate transition allocation is
+      vacuous on this trace, and the frozen config has only 48 coordinate
+      weights, includes tilt `1`, and uses a five-predictor prior with causal
+      predictors and no target-policy factor.
+    - [ ] Add any claimed named-path good-event witness or a random-initial
+      mixture/conditioning bridge for unconditional simulator coverage.
     - [ ] Add a common event or preallocated catalog before selecting the
       candidate or depth from the scored path; the checked empirical theorem
       fixes both, together with its reference, score, and contraction

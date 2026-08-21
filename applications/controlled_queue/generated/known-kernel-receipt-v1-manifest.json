@@ -1,0 +1,84 @@
+{
+  "artifact_status": "DETERMINISTIC KNOWN-KERNEL RECEIPT",
+  "generator": {
+    "path": "scripts/generate_controlled_queue_known_kernel_receipt.py",
+    "revision": "controlled-queue-known-kernel-receipt-generator-v1",
+    "sha256": "532619efd98be0c19c45f5431297cadafb844132e4a06f11c46f07306361a929"
+  },
+  "independent_verifier": {
+    "path": "scripts/verify_controlled_queue_known_kernel_receipt.py",
+    "sha256": "2c6ebcf7c3da9bf56b569678af7769e1eaf24f6c95e820fe837c2824b7321070"
+  },
+  "inputs": [
+    {
+      "bytes": 4442,
+      "path": "applications/controlled_queue/known-kernel-receipt-v1.json",
+      "role": "receipt_input",
+      "sha256": "8ffd7a84a25a5397d4eeba2e1d3776f91c38ca8491b0f6703183ac14a35c34ba"
+    },
+    {
+      "bytes": 5411,
+      "path": "applications/controlled_queue/model-v1.json",
+      "role": "model_input",
+      "sha256": "4e92a71ddf07e04e202c901d8c7a682cdf306754a69a0e219fca8ef75abee5a0"
+    },
+    {
+      "bytes": 2262,
+      "path": "applications/controlled_queue/generated/model-v1-manifest.json",
+      "role": "model_manifest",
+      "sha256": "25c4a3ae364023b68a1de77ceff30d9e812f2e7173e36a3142ad0deec3d4a289"
+    },
+    {
+      "bytes": 222338,
+      "path": "applications/controlled_queue/generated/model-v1-tables.json",
+      "role": "model_tables",
+      "sha256": "7d8cf4d970f6e41413ccdf7d62b13bc77418076836505d06ebb4a606493ab724"
+    },
+    {
+      "bytes": 3600017,
+      "path": "applications/controlled_queue/generated/trace-v1.bin",
+      "role": "trace_binary",
+      "sha256": "f2f63274f5454d94a6a45408fb9c85d4b3ee667f826aa10ccd5ec60659bfc1af"
+    },
+    {
+      "bytes": 22602,
+      "path": "applications/controlled_queue/generated/trace-v1-counts.json",
+      "role": "trace_counts",
+      "sha256": "a4941d7a9b4c21389c04c3ed9bea306c4da680ea71a9d2dabc0db3ab10cfd702"
+    },
+    {
+      "bytes": 5666,
+      "path": "applications/controlled_queue/trace-v1.json",
+      "role": "trace_input",
+      "sha256": "64971dad11cba1ffc386903747d0c8977baae860bc68381cca44bd7ec8207050"
+    },
+    {
+      "bytes": 2900,
+      "path": "applications/controlled_queue/generated/trace-v1-manifest.json",
+      "role": "trace_manifest",
+      "sha256": "140a9fc72b763bdb34574f72152dfc1aa6fc3791f482a3653dab70b7d0f272ec"
+    }
+  ],
+  "manifest_note": "canonical JSON; the manifest is not recursively self-hashed",
+  "nonclaims": [
+    "not a good-event membership proof",
+    "not a Lean decoder or SHA-256 proof for the trace binary",
+    "not an unknown-kernel certificate"
+  ],
+  "outputs": [
+    {
+      "bytes": 31623,
+      "path": "applications/controlled_queue/generated/known-kernel-receipt-v1.json",
+      "role": "receipt",
+      "sha256": "2ef1611bdbd810f4d5d52c91f9b938e8cb7c4523d6b2aaebb0bf3c6db581b2ac"
+    },
+    {
+      "bytes": 35552,
+      "path": "FormalSLT/Applications/ControlledQueueKnownKernelReceiptData.lean",
+      "role": "lean_data",
+      "sha256": "f1e47658b26a5bdd6064fc8ae5fc9abebc6710520793fd0f63369566d392d1a2"
+    }
+  ],
+  "receipt_version": "controlled-queue-known-kernel-receipt-v1",
+  "schema_version": "controlled-queue-known-kernel-receipt-input-v1"
+}

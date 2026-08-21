@@ -18,6 +18,7 @@ import FormalSLT.Applications.ControlledQueueTargetPolicyScores
 import FormalSLT.Applications.ControlledQueueContraction
 import FormalSLT.Applications.ControlledQueueOPECatalog
 import FormalSLT.Applications.ControlledQueueInvariantRisk
+import FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 
 /-!
 # FormalSLT applications
@@ -40,6 +41,9 @@ combines those receipts into a twelve-atom, fixed-nominal-candidate event for
 any depth fixed before the event. `ControlledQueueInvariantRisk` supplies one
 explicit invariant PMF, identifies it with the catalog's canonical witness by
 contraction uniqueness, and evaluates one exact stationary Brier risk. These
-modules do not certify the frozen trace, select a candidate or depth from data,
-or make a theorem-produced good-path claim.
+modules culminate in `ControlledQueueKnownKernelReceipt`: a fixed-initial
+failure-mass theorem and an exact `< 0.07` selected-risk endpoint conditional
+on both the aligned suffix-histogram premise and the theorem-produced event
+inequality. They do not prove that the named trace satisfies the good event,
+select a candidate or depth from data, or give an unknown-kernel certificate.
 -/

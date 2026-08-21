@@ -60,6 +60,27 @@ def fixedPredictorTableValue
   (fixedPredictorRow predictor).get
     (Fin.cast (fixedPredictorRow_length predictor).symm row)
 
+/-- Exact generated forecast probability indexed directly by physical state
+and action in state-major/action-minor order. -/
+def fixedPredictorTableValueStateAction
+    (predictor : FixedPredictorIndex) (state : PhysicalState)
+    (action : Action) : ℚ :=
+  (fixedPredictorRow predictor).get
+    (Fin.cast (fixedPredictorRow_length predictor).symm
+      ⟨2 * state.val + action.val, by omega⟩)
+
+@[simp]
+theorem fixedPredictorTableValue_stateActionRowEquiv
+    (predictor : FixedPredictorIndex) (state : PhysicalState)
+    (action : Action) :
+    fixedPredictorTableValue predictor
+        (stateActionRowEquiv (state, action)) =
+      fixedPredictorTableValueStateAction predictor state action := by
+  unfold fixedPredictorTableValue fixedPredictorTableValueStateAction
+  congr 1
+  apply Fin.ext
+  exact stateActionRowEquiv_apply_val state action
+
 private theorem controlCostTable_length : controlCostTable.length = 2 := rfl
 
 private abbrev controlCostRow (action : Action) : List ℚ :=
@@ -134,8 +155,10 @@ theorem fixedPredictorProbability_mem_Icc
     (predictor : FixedPredictorIndex) (state : PhysicalState)
     (action : Action) :
     fixedPredictorProbability predictor state action ∈ Set.Icc (0 : ℝ) 1 := by
+  rw [fixedPredictorProbability,
+    fixedPredictorTableValue_stateActionRowEquiv]
   exact fixedPredictorRow_all_bounds predictor
-    (fixedPredictorTableValue predictor (stateActionRowEquiv (state, action)))
+    (fixedPredictorTableValueStateAction predictor state action)
     (List.get_mem _ _)
 
 private theorem overloadOutcomeTable_all_bounds :

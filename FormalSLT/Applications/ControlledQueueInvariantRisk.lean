@@ -4,7 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 
-import FormalSLT.Applications.ControlledQueueOPECatalog
+import FormalSLT.Applications.ControlledQueueKnownKernelSelection
 
 /-!
 # Explicit controlled-queue invariant law and stationary risk
@@ -30,17 +30,6 @@ namespace FormalSLT.Applications.ControlledQueue
 open FormalSLT.Applications.ControlledQueueData
 
 noncomputable section
-
-/-- Queue-threshold target-policy row in the generated target catalog. -/
-def queueThresholdTargetIndex : TargetPolicyIndex := 1
-
-/-- Nominal-model overload predictor row in the generated fixed catalog. -/
-def nominalModelOverloadPredictorIndex : FixedPredictorIndex := 2
-
-/-- The queue-threshold policy paired with the nominal-model overload
-predictor inside the fixed twelve-atom OPE catalog. -/
-def queueThresholdNominalModelHypothesis : QueueHypothesis :=
-  (queueThresholdTargetIndex, nominalModelOverloadPredictorIndex)
 
 @[simp]
 private theorem candidateGammaRat_one_eq_three_fourths :

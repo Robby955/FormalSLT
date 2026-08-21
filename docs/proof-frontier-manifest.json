@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 229,
-    "library_and_example_lean_lines": 146200,
-    "library_lean_lines": 116595,
-    "library_modules": 273,
-    "theorem_map_entries": 1070
+    "example_lean_files": 230,
+    "library_and_example_lean_lines": 150451,
+    "library_lean_lines": 120723,
+    "library_modules": 285,
+    "theorem_map_entries": 1074
   },
   "theorem_families": [
     {
@@ -5044,6 +5044,35 @@
         }
       ],
       "name": "Controlled-queue explicit invariant law and stationary risk"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueKnownKernelReceipt",
+          "name": "exists_controlledQueueKnownKernelReceiptOPE_event",
+          "summary": "Specializes the twelve-atom approximate target-policy OPE theorem to the generated fixed initial observation (action = 1, state = 1), singleton tilt 1/16, and failure mass at most 1/40; the event is simultaneous over posterior PMFs and times n >= 2"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueKnownKernelReceipt",
+          "name": "knownKernelReceiptPathSummary_of_suffixEdgeHistogram",
+          "summary": "Converts the exact aligned 24 x 2 x 24 suffix-edge-histogram premise into the selected score sum and squared-score sum, preventing the off-by-one ambiguity that those two scalar moments alone cannot detect"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueKnownKernelReceipt",
+          "name": "knownKernelReceipt_selectedBoundary_add_residual_le_d9_of_suffixEdgeHistogram",
+          "summary": "Evaluates the selected queue-threshold/nominal-model depth-twelve boundary plus its exact residual envelope below the generated rational d9 receipt"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueKnownKernelReceipt",
+          "name": "knownKernelReceipt_selectedRisk_lt_seven_hundredths",
+          "summary": "Combines the aligned histogram calculation with the event inequality to prove the selected stationary risk is below 7/100"
+        }
+      ],
+      "name": "Controlled-queue known-kernel numerical receipt"
     },
     {
       "entries": [

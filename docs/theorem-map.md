@@ -1016,6 +1016,25 @@ overload predictor (index `2`). It neither imports the frozen trace nor proves
 good-event membership, a confidence bound, unknown-kernel usefulness, or any
 data-adaptive selection license.
 
+## Controlled-queue known-kernel numerical receipt
+
+| Declaration | Module | Role |
+|---|---|---|
+| `exists_controlledQueueKnownKernelReceiptOPE_event` | `Applications.ControlledQueueKnownKernelReceipt` | Specializes the twelve-atom approximate target-policy OPE theorem to the generated fixed initial observation `(action = 1, state = 1)`, singleton tilt `1/16`, and failure mass at most `1/40`; the event is simultaneous over posterior PMFs and times `n >= 2` |
+| `knownKernelReceiptPathSummary_of_suffixEdgeHistogram` | `Applications.ControlledQueueKnownKernelReceipt` | Converts the exact aligned `24 x 2 x 24` suffix-edge-histogram premise into the selected score sum and squared-score sum, preventing the off-by-one ambiguity that those two scalar moments alone cannot detect |
+| `knownKernelReceipt_selectedBoundary_add_residual_le_d9_of_suffixEdgeHistogram` | `Applications.ControlledQueueKnownKernelReceipt` | Evaluates the selected queue-threshold/nominal-model depth-twelve boundary plus its exact residual envelope below the generated rational `d9` receipt |
+| `knownKernelReceipt_selectedRisk_lt_seven_hundredths` | `Applications.ControlledQueueKnownKernelReceipt` | Combines the aligned histogram calculation with the event inequality to prove the selected stationary risk is below `7/100` |
+
+The selected atom has exact stationary risk
+`4338268437 / 67816493056`, a twelve-way uniform prior, ratio cap `3/2`, and a
+generated depth-twelve shifted potential. The generator and independent
+verifier bind the raw trace bytes to the aligned suffix histogram, while Lean
+checks histogram-to-score arithmetic and the statistical endpoint. The final
+path theorem still takes both the histogram premise and the event inequality:
+it does not prove that the named path belongs to the theorem-produced event,
+does not identify the generated potential with the generic finite-depth
+constructor, and is not an unknown-kernel certificate.
+
 ## Controlled-queue target-policy score certificates
 
 | Declaration | Module | Role |
