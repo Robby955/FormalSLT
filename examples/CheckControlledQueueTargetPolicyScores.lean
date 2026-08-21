@@ -1,0 +1,27 @@
+import FormalSLT.Applications.ControlledQueueTargetPolicyScores
+
+open FormalSLT.Applications.ControlledQueue
+
+#check FixedPredictorIndex
+#check fixedPredictorTableValue
+#check controlCostTableValue
+#check overloadOutcomeTableValue
+#check fixedPredictorProbability
+#check overloadOutcome
+#check fixedBrierScore
+#check controlCostScore
+#check fixedPredictorProbability_mem_Icc
+#check overloadOutcome_mem_Icc
+#check fixedBrierScore_eq_squaredError
+#check fixedBrierScore_mem_Icc
+#check controlCostScore_mem_Icc
+#check behavior_targetPolicy_overlap
+#check behavior_targetPolicy_ratioBound_three_halves
+
+#print axioms fixedPredictorProbability_mem_Icc
+#print axioms overloadOutcome_mem_Icc
+#print axioms fixedBrierScore_eq_squaredError
+#print axioms fixedBrierScore_mem_Icc
+#print axioms controlCostScore_mem_Icc
+#print axioms behavior_targetPolicy_overlap
+#print axioms behavior_targetPolicy_ratioBound_three_halves

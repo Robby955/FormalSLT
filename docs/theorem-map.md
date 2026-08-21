@@ -967,7 +967,22 @@ and time, with complement mass at most `deltaRisk + deltaTransition`. The
 normalized transition certificate requires every augmented source row to be
 visited at the displayed horizon. This theorem does not select the candidate
 or depth, construct invariant PMFs, certify a named path, or instantiate the
-queue-specific scores and numerical constants.
+queue-specific contraction, invariant, or numerical certificates.
+
+## Controlled-queue target-policy score certificates
+
+| Declaration | Module | Role |
+|---|---|---|
+| `fixedBrierScore_eq_squaredError` | `Applications.ControlledQueueTargetPolicyScores` | Identifies each of the three fixed queue predictors with squared error against the generated binary overload outcome |
+| `fixedBrierScore_mem_Icc` | `Applications.ControlledQueueTargetPolicyScores` | Proves every fixed-predictor Brier score lies in `[0,1]`; the two causal Beta predictors remain outside this stationary-score interface |
+| `controlCostScore_mem_Icc` | `Applications.ControlledQueueTargetPolicyScores` | Proves the generated normalized control cost lies in `[0,1]` |
+| `behavior_targetPolicy_overlap` | `Applications.ControlledQueueTargetPolicyScores` | Lifts exact uniform behavior mass `1/2` to pointwise history-interface overlap for all four generated target policies |
+| `behavior_targetPolicy_ratioBound_three_halves` | `Applications.ControlledQueueTargetPolicyScores` | Lifts the generated target-policy mass bound `3/4` to the exact controlled importance-ratio cap `3/2` |
+
+These are deterministic model certificates, not a confidence statement. They
+do not construct invariant PMFs, prove candidate target-kernel contraction,
+import the frozen trace, or establish membership of any path in a statistical
+good event.
 
 ## Dynamic target-policy comparators
 

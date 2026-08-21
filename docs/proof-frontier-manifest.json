@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 225,
-    "library_and_example_lean_lines": 147185,
-    "library_lean_lines": 117810,
-    "library_modules": 269,
-    "theorem_map_entries": 1040
+    "example_lean_files": 226,
+    "library_and_example_lean_lines": 147440,
+    "library_lean_lines": 118038,
+    "library_modules": 270,
+    "theorem_map_entries": 1045
   },
   "theorem_families": [
     {
@@ -4938,6 +4938,41 @@
         }
       ],
       "name": "Same-path empirical-kernel finite-depth target-policy OPE"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTargetPolicyScores",
+          "name": "fixedBrierScore_eq_squaredError",
+          "summary": "Identifies each of the three fixed queue predictors with squared error against the generated binary overload outcome"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTargetPolicyScores",
+          "name": "fixedBrierScore_mem_Icc",
+          "summary": "Proves every fixed-predictor Brier score lies in [0,1]; the two causal Beta predictors remain outside this stationary-score interface"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTargetPolicyScores",
+          "name": "controlCostScore_mem_Icc",
+          "summary": "Proves the generated normalized control cost lies in [0,1]"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTargetPolicyScores",
+          "name": "behavior_targetPolicy_overlap",
+          "summary": "Lifts exact uniform behavior mass 1/2 to pointwise history-interface overlap for all four generated target policies"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTargetPolicyScores",
+          "name": "behavior_targetPolicy_ratioBound_three_halves",
+          "summary": "Lifts the generated target-policy mass bound 3/4 to the exact controlled importance-ratio cap 3/2"
+        }
+      ],
+      "name": "Controlled-queue target-policy score certificates"
     },
     {
       "entries": [

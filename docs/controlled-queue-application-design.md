@@ -21,8 +21,10 @@ rational table generator, deterministic 200,000-transition trace, exact causal
 prediction streams, independent replay verifier, generated Lean model-data
 module, and SHA-256 manifests are implemented. Separate Lean modules now check
 the generated table-to-`PMF` semantics, uniform behavior policy, pointwise
-`3/2` target-to-behavior probability bound, and sharp factor-two physical-row
-TV transfer. Generic target-policy candidate robustness, fixed-envelope
+`3/2` target-to-behavior probability bound, sharp factor-two physical-row TV
+transfer, fixed Brier and control-cost score semantics, unit-range bounds, and
+history-interface overlap/ratio certificates. Generic target-policy candidate
+robustness, fixed-envelope
 approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE are also
 checked. A further generic theorem intersects the signed-residual OPE event
 with augmented empirical-transition confidence under the same controlled path
@@ -128,6 +130,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Action-conditioned TV transfer | `StochasticDynamics.ControlledKernelTV` | Exact shared-behavior TV decomposition; positive behavior mass gives the sharp inverse-probability row bound |
 | Generated queue row ordering | `Applications.ControlledQueueReindex` | Exact state-major/action-minor indexing and the `(S_t, A_t)` row selected by a controlled edge |
 | Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
+| Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
 | Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
@@ -152,8 +155,8 @@ generic same-path empirical-event intersection are checked. The following
 application items remain **OPEN**.
 
 1. Executable queue certificates: check exact rational true invariant and
-   candidate reference PMFs, concrete cost and Brier score atoms, target-kernel
-   contraction and centered-risk bounds, and final numerical arithmetic.
+   candidate reference PMFs, target-kernel contraction and centered-risk
+   bounds, fixed-only prior/posterior atoms, and final numerical arithmetic.
 2. Trace-to-theorem instantiation: resolve the initial-observation offset,
    encode compact trace and all-row-visit witnesses, and separately prove any
    claimed good-event membership.
@@ -247,8 +250,11 @@ The binary stores physical states and actions as separate arrays. FormalSLT's
 rows use state-major `(Z, A)` indexing. `ControlledQueueReindex` now proves the
 swap, index equivalence, and controlled-edge row selection.
 `ControlledQueueTypedModel` reads the generated kernel and policy tables into
-typed PMFs with exact mass identities. Neither bridge imports the frozen trace
-or supplies an empirical confidence event.
+typed PMFs with exact mass identities. `ControlledQueueTargetPolicyScores`
+turns the three fixed predictors and the generated control cost into bounded
+target-policy scores and closes the static overlap and `3/2` ratio premises.
+None of these bridges imports the frozen trace or supplies an empirical
+confidence event.
 The causal Beta predictors remain dynamic behavior-encountered scores. They
 are not fixed stationary target-policy scores without augmenting the state by
 learner memory and proving the corresponding stationary theorem.

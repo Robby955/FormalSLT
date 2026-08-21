@@ -14,6 +14,7 @@ import FormalSLT.Applications.RandomRefreshLoadOracleCertificate
 import FormalSLT.Applications.ControlledQueueData
 import FormalSLT.Applications.ControlledQueueReindex
 import FormalSLT.Applications.ControlledQueueTypedModel
+import FormalSLT.Applications.ControlledQueueTargetPolicyScores
 
 /-!
 # FormalSLT applications
@@ -25,6 +26,9 @@ part of the small v0.2 stable-endpoint promise.
 `ControlledQueueData` is an opt-in generated preprocessing table,
 `ControlledQueueReindex` connects its row order to controlled action--state
 observations, and `ControlledQueueTypedModel` turns the exact rational kernel
-and policy tables into typed PMFs.  These modules do not identify a candidate
-with the true environment or make a theorem-produced good-path claim.
+and policy tables into typed PMFs.  `ControlledQueueTargetPolicyScores`
+reconstructs fixed Brier scores from the generated forecast and outcome tables,
+binds the generated control-cost table, and discharges the static overlap and
+ratio-cap assumptions.  These modules do not identify a candidate with the
+true environment or make a theorem-produced good-path claim.
 -/

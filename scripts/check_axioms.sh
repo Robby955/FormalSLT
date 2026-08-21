@@ -449,6 +449,13 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.augmentedCandidateBehaviorKernel_apply_toReal"
   "FormalSLT.Applications.ControlledQueue.augmentedBehavior_candidateEnvironment_rowTV_eq_sum"
   "FormalSLT.Applications.ControlledQueue.environmentRowTV_candidate_le_two_mul_augmentedRowTV"
+  "FormalSLT.Applications.ControlledQueue.fixedPredictorProbability_mem_Icc"
+  "FormalSLT.Applications.ControlledQueue.overloadOutcome_mem_Icc"
+  "FormalSLT.Applications.ControlledQueue.fixedBrierScore_eq_squaredError"
+  "FormalSLT.Applications.ControlledQueue.fixedBrierScore_mem_Icc"
+  "FormalSLT.Applications.ControlledQueue.controlCostScore_mem_Icc"
+  "FormalSLT.Applications.ControlledQueue.behavior_targetPolicy_overlap"
+  "FormalSLT.Applications.ControlledQueue.behavior_targetPolicy_ratioBound_three_halves"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -838,6 +845,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications"
   echo "import FormalSLT.Applications.ControlledQueueReindex"
   echo "import FormalSLT.Applications.ControlledQueueTypedModel"
+  echo "import FormalSLT.Applications.ControlledQueueTargetPolicyScores"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -925,6 +933,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications \
   FormalSLT.Applications.ControlledQueueReindex \
   FormalSLT.Applications.ControlledQueueTypedModel \
+  FormalSLT.Applications.ControlledQueueTargetPolicyScores \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

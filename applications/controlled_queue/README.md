@@ -23,6 +23,10 @@ of unknown-kernel target-policy OPE.
 - `../../FormalSLT/Applications/ControlledQueueTypedModel.lean`: checked
   table-backed kernel and policy PMFs with exact mass identities and the static
   uniform-behavior probability and TV transfers.
+- `../../FormalSLT/Applications/ControlledQueueTargetPolicyScores.lean`:
+  checked fixed Brier and control-cost scores, unit-range bounds, target-policy
+  overlap, and the exact `3/2` ratio cap. The two causal Beta predictors remain
+  outside this stationary-score interface.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -64,8 +68,11 @@ The binary stores `state_t` and `action_t` separately. FormalSLT's
 model's 48 rows use state-major indices `2 * state + action`.
 `ControlledQueueReindex` proves the required swap, index equivalence, and
 controlled-edge row selection. `ControlledQueueTypedModel` reads the generated
-kernel and policy tables into typed PMFs with exact mass identities. Neither
-bridge imports the frozen trace or supplies an empirical confidence event.
+kernel and policy tables into typed PMFs with exact mass identities.
+`ControlledQueueTargetPolicyScores` reconstructs the three fixed Brier scores
+from the generated forecast and outcome tables and types the generated
+control-cost score. None of these bridges imports the frozen trace or supplies
+an empirical confidence event.
 The generic empirical finite-depth theorem separately intersects its risk and
 transition events with failure cost `deltaRisk + deltaTransition`. Under exact
 behavior mass `1/2` and positive visit mass for every augmented source row, it

@@ -70,8 +70,10 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake build FormalSLT.Applications.ControlledQueueData
 	lake build FormalSLT.Applications.ControlledQueueReindex
 	lake build FormalSLT.Applications.ControlledQueueTypedModel
+	lake build FormalSLT.Applications.ControlledQueueTargetPolicyScores
 	lake env lean examples/CheckControlledQueueReindex.lean
 	lake env lean examples/CheckControlledQueueTypedModel.lean
+	lake env lean examples/CheckControlledQueueTargetPolicyScores.lean
 
 # Regenerate the deterministic trace, counts, and trace SHA-256 manifest.
 generate-controlled-queue-trace:
