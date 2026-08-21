@@ -191,7 +191,13 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     ],
     "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
     "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "donsker", "variational"],
-    "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
+    "Rademacher": [
+        "rademacher",
+        "massart",
+        "symmetriz",
+        "one_step_contraction",
+        "contraction_1lip",
+    ],
     "VC dimension": ["vc", "sauer", "shelah", "shatter"],
     "covering / chaining": [
         "covering",
@@ -539,6 +545,22 @@ def main() -> int:
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
         assert "covering / chaining" not in concepts_for("bennett_mgf", "Bennett MGF", "")
+        assert "Rademacher" in concepts_for(
+            "one_step_contraction", "One coordinate replacement step", ""
+        )
+        assert "Rademacher" in concepts_for(
+            "contraction_1lip", "Finite-sample scalar contraction", ""
+        )
+        assert "Rademacher" not in concepts_for(
+            "queueHypothesis_nominal_isOscillationContraction",
+            "Target-policy Dobrushin kernel-contraction certificate",
+            "",
+        )
+        assert "Rademacher" not in concepts_for(
+            "finiteDobrushinCoefficient_isOscillationContraction",
+            "Finite-state Markov-kernel oscillation contraction",
+            "",
+        )
         assert "risk" not in concepts_for(
             "finiteWeightedUnionBound_sum_le_of_exists_mem",
             "Plain-sum finite weighted union bound",

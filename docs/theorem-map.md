@@ -972,6 +972,29 @@ visited at the displayed horizon. This theorem does not select the candidate
 or depth, construct invariant PMFs, certify a named path, or instantiate the
 queue-specific contraction, invariant, or numerical certificates.
 
+## Controlled-queue twelve-atom OPE catalog
+
+| Declaration | Module | Role |
+|---|---|---|
+| `queueHypothesisPrior_apply` | `Applications.ControlledQueueOPECatalog` | Identifies the uniform prior on the four generated target policies paired with the three fixed Brier predictors as mass `1/12` per atom |
+| `queueTransitionPrior_apply` | `Applications.ControlledQueueOPECatalog` | Checks that the fresh uniform prior covers all `48 * 48 * 2 = 4608` augmented transition coordinates with mass `1/4608` each |
+| `queueHypothesisStationary_isInvariant` | `Applications.ControlledQueueOPECatalog` | Supplies a canonical noncomputable invariant PMF for each true target-policy kernel on the finite physical state space; it proves neither uniqueness nor an explicit stationary-risk value |
+| `queueHypothesis_nominal_isOscillationContraction` | `Applications.ControlledQueueOPECatalog` | Specializes the nominal candidate's checked contraction upper bound to `3/4` for every one of the twelve policy--predictor atoms |
+| `exists_nominalControlledQueueEmpiricalFiniteDepthOPE_event` | `Applications.ControlledQueueOPECatalog` | Instantiates one `19/20` outer event for the fixed nominal candidate, all twelve posterior atoms, and any depth fixed before the event, under positive visit mass for every augmented source row; the residual is `(3/4)^m + 4 (1 + B_m) etaAug` |
+
+The application theorem uses `D = 1`, importance cap `3/2`, separate risk and
+transition budgets `1/40`, singleton risk and transition tilts `1/4`, and a
+fresh uniform full-support prior on all `48 * 48 * 2 = 4608` augmented
+transition coordinates. The latter is intentionally not the frozen trace
+configuration's 48 source-row weights; that configuration's tilt grid also
+contains the inadmissible endpoint `1`, and its five-predictor weights include
+two history-dependent predictors rather than the twelve stationary atoms.
+The true environment, initial observation, nominal candidate, depth, catalogs,
+and priors are fixed before the event. The conclusion is simultaneous over
+posterior PMFs and time, but it does not prove all-row visitation or event
+membership for the frozen trace, identify an explicit invariant law or risk,
+select a candidate or depth from data, or provide a numerical endpoint.
+
 ## Controlled-queue target-policy score certificates
 
 | Declaration | Module | Role |

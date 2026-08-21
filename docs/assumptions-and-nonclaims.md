@@ -285,9 +285,41 @@ The event remains simultaneous over both declared finite tilt catalogs,
 posterior PMFs, and time. The true and candidate environments, true invariant
 PMFs, candidate reference PMFs, target-policy and score catalogs, contraction
 and centered-risk certificates, and depth are fixed before the event. The
-theorem does not construct the queue-specific certificates, prove all-row
-visits or good-event membership for the frozen trace, or license candidate or
-depth selection after observing the path.
+generic theorem does not construct the queue-specific certificates, prove
+all-row visits or good-event membership for the frozen trace, or license
+candidate or depth selection after observing the path. The separate
+application specialization below supplies one fixed queue catalog.
+
+### Fixed controlled-queue OPE catalog
+
+`Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian
+product of four generated target policies and three generated fixed Brier
+predictors. The candidate environment is the nominal table `Q`. The true
+environment `P`, deterministic initial augmented observation, and finite depth
+are theorem inputs fixed before the outer event. For each hypothesis the target
+stationary PMF is the canonical noncomputable `finiteInvariantPMF` of the true
+target-policy kernel. The finite-depth reference is uniform over physical
+states and is not claimed invariant.
+
+The checked constants are the contraction upper bound `alpha = 3/4`, centered
+row-risk envelope `D = 1`, and action-ratio cap `C = 3/2`. The application uses
+a fresh uniform full-support prior over the 12 hypotheses and a fresh uniform
+full-support prior over all `48 * 48 * 2 = 4,608` augmented transition
+coordinates. Both the singleton risk tilt and singleton transition tilt equal
+`1/4`. Risk and transition failure budgets are `1/40` each, so the event's
+complement has real mass at most `1/20`. On that event, the conclusion is
+simultaneous over all posterior PMFs and all times `n >= 2`, provided all 48
+augmented source rows have positive visit mass at the displayed time.
+
+The frozen `trace-v1.json` allocation is not instantiated. It has only 48
+coordinate weights, its tilt grid contains `1` although the theorem requires
+every tilt to lie strictly below one, and its five-predictor prior includes the
+two causal predictors and has no target-policy factor. The application-level
+priors and singleton tilts are separate declarations. The theorem does not
+prove a named trace lies in its event, prove good-event membership, bridge the
+generator's initial-observation offset, calculate an explicit stationary law or
+stationary risk, prove uniqueness, permit post-data candidate or depth
+selection, or establish a numerically useful endpoint.
 
 ### Empirical transition confidence and selected candidates
 
@@ -1084,13 +1116,19 @@ minorization gives target-policy Dobrushin upper bounds `5/8`, `3/4`, and
 `7/8` for every state-Markov target policy. These are contraction upper bounds,
 not exact-coefficient claims, and the uniform reference used in the proof is
 not claimed invariant for an arbitrary target policy.
+The controlled-queue application fixes the nominal candidate, a 12-atom
+target-policy/fixed-Brier catalog, canonical noncomputable true invariant PMFs,
+and fixed depth before a `19/20` outer event. It is simultaneous over posterior
+PMFs and time under all-48-row visitation, but it does not instantiate the
+incompatible frozen trace weights or prove trace/event alignment.
 The controlled layer also supplies encountered-prefix comparators for
 history-dependent targets and exact fixed-horizon target-path change of
-measure. These results do not construct the remaining queue-specific true
-invariant, stationary-risk, numerical, or trace certificates; license
+measure. These results do not construct the remaining queue-specific explicit
+stationary-risk, numerical, or trace certificates; prove uniqueness; license
 data-dependent candidates or depths without a common event; estimate nuisance
 quantities; or give an anytime-valid cumulative-likelihood target-value
-boundary.
+boundary. The application-level invariant witnesses are noncomputable choices,
+not explicit queue stationary laws.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and

@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 227,
-    "library_and_example_lean_lines": 147889,
-    "library_lean_lines": 118429,
-    "library_modules": 271,
-    "theorem_map_entries": 1056
+    "example_lean_files": 228,
+    "library_and_example_lean_lines": 148361,
+    "library_lean_lines": 118814,
+    "library_modules": 272,
+    "theorem_map_entries": 1061
   },
   "theorem_families": [
     {
@@ -4956,6 +4956,41 @@
         }
       ],
       "name": "Same-path empirical-kernel finite-depth target-policy OPE"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueOPECatalog",
+          "name": "queueHypothesisPrior_apply",
+          "summary": "Identifies the uniform prior on the four generated target policies paired with the three fixed Brier predictors as mass 1/12 per atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueOPECatalog",
+          "name": "queueTransitionPrior_apply",
+          "summary": "Checks that the fresh uniform prior covers all 48 * 48 * 2 = 4608 augmented transition coordinates with mass 1/4608 each"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueOPECatalog",
+          "name": "queueHypothesisStationary_isInvariant",
+          "summary": "Supplies a canonical noncomputable invariant PMF for each true target-policy kernel on the finite physical state space; it proves neither uniqueness nor an explicit stationary-risk value"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueOPECatalog",
+          "name": "queueHypothesis_nominal_isOscillationContraction",
+          "summary": "Specializes the nominal candidate's checked contraction upper bound to 3/4 for every one of the twelve policy--predictor atoms"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueOPECatalog",
+          "name": "exists_nominalControlledQueueEmpiricalFiniteDepthOPE_event",
+          "summary": "Instantiates one 19/20 outer event for the fixed nominal candidate, all twelve posterior atoms, and any depth fixed before the event, under positive visit mass for every augmented source row; the residual is (3/4)^m + 4 (1 + B_m) etaAug"
+        }
+      ],
+      "name": "Controlled-queue twelve-atom OPE catalog"
     },
     {
       "entries": [

@@ -334,10 +334,20 @@
       `3/2` ratio cap, and certify each candidate target-kernel contraction
       from its common uniform minorization. The bounded-score adapter supplies
       the universal centered row-risk envelope `D = 1`.
-    - [ ] Add executable true-invariant, stationary-risk, catalog, and
-      numerical certificates plus the initial-offset bridge, compact trace
-      witnesses, and any claimed good-event alignment. Sharper centered-risk
-      constants are optional numerical refinements.
+    - [x] Instantiate the nominal candidate with the 12 atoms formed from four
+      fixed target policies and three fixed Brier predictors. For true `P`,
+      initial observation, and depth fixed before the event, canonical
+      noncomputable invariant witnesses, the uniform reference,
+      `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior,
+      singleton tilts `1/4`, and two `1/40` budgets give a posterior/time-
+      simultaneous event with complement mass at most `1/20`, conditional on
+      all 48 augmented rows being visited.
+    - [ ] Add executable true invariant laws and stationary risks, numerical
+      certificates, the initial-offset bridge, compact trace witnesses, and
+      any claimed good-event alignment. The frozen config is not instantiated:
+      it has only 48 coordinate weights, includes tilt `1`, and uses a
+      five-predictor prior with causal predictors and no target-policy factor.
+      No uniqueness or numeric usefulness is currently claimed.
     - [ ] Add a common event or preallocated catalog before selecting the
       candidate or depth from the scored path; the checked empirical theorem
       fixes both, together with its reference, score, and contraction

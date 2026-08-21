@@ -1,7 +1,7 @@
 # Controlled queue application design
 
-Status: **GENERIC SAME-PATH EMPIRICAL ROBUST OPE CHECKED LOCALLY** /
-**QUEUE-SPECIFIC CERTIFICATE OPEN**
+Status: **FIXED 12-ATOM QUEUE OPE EVENT CHECKED LOCALLY** /
+**TRACE AND NUMERICAL CERTIFICATES OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -35,8 +35,18 @@ uses `etaEnv = 2 * etaAug` and the residual
 `alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`, with separate failure budgets
 `deltaRisk + deltaTransition`. The candidate environment, depth, reference
 PMFs, scores, and contraction certificates remain fixed before the event. The
-frozen trace is still preprocessing: it is not a theorem-produced good path,
-Lean-verified trace, or numerical application certificate.
+queue specialization now fixes the nominal candidate and the 12 hypotheses
+formed from four target policies and three fixed Brier predictors. For an
+arbitrary true environment, initial observation, and depth fixed before the
+event, it targets the canonical noncomputable `finiteInvariantPMF` witnesses,
+uses the uniform reference, `alpha = 3/4` as a contraction upper bound, `D = 1`,
+and `C = 3/2`. Fresh uniform full-support priors cover the 12 hypotheses and
+4,608 augmented transition coordinates; singleton risk and transition tilts
+are both `1/4`, and budgets `1/40` plus `1/40` give complement mass at most
+`1/20`. The event is simultaneous over posterior PMFs and time, under positive
+visits to all 48 augmented source rows at the displayed time. The frozen trace
+is still preprocessing: it is not a theorem-produced good path, Lean-verified
+trace, or numerical application certificate.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -134,6 +144,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
 | Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, universal centered row-risk envelope `D = 1`, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
+| Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
 | Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
@@ -144,26 +155,25 @@ The generic modules do not by themselves instantiate the queue application.
 | Empirical transition confidence | `StochasticDynamics.EmpiricalTransitionConfidence` | State-only transition rows and candidate TV budgets |
 | Same-path stationary candidate selection | `StochasticDynamics.EmpiricalStationaryCatalog` | Candidate, posterior, depth, and tilt catalogs |
 
-These modules now provide the generic empirical-transition/OPE event
-intersection for a fixed candidate, depth, and certificate package. They do not
-instantiate the queue-specific witnesses or license data-dependent candidate
-or depth selection. The new declarations are outside the 19-name v0.2
-compatibility allowlist.
+These modules now provide both the generic empirical-transition/OPE event
+intersection and its fixed 12-atom queue specialization. The specialization
+does not license data-dependent candidate or depth selection. The new
+declarations are outside the 19-name v0.2 compatibility allowlist.
 
 ## Remaining theorem and application work
 
 The typed queue-table instantiation, sharp factor-two deterministic row-TV
 transfer, target-policy scores and overlap, candidate target-kernel
-contraction, target-policy robustness, approximate and finite-depth OPE, and
-the generic same-path empirical-event intersection are checked. The following
-application items remain **OPEN**.
+contraction, target-policy robustness, approximate and finite-depth OPE,
+generic same-path empirical-event intersection, and fixed 12-atom queue event
+are checked. The following application items remain **OPEN**.
 
-1. Executable queue certificates: check exact rational true invariant and
-   stationary-risk witnesses, fixed-only prior/posterior atoms, and final
-   numerical arithmetic. The checked uniform reference already suffices for
-   finite-depth potentials and need not be invariant. The universal centered
-   row-risk envelope `D = 1` is checked; sharper candidate-specific envelopes
-   remain optional numerical refinements.
+1. Executable queue certificates: compute exact rational true invariant laws
+   and stationary risks and perform final numerical arithmetic. The checked
+   canonical invariant witnesses are noncomputable; the uniform reference
+   already suffices for finite-depth potentials and is not claimed invariant.
+   The universal centered row-risk envelope `D = 1` is checked; sharper
+   candidate-specific envelopes remain optional numerical refinements.
 2. Trace-to-theorem instantiation: resolve the initial-observation offset,
    encode compact trace and all-row-visit witnesses, and separately prove any
    claimed good-event membership.
@@ -172,8 +182,11 @@ application items remain **OPEN**.
    its outer event. A new common event or preallocated catalog is required to
    choose a candidate or depth from the scored path.
 
-Until those steps close, the generic theorem is checked but the controlled
-queue's end-to-end unknown-dynamics numerical certificate remains open.
+Until those steps close, the fixed queue event is checked but the controlled
+queue's end-to-end unknown-dynamics numerical certificate remains open. No
+named path or good-event membership, initial-offset bridge, explicit stationary
+risk, uniqueness, data-selected candidate or depth, or numeric usefulness is
+claimed.
 
 ## Frozen input and generator contract
 
@@ -195,6 +208,15 @@ unsigned 64-bit big-endian words and rejection sampling before reduction
 modulo the common integer-weight denominator. A seed alone would not have been
 a reproducible sampling contract.
 
+Those frozen weight tables are not instantiated by the checked 12-atom event.
+The trace file has 48 source-row coordinate weights, whereas the theorem uses a
+fresh uniform full-support prior on all `48 * 48 * 2 = 4,608` transition
+coordinates. Its tilt grid contains `1`, but every theorem tilt must be strictly
+below one. Its five-predictor prior also includes both causal predictors and has
+no target-policy factor. The application theorem therefore uses a separate
+uniform prior on the four-target-policy by three-fixed-predictor catalog and
+separate singleton risk and transition tilts equal to `1/4`.
+
 A dependency-free deterministic generator now emits:
 
 1. the controlled trace;
@@ -208,13 +230,13 @@ A dependency-free deterministic generator now emits:
 The generator and independent replay verifier are preprocessing only. The
 trace is deliberately not embedded in Lean. Checked adapters already discharge
 row ordering, table normalization and positivity, typed-PMF conversion, and
-the static probability and TV transfers. The generic same-path theorem now
-composes the risk and empirical augmented-transition events. Later application
-slices must still provide compact witnesses for counts and all-row visits,
-true invariant laws and stationary risks, catalog certificates, trace/event
-alignment, selected grid membership, and final numerical arithmetic. The
-generic centered row-risk envelope `D = 1` is already checked; any sharper
-queue-specific constant remains a refinement.
+the static probability and TV transfers. The queue application now composes
+the risk and empirical augmented-transition events for the fixed 12-atom
+catalog and uses canonical noncomputable true invariant witnesses. Later
+application slices must still provide compact witnesses for counts and all-row
+visits, executable invariant laws and stationary risks, trace/event alignment,
+and final numerical arithmetic. The generic centered row-risk envelope `D = 1`
+is already checked; any sharper queue-specific constant remains a refinement.
 
 ### Implemented preprocessing slice
 
@@ -263,9 +285,10 @@ typed PMFs with exact mass identities. `ControlledQueueTargetPolicyScores`
 turns the three fixed predictors and the generated control cost into bounded
 target-policy scores and closes the static overlap and `3/2` ratio premises.
 `ControlledQueueContraction` checks the candidate cell floors and turns them
-into target-policy contraction factors. None of these bridges imports the
-frozen trace, constructs a true invariant PMF, or supplies an empirical
-confidence event.
+into target-policy contraction factors. `ControlledQueueOPECatalog` fixes the
+12 stationary hypotheses and supplies the same-path empirical event with
+canonical noncomputable true invariant witnesses. None of these bridges imports
+the frozen trace or proves membership in the resulting event.
 The causal Beta predictors remain dynamic behavior-encountered scores. They
 are not fixed stationary target-policy scores without augmenting the state by
 learner memory and proving the corresponding stationary theorem.
@@ -278,9 +301,9 @@ A future use must therefore condition on and score an explicitly indexed
 suffix beginning at the realized first pair, or prove a random-initial
 controlled-law bridge. No direct full-trace horizon alignment is claimed.
 
-This slice still does not check a concrete true invariant law, selected grids,
-final bounds, or good-event membership. Those are later model-to-theorem and
-certificate slices, not preprocessing claims.
+This slice still does not check an explicit true invariant law or stationary
+risk, trace-aligned final bounds, or good-event membership. Those are later
+model-to-theorem and certificate slices, not preprocessing claims.
 
 ## Matched comparison contract
 

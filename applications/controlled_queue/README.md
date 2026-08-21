@@ -1,6 +1,7 @@
 # Controlled queue preprocessing
 
-Status: **MODEL AND TRACE/PREPROCESSING ONLY**
+Status: **PREPROCESSING AND LOCAL FIXED-CATALOG EVENT CHECKED** /
+**TRACE AND NUMERICAL CERTIFICATES OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -32,6 +33,10 @@ of unknown-kernel target-policy OPE.
   candidate cell minorization, uniform physical-state reference, Dobrushin
   upper bounds `5/8`, `3/4`, and `7/8`, and target-policy oscillation
   contraction. The coefficient is bounded above, not claimed exact.
+- `../../FormalSLT/Applications/ControlledQueueOPECatalog.lean`: locally
+  checked 12-atom catalog obtained from four fixed target policies and three
+  fixed Brier predictors, together with its fixed-nominal-candidate empirical
+  finite-depth OPE event.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -77,16 +82,33 @@ kernel and policy tables into typed PMFs with exact mass identities.
 `ControlledQueueTargetPolicyScores` reconstructs the three fixed Brier scores
 from the generated forecast and outcome tables and types the generated
 control-cost score. `ControlledQueueContraction` lifts each generated
-candidate's common cell floor through every state-Markov target policy. None of
-these bridges imports the frozen trace, supplies a true invariant PMF, or
-supplies an empirical confidence event.
-The generic empirical finite-depth theorem separately intersects its risk and
-transition events with failure cost `deltaRisk + deltaTransition`. Under exact
-behavior mass `1/2` and positive visit mass for every augmented source row, it
-uses the physical radius `2 * etaAug` and residual
-`alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`. It does not instantiate this
-frozen trace, prove its all-row visits or good-event membership, or select the
-candidate or depth from data.
+candidate's common cell floor through every state-Markov target policy.
+`ControlledQueueOPECatalog` then fixes the nominal candidate `Q`, the uniform
+finite-depth reference, contraction upper bound `alpha = 3/4`, centered
+row-risk envelope `D = 1`, and ratio cap `C = 3/2`. For an arbitrary true
+environment `P` and an initial observation and depth fixed before the event, it
+uses the canonical noncomputable `finiteInvariantPMF` of each true
+target-policy kernel. With fresh uniform full-support priors over the 12
+hypotheses and all 4,608 augmented transition coordinates, singleton risk and
+transition tilts `1/4`, and failure budgets `1/40` each, it gives one event of
+complement mass at most `1/20`. The event is simultaneous over every posterior
+PMF and time `n >= 2`; its normalized bound at the displayed time assumes all
+48 augmented source rows were visited.
+
+The uniform reference is not asserted invariant, and `alpha = 3/4` is an upper
+bound rather than an exact Dobrushin coefficient. This theorem does not prove
+named-trace or good-event membership, resolve the initial-observation offset,
+compute an explicit stationary law or stationary risk, prove uniqueness,
+select the candidate or depth from data, or establish a numerically useful
+endpoint.
+
+The theorem deliberately does not instantiate the weight tables in
+`trace-v1.json`: that file supplies only 48 coordinate weights, while the
+transition-coordinate prior here needs 4,608 atoms; its tilt grid includes `1`,
+which violates the theorem's strict `< 1` premise; and its five-predictor prior
+includes the causal predictors and has no target-policy factor. The fresh
+12-hypothesis and 4,608-coordinate priors and singleton `1/4` tilts are separate
+checked declarations.
 Likewise, the causal Beta predictors currently support dynamic
 behavior-encountered comparison only. They are not fixed stationary
 target-policy scores unless learner memory is added to the state and a

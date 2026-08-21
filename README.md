@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C105-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-271-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-147%2C889-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C127-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-272-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-148%2C361-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -229,8 +229,12 @@ and the staged [controlled-queue application](./docs/controlled-queue-applicatio
 are available through the opt-in <code>import FormalSLT.Applications</code>
 umbrella. The queue layer now includes typed generated kernels and policies,
 bounded fixed scores, overlap and ratio certificates, a universal centered
-row-risk envelope `D = 1`, and candidate target-kernel contraction; its true-
-invariant, trace-alignment, and final numerical certificates remain open.
+row-risk envelope `D = 1`, candidate target-kernel contraction, canonical
+finite-state invariant witnesses, and a fixed-nominal-candidate twelve-atom
+OPE event. The latter uses a fresh full-support transition-coordinate prior
+and requires every augmented row to be visited; frozen-trace membership,
+trace alignment, explicit stationary risks, candidate/depth selection, and a
+final numerical certificate remain open.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 
