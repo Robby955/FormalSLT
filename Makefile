@@ -114,9 +114,21 @@ verify-controlled-queue-known-kernel-receipt: check-controlled-queue-known-kerne
 	lake build FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 	lake env lean examples/CheckControlledQueueKnownKernelReceipt.lean
 
+# Validate the prospective structured-OPE preregistration and fail if any
+# declared fresh trace, receipt, manifest, or generated Lean output exists.
+check-controlled-queue-structured-ope-protocol:
+	python3 scripts/check_controlled_queue_structured_ope_protocol.py
+
+# Run the fail-closed schema/binding/chronology mutation suite. This target
+# never fetches a beacon or generates a trace.
+verify-controlled-queue-structured-ope-protocol: check-controlled-queue-structured-ope-protocol
+	python3 -m pytest -q tests/test_check_controlled_queue_structured_ope_protocol.py
+
 .PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests \
 	generate-controlled-queue-model check-controlled-queue-model verify-controlled-queue-model \
 	generate-controlled-queue-trace check-controlled-queue-trace verify-controlled-queue-trace \
 	generate-controlled-queue-known-kernel-receipt \
 	check-controlled-queue-known-kernel-receipt \
-	verify-controlled-queue-known-kernel-receipt
+	verify-controlled-queue-known-kernel-receipt \
+	check-controlled-queue-structured-ope-protocol \
+	verify-controlled-queue-structured-ope-protocol

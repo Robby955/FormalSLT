@@ -1,0 +1,448 @@
+{
+  "adaptive_secondary": {
+    "analysis_time": 200000,
+    "candidate_support": [
+      "low",
+      "nominal",
+      "high"
+    ],
+    "catalog_weight": "1/21",
+    "decision_threshold": "1",
+    "depth_support": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      8,
+      12
+    ],
+    "endpoint_id": "adaptive_d1_21_atom_eb",
+    "event_relation_to_primary": "separate valid event and confidence allocation; no simultaneous-primary claim without an additional union construction",
+    "persistence_tilt_support": [
+      "1/16",
+      "1/8",
+      "1/4",
+      "1/2"
+    ],
+    "persistence_tilt_weight": "1/4",
+    "posterior_support": "12 Dirac policy-predictor atoms in policy-major then predictor-major order",
+    "risk_tilt_support": [
+      "1/16",
+      "1/8",
+      "1/4",
+      "1/2"
+    ],
+    "risk_tilt_weight": "1/4",
+    "selection_rule": "minimize the exact certified RHS and break ties lexicographically by candidate_index,depth_index,risk_tilt_index,persistence_tilt_index,posterior_index",
+    "status": "SECONDARY - CURRENT CHECKED D=1 FINITE-CATALOG EVENT"
+  },
+  "analysis_estimand": {
+    "analysis_time": 200000,
+    "hypothesis_prior": "uniform over the 12 policy-predictor atoms",
+    "hypothesis_prior_mass": "1/12",
+    "importance_ratio_cap": "3/2",
+    "optional_stopping_for_primary": false,
+    "posterior": "Dirac(queue_threshold,nominal_model_overload)",
+    "posterior_fixed_before_data": true,
+    "predictor_id": "nominal_model_overload",
+    "predictor_index": 2,
+    "quantity": "stationary Brier risk under the true refresh-family environment",
+    "target_policy_id": "queue_threshold",
+    "target_policy_index": 1
+  },
+  "artifact_contract": {
+    "fresh_output_paths": [
+      "applications/controlled_queue/prospective/generated/structured-ope-trace-v1.bin",
+      "applications/controlled_queue/prospective/generated/structured-ope-trace-v1-counts.json",
+      "applications/controlled_queue/prospective/generated/structured-ope-trace-v1-manifest.json",
+      "applications/controlled_queue/prospective/generated/structured-ope-receipt-v1.json",
+      "applications/controlled_queue/prospective/generated/structured-ope-receipt-v1-manifest.json",
+      "FormalSLT/Applications/ControlledQueueProspectiveStructuredOPEData.lean"
+    ],
+    "independent_verifiers_must_not_import_generators": true,
+    "lean_hash_boundary": "Lean proves table-to-endpoint arithmetic; manifests and independent verifiers bind raw bytes and hashes",
+    "receipt_generator_path": "scripts/generate_controlled_queue_prospective_receipt.py",
+    "receipt_verifier_path": "scripts/verify_controlled_queue_prospective_receipt.py",
+    "trace_generator_must_not_compute_endpoints": true,
+    "trace_generator_path": "scripts/generate_controlled_queue_prospective_trace.py",
+    "trace_manifest_must_bind": "OSF registration id, date_registered value and API-response SHA-256; protocol and code-freeze Git objects; quicknet chain, formula-selected round and verified signature; every generator, verifier, input and output SHA-256",
+    "trace_verifier_path": "scripts/verify_controlled_queue_prospective_trace.py"
+  },
+  "artifact_status": "PROSPECTIVE PROTOCOL ONLY - NO TRACE OR RESULT",
+  "bindings": {
+    "known_kernel_receipt_source": {
+      "path": "FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean",
+      "sha256": "a92e58c2789161d6836ba934f5204b670dda11e0040687bc8ea05fe5645e5b0e"
+    },
+    "lake_manifest": {
+      "path": "lake-manifest.json",
+      "sha256": "52d60d1a48be7143c261c93c4f375c92a814a2499e2c320325b5f4e5855a8a66"
+    },
+    "lean_toolchain": {
+      "path": "lean-toolchain",
+      "sha256": "2bdc48adfa58d0017e538a0ad117c5d73d35deec879978f909406a80c8037273"
+    },
+    "model_input": {
+      "path": "applications/controlled_queue/model-v1.json",
+      "sha256": "4e92a71ddf07e04e202c901d8c7a682cdf306754a69a0e219fca8ef75abee5a0"
+    },
+    "model_manifest": {
+      "path": "applications/controlled_queue/generated/model-v1-manifest.json",
+      "sha256": "25c4a3ae364023b68a1de77ceff30d9e812f2e7173e36a3142ad0deec3d4a289"
+    },
+    "model_tables": {
+      "path": "applications/controlled_queue/generated/model-v1-tables.json",
+      "sha256": "7d8cf4d970f6e41413ccdf7d62b13bc77418076836505d06ebb4a606493ab724"
+    },
+    "persistence_confidence_source": {
+      "path": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
+      "sha256": "5e0d9ce372505b50ad5fbae6f9fb07b9b5e37fef5a6658afe0e46ee2c652bd43"
+    },
+    "pilot_selected_potential_data": {
+      "path": "FormalSLT/Applications/ControlledQueueKnownKernelReceiptData.lean",
+      "sha256": "f1e47658b26a5bdd6064fc8ae5fc9abebc6710520793fd0f63369566d392d1a2"
+    },
+    "structured_ope_source": {
+      "path": "FormalSLT/Applications/ControlledQueueStructuredOPE.lean",
+      "sha256": "d7b2669b70774d82bdca2dd338495988a543c94f283e558f278b610198a8d7b4"
+    }
+  },
+  "chronology_contract": {
+    "analytic_change_requires_new_protocol_and_never_inspected_beacon_round": true,
+    "beacon_round_selected_only_after_osf_registration_plus_seconds": 3600,
+    "code_freeze_required_before_generation": true,
+    "no_seed_horizon_gamma_endpoint_selector_delta_or_threshold_change_after_beacon": true,
+    "nonanalytic_typo_correction_requires_logged_amendment": true,
+    "preregistration_commit_contains_fresh_output": false,
+    "public_osf_registration_binding_both_commits_required_before_generation": true,
+    "publish_raw_trace_counts_receipts_and_all_baselines_regardless_of_result": true,
+    "single_generation_run": true
+  },
+  "confidence_contract": {
+    "delta_persistence": "1/40",
+    "delta_risk": "1/40",
+    "delta_total": "1/20",
+    "event_accounting": "intersect the risk and persistence outer-mass events; use the union bound; no independence or sample split",
+    "persistence_eta": "abs(73/96 - persistence_hit_count/n) + max(direct_empirical_Bernstein_boundary,complement_empirical_Bernstein_boundary)",
+    "persistence_orientation_prior": {
+      "complement": "1/2",
+      "direct": "1/2"
+    },
+    "persistence_psi_upper_bound": "1/8064",
+    "persistence_tilt": "1/64",
+    "persistence_tilt_weight": "1",
+    "psi_bound_formula": "forwardEmpiricalBernsteinPsi(lambda) <= lambda^2 / (2 * (1 - lambda)) for 0 <= lambda < 1",
+    "risk_psi_upper_bound": "1/480",
+    "risk_tilt": "1/16",
+    "risk_tilt_weight": "1"
+  },
+  "data_generation": {
+    "action_encoding": [
+      "eco",
+      "boost"
+    ],
+    "behavior_policy_id": "behavior_uniform",
+    "binary_contract": {
+      "action_count_encoding": "unsigned 64-bit big-endian",
+      "action_values": "200001 unsigned bytes in dummy_eco,A_1,...,A_200000 order",
+      "byte_order": "big-endian",
+      "causal_predictor_streams_replayed_from_path_not_stored": true,
+      "expected_byte_length": 400036,
+      "horizon_encoding": "unsigned 64-bit big-endian",
+      "layout": "magic || horizon_u64 || state_count_u64 || action_count_u64 || state_bytes || action_bytes",
+      "magic_ascii": "FSLTCQSP1\n",
+      "magic_hex": "46534c5443515350310a",
+      "no_endpoint_values": true,
+      "state_count_encoding": "unsigned 64-bit big-endian",
+      "state_values": "200001 unsigned bytes in S_0,...,S_200000 order",
+      "version": "controlled-queue-prospective-trace-binary-v1"
+    },
+    "family": "refreshEnvironment",
+    "horizon": 200000,
+    "initial_observation": {
+      "action_id": "eco",
+      "action_index": 0,
+      "lean_order": "(action,state)",
+      "physical_state_index": 0,
+      "queue": 0,
+      "regime": 0
+    },
+    "nearest_candidate": {
+      "candidate_id": "nominal",
+      "candidate_index": 1,
+      "exact_row_total_variation_gap": "23/4800",
+      "gamma": "3/4",
+      "hit_probability": "73/96"
+    },
+    "path_contract": {
+      "action_array_length": 200001,
+      "dummy_previous_action_used_only_at_x0": true,
+      "observation": "x_0 = (eco,S_0); x_(k+1) = (A_(k+1),S_(k+1))",
+      "sampling": "sample A_(k+1) from behaviorPolicy at S_k, then sample S_(k+1) from refreshEnvironment(true_gamma) at (S_k,A_(k+1))",
+      "score": "score k uses the controlled transition x_k to x_(k+1)",
+      "score_count": 200000,
+      "state_array_length": 200001,
+      "transition_range": "k = 0,...,199999"
+    },
+    "prng_contract": {
+      "beacon_api": "https://api.drand.sh/v2/chains/{chain_hash}/rounds/{round}",
+      "beacon_chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+      "beacon_chain_info_api": "https://api.drand.sh/v2/chains/{chain_hash}/info",
+      "beacon_chain_info_exact_match_required": true,
+      "beacon_genesis_unix_seconds": 1692803367,
+      "beacon_group_hash": "f477d5c89f21a17c863a7f937c6a6d15859414d2be09cd448d4279af331c5d3e",
+      "beacon_period_seconds": 3,
+      "beacon_public_key": "83cf0f2896adee7eb8b5f01fcad3912212c437e0073e911fb90022d3e760183c8c4b450b6a0a6c3ac6a5776a2d1064510d1fec758c921cc22b0e17e63aaf4bcb5ed66304de9cf809bd274ca73bab4af5a6e9c76a4bc09e76eae8991ef5ece45a",
+      "beacon_round_formula": "1 + ceil((osf_registration_unix_seconds + 3600 - beacon_genesis_unix_seconds) / beacon_period_seconds)",
+      "beacon_round_on_fetch_or_verification_failure": "abort, publish the failure, and do not use a later round or another seed",
+      "beacon_round_time_formula": "beacon_genesis_unix_seconds + (round - 1) * beacon_period_seconds",
+      "beacon_scheme_id": "bls-unchained-g1-rfc9380",
+      "beacon_signature_encoding": "hex-decoded signature bytes",
+      "beacon_signature_verification_required": true,
+      "beacon_signature_verifier_contract": "the pinned code-freeze verifier checks the formula-selected round signature under the frozen public key and bls-unchained-g1-rfc9380 scheme before deriving the seed",
+      "block_input": "domain_utf8 || 0x00 || seed_bytes || counter_u64_be",
+      "block_output": "32 digest bytes consumed left-to-right",
+      "counter_encoding": "unsigned 64-bit big-endian",
+      "counter_start": 0,
+      "domain_utf8": "FormalSLT/controlled-queue/prospective-structured-ope-v1",
+      "hash": "SHA-256",
+      "seed_derivation": "SHA256(domain_utf8 || 0x00 || beacon_chain_hash_bytes || beacon_round_u64_be || beacon_signature_bytes)",
+      "seed_source": "the single quicknet round computed by beacon_round_formula from the public OSF date_registered field; no search and no fallback",
+      "separator_hex": "00",
+      "test_counter_zero_digest_hex": "02be0e953603f95244eea43f8a16795185b337e881a64248d260219cfb7721ca",
+      "test_seed_derivation": "SHA256(domain_utf8 || UTF8(/test-seed))",
+      "test_seed_hex": "ac40e6b078e9298f9b271e6d7ed690b8911fa1e3f7005deff855ca43d94d5fcf",
+      "version": "sha256-counter-stream-v1",
+      "word_encoding": "eight consecutive stream bytes as unsigned 64-bit big-endian"
+    },
+    "sampling_contract": {
+      "categorical": "reduce rational probabilities to integer weights over their least common denominator; draw uniformly below the total weight; use left-closed cumulative intervals in listed order",
+      "draw_order": "one categorical action draw followed by one categorical next-state draw per transition; rejection draws consume additional words immediately",
+      "uniform_integer": "for modulus m, set limit = 2^64 - (2^64 mod m); reject words x >= limit; return x mod m",
+      "version": "exact-categorical-u64-rejection-v1"
+    },
+    "state_encoding": "state_id = 3 * queue + regime",
+    "true_gamma": "149/200",
+    "true_gamma_role": "fixed source-law parameter for generation and independent replay; forbidden to primary endpoint selection",
+    "true_hit_probability": "1209/1600"
+  },
+  "matched_baselines": [
+    {
+      "analysis_time": 200000,
+      "baseline_id": "oracle_true_kernel_selected_h12_eb",
+      "confidence_allocation": {
+        "delta_persistence": "0",
+        "delta_risk": "1/20",
+        "delta_total": "1/20",
+        "persistence_tilt": "not applicable",
+        "persistence_tilt_weight": "not applicable",
+        "risk_tilt": "1/16",
+        "risk_tilt_weight": "1"
+      },
+      "difference_from_primary": "replace empirical persistence uncertainty by the exact true refresh parameter and use a true-kernel depth-twelve potential",
+      "endpoint_formula": "stationaryTargetPolicyOPEBoundary for refreshEnvironment(149/200), the deterministic true-kernel depth-twelve potential, fixed Dirac posterior, C=3/2, risk tilt 1/16, and risk delta 1/20, plus its exact depth-twelve drift oscillation",
+      "posterior": "Dirac(queue_threshold,nominal_model_overload)",
+      "potential_contract": "finiteDepthPoissonPotential at depth 12 for refreshEnvironment(149/200), computed from the model before reading the trace; no depth or potential selection",
+      "predictor_id": "nominal_model_overload",
+      "same_path_and_estimand": true,
+      "selection_rule": "fixed before data",
+      "status": "PLANNED ORACLE BASELINE",
+      "target_policy_id": "queue_threshold"
+    },
+    {
+      "analysis_time": 200000,
+      "baseline_id": "generic_d1_m12_structured_eb",
+      "candidate_id": "nominal",
+      "candidate_index": 1,
+      "confidence_allocation": {
+        "delta_persistence": "1/40",
+        "delta_risk": "1/40",
+        "delta_total": "1/20",
+        "persistence_tilt": "1/64",
+        "persistence_tilt_weight": "1",
+        "risk_tilt": "1/16",
+        "risk_tilt_weight": "1"
+      },
+      "difference_from_primary": "use the generic D=1 depth-twelve potential with span 16245775/4194304 and candidate truncation 531441/16777216",
+      "endpoint_formula": "stationaryTargetPolicyOPEBoundary with the generic D=1 nominal depth-twelve potential and B=16245775/4194304, plus 531441/16777216 + 2*(1+B)*persistence_eta",
+      "posterior": "Dirac(queue_threshold,nominal_model_overload)",
+      "potential_depth": 12,
+      "predictor_id": "nominal_model_overload",
+      "same_path_and_estimand": true,
+      "selection_rule": "fixed before data",
+      "status": "CHECKED THEOREM FAMILY; NUMERICAL RECEIPT PENDING",
+      "target_policy_id": "queue_threshold"
+    },
+    {
+      "analysis_time": 200000,
+      "baseline_id": "generic_d1_m5_structured_eb",
+      "candidate_id": "nominal",
+      "candidate_index": 1,
+      "confidence_allocation": {
+        "delta_persistence": "1/40",
+        "delta_risk": "1/40",
+        "delta_total": "1/20",
+        "persistence_tilt": "1/64",
+        "persistence_tilt_weight": "1",
+        "risk_tilt": "1/16",
+        "risk_tilt_weight": "1"
+      },
+      "difference_from_primary": "fix depth five with generic D=1 span 781/256 and candidate truncation 243/1024",
+      "endpoint_formula": "stationaryTargetPolicyOPEBoundary with the generic D=1 nominal depth-five potential and B=781/256, plus 243/1024 + 2*(1+B)*persistence_eta",
+      "posterior": "Dirac(queue_threshold,nominal_model_overload)",
+      "potential_depth": 5,
+      "predictor_id": "nominal_model_overload",
+      "same_path_and_estimand": true,
+      "selection_rule": "fixed before data",
+      "status": "CHECKED THEOREM FAMILY; NUMERICAL RECEIPT PENDING",
+      "target_policy_id": "queue_threshold"
+    },
+    {
+      "analysis_time": 200000,
+      "baseline_id": "selected_h12_nonvariance_fixed_range",
+      "candidate_id": "nominal",
+      "candidate_index": 1,
+      "confidence_allocation": {
+        "delta_persistence": "1/40",
+        "delta_risk": "1/40",
+        "delta_total": "1/20",
+        "persistence_tilt": "1/64",
+        "persistence_tilt_weight": "1",
+        "risk_tilt": "1/16",
+        "risk_tilt_weight": "1"
+      },
+      "difference_from_primary": "replace both empirical-Bernstein variance terms by their fixed-range sub-gamma corrections at the same fixed tilts",
+      "endpoint_formula": "fixed-range target-policy boundary with risk correction lambda_r/(8*(1-lambda_r/3)) + (KL+log(1/delta_r))/(n*lambda_r), plus candidate_drift_oscillation + refresh_drift_sensitivity_oscillation*eta_fixed_range",
+      "eta_formula": "abs(73/96 - persistence_hit_count/n) + lambda_p/(8*(1-lambda_p/3)) + log(2/delta_p)/(n*lambda_p)",
+      "posterior": "Dirac(queue_threshold,nominal_model_overload)",
+      "potential_depth": 12,
+      "potential_source": "the same fixed selectedPotentialTable used by the primary",
+      "predictor_id": "nominal_model_overload",
+      "same_path_and_estimand": true,
+      "selection_rule": "fixed before data",
+      "status": "PLANNED THEOREM AND RECEIPT",
+      "target_policy_id": "queue_threshold"
+    },
+    {
+      "all_augmented_source_rows_must_be_visited": true,
+      "analysis_time": 200000,
+      "baseline_id": "unstructured_4608_coordinate_eb",
+      "candidate_id": "nominal",
+      "candidate_index": 1,
+      "confidence_allocation": {
+        "delta_risk": "1/40",
+        "delta_total": "1/20",
+        "delta_transition": "1/40",
+        "risk_tilt": "1/16",
+        "risk_tilt_weight": "1",
+        "transition_tilt": "1/64",
+        "transition_tilt_weight": "1"
+      },
+      "difference_from_primary": "replace both the sharp selected-potential transfer and scalar refresh-family confidence radius by the generic D=1 depth-twelve potential and full augmented transition-coordinate construction",
+      "endpoint_formula": "stationaryTargetPolicyOPEBoundary with the generic D=1 nominal depth-twelve potential and B=16245775/4194304, plus 531441/16777216 + 4*(1+B)*eta_augmented",
+      "posterior": "Dirac(queue_threshold,nominal_model_overload)",
+      "potential_depth": 12,
+      "predictor_id": "nominal_model_overload",
+      "same_path_and_estimand": true,
+      "selection_rule": "fixed before data",
+      "status": "CHECKED THEOREM FAMILY; NUMERICAL RECEIPT PENDING",
+      "target_policy_id": "queue_threshold",
+      "transition_coordinate_prior_mass": "1/4608"
+    }
+  ],
+  "nonclaims": [
+    "not a generated trace, numerical result, confidence receipt, or theorem",
+    "not evidence that the one-tenth primary threshold will be met",
+    "not a general unknown-kernel result outside the one-parameter refresh family",
+    "not a test that the true environment belongs to the refresh family",
+    "not adaptive candidate or depth selection for the primary endpoint",
+    "not a simultaneous confidence statement for the primary, secondary, and baseline rows",
+    "not stationary target-policy certification for the two causal Beta predictors",
+    "not proof that any eventual named path belongs to a theorem-produced good event",
+    "not Lean verification of raw bytes, SHA-256, a drand signature, or a public timestamp",
+    "not a cumulative-value, control-regret, or policy-optimization guarantee"
+  ],
+  "primary_endpoint": {
+    "candidate_drift_oscillation": "58989951/9007199254740992",
+    "candidate_gamma": "3/4",
+    "candidate_id": "nominal",
+    "candidate_index": 1,
+    "decision_threshold": "1/10",
+    "endpoint_formula": "risk_boundary + candidate_drift_oscillation + refresh_drift_sensitivity_oscillation * persistence_eta",
+    "endpoint_id": "selected_h12_sharp_structured_eb",
+    "potential_depth": 12,
+    "potential_shift": "h_shift(z) = h_raw(z) - h_raw(0)",
+    "potential_source": "selectedPotentialTable in the bound pilot-selected potential data",
+    "potential_span": "390176269054599/2251799813685248",
+    "refresh_drift_sensitivity_oscillation": "831542406207231/3236962232172544",
+    "required_checked_results": [
+      "targetPolicyPoissonDrift_refresh_sub_candidate_eq",
+      "abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity",
+      "exists_controlledQueueSharpStructuredReceipt_event",
+      "forwardEmpiricalBernsteinPsi_le_quadratic",
+      "sharpStructuredReceiptBoundary_evaluation_of_histogram"
+    ],
+    "residual_formula": "candidate_drift_oscillation + refresh_drift_sensitivity_oscillation * persistence_eta",
+    "risk_boundary": "stationaryTargetPolicyOPEBoundary with the fixed selected potential, span, ratio cap, Dirac posterior, risk tilt, and risk delta",
+    "selection": "fixed before data; no candidate, depth, tilt, policy, predictor, posterior, or time selection",
+    "status": "FROZEN PROSPECTIVE PRIMARY - REQUIRED SHARP THEOREM AND RECEIPT NOT YET IMPLEMENTED",
+    "threshold_corollary_contract": "prove endpoint < 1/10 only if the frozen exact receipt arithmetic supports it; otherwise publish the exact endpoint without that corollary"
+  },
+  "protocol_version": "controlled-queue-structured-ope-protocol-v1",
+  "registration": {
+    "base_commit": "299bb0a45398dcf055701ed7a5786ccf2ca41b6c",
+    "base_tree": "3f983a3ba7c1bc1572defa814929f8f3a16f9d3a",
+    "fresh_trace_generated": false,
+    "pilot_disclosure": [
+      "the refresh-family source law and true gamma, horizon, selected nominal depth-twelve potential, confidence allocations, tilts, and one-tenth success threshold were chosen after inspecting a separate retrospective trace and power analysis",
+      "the confirmatory trace uses a new fixed initial observation, a future public randomness beacon, and a full-horizon indexing contract"
+    ],
+    "pilot_informed": true,
+    "public_timestamp_required_before_generation": true,
+    "registration_mode": "public OSF registration binding both preregistration and code-freeze Git objects before any beacon round is selected or trace is generated",
+    "timestamp_contract": {
+      "api_url_template": "https://api.osf.io/v2/registrations/{registration_id}/",
+      "binding_requirement": "the immutable registration files contain the canonical protocol SHA-256, preregistration commit and tree, code-freeze commit and tree, and every code-freeze generator and verifier SHA-256",
+      "field": "data.attributes.date_registered",
+      "field_format": "RFC3339 UTC ending in Z; fractional seconds allowed",
+      "integer_conversion": "ceiling of the exact UTC instant to Unix seconds",
+      "provider": "Open Science Framework Registrations"
+    }
+  },
+  "reporting_contract": {
+    "causal_predictors_reported_separately_as_dynamic_encountered_risk": true,
+    "exact_rational_and_decimal_required": true,
+    "failure_and_vacuous_rows_published_unchanged": true,
+    "no_suppression_or_reordering_based_on_result": true,
+    "required_fields_per_row": [
+      "endpoint_id",
+      "theorem_or_event",
+      "empirical_corrected_score",
+      "risk_statistical_correction",
+      "persistence_or_transition_radius",
+      "candidate_or_truncation_residual",
+      "total_certified_rhs",
+      "confidence_allocation",
+      "selected_indices_or_fixed_settings",
+      "vacuity_and_threshold_status"
+    ],
+    "row_order": [
+      "selected_h12_sharp_structured_eb",
+      "adaptive_d1_21_atom_eb",
+      "oracle_true_kernel_selected_h12_eb",
+      "generic_d1_m12_structured_eb",
+      "generic_d1_m5_structured_eb",
+      "selected_h12_nonvariance_fixed_range",
+      "unstructured_4608_coordinate_eb"
+    ],
+    "separate_event_label_required": true
+  },
+  "schema_version": "controlled-queue-structured-ope-preregistration-v1",
+  "success_criteria": {
+    "adaptive_secondary_cannot_replace_failed_primary": true,
+    "primary_success": "selected_h12_sharp_structured_eb endpoint < 1/10",
+    "primary_useful_fallback": "selected_h12_sharp_structured_eb endpoint < 1",
+    "report_failure_unchanged": true
+  }
+}

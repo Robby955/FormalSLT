@@ -348,6 +348,15 @@ random-initial coverage, or a useful prospective numerical endpoint. Its
 selectors are pointwise substitutions into the common event, not a measurable
 selected process or selected e-process.
 
+The separate `structured-ope-protocol-v1.json` is a local prospective protocol
+input, not a theorem or result. It freezes an off-grid true refresh parameter,
+fixed selected-potential primary, future-public-beacon seed rule, adaptive
+secondary, matched comparisons, and publish-regardless chronology before an
+independent trace. The primary requires a sharper refresh-family
+drift-sensitivity transfer that is not yet checked. Until both protocol and
+generator/verifier code are bound by one immutable public OSF registration, no
+public preregistration or prospective numerical claim is made.
+
 ### Fixed controlled-queue OPE catalog
 
 `Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian

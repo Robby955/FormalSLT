@@ -2,8 +2,9 @@
 
 Status: **PREPROCESSING, STRUCTURED ADAPTIVE OPE EVENT, ONE EXACT INVARIANT/RISK
 ATOM, AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** / **PROSPECTIVE
-UNKNOWN-DYNAMICS NUMERICAL CERTIFICATE, MATCHED BASELINES, AND NAMED-PATH EVENT
-MEMBERSHIP OPEN**
+UNKNOWN-DYNAMICS PROTOCOL FROZEN LOCALLY; PUBLIC TIMESTAMP, SHARP THEOREM,
+CODE FREEZE, FRESH TRACE, MATCHED RECEIPTS, AND NAMED-PATH EVENT MEMBERSHIP
+OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -61,6 +62,13 @@ of unknown-kernel target-policy OPE.
   exact depth-twelve potential, suffix histogram, score moments, residual, and
   rational endpoint bound, independently reconstructed from the model tables
   and raw trace.
+- `structured-ope-protocol-v1.json` and its Markdown companion: fail-closed
+  prospective contract for one independent structured unknown-dynamics trace.
+  It freezes the source law, future-beacon seed rule, full-horizon indexing,
+  fixed sharp primary, adaptive secondary, matched baselines, reporting rule,
+  and required theorem/code-freeze work. It contains no fresh trace or result
+  and is not publicly preregistered until one immutable OSF registration binds
+  both the protocol commit and the completed code-freeze commit.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -86,11 +94,18 @@ only the Python standard library.
 make generate-controlled-queue-model
 make generate-controlled-queue-trace
 make generate-controlled-queue-known-kernel-receipt
+make check-controlled-queue-structured-ope-protocol
 ~/.elan/bin/lake exe cache get
 make verify-controlled-queue-model
 make verify-controlled-queue-trace
 make verify-controlled-queue-known-kernel-receipt
 ```
+
+The prospective protocol check validates canonical JSON, exact source hashes,
+analytic constants and allocations, future drand-beacon derivation, and the
+publish-regardless chronology. It also fails if any declared fresh trace,
+receipt, manifest, or generated Lean output already exists. It does not fetch a
+beacon or generate data.
 
 The model verification target fails if any generated model byte or manifest
 hash is stale, runs the narrow arithmetic/schema tests, and builds the full

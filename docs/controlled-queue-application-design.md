@@ -2,8 +2,9 @@
 
 Status: **STRUCTURED ADAPTIVE QUEUE OPE EVENT, ONE EXACT INVARIANT/RISK ATOM,
 AND AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED LOCALLY** /
-**PROSPECTIVE UNKNOWN-DYNAMICS NUMERICAL CERTIFICATE, MATCHED BASELINES, AND
-NAMED-PATH EVENT MEMBERSHIP OPEN**
+**PROSPECTIVE PROTOCOL FROZEN LOCALLY; PUBLIC TIMESTAMP, SHARP THEOREM, CODE
+FREEZE, FRESH UNKNOWN-DYNAMICS RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT
+MEMBERSHIP OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -64,7 +65,12 @@ scalar hit statistic. A further checked module intersects preallocated OPE
 events for the `3 x 7` generated candidate--depth catalog with that scalar
 event. Candidate, depth, two admissible tilt atoms, posterior, and time may be
 selected inside its common `19/20` outer-mass event. Its prospective numerical
-endpoint and matched baselines remain open.
+endpoint and matched baselines remain open. A separate local prospective
+protocol now freezes an independent off-grid refresh parameter, fixed initial
+observation, future-public-beacon seed rule, sharp selected-potential primary,
+adaptive secondary, comparison rows, and publish-regardless rule. It has not
+yet received a public immutable timestamp and contains no fresh trace or
+result.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -198,9 +204,12 @@ inequality. The following application items remain **OPEN**.
 1. Prospective structured unknown-dynamics receipt and matched baselines: the fresh
    4,608-coordinate empirical-transition allocation is vacuous on the current
    trace. The scalar persistence module and its adaptive OPE composition now
-   avoid that allocation within the refresh family, but a protocol must be
-   frozen before a fresh trace and evaluated against matched baselines before
-   any useful numerical unknown-dynamics claim.
+   avoid that allocation within the refresh family. The local v1 protocol now
+   freezes the primary and comparisons, but the sharp drift-sensitivity theorem
+   and independent generator/verifier code must be frozen and one public OSF
+   registration must bind both commits before the formula-selected future
+   beacon round is read or a fresh trace is generated. Every comparison must
+   then be reported before any useful numerical unknown-dynamics claim.
 2. Probabilistic trace interpretation: the known-kernel receipt resolves the
    deterministic initial-offset and histogram alignment for the realized
    suffix, but does not prove named-path good-event membership or unconditional
@@ -221,7 +230,8 @@ prospectively calibrated report for the already-observed trace. The controlled
 queue's end-to-end unknown-dynamics numerical certificate remains open. No
 named-path good-event membership, histogram-conditioned coverage,
 unconditional simulator coverage, or useful prospective numerical endpoint is
-claimed.
+claimed. The protocol-only file is not a numerical result or public
+preregistration merely because it exists in a local Git commit.
 
 ## Frozen input and generator contract
 
