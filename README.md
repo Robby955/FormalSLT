@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C173-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-285-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-150%2C451-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C185-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-286-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-151%2C151-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
@@ -231,7 +231,11 @@ umbrella. The queue layer now includes typed generated kernels and policies,
 bounded fixed scores, overlap and ratio certificates, a universal centered
 row-risk envelope `D = 1`, candidate target-kernel contraction, canonical
 finite-state invariant witnesses, and a fixed-nominal-candidate twelve-atom
-OPE event. For the nominal environment, queue-threshold target-policy index `1`,
+OPE event. A separate structured-confidence module embeds the three candidates
+in the arbitrary-parameter refresh family `gamma in [0,1)` and gives one
+time-uniform scalar event whose hit-probability discrepancy equals every
+physical-row TV discrepancy. For the nominal environment, queue-threshold
+target-policy index `1`,
 and nominal-model fixed-predictor index `2`, a separate checked module gives an
 explicit 24-state invariant PMF, proves equality to the canonical catalog
 witness, and evaluates stationary Brier risk exactly as
@@ -242,8 +246,10 @@ independently reconstructed suffix histogram yields a selected endpoint below
 unconditional coverage for the simulator's random first observation. The
 empirical-kernel event uses a fresh full-support transition-coordinate prior,
 requires every augmented row to be visited, and is numerically vacuous on the
-current trace; useful unknown-kernel certification and candidate/depth
-selection remain open.
+current trace. The structured scalar event avoids that 4,608-coordinate
+allocation, but its OPE composition, prospective trace evaluation, useful
+unknown-dynamics numerical endpoint, and candidate/depth-selected OPE remain
+open.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 

@@ -198,7 +198,17 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
         "one_step_contraction",
         "contraction_1lip",
     ],
-    "VC dimension": ["vc", "sauer", "shelah", "shatter"],
+    "VC dimension": [
+        ".vc.",
+        "vc_",
+        "_vc",
+        "vcdimension",
+        "vc dimension",
+        "vc-dimension",
+        "sauer",
+        "shelah",
+        "shatter",
+    ],
     "covering / chaining": [
         "covering",
         "dudley",
@@ -271,6 +281,24 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
 # triggers such as "indicator" would incorrectly tag CDF indicator families as
 # Bernoulli results.
 DECLARATION_CONCEPTS: dict[str, list[str]] = {
+    "FormalSLT.Applications.ControlledQueue.refreshEnvironment_apply_toReal": [
+        "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.candidateEnvironment_eq_refreshEnvironment": [
+        "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.persistenceDestinationHit_rowRisk": [
+        "adaptive trajectory", "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.exists_persistenceHitConfidence_event": [
+        "adaptive trajectory", "transition kernel", "confidence sequence"
+    ],
+    "FormalSLT.Applications.ControlledQueue.refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy": [
+        "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.exists_structuredCandidateTVConfidence_event": [
+        "adaptive trajectory", "transition kernel", "confidence sequence"
+    ],
     "FormalSLT.StochasticDynamics.candidateTargetPolicyFiniteDepthPotential": [
         "adaptive trajectory", "Poisson equation", "transition kernel"
     ],
@@ -544,6 +572,16 @@ def main() -> int:
         assert "ERM" not in concepts_for("genGap", "generalization gap", "")
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        structured_tags = concepts_for(
+            "FormalSLT.Applications.ControlledQueue."
+            "exists_structuredCandidateTVConfidence_event",
+            "Simultaneous physical-row TV budgets for the generated candidates",
+            "",
+        )
+        assert "VC dimension" not in structured_tags
+        assert {
+            "adaptive trajectory", "transition kernel", "confidence sequence"
+        }.issubset(structured_tags)
         assert "covering / chaining" not in concepts_for("bennett_mgf", "Bennett MGF", "")
         assert "Rademacher" in concepts_for(
             "one_step_contraction", "One coordinate replacement step", ""

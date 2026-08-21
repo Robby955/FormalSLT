@@ -1,8 +1,9 @@
 # Controlled queue preprocessing
 
-Status: **PREPROCESSING, FIXED-CATALOG EVENT, ONE EXACT INVARIANT/RISK ATOM,
-AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** / **NAMED-PATH EVENT MEMBERSHIP
-AND UNKNOWN-KERNEL NUMERICAL CERTIFICATE OPEN**
+Status: **PREPROCESSING, STRUCTURED ROW-TV CONFIDENCE, FIXED-CATALOG EVENT, ONE
+EXACT INVARIANT/RISK ATOM, AND AN ALIGNED KNOWN-KERNEL RECEIPT CHECKED** /
+**STRUCTURED OPE COMPOSITION, NAMED-PATH EVENT MEMBERSHIP, AND UNKNOWN-DYNAMICS
+NUMERICAL CERTIFICATE OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -34,6 +35,11 @@ of unknown-kernel target-policy OPE.
   candidate cell minorization, uniform physical-state reference, Dobrushin
   upper bounds `5/8`, `3/4`, and `7/8`, and target-policy oscillation
   contraction. The coefficient is bounded above, not claimed exact.
+- `../../FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean`:
+  checked arbitrary-parameter refresh-family PMFs, a direct/complement
+  persistence-hit outer-mass event, the exact identity between hit-probability
+  discrepancy and every physical-row TV discrepancy, and simultaneous budgets
+  for all three generated candidates.
 - `../../FormalSLT/Applications/ControlledQueueOPECatalog.lean`: locally
   checked 12-atom catalog obtained from four fixed target policies and three
   fixed Brier predictors, together with its fixed-nominal-candidate empirical
@@ -102,6 +108,14 @@ exported generated-table lookup.
 from the generated forecast and outcome tables and types the generated
 control-cost score. `ControlledQueueContraction` lifts each generated
 candidate's common cell floor through every state-Markov target policy.
+`ControlledQueuePersistenceConfidence` instead treats the true environment as
+`(1 - gamma) * Uniform24 + gamma * delta_step` for arbitrary fixed
+`gamma in [0,1)`. A destination hit includes both persistence and an accidental
+uniform refresh to the step state, so its mean is `(1 + 23 * gamma) / 24`, not
+`gamma`. One outer-mass event is simultaneous over declared tilts and times,
+and after that event the candidate may be chosen from the three generated
+values. The result is not uniform over `gamma`, does not test family membership,
+and is not yet composed with target-policy OPE or a frozen path.
 `ControlledQueueOPECatalog` then fixes the nominal candidate `Q`, the uniform
 finite-depth reference, contraction upper bound `alpha = 3/4`, centered
 row-risk envelope `D = 1`, and ratio cap `C = 3/2`. For an arbitrary true

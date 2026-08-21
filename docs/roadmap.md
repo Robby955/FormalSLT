@@ -354,16 +354,24 @@
       endpoint below `7/100`. The pathwise conclusion remains conditional on
       the histogram and theorem-event inequality; named-path event membership
       is not claimed.
+    - [x] Embed the three generated kernels in an arbitrary-parameter refresh
+      family and check one scalar, time-uniform direct/complement outer-mass
+      event whose hit-probability discrepancy equals every physical-row TV
+      discrepancy. The true parameter is fixed before the event; candidate,
+      tilt, and time are simultaneous afterward.
     - [ ] Add a useful unknown-kernel numerical certificate and matched
       baselines. The present fresh 4,608-coordinate transition allocation is
-      vacuous on this trace, and the frozen config has only 48 coordinate
-      weights, includes tilt `1`, and uses a five-predictor prior with causal
-      predictors and no target-policy factor.
+      vacuous on this trace. First compose the structured scalar TV event with
+      the queue OPE catalog and preallocated candidate/depth selectors, then
+      evaluate it under a protocol frozen before a fresh trace. The old frozen
+      config has only 48 coordinate weights, includes tilt `1`, and uses a
+      five-predictor prior with causal predictors and no target-policy factor.
     - [ ] Add any claimed named-path good-event witness or a random-initial
       mixture/conditioning bridge for unconditional simulator coverage.
-    - [ ] Add a common event or preallocated catalog before selecting the
-      candidate or depth from the scored path; the checked empirical theorem
-      fixes both, together with its reference, score, and contraction
+    - [ ] Add a composed OPE event or preallocated catalog before selecting the
+      candidate or depth in the final risk conclusion. The scalar TV theorem is
+      candidate-simultaneous, but the checked empirical OPE theorem fixes both
+      candidate and depth, together with its reference, score, and contraction
       certificates, before the event.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
     stationary risk, multistep conclusions, and atomless transition evidence

@@ -14,6 +14,7 @@ import FormalSLT.Applications.RandomRefreshLoadOracleCertificate
 import FormalSLT.Applications.ControlledQueueData
 import FormalSLT.Applications.ControlledQueueReindex
 import FormalSLT.Applications.ControlledQueueTypedModel
+import FormalSLT.Applications.ControlledQueuePersistenceConfidence
 import FormalSLT.Applications.ControlledQueueTargetPolicyScores
 import FormalSLT.Applications.ControlledQueueContraction
 import FormalSLT.Applications.ControlledQueueOPECatalog
@@ -36,14 +37,20 @@ binds the generated control-cost table, and discharges the static overlap and
 ratio-cap assumptions. It also supplies the universal centered row-risk
 envelope `D = 1` for every generated fixed Brier score and every reference
 PMF. `ControlledQueueContraction` certifies each candidate's uniform
-minorization and target-policy contraction factor. `ControlledQueueOPECatalog`
-combines those receipts into a twelve-atom, fixed-nominal-candidate event for
-any depth fixed before the event. `ControlledQueueInvariantRisk` supplies one
-explicit invariant PMF, identifies it with the catalog's canonical witness by
-contraction uniqueness, and evaluates one exact stationary Brier risk. These
-modules culminate in `ControlledQueueKnownKernelReceipt`: a fixed-initial
-failure-mass theorem and an exact `< 0.07` selected-risk endpoint conditional
-on both the aligned suffix-histogram premise and the theorem-produced event
-inequality. They do not prove that the named trace satisfies the good event,
-select a candidate or depth from data, or give an unknown-kernel certificate.
+minorization and target-policy contraction factor.
+`ControlledQueuePersistenceConfidence` embeds the three candidates in an
+arbitrary-parameter refresh family and gives one scalar time-uniform outer-mass
+event whose hit-probability discrepancy is exactly every physical-row TV
+discrepancy.
+`ControlledQueueOPECatalog` combines the earlier deterministic receipts into a
+twelve-atom, fixed-nominal-candidate event for any depth fixed before the event.
+`ControlledQueueInvariantRisk` supplies one explicit invariant PMF, identifies
+it with the catalog's canonical witness by contraction uniqueness, and evaluates
+one exact stationary Brier risk. These modules culminate in
+`ControlledQueueKnownKernelReceipt`: a fixed-initial failure-mass theorem and
+an exact `< 0.07` selected-risk endpoint conditional on both the aligned
+suffix-histogram premise and the theorem-produced event inequality. They do not
+prove that the named trace satisfies the good event or yet compose the
+structured row-TV event with candidate/depth selection into a useful
+unknown-kernel OPE endpoint.
 -/

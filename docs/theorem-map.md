@@ -972,6 +972,27 @@ visited at the displayed horizon. This theorem does not select the candidate
 or depth, construct invariant PMFs, certify a named path, or instantiate the
 queue-specific contraction, invariant, or numerical certificates.
 
+## Controlled-queue structured persistence confidence
+
+| Declaration | Module | Role |
+|---|---|---|
+| `refreshEnvironment_apply_toReal` | `Applications.ControlledQueuePersistenceConfidence` | Constructs the arbitrary-parameter physical kernel `(1 - gamma) * Uniform24 + gamma * delta_step` for fixed `gamma in [0,1)` and exposes every real-valued mass |
+| `candidateEnvironment_eq_refreshEnvironment` | `Applications.ControlledQueuePersistenceConfidence` | Identifies each of the three generated candidate kernels with its corresponding member of the structured refresh family |
+| `persistenceDestinationHit_rowRisk` | `Applications.ControlledQueuePersistenceConfidence` | Proves that the controlled transition hit statistic has row-independent conditional mean `(1 + 23 * gamma) / 24`; a hit can also arise from uniform refresh and is not the persistence indicator itself |
+| `exists_persistenceHitConfidence_event` | `Applications.ControlledQueuePersistenceConfidence` | Gives one outer-mass event, for true `gamma` and initial observation fixed beforehand, that controls the direct/complement hit statistic at every declared tilt atom and every `n >= 2` |
+| `refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy` | `Applications.ControlledQueuePersistenceConfidence` | Identifies every physical action-row TV distance from the structured true kernel to a generated candidate with the absolute difference of their hit probabilities, equivalently `(23/24) * |gamma - gammaCandidate|` |
+| `exists_structuredCandidateTVConfidence_event` | `Applications.ControlledQueuePersistenceConfidence` | Transfers the scalar event to simultaneous physical-row TV budgets for all three candidates; candidate, tilt atom, and time are quantified after the common event |
+
+The true parameter, initial observation, behavior policy, tilt catalog and
+weights, and failure budget are fixed before the event. The theorem covers only
+the frozen one-parameter refresh family and is not uniform over the true
+parameter. It does not test model-family membership or construct an
+arbitrary-kernel confidence set, invariant law, Poisson/OPE composition,
+measurable selector, frozen-trace membership proof, or numerical OPE endpoint.
+Because the statistic has the same conditional mean in every row, this route
+does not require the all-source-row visitation premise of the general
+4,608-coordinate transition-confidence construction.
+
 ## Controlled-queue twelve-atom OPE catalog
 
 | Declaration | Module | Role |

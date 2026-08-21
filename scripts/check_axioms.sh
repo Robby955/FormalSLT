@@ -472,6 +472,13 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.candidateTargetPolicyKernel_dobrushin_le_gamma"
   "FormalSLT.Applications.ControlledQueue.candidateTargetPolicyKernel_isOscillationContraction"
   "FormalSLT.Applications.ControlledQueue.candidateGamma_mem_Ico"
+  "FormalSLT.Applications.ControlledQueue.refreshEnvironment_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.candidateEnvironment_eq_refreshEnvironment"
+  "FormalSLT.Applications.ControlledQueue.orientedPersistenceHitScore_mem_Icc"
+  "FormalSLT.Applications.ControlledQueue.persistenceDestinationHit_rowRisk"
+  "FormalSLT.Applications.ControlledQueue.exists_persistenceHitConfidence_event"
+  "FormalSLT.Applications.ControlledQueue.refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy"
+  "FormalSLT.Applications.ControlledQueue.exists_structuredCandidateTVConfidence_event"
   "FormalSLT.Applications.ControlledQueue.nominalCandidateGamma_eq_three_fourths"
   "FormalSLT.Applications.ControlledQueue.queueHypothesis_card"
   "FormalSLT.Applications.ControlledQueue.queueHypothesisPrior_apply"
@@ -930,6 +937,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueTypedModel"
   echo "import FormalSLT.Applications.ControlledQueueTargetPolicyScores"
   echo "import FormalSLT.Applications.ControlledQueueContraction"
+  echo "import FormalSLT.Applications.ControlledQueuePersistenceConfidence"
   echo "import FormalSLT.Applications.ControlledQueueOPECatalog"
   echo "import FormalSLT.Applications.ControlledQueueInvariantRisk"
   echo "import FormalSLT.Applications.ControlledQueueKnownKernelReceipt"
@@ -1022,6 +1030,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueTypedModel \
   FormalSLT.Applications.ControlledQueueTargetPolicyScores \
   FormalSLT.Applications.ControlledQueueContraction \
+  FormalSLT.Applications.ControlledQueuePersistenceConfidence \
   FormalSLT.Applications.ControlledQueueOPECatalog \
   FormalSLT.Applications.ControlledQueueInvariantRisk \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \

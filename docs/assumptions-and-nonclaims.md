@@ -290,6 +290,29 @@ all-row visits or good-event membership for the frozen trace, or license
 candidate or depth selection after observing the path. The separate
 application specialization below supplies one fixed queue catalog.
 
+### Controlled-queue structured persistence confidence
+
+`Applications.ControlledQueuePersistenceConfidence` assumes that the true
+physical environment belongs to the one-parameter family
+`(1 - gamma) * Uniform24 + gamma * delta_step`, with fixed
+`gamma in [0,1)`. The true parameter and deterministic initial controlled
+observation are fixed before the outer-mass event. The event is simultaneous
+over the supplied finite tilt catalog and all `n >= 2`; after it is constructed,
+all three generated candidates and all physical state-action rows share the
+same scalar confidence information.
+
+The observed statistic records whether the next state equals the deterministic
+queue-step destination. Uniform refresh can land there too, so its conditional
+mean is `(1 + 23 * gamma) / 24`, not `gamma`. The checked TV identity makes the
+difference of two such hit probabilities exactly the physical-row TV distance,
+with no behavior-action factor. This is a structured or parametric
+unknown-dynamics result, not arbitrary-kernel confidence. It is not uniform
+over `gamma`, does not detect refresh-family misspecification, and does not by
+itself construct invariant laws, compose with the queue OPE event, certify a
+frozen trace, or supply a useful unknown-dynamics numerical endpoint. Since
+the scored mean is row-independent, this route needs no all-source-row
+visitation premise.
+
 ### Fixed controlled-queue OPE catalog
 
 `Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian
@@ -1145,11 +1168,15 @@ observation.
 The controlled layer also supplies encountered-prefix comparators for
 history-dependent targets and exact fixed-horizon target-path change of
 measure. These results do not construct a useful queue-specific unknown-kernel
-numerical certificate; license data-dependent candidates or depths without a
-common event; estimate nuisance quantities; prove named-path event membership;
-or give an anytime-valid cumulative-likelihood target-value boundary. Except
-for the one explicit atom above, the application-level invariant witnesses
-remain noncomputable choices rather than explicit queue stationary laws.
+numerical certificate. The structured persistence lane does give a
+time-uniform physical-row TV budget for an arbitrary fixed parameter in the
+frozen refresh family, but it is not yet composed with the queue OPE theorem or
+evaluated prospectively. The controlled results do not license data-dependent
+candidates or depths without a common event; estimate general nuisance
+quantities; prove named-path event membership; or give an anytime-valid
+cumulative-likelihood target-value boundary. Except for the one explicit atom
+above, the application-level invariant witnesses remain noncomputable choices
+rather than explicit queue stationary laws.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and

@@ -1,8 +1,9 @@
 # Controlled queue application design
 
-Status: **FIXED 12-ATOM QUEUE OPE EVENT, ONE EXACT INVARIANT/RISK ATOM, AND
-AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED LOCALLY** / **NAMED-PATH
-EVENT MEMBERSHIP AND UNKNOWN-KERNEL NUMERICAL CERTIFICATE OPEN**
+Status: **STRUCTURED ROW-TV CONFIDENCE, FIXED 12-ATOM QUEUE OPE EVENT, ONE EXACT
+INVARIANT/RISK ATOM, AND AN ALIGNED KNOWN-KERNEL `< 0.07` RECEIPT CHECKED
+LOCALLY** / **STRUCTURED OPE COMPOSITION, NAMED-PATH EVENT MEMBERSHIP, AND
+UNKNOWN-DYNAMICS NUMERICAL CERTIFICATE OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -56,8 +57,10 @@ realized initial observation `(1, 1)`, depth `12`, tilt `1/16`, and the aligned
 199,999-score suffix. Python independently reconstructs the exact suffix
 histogram from the raw bytes; Lean proves histogram-to-score arithmetic and a
 selected boundary-plus-residual endpoint below `7/100`. The named trace is not
-proved to belong to the theorem-produced good event, and the unknown-kernel
-endpoint remains open.
+proved to belong to the theorem-produced good event. A separate structured
+module now embeds the three candidates in the arbitrary-parameter refresh
+family and obtains simultaneous time-uniform physical-row TV budgets from one
+scalar hit statistic. Its OPE composition and numerical endpoint remain open.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -155,6 +158,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
 | Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, universal centered row-risk envelope `D = 1`, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
+| Structured queue persistence confidence | `Applications.ControlledQueuePersistenceConfidence` | Arbitrary fixed `gamma in [0,1)` in the generated refresh family; one direct/complement hit outer-mass event; exact all-row TV identity; simultaneous budgets for all three candidates, but no family-membership test or OPE composition |
 | Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
 | Explicit queue invariant/risk atom | `Applications.ControlledQueueInvariantRisk` | Explicit 24-state rational invariant PMF for nominal `Q` and target-policy index `1`, equality to the canonical catalog witness by strict-contraction uniqueness, exact row risks for fixed-predictor index `2`, and stationary Brier risk `4338268437 / 67816493056 < 13 / 200` |
 | Known-kernel aligned numerical receipt | `Applications.ControlledQueueKnownKernelReceipt` | Fixed-initial `39/40` event, exact depth-twelve potential/residual, aligned `24 x 2 x 24` suffix-histogram bridge, and selected risk endpoint below `7/100`, conditional on the histogram and event inequality |
@@ -186,20 +190,24 @@ witness, and its stationary Brier risk is exactly
 proves the selected endpoint below `7/100` from the suffix histogram and event
 inequality. The following application items remain **OPEN**.
 
-1. Unknown-kernel numerical certificate and matched baselines: the fresh
+1. Structured unknown-dynamics OPE and matched baselines: the fresh
    4,608-coordinate empirical-transition allocation is vacuous on the current
-   trace, so changing only its tilt or weights is not enough. A stronger
-   transition-confidence construction or a better-designed trace/model is
-   required before claiming useful unknown-dynamics OPE.
+   trace. The scalar persistence module now avoids that allocation and gives
+   candidate-simultaneous physical-row TV budgets within the refresh family,
+   but it still must be composed with the OPE catalog, frozen under a
+   prospective protocol, and evaluated against matched baselines before any
+   useful unknown-dynamics OPE claim.
 2. Probabilistic trace interpretation: the known-kernel receipt resolves the
    deterministic initial-offset and histogram alignment for the realized
    suffix, but does not prove named-path good-event membership or unconditional
    coverage for the upstream random first observation. Those require a
    separate membership witness or random-initial mixture/conditioning bridge.
-3. Data-dependent candidate or depth selection: the checked empirical theorem
-   fixes `Q`, `m`, reference PMFs, scores, and contraction certificates before
-   its outer event. A new common event or preallocated catalog is required to
-   choose a candidate or depth from the scored path.
+3. Candidate/depth-selected OPE: the structured row-TV event permits choosing
+   one of the three candidates after that event, but the checked OPE theorem
+   still fixes `Q`, `m`, reference PMFs, scores, and contraction certificates
+   beforehand. A composed common event or preallocated candidate-by-depth
+   catalog is required before making the same post-path choice in the OPE
+   conclusion.
 
 Until those steps close, the known-kernel result is a checked retrospective
 receipt: it demonstrates the exact theorem-to-histogram arithmetic, but no
@@ -255,9 +263,12 @@ trace is deliberately not embedded in Lean. Checked adapters already discharge
 row ordering, table normalization and positivity, typed-PMF conversion, and
 the static probability and TV transfers. The queue application now composes
 the risk and empirical augmented-transition events for the fixed 12-atom
-catalog and uses canonical noncomputable true invariant witnesses. Later
-application slices must still provide compact witnesses for counts and all-row
-visits, any further invariant/risk receipts needed for reported atoms,
+catalog and uses canonical noncomputable true invariant witnesses. That general
+4,608-coordinate route still requires compact count and all-row-visit witnesses.
+The structured persistence route instead scores one row-independent statistic
+and needs no all-row-visit premise, but it has not yet been composed with OPE or
+evaluated on a prospectively frozen trace. Later application slices must still
+provide any further invariant/risk receipts needed for reported atoms,
 trace/event alignment, and final numerical confidence arithmetic. One explicit
 invariant law and stationary risk is now checked for the queue-threshold/
 nominal-model atom. The generic centered row-risk envelope `D = 1` is already
@@ -312,7 +323,11 @@ each candidate mass with the corresponding exported generated-table lookup.
 turns the three fixed predictors and the generated control cost into bounded
 target-policy scores and closes the static overlap and `3/2` ratio premises.
 `ControlledQueueContraction` checks the candidate cell floors and turns them
-into target-policy contraction factors. `ControlledQueueOPECatalog` fixes the
+into target-policy contraction factors. `ControlledQueuePersistenceConfidence`
+uses the same compact refresh representation for an arbitrary fixed true
+parameter, then turns a direct/complement destination-hit confidence sequence
+into exact physical-row TV budgets for all three candidates.
+`ControlledQueueOPECatalog` fixes the
 12 stationary hypotheses and supplies the same-path empirical event with
 canonical noncomputable true invariant witnesses. None of these bridges imports
 the frozen trace or proves membership in the resulting event.
@@ -332,8 +347,10 @@ suffix beginning at the realized first pair, or prove a random-initial
 controlled-law bridge. No direct full-trace horizon alignment is claimed.
 
 The application now checks one explicit true invariant law and stationary risk
-for the nominal queue-threshold/nominal-model atom. It still does not check
-trace-aligned final bounds or good-event membership. Those remain later
+for the nominal queue-threshold/nominal-model atom and one trace-aligned
+known-kernel bound conditional on the aligned suffix histogram and event
+inequality. It still does not check a useful unknown-dynamics trace-aligned
+final bound or named-path good-event membership. Those remain later
 model-to-theorem and certificate slices, not preprocessing claims.
 
 ## Matched comparison contract
