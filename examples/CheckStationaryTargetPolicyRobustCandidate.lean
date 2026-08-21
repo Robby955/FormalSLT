@@ -11,6 +11,9 @@ The target policy is shared between true and candidate environments, while
 open FormalSLT.StochasticDynamics
 
 #check targetPolicyRowScore
+#check targetPolicyRowRisk_mem_Icc
+#check targetPolicyRowScore_mem_Icc
+#check centered_targetPolicyRowScore_finiteOscillation_le_one
 #check markovRowRisk_targetPolicyRowScore
 #check stationaryMarkovRisk_targetPolicyRowScore
 #check targetPolicyPoissonDrift
@@ -24,6 +27,9 @@ open FormalSLT.StochasticDynamics
 #check abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation
 
 #print axioms FormalSLT.StochasticDynamics.markovRowRisk_targetPolicyRowScore
+#print axioms FormalSLT.StochasticDynamics.targetPolicyRowRisk_mem_Icc
+#print axioms FormalSLT.StochasticDynamics.targetPolicyRowScore_mem_Icc
+#print axioms FormalSLT.StochasticDynamics.centered_targetPolicyRowScore_finiteOscillation_le_one
 #print axioms FormalSLT.StochasticDynamics.stationaryMarkovRisk_targetPolicyRowScore
 #print axioms FormalSLT.StochasticDynamics.targetPolicyPoissonDrift_eq_markovPoissonDrift
 #print axioms FormalSLT.StochasticDynamics.approximateTargetPolicyPoissonResidual_eq_inducedKernel

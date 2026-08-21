@@ -103,10 +103,10 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 227,
-    "library_and_example_lean_lines": 147793,
-    "library_lean_lines": 118341,
+    "library_and_example_lean_lines": 147889,
+    "library_lean_lines": 118429,
     "library_modules": 271,
-    "theorem_map_entries": 1052
+    "theorem_map_entries": 1056
   },
   "theorem_families": [
     {
@@ -4899,6 +4899,24 @@
         {
           "kind": "theorem",
           "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
+          "name": "targetPolicyRowRisk_mem_Icc",
+          "summary": "Proves that the nested target-action and next-state PMF average of any [0,1] controlled-transition score remains in [0,1]"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
+          "name": "targetPolicyRowScore_mem_Icc",
+          "summary": "Transfers the unit-range certificate to the constant-next-state Markov row-score adapter"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
+          "name": "centered_targetPolicyRowScore_finiteOscillation_le_one",
+          "summary": "Supplies the generic centered row-risk oscillation envelope D = 1 for any reference PMF and any [0,1] target-policy score"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyRobustCandidate",
           "name": "abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation",
           "summary": "Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in [0,1], potential span B, and a nonnegative uniform action-conditioned environment-row TV radius etaEnv, deterministically bounds the true stationary residual by finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv); it supplies no confidence event, OPE theorem, or selection license"
         }
@@ -4952,6 +4970,12 @@
           "module": "Applications.ControlledQueueTargetPolicyScores",
           "name": "fixedBrierScore_mem_Icc",
           "summary": "Proves every fixed-predictor Brier score lies in [0,1]; the two causal Beta predictors remain outside this stationary-score interface"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTargetPolicyScores",
+          "name": "fixedBrierScore_centeredTargetPolicyRowRisk_finiteOscillation_le_one",
+          "summary": "Instantiates the generic envelope D = 1 uniformly over all generated candidates, target policies, fixed predictors, and reference PMFs; it does not claim the sharper candidate-specific constants"
         },
         {
           "kind": "theorem",

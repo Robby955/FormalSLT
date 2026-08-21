@@ -434,6 +434,9 @@ span at most `B`, the target-policy drifts differ by at most
 `(1 + B) * etaEnv`. With a supplied invariant PMF for the true induced kernel,
 the checked pointwise residual envelope is
 `oscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`.
+The same module proves that every such bounded target-policy score has centered
+row-risk oscillation at most `1`, for any supplied reference PMF. This is a
+universal envelope, not a sharper model-specific oscillation calculation.
 
 This deterministic bridge does not construct invariant PMFs, estimate `P` or
 `etaEnv`, create a confidence event, or license candidate, certificate, or

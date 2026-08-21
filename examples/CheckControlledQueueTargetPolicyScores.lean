@@ -14,6 +14,7 @@ open FormalSLT.Applications.ControlledQueue
 #check overloadOutcome_mem_Icc
 #check fixedBrierScore_eq_squaredError
 #check fixedBrierScore_mem_Icc
+#check fixedBrierScore_centeredTargetPolicyRowRisk_finiteOscillation_le_one
 #check controlCostScore_mem_Icc
 #check behavior_targetPolicy_overlap
 #check behavior_targetPolicy_ratioBound_three_halves
@@ -22,6 +23,7 @@ open FormalSLT.Applications.ControlledQueue
 #print axioms overloadOutcome_mem_Icc
 #print axioms fixedBrierScore_eq_squaredError
 #print axioms fixedBrierScore_mem_Icc
+#print axioms fixedBrierScore_centeredTargetPolicyRowRisk_finiteOscillation_le_one
 #print axioms controlCostScore_mem_Icc
 #print axioms behavior_targetPolicy_overlap
 #print axioms behavior_targetPolicy_ratioBound_three_halves

@@ -936,6 +936,9 @@ interval.
 
 | Declaration | Module | Role |
 |---|---|---|
+| `targetPolicyRowRisk_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Proves that the nested target-action and next-state PMF average of any `[0,1]` controlled-transition score remains in `[0,1]` |
+| `targetPolicyRowScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Transfers the unit-range certificate to the constant-next-state Markov row-score adapter |
+| `centered_targetPolicyRowScore_finiteOscillation_le_one` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Supplies the generic centered row-risk oscillation envelope `D = 1` for any reference PMF and any `[0,1]` target-policy score |
 | `abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in `[0,1]`, potential span `B`, and a nonnegative uniform action-conditioned environment-row TV radius `etaEnv`, deterministically bounds the true stationary residual by `finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`; it supplies no confidence event, OPE theorem, or selection license |
 
 ## Fixed-candidate finite-depth robust target-policy off-policy evaluation
@@ -975,6 +978,7 @@ queue-specific contraction, invariant, or numerical certificates.
 |---|---|---|
 | `fixedBrierScore_eq_squaredError` | `Applications.ControlledQueueTargetPolicyScores` | Identifies each of the three fixed queue predictors with squared error against the generated binary overload outcome |
 | `fixedBrierScore_mem_Icc` | `Applications.ControlledQueueTargetPolicyScores` | Proves every fixed-predictor Brier score lies in `[0,1]`; the two causal Beta predictors remain outside this stationary-score interface |
+| `fixedBrierScore_centeredTargetPolicyRowRisk_finiteOscillation_le_one` | `Applications.ControlledQueueTargetPolicyScores` | Instantiates the generic envelope `D = 1` uniformly over all generated candidates, target policies, fixed predictors, and reference PMFs; it does not claim the sharper candidate-specific constants |
 | `controlCostScore_mem_Icc` | `Applications.ControlledQueueTargetPolicyScores` | Proves the generated normalized control cost lies in `[0,1]` |
 | `behavior_targetPolicy_overlap` | `Applications.ControlledQueueTargetPolicyScores` | Lifts exact uniform behavior mass `1/2` to pointwise history-interface overlap for all four generated target policies |
 | `behavior_targetPolicy_ratioBound_three_halves` | `Applications.ControlledQueueTargetPolicyScores` | Lifts the generated target-policy mass bound `3/4` to the exact controlled importance-ratio cap `3/2` |

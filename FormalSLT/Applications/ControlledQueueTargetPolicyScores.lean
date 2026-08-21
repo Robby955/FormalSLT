@@ -5,7 +5,7 @@ Authors: Robby Sneiderman
 -/
 
 import FormalSLT.Applications.ControlledQueueTypedModel
-import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate
 
 /-!
 # Controlled-queue target-policy scores
@@ -25,9 +25,10 @@ The generated behavior policy has mass `1/2` on both actions, while every
 target-policy mass is at most `3/4`.  Consequently all four target policies
 satisfy overlap and the exact declared ratio cap `3/2`.
 
-This module supplies score and policy certificates only.  It does not construct
-invariant laws, prove candidate contraction, import the trace, or instantiate a
-statistical event.
+The unit-range score certificate also gives the universal centered row-risk
+oscillation envelope `D = 1` for every candidate, target policy, predictor, and
+reference PMF. This module does not construct invariant laws, prove candidate
+contraction, import the trace, or instantiate a statistical event.
 -/
 
 open Finset MeasureTheory ProbabilityTheory
@@ -186,6 +187,24 @@ theorem fixedBrierScore_mem_Icc
   · positivity
   · dsimp [p, y] at hproduct
     nlinarith
+
+/-- Every generated fixed Brier score has centered target-policy row-risk
+oscillation at most one, uniformly over candidates, target policies, and
+reference PMFs. -/
+theorem fixedBrierScore_centeredTargetPolicyRowRisk_finiteOscillation_le_one
+    (candidate : CandidateIndex) (target : TargetPolicyIndex)
+    (reference : PMF PhysicalState) (predictor : FixedPredictorIndex) :
+    finiteOscillation
+        (centeredMarkovRowRisk
+          (targetPolicyKernel
+            (candidateEnvironment candidate) (targetPolicy target))
+          reference
+          (targetPolicyRowScore
+            (candidateEnvironment candidate) (targetPolicy target)
+            (fixedBrierScore predictor))) ≤ 1 := by
+  exact centered_targetPolicyRowScore_finiteOscillation_le_one
+    (candidateEnvironment candidate) (targetPolicy target) reference
+    (fixedBrierScore_mem_Icc predictor)
 
 /-- Every generated normalized control-cost score lies in the unit interval. -/
 theorem controlCostScore_mem_Icc

@@ -332,10 +332,12 @@
       `deltaRisk + deltaTransition`.
     - [x] Bind the generated fixed Brier/control-cost scores, overlap and
       `3/2` ratio cap, and certify each candidate target-kernel contraction
-      from its common uniform minorization.
-    - [ ] Add executable true-invariant, centered-risk, catalog, and numerical
-      certificates plus the initial-offset bridge, compact trace witnesses,
-      and any claimed good-event alignment.
+      from its common uniform minorization. The bounded-score adapter supplies
+      the universal centered row-risk envelope `D = 1`.
+    - [ ] Add executable true-invariant, stationary-risk, catalog, and
+      numerical certificates plus the initial-offset bridge, compact trace
+      witnesses, and any claimed good-event alignment. Sharper centered-risk
+      constants are optional numerical refinements.
     - [ ] Add a common event or preallocated catalog before selecting the
       candidate or depth from the scored path; the checked empirical theorem
       fixes both, together with its reference, score, and contraction

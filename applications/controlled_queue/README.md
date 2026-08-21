@@ -25,8 +25,9 @@ of unknown-kernel target-policy OPE.
   uniform-behavior probability and TV transfers.
 - `../../FormalSLT/Applications/ControlledQueueTargetPolicyScores.lean`:
   checked fixed Brier and control-cost scores, unit-range bounds, target-policy
-  overlap, and the exact `3/2` ratio cap. The two causal Beta predictors remain
-  outside this stationary-score interface.
+  overlap, the exact `3/2` ratio cap, and a universal centered row-risk
+  oscillation envelope `D = 1` for each fixed Brier score. The two causal Beta
+  predictors remain outside this stationary-score interface.
 - `../../FormalSLT/Applications/ControlledQueueContraction.lean`: checked
   candidate cell minorization, uniform physical-state reference, Dobrushin
   upper bounds `5/8`, `3/4`, and `7/8`, and target-policy oscillation

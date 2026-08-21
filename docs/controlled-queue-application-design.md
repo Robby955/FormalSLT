@@ -23,8 +23,10 @@ module, and SHA-256 manifests are implemented. Separate Lean modules now check
 the generated table-to-`PMF` semantics, uniform behavior policy, pointwise
 `3/2` target-to-behavior probability bound, sharp factor-two physical-row TV
 transfer, fixed Brier and control-cost score semantics, unit-range bounds, and
-history-interface overlap/ratio certificates. Generic target-policy candidate
-robustness, fixed-envelope
+history-interface overlap/ratio certificates. The bounded-score adapter also
+supplies a universal centered row-risk oscillation envelope `D = 1` for every
+generated fixed Brier score, candidate, target policy, and reference PMF.
+Generic target-policy candidate robustness, fixed-envelope
 approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE are also
 checked. A further generic theorem intersects the signed-residual OPE event
 with augmented empirical-transition confidence under the same controlled path
@@ -130,7 +132,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Action-conditioned TV transfer | `StochasticDynamics.ControlledKernelTV` | Exact shared-behavior TV decomposition; positive behavior mass gives the sharp inverse-probability row bound |
 | Generated queue row ordering | `Applications.ControlledQueueReindex` | Exact state-major/action-minor indexing and the `(S_t, A_t)` row selected by a controlled edge |
 | Typed generated queue model | `Applications.ControlledQueueTypedModel` | Exact table-backed kernel and policy PMFs, behavior mass `1/2`, target/behavior bound `3/2`, and physical-row TV at most twice augmented-row TV |
-| Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
+| Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, universal centered row-risk envelope `D = 1`, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
@@ -157,10 +159,11 @@ the generic same-path empirical-event intersection are checked. The following
 application items remain **OPEN**.
 
 1. Executable queue certificates: check exact rational true invariant and
-   stationary-risk witnesses, centered-risk bounds, fixed-only
-   prior/posterior atoms, and final numerical arithmetic. The checked uniform
-   reference already suffices for finite-depth potentials and need not be
-   invariant.
+   stationary-risk witnesses, fixed-only prior/posterior atoms, and final
+   numerical arithmetic. The checked uniform reference already suffices for
+   finite-depth potentials and need not be invariant. The universal centered
+   row-risk envelope `D = 1` is checked; sharper candidate-specific envelopes
+   remain optional numerical refinements.
 2. Trace-to-theorem instantiation: resolve the initial-observation offset,
    encode compact trace and all-row-visit witnesses, and separately prove any
    claimed good-event membership.
@@ -208,9 +211,10 @@ row ordering, table normalization and positivity, typed-PMF conversion, and
 the static probability and TV transfers. The generic same-path theorem now
 composes the risk and empirical augmented-transition events. Later application
 slices must still provide compact witnesses for counts and all-row visits,
-true invariant laws and stationary risks, centered row-risk and catalog
-certificates, trace/event alignment, selected grid membership, and final
-numerical arithmetic.
+true invariant laws and stationary risks, catalog certificates, trace/event
+alignment, selected grid membership, and final numerical arithmetic. The
+generic centered row-risk envelope `D = 1` is already checked; any sharper
+queue-specific constant remains a refinement.
 
 ### Implemented preprocessing slice
 

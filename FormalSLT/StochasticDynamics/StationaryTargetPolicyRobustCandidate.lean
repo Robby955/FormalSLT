@@ -54,6 +54,73 @@ def targetPolicyRowScore
     (score : TargetPolicyTransitionScore Z A) : MarkovTransitionScore Z :=
   fun state _nextState ↦ targetPolicyRowRisk P π score state
 
+omit [Nonempty Z] in
+/-- A target-policy row average of a `[0,1]` controlled-transition score
+remains in `[0,1]`. -/
+lemma targetPolicyRowRisk_mem_Icc
+    (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
+    {score : TargetPolicyTransitionScore Z A}
+    (hscore : ∀ state action nextState,
+      score state action nextState ∈ Set.Icc (0 : ℝ) 1)
+    (state : Z) :
+    targetPolicyRowRisk P π score state ∈ Set.Icc (0 : ℝ) 1 := by
+  classical
+  have hinner : ∀ action : A,
+      (∑ nextState : Z,
+        (P state action nextState).toReal *
+          score state action nextState) ∈ Set.Icc (0 : ℝ) 1 := by
+    intro action
+    constructor
+    · exact Finset.sum_nonneg (fun nextState _ ↦
+        mul_nonneg ENNReal.toReal_nonneg
+          (hscore state action nextState).1)
+    · calc
+        _ ≤ ∑ nextState : Z,
+            (P state action nextState).toReal * 1 :=
+          Finset.sum_le_sum (fun nextState _ ↦
+            mul_le_mul_of_nonneg_left
+              (hscore state action nextState).2 ENNReal.toReal_nonneg)
+        _ = 1 := by
+          rw [← Finset.sum_mul, finitePMF_real_mass_sum, one_mul]
+  unfold targetPolicyRowRisk
+  constructor
+  · exact Finset.sum_nonneg (fun action _ ↦
+      mul_nonneg ENNReal.toReal_nonneg (hinner action).1)
+  · calc
+      _ ≤ ∑ action : A, (π state action).toReal * 1 :=
+        Finset.sum_le_sum (fun action _ ↦
+          mul_le_mul_of_nonneg_left
+            (hinner action).2 ENNReal.toReal_nonneg)
+      _ = 1 := by
+        rw [← Finset.sum_mul, finitePMF_real_mass_sum, one_mul]
+
+omit [Nonempty Z] in
+/-- The constant-next-state row-score adapter preserves the unit interval. -/
+lemma targetPolicyRowScore_mem_Icc
+    (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
+    {score : TargetPolicyTransitionScore Z A}
+    (hscore : ∀ state action nextState,
+      score state action nextState ∈ Set.Icc (0 : ℝ) 1) :
+    ∀ state nextState,
+      targetPolicyRowScore P π score state nextState ∈ Set.Icc (0 : ℝ) 1 := by
+  intro state nextState
+  simpa [targetPolicyRowScore] using
+    targetPolicyRowRisk_mem_Icc P π hscore state
+
+/-- Unit-range target-policy scores have centered induced-row-risk
+oscillation at most one, for any reference PMF. -/
+lemma centered_targetPolicyRowScore_finiteOscillation_le_one
+    (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
+    (reference : PMF Z) {score : TargetPolicyTransitionScore Z A}
+    (hscore : ∀ state action nextState,
+      score state action nextState ∈ Set.Icc (0 : ℝ) 1) :
+    finiteOscillation
+        (centeredMarkovRowRisk (targetPolicyKernel P π) reference
+          (targetPolicyRowScore P π score)) ≤ 1 := by
+  exact centeredMarkovRowRisk_finiteOscillation_le_one
+    (targetPolicyKernel P π) reference
+    (targetPolicyRowScore_mem_Icc P π hscore)
+
 omit [Nonempty Z] [MeasurableSpace A] [MeasurableSingletonClass A] in
 /-- The row-score adapter has exactly the original target-policy row risk
 under the induced state kernel. -/

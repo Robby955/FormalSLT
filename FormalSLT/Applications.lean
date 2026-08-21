@@ -30,8 +30,10 @@ observations, and `ControlledQueueTypedModel` turns the exact rational kernel
 and policy tables into typed PMFs.  `ControlledQueueTargetPolicyScores`
 reconstructs fixed Brier scores from the generated forecast and outcome tables,
 binds the generated control-cost table, and discharges the static overlap and
-ratio-cap assumptions. `ControlledQueueContraction` certifies each candidate's
-uniform minorization and target-policy contraction factor. These modules do
-not identify a candidate with the true environment or make a theorem-produced
+ratio-cap assumptions. It also supplies the universal centered row-risk
+envelope `D = 1` for every generated fixed Brier score and every reference
+PMF. `ControlledQueueContraction` certifies each candidate's uniform
+minorization and target-policy contraction factor. These modules do not
+identify a candidate with the true environment or make a theorem-produced
 good-path claim.
 -/
