@@ -140,6 +140,7 @@ def queueEmpiricalFiniteDepthResidual
 theorem nominalCandidateGamma_eq_three_fourths :
     candidateGamma nominalCandidateIndex = (3 / 4 : ℝ) := by
   norm_num [nominalCandidateIndex, candidateGamma,
+    candidateGammaRat,
     ControlledQueueData.candidateGammaTable]
 
 /-- The fixed hypothesis catalog has twelve atoms. -/

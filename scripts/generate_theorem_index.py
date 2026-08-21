@@ -222,7 +222,7 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
         "empirical risk minimizer",
         "empirical-risk minimizer",
     ],
-    "stability": ["stability", "stable"],
+    "stability": ["stability", " stable ", "stable_", "_stable"],
     "sample statistics": [
         "samplemean",
         "samplevariance",
@@ -559,6 +559,16 @@ def main() -> int:
         assert "Rademacher" not in concepts_for(
             "finiteDobrushinCoefficient_isOscillationContraction",
             "Finite-state Markov-kernel oscillation contraction",
+            "",
+        )
+        assert "stability" not in concepts_for(
+            "candidateKernelTable_eq_massTable",
+            "Exact generated transition-kernel table identity",
+            "",
+        )
+        assert "stability" in concepts_for(
+            "expectedGeneralizationGap_le_uniformStability",
+            "Uniform stability generalization theorem",
             "",
         )
         assert "risk" not in concepts_for(

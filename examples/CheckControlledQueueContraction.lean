@@ -34,10 +34,11 @@ open FormalSLT.StochasticDynamics
 #print axioms candidateGamma_mem_Ico
 
 example : candidateGamma (0 : CandidateIndex) = 5 / 8 := by
-  norm_num [candidateGamma, candidateGammaTable]
+  norm_num [candidateGamma, candidateGammaRat, candidateGammaTable]
 
 example : candidateRefreshBase (1 : CandidateIndex) = 1 / 96 := by
-  norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable]
+  norm_num [candidateRefreshBase, candidateGamma, candidateGammaRat,
+    candidateGammaTable]
 
 example :
     finiteDobrushinCoefficient
@@ -45,6 +46,6 @@ example :
           (candidateEnvironment (1 : CandidateIndex))
           (targetPolicy (0 : TargetPolicyIndex))) ≤
       (3 / 4 : ℝ) := by
-  simpa [candidateGamma, candidateGammaTable] using
+  simpa [candidateGamma, candidateGammaRat, candidateGammaTable] using
     candidateTargetPolicyKernel_dobrushin_le_gamma
       (1 : CandidateIndex) (targetPolicy (0 : TargetPolicyIndex))

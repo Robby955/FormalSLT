@@ -342,12 +342,19 @@
       singleton tilts `1/4`, and two `1/40` budgets give a posterior/time-
       simultaneous event with complement mass at most `1/20`, conditional on
       all 48 augmented rows being visited.
-    - [ ] Add executable true invariant laws and stationary risks, numerical
-      certificates, the initial-offset bridge, compact trace witnesses, and
-      any claimed good-event alignment. The frozen config is not instantiated:
-      it has only 48 coordinate weights, includes tilt `1`, and uses a
-      five-predictor prior with causal predictors and no target-policy factor.
-      No uniqueness or numeric usefulness is currently claimed.
+    - [x] For the nominal environment, queue-threshold target-policy index `1`,
+      and nominal-model fixed-predictor index `2`, construct an explicit
+      rational 24-state invariant PMF, prove it equals the catalog's canonical
+      witness by strict-contraction uniqueness, evaluate the exact row risks,
+      and prove stationary Brier risk
+      `4338268437 / 67816493056 < 13 / 200`.
+    - [ ] Add the final numerical confidence certificates and matched
+      baselines, the initial-offset bridge, compact trace witnesses, and any
+      claimed good-event alignment. The frozen config is not instantiated: it
+      has only 48 coordinate weights, includes tilt `1`, and uses a five-
+      predictor prior with causal predictors and no target-policy factor. The
+      checked exact model risk is not a confidence endpoint or evidence of
+      frozen-path event membership.
     - [ ] Add a common event or preallocated catalog before selecting the
       candidate or depth from the scored path; the checked empirical theorem
       fixes both, together with its reference, score, and contraction

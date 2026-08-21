@@ -72,6 +72,7 @@ def test_target_policy_overlap_cap_is_exactly_three_halves() -> None:
 
 def test_queue_step_and_refresh_formula_match_the_frozen_specification() -> None:
     spec, tables = load_spec_and_tables()
+    generator.validate_candidate_kernel_compaction(tables)
     step_by_row = {
         (row["state"], row["action"]): row["next_state"]
         for row in tables["queue_step"]
@@ -95,6 +96,50 @@ def test_queue_step_and_refresh_formula_match_the_frozen_specification() -> None
                 base + (gamma if destination == step else 0)
                 for destination in range(24)
             ]
+
+
+def test_lean_render_fails_closed_on_candidate_kernel_compaction_drift() -> None:
+    _spec, tables = load_spec_and_tables()
+
+    wrong_candidate_order = deepcopy(tables)
+    wrong_candidate_order["candidate_kernels"][0:2] = reversed(
+        wrong_candidate_order["candidate_kernels"][0:2]
+    )
+
+    wrong_row_order = deepcopy(tables)
+    wrong_row_order["candidate_kernels"][0]["rows"][0:2] = reversed(
+        wrong_row_order["candidate_kernels"][0]["rows"][0:2]
+    )
+
+    wrong_exact_fraction = deepcopy(tables)
+    wrong_exact_fraction["candidate_kernels"][0]["rows"][0]["probabilities"][0] = (
+        "1/32"
+    )
+
+    noncanonical_exact_fraction = deepcopy(tables)
+    noncanonical_exact_fraction["candidate_kernels"][0]["rows"][0][
+        "probabilities"
+    ][0] = "2/128"
+
+    wrong_destination_order = deepcopy(tables)
+    probabilities = wrong_destination_order["candidate_kernels"][0]["rows"][0][
+        "probabilities"
+    ]
+    probabilities[0], probabilities[1] = probabilities[1], probabilities[0]
+
+    for drifted in (
+        wrong_candidate_order,
+        wrong_row_order,
+        wrong_exact_fraction,
+        noncanonical_exact_fraction,
+        wrong_destination_order,
+    ):
+        try:
+            generator.render_lean(drifted)
+        except generator.SchemaError:
+            pass
+        else:  # pragma: no cover
+            raise AssertionError("candidate-kernel compaction drift was accepted")
 
 
 def test_control_cost_and_overload_outcome_use_exact_frozen_formulas() -> None:

@@ -12,9 +12,9 @@ import Mathlib.Probability.Distributions.Uniform
 
 Every generated queue candidate has a common uniform-refresh component.  This
 module turns the generated table-wide cell floor into a target-policy kernel
-minorization and then into a Dobrushin upper bound.  The proof evaluates three
-candidate tables once; it does not enumerate all pairs of the twenty-four
-target-kernel rows.
+minorization and then into a Dobrushin upper bound.  The proof uses the compact
+generated persistence-weight and deterministic-destination specification; it
+does not enumerate all pairs of the twenty-four target-kernel rows.
 
 The contraction certificate holds for every state-based target policy, not
 only the four generated policies.  Equality of the Dobrushin coefficient is
@@ -144,7 +144,8 @@ one. -/
 theorem candidateGamma_mem_Ico (candidate : CandidateIndex) :
     candidateGamma candidate ∈ Set.Ico (0 : ℝ) 1 := by
   fin_cases candidate <;>
-    norm_num [candidateGamma, ControlledQueueData.candidateGammaTable]
+    norm_num [candidateGamma, candidateGammaRat,
+      ControlledQueueData.candidateGammaTable]
 
 end
 

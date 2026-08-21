@@ -759,7 +759,118 @@ def _render_nested_nat_table(table: Any, depth: int = 0) -> str:
     return str(table)
 
 
+def validate_candidate_kernel_compaction(tables: dict[str, Any]) -> None:
+    """Fail unless materialized kernel cells equal the compact Lean formula.
+
+    The JSON artifact retains all candidate-kernel cells, while the Lean
+    artifact reconstructs them from candidate gamma values and one deterministic
+    destination per state-action row.  Validate both positional contracts and
+    every exact rational before allowing that compact representation to render.
+    """
+
+    expected_rows = [
+        (source, action_id)
+        for source in range(STATE_COUNT)
+        for action_id in ACTION_IDS
+    ]
+    queue_rows = _expect_list(tables.get("queue_step"), "generated.queue_step")
+    if len(queue_rows) != len(expected_rows):
+        raise SchemaError(
+            "generated.queue_step must contain exactly "
+            f"{len(expected_rows)} state-action rows"
+        )
+
+    compact_steps: list[int] = []
+    for row_index, (row, (expected_state, expected_action)) in enumerate(
+        zip(queue_rows, expected_rows, strict=True)
+    ):
+        where = f"generated.queue_step[{row_index}]"
+        row_object = _expect_object(row, where)
+        _expect_keys(row_object, {"state", "action", "next_state"}, where)
+        _expect_exact(row_object["state"], expected_state, f"{where}.state")
+        _expect_exact(row_object["action"], expected_action, f"{where}.action")
+        next_state = _expect_int(
+            row_object["next_state"], f"{where}.next_state", minimum=0
+        )
+        if next_state >= STATE_COUNT:
+            raise SchemaError(
+                f"{where}.next_state must be below {STATE_COUNT}, got {next_state}"
+            )
+        compact_steps.append(next_state)
+
+    candidates = _expect_list(
+        tables.get("candidate_kernels"), "generated.candidate_kernels"
+    )
+    if len(candidates) != len(CANDIDATE_IDS):
+        raise SchemaError(
+            "generated.candidate_kernels must contain exactly "
+            f"{len(CANDIDATE_IDS)} candidates"
+        )
+
+    for candidate_index, (candidate, expected_id) in enumerate(
+        zip(candidates, CANDIDATE_IDS, strict=True)
+    ):
+        where = f"generated.candidate_kernels[{candidate_index}]"
+        candidate_object = _expect_object(candidate, where)
+        _expect_keys(
+            candidate_object,
+            {"id", "gamma", "uniform_mass_per_state", "rows"},
+            where,
+        )
+        _expect_exact(candidate_object["id"], expected_id, f"{where}.id")
+        gamma = parse_rational(candidate_object["gamma"], f"{where}.gamma")
+        base = (1 - gamma) / STATE_COUNT
+        uniform_mass = parse_rational(
+            candidate_object["uniform_mass_per_state"],
+            f"{where}.uniform_mass_per_state",
+        )
+        if uniform_mass != base:
+            raise SchemaError(
+                f"{where}.uniform_mass_per_state must be {rational_text(base)!r}, "
+                f"got {candidate_object['uniform_mass_per_state']!r}"
+            )
+
+        rows = _expect_list(candidate_object["rows"], f"{where}.rows")
+        if len(rows) != len(expected_rows):
+            raise SchemaError(
+                f"{where}.rows must contain exactly {len(expected_rows)} rows"
+            )
+        for row_index, (row, (expected_state, expected_action), step) in enumerate(
+            zip(rows, expected_rows, compact_steps, strict=True)
+        ):
+            row_where = f"{where}.rows[{row_index}]"
+            row_object = _expect_object(row, row_where)
+            _expect_keys(
+                row_object, {"state", "action", "probabilities"}, row_where
+            )
+            _expect_exact(
+                row_object["state"], expected_state, f"{row_where}.state"
+            )
+            _expect_exact(
+                row_object["action"], expected_action, f"{row_where}.action"
+            )
+            probabilities = _expect_list(
+                row_object["probabilities"], f"{row_where}.probabilities"
+            )
+            if len(probabilities) != STATE_COUNT:
+                raise SchemaError(
+                    f"{row_where}.probabilities must contain exactly "
+                    f"{STATE_COUNT} destinations"
+                )
+            for destination, probability in enumerate(probabilities):
+                cell_where = f"{row_where}.probabilities[{destination}]"
+                actual = parse_rational(probability, cell_where)
+                expected = base + (gamma if destination == step else 0)
+                if actual != expected:
+                    raise SchemaError(
+                        f"{cell_where} must be {rational_text(expected)!r} from "
+                        "candidate gamma and candidateKernelStep, "
+                        f"got {probability!r}"
+                    )
+
+
 def render_lean(tables: dict[str, Any]) -> bytes:
+    validate_candidate_kernel_compaction(tables)
     coordinates = [f"({row['queue']}, {row['regime']})" for row in tables["states"]]
     action_names = [_lean_string(row["id"]) for row in tables["actions"]]
     services = [str(row["service_capacity"]) for row in tables["actions"]]
@@ -773,12 +884,11 @@ def render_lean(tables: dict[str, Any]) -> bytes:
             row["next_state"] for row in tables["queue_step"] if row["state"] == source
         ]
         queue_steps.append(source_rows)
+    candidate_kernel_steps = [
+        f"({row['next_state']} : Fin 24)" for row in tables["queue_step"]
+    ]
     candidate_names = [_lean_string(row["id"]) for row in tables["candidate_kernels"]]
     candidate_gammas = [row["gamma"] for row in tables["candidate_kernels"]]
-    kernel_table = [
-        [row["probabilities"] for row in candidate["rows"]]
-        for candidate in tables["candidate_kernels"]
-    ]
     policy_names = [_lean_string(policy["id"]) for policy in tables["policies"]]
     policy_table = [
         [row["probabilities"] for row in policy["rows"]]
@@ -879,9 +989,22 @@ def candidateNames : List String := {_render_list(candidate_names)}
 /-- Candidate persistence parameters. -/
 def candidateGammaTable : List ℚ := {_render_nested_rational_table(candidate_gammas)}
 
-/-- Exact candidate kernels, indexed by candidate, state-action row, and next state. -/
+/-- Deterministic persistence destination in state-action row order. -/
+def candidateKernelStepByRow : List (Fin 24) :=
+  {_render_list(candidate_kernel_steps)}
+
+/-- One refresh-mixture row with persistence mass at `nextState`. -/
+def candidateKernelRow (gamma : ℚ) (nextState : Fin 24) : List ℚ :=
+  List.ofFn fun destination : Fin 24 ↦
+    (1 - gamma) / 24 + if destination = nextState then gamma else 0
+
+/-- Exact candidate kernels, indexed by candidate, state-action row, and next
+state.  The Lean representation uses the frozen refresh-mixture formula; the
+companion JSON artifact retains every materialized rational cell. -/
 def candidateKernelTable : List (List (List ℚ)) :=
-  {_render_nested_rational_table(kernel_table)}
+  candidateGammaTable.map fun gamma ↦
+    candidateKernelStepByRow.map fun nextState ↦
+      candidateKernelRow gamma nextState
 
 /-- Behavior policy followed by the four target-policy identifiers. -/
 def policyNames : List String := {_render_list(policy_names)}

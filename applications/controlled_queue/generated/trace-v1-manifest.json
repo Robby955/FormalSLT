@@ -32,7 +32,7 @@
   "generator_dependencies": [
     {
       "path": "scripts/generate_controlled_queue_model.py",
-      "sha256": "7cf247a424a8ad7c2e59c8847c2a0853aa4a3a724812694b7e0ae5b15bcc024b"
+      "sha256": "381296e800f3d7a802f5889c2d53235a02b1fe39adc3d19e679d5d9f7a0eb9dc"
     }
   ],
   "independent_verifier": {

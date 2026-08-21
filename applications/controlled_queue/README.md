@@ -1,7 +1,7 @@
 # Controlled queue preprocessing
 
-Status: **PREPROCESSING AND LOCAL FIXED-CATALOG EVENT CHECKED** /
-**TRACE AND NUMERICAL CERTIFICATES OPEN**
+Status: **PREPROCESSING, LOCAL FIXED-CATALOG EVENT, AND ONE EXACT
+INVARIANT/RISK ATOM CHECKED** / **TRACE-ALIGNED CONFIDENCE CERTIFICATE OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -37,6 +37,10 @@ of unknown-kernel target-policy OPE.
   checked 12-atom catalog obtained from four fixed target policies and three
   fixed Brier predictors, together with its fixed-nominal-candidate empirical
   finite-depth OPE event.
+- `../../FormalSLT/Applications/ControlledQueueInvariantRisk.lean`: locally
+  checked explicit 24-state invariant PMF for the nominal environment and
+  queue-threshold target policy, its equality to the catalog's canonical
+  invariant witness, and the exact nominal-model overload Brier risk.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -77,8 +81,10 @@ The binary stores `state_t` and `action_t` separately. FormalSLT's
 `ControlledObservation Z A` is represented as `A × Z`, while the generated
 model's 48 rows use state-major indices `2 * state + action`.
 `ControlledQueueReindex` proves the required swap, index equivalence, and
-controlled-edge row selection. `ControlledQueueTypedModel` reads the generated
-kernel and policy tables into typed PMFs with exact mass identities.
+controlled-edge row selection. `ControlledQueueTypedModel` constructs typed
+PMFs from the generated compact persistence/destination kernel specification
+and policy table, and proves that each candidate mass equals the corresponding
+exported generated-table lookup.
 `ControlledQueueTargetPolicyScores` reconstructs the three fixed Brier scores
 from the generated forecast and outcome tables and types the generated
 control-cost score. `ControlledQueueContraction` lifts each generated
@@ -96,11 +102,26 @@ PMF and time `n >= 2`; its normalized bound at the displayed time assumes all
 48 augmented source rows were visited.
 
 The uniform reference is not asserted invariant, and `alpha = 3/4` is an upper
-bound rather than an exact Dobrushin coefficient. This theorem does not prove
-named-trace or good-event membership, resolve the initial-observation offset,
-compute an explicit stationary law or stationary risk, prove uniqueness,
-select the candidate or depth from data, or establish a numerically useful
-endpoint.
+bound rather than an exact Dobrushin coefficient. The catalog event theorem
+does not prove named-trace or good-event membership, resolve the
+initial-observation offset, select the candidate or depth from data, or
+establish a numerically useful confidence endpoint.
+
+Separately, `ControlledQueueInvariantRisk` fixes target-policy index `1`
+(queue-threshold) and fixed-predictor index `2` (nominal-model overload) under
+the nominal candidate. It constructs an explicit rational 24-state invariant
+PMF, proves invariance, and uses strict Dobrushin contraction to identify that
+PMF with the catalog's canonical noncomputable witness. Its exact stationary
+Brier risk is
+
+```text
+4338268437 / 67816493056 < 13 / 200
+```
+
+This exact risk is a deterministic known-model calculation. It does not use
+the frozen trace and is not a confidence bound, a good-event membership proof,
+an unknown-kernel result, or permission for post-data policy, predictor,
+candidate, or depth selection.
 
 The theorem deliberately does not instantiate the weight tables in
 `trace-v1.json`: that file supplies only 48 coordinate weights, while the

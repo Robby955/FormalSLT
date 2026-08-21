@@ -6,16 +6,18 @@ Authors: Robby Sneiderman
 
 import FormalSLT.Applications.ControlledQueueReindex
 import FormalSLT.StochasticDynamics.ControlledKernelTV
+import Mathlib.Data.List.OfFn
 import Mathlib.Data.Rat.Cast.Order
 
 /-!
 # Typed controlled-queue model
 
-This module turns the generated exact rational kernel and policy tables into
-finite `PMF` objects.  The conversion is direct: every mass is read from
-`candidateKernelTable` or `policyTable`, with proof-carrying bounds for every
-nested `List.get`.  There is no default value and no reconstructed copy of the
-queue model.
+This module turns the generated exact rational kernel specification and policy
+table into finite `PMF` objects.  Candidate masses use the generated
+persistence weights and deterministic destinations in the same refresh-mixture
+formula that defines `candidateKernelTable`; policy masses use proof-carrying
+`List.get` bounds.  There is no default value or independent copy of the queue
+model.
 
 The generated kernel rows are state-major/action-minor, while controlled
 observations are action--state pairs.  For a transition
@@ -49,10 +51,14 @@ abbrev CandidateIndex := Fin 3
 private theorem candidateGammaTable_length :
     candidateGammaTable.length = 3 := rfl
 
+/-- Exact rational persistence weight of a generated candidate environment. -/
+def candidateGammaRat (candidate : CandidateIndex) : ℚ :=
+  candidateGammaTable.get
+    (Fin.cast candidateGammaTable_length.symm candidate)
+
 /-- Exact persistence weight of a generated candidate environment. -/
 def candidateGamma (candidate : CandidateIndex) : ℝ :=
-  (candidateGammaTable.get
-    (Fin.cast candidateGammaTable_length.symm candidate) : ℝ)
+  (candidateGammaRat candidate : ℝ)
 
 /-- Common uniform-refresh mass in every next-state cell of a candidate. -/
 def candidateRefreshBase (candidate : CandidateIndex) : ℝ :=
@@ -71,33 +77,40 @@ def behaviorPolicyIndex : PolicyIndex := 0
 def targetPolicyTableIndex (target : TargetPolicyIndex) : PolicyIndex :=
   ⟨target.val + 1, by omega⟩
 
-private theorem candidateKernelTable_length :
-    candidateKernelTable.length = 3 := rfl
+private theorem candidateKernelStepByRow_length :
+    candidateKernelStepByRow.length = 48 := rfl
 
-private abbrev candidateRows (candidate : CandidateIndex) : List (List ℚ) :=
-  candidateKernelTable.get
-    (Fin.cast candidateKernelTable_length.symm candidate)
+/-- Deterministic persistence destination of a generated state-action row. -/
+def candidateKernelStep (row : Fin 48) : PhysicalState :=
+  candidateKernelStepByRow.get
+    (Fin.cast candidateKernelStepByRow_length.symm row)
 
-private theorem candidateRows_length (candidate : CandidateIndex) :
-    (candidateRows candidate).length = 48 := by
-  fin_cases candidate <;> rfl
+/-- Deterministic persistence destination indexed directly by physical state
+and action.  This is the generated row accessor after the explicit
+state-major/action-minor encoding. -/
+def candidateKernelStepStateAction
+    (state : PhysicalState) (action : Action) : PhysicalState :=
+  candidateKernelStepByRow.get
+    (Fin.cast candidateKernelStepByRow_length.symm
+      ⟨2 * state.val + action.val, by omega⟩)
 
-private abbrev candidateRow
-    (candidate : CandidateIndex) (row : Fin 48) : List ℚ :=
-  (candidateRows candidate).get
-    (Fin.cast (candidateRows_length candidate).symm row)
-
-private theorem candidateRow_length
-    (candidate : CandidateIndex) (row : Fin 48) :
-    (candidateRow candidate row).length = 24 := by
-  fin_cases candidate <;> fin_cases row <;> rfl
+@[simp]
+theorem candidateKernelStep_stateActionRowEquiv
+    (state : PhysicalState) (action : Action) :
+    candidateKernelStep (stateActionRowEquiv (state, action)) =
+      candidateKernelStepStateAction state action := by
+  unfold candidateKernelStep candidateKernelStepStateAction
+  congr 1
+  apply Fin.ext
+  exact stateActionRowEquiv_apply_val state action
 
 /-- Exact rational mass in a generated candidate environment row. -/
 def candidateKernelTableMass
     (candidate : CandidateIndex) (row : Fin 48)
     (nextState : PhysicalState) : ℚ :=
-  (candidateRow candidate row).get
-    (Fin.cast (candidateRow_length candidate row).symm nextState)
+  (1 - candidateGammaRat candidate) / 24 +
+    if nextState = candidateKernelStep row then
+      candidateGammaRat candidate else 0
 
 private theorem policyTable_length : policyTable.length = 5 := rfl
 
@@ -124,52 +137,51 @@ def policyTableMass
   (policyRow policy state).get
     (Fin.cast (policyRow_length policy state).symm action)
 
-private theorem candidateRows_all_pos_0 :
-    ∀ row ∈ candidateRows (0 : CandidateIndex),
-      ∀ mass ∈ row, 0 < mass := by
-  norm_num [candidateRows, candidateKernelTable]
+private theorem candidateGammaRat_mem_Ico (candidate : CandidateIndex) :
+    0 ≤ candidateGammaRat candidate ∧ candidateGammaRat candidate < 1 := by
+  fin_cases candidate <;>
+    norm_num [candidateGammaRat, candidateGammaTable]
 
-private theorem candidateRows_all_pos_1 :
-    ∀ row ∈ candidateRows (1 : CandidateIndex),
-      ∀ mass ∈ row, 0 < mass := by
-  norm_num [candidateRows, candidateKernelTable]
+@[simp]
+theorem candidateKernelTableMass_eq_refreshMixture
+    (candidate : CandidateIndex) (row : Fin 48)
+    (nextState : PhysicalState) :
+    candidateKernelTableMass candidate row nextState =
+      (1 - candidateGammaRat candidate) / 24 +
+        if nextState = candidateKernelStep row then
+          candidateGammaRat candidate else 0 := rfl
 
-private theorem candidateRows_all_pos_2 :
-    ∀ row ∈ candidateRows (2 : CandidateIndex),
-      ∀ mass ∈ row, 0 < mass := by
-  norm_num [candidateRows, candidateKernelTable]
+private theorem candidateGammaTable_eq_ofFn :
+    candidateGammaTable = List.ofFn candidateGammaRat := by
+  change candidateGammaTable = List.ofFn candidateGammaTable.get
+  exact (List.ofFn_get candidateGammaTable).symm
 
-private theorem candidateRows_all_pos
-    (candidate : CandidateIndex) :
-    ∀ row ∈ candidateRows candidate, ∀ mass ∈ row, 0 < mass := by
-  fin_cases candidate
-  · exact candidateRows_all_pos_0
-  · exact candidateRows_all_pos_1
-  · exact candidateRows_all_pos_2
-
-private theorem candidateRows_ge_refreshBase_0 :
-    ∀ row ∈ candidateRows (0 : CandidateIndex),
-      ∀ mass ∈ row, (1 / 64 : ℚ) ≤ mass := by
-  norm_num [candidateRows, candidateKernelTable]
-
-private theorem candidateRows_ge_refreshBase_1 :
-    ∀ row ∈ candidateRows (1 : CandidateIndex),
-      ∀ mass ∈ row, (1 / 96 : ℚ) ≤ mass := by
-  norm_num [candidateRows, candidateKernelTable]
-
-private theorem candidateRows_ge_refreshBase_2 :
-    ∀ row ∈ candidateRows (2 : CandidateIndex),
-      ∀ mass ∈ row, (1 / 192 : ℚ) ≤ mass := by
-  norm_num [candidateRows, candidateKernelTable]
+/-- The exported generated candidate table is exactly the three-dimensional
+table obtained from the typed mass accessor.  This is the Lean-side bridge
+between the compact generated specification and the PMF construction below. -/
+theorem candidateKernelTable_eq_massTable :
+    candidateKernelTable =
+      List.ofFn fun candidate : CandidateIndex ↦
+        List.ofFn fun row : Fin 48 ↦
+          List.ofFn fun nextState : PhysicalState ↦
+            candidateKernelTableMass candidate row nextState := by
+  rw [candidateKernelTable, candidateGammaTable_eq_ofFn, List.map_ofFn]
+  congr 1
 
 /-- Every generated candidate-kernel entry is strictly positive. -/
 theorem candidateKernelTableMass_pos
     (candidate : CandidateIndex) (row : Fin 48)
     (nextState : PhysicalState) :
     0 < candidateKernelTableMass candidate row nextState := by
-  exact candidateRows_all_pos candidate
-    (candidateRow candidate row) (List.get_mem _ _)
-    (candidateKernelTableMass candidate row nextState) (List.get_mem _ _)
+  rw [candidateKernelTableMass_eq_refreshMixture]
+  have hgamma := candidateGammaRat_mem_Ico candidate
+  have hbase : 0 < (1 - candidateGammaRat candidate) / 24 := by
+    exact div_pos (sub_pos.mpr hgamma.2) (by norm_num)
+  by_cases h : nextState = candidateKernelStep row
+  · simp only [h, ↓reduceIte]
+    linarith [hgamma.1]
+  · simp only [h, ↓reduceIte]
+    simpa only [add_zero] using hbase
 
 /-- Every generated candidate cell contains at least its common uniform-refresh
 mass.  This table-wide certificate is the application-side input to the
@@ -179,89 +191,35 @@ theorem candidateRefreshBase_le_candidateKernelTableMass
     (nextState : PhysicalState) :
     candidateRefreshBase candidate ≤
       (candidateKernelTableMass candidate row nextState : ℝ) := by
-  fin_cases candidate
-  · have hrat : (1 / 64 : ℚ) ≤
-        candidateKernelTableMass (0 : CandidateIndex) row nextState :=
-      candidateRows_ge_refreshBase_0
-        (candidateRow (0 : CandidateIndex) row) (List.get_mem _ _)
-        (candidateKernelTableMass (0 : CandidateIndex) row nextState)
-        (List.get_mem _ _)
-    have hreal : ((1 / 64 : ℚ) : ℝ) ≤
-        (candidateKernelTableMass (0 : CandidateIndex) row nextState : ℝ) := by
-      exact_mod_cast hrat
-    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable] at ⊢
-    norm_num at hreal
-    exact hreal
-  · have hrat : (1 / 96 : ℚ) ≤
-        candidateKernelTableMass (1 : CandidateIndex) row nextState :=
-      candidateRows_ge_refreshBase_1
-        (candidateRow (1 : CandidateIndex) row) (List.get_mem _ _)
-        (candidateKernelTableMass (1 : CandidateIndex) row nextState)
-        (List.get_mem _ _)
-    have hreal : ((1 / 96 : ℚ) : ℝ) ≤
-        (candidateKernelTableMass (1 : CandidateIndex) row nextState : ℝ) := by
-      exact_mod_cast hrat
-    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable] at ⊢
-    norm_num at hreal
-    exact hreal
-  · have hrat : (1 / 192 : ℚ) ≤
-        candidateKernelTableMass (2 : CandidateIndex) row nextState :=
-      candidateRows_ge_refreshBase_2
-        (candidateRow (2 : CandidateIndex) row) (List.get_mem _ _)
-        (candidateKernelTableMass (2 : CandidateIndex) row nextState)
-        (List.get_mem _ _)
-    have hreal : ((1 / 192 : ℚ) : ℝ) ≤
-        (candidateKernelTableMass (2 : CandidateIndex) row nextState : ℝ) := by
-      exact_mod_cast hrat
-    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable] at ⊢
-    norm_num at hreal
-    exact hreal
+  have hrat : (1 - candidateGammaRat candidate) / 24 ≤
+      candidateKernelTableMass candidate row nextState := by
+    rw [candidateKernelTableMass_eq_refreshMixture]
+    by_cases h : nextState = candidateKernelStep row
+    · simp only [h, ↓reduceIte]
+      linarith [(candidateGammaRat_mem_Ico candidate).1]
+    · simp [h]
+  unfold candidateRefreshBase candidateGamma
+  exact_mod_cast hrat
 
 /-- The persistence weight and total common uniform-refresh mass partition one row. -/
 theorem twentyFour_mul_candidateRefreshBase_add_gamma
-    (candidate : CandidateIndex) :
+  (candidate : CandidateIndex) :
     24 * candidateRefreshBase candidate + candidateGamma candidate = 1 := by
   fin_cases candidate <;>
-    norm_num [candidateRefreshBase, candidateGamma, candidateGammaTable]
-
-private theorem candidateRows_sum_one_0 :
-    ∀ row ∈ candidateRows (0 : CandidateIndex), row.sum = 1 := by
-  norm_num [candidateRows, candidateKernelTable]
-
-private theorem candidateRows_sum_one_1 :
-    ∀ row ∈ candidateRows (1 : CandidateIndex), row.sum = 1 := by
-  norm_num [candidateRows, candidateKernelTable]
-
-private theorem candidateRows_sum_one_2 :
-    ∀ row ∈ candidateRows (2 : CandidateIndex), row.sum = 1 := by
-  norm_num [candidateRows, candidateKernelTable]
-
-private theorem candidateRows_sum_one (candidate : CandidateIndex) :
-    ∀ row ∈ candidateRows candidate, row.sum = 1 := by
-  fin_cases candidate
-  · exact candidateRows_sum_one_0
-  · exact candidateRows_sum_one_1
-  · exact candidateRows_sum_one_2
-
-private theorem sum_get_cast_eq_sum
-    (xs : List ℚ) {n : ℕ} (h : xs.length = n) :
-    (∑ i : Fin n, xs.get (Fin.cast h.symm i)) = xs.sum := by
-  subst n
-  simp
+    norm_num [candidateRefreshBase, candidateGamma, candidateGammaRat,
+      candidateGammaTable]
 
 private theorem candidateKernelTableMass_sum_one_rat
     (candidate : CandidateIndex) (row : Fin 48) :
     ∑ nextState : PhysicalState,
       candidateKernelTableMass candidate row nextState = 1 := by
-  calc
-    ∑ nextState : PhysicalState,
-        candidateKernelTableMass candidate row nextState =
-        (candidateRow candidate row).sum := by
-          simpa only [candidateKernelTableMass] using
-            sum_get_cast_eq_sum (candidateRow candidate row)
-              (candidateRow_length candidate row)
-    _ = 1 := candidateRows_sum_one candidate
-      (candidateRow candidate row) (List.get_mem _ _)
+  simp_rw [candidateKernelTableMass_eq_refreshMixture]
+  rw [Finset.sum_add_distrib]
+  simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul]
+  rw [Finset.sum_ite_eq']
+  simp
+  ring
 
 /-- Every generated candidate-kernel row has exact real mass one. -/
 theorem candidateKernelTableMass_sum_one
@@ -366,7 +324,8 @@ theorem policyTableMass_sum_one
   · exact policyTableMass_sum_one_3 state
   · exact policyTableMass_sum_one_4 state
 
-/-- Typed environment kernel read directly from one generated candidate table. -/
+/-- Typed environment kernel whose masses are identified with the exported
+generated candidate table by `candidateKernelTable_eq_massTable`. -/
 noncomputable def candidateEnvironment
     (candidate : CandidateIndex) :
     PhysicalState → Action → PMF PhysicalState :=

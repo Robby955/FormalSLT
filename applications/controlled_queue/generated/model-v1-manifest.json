@@ -14,13 +14,13 @@
     {
       "path": "FormalSLT/Applications/ControlledQueueData.lean",
       "role": "output",
-      "sha256": "8b3785c84183326270643bee6320ecd0aa7834fa84438512e56765c1996d51d7"
+      "sha256": "92067ab2b14ce57714d1f7f6427768562061a6ef4a5e422b9389b27cc132e0a9"
     }
   ],
   "generator": {
     "path": "scripts/generate_controlled_queue_model.py",
     "revision": "controlled-queue-preprocess-v1",
-    "sha256": "7cf247a424a8ad7c2e59c8847c2a0853aa4a3a724812694b7e0ae5b15bcc024b"
+    "sha256": "381296e800f3d7a802f5889c2d53235a02b1fe39adc3d19e679d5d9f7a0eb9dc"
   },
   "model_version": "controlled-queue-v1",
   "nonclaims": [

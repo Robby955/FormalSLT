@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 228,
-    "library_and_example_lean_lines": 148361,
-    "library_lean_lines": 118814,
-    "library_modules": 272,
-    "theorem_map_entries": 1061
+    "example_lean_files": 229,
+    "library_and_example_lean_lines": 146200,
+    "library_lean_lines": 116595,
+    "library_modules": 273,
+    "theorem_map_entries": 1070
   },
   "theorem_families": [
     {
@@ -4996,6 +4996,59 @@
       "entries": [
         {
           "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThresholdStationaryMass_isPMF",
+          "summary": "Checks that the explicit 24-entry rational mass vector is nonnegative and sums to one"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThresholdStationaryLaw_apply_toReal",
+          "summary": "Identifies every real-valued mass of the constructed PMF with its exact rational table entry"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThresholdNominalTargetKernel_apply_toReal",
+          "summary": "Evaluates the nominal environment under target-policy index 1 as an exact 24-state rational kernel"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThresholdStationaryLaw_isInvariant",
+          "summary": "Proves the explicit PMF invariant for the nominal candidate and queue-threshold target policy"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThresholdStationaryLaw_eq_catalogStationary",
+          "summary": "Uses strict Dobrushin contraction to identify the explicit PMF with the canonical noncomputable invariant witness for the corresponding catalog atom"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThreshold_nominalModelOverload_rowRisk",
+          "summary": "Evaluates the exact one-step Brier row-risk vector for target-policy index 1 and fixed-predictor index 2"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThreshold_nominalModelOverload_stationaryRisk",
+          "summary": "Proves that the explicit stationary Brier risk is exactly 4338268437 / 67816493056, hence below 13/200"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueInvariantRisk",
+          "name": "queueThreshold_nominalModelOverload_catalogStationaryRisk",
+          "summary": "Rewrites the same exact risk through the canonical invariant witness and score stored in the twelve-atom catalog"
+        }
+      ],
+      "name": "Controlled-queue explicit invariant law and stationary risk"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
           "module": "Applications.ControlledQueueTargetPolicyScores",
           "name": "fixedBrierScore_eq_squaredError",
           "summary": "Identifies each of the three fixed queue predictors with squared error against the generated binary overload outcome"
@@ -5038,8 +5091,14 @@
         {
           "kind": "theorem",
           "module": "Applications.ControlledQueueTypedModel",
+          "name": "candidateKernelTable_eq_massTable",
+          "summary": "Identifies the complete exported generated candidate table with the three-dimensional table obtained from the compact typed refresh-mixture mass accessor"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueTypedModel",
           "name": "candidateRefreshBase_le_candidateKernelTableMass",
-          "summary": "Checks once per generated candidate that every literal kernel cell contains the declared common uniform-refresh mass"
+          "summary": "Derives from the generated refresh-mixture specification that every candidate-kernel cell contains the declared common uniform-refresh mass"
         },
         {
           "kind": "theorem",

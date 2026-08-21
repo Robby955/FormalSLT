@@ -6,14 +6,14 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C127-brightgreen.svg)](#checked-surfaces)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-272-blue.svg)](#module-map)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-148%2C361-brightgreen.svg)](#audit-commands)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C138-brightgreen.svg)](#checked-surfaces)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-273-blue.svg)](#module-map)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-146%2C200-brightgreen.svg)](#audit-commands)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#audit-commands)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#audit-commands)
 
 The Lean-line badge follows the repository-wide library-plus-examples count.
-That total includes the 8,556-line generated
+That total includes the 4,867-line generated
 `FormalSLT/Applications/ControlledQueueData.lean` exact-table module; those
 lines are generated definitions and data, not hand-written theorem source.
 
@@ -231,10 +231,14 @@ umbrella. The queue layer now includes typed generated kernels and policies,
 bounded fixed scores, overlap and ratio certificates, a universal centered
 row-risk envelope `D = 1`, candidate target-kernel contraction, canonical
 finite-state invariant witnesses, and a fixed-nominal-candidate twelve-atom
-OPE event. The latter uses a fresh full-support transition-coordinate prior
-and requires every augmented row to be visited; frozen-trace membership,
-trace alignment, explicit stationary risks, candidate/depth selection, and a
-final numerical certificate remain open.
+OPE event. For the nominal environment, queue-threshold target-policy index `1`,
+and nominal-model fixed-predictor index `2`, a separate checked module gives an
+explicit 24-state invariant PMF, proves equality to the canonical catalog
+witness, and evaluates stationary Brier risk exactly as
+`4338268437 / 67816493056 < 13 / 200`. The event theorem uses a fresh
+full-support transition-coordinate prior and requires every augmented row to
+be visited; frozen-trace membership, trace alignment, candidate/depth
+selection, and a final numerical confidence certificate remain open.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 

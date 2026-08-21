@@ -1,7 +1,7 @@
 # Controlled queue application design
 
-Status: **FIXED 12-ATOM QUEUE OPE EVENT CHECKED LOCALLY** /
-**TRACE AND NUMERICAL CERTIFICATES OPEN**
+Status: **FIXED 12-ATOM QUEUE OPE EVENT AND ONE EXACT INVARIANT/RISK ATOM
+CHECKED LOCALLY** / **TRACE-ALIGNED CONFIDENCE CERTIFICATE OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -44,9 +44,15 @@ and `C = 3/2`. Fresh uniform full-support priors cover the 12 hypotheses and
 4,608 augmented transition coordinates; singleton risk and transition tilts
 are both `1/4`, and budgets `1/40` plus `1/40` give complement mass at most
 `1/20`. The event is simultaneous over posterior PMFs and time, under positive
-visits to all 48 augmented source rows at the displayed time. The frozen trace
-is still preprocessing: it is not a theorem-produced good path, Lean-verified
-trace, or numerical application certificate.
+visits to all 48 augmented source rows at the displayed time. A separate
+deterministic module fixes target-policy index `1` (queue-threshold) and
+fixed-predictor index `2` (nominal-model overload) under the nominal candidate.
+It constructs an explicit 24-state rational invariant PMF, identifies it with
+the corresponding catalog witness by strict-contraction uniqueness, and proves
+the exact stationary Brier risk
+`4338268437 / 67816493056 < 13 / 200`. The frozen trace is still preprocessing:
+it is not a theorem-produced good path, Lean-verified trace, or confidence
+certificate.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -145,6 +151,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Queue target-policy scores | `Applications.ControlledQueueTargetPolicyScores` | Fixed Brier scores reconstructed from generated forecasts/outcomes, generated control cost, unit-range bounds, universal centered row-risk envelope `D = 1`, overlap, and exact ratio cap `3/2`; causal Beta predictors excluded |
 | Queue candidate contraction | `Applications.ControlledQueueContraction` | Table-backed common uniform minorization and induced target-policy Dobrushin upper bounds `5/8`, `3/4`, and `7/8`; the uniform reference is not claimed invariant |
 | Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
+| Explicit queue invariant/risk atom | `Applications.ControlledQueueInvariantRisk` | Explicit 24-state rational invariant PMF for nominal `Q` and target-policy index `1`, equality to the canonical catalog witness by strict-contraction uniqueness, exact row risks for fixed-predictor index `2`, and stationary Brier risk `4338268437 / 67816493056 < 13 / 200` |
 | Known-environment target-policy OPE | `StochasticDynamics.StationaryTargetPolicyOPE` | Supplied invariant laws and exact Poisson potentials |
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
 | Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
@@ -166,14 +173,17 @@ The typed queue-table instantiation, sharp factor-two deterministic row-TV
 transfer, target-policy scores and overlap, candidate target-kernel
 contraction, target-policy robustness, approximate and finite-depth OPE,
 generic same-path empirical-event intersection, and fixed 12-atom queue event
-are checked. The following application items remain **OPEN**.
+are checked. One executable known-model atom is also checked: the explicit
+queue-threshold/nominal-model invariant law equals its canonical catalog
+witness, and its stationary Brier risk is exactly
+`4338268437 / 67816493056 < 13 / 200`. The following application items remain
+**OPEN**.
 
-1. Executable queue certificates: compute exact rational true invariant laws
-   and stationary risks and perform final numerical arithmetic. The checked
-   canonical invariant witnesses are noncomputable; the uniform reference
-   already suffices for finite-depth potentials and is not claimed invariant.
-   The universal centered row-risk envelope `D = 1` is checked; sharper
-   candidate-specific envelopes remain optional numerical refinements.
+1. Final numerical confidence certificates and matched baselines: instantiate
+   a useful known-kernel theorem endpoint and determine whether any empirical-
+   kernel endpoint is informative on the same declared inputs. The exact model
+   risk above is not itself a confidence bound. Additional explicit invariant
+   laws or risks are needed only for other catalog atoms that are reported.
 2. Trace-to-theorem instantiation: resolve the initial-observation offset,
    encode compact trace and all-row-visit witnesses, and separately prove any
    claimed good-event membership.
@@ -184,9 +194,10 @@ are checked. The following application items remain **OPEN**.
 
 Until those steps close, the fixed queue event is checked but the controlled
 queue's end-to-end unknown-dynamics numerical certificate remains open. No
-named path or good-event membership, initial-offset bridge, explicit stationary
-risk, uniqueness, data-selected candidate or depth, or numeric usefulness is
-claimed.
+named path or good-event membership, initial-offset bridge, data-selected
+candidate or depth, or numerical confidence usefulness is claimed. The one
+explicit invariant/risk atom is a deterministic known-model theorem and is not
+evidence for any of those claims.
 
 ## Frozen input and generator contract
 
@@ -234,9 +245,11 @@ the static probability and TV transfers. The queue application now composes
 the risk and empirical augmented-transition events for the fixed 12-atom
 catalog and uses canonical noncomputable true invariant witnesses. Later
 application slices must still provide compact witnesses for counts and all-row
-visits, executable invariant laws and stationary risks, trace/event alignment,
-and final numerical arithmetic. The generic centered row-risk envelope `D = 1`
-is already checked; any sharper queue-specific constant remains a refinement.
+visits, any further invariant/risk receipts needed for reported atoms,
+trace/event alignment, and final numerical confidence arithmetic. One explicit
+invariant law and stationary risk is now checked for the queue-threshold/
+nominal-model atom. The generic centered row-risk envelope `D = 1` is already
+checked; any sharper queue-specific constant remains a refinement.
 
 ### Implemented preprocessing slice
 
@@ -280,8 +293,10 @@ The binary stores physical states and actions as separate arrays. FormalSLT's
 `ControlledObservation Z A` is `A × Z`, while the generated augmented-kernel
 rows use state-major `(Z, A)` indexing. `ControlledQueueReindex` now proves the
 swap, index equivalence, and controlled-edge row selection.
-`ControlledQueueTypedModel` reads the generated kernel and policy tables into
-typed PMFs with exact mass identities. `ControlledQueueTargetPolicyScores`
+`ControlledQueueTypedModel` constructs typed PMFs from the generated compact
+persistence/destination kernel specification and policy table, and identifies
+each candidate mass with the corresponding exported generated-table lookup.
+`ControlledQueueTargetPolicyScores`
 turns the three fixed predictors and the generated control cost into bounded
 target-policy scores and closes the static overlap and `3/2` ratio premises.
 `ControlledQueueContraction` checks the candidate cell floors and turns them
@@ -289,6 +304,9 @@ into target-policy contraction factors. `ControlledQueueOPECatalog` fixes the
 12 stationary hypotheses and supplies the same-path empirical event with
 canonical noncomputable true invariant witnesses. None of these bridges imports
 the frozen trace or proves membership in the resulting event.
+`ControlledQueueInvariantRisk` separately supplies the explicit nominal
+queue-threshold invariant PMF and exact nominal-model overload risk for one
+catalog atom, without making a trace or confidence statement.
 The causal Beta predictors remain dynamic behavior-encountered scores. They
 are not fixed stationary target-policy scores without augmenting the state by
 learner memory and proving the corresponding stationary theorem.
@@ -301,8 +319,9 @@ A future use must therefore condition on and score an explicitly indexed
 suffix beginning at the realized first pair, or prove a random-initial
 controlled-law bridge. No direct full-trace horizon alignment is claimed.
 
-This slice still does not check an explicit true invariant law or stationary
-risk, trace-aligned final bounds, or good-event membership. Those are later
+The application now checks one explicit true invariant law and stationary risk
+for the nominal queue-threshold/nominal-model atom. It still does not check
+trace-aligned final bounds or good-event membership. Those remain later
 model-to-theorem and certificate slices, not preprocessing claims.
 
 ## Matched comparison contract

@@ -19,6 +19,9 @@ open FormalSLT.StochasticDynamics
 #check TargetPolicyIndex
 #check behaviorPolicyIndex
 #check targetPolicyTableIndex
+#check candidateGammaRat
+#check candidateKernelStep
+#check candidateKernelStepStateAction
 #check candidateKernelTableMass
 #check policyTableMass
 #check candidateEnvironment
@@ -27,6 +30,9 @@ open FormalSLT.StochasticDynamics
 #check targetPolicy
 
 #check candidateKernelTableMass_pos
+#check candidateKernelStep_stateActionRowEquiv
+#check candidateKernelTableMass_eq_refreshMixture
+#check candidateKernelTable_eq_massTable
 #check candidateKernelTableMass_sum_one
 #check policyTableMass_pos
 #check policyTableMass_sum_one
@@ -41,6 +47,9 @@ open FormalSLT.StochasticDynamics
 #check environmentRowTV_candidate_le_two_mul_augmentedRowTV
 
 #print axioms candidateKernelTableMass_pos
+#print axioms candidateKernelStep_stateActionRowEquiv
+#print axioms candidateKernelTableMass_eq_refreshMixture
+#print axioms candidateKernelTable_eq_massTable
 #print axioms candidateKernelTableMass_sum_one
 #print axioms policyTableMass_pos
 #print axioms policyTableMass_sum_one
@@ -61,7 +70,8 @@ theorem nominal_firstRow_nextOne_mass :
       (0 : PhysicalState) (0 : Action) (1 : PhysicalState)).toReal =
         (73 / 96 : ℝ) := by
   rw [candidateEnvironment_apply_toReal]
-  norm_num [candidateKernelTableMass, candidateKernelTable]
+  norm_num [candidateKernelTableMass_eq_refreshMixture, candidateGammaRat,
+    candidateKernelStep, candidateGammaTable, candidateKernelStepByRow]
 
 /-- The first generated target is conservative: its boost probability at
 state zero is exactly `1/4`. -/

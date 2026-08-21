@@ -439,6 +439,9 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.augmentedBehaviorStateTable_getElem?_observation"
   "FormalSLT.Applications.ControlledQueue.transitionRow_val"
   "FormalSLT.Applications.ControlledQueue.transitionRow_pair"
+  "FormalSLT.Applications.ControlledQueue.candidateKernelStep_stateActionRowEquiv"
+  "FormalSLT.Applications.ControlledQueue.candidateKernelTableMass_eq_refreshMixture"
+  "FormalSLT.Applications.ControlledQueue.candidateKernelTable_eq_massTable"
   "FormalSLT.Applications.ControlledQueue.candidateKernelTableMass_pos"
   "FormalSLT.Applications.ControlledQueue.candidateKernelTableMass_sum_one"
   "FormalSLT.Applications.ControlledQueue.policyTableMass_pos"
@@ -490,6 +493,14 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.queueHypothesis_overlap"
   "FormalSLT.Applications.ControlledQueue.queueHypothesis_ratioBound_three_halves"
   "FormalSLT.Applications.ControlledQueue.exists_nominalControlledQueueEmpiricalFiniteDepthOPE_event"
+  "FormalSLT.Applications.ControlledQueue.queueThresholdStationaryMass_isPMF"
+  "FormalSLT.Applications.ControlledQueue.queueThresholdStationaryLaw_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.queueThresholdNominalTargetKernel_apply_toReal"
+  "FormalSLT.Applications.ControlledQueue.queueThresholdStationaryLaw_isInvariant"
+  "FormalSLT.Applications.ControlledQueue.queueThresholdStationaryLaw_eq_catalogStationary"
+  "FormalSLT.Applications.ControlledQueue.queueThreshold_nominalModelOverload_rowRisk"
+  "FormalSLT.Applications.ControlledQueue.queueThreshold_nominalModelOverload_stationaryRisk"
+  "FormalSLT.Applications.ControlledQueue.queueThreshold_nominalModelOverload_catalogStationaryRisk"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -885,6 +896,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueTargetPolicyScores"
   echo "import FormalSLT.Applications.ControlledQueueContraction"
   echo "import FormalSLT.Applications.ControlledQueueOPECatalog"
+  echo "import FormalSLT.Applications.ControlledQueueInvariantRisk"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -975,6 +987,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueTargetPolicyScores \
   FormalSLT.Applications.ControlledQueueContraction \
   FormalSLT.Applications.ControlledQueueOPECatalog \
+  FormalSLT.Applications.ControlledQueueInvariantRisk \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

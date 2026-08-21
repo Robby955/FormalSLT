@@ -992,8 +992,29 @@ two history-dependent predictors rather than the twelve stationary atoms.
 The true environment, initial observation, nominal candidate, depth, catalogs,
 and priors are fixed before the event. The conclusion is simultaneous over
 posterior PMFs and time, but it does not prove all-row visitation or event
-membership for the frozen trace, identify an explicit invariant law or risk,
-select a candidate or depth from data, or provide a numerical endpoint.
+membership for the frozen trace, select a candidate or depth from data, or
+provide a numerical confidence endpoint. A separate deterministic module below
+identifies the invariant law and stationary risk for one fixed catalog atom;
+that calculation is not a statement about the frozen path or the event.
+
+## Controlled-queue explicit invariant law and stationary risk
+
+| Declaration | Module | Role |
+|---|---|---|
+| `queueThresholdStationaryMass_isPMF` | `Applications.ControlledQueueInvariantRisk` | Checks that the explicit 24-entry rational mass vector is nonnegative and sums to one |
+| `queueThresholdStationaryLaw_apply_toReal` | `Applications.ControlledQueueInvariantRisk` | Identifies every real-valued mass of the constructed PMF with its exact rational table entry |
+| `queueThresholdNominalTargetKernel_apply_toReal` | `Applications.ControlledQueueInvariantRisk` | Evaluates the nominal environment under target-policy index `1` as an exact 24-state rational kernel |
+| `queueThresholdStationaryLaw_isInvariant` | `Applications.ControlledQueueInvariantRisk` | Proves the explicit PMF invariant for the nominal candidate and queue-threshold target policy |
+| `queueThresholdStationaryLaw_eq_catalogStationary` | `Applications.ControlledQueueInvariantRisk` | Uses strict Dobrushin contraction to identify the explicit PMF with the canonical noncomputable invariant witness for the corresponding catalog atom |
+| `queueThreshold_nominalModelOverload_rowRisk` | `Applications.ControlledQueueInvariantRisk` | Evaluates the exact one-step Brier row-risk vector for target-policy index `1` and fixed-predictor index `2` |
+| `queueThreshold_nominalModelOverload_stationaryRisk` | `Applications.ControlledQueueInvariantRisk` | Proves that the explicit stationary Brier risk is exactly `4338268437 / 67816493056`, hence below `13/200` |
+| `queueThreshold_nominalModelOverload_catalogStationaryRisk` | `Applications.ControlledQueueInvariantRisk` | Rewrites the same exact risk through the canonical invariant witness and score stored in the twelve-atom catalog |
+
+This is a deterministic known-model calculation for one predeclared atom: the
+nominal environment, queue-threshold target (index `1`), and nominal-model
+overload predictor (index `2`). It neither imports the frozen trace nor proves
+good-event membership, a confidence bound, unknown-kernel usefulness, or any
+data-adaptive selection license.
 
 ## Controlled-queue target-policy score certificates
 
@@ -1016,7 +1037,8 @@ fixed-catalog instantiation can combine the two layers.
 
 | Declaration | Module | Role |
 |---|---|---|
-| `candidateRefreshBase_le_candidateKernelTableMass` | `Applications.ControlledQueueTypedModel` | Checks once per generated candidate that every literal kernel cell contains the declared common uniform-refresh mass |
+| `candidateKernelTable_eq_massTable` | `Applications.ControlledQueueTypedModel` | Identifies the complete exported generated candidate table with the three-dimensional table obtained from the compact typed refresh-mixture mass accessor |
+| `candidateRefreshBase_le_candidateKernelTableMass` | `Applications.ControlledQueueTypedModel` | Derives from the generated refresh-mixture specification that every candidate-kernel cell contains the declared common uniform-refresh mass |
 | `candidateTargetPolicyKernel_common_minorization` | `Applications.ControlledQueueContraction` | Lifts the environment-cell floor through an arbitrary state-Markov target policy to a common uniform minorization of every induced state-kernel row |
 | `candidateTargetPolicyKernel_dobrushin_le_gamma` | `Applications.ControlledQueueContraction` | Bounds the induced target-policy kernel's finite Dobrushin coefficient by the generated candidate weight `5/8`, `3/4`, or `7/8` |
 | `candidateTargetPolicyKernel_isOscillationContraction` | `Applications.ControlledQueueContraction` | Supplies the oscillation-contraction premise used by finite-depth target-policy OPE for every state-Markov target policy |

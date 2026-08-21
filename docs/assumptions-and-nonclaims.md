@@ -315,11 +315,20 @@ The frozen `trace-v1.json` allocation is not instantiated. It has only 48
 coordinate weights, its tilt grid contains `1` although the theorem requires
 every tilt to lie strictly below one, and its five-predictor prior includes the
 two causal predictors and has no target-policy factor. The application-level
-priors and singleton tilts are separate declarations. The theorem does not
-prove a named trace lies in its event, prove good-event membership, bridge the
-generator's initial-observation offset, calculate an explicit stationary law or
-stationary risk, prove uniqueness, permit post-data candidate or depth
-selection, or establish a numerically useful endpoint.
+priors and singleton tilts are separate declarations. The catalog event theorem
+does not prove a named trace lies in its event, prove good-event membership,
+bridge the generator's initial-observation offset, permit post-data candidate
+or depth selection, or establish a numerically useful confidence endpoint.
+
+`Applications.ControlledQueueInvariantRisk` is a separate deterministic
+known-model slice. For the nominal environment, target-policy index `1`
+(queue-threshold), and fixed-predictor index `2` (nominal-model overload), it
+constructs an explicit rational 24-state PMF, proves it invariant, identifies
+it with the catalog's canonical witness using strict Dobrushin contraction,
+and proves the stationary Brier risk exactly
+`4338268437 / 67816493056 < 13 / 200`. This does not import the frozen trace,
+prove event membership or a confidence bound, establish unknown-kernel
+usefulness, or license any data-adaptive selection.
 
 ### Empirical transition confidence and selected candidates
 
@@ -1121,14 +1130,19 @@ target-policy/fixed-Brier catalog, canonical noncomputable true invariant PMFs,
 and fixed depth before a `19/20` outer event. It is simultaneous over posterior
 PMFs and time under all-48-row visitation, but it does not instantiate the
 incompatible frozen trace weights or prove trace/event alignment.
+For one predeclared atom, `ControlledQueueInvariantRisk` additionally supplies
+an explicit 24-state invariant PMF, proves equality to the canonical catalog
+witness by strict-contraction uniqueness, and evaluates its exact stationary
+Brier risk as `4338268437 / 67816493056 < 13 / 200`.
 The controlled layer also supplies encountered-prefix comparators for
 history-dependent targets and exact fixed-horizon target-path change of
 measure. These results do not construct the remaining queue-specific explicit
-stationary-risk, numerical, or trace certificates; prove uniqueness; license
+stationary-risk, numerical-confidence, or trace certificates; license
 data-dependent candidates or depths without a common event; estimate nuisance
 quantities; or give an anytime-valid cumulative-likelihood target-value
-boundary. The application-level invariant witnesses are noncomputable choices,
-not explicit queue stationary laws.
+boundary. Except for the one explicit atom above, the application-level
+invariant witnesses remain noncomputable choices rather than explicit queue
+stationary laws.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and
