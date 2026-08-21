@@ -263,6 +263,32 @@ adapt the depth to the path, construct the true invariant PMFs, or establish a
 full-trajectory target-versus-behavior change of measure. It is finite-state,
 finite-action, finite-hypothesis, and finite-tilt.
 
+### Same-path empirical robust target-policy OPE
+
+`StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE` intersects
+the signed-residual target-policy OPE event with empirical confidence for every
+row of the augmented behavior kernel under the same controlled path law. The
+two budgets remain separate: `deltaRisk` appears in the OPE boundary,
+`deltaTransition` appears in the empirical transition radius, and the
+complement of the intersected event has real mass at most
+`deltaRisk + deltaTransition` without an independence assumption.
+
+The behavior policy is state-Markov with exact action mass `1/2`. At a displayed
+horizon where every augmented source row has positive visit mass, the empirical
+augmented-row radius `etaAug` gives the physical action-row radius
+`etaEnv = 2 * etaAug`. For the fixed candidate and depth, the resulting
+residual is
+
+`alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`.
+
+The event remains simultaneous over both declared finite tilt catalogs,
+posterior PMFs, and time. The true and candidate environments, true invariant
+PMFs, candidate reference PMFs, target-policy and score catalogs, contraction
+and centered-risk certificates, and depth are fixed before the event. The
+theorem does not construct the queue-specific certificates, prove all-row
+visits or good-event membership for the frozen trace, or license candidate or
+depth selection after observing the path.
+
 ### Empirical transition confidence and selected candidates
 
 `StochasticDynamics.EmpiricalTransitionConfidence` treats each finite
@@ -424,11 +450,18 @@ simultaneous over every `n >= 2`, posterior PMF, and declared finite tilt atom.
 Relative to the exact-Poisson endpoint, its upper bound adds exactly the
 posterior average of the supplied residual envelopes.
 
-The theorem does not construct finite-depth potentials, candidates, invariant
-laws, transition-confidence events, or residual envelopes; permit a
-data-dependent envelope; or prove the event intersection needed for final
-unknown-dynamics OPE. It also does not provide full-trajectory importance
-sampling or a two-sided confidence interval.
+The same module also exposes a signed-residual event that leaves the encountered
+posterior residual average explicit. It requires no pointwise residual envelope
+before the event and is the interface used to intersect a second same-path
+certificate.
+
+The fixed-envelope theorem does not construct finite-depth potentials,
+candidates, invariant laws, transition-confidence events, or residual
+envelopes; permit a data-dependent envelope; or itself intersect a second
+event. The separate fixed-candidate empirical theorem supplies that same-path
+intersection under its all-row-visit and fixed-input assumptions. Neither
+result provides full-trajectory importance sampling or a two-sided confidence
+interval.
 
 ### Dynamic target-policy comparators
 
@@ -1040,12 +1073,15 @@ row-TV contraction certificate.
 The controlled layer proves exact one-step behavior-law semantics, stationary
 state-Markov target-policy OPE under supplied exact or approximate Poisson
 objects, deterministic candidate-environment robustness, and fixed-candidate
-finite-depth robust OPE. It also supplies encountered-prefix comparators for
+finite-depth robust OPE. A separate fixed-candidate theorem intersects its
+signed-residual OPE event with augmented empirical-transition confidence on the
+same controlled path, under all-row visitation and exact behavior mass `1/2`.
+The controlled layer also supplies encountered-prefix comparators for
 history-dependent targets and exact fixed-horizon target-path change of
-measure. These results do not infer environment-row confidence from data,
-license data-dependent candidates or depths without a common event, estimate
-nuisance quantities, or give an anytime-valid cumulative-likelihood
-target-value boundary.
+measure. These results do not construct queue-specific certificates, license
+data-dependent candidates or depths without a common event, estimate nuisance
+quantities, or give an anytime-valid cumulative-likelihood target-value
+boundary.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and

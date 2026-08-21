@@ -23,6 +23,10 @@ of unknown-kernel target-policy OPE.
 - `../../FormalSLT/Applications/ControlledQueueTypedModel.lean`: checked
   table-backed kernel and policy PMFs with exact mass identities and the static
   uniform-behavior probability and TV transfers.
+- `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
+  generic same-path intersection of signed-residual target-policy OPE and
+  augmented empirical-transition confidence for a fixed candidate, depth, and
+  certificate package.
 - `trace-v1.json`: exact initial state, horizon, source candidate, behavior
   policy, weight tables, binary layout, SHA-256 counter-stream contract, and
   unbiased rejection-sampling contract.
@@ -62,6 +66,13 @@ model's 48 rows use state-major indices `2 * state + action`.
 controlled-edge row selection. `ControlledQueueTypedModel` reads the generated
 kernel and policy tables into typed PMFs with exact mass identities. Neither
 bridge imports the frozen trace or supplies an empirical confidence event.
+The generic empirical finite-depth theorem separately intersects its risk and
+transition events with failure cost `deltaRisk + deltaTransition`. Under exact
+behavior mass `1/2` and positive visit mass for every augmented source row, it
+uses the physical radius `2 * etaAug` and residual
+`alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`. It does not instantiate this
+frozen trace, prove its all-row visits or good-event membership, or select the
+candidate or depth from data.
 Likewise, the causal Beta predictors currently support dynamic
 behavior-encountered comparison only. They are not fixed stationary
 target-policy scores unless learner memory is added to the state and a

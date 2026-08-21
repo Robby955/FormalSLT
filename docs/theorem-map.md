@@ -915,6 +915,7 @@ learn nuisance quantities, or handle unknown dynamics.
 | `stationaryTargetPolicyPosteriorResidualAverage` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Averages the true induced-kernel approximate-Poisson residual over the first `n` encountered states and a posterior PMF |
 | `posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean_approximate` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Identifies the posterior predictable-mean prefix average with `(posterior stationary risk + posterior residual average + B) / (C * (1 + 2 * B))` |
 | `neg_stationaryTargetPolicyPosteriorResidualAverage_le` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Converts a fixed pointwise absolute residual envelope into exactly `posteriorAverage posterior residualEnvelope`, with no extra importance-ratio, span, horizon, or factor-two multiplier |
+| `exists_stationaryApproximateTargetPolicyOPE_signedResidual_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Leaves the encountered signed residual average explicit on one event simultaneous over path, finite tilt atom, posterior PMF, and time, so a second simultaneous event may certify a pathwise residual bound without fixing that bound before the OPE event |
 | `exists_stationaryApproximateTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every `n >= 2`, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus `posteriorAverage posterior residualEnvelope` |
 
 The environment `P`, behavior policy `beta`, target-policy catalog `pi`,
@@ -951,6 +952,22 @@ importance-ratio cap `C`. The theorem fixes the candidate environment,
 references, contraction and row-TV certificates, and depth before the outer
 event; it licenses no empirical transition event, candidate selection,
 adaptive depth, or invariant-law construction.
+
+## Same-path empirical-kernel finite-depth target-policy OPE
+
+| Declaration | Module | Role |
+|---|---|---|
+| `exists_stationaryEmpiricalRobustCandidateFiniteDepthTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE` | Intersects the signed-residual OPE event with empirical transition confidence for the augmented behavior chain; under exact behavior mass `1/2`, every visited augmented row yields a physical action-row budget `2 * etaAug` and the final residual `alpha^m D + 4 (1 + B_m) etaAug`, outside the importance-weighted OPE boundary |
+
+The true and candidate environments, Markov behavior policy, target-policy
+catalog, supplied true invariant PMFs, candidate references, contraction and
+oscillation certificates, and depth are fixed before the event. The common
+event is simultaneous over both declared finite tilt catalogs, posterior PMFs,
+and time, with complement mass at most `deltaRisk + deltaTransition`. The
+normalized transition certificate requires every augmented source row to be
+visited at the displayed horizon. This theorem does not select the candidate
+or depth, construct invariant PMFs, certify a named path, or instantiate the
+queue-specific scores and numerical constants.
 
 ## Dynamic target-policy comparators
 

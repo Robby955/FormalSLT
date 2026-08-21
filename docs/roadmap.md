@@ -325,14 +325,18 @@
       table-backed PMFs, and the sharp uniform-behavior factor-two TV transfer.
     - [x] Check generic target-policy candidate robustness, fixed-envelope
       approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE.
-    - [ ] Compose empirical augmented-transition confidence with the checked
-      physical-row transfer.
+    - [x] Intersect the signed-residual OPE and augmented-transition events on
+      the same controlled path. With behavior mass `1/2` and every augmented
+      row visited, the checked endpoint uses `etaEnv = 2 * etaAug`, residual
+      `alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`, and failure budget
+      `deltaRisk + deltaTransition`.
     - [ ] Add executable invariant, potential, score, and numerical
       certificates plus the initial-offset bridge, compact trace witnesses, and
       any claimed good-event alignment.
-    - [ ] Keep the final unknown-dynamics target-policy OPE claim open until the
-      event intersection and every candidate, depth, and other data-dependent
-      input are justified.
+    - [ ] Add a common event or preallocated catalog before selecting the
+      candidate or depth from the scored path; the checked empirical theorem
+      fixes both, together with its reference, score, and contraction
+      certificates, before the event.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
     stationary risk, multistep conclusions, and atomless transition evidence
     as separate later theorem families.

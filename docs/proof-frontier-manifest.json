@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 224,
-    "library_and_example_lean_lines": 146840,
-    "library_lean_lines": 117486,
-    "library_modules": 268,
-    "theorem_map_entries": 1038
+    "example_lean_files": 225,
+    "library_and_example_lean_lines": 147185,
+    "library_lean_lines": 117810,
+    "library_modules": 269,
+    "theorem_map_entries": 1040
   },
   "theorem_families": [
     {
@@ -4882,6 +4882,12 @@
         {
           "kind": "theorem",
           "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
+          "name": "exists_stationaryApproximateTargetPolicyOPE_signedResidual_event",
+          "summary": "Leaves the encountered signed residual average explicit on one event simultaneous over path, finite tilt atom, posterior PMF, and time, so a second simultaneous event may certify a pathwise residual bound without fixing that bound before the OPE event"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
           "name": "exists_stationaryApproximateTargetPolicyOPE_event",
           "summary": "Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every n >= 2, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus posteriorAverage posterior residualEnvelope"
         }
@@ -4921,6 +4927,17 @@
         }
       ],
       "name": "Fixed-candidate finite-depth robust target-policy off-policy evaluation"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE",
+          "name": "exists_stationaryEmpiricalRobustCandidateFiniteDepthTargetPolicyOPE_event",
+          "summary": "Intersects the signed-residual OPE event with empirical transition confidence for the augmented behavior chain; under exact behavior mass 1/2, every visited augmented row yields a physical action-row budget 2 * etaAug and the final residual alpha^m D + 4 (1 + B_m) etaAug, outside the importance-weighted OPE boundary"
+        }
+      ],
+      "name": "Same-path empirical-kernel finite-depth target-policy OPE"
     },
     {
       "entries": [

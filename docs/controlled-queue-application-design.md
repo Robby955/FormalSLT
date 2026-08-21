@@ -1,15 +1,18 @@
 # Controlled queue application design
 
-Status: **TYPED MODEL AND FIXED-CANDIDATE ROBUST OPE BRIDGES CHECKED LOCALLY** /
-**EMPIRICAL APPLICATION CERTIFICATE OPEN**
+Status: **GENERIC SAME-PATH EMPIRICAL ROBUST OPE CHECKED LOCALLY** /
+**QUEUE-SPECIFIC CERTIFICATE OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
 
-Checked theorem-integration snapshot: local commit
+Banked theorem-integration snapshot through fixed-candidate robust OPE: local
+commit
 `de4b2f02761d50ae86276b1fd4ae8bdce83fc018` (tree
-`b63d0bf9358558bb38e1d208222f4f1af20b355c`). This snapshot is local and is
-not evidence of inclusion in public `main`, draft PR #99, or v0.2.
+`b63d0bf9358558bb38e1d208222f4f1af20b355c`). The same-path empirical-event
+intersection is checked in the current local integration worktree beyond that
+snapshot. Neither local state is evidence of inclusion in public `main`, draft
+PR #99, or v0.2.
 
 This packet specifies the smallest controlled finite-state application that can
 serve as a journal-grade demonstration of FormalSLT's trajectory, stationary,
@@ -21,9 +24,15 @@ the generated table-to-`PMF` semantics, uniform behavior policy, pointwise
 `3/2` target-to-behavior probability bound, and sharp factor-two physical-row
 TV transfer. Generic target-policy candidate robustness, fixed-envelope
 approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE are also
-checked. The trace remains preprocessing: it is not a theorem-produced good
-path, Lean-verified trace, empirical-event composition, or numerical
-application certificate.
+checked. A further generic theorem intersects the signed-residual OPE event
+with augmented empirical-transition confidence under the same controlled path
+law. With exact behavior mass `1/2` and every augmented source row visited, it
+uses `etaEnv = 2 * etaAug` and the residual
+`alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`, with separate failure budgets
+`deltaRisk + deltaTransition`. The candidate environment, depth, reference
+PMFs, scores, and contraction certificates remain fixed before the event. The
+frozen trace is still preprocessing: it is not a theorem-produced good path,
+Lean-verified trace, or numerical application certificate.
 
 The existing 20-state random-refresh load example remains a checked synthetic
 worked example. It is not relabeled as a controlled queue: it has no actions or
@@ -123,41 +132,38 @@ The generic modules do not by themselves instantiate the queue application.
 | Target-policy candidate robustness | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Induced-kernel TV transfer, `(1 + B) * etaEnv` drift perturbation, and a supplied-invariant residual envelope |
 | Approximate-Poisson target-policy OPE | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | One event over time, posterior, and declared tilt atoms for fixed environment, invariant PMFs, potentials, and pointwise residual envelopes |
 | Fixed-candidate finite-depth robust OPE | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | Candidate finite-depth potential and residual `alpha ^ m * D + 2 * ((1 + B_m) * etaEnv)` for candidate, depth, certificates, and envelope fixed before the event |
+| Same-path empirical robust OPE | `StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE` | Intersects risk and augmented-transition events with mass cost `deltaRisk + deltaTransition`; under behavior mass `1/2` and all augmented rows visited, uses `etaEnv = 2 * etaAug` and residual `alpha ^ m * D + 4 * ((1 + B_m) * etaAug)` |
 | Fixed and history-dependent score comparison | `StochasticDynamics.DynamicTargetPolicyComparator` | Behavior-encountered histories |
 | Finite-depth Poisson selection | `StochasticDynamics.StationaryPoissonDepthSelection` | Ordinary finite-state Markov scores |
 | Empirical transition confidence | `StochasticDynamics.EmpiricalTransitionConfidence` | State-only transition rows and candidate TV budgets |
 | Same-path stationary candidate selection | `StochasticDynamics.EmpiricalStationaryCatalog` | Candidate, posterior, depth, and tilt catalogs |
 
-These modules are reusable substrate. Their existence does not by itself
-compose empirical transition confidence with controlled OPE or license
-data-dependent candidate, depth, or residual-envelope selection. The new
-declarations are outside the 19-name v0.2 compatibility allowlist.
+These modules now provide the generic empirical-transition/OPE event
+intersection for a fixed candidate, depth, and certificate package. They do not
+instantiate the queue-specific witnesses or license data-dependent candidate
+or depth selection. The new declarations are outside the 19-name v0.2
+compatibility allowlist.
 
 ## Remaining theorem and application work
 
 The typed queue-table instantiation, sharp factor-two deterministic row-TV
-transfer, generic target-policy candidate robustness, fixed-envelope
-approximate-Poisson OPE, and fixed-candidate finite-depth OPE are checked. The
-following application and composition items remain **OPEN**.
+transfer, target-policy robustness, approximate and finite-depth OPE, and the
+generic same-path empirical-event intersection are checked. The following
+application items remain **OPEN**.
 
-1. Empirical augmented-transition composition: instantiate transition
-   confidence on the 48-state behavior chain and feed its augmented-row bound
-   through the checked `2 * eta` physical-row transfer.
-2. Executable queue certificates: check exact rational invariant-law and
-   Poisson-potential witnesses, concrete cost and Brier score atoms, and final
-   numerical bounds.
-3. Trace-to-theorem composition: resolve the initial-observation offset, encode
-   compact trace witnesses, and separately prove any claimed good-event
-   membership.
-4. Final unknown-dynamics OPE: intersect the transition-confidence and OPE
-   events while preserving the checked posterior and tilt simultaneity, and
-   justify every candidate, depth, and other data-dependent input. The checked
-   finite-depth theorem fixes the candidate, depth, certificates, and
-   environment-row radius before its outer event; it does not license those
-   data-dependent selections.
+1. Executable queue certificates: check exact rational true invariant and
+   candidate reference PMFs, concrete cost and Brier score atoms, target-kernel
+   contraction and centered-risk bounds, and final numerical arithmetic.
+2. Trace-to-theorem instantiation: resolve the initial-observation offset,
+   encode compact trace and all-row-visit witnesses, and separately prove any
+   claimed good-event membership.
+3. Data-dependent candidate or depth selection: the checked empirical theorem
+   fixes `Q`, `m`, reference PMFs, scores, and contraction certificates before
+   its outer event. A new common event or preallocated catalog is required to
+   choose a candidate or depth from the scored path.
 
-Until those steps close, the generic ingredients are checked but the
-controlled queue's empirical unknown-dynamics OPE certificate remains open.
+Until those steps close, the generic theorem is checked but the controlled
+queue's end-to-end unknown-dynamics numerical certificate remains open.
 
 ## Frozen input and generator contract
 
@@ -192,8 +198,10 @@ A dependency-free deterministic generator now emits:
 The generator and independent replay verifier are preprocessing only. The
 trace is deliberately not embedded in Lean. Checked adapters already discharge
 row ordering, table normalization and positivity, typed-PMF conversion, and
-the static probability and TV transfers. Later certificate slices must provide
-compact witnesses for counts, invariant laws, Poisson identities, trace/event
+the static probability and TV transfers. The generic same-path theorem now
+composes the risk and empirical augmented-transition events. Later application
+slices must still provide compact witnesses for counts and all-row visits,
+invariant and reference laws, score and contraction certificates, trace/event
 alignment, selected grid membership, and final arithmetic.
 
 ### Implemented preprocessing slice
@@ -307,6 +315,6 @@ This application milestone is complete only when all of the following hold:
 - the exact Lean receipt gives at least one endpoint below one;
 - matched baselines use the same data and failure budget;
 - independent probability and Lean reviews are recorded;
-- the final unknown-dynamics OPE claim remains `OPEN` until empirical-event
-  composition, executable certificates, trace alignment, and final arithmetic
-  are checked.
+- any queue-specific end-to-end unknown-dynamics OPE claim remains `OPEN` until
+  executable certificates, trace and good-event alignment, and any claimed
+  data-dependent candidate or depth selection are checked.

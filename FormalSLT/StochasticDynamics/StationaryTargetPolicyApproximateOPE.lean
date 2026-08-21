@@ -171,13 +171,14 @@ theorem neg_stationaryTargetPolicyPosteriorResidualAverage_le
   simpa [Finset.sum_const, nsmul_eq_mul, mul_comm] using hsum
 
 omit [Nonempty Z] in
-/-- Approximate-Poisson target-policy empirical-Bernstein PAC--Bayes OPE.
+/-- Signed-residual target-policy empirical-Bernstein PAC--Bayes OPE.
 
 One outer event is simultaneous over every `n >= 2`, posterior PMF, and atom
-of the fixed finite tilt catalog.  Relative to the exact-Poisson OPE boundary,
-the theorem adds exactly the posterior average of the supplied pointwise
-residual envelopes. -/
-theorem exists_stationaryApproximateTargetPolicyOPE_event
+of the fixed finite tilt catalog.  The conclusion leaves the encountered
+signed approximate-Poisson residual average explicit instead of requiring a
+pointwise envelope before the event.  This is the reusable interface for
+pathwise residual certificates proved on a second simultaneous event. -/
+theorem exists_stationaryApproximateTargetPolicyOPE_signedResidual_event
     [Fintype ι] [DecidableEq ι] [Nonempty ι]
     [Fintype τ] [DecidableEq τ] [Nonempty τ]
     (P : Z → A → PMF Z) (β : BehaviorPolicy Z A)
@@ -189,11 +190,6 @@ theorem exists_stationaryApproximateTargetPolicyOPE_event
     (hscore : ∀ i z a y, score i z a y ∈ Set.Icc (0 : ℝ) 1)
     (potential : ι → Z → ℝ) {B C : ℝ} (hB : 0 ≤ B) (hC : 0 < C)
     (hspan : ∀ i z y, |potential i y - potential i z| ≤ B)
-    {residualEnvelope : ι → ℝ}
-    (hresidual : ∀ i z,
-      |approximateTargetPolicyPoissonResidual
-        P (π i) (stationary i) (score i) (potential i) z| ≤
-          residualEnvelope i)
     (hoverlap : ∀ i, ControlledPolicyOverlap
       β (markovTargetPolicyAsHistory (π i)))
     (hratio : ∀ i, ControlledPolicyRatioBound
@@ -211,8 +207,9 @@ theorem exists_stationaryApproximateTargetPolicyOPE_event
                   P π stationary score posterior <
                 stationaryTargetPolicyOPEBoundary
                     prior weight lam β π score potential B C
-                      posterior delta j n x +
-                  posteriorAverage posterior residualEnvelope := by
+                      posterior delta j n x -
+                  stationaryTargetPolicyPosteriorResidualAverage
+                    P π stationary score potential posterior n x := by
   -- Invariance supplies the stationary interpretation.  The concentration
   -- algebra below uses the explicit residual decomposition.
   let _ := hinvariant
@@ -265,9 +262,6 @@ theorem exists_stationaryApproximateTargetPolicyOPE_event
         posterior hposterior n hnpos x
   rw [hleft] at hbase
   have hscaled := mul_lt_mul_of_pos_left hbase hden
-  have hres := neg_stationaryTargetPolicyPosteriorResidualAverage_le
-    P π stationary score potential hresidual
-      hposterior n hnpos x
   field_simp [ne_of_gt hden] at hscaled
   unfold stationaryTargetPolicyOPEBoundary
   change
@@ -281,8 +275,65 @@ theorem exists_stationaryApproximateTargetPolicyOPE_event
                 (markovTargetPolicyAsHistory (π i))
                 (targetPolicyPoissonControlledScore
                   (score i) (potential i) B) C)
-              posterior delta j n x) - B +
-        posteriorAverage posterior residualEnvelope
+              posterior delta j n x) - B -
+        stationaryTargetPolicyPosteriorResidualAverage
+          P π stationary score potential posterior n x
+  linarith
+
+omit [Nonempty Z] in
+/-- Approximate-Poisson target-policy empirical-Bernstein PAC--Bayes OPE.
+
+One outer event is simultaneous over every `n >= 2`, posterior PMF, and atom
+of the fixed finite tilt catalog.  Relative to the exact-Poisson OPE boundary,
+the theorem adds exactly the posterior average of the supplied pointwise
+residual envelopes. -/
+theorem exists_stationaryApproximateTargetPolicyOPE_event
+    [Fintype ι] [DecidableEq ι] [Nonempty ι]
+    [Fintype τ] [DecidableEq τ] [Nonempty τ]
+    (P : Z → A → PMF Z) (β : BehaviorPolicy Z A)
+    (initial : ControlledObservation Z A)
+    (π : ι → MarkovTargetPolicy Z A) (stationary : ι → PMF Z)
+    (hinvariant : ∀ i, IsInvariantPMF
+      (targetPolicyKernel P (π i)) (stationary i))
+    (score : ι → TargetPolicyTransitionScore Z A)
+    (hscore : ∀ i z a y, score i z a y ∈ Set.Icc (0 : ℝ) 1)
+    (potential : ι → Z → ℝ) {B C : ℝ} (hB : 0 ≤ B) (hC : 0 < C)
+    (hspan : ∀ i z y, |potential i y - potential i z| ≤ B)
+    {residualEnvelope : ι → ℝ}
+    (hresidual : ∀ i z,
+      |approximateTargetPolicyPoissonResidual
+        P (π i) (stationary i) (score i) (potential i) z| ≤
+          residualEnvelope i)
+    (hoverlap : ∀ i, ControlledPolicyOverlap
+      β (markovTargetPolicyAsHistory (π i)))
+    (hratio : ∀ i, ControlledPolicyRatioBound
+      β (markovTargetPolicyAsHistory (π i)) C)
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    {weight : τ → ℝ} (hweight : IsFullSupportPMF weight)
+    {lam : τ → ℝ} {delta : ℝ} (hdelta : 0 < delta)
+    (hlam : ∀ j, 0 < lam j) (hlam_one : ∀ j, lam j < 1) :
+    ∃ goodEvent : Set (ℕ → ControlledObservation Z A),
+      (controlledTrajectoryMeasure P β initial).real goodEventᶜ ≤ delta ∧
+        ∀ x ∈ goodEvent, ∀ j : τ,
+          ∀ posterior : ι → ℝ, IsPMF posterior →
+            ∀ n : ℕ, 2 ≤ n →
+              stationaryTargetPolicyPosteriorRisk
+                  P π stationary score posterior <
+                stationaryTargetPolicyOPEBoundary
+                    prior weight lam β π score potential B C
+                      posterior delta j n x +
+                  posteriorAverage posterior residualEnvelope := by
+  rcases exists_stationaryApproximateTargetPolicyOPE_signedResidual_event
+      P β initial π stationary hinvariant score hscore potential
+      hB hC hspan hoverlap hratio hprior hweight hdelta hlam hlam_one with
+    ⟨goodEvent, hmass, hraw⟩
+  refine ⟨goodEvent, hmass, ?_⟩
+  intro x hx j posterior hposterior n hn
+  have hnpos : 0 < n := by omega
+  have hbase := hraw x hx j posterior hposterior n hn
+  have hres := neg_stationaryTargetPolicyPosteriorResidualAverage_le
+    P π stationary score potential hresidual
+      hposterior n hnpos x
   linarith
 
 end
