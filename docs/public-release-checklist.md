@@ -212,6 +212,20 @@ and attach those same bytes to the draft GitHub Release before publication.
   versioned docs archive and the deployed current docs are pinned to the same
   commit.
 
+## External technical review
+
+- Use the exact-SHA [v0.2 external review packet](reviews/v0.2/README.md) for
+  one probability/statistics review and one Lean/artifact review.
+- Record the review scope, exact commit, commands or materials inspected,
+  anchored findings, conflicts, and verdict. A general endorsement is not a
+  substitute for an exact review record.
+- Keep both lanes open until a durable response exists. A probability review
+  does not establish Lean artifact integrity, and a Lean review does not
+  establish model fidelity, coverage semantics, or numerical usefulness.
+- Resolve release-blocking findings on a new exact commit and rerun the
+  affected checks before tagging. Do not transfer an approval automatically
+  across theorem, protocol, generator, or receipt changes.
+
 In a fresh checkout or worktree, run `lake exe cache get` before the first
 build. If `lake` is not on `PATH`, use `~/.elan/bin/lake`. A cold Mathlib
 source build is not part of the release checklist.
