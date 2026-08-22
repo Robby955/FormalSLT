@@ -56,7 +56,8 @@ theorem gaussianPosterior_kl_within_complexity :
 theorem gaussianPosterior_bernstein_certificate :
     empiricalRiskNumerator + varianceNumerator + complexityNumerator ≤
       bernsteinBoundNumerator := by
-  native_decide
+  norm_num [empiricalRiskNumerator, varianceNumerator, complexityNumerator,
+    bernsteinBoundNumerator]
 
 #eval empiricalRiskNumerator + varianceNumerator + complexityNumerator
 #eval bernsteinBoundNumerator

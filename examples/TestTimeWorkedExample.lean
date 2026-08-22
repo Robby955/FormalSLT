@@ -75,7 +75,9 @@ theorem gaussianPosterior_kl_within_cap :
 /-- The displayed meta-bound side is below the unit loss width. -/
 theorem testTimeWorkedExample_bound_certificate :
     metaBoundMilli ≤ lossWidthMilli := by
-  native_decide
+  norm_num [metaBoundMilli, empiricalRiskMilli, onlineRegretMilli,
+    mcAllesterMilli, bernsteinMilli, anytimeVilleMilli, prefixKernelMilli,
+    lossWidthMilli]
 
 noncomputable def assumptions : TestTimeMetaAssumptions where
   sampleConfidence := {

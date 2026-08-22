@@ -6,9 +6,9 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C217-brightgreen.svg)](#verification)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C218-brightgreen.svg)](#verification)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-290-blue.svg)](#use-the-library)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-153%2C463-brightgreen.svg)](#verification)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-153%2C476-brightgreen.svg)](#verification)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#verification)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#verification)
 

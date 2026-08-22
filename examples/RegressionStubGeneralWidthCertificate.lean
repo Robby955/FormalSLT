@@ -59,7 +59,8 @@ theorem gaussianPosterior_kl_within_cap :
 /-- The displayed general-width bound side is within the declared loss width. -/
 theorem regressionStubGeneralWidth_bound_certificate :
     generalBoundMilli ≤ lossBoundMilli := by
-  native_decide
+  norm_num [generalBoundMilli, empiricalRiskMilli, generalPenaltyMilli,
+    lossBoundMilli]
 
 namespace Stub
 
