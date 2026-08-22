@@ -255,7 +255,13 @@ def test_build_refuses_commit_mismatch(tmp_path: Path) -> None:
 
 
 @pytest.mark.parametrize(
-    "mutation", ["wrong-source", "extra-wrong-link", "unresolved-token"]
+    "mutation",
+    [
+        "wrong-source",
+        "extra-wrong-link",
+        "case-variant-wrong-link",
+        "unresolved-token",
+    ],
 )
 def test_build_refuses_unstaged_docs(tmp_path: Path, mutation: str) -> None:
     checkout, commit, _ = _fixture_checkout(tmp_path)
@@ -266,9 +272,14 @@ def test_build_refuses_unstaged_docs(tmp_path: Path, mutation: str) -> None:
             root.read_text(encoding="utf-8").replace(commit, "c" * 40),
             encoding="utf-8",
         )
-    elif mutation == "extra-wrong-link":
+    elif mutation in {"extra-wrong-link", "case-variant-wrong-link"}:
+        repository = (
+            "Robby955/FormalSLT"
+            if mutation == "extra-wrong-link"
+            else "robBY955/formalSLT"
+        )
         (docs / "api.html").write_text(
-            '<a href="https://github.com/Robby955/FormalSLT/blob/main/README.md">'
+            f'<a href="https://github.com/{repository}/blob/main/README.md">'
             "moving source</a>\n",
             encoding="utf-8",
         )
@@ -293,6 +304,7 @@ def test_build_refuses_unstaged_docs(tmp_path: Path, mutation: str) -> None:
     expected = {
         "wrong-source": "not pinned",
         "extra-wrong-link": "source link not pinned",
+        "case-variant-wrong-link": "source link not pinned",
         "unresolved-token": "unresolved source token",
     }[mutation]
     assert expected in completed.stderr
@@ -369,6 +381,29 @@ def test_build_refuses_docs_symlink_and_unsafe_output(tmp_path: Path) -> None:
     assert "output directory must be outside" in inside_checkout.stderr
 
 
+def test_build_refuses_hardlinked_docs_file(tmp_path: Path) -> None:
+    checkout, commit, _ = _fixture_checkout(tmp_path)
+    docs = _fixture_docs(tmp_path, commit)
+    outside = tmp_path / "outside-boundary.txt"
+    outside.write_text("outside boundary\n", encoding="utf-8")
+    os.link(outside, docs / "assets" / "hardlinked.txt")
+
+    completed = subprocess.run(
+        _command(
+            "build",
+            checkout=checkout,
+            commit=commit,
+            docs=docs,
+            output=tmp_path / "assets",
+        ),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 1
+    assert "docs tree contains hardlinked file" in completed.stderr
+
+
 def test_verify_refuses_tampering_and_build_refuses_overwrite(tmp_path: Path) -> None:
     checkout, commit, _, docs, output = _package(tmp_path)
     overwrite = subprocess.run(
@@ -389,7 +424,95 @@ def test_verify_refuses_tampering_and_build_refuses_overwrite(tmp_path: Path) ->
         text=True,
     )
     assert tampered.returncode == 1
-    assert "SHA256SUMS does not match" in tampered.stderr
+    assert "release-asset manifest is not canonical JSON" in tampered.stderr
+
+
+def test_verify_refuses_noncanonical_manifest_with_regenerated_checksums(
+    tmp_path: Path,
+) -> None:
+    checkout, commit, _, docs, output = _package(tmp_path)
+    manifest_path = output / "formalslt-v0.2.0-release-assets.json"
+    manifest_path.write_text(
+        " " + manifest_path.read_text(encoding="utf-8"), encoding="utf-8"
+    )
+    checksum_inputs = sorted(
+        path for path in output.iterdir() if path.name != "SHA256SUMS"
+    )
+    (output / "SHA256SUMS").write_text(
+        "".join(
+            f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}\n"
+            for path in checksum_inputs
+        ),
+        encoding="utf-8",
+    )
+
+    completed = subprocess.run(
+        _command("verify", checkout=checkout, commit=commit, docs=docs, output=output),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 1
+    assert "release-asset manifest is not canonical JSON" in completed.stderr
+
+
+def test_verify_refuses_type_changed_manifest_with_regenerated_checksums(
+    tmp_path: Path,
+) -> None:
+    checkout, commit, _, docs, output = _package(tmp_path)
+    manifest_path = output / "formalslt-v0.2.0-release-assets.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    source_entry = manifest["assets"]["source_archive"]
+    source_entry["file_count"] = float(source_entry["file_count"])
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    checksum_inputs = sorted(
+        path for path in output.iterdir() if path.name != "SHA256SUMS"
+    )
+    (output / "SHA256SUMS").write_text(
+        "".join(
+            f"{hashlib.sha256(path.read_bytes()).hexdigest()}  {path.name}\n"
+            for path in checksum_inputs
+        ),
+        encoding="utf-8",
+    )
+
+    completed = subprocess.run(
+        _command("verify", checkout=checkout, commit=commit, docs=docs, output=output),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 1
+    assert "release-asset manifest does not match the exact inputs" in completed.stderr
+
+
+@pytest.mark.parametrize(
+    ("filename", "size", "expected"),
+    [
+        (
+            "formalslt-v0.2.0-release-assets.json",
+            (1 << 20) + 1,
+            "release-asset manifest exceeds 1048576 bytes",
+        ),
+        ("SHA256SUMS", (1 << 16) + 1, "SHA256SUMS exceeds 65536 bytes"),
+    ],
+)
+def test_verify_refuses_oversized_metadata(
+    tmp_path: Path, filename: str, size: int, expected: str
+) -> None:
+    checkout, commit, _, docs, output = _package(tmp_path)
+    (output / filename).write_bytes(b" " * size)
+
+    completed = subprocess.run(
+        _command("verify", checkout=checkout, commit=commit, docs=docs, output=output),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert completed.returncode == 1
+    assert expected in completed.stderr
 
 
 def test_verify_refuses_repacked_archive_with_regenerated_hashes(

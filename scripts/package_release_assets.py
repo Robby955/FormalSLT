@@ -37,7 +37,8 @@ from release_tag_identity import (
 SITE_MARKER = 'data-formalslt-site="research"'
 SOURCE_REF_TOKEN = "__FORMALSLT_SOURCE_REF__"
 SOURCE_URL_RE = re.compile(
-    r"https://github\.com/Robby955/FormalSLT/(?:blob|tree)/([^/\"'?#<>&]+)"
+    r"https://github\.com/Robby955/FormalSLT/(?:blob|tree)/([^/\"'?#<>&]+)",
+    flags=re.IGNORECASE,
 )
 REQUIRED_DOC_PATHS = (
     "index.html",
@@ -47,6 +48,8 @@ REQUIRED_DOC_PATHS = (
     "theorems/index.html",
 )
 MANIFEST_SCHEMA = "formalslt.release-assets.v1"
+MAX_MANIFEST_BYTES = 1 << 20
+MAX_CHECKSUMS_BYTES = 1 << 16
 
 
 @dataclass(frozen=True)
@@ -416,6 +419,10 @@ def _scan_docs(doc_root: Path) -> list[DocEntry]:
                 )
                 visit(source, relative)
             elif stat.S_ISREG(mode):
+                if metadata.st_nlink != 1:
+                    raise ReceiptError(
+                        f"docs tree contains hardlinked file: {relative_text!r}"
+                    )
                 entries.append(
                     DocEntry(
                         relative_text,
@@ -445,6 +452,7 @@ def _read_stable_doc(entry: DocEntry) -> bytes:
         or metadata.st_size != entry.size
         or metadata.st_mtime_ns != entry.mtime_ns
         or metadata.st_ino != entry.inode
+        or metadata.st_nlink != 1
         or len(data) != entry.size
     ):
         raise ReceiptError(f"docs file changed while packaging: {entry.path!r}")
@@ -708,25 +716,46 @@ def _expected_manifest(
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.write_text(
-        json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    path.write_text(_canonical_json_text(payload), encoding="utf-8")
+
+
+def _canonical_json_text(payload: dict[str, Any]) -> str:
+    return json.dumps(payload, indent=2, sort_keys=True) + "\n"
+
+
+def _read_bounded_utf8(path: Path, *, limit: int, description: str) -> str:
+    try:
+        with path.open("rb") as stream:
+            raw = stream.read(limit + 1)
+    except OSError as exc:
+        raise ReceiptError(f"unable to read {description} {path}: {exc}") from exc
+    if len(raw) > limit:
+        raise ReceiptError(f"{description} exceeds {limit} bytes")
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError as exc:
+        raise ReceiptError(f"{description} is not UTF-8: {path}") from exc
 
 
 def _checksums_text(paths: Sequence[Path]) -> str:
     return "".join(f"{_sha256(path)}  {path.name}\n" for path in sorted(paths))
 
 
-def _load_manifest(path: Path) -> dict[str, Any]:
+def _load_manifest(path: Path) -> tuple[dict[str, Any], str]:
+    text = _read_bounded_utf8(
+        path,
+        limit=MAX_MANIFEST_BYTES,
+        description="release-asset manifest",
+    )
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise ReceiptError(
-            f"unable to read release-asset manifest {path}: {exc}"
-        ) from exc
+        payload = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise ReceiptError(f"release-asset manifest is invalid JSON: {exc}") from exc
     if not isinstance(payload, dict):
         raise ReceiptError("release-asset manifest must be a JSON object")
-    return payload
+    if text != _canonical_json_text(payload):
+        raise ReceiptError("release-asset manifest is not canonical JSON")
+    return payload, text
 
 
 def verify_bundle(
@@ -787,11 +816,15 @@ def verify_bundle(
         docs_archive=docs_archive,
         docs_count=docs_count,
     )
-    manifest = _load_manifest(manifest_path)
-    if manifest != expected_manifest:
+    manifest, manifest_text = _load_manifest(manifest_path)
+    if manifest_text != _canonical_json_text(expected_manifest):
         raise ReceiptError("release-asset manifest does not match the exact inputs")
     expected_sums = _checksums_text([source_archive, docs_archive, manifest_path])
-    if sums_path.read_text(encoding="utf-8") != expected_sums:
+    if _read_bounded_utf8(
+        sums_path,
+        limit=MAX_CHECKSUMS_BYTES,
+        description="SHA256SUMS",
+    ) != expected_sums:
         raise ReceiptError("SHA256SUMS does not match the packaged assets")
     _validate_checkout(checkout, commit)
     _validate_local_tag_identity(checkout, tag, tag_object, commit)
