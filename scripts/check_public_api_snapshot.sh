@@ -75,6 +75,8 @@ fi
 # from silently retaining shortened, stale, or renamed endpoints.
 python3 - "${CHECKERS[@]}" <<'PY'
 from pathlib import Path
+import hashlib
+import json
 import re
 import sys
 
@@ -86,6 +88,46 @@ def bounded_section(text: str, start: str, end: str) -> str:
             f"{start!r}, {end!r}"
         )
     return text.split(start, 1)[1].split(end, 1)[0]
+
+
+def markdown_table_cells(line: str) -> list[str]:
+    """Split a one-line Markdown table row without splitting inline code."""
+    stripped = line.strip()
+    if not stripped.startswith("|") or not stripped.endswith("|"):
+        raise ValueError("not a Markdown table row")
+    cells: list[str] = []
+    current: list[str] = []
+    body = stripped[1:-1]
+    code_delimiter_length = 0
+    index = 0
+    while index < len(body):
+        character = body[index]
+        if character == "\\" and code_delimiter_length == 0 and index + 1 < len(body):
+            current.extend((character, body[index + 1]))
+            index += 2
+            continue
+        if character == "`":
+            run_end = index + 1
+            while run_end < len(body) and body[run_end] == "`":
+                run_end += 1
+            run_length = run_end - index
+            current.extend(body[index:run_end])
+            if code_delimiter_length == 0:
+                code_delimiter_length = run_length
+            elif run_length == code_delimiter_length:
+                code_delimiter_length = 0
+            index = run_end
+            continue
+        if character == "|" and code_delimiter_length == 0:
+            cells.append("".join(current).strip())
+            current = []
+        else:
+            current.append(character)
+        index += 1
+    if code_delimiter_length != 0:
+        raise ValueError("unclosed inline-code span")
+    cells.append("".join(current).strip())
+    return cells
 
 
 checker_names: list[str] = []
@@ -133,16 +175,262 @@ literature_block = bounded_section(
     "### Exact candidate-v0.2 endpoint provenance",
     "### Proof-assistant and reusable-interface crosswalk",
 )
-literature_names = re.findall(
-    r"^\|\s*\d+\s*\|\s*`(FormalSLT\.[A-Za-z0-9_.]+)`\s*\|",
-    literature_block,
-    re.MULTILINE,
+endpoint_matrix = bounded_section(
+    literature,
+    "### Exact candidate-v0.2 endpoint provenance",
+    "### Candidate-v0.2 endpoint audit join",
 )
-if literature_names != api_names:
+endpoint_rows: dict[int, list[str]] = {}
+for line in endpoint_matrix.splitlines():
+    if not re.match(r"^\s{0,3}\|\s*\d+\s*\|", line):
+        continue
+    try:
+        cells = markdown_table_cells(line)
+    except ValueError as error:
+        raise SystemExit(
+            "ERROR: malformed exact-endpoint row in docs/LITERATURE.md: "
+            f"{error}: {line}"
+        ) from error
+    if len(cells) != 6:
+        raise SystemExit(
+            "ERROR: malformed exact-endpoint row in docs/LITERATURE.md: " + line
+        )
+    row_number = int(cells[0])
+    if row_number in endpoint_rows:
+        raise SystemExit(
+            f"ERROR: duplicate exact-endpoint row {row_number} in docs/LITERATURE.md"
+        )
+    endpoint_rows[row_number] = cells
+
+if list(endpoint_rows) != list(range(1, 20)):
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md exact endpoint rows must be numbered 1 through 19"
+    )
+endpoint_names: list[str] = []
+for row_number in range(1, 20):
+    name_match = re.fullmatch(
+        r"`(FormalSLT\.[A-Za-z0-9_.]+)`", endpoint_rows[row_number][1]
+    )
+    if name_match is None:
+        raise SystemExit(
+            f"ERROR: docs/LITERATURE.md row {row_number} has a malformed endpoint FQN"
+        )
+    endpoint_names.append(name_match.group(1))
+if endpoint_names != api_names:
     raise SystemExit(
         "ERROR: docs/LITERATURE.md exact endpoint matrix differs from the "
         "public allowlist"
     )
+
+expected_classifications = [
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"DERIVED VARIANT"},
+    {"SPECIALIZATION"},
+    {"SPECIALIZATION"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"DERIVED VARIANT"},
+    {"DERIVED VARIANT"},
+    {"DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION", "DERIVED VARIANT"},
+    {"SPECIALIZATION"},
+    {"REPRODUCTION"},
+    {"DERIVED VARIANT"},
+    {"DERIVED VARIANT"},
+]
+for row_number, expected in enumerate(expected_classifications, start=1):
+    classification = endpoint_rows[row_number][3]
+    tokens = re.findall(
+        r"\*\*(REPRODUCTION|SPECIALIZATION|DERIVED VARIANT|CANDIDATE NEW)\*\*",
+        classification,
+    )
+    bold_labels = re.findall(r"\*\*([^*]+)\*\*", classification)
+    unexpected_bold_labels = [
+        label for label in bold_labels
+        if label.upper() == label
+        and label not in {
+            "REPRODUCTION", "SPECIALIZATION", "DERIVED VARIANT", "CANDIDATE NEW"
+        }
+    ]
+    if (
+        "CANDIDATE NEW" in classification
+        or unexpected_bold_labels
+        or len(tokens) != len(set(tokens))
+        or set(tokens) != expected
+    ):
+        raise SystemExit(
+            f"ERROR: docs/LITERATURE.md row {row_number} classification tokens "
+            f"are {tokens!r}, expected {sorted(expected)!r}"
+        )
+
+join_block = bounded_section(
+    literature,
+    "### Candidate-v0.2 endpoint audit join",
+    "#### Mathlib profiles",
+)
+join_rows: list[tuple[str, str, str, str]] = []
+for line in join_block.splitlines():
+    if not re.match(r"^\s{0,3}\|\s*\d+\s*\|", line):
+        continue
+    try:
+        cells = markdown_table_cells(line)
+    except ValueError as error:
+        raise SystemExit(
+            "ERROR: malformed endpoint audit row in docs/LITERATURE.md: "
+            f"{error}: {line}"
+        ) from error
+    if (
+        len(cells) != 4
+        or re.fullmatch(r"M\d+", cells[2]) is None
+        or re.fullmatch(r"P\d+", cells[3]) is None
+    ):
+        raise SystemExit(
+            "ERROR: malformed endpoint audit row in docs/LITERATURE.md: " + line
+        )
+    join_rows.append((cells[0], cells[1], cells[2], cells[3]))
+join_numbers = [int(number) for number, _assumptions, _mathlib, _paper in join_rows]
+if join_numbers != list(range(1, 20)):
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md endpoint audit rows must be numbered 1 through 19"
+    )
+
+expected_mathlib_profiles = [
+    "M1", "M2", "M2", "M2", "M3", "M4", "M2", "M5", "M6", "M7",
+    "M8", "M9", "M10", "M11", "M12", "M8", "M13", "M14", "M15",
+]
+expected_paper_profiles = [
+    "P1", "P0", "P0", "P0", "P0", "P1", "P0", "P0", "P0", "P0",
+    "P2", "P3", "P4", "P5", "P6", "P0", "P0", "P0", "P0",
+]
+actual_mathlib_profiles = [mathlib for _n, _a, mathlib, _paper in join_rows]
+actual_paper_profiles = [paper for _n, _a, _mathlib, paper in join_rows]
+if actual_mathlib_profiles != expected_mathlib_profiles:
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md endpoint Mathlib-profile assignment drifted"
+    )
+if actual_paper_profiles != expected_paper_profiles:
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md endpoint paper-profile assignment drifted"
+    )
+for number, assumptions, _mathlib, _paper in join_rows:
+    if not assumptions or re.search(r"\b(?:TBD|UNSWEPT)\b", assumptions):
+        raise SystemExit(
+            f"ERROR: docs/LITERATURE.md endpoint row {number} has an incomplete "
+            "assumptions/constants cell"
+        )
+
+mathlib_profiles_block = bounded_section(
+    literature,
+    "#### Mathlib profiles",
+    "#### Paper profiles",
+)
+paper_profiles_block = bounded_section(
+    literature,
+    "#### Paper profiles",
+    "### Proof-assistant and reusable-interface crosswalk",
+)
+mathlib_profile_definitions = re.findall(
+    r"^\s{0,3}- \*\*(M\d+)\*\*:\s+\S.*$",
+    mathlib_profiles_block,
+    re.MULTILINE,
+)
+paper_profile_definitions = re.findall(
+    r"^\s{0,3}- \*\*(P\d+)\*\*:\s+\S.*$",
+    paper_profiles_block,
+    re.MULTILINE,
+)
+mathlib_profile_lines = re.findall(
+    r"^\s{0,3}- \*\*M\d+\*\*.*$", mathlib_profiles_block, re.MULTILINE
+)
+paper_profile_lines = re.findall(
+    r"^\s{0,3}- \*\*P\d+\*\*.*$", paper_profiles_block, re.MULTILINE
+)
+if (
+    len(mathlib_profile_definitions) != 15
+    or len(mathlib_profile_lines) != len(mathlib_profile_definitions)
+    or mathlib_profile_definitions != [f"M{i}" for i in range(1, 16)]
+):
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md must define each Mathlib profile M1 through M15 once"
+    )
+if (
+    len(paper_profile_definitions) != 7
+    or len(paper_profile_lines) != len(paper_profile_definitions)
+    or paper_profile_definitions != [f"P{i}" for i in range(7)]
+):
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md must define each paper profile P0 through P6 once"
+    )
+
+# The structured checks above give targeted failures. This digest additionally
+# binds the reviewed source, boundary, assumption, profile-body, and nonclaim
+# text so a prose mutation cannot retain a misleading green provenance gate.
+expected_endpoint_provenance_sha256 = (
+    "8af86e1865a21176411c0c567c1cf9f119e33fc87fe9173d0eb169a441269483"
+)
+actual_endpoint_provenance_sha256 = hashlib.sha256(
+    literature_block.encode("utf-8")
+).hexdigest()
+if actual_endpoint_provenance_sha256 != expected_endpoint_provenance_sha256:
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md exact endpoint provenance bytes drifted; "
+        "review the change and update the expected digest deliberately"
+    )
+
+toolchain = Path("lean-toolchain").read_text(encoding="utf-8").strip()
+expected_toolchain = "leanprover/lean4:v4.32.2"
+if toolchain != expected_toolchain:
+    raise SystemExit(
+        f"ERROR: unexpected Lean toolchain {toolchain!r}; expected {expected_toolchain!r}"
+    )
+manifest = json.loads(Path("lake-manifest.json").read_text(encoding="utf-8"))
+mathlib_packages = [
+    package for package in manifest.get("packages", [])
+    if package.get("name") == "mathlib"
+]
+expected_mathlib_revision = "905b95818eb32af7874a58b427f50c1711a5e96c"
+expected_mathlib_url = "https://github.com/leanprover-community/mathlib4.git"
+if (
+    len(mathlib_packages) != 1
+    or mathlib_packages[0].get("rev") != expected_mathlib_revision
+    or mathlib_packages[0].get("url") != expected_mathlib_url
+    or mathlib_packages[0].get("type") != "git"
+    or mathlib_packages[0].get("inputRev") != "v4.32.2"
+):
+    raise SystemExit(
+        "ERROR: lake-manifest.json does not pin the documented Mathlib revision"
+    )
+mathlib_boundary = bounded_section(
+    literature,
+    "### Mathlib import boundary at the v0.2 code freeze",
+    "## Stationary and unknown-kernel source dictionary",
+)
+expected_mathlib_boundary_sha256 = (
+    "e85019191995ff9bbad6b83c6a31710e7c4aa267f364efce5a206060f30bdec1"
+)
+actual_mathlib_boundary_sha256 = hashlib.sha256(
+    mathlib_boundary.encode("utf-8")
+).hexdigest()
+if actual_mathlib_boundary_sha256 != expected_mathlib_boundary_sha256:
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md Mathlib-boundary bytes drifted; review the "
+        "change and update the expected digest deliberately"
+    )
+for documented_value in (
+    "v4.32.2",
+    expected_mathlib_revision,
+    "15b444e75a3e0ce734968c8f58b28881959eb313",
+):
+    if f"`{documented_value}`" not in mathlib_boundary:
+        raise SystemExit(
+            "ERROR: docs/LITERATURE.md Mathlib boundary is missing documented "
+            f"value {documented_value}"
+        )
 
 theorem_map = Path("docs/theorem-map.md").read_text(encoding="utf-8")
 map_block = bounded_section(
@@ -182,8 +470,9 @@ for path, expected_count in install_surfaces.items():
         )
 
 print(
-    "public API provenance passed: 19 exact endpoints across policy, "
-    "literature, map, and checkers; install snippets match the Lake package"
+    "public API provenance passed: 19 exact endpoints and audit rows across "
+    "policy, literature, map, and checkers; install snippets and dependency "
+    "pins match"
 )
 PY
 
