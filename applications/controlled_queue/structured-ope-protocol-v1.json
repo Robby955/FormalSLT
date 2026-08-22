@@ -243,7 +243,26 @@
       "difference_from_primary": "replace empirical persistence uncertainty by the exact true refresh parameter and use a true-kernel depth-twelve potential",
       "endpoint_formula": "stationaryTargetPolicyOPEBoundary for refreshEnvironment(149/200), the deterministic true-kernel depth-twelve potential, fixed Dirac posterior, C=3/2, risk tilt 1/16, and risk delta 1/20, plus its exact depth-twelve drift oscillation",
       "posterior": "Dirac(queue_threshold,nominal_model_overload)",
-      "potential_contract": "finiteDepthPoissonPotential at depth 12 for refreshEnvironment(149/200), computed from the model before reading the trace; no depth or potential selection",
+      "potential_contract": {
+        "boundary_span": {
+          "formula": "max_z h_shift(z) - min_z h_shift(z)",
+          "use": "exact rational B_oracle in stationaryTargetPolicyOPEBoundary"
+        },
+        "centering_reference": "uniform_physical_state_reference",
+        "definition": "finiteDepthPoissonPotential",
+        "depth": 12,
+        "drift_oscillation": {
+          "drift": "targetPolicyPoissonDrift(refreshEnvironment(149/200),queue_threshold,nominal_model_overload,h_shift)",
+          "formula": "max_z drift(z) - min_z drift(z)",
+          "use": "exact rational additive residual outside stationaryTargetPolicyOPEBoundary"
+        },
+        "kernel": "targetPolicyKernel(refreshEnvironment(149/200),queue_threshold)",
+        "score": "targetPolicyRowScore(refreshEnvironment(149/200),queue_threshold,nominal_model_overload)",
+        "shift": {
+          "anchor_state": 0,
+          "formula": "h_shift(z) = h_raw(z) - h_raw(0)"
+        }
+      },
       "predictor_id": "nominal_model_overload",
       "same_path_and_estimand": true,
       "selection_rule": "fixed before data",
@@ -303,6 +322,7 @@
       "baseline_id": "selected_h12_nonvariance_fixed_range",
       "candidate_id": "nominal",
       "candidate_index": 1,
+      "checked_status_until_theorem_exists": "PLANNED_NOT_CHECKED",
       "confidence_allocation": {
         "delta_persistence": "1/40",
         "delta_risk": "1/40",
@@ -312,6 +332,7 @@
         "risk_tilt": "1/16",
         "risk_tilt_weight": "1"
       },
+      "confidence_claim_until_theorem_exists": "NOT_A_CONFIDENCE_CERTIFICATE",
       "difference_from_primary": "replace both empirical-Bernstein variance terms by their fixed-range sub-gamma corrections at the same fixed tilts",
       "endpoint_formula": "fixed-range target-policy boundary with risk correction lambda_r/(8*(1-lambda_r/3)) + (KL+log(1/delta_r))/(n*lambda_r), plus candidate_drift_oscillation + refresh_drift_sensitivity_oscillation*eta_fixed_range",
       "eta_formula": "abs(73/96 - persistence_hit_count/n) + lambda_p/(8*(1-lambda_p/3)) + log(2/delta_p)/(n*lambda_p)",
@@ -371,6 +392,12 @@
     "decision_threshold": "1/10",
     "endpoint_formula": "risk_boundary + candidate_drift_oscillation + refresh_drift_sensitivity_oscillation * persistence_eta",
     "endpoint_id": "selected_h12_sharp_structured_eb",
+    "histogram_evaluation_contract": {
+      "implementation_deadline": "checked and code-frozen before the formula-selected beacon round is read",
+      "input": "a 24x2x24 physical transition histogram and exact derived sufficient statistics satisfying the frozen receipt schema",
+      "role": "generic pre-data reduction from the histogram sufficient statistics to the exact primary endpoint upper bound; generated trace data may only instantiate this theorem",
+      "theorem": "sharpStructuredReceiptBoundary_evaluation_of_histogram"
+    },
     "potential_depth": 12,
     "potential_shift": "h_shift(z) = h_raw(z) - h_raw(0)",
     "potential_source": "selectedPotentialTable in the bound pilot-selected potential data",
@@ -386,10 +413,56 @@
     "residual_formula": "candidate_drift_oscillation + refresh_drift_sensitivity_oscillation * persistence_eta",
     "risk_boundary": "stationaryTargetPolicyOPEBoundary with the fixed selected potential, span, ratio cap, Dirac posterior, risk tilt, and risk delta",
     "selection": "fixed before data; no candidate, depth, tilt, policy, predictor, posterior, or time selection",
-    "status": "FROZEN PROSPECTIVE PRIMARY - REQUIRED SHARP THEOREM AND RECEIPT NOT YET IMPLEMENTED",
+    "status": "FROZEN PROSPECTIVE PRIMARY - SHARP EVENT CHECKED; GENERIC HISTOGRAM EVALUATION THEOREM REQUIRED BEFORE GENERATION",
     "threshold_corollary_contract": "prove endpoint < 1/10 only if the frozen exact receipt arithmetic supports it; otherwise publish the exact endpoint without that corollary"
   },
   "protocol_version": "controlled-queue-structured-ope-protocol-v1",
+  "receipt_arithmetic_contract": {
+    "authoritative_number": "canonical reduced rational numerator/denominator with positive denominator; integers use denominator 1",
+    "decimal_display": {
+      "digits_after_decimal": 15,
+      "rounding": "ROUND_HALF_EVEN",
+      "source": "authoritative exact reduced rational only"
+    },
+    "hybrid_bessel_upper": "always 1/2 + (3/2)*Q where Q = sum_sq - sum^2/n; never evaluate or data-select the harmonic branch",
+    "log_cost_upper": {
+      "adaptive": {
+        "persistence": "9",
+        "risk": "16"
+      },
+      "fixed_range": {
+        "persistence": "7",
+        "risk": "9"
+      },
+      "generic_m12": {
+        "persistence": "7",
+        "risk": "9"
+      },
+      "generic_m5": {
+        "persistence": "7",
+        "risk": "9"
+      },
+      "oracle": {
+        "risk": "8"
+      },
+      "primary": {
+        "persistence": "7",
+        "risk": "9"
+      },
+      "unstructured": {
+        "risk": "9",
+        "transition": "18"
+      }
+    },
+    "psi_upper_by_tilt": {
+      "1/16": "1/480",
+      "1/2": "1/4",
+      "1/4": "1/24",
+      "1/64": "1/8064",
+      "1/8": "1/112"
+    },
+    "strict_threshold_comparison": "compare reduced rationals exactly; decimal display is never authoritative"
+  },
   "registration": {
     "base_commit": "299bb0a45398dcf055701ed7a5786ccf2ca41b6c",
     "base_tree": "3f983a3ba7c1bc1572defa814929f8f3a16f9d3a",
@@ -411,6 +484,18 @@
     }
   },
   "reporting_contract": {
+    "causal_predictor_contract": {
+      "confidence_status": "DESCRIPTIVE_DYNAMIC_ENCOUNTERED_RISK_ONLY",
+      "evaluation": "score each transition with the pre-update Beta probability, then update using that transition outcome",
+      "outputs": [
+        "exact cumulative Brier loss sum",
+        "exact mean Brier loss over n = 200000"
+      ],
+      "predictor_order": [
+        "global_beta",
+        "queue_band_action_beta"
+      ]
+    },
     "causal_predictors_reported_separately_as_dynamic_encountered_risk": true,
     "exact_rational_and_decimal_required": true,
     "failure_and_vacuous_rows_published_unchanged": true,
@@ -418,6 +503,7 @@
     "required_fields_per_row": [
       "endpoint_id",
       "theorem_or_event",
+      "certification_status",
       "empirical_corrected_score",
       "risk_statistical_correction",
       "persistence_or_transition_radius",

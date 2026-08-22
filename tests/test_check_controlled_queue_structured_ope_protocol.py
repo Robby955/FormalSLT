@@ -155,6 +155,16 @@ def test_rejects_unconditional_threshold_prepromise(tmp_path: Path) -> None:
         checker.validate_protocol_file(path)
 
 
+def test_rejects_post_beacon_histogram_theorem_design(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["primary_endpoint"]["histogram_evaluation_contract"][  # type: ignore[index]
+        "implementation_deadline"
+    ] = "design the theorem after reading the trace"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="implementation_deadline"):
+        checker.validate_protocol_file(path)
+
+
 def test_rejects_baseline_confidence_allocation_drift(tmp_path: Path) -> None:
     spec = _spec()
     spec["matched_baselines"][1]["confidence_allocation"][  # type: ignore[index]
@@ -172,6 +182,66 @@ def test_rejects_baseline_formula_drift(tmp_path: Path) -> None:
     ] = "replace the frozen formula after seeing the trace"
     path = _write_spec(tmp_path, spec)
     with pytest.raises(checker.ProtocolError, match="eta_formula"):
+        checker.validate_protocol_file(path)
+
+
+def test_rejects_unchecked_baseline_confidence_claim(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["matched_baselines"][3][  # type: ignore[index]
+        "confidence_claim_until_theorem_exists"
+    ] = "CHECKED_CONFIDENCE_CERTIFICATE"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="confidence_claim_until_theorem_exists"):
+        checker.validate_protocol_file(path)
+
+
+def test_rejects_hybrid_branch_selection_after_data(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["receipt_arithmetic_contract"][  # type: ignore[index]
+        "hybrid_bessel_upper"
+    ] = "select the smaller affine or harmonic branch after reading the trace"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="hybrid_bessel_upper"):
+        checker.validate_protocol_file(path)
+
+
+def test_rejects_log_cost_drift(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["receipt_arithmetic_contract"]["log_cost_upper"][  # type: ignore[index]
+        "adaptive"
+    ]["risk"] = "15"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="adaptive.risk"):
+        checker.validate_protocol_file(path)
+
+
+def test_rejects_causal_predictor_post_update_scoring(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["reporting_contract"]["causal_predictor_contract"][  # type: ignore[index]
+        "evaluation"
+    ] = "update first and score the same transition afterward"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="causal_predictor_contract.evaluation"):
+        checker.validate_protocol_file(path)
+
+
+def test_rejects_oracle_potential_centering_drift(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["matched_baselines"][0]["potential_contract"][  # type: ignore[index]
+        "centering_reference"
+    ] = "stationary_reference_selected_after_data"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="centering_reference"):
+        checker.validate_protocol_file(path)
+
+
+def test_rejects_oracle_drift_oscillation_drift(tmp_path: Path) -> None:
+    spec = _spec()
+    spec["matched_baselines"][0]["potential_contract"][  # type: ignore[index]
+        "drift_oscillation"
+    ]["formula"] = "maximum absolute drift selected after data"
+    path = _write_spec(tmp_path, spec)
+    with pytest.raises(checker.ProtocolError, match="drift_oscillation.formula"):
         checker.validate_protocol_file(path)
 
 

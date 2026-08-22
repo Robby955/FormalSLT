@@ -46,7 +46,7 @@ PRNG_TEST_COUNTER_ZERO_DIGEST_HEX = (
     "02be0e953603f95244eea43f8a16795185b337e881a64248d260219cfb7721ca"
 )
 EXPECTED_PROTOCOL_SHA256 = (
-    "e62fa5d4896c50c04c50a709bf5b380fa037e40898197f7bb269c77d95799742"
+    "070519615ba7cdaf0198a72a03ab6f691a7ff9b37c2eaa97a363d7fd4c3bf153"
 )
 
 CANDIDATE_SUPPORT = ("low", "nominal", "high")
@@ -582,6 +582,12 @@ def _validate_primary_endpoint(value: Any) -> None:
         "decision_threshold": "1/10",
         "endpoint_formula": "risk_boundary + candidate_drift_oscillation + refresh_drift_sensitivity_oscillation * persistence_eta",
         "endpoint_id": "selected_h12_sharp_structured_eb",
+        "histogram_evaluation_contract": {
+            "implementation_deadline": "checked and code-frozen before the formula-selected beacon round is read",
+            "input": "a 24x2x24 physical transition histogram and exact derived sufficient statistics satisfying the frozen receipt schema",
+            "role": "generic pre-data reduction from the histogram sufficient statistics to the exact primary endpoint upper bound; generated trace data may only instantiate this theorem",
+            "theorem": "sharpStructuredReceiptBoundary_evaluation_of_histogram",
+        },
         "potential_depth": 12,
         "potential_shift": "h_shift(z) = h_raw(z) - h_raw(0)",
         "potential_source": "selectedPotentialTable in the bound pilot-selected potential data",
@@ -597,7 +603,7 @@ def _validate_primary_endpoint(value: Any) -> None:
         "residual_formula": "candidate_drift_oscillation + refresh_drift_sensitivity_oscillation * persistence_eta",
         "risk_boundary": "stationaryTargetPolicyOPEBoundary with the fixed selected potential, span, ratio cap, Dirac posterior, risk tilt, and risk delta",
         "selection": "fixed before data; no candidate, depth, tilt, policy, predictor, posterior, or time selection",
-        "status": "FROZEN PROSPECTIVE PRIMARY - REQUIRED SHARP THEOREM AND RECEIPT NOT YET IMPLEMENTED",
+        "status": "FROZEN PROSPECTIVE PRIMARY - SHARP EVENT CHECKED; GENERIC HISTOGRAM EVALUATION THEOREM REQUIRED BEFORE GENERATION",
         "threshold_corollary_contract": "prove endpoint < 1/10 only if the frozen exact receipt arithmetic supports it; otherwise publish the exact endpoint without that corollary",
     }
     _exact_tree(value, expected, "primary_endpoint")
@@ -665,7 +671,26 @@ def _validate_matched_baselines(value: Any) -> None:
             "difference_from_primary": "replace empirical persistence uncertainty by the exact true refresh parameter and use a true-kernel depth-twelve potential",
             "endpoint_formula": "stationaryTargetPolicyOPEBoundary for refreshEnvironment(149/200), the deterministic true-kernel depth-twelve potential, fixed Dirac posterior, C=3/2, risk tilt 1/16, and risk delta 1/20, plus its exact depth-twelve drift oscillation",
             "posterior": "Dirac(queue_threshold,nominal_model_overload)",
-            "potential_contract": "finiteDepthPoissonPotential at depth 12 for refreshEnvironment(149/200), computed from the model before reading the trace; no depth or potential selection",
+            "potential_contract": {
+                "boundary_span": {
+                    "formula": "max_z h_shift(z) - min_z h_shift(z)",
+                    "use": "exact rational B_oracle in stationaryTargetPolicyOPEBoundary",
+                },
+                "centering_reference": "uniform_physical_state_reference",
+                "definition": "finiteDepthPoissonPotential",
+                "depth": 12,
+                "drift_oscillation": {
+                    "drift": "targetPolicyPoissonDrift(refreshEnvironment(149/200),queue_threshold,nominal_model_overload,h_shift)",
+                    "formula": "max_z drift(z) - min_z drift(z)",
+                    "use": "exact rational additive residual outside stationaryTargetPolicyOPEBoundary",
+                },
+                "kernel": "targetPolicyKernel(refreshEnvironment(149/200),queue_threshold)",
+                "score": "targetPolicyRowScore(refreshEnvironment(149/200),queue_threshold,nominal_model_overload)",
+                "shift": {
+                    "anchor_state": 0,
+                    "formula": "h_shift(z) = h_raw(z) - h_raw(0)",
+                },
+            },
             "predictor_id": "nominal_model_overload",
             "same_path_and_estimand": True,
             "selection_rule": "fixed before data",
@@ -725,6 +750,7 @@ def _validate_matched_baselines(value: Any) -> None:
             "baseline_id": "selected_h12_nonvariance_fixed_range",
             "candidate_id": "nominal",
             "candidate_index": 1,
+            "checked_status_until_theorem_exists": "PLANNED_NOT_CHECKED",
             "confidence_allocation": {
                 "delta_persistence": "1/40",
                 "delta_risk": "1/40",
@@ -734,6 +760,7 @@ def _validate_matched_baselines(value: Any) -> None:
                 "risk_tilt": "1/16",
                 "risk_tilt_weight": "1",
             },
+            "confidence_claim_until_theorem_exists": "NOT_A_CONFIDENCE_CERTIFICATE",
             "difference_from_primary": "replace both empirical-Bernstein variance terms by their fixed-range sub-gamma corrections at the same fixed tilts",
             "endpoint_formula": "fixed-range target-policy boundary with risk correction lambda_r/(8*(1-lambda_r/3)) + (KL+log(1/delta_r))/(n*lambda_r), plus candidate_drift_oscillation + refresh_drift_sensitivity_oscillation*eta_fixed_range",
             "eta_formula": "abs(73/96 - persistence_hit_count/n) + lambda_p/(8*(1-lambda_p/3)) + log(2/delta_p)/(n*lambda_p)",
@@ -917,15 +944,64 @@ def _validate_chronology_contract(value: Any) -> None:
     _exact_tree(value, expected, "chronology_contract")
 
 
+def _validate_receipt_arithmetic_contract(value: Any) -> None:
+    expected = {
+        "authoritative_number": "canonical reduced rational numerator/denominator with positive denominator; integers use denominator 1",
+        "decimal_display": {
+            "digits_after_decimal": 15,
+            "rounding": "ROUND_HALF_EVEN",
+            "source": "authoritative exact reduced rational only",
+        },
+        "hybrid_bessel_upper": "always 1/2 + (3/2)*Q where Q = sum_sq - sum^2/n; never evaluate or data-select the harmonic branch",
+        "log_cost_upper": {
+            "adaptive": {"persistence": "9", "risk": "16"},
+            "fixed_range": {"persistence": "7", "risk": "9"},
+            "generic_m12": {"persistence": "7", "risk": "9"},
+            "generic_m5": {"persistence": "7", "risk": "9"},
+            "oracle": {"risk": "8"},
+            "primary": {"persistence": "7", "risk": "9"},
+            "unstructured": {"risk": "9", "transition": "18"},
+        },
+        "psi_upper_by_tilt": {
+            "1/16": "1/480",
+            "1/2": "1/4",
+            "1/4": "1/24",
+            "1/64": "1/8064",
+            "1/8": "1/112",
+        },
+        "strict_threshold_comparison": "compare reduced rationals exactly; decimal display is never authoritative",
+    }
+    _exact_tree(value, expected, "receipt_arithmetic_contract")
+    contract = _object(value, "receipt_arithmetic_contract")
+    for tilt, upper in contract["psi_upper_by_tilt"].items():
+        parsed_tilt = _fraction(tilt, f"receipt arithmetic tilt {tilt}")
+        parsed_upper = _fraction(upper, f"receipt arithmetic psi upper {tilt}")
+        _exact(
+            parsed_upper,
+            parsed_tilt * parsed_tilt / (2 * (1 - parsed_tilt)),
+            f"receipt arithmetic quadratic psi upper {tilt}",
+        )
+
+
 def _validate_reporting_contract(value: Any) -> None:
     expected = {
         "causal_predictors_reported_separately_as_dynamic_encountered_risk": True,
+        "causal_predictor_contract": {
+            "confidence_status": "DESCRIPTIVE_DYNAMIC_ENCOUNTERED_RISK_ONLY",
+            "evaluation": "score each transition with the pre-update Beta probability, then update using that transition outcome",
+            "outputs": [
+                "exact cumulative Brier loss sum",
+                "exact mean Brier loss over n = 200000",
+            ],
+            "predictor_order": ["global_beta", "queue_band_action_beta"],
+        },
         "exact_rational_and_decimal_required": True,
         "failure_and_vacuous_rows_published_unchanged": True,
         "no_suppression_or_reordering_based_on_result": True,
         "required_fields_per_row": [
             "endpoint_id",
             "theorem_or_event",
+            "certification_status",
             "empirical_corrected_score",
             "risk_statistical_correction",
             "persistence_or_transition_radius",
@@ -950,8 +1026,8 @@ def _validate_reporting_contract(value: Any) -> None:
     report = _object(value, "reporting_contract")
     fields = _array(report["required_fields_per_row"], "reporting required fields")
     rows = _array(report["row_order"], "reporting row order")
-    if len(fields) != 10 or len(set(fields)) != len(fields):
-        _fail("reporting_contract must freeze ten distinct required fields per row")
+    if len(fields) != 11 or len(set(fields)) != len(fields):
+        _fail("reporting_contract must freeze eleven distinct required fields per row")
     if len(rows) != 7 or len(set(rows)) != len(rows):
         _fail("reporting_contract must freeze seven distinct rows")
 
@@ -990,6 +1066,7 @@ def validate_protocol(spec: dict[str, Any]) -> None:
             "nonclaims",
             "primary_endpoint",
             "protocol_version",
+            "receipt_arithmetic_contract",
             "registration",
             "reporting_contract",
             "schema_version",
@@ -1011,6 +1088,7 @@ def validate_protocol(spec: dict[str, Any]) -> None:
     _validate_success_criteria(spec["success_criteria"])
     _validate_artifact_contract(spec["artifact_contract"])
     _validate_chronology_contract(spec["chronology_contract"])
+    _validate_receipt_arithmetic_contract(spec["receipt_arithmetic_contract"])
     _validate_reporting_contract(spec["reporting_contract"])
     _validate_nonclaims(spec["nonclaims"])
 
