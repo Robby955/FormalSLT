@@ -30,6 +30,7 @@ SITE_MARKER = 'data-formalslt-site="research"'
 
 SITE_FILES = (
     "index.html",
+    "assets/favicon.svg",
     "assets/site.css",
     "assets/theorem-chain.svg",
     "readers/stats-ml/index.html",
@@ -135,6 +136,9 @@ def validate_source_tree() -> None:
         text = path.read_text(encoding="utf-8")
         if SOURCE_REF_TOKEN not in text:
             raise ValueError(f"{path}: missing exact-source placeholder")
+        for marker in ('name="theme-color"', 'rel="canonical"', 'rel="icon"'):
+            if marker not in text:
+                raise ValueError(f"{path}: missing metadata marker {marker}")
         parser = _parse_html(path)
         for href in parser.targets:
             target = _local_target(path.parent, href)
@@ -157,6 +161,15 @@ def validate_source_tree() -> None:
             if not target.is_file():
                 raise ValueError(f"{path}: broken static link {href!r}")
 
+    for marker in (
+        'property="og:title"',
+        'property="og:description"',
+        'property="og:url"',
+        'name="twitter:card"',
+    ):
+        if marker not in root_html:
+            raise ValueError(f"docs/site/index.html is missing social marker {marker}")
+
     site_chain = SITE_ROOT / "assets" / "theorem-chain.svg"
     if not THEOREM_CHAIN_SOURCE.is_file():
         raise ValueError("docs/theorem-chain.svg is missing")
@@ -171,6 +184,11 @@ def validate_source_tree() -> None:
     concept_html = CONCEPT_INDEX.read_text(encoding="utf-8")
     if UNPINNED_SOURCE_PREFIX not in concept_html:
         raise ValueError("docs/INDEX.html has no main-branch source links to pin")
+    if concept_html.count(SOURCE_REF_TOKEN) != 2:
+        raise ValueError(
+            "docs/INDEX.html must contain the exact-source placeholder twice "
+            "(tree link and visible commit)"
+        )
 
 
 def _validate_source_ref(source_ref: str) -> str:
@@ -205,9 +223,11 @@ def _copy_concept_index(source_ref: str, doc_root: Path) -> None:
     staged = concept_html.replace(
         UNPINNED_SOURCE_PREFIX,
         PINNED_SOURCE_PREFIX.format(source_ref=source_ref),
-    )
+    ).replace(SOURCE_REF_TOKEN, source_ref)
     if UNPINNED_SOURCE_PREFIX in staged:
         raise ValueError("an unpinned concept-index source link remains")
+    if SOURCE_REF_TOKEN in staged:
+        raise ValueError("an unresolved concept-index source placeholder remains")
     indexed_label = " indexed declarations &middot;"
     if staged.count(indexed_label) != 1 or " public declarations &middot;" in staged:
         raise ValueError("unexpected declaration-count label in docs/INDEX.html")
@@ -218,11 +238,20 @@ def _copy_concept_index(source_ref: str, doc_root: Path) -> None:
 
 def _validate_staged_links(doc_root: Path) -> None:
     staged_pages = [doc_root / rel for rel in SITE_FILES if rel.endswith(".html")]
+    staged_pages.append(doc_root / "theorems" / "index.html")
     for page in staged_pages:
         parser = _parse_html(page)
         for href in parser.targets:
             target = _local_target(page.parent, href)
-            if target is not None and not target.is_file():
+            if target is None:
+                continue
+            try:
+                target.relative_to(doc_root)
+            except ValueError as exc:
+                raise ValueError(
+                    f"{page}: staged link escapes documentation root: {href!r}"
+                ) from exc
+            if not target.is_file():
                 raise ValueError(f"{page}: staged link target is missing: {href!r}")
 
 
@@ -260,7 +289,8 @@ def self_test() -> None:
     validate_source_tree()
     source_ref = "0123456789abcdef0123456789abcdef01234567"
     with tempfile.TemporaryDirectory(prefix="formalslt-docs-stage-") as tmp:
-        doc_root = Path(tmp)
+        fixture_root = Path(tmp)
+        doc_root = fixture_root / "doc"
         for rel in DOCGEN_PATHS:
             path = doc_root / rel
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -275,10 +305,28 @@ def self_test() -> None:
         assert f"/blob/{source_ref}/" in staged_index
         assert UNPINNED_SOURCE_PREFIX not in staged_index
         assert " indexed declarations &middot;" in staged_index
+        assert 'href="../">FormalSLT</a>' in staged_index
+        assert 'aria-pressed="false"' in staged_index
+        assert 'role="status" aria-live="polite" aria-atomic="true"' in staged_index
+        assert 'rel="canonical" href="https://robby955.github.io/FormalSLT/theorems/"' in staged_index
+        assert (doc_root / "assets" / "favicon.svg").is_file()
         assert SOURCE_REF_TOKEN not in "".join(
             page.read_text(encoding="utf-8")
             for page in doc_root.rglob("*.html")
         )
+        outside = fixture_root / "outside.html"
+        outside.write_text("<html><body>outside</body></html>", encoding="utf-8")
+        staged_index_path = doc_root / "theorems" / "index.html"
+        staged_index_path.write_text(
+            staged_index + '<a href="../../outside.html">escape</a>',
+            encoding="utf-8",
+        )
+        try:
+            _validate_staged_links(doc_root)
+        except ValueError as exc:
+            assert "staged link escapes documentation root" in str(exc)
+        else:
+            raise AssertionError("staged-link validation accepted an escaping link")
         # Re-running staging must preserve the original generated API root.
         stage_site(doc_root, source_ref)
         assert (doc_root / "api.html").read_bytes() == original_root

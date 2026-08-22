@@ -159,7 +159,7 @@ h3 {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.13fr) minmax(18rem, 0.87fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(24rem, 1.05fr);
   gap: clamp(2rem, 6vw, 6rem);
   align-items: center;
   min-height: calc(100vh - 4.5rem);
@@ -263,8 +263,35 @@ h3 {
   animation: enter 800ms 100ms ease-out both;
 }
 
+.theorem-map-link {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--line-dark);
+  background: var(--ink);
+  cursor: zoom-in;
+}
+
 .hero-figure img {
   width: 100%;
+  height: auto;
+  transition: transform 220ms ease;
+}
+
+.theorem-map-link:hover img {
+  transform: scale(1.012);
+}
+
+.map-action {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.45rem 0.65rem;
+  background: color-mix(in srgb, var(--ink-deep) 92%, transparent);
+  color: var(--paper-bright);
+  font-size: 0.72rem;
+  font-weight: 720;
+  letter-spacing: 0.02em;
 }
 
 .hero-figure figcaption {
@@ -619,6 +646,18 @@ h3 {
   }
 }
 
+@media (max-width: 1040px) {
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .hero-figure {
+    width: 100%;
+    max-width: 46rem;
+  }
+}
+
 @media (max-width: 860px) {
   .site-header {
     position: static;
@@ -627,15 +666,6 @@ h3 {
 
   .site-header nav {
     max-width: 25rem;
-  }
-
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-  }
-
-  .hero-figure {
-    max-width: 38rem;
   }
 
   .proof-key dl {
@@ -672,13 +702,19 @@ h3 {
   }
 
   .site-header nav {
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-content: stretch;
+    gap: 0.2rem 0.8rem;
+    width: 100%;
     margin-top: 0.55rem;
   }
 
-  .site-header nav a:nth-child(2),
-  .site-header nav a:nth-child(3) {
-    display: none;
+  .site-header nav a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: 0.78rem;
   }
 
   .hero {

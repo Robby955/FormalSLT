@@ -44,6 +44,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
 OUT_HTML = ROOT / "docs" / "INDEX.html"
 OUT_MD = ROOT / "docs" / "INDEX.md"
+SITE_CSS = ROOT / "docs" / "site" / "assets" / "site.css"
 REPO_URL = "https://github.com/Robby955/FormalSLT/blob/main"
 
 # Concept keywords: a declaration is tagged with every concept whose trigger
@@ -429,6 +430,7 @@ def render_md(rows: list[dict[str, Any]]) -> str:
 def render_html(rows: list[dict[str, Any]]) -> str:
     n_resolved = sum(1 for r in rows if r["line"] is not None)
     all_concepts = sorted({c for r in rows for c in r["concepts"]})
+    shared_site_css = SITE_CSS.read_text(encoding="utf-8")
 
     def esc(s: str) -> str:
         return html.escape(s, quote=True)
@@ -461,61 +463,138 @@ def render_html(rows: list[dict[str, Any]]) -> str:
         )
 
     concept_buttons = "".join(
-        f'<button type="button" class="cbtn" data-concept="{esc(c)}">{esc(c)}</button>'
+        f'<button type="button" class="cbtn" data-concept="{esc(c)}" '
+        f'aria-pressed="false">{esc(c)}</button>'
         for c in all_concepts
     )
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
+    return f"""<!doctype html>
+<html lang="en" data-formalslt-site="theorem-index">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Search the checked FormalSLT theorem surface by mathematical concept, declaration, module, or role.">
+<meta name="theme-color" content="#0b172b">
 <title>FormalSLT theorem index</title>
+<link rel="canonical" href="https://robby955.github.io/FormalSLT/theorems/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <style>
-:root {{ --bg:#0f1115; --fg:#e6e6e6; --muted:#9aa4b2; --card:#1a1d24; --accent:#7aa2f7; --chip:#283041; }}
-* {{ box-sizing:border-box; }}
-body {{ margin:0; font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); }}
-header {{ position:sticky; top:0; background:var(--bg); padding:18px 20px 12px; border-bottom:1px solid #232733; z-index:5; }}
-h1 {{ margin:0 0 4px; font-size:20px; }}
-.sub {{ color:var(--muted); font-size:13px; margin-bottom:10px; }}
-#q {{ width:100%; padding:10px 12px; font-size:15px; border-radius:8px; border:1px solid #2c3340; background:#11141a; color:var(--fg); }}
-.concepts {{ margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; }}
-.cbtn {{ background:var(--chip); color:var(--fg); border:1px solid #313a4d; border-radius:14px; padding:3px 10px; font-size:12px; cursor:pointer; }}
-.cbtn.active {{ background:var(--accent); color:#0f1115; border-color:var(--accent); }}
-main {{ padding:14px 20px 60px; }}
-.count {{ color:var(--muted); font-size:13px; margin:8px 0 14px; }}
-.row {{ background:var(--card); border:1px solid #232733; border-radius:10px; padding:12px 14px; margin-bottom:10px; }}
-.decl code {{ font-size:15px; color:var(--accent); word-break:break-all; }}
-.kind {{ color:var(--muted); font-size:11px; margin-left:8px; text-transform:uppercase; letter-spacing:.04em; }}
-.meta {{ margin:6px 0; display:flex; flex-wrap:wrap; gap:5px; }}
-.chip {{ background:var(--chip); color:#cdd6e4; border-radius:10px; padding:1px 8px; font-size:11px; }}
-.summary {{ color:#d3d8e0; font-size:14px; }}
-.locline {{ margin-top:6px; font-size:12px; }}
-.loc {{ color:var(--muted); text-decoration:none; font-family:ui-monospace,Menlo,monospace; }}
-.loc:hover {{ color:var(--accent); text-decoration:underline; }}
-.fam {{ color:var(--muted); margin-left:10px; font-style:italic; }}
-.hidden {{ display:none; }}
+{shared_site_css}
+input:focus-visible, summary:focus-visible {{ outline: 3px solid var(--accent-light); outline-offset: 4px; }}
+.index-header {{ background: var(--ink-deep); color: var(--paper-bright); }}
+.index-header-inner, .search-inner, main {{ width: min(calc(100% - 2.5rem), var(--measure)); margin-inline: auto; }}
+.index-header-inner {{ padding: 2rem 0 clamp(3rem, 7vw, 6rem); }}
+.index-nav {{ display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: clamp(3rem, 7vw, 6rem); }}
+.index-header .wordmark {{ color: var(--paper-bright); }}
+.index-nav-links {{ display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem 1.25rem; }}
+.index-nav-links a {{ color: #d8dfeb; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; }}
+.eyebrow {{ margin: 0 0 1rem; color: var(--accent-light); font-size: .76rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }}
+h1 {{ max-width: 14ch; margin: 0 0 1.25rem; font: 600 clamp(2.6rem, 7vw, 5.8rem)/1.02 var(--serif); letter-spacing: -.045em; text-wrap: balance; }}
+.sub {{ max-width: 50rem; margin: 0; color: #d8dfeb; font-size: 1.02rem; }}
+.search-shell {{ position: sticky; top: 0; z-index: 8; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper-bright) 96%, transparent); backdrop-filter: blur(12px); }}
+.search-inner {{ display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: end; padding-block: .9rem; }}
+.search-field {{ display: grid; gap: .35rem; }}
+.search-field label {{ color: var(--muted); font-size: .76rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }}
+#q {{ width: 100%; min-height: 3rem; padding: .7rem .85rem; border: 1px solid var(--line-dark); border-radius: 0; background: var(--paper-bright); color: var(--ink); font: 1rem var(--sans); }}
+.clear {{ min-height: 3rem; padding: .65rem 1rem; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-weight: 720; cursor: pointer; }}
+.clear:disabled {{ border-color: var(--line); color: var(--muted); cursor: default; }}
+main {{ padding-block: clamp(2.5rem, 6vw, 5rem) 6rem; }}
+.concept-filter {{ margin-bottom: 2rem; border-block: 1px solid var(--line); }}
+.concept-filter summary {{ display: flex; min-height: 3.25rem; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; font-weight: 720; }}
+.filter-state {{ color: var(--muted); font-size: .78rem; font-weight: 500; }}
+.concepts {{ display: flex; flex-wrap: wrap; gap: .45rem; padding: 0 0 1.1rem; }}
+.cbtn {{ min-height: 2.15rem; padding: .3rem .7rem; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink); font-size: .76rem; cursor: pointer; }}
+.cbtn.active, .cbtn[aria-pressed="true"] {{ border-color: var(--accent); background: var(--accent); color: var(--paper-bright); }}
+.count {{ display: block; margin: 0 0 1rem; color: var(--muted); font-size: .84rem; }}
+.row {{ display: grid; grid-template-columns: minmax(16rem, .8fr) minmax(0, 1.2fr); gap: .65rem clamp(1.5rem, 4vw, 4rem); padding: 1.5rem 0; border-top: 1px solid var(--line); }}
+.row > * {{ min-width: 0; }}
+.row:last-child {{ border-bottom: 1px solid var(--line); }}
+.decl {{ min-width: 0; }}
+.decl code {{ color: var(--accent); font: 650 .9rem/1.45 var(--mono); overflow-wrap: anywhere; }}
+.kind {{ margin-left: .55rem; color: var(--muted); font-size: .66rem; letter-spacing: .06em; text-transform: uppercase; }}
+.meta {{ display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .65rem; }}
+.chip {{ padding: .05rem .45rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .67rem; }}
+.summary {{ align-self: start; color: var(--ink); font-size: .92rem; overflow-wrap: anywhere; }}
+.locline {{ grid-column: 2; color: var(--muted); font-size: .72rem; }}
+.loc {{ color: var(--muted); font-family: var(--mono); overflow-wrap: anywhere; text-decoration: none; }}
+.loc:hover {{ color: var(--accent); text-decoration: underline; }}
+.fam {{ margin-left: .7rem; font-style: italic; }}
+.index-footer {{ width: min(calc(100% - 2.5rem), var(--measure)); margin-inline: auto; padding: 2rem 0 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }}
+.index-footer p {{ margin: 0; }}
+.hidden {{ display: none; }}
+@media (max-width: 720px) {{
+  .index-nav {{ align-items: flex-start; }}
+  .index-nav-links {{ display: grid; gap: .25rem; text-align: right; }}
+  .search-inner {{ grid-template-columns: 1fr; }}
+  .clear {{ width: 100%; }}
+  .concepts {{ max-height: 14rem; overflow: auto; padding-right: .25rem; }}
+  .row {{ grid-template-columns: minmax(0, 1fr); }}
+  .locline {{ grid-column: 1; }}
+  .fam {{ display: block; margin: .25rem 0 0; }}
+}}
+@media (prefers-reduced-motion: reduce) {{
+  html {{ scroll-behavior: auto; }}
+  *, *::before, *::after {{ transition-duration: .01ms !important; }}
+}}
 </style>
 </head>
 <body>
-<header>
-  <h1>FormalSLT theorem index</h1>
-  <div class="sub">{len(rows)} indexed declarations &middot; {n_resolved} linked to source &middot; discovery surface, not an API compatibility promise</div>
-  <input id="q" type="search" aria-label="Search the theorem index" placeholder="Search: empirical Bernstein, adaptive trajectory, Poisson equation, transition kernel, ...">
-  <div class="concepts">{concept_buttons}</div>
+<a class="skip-link" href="#results">Skip to results</a>
+<header class="index-header">
+  <div class="index-header-inner">
+    <nav class="index-nav" aria-label="Theorem index navigation">
+      <a class="wordmark" href="../">FormalSLT</a>
+      <div class="index-nav-links">
+        <a href="../">Research overview</a>
+        <a href="../api.html">Lean docs</a>
+      </div>
+    </nav>
+    <p class="eyebrow">Concept-keyed discovery</p>
+    <h1>Find the theorem before the declaration name.</h1>
+    <p class="sub">{len(rows)} indexed declarations &middot; {n_resolved} linked to source &middot; discovery surface, not an API compatibility promise</p>
+  </div>
 </header>
-<main>
-  <div class="count" id="count"></div>
+<div class="search-shell">
+  <div class="search-inner">
+    <div class="search-field">
+      <label for="q">Search declarations</label>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" aria-controls="results" placeholder="Empirical Bernstein, adaptive trajectory, Poisson equation, transition kernel">
+    </div>
+    <button class="clear" id="clear" type="button" disabled>Clear filters</button>
+  </div>
+</div>
+<main id="results">
+  <details class="concept-filter" id="concept-filter">
+    <summary>Filter by concept <span class="filter-state" id="filter-state">No concept selected</span></summary>
+    <div class="concepts" aria-label="Theorem concepts">{concept_buttons}</div>
+  </details>
+  <output class="count" id="count" role="status" aria-live="polite" aria-atomic="true"></output>
   {"".join(cards)}
 </main>
+<footer class="index-footer">
+  <p>Built from <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__"><code>__FORMALSLT_SOURCE_REF__</code></a>. Source links are pinned to the same documentation commit during staging.</p>
+</footer>
 <script>
 const rows = Array.from(document.querySelectorAll('.row'));
 const q = document.getElementById('q');
 const count = document.getElementById('count');
 const cbtns = Array.from(document.querySelectorAll('.cbtn'));
+const clear = document.getElementById('clear');
+const filterState = document.getElementById('filter-state');
+const conceptFilter = document.getElementById('concept-filter');
 let activeConcept = null;
+if (!window.matchMedia('(max-width: 720px)').matches) conceptFilter.open = true;
 function normalize(value) {{
   return value.toLowerCase().replace(/[-\u2010-\u2015]/g, '');
+}}
+function selectConcept(concept) {{
+  activeConcept = concept;
+  for (const b of cbtns) {{
+    const active = b.dataset.concept === activeConcept;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-pressed', String(active));
+  }}
+  filterState.textContent = activeConcept || 'No concept selected';
 }}
 function apply() {{
   const term = normalize(q.value.trim());
@@ -529,16 +608,22 @@ function apply() {{
     r.classList.toggle('hidden', !show);
     if (show) shown++;
   }}
-  count.textContent = shown + ' / ' + rows.length + ' shown';
+  count.textContent = shown + ' of ' + rows.length + ' declarations shown';
+  clear.disabled = !term && !activeConcept;
 }}
 q.addEventListener('input', apply);
 for (const b of cbtns) {{
   b.addEventListener('click', () => {{
-    if (activeConcept === b.dataset.concept) {{ activeConcept = null; b.classList.remove('active'); }}
-    else {{ cbtns.forEach(x => x.classList.remove('active')); activeConcept = b.dataset.concept; b.classList.add('active'); }}
+    selectConcept(activeConcept === b.dataset.concept ? null : b.dataset.concept);
     apply();
   }});
 }}
+clear.addEventListener('click', () => {{
+  q.value = '';
+  selectConcept(null);
+  apply();
+  q.focus();
+}});
 apply();
 </script>
 </body>
@@ -726,6 +811,14 @@ def main() -> int:
         assert "1 indexed declarations" in filter_fixture
         assert "discovery surface, not an API compatibility promise" in filter_fixture
         assert "public declarations" not in filter_fixture
+        assert 'href="../">FormalSLT</a>' in filter_fixture
+        assert 'rel="canonical" href="https://robby955.github.io/FormalSLT/theorems/"' in filter_fixture
+        assert 'rel="icon" href="../assets/favicon.svg"' in filter_fixture
+        assert 'aria-pressed="false"' in filter_fixture
+        assert 'role="status" aria-live="polite" aria-atomic="true"' in filter_fixture
+        assert '<details class="concept-filter" id="concept-filter">' in filter_fixture
+        assert "setAttribute('aria-pressed', String(active))" in filter_fixture
+        assert filter_fixture.count("__FORMALSLT_SOURCE_REF__") == 2
         print("theorem-index self-test passed")
         return 0
 
