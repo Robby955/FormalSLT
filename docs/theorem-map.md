@@ -1065,14 +1065,19 @@ matched baseline comparison.
 | `refreshTargetPolicyPoissonDriftSensitivity` | `Applications.ControlledQueueRefreshSensitivity` | Defines the exact target-policy Poisson-drift slope in the observable persistence-hit coordinate, including the `24/23` conversion from the latent refresh parameter |
 | `targetPolicyPoissonDrift_refresh_sub_candidate_eq` | `Applications.ControlledQueueRefreshSensitivity` | Identifies true refresh-family drift minus generated-candidate drift exactly as hit-probability discrepancy times the normalized sensitivity, with no TV factor two |
 | `abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity` | `Applications.ControlledQueueRefreshSensitivity` | Combines candidate-drift oscillation, sensitivity oscillation, and a hit-discrepancy budget `eta` into the residual `epsilon + sensitivityBound * eta`, with no extra `2 * (1 + B)` multiplier |
-| `knownKernelSelectedCandidateDrift_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `58989951 / 9007199254740992` for the nominal selected candidate drift using the supplied shifted depth-twelve potential |
+| `knownKernelSelectedCandidateDrift_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `58989951 / 9007199254740992` for the nominal selected candidate drift directly from the candidate, target-policy, score, transition, and shifted depth-twelve potential tables, without the invariant law, stationary risk, or generated residual table |
 | `knownKernelSelectedRefreshSensitivity_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `831542406207231 / 3236962232172544` for the selected normalized refresh sensitivity |
 | `sharpStructuredResidual` | `Applications.ControlledQueueSharpStructuredOPE` | Defines the pathwise sharp residual as the two checked oscillation bounds combined with the nominal candidate's scalar persistence budget |
 | `exists_controlledQueueSharpStructuredOPE_event` | `Applications.ControlledQueueSharpStructuredOPE` | For any true refresh parameter and deterministic initial observation fixed beforehand, intersects the fixed selected-atom risk and persistence events and bounds the stationary target-policy risk on one adaptive-trajectory outer event of complement mass at most `1/20` at every `n >= 2` |
 | `exists_controlledQueueSharpStructuredReceipt_event` | `Applications.ControlledQueueSharpStructuredOPE` | Freezes true `gamma = 149/200`, initial observation `(eco, state 0)`, horizon `200000`, nominal candidate, supplied shifted depth-twelve potential, and queue-threshold/nominal-model Dirac posterior for the stationary target-policy risk on an adaptive trajectory; it is an event theorem, not a trace or numerical receipt |
 | `sharpStructuredReceiptBoundary_evaluation_of_histogram` | `Applications.ControlledQueueSharpStructuredReceiptCore` | For any path matching a supplied physical transition histogram at horizon `200000`, bounds the frozen sharp primary boundary by the exact count-derived affine-Bessel endpoint with risk log/psi bounds `9` and `1/480` and persistence log/psi bounds `7` and `1/8064`; it contains no future histogram or threshold result |
+| `sharpStructuredRetrospectivePathSummary_of_suffixEdgeHistogram` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Derives the selected score moments and persistence-hit count `152266` from the existing aligned `199999`-transition suffix histogram |
+| `sharpStructuredRetrospectiveUpper_eq_primary` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Checks the exact risk-plus-residual ledger against `45318758321311224310665458696783373002366549 / 659558894102351266671449077672292808728248320` using no true parameter, invariant law, or exact stationary risk |
+| `sharpStructuredRetrospectiveBoundary_lt_sixtyNineThousandths` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Bounds the sharp structured pathwise endpoint by `0.068710707605557... < 0.069` from the aligned retrospective histogram |
+| `exists_controlledQueueSharpStructuredRetrospective_event` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | For every fixed admissible refresh parameter under the path law started at `(action = 1, state = 1)`, supplies an outer event of complement mass at most `1/20` on which any path with the aligned retrospective histogram receives the exact sharp endpoint; it is not a simultaneous-in-parameter event or a named-path membership theorem |
+| `sharpStructuredRetrospectiveFailureEvent_mass_le` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | For each fixed admissible refresh parameter under the path law started at `(action = 1, state = 1)`, bounds by `1/20` the outer mass of the paths on which the aligned frozen histogram occurs while the displayed risk conclusion fails; the failure set is not asserted measurable, and the statement is neither histogram-conditioned nor simultaneous-in-parameter coverage |
 
-The fixed slice uses risk tilt `1/16`, persistence tilt `1/64`, and separate
+The fixed prospective slice uses risk tilt `1/16`, persistence tilt `1/64`, and separate
 failure budgets `1/40`. It has no fresh prospective trace or histogram, no
 named-path good-event membership theorem, and no checked numerical endpoint
 below the protocol threshold `< 0.10`. Its local protocol has not been
@@ -1083,6 +1088,12 @@ Its version-one binding contains no final OSF registration GUID; the completed
 registration response supplies that GUID, the archived-file metadata target
 must match it, and the metadata size and SHA-256 must match the exact binding
 bytes.
+
+The retrospective slice uses the already-existing trace histogram rather than
+fresh prospective data. It is an unknown-parameter certificate only within the
+well-specified one-dimensional refresh family. It does not test that family,
+give histogram-conditioned `19/20` coverage, or establish that a named trace
+lies in the theorem-produced event.
 
 ## Controlled-queue twelve-atom OPE catalog
 

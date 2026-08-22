@@ -2,7 +2,8 @@
 
 Status: **PREPROCESSING, STRUCTURED ADAPTIVE OPE EVENT, FIXED SHARP
 UNKNOWN-DYNAMICS EVENT, ONE EXACT INVARIANT/RISK ATOM, AND AN ALIGNED
-KNOWN-KERNEL RECEIPT CHECKED** / **PROSPECTIVE PROTOCOL FROZEN LOCALLY;
+KNOWN-KERNEL RECEIPT AND RETROSPECTIVE SHARP STRUCTURED RECEIPT CHECKED** /
+**PROSPECTIVE PROTOCOL FROZEN LOCALLY;
 INDEPENDENT GENERATOR/VERIFIER IMPLEMENTATION CHECKED LOCALLY; IMMUTABLE
 PUBLIC BINDING, FRESH TRACE, HISTOGRAM, NUMERICAL `< 0.10` RECEIPT, MATCHED
 BASELINES, AND NAMED-PATH EVENT MEMBERSHIP OPEN**
@@ -66,6 +67,15 @@ of unknown-kernel target-policy OPE.
   preregistered affine Bessel branch, log-cost bounds `9` and `7`, and cumulant
   bounds `1/480` and `1/8064`; it contains no prospective counts or threshold
   conclusion.
+- `../../FormalSLT/Applications/ControlledQueueSharpStructuredRetrospectiveReceipt.lean`:
+  checked reduction of the existing aligned `199999`-transition suffix
+  histogram, including persistence-hit count `152266`, to the exact sharp
+  endpoint `0.068710707605557... < 0.069`. The numerical proof does not use the
+  true parameter, exact invariant law, or exact stationary risk. For every
+  fixed admissible refresh parameter under the path law started at `(action =
+  1, state = 1)`, the outer mass of the paths on which the frozen histogram
+  occurs while the displayed risk bound fails is at most `1/20`; this is not
+  coverage conditional on the histogram or simultaneous over parameters.
 - `../../FormalSLT/Applications/ControlledQueueInvariantRisk.lean`: locally
   checked explicit 24-state invariant PMF for the nominal environment and
   queue-threshold target policy, its equality to the catalog's canonical
@@ -186,7 +196,8 @@ stream, then an implementation-independent verifier replays every random draw,
 transition, count, and causal update. It also runs tamper, rejection,
 no-look-ahead, and stale-artifact tests. The known-kernel receipt target runs a
 second independent arithmetic implementation, adversarial schema/provenance
-tests, the memory-bounded Lean receipt build, and its public theorem checker.
+tests, the memory-bounded Lean receipt build, the retrospective sharp structured
+receipt, and their public theorem checkers.
 
 The binary stores `state_t` and `action_t` separately. FormalSLT's
 `ControlledObservation Z A` is represented as `A × Z`, while the generated

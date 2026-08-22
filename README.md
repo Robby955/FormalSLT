@@ -6,13 +6,13 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C218-brightgreen.svg)](#verification)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-290-blue.svg)](#use-the-library)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-153%2C476-brightgreen.svg)](#verification)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C232-brightgreen.svg)](#verification)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-291-blue.svg)](#use-the-library)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-154%2C217-brightgreen.svg)](#verification)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#verification)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#verification)
 
-The `153,453` count covers the library and examples, including the 4,867-line
+The `154,217` count covers the library and examples, including the 4,867-line
 generated data-definition module `FormalSLT/Applications/ControlledQueueData.lean`.
 
 FormalSLT is a Lean 4 library for **machine-checked statistical learning under
@@ -186,8 +186,17 @@ receipts plus a frozen prospective protocol. It contains **no fresh prospective
 trace, receipt, or numerical result**. The oracle true-kernel and fixed-range
 comparison rows are arithmetic-only `PLANNED_NOT_CHECKED` noncertificates; their
 `1/20` entries are planned allocations, not checked outer-mass bounds. The named
-deterministic application path is not proved to lie in a theorem-produced good
-event.
+retrospective suffix histogram now bounds the sharp structured pathwise boundary
+by the exact observable endpoint `0.068710707605557... < 0.069`. For every fixed
+admissible parameter in the
+well-specified one-parameter refresh family, under the path law started at
+`(action = 1, state = 1)`, Lean bounds by `1/20` the outer mass of the paths on
+which that histogram occurs while the displayed risk conclusion fails. This is
+pointwise in the fixed parameter and unconditional under that fixed-initial
+path law; it is not coverage conditional on the histogram or one event
+simultaneous over all parameters. The named deterministic path is not proved to
+lie in a particular good event, and refresh-family well-specification is an
+assumption rather than a tested conclusion.
 
 ## Verification
 

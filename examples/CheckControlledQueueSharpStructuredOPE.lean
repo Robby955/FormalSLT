@@ -1,5 +1,7 @@
 import FormalSLT.Applications.ControlledQueueSharpStructuredOPE
+import Mathlib.Tactic.MinImports
 
+open Lean Elab Command
 open FormalSLT.AnytimeValid
 open FormalSLT.StochasticDynamics
 open FormalSLT.Applications.ControlledQueue
@@ -62,6 +64,31 @@ open FormalSLT.Applications.ControlledQueueData
 #print axioms knownKernelSelectedRefreshSensitivity_finiteOscillation_le
 #print axioms exists_controlledQueueSharpStructuredOPE_event
 #print axioms exists_controlledQueueSharpStructuredReceipt_event
+
+/-! The sharp candidate-drift certificate must not recover its oscillation
+through the exact invariant law or exact stationary-risk receipt. -/
+
+run_cmd do
+  let decl : Name :=
+    ``FormalSLT.Applications.ControlledQueue.knownKernelSelectedCandidateDrift_finiteOscillation_le
+  let dependencies ← liftCoreM decl.transitivelyUsedConstants
+  let forbidden : Array Name := #[
+    ``FormalSLT.Applications.ControlledQueue.knownKernelSelectedResidual,
+    ``FormalSLT.Applications.ControlledQueue.knownKernelSelectedPotential_residual_eq,
+    ``FormalSLT.Applications.ControlledQueue.queueThreshold_nominalModelOverload_stationaryRisk,
+    ``FormalSLT.Applications.ControlledQueue.queueThreshold_nominalModelOverload_catalogStationaryRisk,
+    ``FormalSLT.Applications.ControlledQueue.knownKernelSelectedPosteriorRisk_eq,
+    ``FormalSLT.Applications.ControlledQueue.queueThresholdStationaryLaw,
+    ``FormalSLT.Applications.ControlledQueue.queueThresholdStationaryLaw_isInvariant,
+    ``FormalSLT.Applications.ControlledQueue.queueThresholdStationaryLaw_eq_catalogStationary,
+    ``FormalSLT.Applications.ControlledQueueKnownKernelReceiptData.selectedStationaryLawTable,
+    ``FormalSLT.Applications.ControlledQueueKnownKernelReceiptData.selectedStationaryRisk,
+    ``FormalSLT.Applications.ControlledQueueKnownKernelReceiptData.selectedResidualTable,
+    ``FormalSLT.StochasticDynamics.approximateTargetPolicyPoissonResidual,
+    ``FormalSLT.StochasticDynamics.stationaryTargetPolicyRisk]
+  for name in forbidden do
+    if dependencies.contains name then
+      throwError m!"candidate-drift certificate has forbidden transitive dependency: {name}"
 
 /-! Concrete prospective constants, checked independently of any trace. -/
 

@@ -571,6 +571,20 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredOPE_event"
   "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredReceipt_event"
   "FormalSLT.Applications.ControlledQueue.sharpStructuredReceiptBoundary_evaluation_of_histogram"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePathSummary_of_suffixEdgeHistogram"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveRiskUpper_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePersistenceBesselQ_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePersistenceAffinePenalty_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveCandidateGap_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePersistenceRadiusUpper_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePersistenceBudgetUpper_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveResidualUpper_eq"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveUpper_eq_primary"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePrimaryUpper_lt_sixtyNineThousandths"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveBoundary_le"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveBoundary_lt_sixtyNineThousandths"
+  "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredRetrospective_event"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectiveFailureEvent_mass_le"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -974,6 +988,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueRefreshSensitivity"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredOPE"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore"
+  echo "import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -1070,6 +1085,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueRefreshSensitivity \
   FormalSLT.Applications.ControlledQueueSharpStructuredOPE \
   FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore \
+  FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

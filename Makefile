@@ -85,6 +85,7 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake build FormalSLT.Applications.ControlledQueueRefreshSensitivity
 	lake build FormalSLT.Applications.ControlledQueueSharpStructuredOPE
 	lake build FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
+	lake build FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 	lake env lean examples/CheckControlledQueueReindex.lean
 	lake env lean examples/CheckControlledQueueTypedModel.lean
 	lake env lean examples/CheckControlledQueueTargetPolicyScores.lean
@@ -95,6 +96,7 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake env lean examples/CheckControlledQueueInvariantRisk.lean
 	lake env lean examples/CheckControlledQueueSharpStructuredOPE.lean
 	lake env lean examples/CheckControlledQueueSharpStructuredReceiptCore.lean
+	lake env lean examples/CheckControlledQueueSharpStructuredRetrospectiveReceipt.lean
 
 # Regenerate the deterministic trace, counts, and trace SHA-256 manifest.
 generate-controlled-queue-trace:
@@ -121,8 +123,11 @@ check-controlled-queue-known-kernel-receipt:
 # Run adversarial preprocessing tests and the checked Lean endpoint.
 verify-controlled-queue-known-kernel-receipt: check-controlled-queue-known-kernel-receipt
 	python3 -m pytest -q tests/test_generate_controlled_queue_known_kernel_receipt.py
+	python3 -m pytest -q tests/test_controlled_queue_sharp_structured_retrospective_receipt.py
 	lake build FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 	lake env lean examples/CheckControlledQueueKnownKernelReceipt.lean
+	lake build FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
+	lake env lean examples/CheckControlledQueueSharpStructuredRetrospectiveReceipt.lean
 
 # Validate the prospective structured-OPE preregistration and fail if any
 # declared fresh trace, receipt, manifest, or generated Lean output exists.

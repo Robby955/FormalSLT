@@ -411,6 +411,42 @@ relabel the primary, adaptive, generic structured, or premise-qualified
 unstructured rows, and it does not alter the separate checked retrospective
 known-kernel receipt.
 
+### Retrospective sharp structured controlled-queue receipt
+
+`Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` evaluates
+the fixed sharp structured reduction on the existing aligned retrospective
+summary with horizon `199999` and persistence-hit count `152266`. Its exact
+primary endpoint is
+
+`45318758321311224310665458696783373002366549 /
+659558894102351266671449077672292808728248320`,
+
+which is checked to be less than `69 / 1000`. The numerical reduction uses the
+declared histogram, score moments, and persistence-hit count. Its source-policy
+gate excludes the true persistence parameter, true invariant law, stationary
+risk, and the existing oracle closed-form risk theorem from the receipt
+arithmetic.
+
+For every fixed admissible true persistence parameter, under the path law
+started at `knownKernelReceiptInitial = (action = 1, state = 1)`, the theorem
+produces a parameter-dependent good event whose outer complement has real mass
+at most `1/20`; paths in that event with the frozen histogram satisfy the
+checked stationary posterior-risk bound. This is not one event simultaneous
+over all persistence parameters. The result also assumes that the
+data-generating kernel belongs to the declared one-parameter refresh family;
+it is neither a family-specification test nor an arbitrary unknown-kernel
+certificate.
+
+The public failure-event corollary removes good-event membership from the
+receipt conclusion: for every fixed parameter, the outer mass of the paths on
+which the frozen histogram occurs while the displayed risk bound fails is at
+most `1/20`. This is unconditional under the corresponding fixed-parameter,
+fixed-initial path law. It does not prove that the named retrospective trace
+belongs to a particular good event, turn the fixed histogram into conditional
+`19/20` coverage, or provide one event simultaneous over parameters. It is a
+retrospective evaluation of an observable-only theorem reduction, not fresh
+prospective evidence.
+
 ### Fixed controlled-queue OPE catalog
 
 `Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian
@@ -1273,7 +1309,14 @@ not yet evaluated on a fresh prospective trace. A fixed sharp event for the
 nominal selected atom is also checked, with residual equal to candidate-drift
 oscillation plus sensitivity oscillation times its path-dependent persistence
 budget and outer complement mass at most `1/20`. It supplies no fresh
-histogram, named-path good-event membership, or numerical `< 0.10` receipt.
+prospective histogram, named-path good-event membership, or prospective
+numerical receipt. The separate retrospective sharp structured receipt uses
+the aligned horizon `199999` histogram and persistence-hit count to check the
+exact endpoint `0.068710707605557... < 0.069`. For each fixed true persistence
+parameter it uses a parameter-dependent event and the well-specified refresh
+family, with the path law started at `(action = 1, state = 1)`. Its
+frozen-histogram/risk-failure set has outer mass at most `1/20`, but it gives
+neither simultaneous-in-parameter nor histogram-conditioned coverage.
 The controlled results do not license
 data-dependent candidates or depths outside that common predeclared event;
 estimate general nuisance

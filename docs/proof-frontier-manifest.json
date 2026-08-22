@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 234,
-    "library_and_example_lean_lines": 153476,
-    "library_lean_lines": 123329,
-    "library_modules": 290,
-    "theorem_map_entries": 1098
+    "example_lean_files": 235,
+    "library_and_example_lean_lines": 154217,
+    "library_lean_lines": 123993,
+    "library_modules": 291,
+    "theorem_map_entries": 1103
   },
   "theorem_families": [
     {
@@ -5075,7 +5075,7 @@
           "kind": "theorem",
           "module": "Applications.ControlledQueueSharpStructuredOPE",
           "name": "knownKernelSelectedCandidateDrift_finiteOscillation_le",
-          "summary": "Certifies the exact rational upper bound 58989951 / 9007199254740992 for the nominal selected candidate drift using the supplied shifted depth-twelve potential"
+          "summary": "Certifies the exact rational upper bound 58989951 / 9007199254740992 for the nominal selected candidate drift directly from the candidate, target-policy, score, transition, and shifted depth-twelve potential tables, without the invariant law, stationary risk, or generated residual table"
         },
         {
           "kind": "theorem",
@@ -5106,6 +5106,36 @@
           "module": "Applications.ControlledQueueSharpStructuredReceiptCore",
           "name": "sharpStructuredReceiptBoundary_evaluation_of_histogram",
           "summary": "For any path matching a supplied physical transition histogram at horizon 200000, bounds the frozen sharp primary boundary by the exact count-derived affine-Bessel endpoint with risk log/psi bounds 9 and 1/480 and persistence log/psi bounds 7 and 1/8064; it contains no future histogram or threshold result"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredRetrospectiveReceipt",
+          "name": "sharpStructuredRetrospectivePathSummary_of_suffixEdgeHistogram",
+          "summary": "Derives the selected score moments and persistence-hit count 152266 from the existing aligned 199999-transition suffix histogram"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredRetrospectiveReceipt",
+          "name": "sharpStructuredRetrospectiveUpper_eq_primary",
+          "summary": "Checks the exact risk-plus-residual ledger against 45318758321311224310665458696783373002366549 / 659558894102351266671449077672292808728248320 using no true parameter, invariant law, or exact stationary risk"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredRetrospectiveReceipt",
+          "name": "sharpStructuredRetrospectiveBoundary_lt_sixtyNineThousandths",
+          "summary": "Bounds the sharp structured pathwise endpoint by 0.068710707605557... < 0.069 from the aligned retrospective histogram"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredRetrospectiveReceipt",
+          "name": "exists_controlledQueueSharpStructuredRetrospective_event",
+          "summary": "For every fixed admissible refresh parameter under the path law started at (action = 1, state = 1), supplies an outer event of complement mass at most 1/20 on which any path with the aligned retrospective histogram receives the exact sharp endpoint; it is not a simultaneous-in-parameter event or a named-path membership theorem"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredRetrospectiveReceipt",
+          "name": "sharpStructuredRetrospectiveFailureEvent_mass_le",
+          "summary": "For each fixed admissible refresh parameter under the path law started at (action = 1, state = 1), bounds by 1/20 the outer mass of the paths on which the aligned frozen histogram occurs while the displayed risk conclusion fails; the failure set is not asserted measurable, and the statement is neither histogram-conditioned nor simultaneous-in-parameter coverage"
         }
       ],
       "name": "Controlled-queue refresh sensitivity and fixed sharp OPE"

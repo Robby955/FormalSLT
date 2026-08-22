@@ -142,21 +142,58 @@ theorem sharpStructuredPersistenceTilt_psi_le_one_eightThousandSixtyFour :
 
 /-! ## Exact finite-state oscillation certificates -/
 
-private def sharpSelectedResidualLower : ℝ :=
-  -144000575053767 / 1193040362720997771575296
+private def sharpSelectedCandidateDriftLower : ℝ :=
+  4609574620925025 / 72057594037927936
 
-private def sharpSelectedResidualUpper : ℝ :=
-  7669459585815921 / 1193040362720997771575296
+private def sharpSelectedCandidateDriftUpper : ℝ :=
+  4609575092844633 / 72057594037927936
 
-private theorem knownKernelSelectedResidual_mem_Icc
+set_option maxHeartbeats 1000000 in
+private theorem knownKernelSelectedCandidateDrift_mem_Icc
     (state : PhysicalState) :
-    knownKernelSelectedResidual state ∈
-      Set.Icc sharpSelectedResidualLower sharpSelectedResidualUpper := by
+    targetPolicyPoissonDrift nominalCandidateEnvironment
+        (queueHypothesisTargetPolicy queueThresholdNominalModelHypothesis)
+        (queueHypothesisScore queueThresholdNominalModelHypothesis)
+        knownKernelSelectedPotential state ∈
+      Set.Icc sharpSelectedCandidateDriftLower
+        sharpSelectedCandidateDriftUpper := by
+  unfold targetPolicyPoissonDrift
+  change
+    targetPolicyRowRisk nominalCandidateEnvironment
+          (targetPolicy queueThresholdTargetIndex)
+          (fixedBrierScore nominalModelOverloadPredictorIndex) state +
+        targetPolicyPotentialMean nominalCandidateEnvironment
+          (targetPolicy queueThresholdTargetIndex)
+          knownKernelSelectedPotential state -
+        knownKernelSelectedPotential state ∈
+      Set.Icc sharpSelectedCandidateDriftLower
+        sharpSelectedCandidateDriftUpper
+  rw [nominalTargetPolicyPotentialMean_eq_refreshMixture]
   fin_cases state <;>
-    norm_num [knownKernelSelectedResidual, sharpSelectedResidualLower,
-      sharpSelectedResidualUpper, selectedResidualTable]
+    norm_num [targetPolicyRowRisk, nominalCandidateEnvironment,
+      queueThresholdTargetIndex, nominalModelOverloadPredictorIndex,
+      nominalCandidateIndex, candidateGammaRat,
+      ControlledQueueData.candidateGammaTable,
+      knownKernelSelectedPotential, selectedPotentialTable,
+      fixedBrierScore, fixedPredictorProbability,
+      fixedPredictorTableValue, overloadOutcome,
+      overloadOutcomeTableValue, targetPolicy_apply_toReal,
+      candidateEnvironment_apply_toReal, targetPolicyTableIndex,
+      policyTableMass, candidateKernelTableMass_eq_refreshMixture,
+      candidateKernelStep_stateActionRowEquiv,
+      candidateKernelStepStateAction,
+      ControlledQueueData.policyTable,
+      ControlledQueueData.candidateKernelStepByRow,
+      ControlledQueueData.fixedPredictorTable,
+      ControlledQueueData.overloadOutcomeTable,
+      sharpSelectedCandidateDriftLower,
+      sharpSelectedCandidateDriftUpper, Fin.ext_iff,
+      Fin.sum_univ_succ]
 
-/-- The nominal selected candidate drift has the frozen tiny oscillation. -/
+/-- The nominal selected candidate drift has the frozen tiny oscillation,
+checked directly from the nominal candidate, target-policy, score, transition,
+and potential tables without an invariant law, stationary risk, or residual
+table. -/
 theorem knownKernelSelectedCandidateDrift_finiteOscillation_le :
     finiteOscillation
         (targetPolicyPoissonDrift nominalCandidateEnvironment
@@ -167,32 +204,17 @@ theorem knownKernelSelectedCandidateDrift_finiteOscillation_le :
       sharpSelectedCandidateDriftOscillation := by
   apply finiteOscillation_le
   intro state nextState
-  have hstate := knownKernelSelectedPotential_residual_eq state
-  have hnext := knownKernelSelectedPotential_residual_eq nextState
-  have hdiff :
-      targetPolicyPoissonDrift nominalCandidateEnvironment
-            (queueHypothesisTargetPolicy
-              queueThresholdNominalModelHypothesis)
-            (queueHypothesisScore queueThresholdNominalModelHypothesis)
-            knownKernelSelectedPotential nextState -
-          targetPolicyPoissonDrift nominalCandidateEnvironment
-            (queueHypothesisTargetPolicy
-              queueThresholdNominalModelHypothesis)
-            (queueHypothesisScore queueThresholdNominalModelHypothesis)
-            knownKernelSelectedPotential state =
-        knownKernelSelectedResidual nextState -
-          knownKernelSelectedResidual state := by
-    unfold approximateTargetPolicyPoissonResidual at hstate hnext
-    linarith
-  rw [hdiff, abs_le]
-  rcases knownKernelSelectedResidual_mem_Icc state with
+  rw [abs_le]
+  rcases knownKernelSelectedCandidateDrift_mem_Icc state with
     ⟨hstateLower, hstateUpper⟩
-  rcases knownKernelSelectedResidual_mem_Icc nextState with
+  rcases knownKernelSelectedCandidateDrift_mem_Icc nextState with
     ⟨hnextLower, hnextUpper⟩
   have hwidth :
-      sharpSelectedResidualUpper - sharpSelectedResidualLower =
+      sharpSelectedCandidateDriftUpper -
+          sharpSelectedCandidateDriftLower =
         sharpSelectedCandidateDriftOscillation := by
-    norm_num [sharpSelectedResidualUpper, sharpSelectedResidualLower,
+    norm_num [sharpSelectedCandidateDriftUpper,
+      sharpSelectedCandidateDriftLower,
       sharpSelectedCandidateDriftOscillation]
   constructor <;> linarith
 

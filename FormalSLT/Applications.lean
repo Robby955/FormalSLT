@@ -24,6 +24,7 @@ import FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 import FormalSLT.Applications.ControlledQueueRefreshSensitivity
 import FormalSLT.Applications.ControlledQueueSharpStructuredOPE
 import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
+import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 
 /-!
 # FormalSLT applications
@@ -66,5 +67,11 @@ events under the prospectively frozen constants.
 transition histogram to the preregistered affine-Bessel primary endpoint,
 without containing future counts. These modules do not prove that any named
 trace satisfies the good event or evaluate the prospective sharp endpoint on
-fresh data.
+fresh data. `ControlledQueueSharpStructuredRetrospectiveReceipt` separately
+evaluates the existing `199999`-transition suffix histogram at a uniform
+`1 / 20` event budget, without using the true persistence parameter or exact
+stationary risk in the numerical reduction. For each fixed admissible true
+parameter under the path law started at `(action = 1, state = 1)`, the
+frozen-histogram/risk-failure set has outer mass at most `1 / 20`; this is not
+histogram-conditioned or simultaneous-in-parameter coverage.
 -/

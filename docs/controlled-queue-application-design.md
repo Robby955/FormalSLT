@@ -58,8 +58,16 @@ realized initial observation `(1, 1)`, depth `12`, tilt `1/16`, and the aligned
 199,999-score suffix. Python independently reconstructs the exact suffix
 histogram from the raw bytes; Lean proves histogram-to-score arithmetic and a
 selected boundary-plus-residual endpoint below `7/100`. The named trace is not
-proved to belong to the theorem-produced good event. A separate structured
-module now embeds the three candidates in the arbitrary-parameter refresh
+proved to belong to the theorem-produced good event. The same aligned suffix
+histogram now also bounds the sharp structured pathwise boundary by the exact
+endpoint `0.068710707605557... < 0.069`. For every fixed admissible refresh parameter,
+under the path law started at `(action = 1, state = 1)`, the outer mass of the
+paths on which that histogram occurs while the displayed risk bound fails is at
+most `1/20`. That numerical reduction uses no true parameter or exact stationary
+risk, but it assumes the one-dimensional refresh family; the coverage is not
+conditional on the histogram or simultaneous over parameters.
+A separate
+structured module now embeds the three candidates in the arbitrary-parameter refresh
 family and obtains simultaneous time-uniform physical-row TV budgets from one
 scalar hit statistic. A further checked module intersects preallocated OPE
 events for the `3 x 7` generated candidate--depth catalog with that scalar
@@ -180,6 +188,7 @@ The generic modules do not by themselves instantiate the queue application.
 | Structured adaptive queue OPE | `Applications.ControlledQueueStructuredOPE` | Same-path finite union over all three candidates and generated depths `[0,1,2,3,5,8,12]`, intersected with scalar persistence confidence; candidate, depth, two four-atom tilt choices, posterior, and time are selectable inside one event of complement mass at most `1/20` |
 | Refresh-family drift sensitivity | `Applications.ControlledQueueRefreshSensitivity` | Exact true-minus-candidate Poisson-drift identity in the observable hit-probability coordinate, and residual bound `candidate drift oscillation + sensitivity oscillation * hit-discrepancy budget`, without the generic `2 * (1 + B)` TV factor |
 | Fixed sharp structured queue OPE | `Applications.ControlledQueueSharpStructuredOPE` | Nominal candidate, supplied shifted depth-twelve potential, queue-threshold/nominal-model Dirac posterior, risk tilt `1/16`, persistence tilt `1/64`, and two `1/40` budgets; the frozen `gamma = 149/200`, `(eco, state 0)`, horizon-`200000` wrapper has outer complement mass at most `1/20`, but no trace or numerical receipt |
+| Retrospective sharp structured receipt | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Existing aligned horizon `199999`, initial observation `(action = 1, state = 1)`, persistence-hit count `152266`, exact selected score moments, and a pathwise endpoint `0.068710707605557... < 0.069`; for every fixed admissible refresh parameter under that fixed-initial path law, the outer mass of the paths on which the frozen histogram occurs together with failure of the risk conclusion is at most `1/20`. The arithmetic uses no true parameter or exact stationary risk, but assumes refresh-family well-specification; the failure set is not asserted measurable, and coverage is neither histogram-conditional nor simultaneous over parameters |
 | Fixed queue OPE catalog | `Applications.ControlledQueueOPECatalog` | Twelve fixed hypotheses from four target policies and three fixed Brier predictors; nominal `Q`, canonical noncomputable true invariant witnesses, uniform reference, `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior, singleton tilts `1/4`, and outer complement mass at most `1/20` for fixed true `P`, initial observation, and depth |
 | Explicit queue invariant/risk atom | `Applications.ControlledQueueInvariantRisk` | Explicit 24-state rational invariant PMF for nominal `Q` and target-policy index `1`, equality to the canonical catalog witness by strict-contraction uniqueness, exact row risks for fixed-predictor index `2`, and stationary Brier risk `4338268437 / 67816493056 < 13 / 200` |
 | Known-kernel aligned numerical receipt | `Applications.ControlledQueueKnownKernelReceipt` | Fixed-initial `39/40` event, exact depth-twelve potential/residual, aligned `24 x 2 x 24` suffix-histogram bridge, and selected risk endpoint below `7/100`, conditional on the histogram and event inequality |
@@ -209,7 +218,11 @@ queue-threshold/nominal-model invariant law equals its canonical catalog
 witness, and its stationary Brier risk is exactly
 `4338268437 / 67816493056 < 13 / 200`. The aligned known-kernel receipt now
 proves the selected endpoint below `7/100` from the suffix histogram and event
-inequality. The following application items remain **OPEN**.
+inequality. The same suffix histogram now also gives a checked sharp structured
+pathwise-boundary upper endpoint `0.068710707605557... < 0.069` under the
+well-specified refresh family, with failure-set outer mass at most `1/20` for
+every fixed parameter under the path law started at `(action = 1, state = 1)`.
+The following application items remain **OPEN**.
 
 1. Prospective structured unknown-dynamics receipt and matched baselines: the
    fresh 4,608-coordinate empirical-transition allocation is vacuous on the
@@ -239,16 +252,18 @@ inequality. The following application items remain **OPEN**.
    causal predictor is licensed. These are pointwise substitutions into one
    common event, not a measurable selected process or selected e-process.
 
-Until those steps close, the known-kernel result is a checked retrospective
-receipt: it demonstrates the exact theorem-to-histogram arithmetic, but no
+Until those steps close, the known-kernel and sharp structured results are
+checked retrospective receipts: they demonstrate exact theorem-to-histogram
+arithmetic, but no
 external record currently establishes that the depth, tilt, and potential were
 selected before this trace was inspected. It is therefore not presented as a
 prospectively calibrated report for the already-observed trace. The controlled
-queue's end-to-end unknown-dynamics numerical certificate remains open. No
+queue's prospectively registered end-to-end unknown-dynamics certificate
+remains open. No
 named-path good-event membership, histogram-conditioned coverage,
-unconditional simulator coverage, or useful prospective numerical endpoint is
-claimed. The protocol-only file is not a numerical result or public
-preregistration merely because it exists in a local Git commit.
+unconditional random-initial/upstream simulator coverage, or useful prospective
+numerical endpoint is claimed. The protocol-only file is not a numerical result
+or public preregistration merely because it exists in a local Git commit.
 
 ## Frozen input and generator contract
 
@@ -313,7 +328,16 @@ uses current state `S_k`, newly sampled action `A_(k+1)`, and next state
 branch and the protocol's rational log/psi upper bounds before any prospective
 counts exist. A future generated receipt may instantiate this theorem with a
 verified histogram, but this result alone does not bind raw bytes, establish
-good-event membership, or prove the `< 0.10` target.
+good-event membership, or prove the `< 0.10` target. The separate
+`ControlledQueueSharpStructuredRetrospectiveReceipt` instantiates the same
+statistical ingredients on the already-existing aligned suffix histogram at
+horizon `199999`, bounding the pathwise boundary by the exact rational endpoint
+`0.068710707605557... < 0.069` without using the true parameter or stationary
+risk in its numerical reduction. It remains retrospective, assumes the
+one-parameter refresh family, and proves that the frozen-histogram/risk-failure
+set has outer mass at most `1/20` for each fixed parameter under the path law
+started at `(action = 1, state = 1)`. That is not coverage conditional on the
+histogram or simultaneous over parameters.
 Later application slices must still
 provide any further invariant/risk receipts needed for reported atoms,
 trace/event alignment, and final numerical confidence arithmetic. One explicit

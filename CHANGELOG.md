@@ -22,6 +22,11 @@ v0.2 release, and no DOI is attached to them yet.
 - An opt-in 24-state controlled-queue application with exact model and trace
   data, a checked invariant-risk atom, structured OPE events, and an aligned
   known-kernel receipt.
+- A retrospective sharp structured queue receipt at horizon `199999`, with an
+  exact observable endpoint `0.068710707605557... < 0.069` and, for every fixed
+  admissible refresh parameter under the path law started at `(action = 1,
+  state = 1)`, a `1/20` outer-mass bound on the paths where the frozen histogram
+  occurs while the displayed risk conclusion fails.
 - A frozen prospective controlled-queue protocol, independent trace and receipt
   tooling, and a generic Lean histogram-to-bound reduction. These contain no
   fresh prospective artifact or result.
@@ -78,6 +83,10 @@ v0.2 release, and no DOI is attached to them yet.
   `PLANNED_NOT_CHECKED` comparisons. Their `1/20` entries are planned
   allocations, not checked outer-mass bounds; neither row has a checked event
   theorem or is a confidence certificate.
+- The retrospective sharp endpoint assumes the well-specified refresh family.
+  Its `1/20` failure-event bound is pointwise in the fixed true persistence
+  parameter; it is neither histogram-conditioned coverage nor one event
+  simultaneous over all persistence parameters.
 - No fresh prospective controlled-queue trace, receipt, or numerical outcome is
   included. After immutable registration and the single authorized generation,
   the ordered post-beacon verification gate is required and the result must be
