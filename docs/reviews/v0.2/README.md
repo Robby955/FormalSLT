@@ -8,18 +8,33 @@ review. It does not ask either reviewer to audit the entire repository.
 
 | Field | Value |
 |---|---|
-| Git commit | `1aca197cbcf1c2f483c212db508d1d488b700b40` |
-| Git tree | `6ab3c4dca662ae9bda5d714e4347a68f97266033` |
+| Git commit | `15b444e75a3e0ce734968c8f58b28881959eb313` |
+| Git tree | `385927337aa0fcfdb873249cd52b3f63c0a1742f` |
 | Pull request | [#99](https://github.com/Robby955/FormalSLT/pull/99) |
 | Lean toolchain | `leanprover/lean4:v4.32.2` |
 | Mathlib revision | `905b95818eb32af7874a58b427f50c1711a5e96c` |
-| Hosted CI | [CI run 32554352481](https://github.com/Robby955/FormalSLT/actions/runs/32554352481) |
-| Hosted documentation check | [Docs run 32554352413](https://github.com/Robby955/FormalSLT/actions/runs/32554352413) |
+| Hosted CI | [CI run 32576351049](https://github.com/Robby955/FormalSLT/actions/runs/32576351049): [build](https://github.com/Robby955/FormalSLT/actions/runs/32576351049/job/97039166171), [Ubuntu downstream](https://github.com/Robby955/FormalSLT/actions/runs/32576351049/job/97039166218), [macOS downstream](https://github.com/Robby955/FormalSLT/actions/runs/32576351049/job/97039166143) |
+| Hosted documentation check | [Docs run 32576351108](https://github.com/Robby955/FormalSLT/actions/runs/32576351108): [build-docs](https://github.com/Robby955/FormalSLT/actions/runs/32576351108/job/97039166502); deployment skipped for the pull-request event |
 
-The hosted run built the library and examples, checked the candidate public
-API, ran the controlled-queue gates, audited public axioms, and built separate
-downstream Lake packages on Ubuntu and macOS. Those checks are evidence about
-this exact commit only; they are not a substitute for either requested review.
+The hosted run built the library (`4,046` Lake jobs), built the Applications
+umbrella (`3,807` Lake jobs), type-checked every example, checked the candidate
+public API, ran the controlled-queue gates, audited public axioms, ran the
+repository-tool suite (`249` passed, `1` skipped), and built the separate
+downstream Lake package (`3,964` Lake jobs) on both Ubuntu and macOS. Those
+checks are evidence about this exact commit only; they are not a substitute
+for either requested review.
+
+This packet is stored in a documentation-only commit after the review target.
+The historical packet in this branch was committed at
+`c328fcb3ce93ab05228f83fdcf361115155310c8` and targeted `1aca197...`; no
+external response is recorded. This revision targets `15b444e...` for new
+review requests, while the historical packet remains available in Git. From
+`1aca197...` to `15b444e...`, every controlled-queue Lean file listed below is
+byte-identical. The repository's only `.lean` change is to comments/docstrings
+in `FormalSLT/VC/SampleComplexity.lean`; no theorem statement or proof changed.
+Release and prospective-artifact tooling changed materially, so any review of
+the earlier artifact target does not carry over to the current files and
+identities.
 
 The controlled-queue application declarations are public, but they are not
 part of the 19-declaration v0.2 compatibility promise in
@@ -39,9 +54,10 @@ The review should keep four kinds of evidence separate:
    satisfying the histogram and event-inequality premises; it does not
    identify the raw trace bytes with a Lean path.
 4. **Prospective design.** The sharp structured protocol freezes a future
-   experiment and theorem interface. At the review target there is no public
-   registration, fresh trace, histogram, receipt, generated Lean result, or
-   numerical `< 1/10` conclusion.
+   experiment and theorem interface. The target tree contains no registration
+   identifier, fresh trace, histogram, receipt, generated Lean result, or
+   numerical `< 1/10` conclusion. As of `2026-08-22`, no public registration
+   was recorded.
 
 The code-freeze reporting contract renders two prospective comparison
 rows—the true-kernel oracle and the fixed-range row—as arithmetic-only
@@ -58,10 +74,10 @@ A Lean tactic audit is not required for this lane.
 
 | Result | Theorem statement | Literature and scope record |
 |---|---|---|
-| All-sample-size offline empirical-Bernstein PAC-Bayes | [`exists_continuousInfiniteEmpiricalBernstein_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean#L332) | [`docs/LITERATURE.md`](../../LITERATURE.md) |
-| Adaptive trajectory inference | [`exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean#L356) | [`docs/assumptions-and-nonclaims.md`](../../assumptions-and-nonclaims.md) |
-| Known-kernel stationary Poisson selection | [`exists_stationaryPoissonDepthSelection_allTime_vanishing_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean#L966) | [`docs/LITERATURE.md`](../../LITERATURE.md) |
-| Unknown-kernel stationary catalog | [`exists_selectedCanonicalEmpiricalStationaryCatalog_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean#L682) | [`docs/related-work.md`](../../related-work.md) |
+| All-sample-size offline empirical-Bernstein PAC-Bayes | [`exists_continuousInfiniteEmpiricalBernstein_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean#L332) | [`docs/LITERATURE.md`](../../LITERATURE.md) |
+| Adaptive trajectory inference | [`exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean#L356) | [`docs/assumptions-and-nonclaims.md`](../../assumptions-and-nonclaims.md) |
+| Known-kernel stationary Poisson selection | [`exists_stationaryPoissonDepthSelection_allTime_vanishing_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean#L966) | [`docs/LITERATURE.md`](../../LITERATURE.md) |
+| Unknown-kernel stationary catalog | [`exists_selectedCanonicalEmpiricalStationaryCatalog_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean#L682) | [`docs/related-work.md`](../../related-work.md) |
 
 For the IID endpoint, check that the result is an offline all-sample-size event,
 not an optional-stopping or selected-process theorem. For the trajectory
@@ -83,16 +99,16 @@ risk-plus-transition event; that combined receipt remains open.
 
 | Role | Theorem | Review question |
 |---|---|---|
-| Contraction | [`candidateTargetPolicyKernel_dobrushin_le_gamma`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueContraction.lean#L120) | Does the common refresh component imply the stated Dobrushin upper bound for every target policy? No exact-coefficient claim is made. |
-| Stationarity | [`queueThresholdStationaryLaw_isInvariant`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueInvariantRisk.lean#L929) and [`queueThresholdStationaryLaw_eq_catalogStationary`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueInvariantRisk.lean#L956) | Is the explicit 24-state rational law invariant, with uniqueness obtained from strict contraction? |
-| Estimand | [`queueThreshold_nominalModelOverload_catalogStationaryRisk`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueInvariantRisk.lean#L1476) | Does the exact nominal stationary Brier risk equal `4338268437 / 67816493056`, and is it kept distinct from a confidence certificate? |
-| Persistence event | [`exists_persistenceHitConfidence_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean#L352) | Is coverage pointwise in the fixed true persistence parameter, simultaneous only over the declared tilts and times, and based on a deterministic initial observation? |
-| Structured transfer | [`refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean#L432) | Within the asserted refresh family, does every physical row-TV discrepancy equal the persistence-hit discrepancy? This is not a family-membership test. |
-| Adaptive OPE | [`exists_controlledQueueStructuredAdaptiveOPE_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueStructuredOPE.lean#L476) | Does one `1/20` outer event support the predeclared candidate-depth, risk-tilt, persistence-tilt, posterior, and time choices? Verify the `1/40 + 1/40` union-bound accounting without an independence claim. |
-| Frozen sharp event | [`exists_controlledQueueSharpStructuredReceipt_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueSharpStructuredOPE.lean#L465) | For `gamma = 149/200`, initial `(eco, state 0)`, and horizon `200000`, is this an event theorem rather than a numerical result? Its target law is the canonical finite invariant witness; this wrapper does not prove uniqueness for the off-grid true parameter. |
-| Histogram reduction | [`sharpStructuredReceiptBoundary_evaluation_of_histogram`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueSharpStructuredReceiptCore.lean#L602) | Does an exact `24 x 2 x 24` physical histogram bound the frozen primary boundary without embedding future counts, a threshold result, or event membership? |
-| Known-kernel event | [`exists_controlledQueueKnownKernelReceiptOPE_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean#L450) | Is the `39/40` statement confined to the nominal known environment and fixed initial observation? |
-| Retrospective endpoint | [`knownKernelReceipt_selectedRisk_lt_seven_hundredths`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean#L799) | Are the aligned suffix-histogram premise and selected event inequality both explicit premises used by the `< 7/100` composition? |
+| Contraction | [`candidateTargetPolicyKernel_dobrushin_le_gamma`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueContraction.lean#L120) | Does the common refresh component imply the stated Dobrushin upper bound for every target policy? No exact-coefficient claim is made. |
+| Stationarity | [`queueThresholdStationaryLaw_isInvariant`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueInvariantRisk.lean#L929) and [`queueThresholdStationaryLaw_eq_catalogStationary`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueInvariantRisk.lean#L956) | Is the explicit 24-state rational law invariant, with uniqueness obtained from strict contraction? |
+| Estimand | [`queueThreshold_nominalModelOverload_catalogStationaryRisk`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueInvariantRisk.lean#L1476) | Does the exact nominal stationary Brier risk equal `4338268437 / 67816493056`, and is it kept distinct from a confidence certificate? |
+| Persistence event | [`exists_persistenceHitConfidence_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean#L352) | Is coverage pointwise in the fixed true persistence parameter, simultaneous only over the declared tilts and times, and based on a deterministic initial observation? |
+| Structured transfer | [`refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean#L432) | Within the asserted refresh family, does every physical row-TV discrepancy equal the persistence-hit discrepancy? This is not a family-membership test. |
+| Adaptive OPE | [`exists_controlledQueueStructuredAdaptiveOPE_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueStructuredOPE.lean#L476) | Does one `1/20` outer event support the predeclared candidate-depth, risk-tilt, persistence-tilt, posterior, and time choices? Verify the `1/40 + 1/40` union-bound accounting without an independence claim. |
+| Frozen sharp event | [`exists_controlledQueueSharpStructuredReceipt_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueSharpStructuredOPE.lean#L465) | For `gamma = 149/200`, initial `(eco, state 0)`, and horizon `200000`, is this an event theorem rather than a numerical result? Its target law is the canonical finite invariant witness; this wrapper does not prove uniqueness for the off-grid true parameter. |
+| Histogram reduction | [`sharpStructuredReceiptBoundary_evaluation_of_histogram`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueSharpStructuredReceiptCore.lean#L602) | Does an exact `24 x 2 x 24` physical histogram bound the frozen primary boundary without embedding future counts, a threshold result, or event membership? |
+| Known-kernel event | [`exists_controlledQueueKnownKernelReceiptOPE_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean#L450) | Is the `39/40` statement confined to the nominal known environment and fixed initial observation? |
+| Retrospective endpoint | [`knownKernelReceipt_selectedRisk_lt_seven_hundredths`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean#L799) | Are the aligned suffix-histogram premise and selected event inequality both explicit premises used by the `< 7/100` composition? |
 
 The controlled-queue index convention deserves a separate check. The
 retrospective receipt uses `199999` aligned suffix scores, while the prospective
@@ -125,19 +141,19 @@ the informal mathematical interpretation without the probability lane.
 
 - Inspect the load-bearing queue semantic bridge rather than treating the
   application capstones as black boxes:
-  [`controlledObservedImportanceScore_condExp`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/StochasticDynamics/ControlledTrajectory.lean#L316),
-  [`exists_stationaryTargetPolicyOPE_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/StochasticDynamics/StationaryTargetPolicyOPE.lean#L431),
-  [`exists_stationaryApproximateTargetPolicyOPE_signedResidual_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/StochasticDynamics/StationaryTargetPolicyApproximateOPE.lean#L181),
+  [`controlledObservedImportanceScore_condExp`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/StochasticDynamics/ControlledTrajectory.lean#L316),
+  [`exists_stationaryTargetPolicyOPE_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/StochasticDynamics/StationaryTargetPolicyOPE.lean#L431),
+  [`exists_stationaryApproximateTargetPolicyOPE_signedResidual_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/StochasticDynamics/StationaryTargetPolicyApproximateOPE.lean#L181),
   and
-  [`exists_structuredControlledQueueFiniteCatalogOPE_event`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueStructuredOPE.lean#L133).
+  [`exists_structuredControlledQueueFiniteCatalogOPE_event`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueStructuredOPE.lean#L133).
 - The prefix dynamic target-policy comparator and finite-horizon target-path
   change-of-measure theorem are adjacent controlled-inference results, not
   dependencies of the queue capstone. Review them separately if the requested
   scope includes history-dependent targets or target-law occupancy.
 - For the sharp queue transfer, inspect both the exact affine identity
-  [`targetPolicyPoissonDrift_refresh_sub_candidate_eq`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueRefreshSensitivity.lean#L119)
+  [`targetPolicyPoissonDrift_refresh_sub_candidate_eq`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueRefreshSensitivity.lean#L119)
   and its residual wrapper
-  [`abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity`](https://github.com/Robby955/FormalSLT/blob/1aca197cbcf1c2f483c212db508d1d488b700b40/FormalSLT/Applications/ControlledQueueRefreshSensitivity.lean#L169).
+  [`abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity`](https://github.com/Robby955/FormalSLT/blob/15b444e75a3e0ce734968c8f58b28881959eb313/FormalSLT/Applications/ControlledQueueRefreshSensitivity.lean#L169).
 - Compare the four supported imports and 19 declaration types against
   [`docs/api-stability.md`](../../api-stability.md), the isolated files under
   [`examples/stable_imports`](../../../examples/stable_imports), and the
@@ -166,6 +182,56 @@ the informal mathematical interpretation without the probability lane.
 - Review the statement-fidelity and witness gates as repository QA. They do
   not replace direct theorem-type review.
 
+### Frozen prospective artifact identity
+
+The committed artifact state at the review target is pre-registration and
+pre-data. Review the following identities as an offline handoff, not as
+evidence that an OSF registration or experiment exists:
+
+| Object | Exact identity |
+|---|---|
+| Protocol | commit `65d8d56245e3862821fce09bcf30b017f03d2baa`, tree `8dbe01780fd2cec94b8b954f6ef1c8c210afee53`, `26,518` bytes, SHA-256 `070519615ba7cdaf0198a72a03ab6f691a7ff9b37c2eaa97a363d7fd4c3bf153` |
+| Executable-freeze commit | commit `6c3f7de49d545be3e6bcfbb32f70b4aa86ef55de`, tree `12248252ab3dc2bcd549b61f2678d40618fb1c7e` |
+| Offline binding | [`code-freeze-binding-v1.json`](../../../applications/controlled_queue/prospective/evidence/code-freeze-binding-v1.json), first committed at `e3acdaf5687408c202e7557cded7158292cd83d1`, `1,501` bytes, SHA-256 `9dea4b601331717358bf0b9e8610384a4f7fbe71c332c563700ec91dd3a2064e` |
+| Exact review candidate | commit `15b444e75a3e0ce734968c8f58b28881959eb313`, tree `385927337aa0fcfdb873249cd52b3f63c0a1742f` |
+
+The binding fixes the four executable files byte-for-byte:
+
+| Role | File | Bytes | SHA-256 |
+|---|---|---:|---|
+| Trace generator | `scripts/generate_controlled_queue_prospective_trace.py` | `63,440` | `409d3fa5302f6617d2ce1b9922f3721f8c1aec5ca30961a45486e597853b64e0` |
+| Independent trace verifier | `scripts/verify_controlled_queue_prospective_trace.py` | `49,737` | `a18a82f6b1836b55d569eb26a6775b23e8c7a1c239d85342e4a01aabfe470578` |
+| Receipt generator | `scripts/generate_controlled_queue_prospective_receipt.py` | `117,690` | `bf19db7a1dd2f10259ecf3ee63132719eae3b5a3abba92cf9a9cc94d45e81a5b` |
+| Independent receipt verifier | `scripts/verify_controlled_queue_prospective_receipt.py` | `132,865` | `da8983a73d15f5a5c55f72115419962890c88a45dcc38b3ee0ce7aa3919cee69` |
+
+Check the offline builder
+[`build_controlled_queue_code_freeze_binding.py`](../../../scripts/build_controlled_queue_code_freeze_binding.py)
+and its adversarial tests. In particular, verify the pinned Git commit/tree and
+file identities, `--no-replace-objects` and no-lazy-fetch checks, canonical
+binding bytes, no-overwrite behavior, validation through the independent
+consumers, and absence of `registration_id` and all six prospective outputs.
+Future OSF metadata and beacon evidence must cross-bind the final registration
+identifier after registration. None is committed at this target; as of
+`2026-08-22`, no public registration was recorded.
+
+### Release artifact targets
+
+Review the tag-only workflow and its supporting scripts:
+
+- [`.github/workflows/release-tag-smoke.yml`](../../../.github/workflows/release-tag-smoke.yml);
+- [`release_tag_identity.py`](../../../scripts/release_tag_identity.py),
+  [`generate_release_receipt.py`](../../../scripts/generate_release_receipt.py),
+  and [`verify_release_receipts.py`](../../../scripts/verify_release_receipts.py);
+- [`package_release_assets.py`](../../../scripts/package_release_assets.py)
+  and its focused adversarial tests.
+
+Check tag object, resolved commit (the peeled commit when annotated), tree,
+clean-checkout, remote-identity, Linux/macOS receipt, source-archive,
+staged-documentation, checksum, bounded-input, symlink/hardlink, and
+no-overwrite failure paths. The workflow uploads a run-scoped Actions artifact
+only. The target contains no release receipt or archive. As of `2026-08-22`, no
+`v0.2.0` tag, GitHub Release, DOI, or candidate deployment was recorded.
+
 ### Comparator boundary
 
 This review target contains no Lean FRO Comparator receipt or trusted
@@ -190,6 +256,13 @@ additional review artifact, not evidence already obtained.
 
 Run the following in a clean detached checkout of the review target. Keep this
 packet open separately because it is documentation prepared after that target.
+Use a full, non-shallow Git clone containing the annotated `v0.1.0` tag object
+and the historical protocol and executable-freeze commits; a commit-only
+archive is insufficient for the identity gates. The commands assume POSIX
+`bash`, Git, Make, Python `>= 3.10` with `venv`/`ensurepip`, and elan/Lake at
+`~/.elan/bin`. Cache retrieval and the dependency installation may access the
+Mathlib cache and PyPI. The verification targets do not contact OSF or drand
+and do not generate any prospective output.
 
 ### Core replay
 
@@ -197,14 +270,15 @@ packet open separately because it is documentation prepared after that target.
 set -euo pipefail
 
 test "$(git rev-parse HEAD)" = \
-  1aca197cbcf1c2f483c212db508d1d488b700b40
+  15b444e75a3e0ce734968c8f58b28881959eb313
 test "$(git rev-parse HEAD^{tree})" = \
-  6ab3c4dca662ae9bda5d714e4347a68f97266033
+  385927337aa0fcfdb873249cd52b3f63c0a1742f
 
 ~/.elan/bin/lake exe cache get
 ~/.elan/bin/lake build FormalSLT
 env PATH="$HOME/.elan/bin:$PATH" LEAN_NUM_THREADS=2 MAKEFLAGS=-j1 make api
 env PATH="$HOME/.elan/bin:$PATH" LEAN_NUM_THREADS=2 MAKEFLAGS=-j1 make downstream
+python3 scripts/build_controlled_queue_code_freeze_binding.py --check
 
 for f in \
   examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean \
@@ -229,15 +303,23 @@ env PATH="$HOME/.elan/bin:$PATH" bash scripts/check_axioms.sh
 test -z "$(git status --porcelain)"
 ```
 
-### Full application replay
+### Full artifact and application replay
 
 ```bash
 set -euo pipefail
+
+test "$(git rev-parse HEAD)" = \
+  15b444e75a3e0ce734968c8f58b28881959eb313
+test "$(git rev-parse HEAD^{tree})" = \
+  385927337aa0fcfdb873249cd52b3f63c0a1742f
 
 review_venv="$(mktemp -d)"
 python3 -m venv "$review_venv"
 "$review_venv/bin/python" -m pip install -r requirements-dev.txt
 export PATH="$review_venv/bin:$HOME/.elan/bin:$PATH"
+
+make verify-release-asset-packaging
+python3 -m pytest -q tests/test_generate_release_receipt.py
 
 env PATH="$HOME/.elan/bin:$PATH" LEAN_NUM_THREADS=2 MAKEFLAGS=-j1 \
   make verify-controlled-queue-model
@@ -247,6 +329,9 @@ env PATH="$HOME/.elan/bin:$PATH" LEAN_NUM_THREADS=2 MAKEFLAGS=-j1 \
   make verify-controlled-queue-known-kernel-receipt
 env PATH="$HOME/.elan/bin:$PATH" LEAN_NUM_THREADS=2 MAKEFLAGS=-j1 \
   make verify-controlled-queue-structured-ope-code-freeze
+
+python3 scripts/build_controlled_queue_code_freeze_binding.py --check
+test -z "$(git status --porcelain)"
 ```
 
 Do not run `make verify-controlled-queue-structured-ope-prospective-receipt`
@@ -263,8 +348,9 @@ requires artifacts that do not exist at the review target.
   end-to-end same-path receipt outside the combined risk-plus-transition event.
 - The retrospective `< 7/100` conclusion is conditional on both histogram and
   event-inequality premises; named-trace good-event membership is not proved.
-- The prospective protocol is not a registration, trace, receipt, numerical
-  result, or successful `< 1/10` certificate.
+- At this review target, the prospective protocol is only a design; the target
+  contains no registration identifier, fresh trace, receipt, numerical result,
+  or successful `< 1/10` certificate.
 - The structured adaptive and frozen sharp queue theorems assume the true
   environment belongs to the stated refresh family; they do not test that
   family or cover arbitrary kernels.
@@ -285,7 +371,7 @@ Affiliation or relevant expertise:
 Conflict and independence disclosure:
 Review lane: probability/statistics | Lean/artifacts
 Review date:
-Target commit: 1aca197cbcf1c2f483c212db508d1d488b700b40
+Target commit: 15b444e75a3e0ce734968c8f58b28881959eb313
 Materials read and commands run:
 Verdict: accept | accept with caveats | changes required | unable to assess
 Findings with theorem/file/line anchors:
