@@ -225,9 +225,9 @@ Supporting families include:
   <code>Statistics</code>
 
 The checked [20-state random-refresh load application](./docs/random-refresh-load-application.md)
-and the staged [controlled-queue application](./docs/controlled-queue-application-design.md)
+and the staged [24-state controlled-queue application](./docs/controlled-queue-application-design.md)
 are available through the opt-in <code>import FormalSLT.Applications</code>
-umbrella. The queue layer now includes typed generated kernels and policies,
+umbrella. The queue layer includes typed generated kernels and policies,
 bounded fixed scores, overlap and ratio certificates, a universal centered
 row-risk envelope `D = 1`, candidate target-kernel contraction, canonical
 finite-state invariant witnesses, and a fixed-nominal-candidate twelve-atom
@@ -250,8 +250,15 @@ current trace. The structured scalar event avoids that 4,608-coordinate
 allocation. Its OPE composition now preallocates all `3 x 7` candidate--depth
 atoms and permits pathwise candidate, depth, risk-tilt, persistence-tilt,
 posterior, and time selection inside a single `19/20` outer-mass event.
-Prospective trace evaluation, a useful unknown-dynamics numerical endpoint,
-and matched comparisons remain open.
+The prospective protocol, independent trace/receipt tooling, and generic Lean
+histogram reduction are frozen. The pre-beacon
+`make verify-controlled-queue-structured-ope-code-freeze` gate checks them
+without fetching a beacon or creating a prospective artifact. No fresh
+prospective trace, receipt, or numerical result exists. After immutable public
+registration and one authorized generation, the ordered
+`make verify-controlled-queue-structured-ope-prospective-receipt` gate is
+required; the result and matched comparisons must be reported regardless of
+outcome.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 
@@ -264,11 +271,11 @@ For the released v0.1 API:
     require FormalSLT from git
       "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 
-For the pre-release base snapshot that began the v0.2 freeze:
+For the exact controlled-queue code-freeze checkpoint:
 
     require FormalSLT from git
       "https://github.com/Robby955/FormalSLT.git" @
-        "e60b582fb2194bd09f74ca0ae839909cce68e36e"
+        "5eae99f5f217edc7b44bd81dda6fde2a946effda"
 
 Then import one of the topic umbrellas above. The exact v0.2 tag will replace
 the snapshot instruction only after protected-tag gates, downstream builds,
@@ -290,13 +297,13 @@ namespace remains available but is not covered by the v0.2 compatibility
 promise.
 
 Until the `v0.2.0` release exists, pin an exact tested commit instead of moving
-`main`. For example, the pre-release base snapshot used to start the v0.2
-freeze can be consumed from another Lake package with:
+`main`. For example, the banked controlled-queue code-freeze checkpoint can be
+consumed from another Lake package with:
 
 ```lean
 require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @
-  "e60b582fb2194bd09f74ca0ae839909cce68e36e"
+  "5eae99f5f217edc7b44bd81dda6fde2a946effda"
 ```
 
 The compatibility commitment starts at the `v0.2.0` tag. The repository also
@@ -315,6 +322,7 @@ make tutorials
 make api
 make downstream
 python3 -m pip install -r requirements-dev.txt
+make verify-controlled-queue-structured-ope-code-freeze
 make python-tests
 make check-controlled-queue-model
 make check-controlled-queue-trace
@@ -340,6 +348,9 @@ The public axiom gate reports only
 - the root build, recursive example sweep, tutorials, public API snapshot,
   v0.1 replay, downstream consumer, and repository-tool self-tests finish
   successfully;
+- the controlled-queue code-freeze gate checks the frozen protocol,
+  generator/verifier lanes, and both generated-Lean branches without creating
+  a prospective artifact;
 - changed theorem statements pass the fail-closed fidelity scan against the
   selected base revision;
 - the proof-debt scans find no executable `sorry`, `admit`, or custom axiom;

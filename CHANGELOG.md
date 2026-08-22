@@ -19,6 +19,12 @@ v0.2 release, and no DOI is attached to them yet.
   unknown-kernel, controlled-dynamics, and target-policy certification layers.
 - A checked 20-state random-refresh load application with matched baselines,
   adaptive selection, and explicit known- and unknown-kernel certificates.
+- An opt-in 24-state controlled-queue application with exact model and trace
+  data, a checked invariant-risk atom, structured OPE events, and an aligned
+  known-kernel receipt.
+- A frozen prospective controlled-queue protocol, independent trace and receipt
+  tooling, and a generic Lean histogram-to-bound reduction. These contain no
+  fresh prospective artifact or result.
 - A countable transition-confidence extension with geometric allocation and
   conditional vanishing row and candidate-kernel budgets.
 
@@ -38,6 +44,9 @@ v0.2 release, and no DOI is attached to them yet.
   literature ledger, and explicit proof-status and literature-fidelity labels.
 - Fail-closed statement-fidelity, witness-quality, transitive-axiom,
   module-reachability, API-snapshot, and tagged-install gates.
+- A hosted controlled-queue code-freeze gate that checks the prospective
+  protocol, generator/verifier lanes, and generated-Lean branches without
+  producing prospective evidence.
 - Resolver-bound exact-tag receipts recording the tag object, peeled commit,
   tree, Lean toolchain, pinned Mathlib revision, operating system, timestamp,
   and hosted run URL. Automatic runs bind the initial resolution to the tag
@@ -60,6 +69,10 @@ v0.2 release, and no DOI is attached to them yet.
   discrepancy convergence.
 - Application declarations are opt-in and are outside the 19-name public API
   candidate.
+- No fresh prospective controlled-queue trace, receipt, or numerical outcome is
+  included. After immutable registration and the single authorized generation,
+  the ordered post-beacon verification gate is required and the result must be
+  reported regardless of outcome.
 
 ## v0.1.0 - 2026-05-08
 

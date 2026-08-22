@@ -49,6 +49,7 @@ make tutorials
 make api
 make downstream
 python3 -m pip install -r requirements-dev.txt
+make verify-controlled-queue-structured-ope-code-freeze
 make python-tests
 lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
@@ -87,6 +88,10 @@ Expected result:
   applications umbrella, while `FormalSLT.lean` reaches no
   `FormalSLT.Applications` module;
 - repository-tool Python self-tests pass;
+- the controlled-queue pre-beacon gate checks the frozen protocol, all four
+  prospective generator/verifier lanes, the generic Lean receipt reduction,
+  and both generated-module branches without fetching a beacon or creating a
+  prospective artifact;
 - changed theorem statements pass the fail-closed fidelity scan against the
   exact release base;
 - public theorem checker prints only the standard Lean/Mathlib axioms for the public
@@ -105,6 +110,15 @@ Expected result:
 - no executable `sorry`, no executable `admit`, no custom axioms, and no custom
   constants are found;
 - whitespace check passes.
+
+If v0.2 includes the prospective controlled-queue outcome, first bind the
+protocol and code-freeze checkpoint in an immutable public registration, then
+perform the single authorized generation. Run
+`make verify-controlled-queue-structured-ope-prospective-receipt` afterward;
+it must verify the trace, receipt, arithmetic, and generated Lean certificate
+in order. Report the outcome whether or not it crosses the frozen threshold.
+No local protocol or compiler fixture is a substitute for that post-beacon
+gate.
 
 ## Post-tag installation check
 
