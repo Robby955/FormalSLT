@@ -98,5 +98,7 @@ make downstream
 `make api` compares the current 19 signatures and axiom reports with the
 committed v0.2 snapshot, compares the two deprecated compatibility theorem
 types with their own v0.1 snapshot, checks the current showcase and v0.1
-quickstart, and replays all exact v0.1.0 examples. `make downstream` builds a
-separate Lake package that consumes only the four topic imports.
+quickstart, replays all exact v0.1.0 examples, and requires exact-name parity
+across this allowlist, the literature ledger, the theorem map, and the four
+isolated import checkers. `make downstream` builds a separate Lake package
+that consumes only the four topic imports.

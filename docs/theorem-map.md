@@ -3,6 +3,38 @@
 This page lists the public theorem spine by family. Names are Lean
 declarations; modules are relative to `FormalSLT`.
 
+## Candidate v0.2 endpoint index
+
+This compact index mirrors the 19-declaration candidate allowlist in
+[`api-stability.md`](api-stability.md). Topic imports are the supported public
+entry points; implementation modules are relative to `FormalSLT`. The
+committed signature snapshot remains normative for declaration types and
+axiom sets. This index becomes a stable compatibility surface only when the
+`v0.2.0` tag and GitHub Release exist. The three VC names are public aliases;
+the table lists their canonical implementation modules.
+
+| Declaration | Topic import | Implementation module | Role |
+|---|---|---|---|
+| `FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event` | `FormalSLT.PACBayes` | `PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` | One event simultaneous over all `n >= 2` and all admissible posterior measures on an arbitrary measurable hypothesis space |
+| `FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.exists_continuousForwardPredictableMeanBesselPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayes` | One outer-mass event controls every `n >= 2`, eligible posterior measure, and atom of a finite predeclared tilt prior |
+| `FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardBesselPACBayesCountable` | One outer-mass event controls every `n >= 2`, finite posterior PMF, and atom of a positive normalized countable tilt catalog |
+| `FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardBesselPACBayesCountable` | Geometric catalog selection on one outer-mass event, with an exact selected boundary tending to zero |
+| `FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_allPosteriors_bound` | `FormalSLT.PACBayes` | `PACBayes.TimeUniformTiltMixture` | One outer-mass event controls every positive time, posterior PMF, and declared finite tilt atom |
+| `FormalSLT.AnytimeValid.eProcess_typeI_control` | `FormalSLT.Sequential` | `AnytimeValid.EProcess` | Ville-based Type-I control for an e-process rejection event |
+| `FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event` | `FormalSLT.Sequential` | `AnytimeValid.ForwardBesselProcess` | Path- and time-dependent selector form of the common finite-catalog event |
+| `FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore_expectation_le_one` | `FormalSLT.Sequential` | `AnytimeValid.SelectionCost` | Expectation-at-most-one bound for a predeclared-weight correction and observation-dependent selector |
+| `FormalSLT.AnytimeValid.AllocationLogLog.frequently_geometricEpoch_loglogCost` | `FormalSLT.Sequential` | `AnytimeValid.AllocationLogLog` | Explicit iterated-logarithm allocation cost along an unbounded geometric-epoch subsequence |
+| `FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSign_anytimeBoundary_frequently_ge_mul_sqrt` | `FormalSLT.Sequential` | `AnytimeValid.UniversalBoundaryLowerBound` | Universal `sqrt n`-scale lower bound for valid deterministic one-sided fair-sign anytime boundaries |
+| `FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable` | Adaptive finite posteriors on one outer-mass event, with all-time validity and an exact selected boundary tending to zero |
+| `FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.StationaryPoissonDepthSelection` | All-time stationary-risk validity on one outer-mass event, with a vanishing selected boundary |
+| `FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.EmpiricalStationaryCatalog` | Canonical finite invariant-PMF target on one outer-mass event, without a supplied invariant premise |
+| `FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.StationaryTargetPolicyOPE` | One outer-mass event controls every `n >= 2`, posterior PMF, and finite declared tilt atom |
+| `FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Deterministic-start measurable-space trajectory certificate on one outer-mass event over all `n >= 2`, eligible posteriors, and finite tilt atoms |
+| `FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Finite-state certificate for a supplied initial PMF, simultaneous over positive times, posteriors, and tilt atoms |
+| `FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily` | `FormalSLT.VC` | `VC.Dimension` | Sauer-Shelah binomial-sum bound for finite set families |
+| `FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective` | `FormalSLT.VC` | `VC.Rademacher` | Effective-class Massart bound |
+| `FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail` | `FormalSLT.VC` | `VC.SampleComplexity` | VC-style ERM excess-risk tail with sharp concentration term |
+
 ## Core definitions
 
 | Declaration | Module | Role |
