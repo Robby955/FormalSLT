@@ -31,6 +31,36 @@ An earlier all-times PAC-Bayes-Bernstein martingale comparator is Seldin,
 Cesa-Bianchi, Auer, Laviolette, and Shawe-Taylor,
 [PAC-Bayes-Bernstein Inequality for Martingales and its Application to Multiarmed Bandits](https://proceedings.mlr.press/v26/seldin12a.html).
 
+### Mathlib import boundary at the v0.2 code freeze
+
+At FormalSLT commit `b91d6a37938cf1665430ea2a8cc45d8f67995f12`
+(tree `4b476c0c88165f871daa3f5a4094591ef0e52f1e`), the project uses Lean
+`v4.32.2` and Mathlib revision
+`905b95818eb32af7874a58b427f50c1711a5e96c`. For each flagship endpoint,
+the table recursively follows `import FormalSLT...` declarations and records
+selected Mathlib modules named directly at the boundary of that FormalSLT
+source closure. The count is the complete number of unique Mathlib boundary
+modules; routine algebra and tactic imports are omitted from the displayed
+spine.
+
+| Flagship endpoint | Mathlib boundary count | Selected exact import spine |
+|---|---:|---|
+| All-sample measurable empirical-Bernstein PAC-Bayes | 49 | Continuous change of measure: `Mathlib.InformationTheory.KullbackLeibler.Basic`, `Mathlib.MeasureTheory.Measure.LogLikelihoodRatio`; infinite-product and reverse-time infrastructure: `Mathlib.Probability.ProductMeasure`, `Mathlib.MeasureTheory.MeasurableSpace.Invariants`, `Mathlib.Probability.Process.Filtration`, `Mathlib.Probability.Martingale.OptionalStopping`; integration and epoch selection: `Mathlib.MeasureTheory.Integral.Bochner.Basic`, `Mathlib.MeasureTheory.Integral.Prod`, `Mathlib.Data.Nat.Log` |
+| Fixed-sample empirical-Bernstein PAC-Bayes | 26 | Finite matching and variance: `Mathlib.Data.Fintype.Perm`, `Mathlib.Data.Fintype.BigOperators`, `Mathlib.Probability.Moments.Variance`; exponential-moment argument: `Mathlib.Probability.Moments.SubGaussian`, `Mathlib.Analysis.Convex.Jensen`, `Mathlib.Analysis.Convex.SpecificFunctions.Basic`; finite grid: `Mathlib.Data.Nat.Log` |
+| Time-uniform finite-IID PAC-Bayes | 35 | IID adapter: `Mathlib.Probability.ConditionalExpectation`, `Mathlib.Probability.HasLaw`; finite-posterior change of measure: `Mathlib.InformationTheory.KullbackLeibler.Basic`, `Mathlib.Probability.ProbabilityMassFunction.Integrals`; mixture and maximal control: `Mathlib.MeasureTheory.Integral.Prod`, `Mathlib.Probability.Martingale.OptionalStopping` |
+| Forward predictable-residual and PAC-Bayes family | 60 | Forward-Bessel algebra: `Mathlib.Analysis.SpecialFunctions.Log.Deriv`, `Mathlib.NumberTheory.Harmonic.Defs`; anytime and countable machinery: `Mathlib.Probability.Martingale.OptionalStopping`, `Mathlib.MeasureTheory.Integral.DominatedConvergence`, `Mathlib.Analysis.PSeries`; finite and continuous PAC-Bayes layers: `Mathlib.InformationTheory.KullbackLeibler.Basic`, `Mathlib.MeasureTheory.Measure.LogLikelihoodRatio`, `Mathlib.Probability.ProbabilityMassFunction.Integrals` |
+| Finite-state countable adaptive trajectory PAC-Bayes | 61 | Trajectory law and conditional moments: `Mathlib.Probability.Kernel.IonescuTulcea.Traj`, `Mathlib.Probability.CondVar`, `Mathlib.Probability.ConditionalExpectation`, `Mathlib.Probability.ProbabilityMassFunction.Integrals`; anytime selector: `Mathlib.Probability.Process.Filtration`, `Mathlib.Probability.Martingale.OptionalStopping`, `Mathlib.Analysis.SpecialFunctions.Log.Deriv`, `Mathlib.NumberTheory.Harmonic.Defs`, `Mathlib.Analysis.PSeries`; finite-posterior KL: `Mathlib.InformationTheory.KullbackLeibler.Basic` |
+| Arbitrary measurable-state trajectory PAC-Bayes | 49 | Trajectory law and conditional moments: `Mathlib.Probability.Kernel.IonescuTulcea.Traj`, `Mathlib.Probability.CondVar`, `Mathlib.Probability.ConditionalExpectation`; continuous change of measure: `Mathlib.InformationTheory.KullbackLeibler.Basic`, `Mathlib.MeasureTheory.Measure.LogLikelihoodRatio`; integration and anytime control: `Mathlib.MeasureTheory.Integral.Bochner.Basic`, `Mathlib.MeasureTheory.Integral.Prod`, `Mathlib.Probability.Martingale.OptionalStopping` |
+| Finite Markov prequential PAC-Bayes | 38 | `Mathlib.Probability.Kernel.IonescuTulcea.Traj`, `Mathlib.Probability.CondVar`, `Mathlib.Probability.ConditionalExpectation`, `Mathlib.Probability.ProbabilityMassFunction.Integrals`, `Mathlib.InformationTheory.KullbackLeibler.Basic`, `Mathlib.Probability.Martingale.OptionalStopping` |
+| Known-kernel stationary Poisson-depth PAC-Bayes | 61 | Path and posterior infrastructure: `Mathlib.Probability.Kernel.IonescuTulcea.Traj`, `Mathlib.Probability.CondVar`, `Mathlib.Probability.ProbabilityMassFunction.Integrals`, `Mathlib.InformationTheory.KullbackLeibler.Basic`; all-time depth and tilt selection: `Mathlib.Probability.Process.Filtration`, `Mathlib.Probability.Martingale.OptionalStopping`, `Mathlib.Analysis.PSeries`, `Mathlib.NumberTheory.Harmonic.Defs`, `Mathlib.Data.Nat.Log` |
+| Unknown-kernel empirical stationary catalog | 63 | The known-kernel stationary closure above, plus exactly `Mathlib.Analysis.Convex.StdSimplex` and `Mathlib.Topology.Sequences` for finite invariant-law existence |
+
+This is import-provenance evidence, not a minimal theorem-dependency trace. A
+module can occur through shared infrastructure without every declaration being
+used by the final theorem. The map does not claim that Mathlib supplies the
+FormalSLT endpoint, that every displayed module is necessary, or that an
+upstream Mathlib contribution exists.
+
 ## Stationary and unknown-kernel source dictionary
 
 FormalSLT uses probabilists' finite total variation throughout this lane:
@@ -128,6 +158,36 @@ At that historical pre-correction snapshot:
   trace, fresh receipt, or result is bound or present in this snapshot. The
   evidence status is therefore
   **FROZEN PROTOCOL ONLY**.
+
+#### Current locally checked code freeze
+
+The current locally checked code-freeze snapshot is commit
+`b91d6a37938cf1665430ea2a8cc45d8f67995f12` (tree
+`4b476c0c88165f871daa3f5a4094591ef0e52f1e`). It retains the canonical
+protocol bytes identified above. At this snapshot:
+
+- `scripts/generate_controlled_queue_prospective_trace.py` and
+  `scripts/verify_controlled_queue_prospective_trace.py` have SHA-256 values
+  `55d9d8b2b9dbe0e0bc8f21a5e6dc34ff7f18ff53b8cd134d2d1969b1d108e57b`
+  and
+  `48f127a75318c4a025e4adf1f18cd35631f52ead1ae376a7c85bdb358bbe7eca`,
+  respectively;
+- `scripts/generate_controlled_queue_prospective_receipt.py` and
+  `scripts/verify_controlled_queue_prospective_receipt.py` have SHA-256 values
+  `5d706fe929ea9683333989f8bfbb9210968a5b15d5456f185eb697e127220322`
+  and
+  `88b49cd659371a1319aafac813379a226bb08ce534429210519fd1dd50375979`,
+  respectively; and
+- all six reserved prospective outputs remain absent.
+
+For this ledger, the `oracle_true_kernel_selected_h12_eb` and
+`selected_h12_nonvariance_fixed_range` comparison rows are both
+**PLANNED_NOT_CHECKED** arithmetic-only noncertificates. They are not checked
+confidence certificates or theorem results.
+
+This block records only a local code and tool-identity check. It does not claim
+an immutable public registration, a formula-selected beacon round, a
+prospective execution, a prospective result, or a public release.
 
 The future post-beacon gate is ordered: independently verify trace bytes and
 beacon provenance, independently verify receipt bytes and arithmetic, then

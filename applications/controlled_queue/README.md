@@ -143,6 +143,15 @@ publish-regardless chronology. It also fails if any declared fresh trace,
 receipt, manifest, or generated Lean output already exists. It does not fetch a
 beacon or generate data.
 
+The seven-row reporting contract distinguishes a checked outer-mass bound from
+a planned allocation. The prospective oracle true-kernel and fixed-range rows are
+arithmetic-only `PLANNED_NOT_CHECKED` noncertificates; each carries a planned
+`1/20` allocation, not a checked outer-mass bound. The receipt reports that
+planned allocation and status instead of a checked outer-mass bound. The
+primary, adaptive, generic structured, and premise-qualified unstructured rows
+retain their separate checked-event labels. This prospective oracle row is not
+the checked retrospective known-kernel receipt described above.
+
 The pre-beacon code-freeze target runs the four prospective generator/verifier
 test lanes, verifies the pinned `py-ecc` quicknet signature path, builds the
 generic histogram reduction, and elaborates both branches of the future

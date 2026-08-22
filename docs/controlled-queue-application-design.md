@@ -11,13 +11,11 @@ OPEN**
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
 
-Banked theorem-integration snapshot through fixed-candidate robust OPE: local
-commit
-`de4b2f02761d50ae86276b1fd4ae8bdce83fc018` (tree
-`b63d0bf9358558bb38e1d208222f4f1af20b355c`). The same-path empirical-event
-intersection is checked in the current local integration worktree beyond that
-snapshot. Neither local state is evidence of inclusion in public `main`, draft
-PR #99, or v0.2.
+Historical theorem-integration snapshot through fixed-candidate robust OPE:
+commit `de4b2f02761d50ae86276b1fd4ae8bdce83fc018` (tree
+`b63d0bf9358558bb38e1d208222f4f1af20b355c`). That commit is an ancestor of
+the current candidate and draft PR #99 history, but this ancestry is not
+evidence of inclusion in public `main` or a v0.2 release.
 
 This packet specifies the smallest controlled finite-state application that can
 serve as a journal-grade demonstration of FormalSLT's trajectory, stationary,
@@ -427,28 +425,41 @@ slices, not preprocessing claims.
 
 ## Matched comparison contract
 
-All displayed methods must use the same frozen trace, horizon, predictor and
-posterior catalog, target policy, and total failure budget.
+All displayed methods must use the same frozen trace and horizon. Each row's
+candidate, depth, policy, predictor, posterior, and selection rule is fixed by
+the canonical protocol. Every row has a nominal `1/20` reporting allocation;
+for the oracle and fixed-range rows, that value is planned and is not a checked
+failure budget.
 
-Compare:
+Report these seven rows in the frozen order:
 
-1. empirical-Bernstein primary endpoint;
-2. fixed-range endpoint;
-3. fixed-depth endpoint;
-4. non-variance-adaptive endpoint.
+1. `selected_h12_sharp_structured_eb`;
+2. `adaptive_d1_21_atom_eb`;
+3. `oracle_true_kernel_selected_h12_eb`;
+4. `generic_d1_m12_structured_eb`;
+5. `generic_d1_m5_structured_eb`;
+6. `selected_h12_nonvariance_fixed_range`;
+7. `unstructured_4608_coordinate_eb`.
 
 The report must show empirical loss, correction width, total upper endpoint,
-and the exact confidence allocation for every row. Report the ordering even if
-the primary method does not win.
+and the exact checked outer-mass bound or planned allocation for every row. It
+must distinguish those two fields and display the certification status. The
+prospective oracle true-kernel and fixed-range rows are arithmetic-only
+`PLANNED_NOT_CHECKED` noncertificates: their `1/20` values
+are planned allocations, not checked outer-mass bounds. The primary, adaptive,
+generic structured, and premise-qualified unstructured rows retain their
+separate checked-event semantics. Report the ordering even if the primary
+method does not win.
 
 ## Receipt and review contract
 
 The final package needs both:
 
-- a theorem-produced event of mass at least `1 - delta`, simultaneous over the
-  declared posterior, depth, and tilt catalogs; and
-- an exact Lean theorem evaluating the frozen trace's selected endpoint and all
-  matched baselines.
+- the checked theorem-produced event statements named for the primary,
+  adaptive, two generic structured, and premise-qualified unstructured rows;
+  and
+- exact Lean arithmetic evaluating all seven rows while preserving the oracle
+  and fixed-range rows as `PLANNED_NOT_CHECKED`.
 
 The frozen trace must not be claimed to belong to an existential or
 high-probability good event unless membership is separately proved. A useful
@@ -472,8 +483,10 @@ This application milestone is complete only when all of the following hold:
 - adaptive choices are numerically identified, not only introduced through an
   unspecified `Classical.choose` argmin;
 - the generator reproduces byte-identical inputs, Lean witnesses, and manifest;
-- the exact Lean receipt gives at least one endpoint below one;
-- matched baselines use the same data and failure budget;
+- the exact Lean receipt gives at least one below-one endpoint on a checked-event
+  row whose explicit premises hold;
+- matched rows use the same data and nominal `1/20` reporting allocation, with
+  checked outer-mass bounds distinguished from planned allocations;
 - independent probability and Lean reviews are recorded;
 - any queue-specific end-to-end unknown-dynamics OPE claim remains `OPEN` until
   executable certificates, trace and good-event alignment, and any claimed

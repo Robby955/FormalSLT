@@ -59,11 +59,13 @@ and cannot rescue a failed primary.
 Before the formula-selected beacon round is read, the code freeze must include
 the generic checked histogram-to-endpoint theorem named in the JSON contract.
 Fresh generated data may instantiate that theorem but may not introduce a new
-post-data reduction or branch. The fixed-range comparison remains explicitly
-`PLANNED_NOT_CHECKED` and is not a confidence certificate until its separate
-target-policy event theorem exists.
+post-data reduction or branch. The canonical JSON labels the prospective oracle
+row `PLANNED ORACLE BASELINE` and the fixed-range row
+`PLANNED_NOT_CHECKED`. The code-freeze reporting contract renders both as
+arithmetic-only `PLANNED_NOT_CHECKED` rows, not confidence certificates, until
+separate matching target-policy event theorems exist.
 
-## Formal work still required before generation
+## Formal requirements satisfied in the code freeze
 
 The generic checked `D = 1` structured theorem is too loose for the primary
 claim. The sharper refresh-family drift-sensitivity event is now checked on the
@@ -74,7 +76,7 @@ candidate drift oscillation
   + refresh drift-sensitivity oscillation × persistence TV budget.
 ```
 
-The receipt proof must also establish the sharper fixed-tilt inequalities
+The receipt proof also establishes the sharper fixed-tilt inequalities
 `psi(1/16) <= 1/480` and `psi(1/64) <= 1/8064` frozen in the JSON; the older
 coarser arithmetic is not silently substituted.
 
@@ -99,8 +101,10 @@ The single trace, counts, exact selected endpoint, adaptive secondary, and all
 matched baselines will be published regardless of whether the primary target
 is met. The report must show the empirical score, statistical correction,
 persistence radius, model-misspecification residual, total endpoint, and
-confidence allocation for every row. Candidate, seed, horizon, endpoint,
-selector, deltas, and threshold cannot be changed after the beacon is known.
+allocation entry for every row. Each entry is identified as either a checked
+outer-mass bound or a planned allocation and is paired with its certification
+status. Candidate, seed, horizon, endpoint, selector, deltas, and threshold
+cannot be changed after the beacon is known.
 
 The fixed comparisons include an oracle known-true-kernel row whose depth-12
 potential uses the uniform physical-state centering reference, is shifted to
@@ -109,7 +113,11 @@ conventions; generic `D = 1` depth-12 and depth-5 rows; a non-variance
 fixed-range row; and the full
 4,608-coordinate empirical-transition construction. Separate confidence events
 are reported as separate events unless a later theorem explicitly proves a
-common-event allocation.
+common-event allocation. The prospective oracle and fixed-range rows carry
+planned `1/20` allocations only: neither value is a checked outer-mass bound,
+and both totals are published as arithmetic-only `PLANNED_NOT_CHECKED`
+noncertificates. This does not change the checked-event status of the primary,
+adaptive, generic structured, or premise-qualified unstructured rows.
 
 ## Boundaries
 

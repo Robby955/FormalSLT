@@ -91,7 +91,9 @@ Expected result:
 - the controlled-queue pre-beacon gate checks the frozen protocol, all four
   prospective generator/verifier lanes, the generic Lean receipt reduction,
   and both generated-module branches without fetching a beacon or creating a
-  prospective artifact;
+  prospective artifact; it fails if either the oracle true-kernel or fixed-range
+  `PLANNED_NOT_CHECKED` arithmetic row is relabeled as a confidence certificate,
+  or if its planned `1/20` allocation is reported as a checked outer-mass bound;
 - changed theorem statements pass the fail-closed fidelity scan against the
   exact release base;
 - public theorem checker prints only the standard Lean/Mathlib axioms for the public

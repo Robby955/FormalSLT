@@ -262,6 +262,12 @@ registration and one authorized generation, the ordered
 `make verify-controlled-queue-structured-ope-prospective-receipt` gate is
 required; the result and matched comparisons must be reported regardless of
 outcome.
+
+The prospective oracle true-kernel and fixed-range comparison rows are
+arithmetic-only `PLANNED_NOT_CHECKED` noncertificates. Their `1/20` entries are
+planned allocations, not checked outer-mass bounds; reporting distinguishes a
+checked outer-mass bound from a planned allocation and includes the row status.
+The other checked-event rows keep their existing event semantics and premises.
 Application-specific declarations are not part of the 19-name v0.2
 compatibility promise.
 

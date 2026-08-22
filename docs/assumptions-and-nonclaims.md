@@ -402,6 +402,15 @@ The frozen post-beacon gate first runs the independent trace verifier, then the
 receipt byte check, independent receipt verifier, and generated Lean checker in
 that order.
 
+Two prospective comparison rows remain arithmetic-only. The oracle true-kernel
+row and the fixed-range row are both `PLANNED_NOT_CHECKED` noncertificates;
+their `1/20` values are planned allocations, not checked outer-mass bounds. A
+receipt row therefore records either a checked outer-mass bound or a planned
+allocation, together with its certification status. This restriction does not
+relabel the primary, adaptive, generic structured, or premise-qualified
+unstructured rows, and it does not alter the separate checked retrospective
+known-kernel receipt.
+
 ### Fixed controlled-queue OPE catalog
 
 `Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian

@@ -74,6 +74,10 @@ v0.2 release, and no DOI is attached to them yet.
   discrepancy convergence.
 - Application declarations are opt-in and are outside the 19-name public API
   candidate.
+- The prospective oracle true-kernel and fixed-range rows are arithmetic-only
+  `PLANNED_NOT_CHECKED` comparisons. Their `1/20` entries are planned
+  allocations, not checked outer-mass bounds; neither row has a checked event
+  theorem or is a confidence certificate.
 - No fresh prospective controlled-queue trace, receipt, or numerical outcome is
   included. After immutable registration and the single authorized generation,
   the ordered post-beacon verification gate is required and the result must be
