@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 233,
-    "library_and_example_lean_lines": 152813,
-    "library_lean_lines": 122700,
-    "library_modules": 289,
-    "theorem_map_entries": 1097
+    "example_lean_files": 234,
+    "library_and_example_lean_lines": 153453,
+    "library_lean_lines": 123319,
+    "library_modules": 290,
+    "theorem_map_entries": 1098
   },
   "theorem_families": [
     {
@@ -5100,6 +5100,12 @@
           "module": "Applications.ControlledQueueSharpStructuredOPE",
           "name": "exists_controlledQueueSharpStructuredReceipt_event",
           "summary": "Freezes true gamma = 149/200, initial observation (eco, state 0), horizon 200000, nominal candidate, supplied shifted depth-twelve potential, and queue-threshold/nominal-model Dirac posterior for the stationary target-policy risk on an adaptive trajectory; it is an event theorem, not a trace or numerical receipt"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueSharpStructuredReceiptCore",
+          "name": "sharpStructuredReceiptBoundary_evaluation_of_histogram",
+          "summary": "For any path matching a supplied physical transition histogram at horizon 200000, bounds the frozen sharp primary boundary by the exact count-derived affine-Bessel endpoint with risk log/psi bounds 9 and 1/480 and persistence log/psi bounds 7 and 1/8064; it contains no future histogram or threshold result"
         }
       ],
       "name": "Controlled-queue refresh sensitivity and fixed sharp OPE"

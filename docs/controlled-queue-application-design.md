@@ -2,10 +2,11 @@
 
 Status: **STRUCTURED ADAPTIVE QUEUE OPE EVENT, FIXED SHARP UNKNOWN-DYNAMICS
 EVENT, ONE EXACT INVARIANT/RISK ATOM, AND AN ALIGNED KNOWN-KERNEL `< 0.07`
-RECEIPT CHECKED LOCALLY** / **PROSPECTIVE PROTOCOL FROZEN LOCALLY; PUBLIC
-PREREGISTRATION, INDEPENDENT GENERATOR/VERIFIER FREEZE, FRESH TRACE AND
-HISTOGRAM, NUMERICAL `< 0.10` RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT
-MEMBERSHIP OPEN**
+RECEIPT CHECKED LOCALLY** / **PROSPECTIVE PROTOCOL FROZEN LOCALLY;
+INDEPENDENT GENERATOR/VERIFIER IMPLEMENTATION CHECKED LOCALLY; PUBLIC
+PREREGISTRATION AND IMMUTABLE CODE BINDING, FRESH TRACE AND HISTOGRAM,
+NUMERICAL `< 0.10` RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT MEMBERSHIP
+OPEN**
 
 Original design base: FormalSLT release-candidate commit
 `93c42192f8e66f2d77c35578e49dc39ff82b1324`.
@@ -217,8 +218,9 @@ inequality. The following application items remain **OPEN**.
    current trace. The scalar persistence route and its checked sharp
    drift-sensitivity composition avoid that allocation within the refresh
    family. The local v1 protocol freezes the primary and comparisons, but the
-   independent generator/verifier code must be completed and frozen, and one
-   public OSF registration must bind the protocol and code-freeze commits,
+   independent generator/verifier implementation and pre-beacon gate are
+   completed and checked locally. One public OSF registration must still bind
+   the protocol and code-freeze commits
    before the formula-selected future beacon round is read or a fresh trace is
    generated. The resulting trace, histogram, selected numerical `< 0.10`
    receipt, and every matched comparison must then be reported whether the
@@ -301,6 +303,15 @@ depth-twelve residual as candidate-drift oscillation plus refresh-sensitivity
 oscillation times a path-dependent persistence budget; it has no extra
 `2 * (1 + B)` factor. It has not yet been evaluated on a fresh prospectively
 generated trace.
+
+The pre-data receipt reduction is now checked separately in
+`ControlledQueueSharpStructuredReceiptCore`. Its generic histogram theorem
+uses current state `S_k`, newly sampled action `A_(k+1)`, and next state
+`S_(k+1)` for all `200000` scored transitions. It fixes the affine Bessel
+branch and the protocol's rational log/psi upper bounds before any prospective
+counts exist. A future generated receipt may instantiate this theorem with a
+verified histogram, but this result alone does not bind raw bytes, establish
+good-event membership, or prove the `< 0.10` target.
 Later application slices must still
 provide any further invariant/risk receipts needed for reported atoms,
 trace/event alignment, and final numerical confidence arithmetic. One explicit
@@ -339,6 +350,20 @@ model arithmetic tests and build the controlled-queue model, score,
 contraction, confidence, OPE, and invariant-risk module/checker chain. Run
 `make verify-controlled-queue-trace` for byte-staleness checks, the independent
 full replay, and the trace-specific tests; that target does not invoke Lean.
+Before any public registration or beacon read, install the pinned development
+dependencies and run
+`make verify-controlled-queue-structured-ope-code-freeze`. That gate checks
+the fail-closed protocol, all four prospective generator/verifier lanes, the
+generic Lean histogram reduction, and coherent above- and below-threshold
+generated-module smokes without writing a prospective artifact. The
+below-threshold smoke deliberately reuses the retrospective histogram only as
+a compiler fixture; it is not a confirmatory result or good-event witness.
+After the immutable registration and one authorized generation, the separate
+`make verify-controlled-queue-structured-ope-prospective-receipt` gate enforces
+trace byte checking, independent BLS/PRNG replay, receipt byte checking,
+independent receipt arithmetic, and generated-Lean elaboration in that order.
+It performs no generation and therefore fails before those future artifacts
+exist.
 
 The second preprocessing slice adds `trace-v1.json`, a compact binary trace,
 exact empirical count tables, exact causal Beta prediction streams, a SHA-256

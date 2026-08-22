@@ -288,6 +288,28 @@ def test_rejects_appearance_of_declared_fresh_output(
         checker.validate_protocol_file(protocol)
 
 
+def test_rejects_broken_symlink_at_declared_fresh_output(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    source_root = checker.ROOT
+    isolated_root = tmp_path / "repo"
+    for binding in checker.EXPECTED_BINDINGS.values():
+        relative = Path(binding["path"])
+        destination = isolated_root / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes((source_root / relative).read_bytes())
+
+    monkeypatch.setattr(checker, "ROOT", isolated_root)
+    protocol = _write(tmp_path, checker.DEFAULT_INPUT.read_bytes())
+    checker.validate_protocol_file(protocol)
+
+    appeared = isolated_root / checker.FRESH_OUTPUT_PATHS[0]
+    appeared.parent.mkdir(parents=True, exist_ok=True)
+    appeared.symlink_to(isolated_root / "missing-prospective-output")
+    with pytest.raises(checker.ProtocolError, match="prospective output already exists"):
+        checker.validate_protocol_file(protocol)
+
+
 def test_rejects_unknown_nested_field(tmp_path: Path) -> None:
     spec = _spec()
     spec["success_criteria"]["unexpected"] = "must fail closed"  # type: ignore[index]

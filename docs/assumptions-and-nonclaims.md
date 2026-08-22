@@ -387,9 +387,17 @@ fixed selected-potential primary, future-public-beacon seed rule, adaptive
 secondary, matched comparisons, and publish-regardless chronology before an
 independent trace. The required sharp drift-sensitivity event is checked
 locally, but the protocol has not been publicly preregistered and the
-independent generator/verifier freeze is incomplete. Until the protocol and
-completed code freeze are bound by one immutable public OSF registration, no
-future-beacon seed may be read and no prospective numerical claim is made.
+independent generator/verifier implementation and pre-beacon gate are only
+checked locally. Until the protocol and completed code freeze are bound by one
+immutable public OSF registration, no future-beacon seed may be read and no
+prospective numerical claim is made.
+
+The prospective receipt verifier independently reconstructs the endpoint
+arithmetic and generated Lean bytes, but it is not a second beacon-signature or
+PRNG replay implementation. A receipt-only pass is therefore insufficient.
+The frozen post-beacon gate first runs the independent trace verifier, then the
+receipt byte check, independent receipt verifier, and generated Lean checker in
+that order.
 
 ### Fixed controlled-queue OPE catalog
 

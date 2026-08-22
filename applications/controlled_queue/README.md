@@ -3,9 +3,9 @@
 Status: **PREPROCESSING, STRUCTURED ADAPTIVE OPE EVENT, FIXED SHARP
 UNKNOWN-DYNAMICS EVENT, ONE EXACT INVARIANT/RISK ATOM, AND AN ALIGNED
 KNOWN-KERNEL RECEIPT CHECKED** / **PROSPECTIVE PROTOCOL FROZEN LOCALLY;
-PUBLIC PREREGISTRATION, INDEPENDENT GENERATOR/VERIFIER FREEZE, FRESH TRACE,
-HISTOGRAM, NUMERICAL `< 0.10` RECEIPT, MATCHED BASELINES, AND NAMED-PATH EVENT
-MEMBERSHIP OPEN**
+INDEPENDENT GENERATOR/VERIFIER IMPLEMENTATION CHECKED LOCALLY; IMMUTABLE
+PUBLIC BINDING, FRESH TRACE, HISTOGRAM, NUMERICAL `< 0.10` RECEIPT, MATCHED
+BASELINES, AND NAMED-PATH EVENT MEMBERSHIP OPEN**
 
 This directory freezes and compiles the deterministic model inputs for the
 24-state, two-action controlled-queue benchmark. The trace slice is a frozen,
@@ -60,6 +60,12 @@ of unknown-kernel target-policy OPE.
   shifted depth-twelve potential, and queue-threshold/nominal-model Dirac
   posterior. Its prospectively frozen wrapper fixes true `gamma = 149/200`,
   initial observation `(eco, state 0)`, and horizon `200000`.
+- `../../FormalSLT/Applications/ControlledQueueSharpStructuredReceiptCore.lean`:
+  checked pre-data reduction from any matching `24 x 2 x 24` physical
+  transition histogram to the frozen primary endpoint. It uses only the
+  preregistered affine Bessel branch, log-cost bounds `9` and `7`, and cumulant
+  bounds `1/480` and `1/8064`; it contains no prospective counts or threshold
+  conclusion.
 - `../../FormalSLT/Applications/ControlledQueueInvariantRisk.lean`: locally
   checked explicit 24-state invariant PMF for the nominal environment and
   queue-threshold target policy, its equality to the catalog's canonical
@@ -105,17 +111,37 @@ make generate-controlled-queue-model
 make generate-controlled-queue-trace
 make generate-controlled-queue-known-kernel-receipt
 make check-controlled-queue-structured-ope-protocol
+python3 -m pip install -r requirements-dev.txt
 ~/.elan/bin/lake exe cache get
+make verify-controlled-queue-structured-ope-code-freeze
 make verify-controlled-queue-model
 make verify-controlled-queue-trace
 make verify-controlled-queue-known-kernel-receipt
 ```
+
+Only after the immutable registration and the single authorized prospective
+generation exist, run
+`make verify-controlled-queue-structured-ope-prospective-receipt`. That
+post-beacon gate checks the trace generator's bytes, independently verifies the
+beacon signature and every PRNG transition, checks the receipt generator's
+bytes, independently reconstructs its arithmetic, and finally elaborates the
+generated Lean certificate in that order. It never generates or overwrites an
+artifact and is expected to fail before the future evidence exists.
 
 The prospective protocol check validates canonical JSON, exact source hashes,
 analytic constants and allocations, future drand-beacon derivation, and the
 publish-regardless chronology. It also fails if any declared fresh trace,
 receipt, manifest, or generated Lean output already exists. It does not fetch a
 beacon or generate data.
+
+The pre-beacon code-freeze target runs the four prospective generator/verifier
+test lanes, verifies the pinned `py-ecc` quicknet signature path, builds the
+generic histogram reduction, and elaborates both branches of the future
+generated Lean module. The below-threshold compilation smoke uses the already
+observed retrospective histogram only to exercise the conditional theorem
+template; it is not prospective evidence or a receipt. The target finishes by
+reasserting that all six reserved prospective outputs are absent and performs
+no network fetch or canonical generation.
 
 The model verification target fails if any generated model byte or manifest
 hash is stale, runs the narrow arithmetic/schema tests, and builds the full

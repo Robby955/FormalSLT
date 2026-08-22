@@ -235,6 +235,16 @@ def _resolve_repository_path(path_text: Any, where: str) -> Path:
     return path
 
 
+def _has_symlink_component(path: Path) -> bool:
+    absolute = path.absolute()
+    current = Path(absolute.anchor)
+    for part in absolute.parts[1:]:
+        current = current / part
+        if current.is_symlink():
+            return True
+    return False
+
+
 def _validate_bindings(value: Any) -> None:
     bindings = _object(value, "bindings")
     _keys(bindings, set(EXPECTED_BINDINGS), "bindings")
@@ -921,12 +931,13 @@ def _validate_artifact_contract(value: Any) -> None:
     _exact_tree(value, expected, "artifact_contract")
     seen: set[Path] = set()
     for index, path_text in enumerate(value["fresh_output_paths"]):
+        declared_path = ROOT / path_text
+        if declared_path.exists() or _has_symlink_component(declared_path):
+            _fail(f"prospective output already exists: {path_text}")
         path = _resolve_repository_path(path_text, f"artifact_contract.fresh_output_paths[{index}]")
         if path in seen:
             _fail("artifact_contract.fresh_output_paths must not contain duplicates")
         seen.add(path)
-        if path.exists():
-            _fail(f"prospective output already exists: {path_text}")
 
 
 def _validate_chronology_contract(value: Any) -> None:

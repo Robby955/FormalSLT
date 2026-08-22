@@ -1038,13 +1038,15 @@ matched baseline comparison.
 | `sharpStructuredResidual` | `Applications.ControlledQueueSharpStructuredOPE` | Defines the pathwise sharp residual as the two checked oscillation bounds combined with the nominal candidate's scalar persistence budget |
 | `exists_controlledQueueSharpStructuredOPE_event` | `Applications.ControlledQueueSharpStructuredOPE` | For any true refresh parameter and deterministic initial observation fixed beforehand, intersects the fixed selected-atom risk and persistence events and bounds the stationary target-policy risk on one adaptive-trajectory outer event of complement mass at most `1/20` at every `n >= 2` |
 | `exists_controlledQueueSharpStructuredReceipt_event` | `Applications.ControlledQueueSharpStructuredOPE` | Freezes true `gamma = 149/200`, initial observation `(eco, state 0)`, horizon `200000`, nominal candidate, supplied shifted depth-twelve potential, and queue-threshold/nominal-model Dirac posterior for the stationary target-policy risk on an adaptive trajectory; it is an event theorem, not a trace or numerical receipt |
+| `sharpStructuredReceiptBoundary_evaluation_of_histogram` | `Applications.ControlledQueueSharpStructuredReceiptCore` | For any path matching a supplied physical transition histogram at horizon `200000`, bounds the frozen sharp primary boundary by the exact count-derived affine-Bessel endpoint with risk log/psi bounds `9` and `1/480` and persistence log/psi bounds `7` and `1/8064`; it contains no future histogram or threshold result |
 
 The fixed slice uses risk tilt `1/16`, persistence tilt `1/64`, and separate
 failure budgets `1/40`. It has no fresh prospective trace or histogram, no
 named-path good-event membership theorem, and no checked numerical endpoint
 below the protocol threshold `< 0.10`. Its local protocol has not been
-publicly preregistered, and the independent generator/verifier code freeze
-still must be completed and publicly bound before the future-beacon seed is
+publicly preregistered. The independent generator/verifier implementation and
+pre-beacon gate are checked locally, but the resulting code-freeze commit still
+must be immutably bound with the protocol before the future-beacon seed is
 read.
 
 ## Controlled-queue twelve-atom OPE catalog

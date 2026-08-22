@@ -23,6 +23,7 @@ import FormalSLT.Applications.ControlledQueueInvariantRisk
 import FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 import FormalSLT.Applications.ControlledQueueRefreshSensitivity
 import FormalSLT.Applications.ControlledQueueSharpStructuredOPE
+import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
 
 /-!
 # FormalSLT applications
@@ -60,7 +61,10 @@ conditional on both the aligned suffix-histogram premise and the
 theorem-produced event inequality. `ControlledQueueRefreshSensitivity` proves
 the exact affine drift identity for the queue refresh family, and
 `ControlledQueueSharpStructuredOPE` combines it with the risk and persistence
-events under the prospectively frozen constants. These modules do not prove
-that any named trace satisfies the good event or evaluate the prospective
-sharp endpoint on fresh data.
+events under the prospectively frozen constants.
+`ControlledQueueSharpStructuredReceiptCore` reduces any matching physical
+transition histogram to the preregistered affine-Bessel primary endpoint,
+without containing future counts. These modules do not prove that any named
+trace satisfies the good event or evaluate the prospective sharp endpoint on
+fresh data.
 -/

@@ -570,6 +570,7 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.knownKernelSelectedRefreshSensitivity_finiteOscillation_le"
   "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredOPE_event"
   "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredReceipt_event"
+  "FormalSLT.Applications.ControlledQueue.sharpStructuredReceiptBoundary_evaluation_of_histogram"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.state_card"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.four_mul_loadLevel_add_regime"
   "FormalSLT.StochasticDynamics.RandomRefreshLoadModel.successorEquiv_apply"
@@ -972,6 +973,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueKnownKernelReceipt"
   echo "import FormalSLT.Applications.ControlledQueueRefreshSensitivity"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredOPE"
+  echo "import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
@@ -1067,6 +1069,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueInvariantRisk \
   FormalSLT.Applications.ControlledQueueRefreshSensitivity \
   FormalSLT.Applications.ControlledQueueSharpStructuredOPE \
+  FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \

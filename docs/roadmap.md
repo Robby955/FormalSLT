@@ -379,17 +379,17 @@
       publish-regardless rule. This is protocol-only and has no public
       timestamp, trace, result, or confidence receipt yet.
     - [ ] Add a useful unknown-kernel numerical certificate and matched
-      baselines. Complete and freeze the independent generator/verifier code,
-      then bind that code freeze and the protocol commit in one immutable
-      public OSF registration before selecting the formula-determined beacon
-      round. Generate the fresh trace once and report its histogram, selected
-      endpoint, `< 0.10` threshold outcome, and every declared comparison
-      whether the primary succeeds or fails. No fresh trace, histogram,
-      good-event membership proof, or numerical receipt exists yet. The
-      present 4,608-coordinate transition allocation is vacuous on the pilot
-      trace. The old frozen config has only 48 coordinate weights, includes
-      tilt `1`, and uses a five-predictor prior with causal predictors and no
-      target-policy factor.
+      baselines. The independent generator/verifier implementation and
+      pre-beacon gate are checked locally. Next bind that code freeze and the
+      protocol commit in one immutable public OSF registration before
+      selecting the formula-determined beacon round. Generate the fresh trace
+      once and report its histogram, selected endpoint, `< 0.10` threshold
+      outcome, and every declared comparison whether the primary succeeds or
+      fails. No fresh trace, histogram, good-event membership proof, or
+      numerical receipt exists yet. The present 4,608-coordinate transition
+      allocation is vacuous on the pilot trace. The old frozen config has only
+      48 coordinate weights, includes tilt `1`, and uses a five-predictor prior
+      with causal predictors and no target-policy factor.
     - [ ] Add any claimed named-path good-event witness or a random-initial
       mixture/conditioning bridge for unconditional simulator coverage.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
