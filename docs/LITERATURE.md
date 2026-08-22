@@ -63,6 +63,86 @@ and Mitrophanov
 These hashes identify the files inspected; they do not turn the bounded source
 comparison into an exhaustive prior-art or priority search.
 
+## Controlled-queue literature and provenance spine
+
+This is a bounded evidence map for code-freeze commit
+`5eae99f5f217edc7b44bd81dda6fde2a946effda` (tree
+`255c20fe5297c1adcc0a4ee3b9e3a308b311f48a`). It records the chain from the
+mathematical source families above to the controlled-queue application. It is
+not a novelty or priority search.
+
+Two classifications are deliberately independent:
+
+- **Literature fidelity** uses `SPECIALIZATION` and `DERIVED VARIANT` as
+  defined at the top of this ledger. **APPLICATION INSTANTIATION** means that
+  exact queue tables and constants discharge a checked generic theorem; it
+  does not assert a new source theorem.
+- **Evidence status** uses **CHECKED THEOREM** for a Lean declaration exposed
+  to a named `examples/Check*.lean` audit, **CHECKED DETERMINISTIC RECEIPT**
+  when frozen nonprospective bytes are also independently reconstructed, and
+  **FROZEN PROTOCOL ONLY** when the contract contains no prospective data or
+  result. These labels say nothing about mathematical priority.
+
+### Source family to generic target-policy chain
+
+| Mathematical source family | FormalSLT declaration and role | Exact assumptions carried into the queue lane | Literature fidelity | Theorem-facing audit |
+|---|---|---|---|---|
+| One-step target-to-behavior likelihood-ratio cancellation; Howard et al., Theorem 4 and Appendix A.8, for the predictable-residual process; Chugg--Wang--Ramdas for prior mixing, change of measure, and Ville | `controlledObservedImportanceScore_condExp` (`FormalSLT/StochasticDynamics/ControlledTrajectory.lean:316`) proves the one-step conditional-mean identity; `exists_stationaryTargetPolicyOPE_event` (`FormalSLT/StochasticDynamics/StationaryTargetPolicyOPE.lean:431`) adds the exact-Poisson stationary-risk interpretation | Finite state and action spaces; deterministic initial controlled observation; possibly history-dependent behavior policy; predeclared Markov target policies; pointwise overlap; a positive common action-ratio cap `C`; `[0,1]` transition scores; supplied invariant PMFs and bounded exact Poisson potentials; full-support finite hypothesis and tilt priors; `0 < lambda < 1`; `delta > 0` | **SPECIALIZATION** of the predictable-residual/PAC-Bayes ingredients; **DERIVED VARIANT** for the controlled importance-weighting and stationary-Poisson composition. The one-step cancellation is proved algebraically and is not presented as a reproduction of a separately named OPE theorem | `examples/CheckStationaryTargetPolicyOPE.lean`; the controlled semantic prerequisites are also exercised by the application checkers below |
+| Glynn--Meyn's Poisson coboundary and martingale organization, with the same Howard/Chugg--Wang--Ramdas concentration layer | `exists_stationaryApproximateTargetPolicyOPE_signedResidual_event` (`FormalSLT/StochasticDynamics/StationaryTargetPolicyApproximateOPE.lean:181`) retains the signed Poisson residual; `exists_stationaryApproximateTargetPolicyOPE_event` (`FormalSLT/StochasticDynamics/StationaryTargetPolicyApproximateOPE.lean:290`) replaces it by a supplied pointwise envelope | The exact-Poisson assumptions above except that the potential may be approximate; invariance is still supplied; the final endpoint adds the posterior average of the explicit residual envelope | **DERIVED VARIANT**. Glynn--Meyn do not state this importance-weighted, PAC-Bayes, finite-catalog endpoint | `examples/CheckStationaryTargetPolicyApproximateOPE.lean` |
+| Gaubert--Qu finite Dobrushin/oscillation contraction; Wolfer row-TV normalization and coefficient perturbation; Glynn--Meyn finite Poisson organization | `exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event` in `FormalSLT/StochasticDynamics/StationaryTargetPolicyRobustFiniteDepthOPE.lean` uses a candidate kernel, finite-depth potential, contraction residual, and a supplied physical row-TV radius | A fixed candidate `Q`, target-policy reference PMFs, `0 <= alpha < 1`, centered candidate row-risk oscillation at most `D`, fixed depth `m`, and true-to-candidate row TV at most `eta`; its residual is `alpha^m * D + 2 * (1 + B_m) * eta` | **SPECIALIZATION** for the finite Dobrushin contraction normalization; **DERIVED VARIANT** for the target-policy finite-depth robust endpoint | `examples/CheckStationaryTargetPolicyRobustFiniteDepthOPE.lean` |
+| Wolfer one-trajectory visit/edge organization; Kueffner et al. Theorem 3 as a confidence-sequence comparator; Howard/Chugg--Wang--Ramdas for the actual fixed-tilt process | `exists_stationaryEmpiricalRobustCandidateFiniteDepthTargetPolicyOPE_event` (`FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean:52`) intersects risk and empirical augmented-transition events on the same path | Fixed candidate and depth before the event; behavior action mass exactly `1/2`; every augmented source row visited at the reported time; predeclared risk and transition tilt catalogs; separate `deltaRisk` and `deltaTransition`; no independence assumption. An augmented row-TV radius `etaAug` becomes physical row TV `2 * etaAug`, hence residual `alpha^m * D + 4 * (1 + B_m) * etaAug` | **DERIVED VARIANT / COMPARATOR**. It is neither Wolfer's mixing-time estimator nor Kueffner et al.'s reset/simulation-access row-local IID construction | `examples/CheckStationaryTargetPolicyEmpiricalFiniteDepthOPE.lean` |
+
+The first row uses only one-step action ratios. None of these declarations is a
+full-trajectory importance-sampling estimator, a doubly robust estimator, a
+policy-optimization theorem, or an identification result without the stated
+overlap, invariant-law, and Poisson assumptions.
+
+### Exact queue instantiation and current evidence
+
+| Layer | Exact frozen assumptions and constants | Lean endpoint, checker, and receipt | Evidence status | Literature fidelity and explicit boundary |
+|---|---|---|---|---|
+| Generated controlled model, scores, overlap, and contraction | `24` physical states, `2` actions, uniform behavior, target-policy catalog of size `4`, fixed Brier-predictor catalog of size `3`, and candidate refresh parameters `5/8`, `3/4`, and `7/8`. The fixed Brier scores lie in `[0,1]`; their centered row-risk oscillation is bounded by `D = 1`; target-to-behavior action ratios are bounded by `C = 3/2`; candidate target-policy Dobrushin coefficients are bounded above by the corresponding refresh parameter | `ControlledQueueTypedModel`, `ControlledQueueTargetPolicyScores`, and `ControlledQueueContraction`; audited by `examples/CheckControlledQueueTypedModel.lean`, `examples/CheckControlledQueueTargetPolicyScores.lean`, and `examples/CheckControlledQueueContraction.lean` | **CHECKED THEOREM** | **APPLICATION INSTANTIATION** of the finite controlled, score, and Dobrushin interfaces. The coefficient values are upper bounds, not asserted exact coefficients. Squared Brier loss is used as a bounded score; no propriety or calibration theorem is invoked. The two causal Beta predictors are not fixed stationary target-policy hypotheses |
+| Twelve-atom nominal empirical-kernel OPE | Nominal candidate `gamma = 3/4`; `4 x 3 = 12` policy--predictor atoms; depth fixed before the base event; singleton risk and transition tilts `1/4`; risk and transition budgets `1/40` each; uniform priors over `12` hypotheses and `4,608` augmented transition coordinates; all `48` augmented source rows must be visited at the displayed time | `exists_nominalControlledQueueEmpiricalFiniteDepthOPE_event` (`FormalSLT/Applications/ControlledQueueOPECatalog.lean:313`); `examples/CheckControlledQueueOPECatalog.lean` | **CHECKED THEOREM** | **APPLICATION INSTANTIATION / DERIVED VARIANT** of the generic empirical finite-depth theorem. It does not prove named-trace good-event membership, remove the all-row visitation premise, or make the transition-coordinate event informative on the retrospective receipt |
+| Structured refresh-family adaptive event | The true environment is assumed to be the one-parameter refresh family with one fixed `gamma in [0,1)` and fixed initial observation. The predeclared support has `3 x 7 = 21` candidate--depth atoms, depths `[0,1,2,3,5,8,12]`, four risk tilts and four persistence tilts `[1/16,1/8,1/4,1/2]`, arbitrary posterior PMFs over the `12` hypotheses, and budgets `1/40 + 1/40 = 1/20`. Candidate, depth, both tilt atoms, posterior, and time may be selected inside the common event | `exists_controlledQueueStructuredAdaptiveOPE_event` (`FormalSLT/Applications/ControlledQueueStructuredOPE.lean:476`) and `exists_selectedControlledQueueStructuredAdaptiveOPE_event` (`FormalSLT/Applications/ControlledQueueStructuredOPE.lean:515`); `examples/CheckControlledQueueStructuredOPE.lean` | **CHECKED THEOREM** | **APPLICATION INSTANTIATION / DERIVED VARIANT** of approximate-Poisson OPE plus scalar persistence confidence. This is not uniform over `gamma`, does not test refresh-family membership, and does not construct a measurable selected process or selected e-process. Unlike the generic `4,608`-coordinate lane, it has no every-row visitation premise |
+| Frozen sharp prospective primary event | True `gamma = 149/200`; initial observation `(eco, state 0)`; horizon `200000`; nominal candidate `gamma = 3/4`; shifted depth-`12` potential; Dirac posterior on queue-threshold policy and nominal-model overload predictor; risk tilt `1/16`; persistence tilt `1/64`; budgets `1/40 + 1/40 = 1/20`; ratio cap `3/2`; candidate-drift oscillation `58989951/9007199254740992`; refresh-sensitivity oscillation `831542406207231/3236962232172544`; cumulant bounds `psi(1/16) <= 1/480` and `psi(1/64) <= 1/8064` | `exists_controlledQueueSharpStructuredReceipt_event` (`FormalSLT/Applications/ControlledQueueSharpStructuredOPE.lean:465`), supported by the exact affine refresh identity in `ControlledQueueRefreshSensitivity`; `examples/CheckControlledQueueSharpStructuredOPE.lean` | **CHECKED THEOREM**, but only for the event and frozen pathwise formula | **APPLICATION INSTANTIATION / DERIVED VARIANT**. No prospective trace exists at this snapshot, no named path is proved to be in the good event, and no endpoint below the frozen `1/10` threshold is claimed |
+| Generic prospective histogram reduction | Any `24 x 2 x 24` physical transition histogram matching a path at horizon `200000`; only the preregistered affine Bessel branch, log-cost bounds `9` and `7`, and cumulant bounds `1/480` and `1/8064` are used | `sharpStructuredReceiptBoundary_evaluation_of_histogram` (`FormalSLT/Applications/ControlledQueueSharpStructuredReceiptCore.lean:602`) proves `sharpStructuredOPEBoundary <= sharpStructuredHistogramUpper`; `examples/CheckControlledQueueSharpStructuredReceiptCore.lean` | **CHECKED THEOREM**, generic in the counts; no prospective counts are present | **APPLICATION INSTANTIATION** of already checked arithmetic and event components, not another statistical source theorem. It does not prove histogram provenance, path membership, or the `1/10` threshold. A generated threshold corollary is permitted only if the future exact arithmetic supports it |
+| Retrospective nominal known-kernel receipt | Nominal kernel; explicit invariant law; queue-threshold/nominal-model atom; exact stationary Brier risk `4338268437/67816493056 < 13/200`; fixed initial observation `(action 1, state 1)`; aligned suffix horizon `199999`; depth `12`; risk tilt `1/16`; event budget `1/40` | `queueThreshold_nominalModelOverload_stationaryRisk` (`FormalSLT/Applications/ControlledQueueInvariantRisk.lean:1461`) and `knownKernelReceipt_selectedRisk_lt_seven_hundredths` (`FormalSLT/Applications/ControlledQueueKnownKernelReceipt.lean:799`); `examples/CheckControlledQueueInvariantRisk.lean`; `examples/CheckControlledQueueKnownKernelReceipt.lean`; `known-kernel-receipt-v1.json` plus its generated manifest and independent verifier | **CHECKED DETERMINISTIC RECEIPT** for the known-kernel arithmetic; the trace and receipt bytes are replayable | **APPLICATION INSTANTIATION**. The `< 7/100` conclusion is conditional on both the aligned histogram and the theorem-produced event inequality. The receipt does not prove that the named retrospective trace is in the event, does not give histogram-conditioned `39/40` coverage, and is not an unknown-kernel result or prospective confirmation |
+
+### Prospective provenance boundary
+
+The canonical protocol is
+`applications/controlled_queue/structured-ope-protocol-v1.json`, SHA-256
+`070519615ba7cdaf0198a72a03ab6f691a7ff9b37c2eaa97a363d7fd4c3bf153`.
+At the code-freeze snapshot above:
+
+- the trace generator, independent trace verifier, receipt generator, and
+  independent receipt verifier have SHA-256 values
+  `5b2a2334c0181ef8ec1bb8cbf7626ceecac4fa1de28922abfd0a3ce4798452fa`,
+  `0b8177622c6c713ac14d8aa53d5a2cafa63a29e945cd5f8ef75d3ef9fcc18c34`,
+  `928d9a3e909f118274dd097c8735b7b94fe709298288f0b2395666f1eba6f01a`,
+  and `6918f8bb06c207eee9017871967fd4fc958561990bda51bbe544f1df05d3637f`,
+  respectively;
+- the six reserved prospective outputs are absent; and
+- no immutable OSF registration receipt, formula-selected beacon round, fresh
+  trace, fresh receipt, or result is bound or present in this snapshot. The
+  evidence status is therefore
+  **FROZEN PROTOCOL ONLY**.
+
+The future post-beacon gate is ordered: independently verify trace bytes and
+beacon provenance, independently verify receipt bytes and arithmetic, then
+elaborate the generated Lean certificate. Lean proves the
+histogram-to-endpoint mathematics; it does not verify SHA-256, the public
+timestamp, the drand signature, or raw binary provenance. The protocol also
+keeps the adaptive `21`-atom result separate from the fixed primary, requires
+all declared baselines and failures to be published unchanged, and forbids a
+secondary row from rescuing a failed primary.
+
+The retrospective trace and known-kernel receipt informed the frozen design.
+They are pilot evidence, not confirmatory evidence. The protocol makes no
+claim of cumulative value, control regret, policy optimization, validity
+outside the refresh family, or stationary certification for the two causal
+Beta predictors.
+
 ## Reviewer dossier required for each flagship
 
 A result is not promoted to a stronger literature or novelty classification
