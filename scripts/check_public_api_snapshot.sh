@@ -91,7 +91,7 @@ def bounded_section(text: str, start: str, end: str) -> str:
 
 
 def markdown_table_cells(line: str) -> list[str]:
-    """Split a one-line Markdown table row without splitting inline code."""
+    """Split a one-line Markdown table row, respecting escaped pipes."""
     stripped = line.strip()
     if not stripped.startswith("|") or not stripped.endswith("|"):
         raise ValueError("not a Markdown table row")
@@ -102,10 +102,18 @@ def markdown_table_cells(line: str) -> list[str]:
     index = 0
     while index < len(body):
         character = body[index]
-        if character == "\\" and code_delimiter_length == 0 and index + 1 < len(body):
-            current.extend((character, body[index + 1]))
-            index += 2
-            continue
+        if character == "\\":
+            slash_end = index + 1
+            while slash_end < len(body) and body[slash_end] == "\\":
+                slash_end += 1
+            if slash_end < len(body) and body[slash_end] == "|":
+                current.extend(body[index : slash_end + 1])
+                index = slash_end + 1
+                continue
+            if code_delimiter_length == 0 and index + 1 < len(body):
+                current.extend((character, body[index + 1]))
+                index += 2
+                continue
         if character == "`":
             run_end = index + 1
             while run_end < len(body) and body[run_end] == "`":
@@ -118,7 +126,9 @@ def markdown_table_cells(line: str) -> list[str]:
                 code_delimiter_length = 0
             index = run_end
             continue
-        if character == "|" and code_delimiter_length == 0:
+        if character == "|":
+            if code_delimiter_length != 0:
+                raise ValueError("unescaped pipe inside inline-code span")
             cells.append("".join(current).strip())
             current = []
         else:
@@ -271,7 +281,7 @@ for row_number, expected in enumerate(expected_classifications, start=1):
 join_block = bounded_section(
     literature,
     "### Candidate-v0.2 endpoint audit join",
-    "#### Mathlib profiles",
+    "#### Prior-formalization profiles",
 )
 join_rows: list[tuple[str, str, str, str]] = []
 for line in join_block.splitlines():
@@ -324,6 +334,73 @@ for number, assumptions, _mathlib, _paper in join_rows:
             "assumptions/constants cell"
         )
 
+expected_formalization_profiles = [
+    "F2", "F2", "F2", "F2", "F2", "F1", "F2", "F2", "F2", "F2",
+    "F2", "F2", "F2", "F2", "F2", "F2", "F1", "F2", "F1",
+]
+formalization_profiles_block = bounded_section(
+    literature,
+    "#### Prior-formalization profiles",
+    "#### Mathlib profiles",
+)
+formalization_profile_definitions = re.findall(
+    r"^\s{0,3}- \*\*(F\d+)\s+—[^*]+\*\*:\s+\S.*$",
+    formalization_profiles_block,
+    re.MULTILINE,
+)
+formalization_profile_lines = re.findall(
+    r"^\s{0,3}- \*\*F\d+\s+—[^*]+\*\*.*$",
+    formalization_profiles_block,
+    re.MULTILINE,
+)
+if (
+    formalization_profile_definitions != ["F1", "F2"]
+    or len(formalization_profile_lines) != 2
+):
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md must define formalization profiles F1 and F2 once"
+    )
+
+formalization_rows: list[tuple[int, str]] = []
+for line in formalization_profiles_block.splitlines():
+    if not re.match(r"^\s{0,3}\|\s*\d+\s*\|", line):
+        continue
+    try:
+        cells = markdown_table_cells(line)
+    except ValueError as error:
+        raise SystemExit(
+            "ERROR: malformed formalization-profile row in docs/LITERATURE.md: "
+            f"{error}: {line}"
+        ) from error
+    if len(cells) != 2 or re.fullmatch(r"F[12]", cells[1]) is None:
+        raise SystemExit(
+            "ERROR: malformed formalization-profile row in docs/LITERATURE.md: " + line
+        )
+    formalization_rows.append((int(cells[0]), cells[1]))
+
+if [number for number, _profile in formalization_rows] != list(range(1, 20)):
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md formalization rows must be numbered 1 through 19"
+    )
+actual_formalization_profiles = [profile for _number, profile in formalization_rows]
+if actual_formalization_profiles != expected_formalization_profiles:
+    raise SystemExit(
+        "ERROR: docs/LITERATURE.md endpoint formalization-profile assignment drifted"
+    )
+for row_number, expected_profile in enumerate(expected_formalization_profiles, start=1):
+    prior_cell = endpoint_rows[row_number][5]
+    profile_match = re.match(r"^\*\*(F[12])\*\*\s+—\s+", prior_cell)
+    if profile_match is None or profile_match.group(1) != expected_profile:
+        raise SystemExit(
+            f"ERROR: docs/LITERATURE.md row {row_number} prior-formalization cell "
+            f"must start with **{expected_profile}**"
+        )
+    if "UNSWEPT" in prior_cell:
+        raise SystemExit(
+            f"ERROR: docs/LITERATURE.md row {row_number} retains an UNSWEPT "
+            "prior-formalization status"
+        )
+
 mathlib_profiles_block = bounded_section(
     literature,
     "#### Mathlib profiles",
@@ -371,7 +448,7 @@ if (
 # binds the reviewed source, boundary, assumption, profile-body, and nonclaim
 # text so a prose mutation cannot retain a misleading green provenance gate.
 expected_endpoint_provenance_sha256 = (
-    "8af86e1865a21176411c0c567c1cf9f119e33fc87fe9173d0eb169a441269483"
+    "91c42ba1cad70edd5cfc80a85fba7d2577872e58c7c00824c5f10513f0b14ada"
 )
 actual_endpoint_provenance_sha256 = hashlib.sha256(
     literature_block.encode("utf-8")
@@ -470,9 +547,9 @@ for path, expected_count in install_surfaces.items():
         )
 
 print(
-    "public API provenance passed: 19 exact endpoints and audit rows across "
-    "policy, literature, map, and checkers; install snippets and dependency "
-    "pins match"
+    "public API provenance passed: 19 exact endpoints, audit rows, and bounded "
+    "formalization profiles across policy, literature, map, and checkers; "
+    "install snippets and dependency pins match"
 )
 PY
 

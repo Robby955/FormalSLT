@@ -5,11 +5,15 @@ import FormalSLT
 
 Checks the VC-style ERM excess-risk tail and its main components.
 
-**Theorem.** For hypothesis class with VC dimension d, loss bounded by B,
-sample size n, tolerance ε ≥ 0:
+**Theorem.** For a finite hypothesis class whose loss and negated-loss
+effective classes satisfy the two supplied growth bounds at exponent `d`, with
+loss bounded by `B`, sample size `n`, and tolerance `ε ≥ 0`:
 
     P(excess risk of ERM ≥ 4B · √(2d · log(en/d) / n) + 2ε)
-      ≤ 2 · exp(-ε² n / (8B²))
+      ≤ 2 · exp(-ε² n / (2B²))
+
+A separate bridge may derive the growth premises from a VC-dimension bound;
+the checked theorem below does not assume such a certificate directly.
 -/
 
 open FormalSLT.VC.SampleComplexity
