@@ -33,7 +33,7 @@ the table lists their canonical implementation modules.
 | `FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Finite-state certificate for a supplied initial PMF, simultaneous over positive times, posteriors, and tilt atoms |
 | `FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily` | `FormalSLT.VC` | `VC.Dimension` | Sauer-Shelah binomial-sum bound for finite set families |
 | `FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective` | `FormalSLT.VC` | `VC.Rademacher` | Effective-class Massart bound |
-| `FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail` | `FormalSLT.VC` | `VC.SampleComplexity` | VC-style ERM excess-risk tail with sharp concentration term |
+| `FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail` | `FormalSLT.VC` | `VC.SampleComplexity` | Effective-growth ERM excess-risk tail with sharp concentration term; the binary zero-one bridge supplies the VC premise separately |
 
 ## Core definitions
 
@@ -158,11 +158,11 @@ the table lists their canonical implementation modules.
 | `uniformDeviation_highProb_finiteClass` | `Rademacher.UniformDeviation` | Two-sided finite-class uniform deviation with sharp one-sided tails |
 | `sauerShelah_polynomial_bound` | `VC.SauerShelah` | `sum_{k<=d} C(n,k) <= (en/d)^d` |
 | `empiricalRademacherComplexity_le_massart_effective` | `VC.Rademacher` | Effective-class Massart bound |
-| `vcRademacher_pointwise` | `VC.SampleComplexity` | `Rad <= B * sqrt(2d * log(en/d) / n)` |
-| `genGap_highProb_vcClass` | `VC.SampleComplexity` | VC-style one-sided genGap tail with sharp exponent |
-| `uniformDeviation_highProb_vcClass` | `VC.SampleComplexity` | VC-style two-sided uniform deviation with sharp one-sided tails |
-| `vc_erm_excessRisk_tail` | `VC.SampleComplexity` | VC-style ERM excess-risk tail with sharp concentration term |
-| `vc_erm_sample_complexity` | `VC.SampleComplexity` | Closed-form VC ERM sample-complexity theorem with explicit `72 * B^2` constant |
+| `vcRademacher_pointwise` | `VC.SampleComplexity` | Pointwise effective-growth bound `Rad <= B * sqrt(2d * log(en/d) / n)` |
+| `genGap_highProb_vcClass` | `VC.SampleComplexity` | Effective-growth one-sided genGap tail with sharp exponent |
+| `uniformDeviation_highProb_vcClass` | `VC.SampleComplexity` | Effective-growth two-sided uniform deviation with sharp one-sided tails |
+| `vc_erm_excessRisk_tail` | `VC.SampleComplexity` | Effective-growth ERM excess-risk tail with sharp concentration term |
+| `vc_erm_sample_complexity` | `VC.SampleComplexity` | Closed-form effective-growth ERM sample-complexity theorem with explicit `72 * B^2` constant |
 | `effectiveClass_zeroOneLoss_card_eq_binaryClassTrace` | `VC.BinaryVCBridge` | Effective 0-1 loss patterns equal binary traces |
 | `effectiveClass_zeroOneLoss_card_le_sauerShelah` | `VC.BinaryVCBridge` | Binary VC Sauer-Shelah corollary |
 
@@ -1587,7 +1587,7 @@ flowchart BT
     azuma["Azuma tail"]
     massart["Massart"]
     vc["Sauer-Shelah + binary VC bridge"]
-    erm["VC ERM excess-risk tail"]
+    erm["Effective-growth ERM excess-risk tail"]
     contraction["Finite contraction"]
     linear["Linear predictors"]
     finite_chain["Finite sub-Gaussian chaining"]

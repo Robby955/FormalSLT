@@ -38,6 +38,20 @@
       </div>
     </section>
 
+    <section class="reader-section" aria-labelledby="lean-install">
+      <h2 id="lean-install">Pin the dependency</h2>
+      <div class="reading">
+        <p>For the released v0.1 API:</p>
+        <pre><code>require «formal-slt» from git
+  "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"</code></pre>
+        <p>For the latest recorded exact-head hosted-CI checkpoint of the v0.2 candidate:</p>
+        <pre><code>require «formal-slt» from git
+  "https://github.com/Robby955/FormalSLT.git" @
+  "e3acdaf5687408c202e7557cded7158292cd83d1"</code></pre>
+        <div class="callout"><p><strong>The candidate is not a release.</strong> Until <code>v0.2.0</code> exists, use the exact tested commit above rather than a moving branch.</p></div>
+      </div>
+    </section>
+
     <section class="reader-section" aria-labelledby="lean-reuse">
       <h2 id="lean-reuse">Reuse discipline</h2>
       <div class="reading">

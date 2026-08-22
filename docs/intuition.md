@@ -204,38 +204,45 @@ behaviors on the sample*. Sauer-Shelah is what gives you a polynomial
 ceiling on that count, which makes `log(effective class)` grow like
 `d · log(en/d)` — the famous `O(d·log n)` rate for VC classes.
 
-## VC pointwise Rademacher — `Rad ≤ B·√(2d·log(en/d) / n)`
+## Effective-growth pointwise Rademacher — `Rad ≤ B·√(2d·log(en/d) / n)`
 
 **What it says.** The same Massart bound, but with `log|H|` replaced by
-`d·log(en/d)` via Sauer-Shelah. This is the canonical VC-dimension
-generalization bound: `O(√(d/n))` rate up to log factors.
+`d·log(en/d)` under a supplied Sauer-Shelah-shaped bound on the effective
+loss-pattern count. The binary zero-one bridge separately derives this premise
+from a trace VC-dimension certificate.
 
 **The shape.** This is *pointwise* (depends on the realized sample `S`)
-but the bound has no `S`-dependent constant — it holds for every sample
-in a class with VC dimension `d`. That uniformity is what distinguishes
-VC theory from finite-class theory.
+and assumes the growth bound for that sample. The expected and high-probability
+wrappers require it uniformly over samples. For binary zero-one classes, a
+uniform trace VC-dimension bound supplies exactly that uniform premise.
 
-## VC ERM excess risk tail — `P(excess risk ≥ 2B√(2d·log(en/d)/n) + ε) ≤ 2·exp(−ε²n / 2B²)`
+## Effective-growth ERM excess risk tail — `P(excess risk ≥ 4B√(2d·log(en/d)/n) + 2ε) ≤ 2·exp(−ε²n / 2B²)`
 
-**The capstone.** Under bounded loss, iid samples, finite VC dimension `d`,
-the ERM learner's excess risk over the best-in-class hypothesis is at
-most `2B√(2d·log(en/d)/n) + ε` with probability at least
-`1 − 2·exp(−ε²n / 2B²)`.
+**The capstone.** Under bounded loss, iid samples, and the two supplied
+binomial-sum growth bounds for the effective classes of the loss and its
+negation, an exact ERM learner's excess risk over a fixed in-class comparator is
+at most `4B√(2d·log(en/d)/n) + 2ε` with probability at least
+`1 − 2·exp(−ε²n / 2B²)`. The binary zero-one bridge separately derives those
+growth bounds from a VC-dimension certificate.
 
 **Reading off sample complexity.** Set the failure probability to `δ` and
 the excess risk slack to `ε_0`; solve to get `n ≳ (B²/ε_0²) · (d·log(1/ε_0)
-+ log(1/δ))`. This is the canonical VC sample-complexity rate.
++ log(1/δ))`. This is the canonical effective-growth rate and becomes the
+usual binary VC sample-complexity rate after applying the zero-one bridge.
 
 **Current boundaries.**
-- It is *not* a low-probability bound on a specific learner's true risk; it
-  is a bound on excess risk over the in-class optimum.
+- It is an excess-risk tail relative to the supplied in-class comparator, not
+  an absolute ceiling on the learner's true risk.
+- The public theorem assumes two effective-class growth bounds; it does not
+  take a VC-dimension premise directly.
 - The `2·exp` (not `exp`) reflects the union of the sharp upper and lower
   product-kernel tails in the two-sided uniform-deviation theorem.
 - Bounded loss is essential: unbounded loss requires moment or
   sub-Gaussian assumptions outside this theorem's signature.
 - iid is essential: the sharp exposure-martingale route assumes independent
   samples. The separate trajectory results use different targets and
-  assumptions; they do not upgrade this VC theorem to dependent data.
+  assumptions; they do not upgrade this effective-growth theorem to dependent
+  data.
 
 ## Binary VC bridge — `effectiveClass(0-1 loss).card = binaryClassTrace.card`
 
@@ -246,8 +253,8 @@ labelings hypotheses produce). This is a small bridge result that lets
 the VC machinery for 0-1 loss reuse the effective-class machinery built
 for general bounded loss.
 
-**Use in the proof.** Without this bridge, the VC sample-complexity
-results would have to be re-proved for the 0-1 case from scratch.
+**Use in the proof.** Without this bridge, the binary VC sample-complexity
+corollary would have to be re-proved for the 0-1 case from scratch.
 With it, a one-line corollary gives the classical PAC bound for binary
 classification.
 

@@ -158,9 +158,32 @@ if map_names != api_names:
         "ERROR: docs/theorem-map.md stable endpoint index differs from the public allowlist"
     )
 
+# The displayed Lake dependency must use the package name declared by
+# lakefile.lean. This catches install snippets that look plausible but cannot
+# resolve because Lake dependency names are exact.
+lakefile = Path("lakefile.lean").read_text(encoding="utf-8")
+package_match = re.search(r"^package\s+(\S+)\s+where\s*$", lakefile, re.MULTILINE)
+if package_match is None:
+    raise SystemExit("ERROR: could not read the package name from lakefile.lean")
+package_name = package_match.group(1)
+
+install_surfaces = {
+    "README.md": 2,
+    "docs/site/readers/lean/index.html": 2,
+}
+for path, expected_count in install_surfaces.items():
+    text = Path(path).read_text(encoding="utf-8")
+    dependency_names = re.findall(r"require\s+(\S+)\s+from\s+git", text)
+    if dependency_names != [package_name] * expected_count:
+        raise SystemExit(
+            f"ERROR: {path} must contain {expected_count} FormalSLT install "
+            f"snippets using the Lake package name {package_name!r}; "
+            f"found {dependency_names!r}"
+        )
+
 print(
     "public API provenance passed: 19 exact endpoints across policy, "
-    "literature, map, and checkers"
+    "literature, map, and checkers; install snippets match the Lake package"
 )
 PY
 

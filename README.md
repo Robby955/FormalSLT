@@ -8,7 +8,7 @@
 
 [![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C217-brightgreen.svg)](#verification)
 [![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-290-blue.svg)](#use-the-library)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-153%2C453-brightgreen.svg)](#verification)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-153%2C463-brightgreen.svg)](#verification)
 [![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#verification)
 [![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#verification)
 
@@ -146,7 +146,7 @@ are not part of that compatibility promise.
 For the released v0.1 API:
 
 ```lean
-require FormalSLT from git
+require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 ```
 
@@ -156,11 +156,12 @@ checkpoint:
 ```lean
 require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @
-  "1aca197cbcf1c2f483c212db508d1d488b700b40"
+  "e3acdaf5687408c202e7557cded7158292cd83d1"
 ```
 
-That SHA is a candidate commit, not a release tag or DOI-backed artifact. Until
-`v0.2.0` exists, pin an exact tested candidate commit rather than moving `main`.
+That SHA is the latest recorded exact-head hosted-CI checkpoint, not a release
+tag or DOI-backed artifact. Until `v0.2.0` exists, pin an exact tested candidate
+commit rather than moving `main`.
 
 ```bash
 lake exe cache get

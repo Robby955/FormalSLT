@@ -657,7 +657,7 @@ This is a discovery index, not an API compatibility promise.
 | Rademacher | `expected_genGap_le_two_expected_empiricalRademacherComplexity` | theorem | `FormalSLT/Rademacher/Symmetrization.lean:197` | E[genGap] <= 2 * E[Rad] |
 | Rademacher | `genGap_highProb_finiteClass` | theorem | `FormalSLT/Rademacher/FiniteClassHighProb.lean:93` | Massart plus sharp high-probability Rademacher |
 | Rademacher | `genGap_highProb_rademacher` | theorem | `FormalSLT/Rademacher/HighProbability.lean:95` | P(genGap >= 2 * E[Rad] + ε) <= exp(-ε² n / (2B²)) |
-| tail bound, VC dimension | `genGap_highProb_vcClass` | theorem | `FormalSLT/VC/SampleComplexity.lean:236` | VC-style one-sided genGap tail with sharp exponent |
+| tail bound, VC dimension | `genGap_highProb_vcClass` | theorem | `FormalSLT/VC/SampleComplexity.lean:241` | Effective-growth one-sided genGap tail with sharp exponent |
 | Azuma, tail bound | `genGap_tail_bound_azuma_explicit` | theorem | `FormalSLT/Azuma/GenGapTail.lean:520` | P(genGap - E[genGap] >= ε) <= exp(-ε² n / (8B²)) |
 | Azuma, tail bound | `genGap_tail_bound_sharp_explicit` | theorem | `FormalSLT/Azuma/GenGapTail.lean:595` | P(genGap - E[genGap] >= ε) <= exp(-ε² n / (2B²)) |
 | Azuma, McDiarmid, tail bound | `hasBoundedDifferences_tail_sharp` | theorem | `FormalSLT/Azuma/GenGapTail.lean:416` | P(f - E[f] >= ε) <= exp(-2ε² / sum_k c_k²) |
@@ -671,10 +671,10 @@ This is a discovery index, not an API compatibility promise.
 | McDiarmid, tail bound | `mcdiarmid_twoSided_of_hasBoundedDifferences_sharp_hetero` | theorem | `FormalSLT/Concentration/HeterogeneousMcDiarmid.lean:81` | Two-sided heterogeneous-law product tail P(\|f - E[f]\| >= ε) <= 2 exp(-2ε² / sum_k c_k²) |
 | VC dimension | `sauerShelah_polynomial_bound` | theorem | `FormalSLT/VC/SauerShelah.lean:44` | sum_{k<=d} C(n,k) <= (en/d)^d |
 | Rademacher, Glivenko-Cantelli | `uniformDeviation_highProb_finiteClass` | theorem | `FormalSLT/Rademacher/UniformDeviation.lean:99` | Two-sided finite-class uniform deviation with sharp one-sided tails |
-| VC dimension, Glivenko-Cantelli | `uniformDeviation_highProb_vcClass` | theorem | `FormalSLT/VC/SampleComplexity.lean:282` | VC-style two-sided uniform deviation with sharp one-sided tails |
-| Rademacher, VC dimension | `vcRademacher_pointwise` | theorem | `FormalSLT/VC/SampleComplexity.lean:137` | Rad <= B * sqrt(2d * log(en/d) / n) |
-| tail bound, VC dimension, ERM, risk | `vc_erm_excessRisk_tail` | theorem | `FormalSLT/VC/SampleComplexity.lean:352` | VC-style ERM excess-risk tail with sharp concentration term |
-| VC dimension, ERM | `vc_erm_sample_complexity` | theorem | `FormalSLT/VC/SampleComplexity.lean:426` | Closed-form VC ERM sample-complexity theorem with explicit 72 * B^2 constant |
+| VC dimension, Glivenko-Cantelli | `uniformDeviation_highProb_vcClass` | theorem | `FormalSLT/VC/SampleComplexity.lean:288` | Effective-growth two-sided uniform deviation with sharp one-sided tails |
+| Rademacher, VC dimension | `vcRademacher_pointwise` | theorem | `FormalSLT/VC/SampleComplexity.lean:140` | Pointwise effective-growth bound Rad <= B * sqrt(2d * log(en/d) / n) |
+| tail bound, VC dimension, ERM, risk | `vc_erm_excessRisk_tail` | theorem | `FormalSLT/VC/SampleComplexity.lean:360` | Effective-growth ERM excess-risk tail with sharp concentration term |
+| VC dimension, ERM | `vc_erm_sample_complexity` | theorem | `FormalSLT/VC/SampleComplexity.lean:436` | Closed-form effective-growth ERM sample-complexity theorem with explicit 72 * B^2 constant |
 | Bernstein, PAC-Bayes | `continuousEmpiricalBernsteinReverseSqrtFailure_mass_le_delta` | theorem | `FormalSLT/PACBayes/ContinuousEmpiricalBernsteinReverseSqrt.lean:286` | Bounds the canonical continuous-prior dyadic-scale reverse-epoch event by delta |
 | Bernstein, PAC-Bayes, risk, likelihood / MLE | `continuousEmpiricalBernsteinReverseSqrt_posteriorRisk_prefix_lt_of_not_mem` | theorem | `FormalSLT/PACBayes/ContinuousEmpiricalBernsteinReverseSqrt.lean:354` | Gives the closed-form 5/4, 5/2 empirical-Bernstein bound at every prefix for every absolutely continuous posterior with integrable log-likelihood ratio |
 | Bernstein, PAC-Bayes, KL divergence | `continuousInfiniteEmpiricalBernsteinComplexity` | definition | `FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean:43` | Measure-KL complexity with the telescoping dyadic-epoch confidence penalty at sample size n |

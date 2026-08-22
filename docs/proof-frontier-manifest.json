@@ -103,8 +103,8 @@
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
     "example_lean_files": 234,
-    "library_and_example_lean_lines": 153453,
-    "library_lean_lines": 123319,
+    "library_and_example_lean_lines": 153463,
+    "library_lean_lines": 123329,
     "library_modules": 290,
     "theorem_map_entries": 1098
   },
@@ -754,31 +754,31 @@
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "vcRademacher_pointwise",
-          "summary": "Rad <= B * sqrt(2d * log(en/d) / n)"
+          "summary": "Pointwise effective-growth bound Rad <= B * sqrt(2d * log(en/d) / n)"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "genGap_highProb_vcClass",
-          "summary": "VC-style one-sided genGap tail with sharp exponent"
+          "summary": "Effective-growth one-sided genGap tail with sharp exponent"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "uniformDeviation_highProb_vcClass",
-          "summary": "VC-style two-sided uniform deviation with sharp one-sided tails"
+          "summary": "Effective-growth two-sided uniform deviation with sharp one-sided tails"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "vc_erm_excessRisk_tail",
-          "summary": "VC-style ERM excess-risk tail with sharp concentration term"
+          "summary": "Effective-growth ERM excess-risk tail with sharp concentration term"
         },
         {
           "kind": "theorem",
           "module": "VC.SampleComplexity",
           "name": "vc_erm_sample_complexity",
-          "summary": "Closed-form VC ERM sample-complexity theorem with explicit 72 * B^2 constant"
+          "summary": "Closed-form effective-growth ERM sample-complexity theorem with explicit 72 * B^2 constant"
         },
         {
           "kind": "theorem",
