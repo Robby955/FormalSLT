@@ -171,6 +171,7 @@ ROW_FIELDS = {
 NONCLAIMS = [
     "not proof that the named path belongs to a theorem-produced good event",
     "not Lean verification of raw bytes, SHA-256, a drand signature, or an OSF timestamp",
+    "not a confidence certificate for the oracle true-kernel PLANNED_NOT_CHECKED row",
     "not a confidence certificate for the fixed-range PLANNED_NOT_CHECKED row",
     "not stationary target-policy certification for the two causal Beta predictors",
     "not a family-membership test or a result outside the frozen refresh family",
@@ -1402,6 +1403,36 @@ def _vacuity(total: Fraction, *, primary: bool = False, planned: bool = False, p
     }
 
 
+def _validate_planned_reporting_rows(rows: Sequence[dict[str, Any]]) -> None:
+    if len(rows) != len(ROW_ORDER):
+        _fail("receipt must contain exactly seven reporting rows")
+    for index, label, event_label in (
+        (2, "oracle", "oracle_true_kernel_planned_arithmetic"),
+        (5, "fixed-range", "fixed_range_planned_arithmetic"),
+    ):
+        row = _object(rows[index], f"{label} reporting row")
+        _exact(row.get("endpoint_id"), ROW_ORDER[index], f"{label} endpoint")
+        expected_event = _event(
+            event_label,
+            None,
+            "PLANNED_ARITHMETIC_ONLY",
+            checked_outer_mass=None,
+            planned_allocation=Fraction(1, 20),
+        )
+        _exact(
+            row.get("theorem_or_event"), expected_event, f"{label} theorem or event"
+        )
+        _exact(
+            row.get("certification_status"),
+            "PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE",
+            f"{label} certification status",
+        )
+        vacuity = _object(
+            row.get("vacuity_and_threshold_status"), f"{label} vacuity status"
+        )
+        _exact(vacuity.get("status"), "PLANNED_NOT_CHECKED", f"{label} status")
+
+
 def _report_row(
     *,
     endpoint_id: str,
@@ -1617,21 +1648,21 @@ def build_receipt(
         _report_row(
             endpoint_id=ROW_ORDER[2],
             theorem_or_event=_event(
-                "oracle_true_kernel_event",
-                "exists_controlledQueueKnownKernelOPE_event",
-                "SEPARATE_CHECKED_TRUE_KERNEL_EVENT",
-                checked_outer_mass=Fraction(1, 20),
-                planned_allocation=None,
+                "oracle_true_kernel_planned_arithmetic",
+                None,
+                "PLANNED_ARITHMETIC_ONLY",
+                checked_outer_mass=None,
+                planned_allocation=Fraction(1, 20),
             ),
-            certification_status=checked_status,
+            certification_status="PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE",
             empirical=oracle_score["empirical_corrected_score"],
             risk=oracle_risk,
             radius=Fraction(0),
             residual=oracle_residual,
             total=oracle_total,
             confidence={"delta_risk": "1/20", "delta_total": "1/20", "risk_tilt": "1/16"},
-            settings={"true_gamma": "149/200", "depth": 12, "policy_index": 1, "predictor_index": 2, "precomputed_before_trace_decode": True},
-            vacuity=_vacuity(oracle_total),
+            settings={"true_gamma": "149/200", "depth": 12, "policy_index": 1, "predictor_index": 2, "precomputed_before_trace_decode": True, "oracle_arithmetic_only": True},
+            vacuity=_vacuity(oracle_total, planned=True),
         ),
         _report_row(
             endpoint_id=ROW_ORDER[3],
@@ -1687,6 +1718,7 @@ def build_receipt(
         ),
     ]
     _exact([row["endpoint_id"] for row in rows], list(ROW_ORDER), "receipt row order")
+    _validate_planned_reporting_rows(rows)
 
     trace_input_prefix = [dict(row) for row in trace_manifest["inputs"]]
     receipt_only_inputs = [
@@ -1989,8 +2021,8 @@ This generated arithmetic module is rendered byte-for-byte by
 `scripts/generate_controlled_queue_prospective_receipt.py`.  It contains the
 frozen physical histogram and exact rational sufficient statistics.  It does
 not prove the source hashes, the beacon signature, registration chronology,
-good-event membership, or a confidence theorem.  The fixed-range row remains
-`PLANNED_NOT_CHECKED`.
+good-event membership, or a confidence theorem.  The oracle true-kernel and
+fixed-range rows remain `PLANNED_NOT_CHECKED`.
 -/
 
 namespace FormalSLT.Applications.ControlledQueueProspectiveStructuredOPEData
@@ -2057,6 +2089,9 @@ def prospectiveAdaptiveSelectedIndices : List Nat :=
 
 def prospectiveEndpointIDs : List String := {_render_list(row_ids)}
 def prospectiveEndpointUpperBounds : List ℚ := {_render_list(row_totals)}
+
+def oracleTrueKernelCertificationStatus : String :=
+  "PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE"
 
 def fixedRangeCertificationStatus : String :=
   "PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE"

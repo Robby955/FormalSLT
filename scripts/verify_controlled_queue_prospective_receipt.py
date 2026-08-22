@@ -212,6 +212,7 @@ ROW_FIELDS = {
 NONCLAIMS = [
     "not proof that the named path belongs to a theorem-produced good event",
     "not Lean verification of raw bytes, SHA-256, a drand signature, or an OSF timestamp",
+    "not a confidence certificate for the oracle true-kernel PLANNED_NOT_CHECKED row",
     "not a confidence certificate for the fixed-range PLANNED_NOT_CHECKED row",
     "not stationary target-policy certification for the two causal Beta predictors",
     "not a family-membership test or a result outside the frozen refresh family",
@@ -1695,6 +1696,37 @@ def _vacuity(
     }
 
 
+def _validate_planned_reporting_rows(rows: Sequence[dict[str, Any]]) -> None:
+    if len(rows) != len(ROW_ORDER):
+        _fail("receipt must contain exactly seven reporting rows")
+    for index, label, event_label in (
+        (2, "oracle", "oracle_true_kernel_planned_arithmetic"),
+        (5, "fixed-range", "fixed_range_planned_arithmetic"),
+    ):
+        row = _object(rows[index], f"{label} reporting row")
+        _exact(row.get("endpoint_id"), ROW_ORDER[index], f"{label} endpoint")
+        _exact(
+            row.get("theorem_or_event"),
+            _event(
+                event_label,
+                None,
+                "PLANNED_ARITHMETIC_ONLY",
+                checked_outer_mass=None,
+                planned_allocation=Fraction(1, 20),
+            ),
+            f"{label} theorem or event",
+        )
+        _exact(
+            row.get("certification_status"),
+            "PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE",
+            f"{label} certification status",
+        )
+        vacuity = _object(
+            row.get("vacuity_and_threshold_status"), f"{label} vacuity status"
+        )
+        _exact(vacuity.get("status"), "PLANNED_NOT_CHECKED", f"{label} status")
+
+
 def _report_row(
     *,
     endpoint_id: str,
@@ -1832,21 +1864,21 @@ def build_expected_receipt(
         _report_row(
             endpoint_id=ROW_ORDER[2],
             theorem_or_event=_event(
-                "oracle_true_kernel_event",
-                "exists_controlledQueueKnownKernelOPE_event",
-                "SEPARATE_CHECKED_TRUE_KERNEL_EVENT",
-                checked_outer_mass=Fraction(1, 20),
-                planned_allocation=None,
+                "oracle_true_kernel_planned_arithmetic",
+                None,
+                "PLANNED_ARITHMETIC_ONLY",
+                checked_outer_mass=None,
+                planned_allocation=Fraction(1, 20),
             ),
-            certification_status=checked_status,
+            certification_status="PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE",
             empirical=oracle_score["empirical_corrected_score"],
             risk=stats["oracle"]["risk"],
             radius=Fraction(0),
             residual=stats["oracle"]["residual"],
             total=stats["oracle"]["total"],
             confidence={"delta_risk": "1/20", "delta_total": "1/20", "risk_tilt": "1/16"},
-            settings={"true_gamma": "149/200", "depth": 12, "policy_index": 1, "predictor_index": 2, "precomputed_before_trace_decode": True},
-            vacuity=_vacuity(stats["oracle"]["total"]),
+            settings={"true_gamma": "149/200", "depth": 12, "policy_index": 1, "predictor_index": 2, "precomputed_before_trace_decode": True, "oracle_arithmetic_only": True},
+            vacuity=_vacuity(stats["oracle"]["total"], planned=True),
         ),
         _report_row(
             endpoint_id=ROW_ORDER[3],
@@ -1926,8 +1958,7 @@ def build_expected_receipt(
         ),
     ]
     _exact([row["endpoint_id"] for row in rows], list(ROW_ORDER), "receipt reporting row order")
-    if "NOT_A_CONFIDENCE_CERTIFICATE" not in rows[5]["certification_status"]:
-        _fail("fixed-range row was mislabeled as a confidence certificate")
+    _validate_planned_reporting_rows(rows)
 
     adaptive_stats = [
         {
@@ -2246,8 +2277,8 @@ This generated arithmetic module is rendered byte-for-byte by
 `scripts/generate_controlled_queue_prospective_receipt.py`.  It contains the
 frozen physical histogram and exact rational sufficient statistics.  It does
 not prove the source hashes, the beacon signature, registration chronology,
-good-event membership, or a confidence theorem.  The fixed-range row remains
-`PLANNED_NOT_CHECKED`.
+good-event membership, or a confidence theorem.  The oracle true-kernel and
+fixed-range rows remain `PLANNED_NOT_CHECKED`.
 -/
 
 namespace FormalSLT.Applications.ControlledQueueProspectiveStructuredOPEData
@@ -2314,6 +2345,9 @@ def prospectiveAdaptiveSelectedIndices : List Nat :=
 
 def prospectiveEndpointIDs : List String := {_render_list(row_ids)}
 def prospectiveEndpointUpperBounds : List ℚ := {_render_list(row_totals)}
+
+def oracleTrueKernelCertificationStatus : String :=
+  "PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE"
 
 def fixedRangeCertificationStatus : String :=
   "PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE"
@@ -2568,12 +2602,14 @@ def _validate_lean_contract(rendered: bytes) -> None:
         b"prospectiveStateCertificate_23",
         b"private noncomputable def prospectiveActualScoreRow",
         b"private structure ProspectiveStateSubtotalCertificate",
+        b"def oracleTrueKernelCertificationStatus : String :=",
+        b"def fixedRangeCertificationStatus : String :=",
         b"#print axioms FormalSLT.Applications.ControlledQueueProspectiveStructuredOPEData.prospectiveSharpStructuredEndpoint_le",
     )
     if any(fragment not in rendered for fragment in required):
         _fail("generated Lean lacks a required conditional histogram certificate")
-    if b"PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE" not in rendered:
-        _fail("generated Lean relabeled the fixed-range arithmetic row")
+    if rendered.count(b"PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE") < 2:
+        _fail("generated Lean relabeled a planned arithmetic row")
 
 
 def _path_identity(path: Path) -> str:
@@ -2768,11 +2804,7 @@ def verify_paths(
     receipt_raw = _read(receipt_path, "prospective receipt")
     actual_receipt = parse_canonical_object(receipt_raw, "prospective receipt")
     rows = _array(actual_receipt.get("reporting_rows"), "receipt reporting rows")
-    if len(rows) != 7:
-        _fail("receipt must contain exactly seven reporting rows")
-    fixed = _object(rows[5], "fixed-range reporting row")
-    if fixed.get("endpoint_id") != ROW_ORDER[5] or "NOT_A_CONFIDENCE_CERTIFICATE" not in _string(fixed.get("certification_status"), "fixed-range certification status"):
-        _fail("fixed-range arithmetic was relabeled as a confidence certificate")
+    _validate_planned_reporting_rows(rows)
     _exact(receipt_raw, expected_receipt_raw, "independently reconstructed receipt bytes")
 
     lean_raw = _read(lean_path, "generated Lean data")

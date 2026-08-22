@@ -291,6 +291,43 @@ def test_fixed_range_remains_planned_not_checked() -> None:
     assert generator.fixed_range_eta(Fraction(73, 96), 15, 20)["eta"] > 0
 
 
+def test_oracle_remains_planned_not_checked() -> None:
+    status = generator._vacuity(Fraction(1, 100), planned=True)
+    assert status["status"] == "PLANNED_NOT_CHECKED"
+    assert any("oracle true-kernel" in claim for claim in generator.NONCLAIMS)
+    rows: list[dict[str, Any]] = [{} for _ in generator.ROW_ORDER]
+    for index, event_label in (
+        (2, "oracle_true_kernel_planned_arithmetic"),
+        (5, "fixed_range_planned_arithmetic"),
+    ):
+        rows[index] = generator._report_row(
+            endpoint_id=generator.ROW_ORDER[index],
+            theorem_or_event=generator._event(
+                event_label,
+                None,
+                "PLANNED_ARITHMETIC_ONLY",
+                checked_outer_mass=None,
+                planned_allocation=Fraction(1, 20),
+            ),
+            certification_status="PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE",
+            empirical=Fraction(0),
+            risk=Fraction(0),
+            radius=Fraction(0),
+            residual=Fraction(0),
+            total=Fraction(0),
+            confidence={},
+            settings={},
+            vacuity=generator._vacuity(Fraction(0), planned=True),
+        )
+    generator._validate_planned_reporting_rows(rows)
+    relabeled = deepcopy(rows)
+    relabeled[2]["theorem_or_event"]["lean_theorem"] = (
+        "exists_controlledQueueKnownKernelOPE_event"
+    )
+    with pytest.raises(generator.ProspectiveReceiptError, match="oracle theorem or event"):
+        generator._validate_planned_reporting_rows(relabeled)
+
+
 def test_renderer_freezes_bounded_conditional_proof_and_threshold_gate() -> None:
     below = generator.render_lean(_minimal_render_receipt(Fraction(1, 20)))
     above = generator.render_lean(_minimal_render_receipt(Fraction(1, 5)))
@@ -298,6 +335,9 @@ def test_renderer_freezes_bounded_conditional_proof_and_threshold_gate() -> None
     assert text.count("private theorem prospectiveCertificate_") == 48
     assert "sharpStructuredReceiptBoundary_evaluation_of_histogram" in text
     assert "prospectiveHistogramUpper_eq" in text
+    assert "def oracleTrueKernelCertificationStatus : String :=" in text
+    assert "def fixedRangeCertificationStatus : String :=" in text
+    assert text.count("PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE") >= 2
     assert "(hhist : HasPhysicalTransitionHistogram" in text
     assert "prospectiveSharpStructuredEndpoint_lt_one_tenth" in text
     assert "lt_of_le_of_lt (prospectiveSharpStructuredEndpoint_le path hhist)" in text

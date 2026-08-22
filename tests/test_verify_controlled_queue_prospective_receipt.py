@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import inspect
 import json
+from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
 
@@ -320,6 +321,40 @@ def test_fixed_range_arithmetic_is_distinct_and_must_remain_noncertificate() -> 
     assert row["vacuity_and_threshold_status"]["status"] == "PLANNED_NOT_CHECKED"
 
 
+def test_oracle_arithmetic_must_remain_noncertificate() -> None:
+    rows: list[dict[str, object]] = [{} for _ in verifier.ROW_ORDER]
+    for index, event_label in (
+        (2, "oracle_true_kernel_planned_arithmetic"),
+        (5, "fixed_range_planned_arithmetic"),
+    ):
+        rows[index] = verifier._report_row(
+            endpoint_id=verifier.ROW_ORDER[index],
+            theorem_or_event=verifier._event(
+                event_label,
+                None,
+                "PLANNED_ARITHMETIC_ONLY",
+                checked_outer_mass=None,
+                planned_allocation=Fraction(1, 20),
+            ),
+            certification_status="PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE",
+            empirical=Fraction(0),
+            risk=Fraction(0),
+            radius=Fraction(0),
+            residual=Fraction(0),
+            total=Fraction(0),
+            confidence={},
+            settings={},
+            vacuity=verifier._vacuity(Fraction(0), planned=True),
+        )
+    verifier._validate_planned_reporting_rows(rows)
+    relabeled = deepcopy(rows)
+    relabeled[2]["theorem_or_event"]["lean_theorem"] = (
+        "exists_controlledQueueKnownKernelOPE_event"
+    )
+    with pytest.raises(verifier.VerificationError, match="oracle theorem or event"):
+        verifier._validate_planned_reporting_rows(relabeled)
+
+
 def test_strict_rational_threshold_and_decimal_half_even() -> None:
     assert verifier._vacuity(Fraction(1, 10) - Fraction(1, 10**30), primary=True)[
         "status"
@@ -456,6 +491,9 @@ def test_expected_lean_is_conditional_and_has_bounded_row_certificates() -> None
     assert b"HasPhysicalTransitionHistogram" in raw
     assert b"sharpStructuredReceiptBoundary_evaluation_of_histogram" in raw
     assert b"prospectiveHistogramUpper_eq" in raw
+    assert b"def oracleTrueKernelCertificationStatus : String :=" in raw
+    assert b"def fixedRangeCertificationStatus : String :=" in raw
+    assert raw.count(b"PLANNED_NOT_CHECKED - NOT_A_CONFIDENCE_CERTIFICATE") >= 2
     assert b"theorem prospectiveSharpStructuredEndpoint_le" in raw
     assert b"prospectiveSharpStructuredEndpoint_lt_one_tenth" not in raw
 
