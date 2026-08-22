@@ -51,6 +51,7 @@ make downstream
 python3 -m pip install -r requirements-dev.txt
 make verify-controlled-queue-structured-ope-code-freeze
 make python-tests
+make verify-release-asset-packaging
 lake env lean examples/CheckShowcaseTheorems.lean
 lake env lean examples/CheckSubGammaExtractor.lean
 lake env lean examples/CheckUnitIntervalDudley.lean
@@ -88,6 +89,8 @@ Expected result:
   applications umbrella, while `FormalSLT.lean` reaches no
   `FormalSLT.Applications` module;
 - repository-tool Python self-tests pass;
+- deterministic release-asset packaging tests pass, including exact-commit,
+  staged-source-pin, unsafe-path, symlink, overwrite, and tamper refusals;
 - the controlled-queue pre-beacon gate checks the frozen protocol, all four
   prospective generator/verifier lanes, the generic Lean receipt reduction,
   and both generated-module branches without fetching a beacon or creating a
@@ -171,6 +174,26 @@ source-environment metadata; CI success is established by the hosted job, not
 by a field in the receipt. Neither a receipt nor a green workflow asserts that
 a GitHub Release or DOI exists.
 
+After the aggregate receipt check passes, the same workflow builds and stages
+doc-gen4 at the resolver commit. It then uploads one run-scoped Actions
+artifact containing exactly:
+
+- `formalslt-v0.2.0-source.tar.gz`, rebuilt from Git blobs at the resolved
+  commit with normalized archive metadata;
+- `formalslt-v0.2.0-docs.tar.gz`, containing the already-staged documentation
+  with source links pinned to that commit;
+- `formalslt-v0.2.0-release-assets.json`, binding the tag object, commit, tree,
+  toolchain, Mathlib revision, filenames, sizes, and SHA-256 digests; and
+- `SHA256SUMS`, covering the two archives and JSON manifest.
+
+The packager rejects a dirty or mismatched checkout, unsafe paths, symlinks,
+unresolved documentation source tokens, a wrong docs source pin, archive
+tampering, stale extra files, and an existing output directory. The Actions
+artifact is preparation for review: it does not create or modify a tag, GitHub
+Release, Pages deployment, archival deposit, or DOI. Download it only from the
+successful run for the exact release tag, rerun the packager's `verify` mode,
+and attach those same bytes to the draft GitHub Release before publication.
+
 ## Citation and publication ordering
 
 - If `CITATION.cff` in the tagged artifact must contain the v0.2 DOI, first
@@ -183,6 +206,11 @@ a GitHub Release or DOI exists.
   now-public DOI resolves to the same version, tag, commit, and tree.
 - Merely reserving a DOI is not a release and must not be described as minted,
   published, or resolving.
+- The versioned docs tarball is the immutable documentation artifact required
+  for v0.2.0. A permanent `/v0.2.0/` Pages route is useful for discovery but is
+  not a release gate when the GitHub Release and archival record link the
+  versioned docs archive and the deployed current docs are pinned to the same
+  commit.
 
 In a fresh checkout or worktree, run `lake exe cache get` before the first
 build. If `lake` is not on `PATH`, use `~/.elan/bin/lake`. A cold Mathlib

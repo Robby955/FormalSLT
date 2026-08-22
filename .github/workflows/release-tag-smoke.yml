@@ -65,6 +65,7 @@ jobs:
         with:
           ref: ${{ needs.resolve_tag.outputs.resolved_commit }}
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Install elan
         run: |
@@ -128,3 +129,83 @@ jobs:
             --repository-url "$FORMALSLT_REPOSITORY_URL" \
             --expected-tag-object "$FORMALSLT_EXPECTED_TAG_OBJECT" \
             --expected-commit "$FORMALSLT_EXPECTED_COMMIT"
+
+  package_release_assets:
+    name: package deterministic release assets
+    needs: [resolve_tag, verify_receipts]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      FORMALSLT_RELEASE_TAG: ${{ needs.resolve_tag.outputs.release_tag }}
+      FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
+      FORMALSLT_EXPECTED_TAG_OBJECT: ${{ needs.resolve_tag.outputs.tag_object }}
+      FORMALSLT_EXPECTED_COMMIT: ${{ needs.resolve_tag.outputs.resolved_commit }}
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ needs.resolve_tag.outputs.resolved_commit }}
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh \
+            | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Cache Lake packages
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.elan
+            .lake/packages
+          key: release-docs-lake-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lakefile.lean', 'lake-manifest.json') }}
+          restore-keys: release-docs-lake-${{ runner.os }}-
+
+      - name: Get Mathlib cache and resolve doc-gen4
+        run: lake -R -Kenv=dev exe cache get
+
+      - name: Build and stage exact-commit docs
+        run: |
+          lake -Kenv=dev build FormalSLT:docs
+          python3 scripts/stage_docs_site.py \
+            --doc-root .lake/build/doc \
+            --source-ref "$FORMALSLT_EXPECTED_COMMIT"
+
+      - name: Package and verify release assets
+        id: package
+        run: |
+          asset_dir="$RUNNER_TEMP/formalslt-${FORMALSLT_RELEASE_TAG}-release-assets"
+          python3 scripts/package_release_assets.py build \
+            --tag "$FORMALSLT_RELEASE_TAG" \
+            --repository-url "$FORMALSLT_REPOSITORY_URL" \
+            --expected-tag-object "$FORMALSLT_EXPECTED_TAG_OBJECT" \
+            --expected-commit "$FORMALSLT_EXPECTED_COMMIT" \
+            --doc-root .lake/build/doc \
+            --output-dir "$asset_dir"
+          python3 scripts/package_release_assets.py verify \
+            --tag "$FORMALSLT_RELEASE_TAG" \
+            --repository-url "$FORMALSLT_REPOSITORY_URL" \
+            --expected-tag-object "$FORMALSLT_EXPECTED_TAG_OBJECT" \
+            --expected-commit "$FORMALSLT_EXPECTED_COMMIT" \
+            --doc-root .lake/build/doc \
+            --output-dir "$asset_dir"
+          echo "path=$asset_dir" >> "$GITHUB_OUTPUT"
+
+      - name: Recheck remote tag identity before artifact upload
+        run: |
+          python3 scripts/release_tag_identity.py verify \
+            --tag "$FORMALSLT_RELEASE_TAG" \
+            --repository-url "$FORMALSLT_REPOSITORY_URL" \
+            --expected-tag-object "$FORMALSLT_EXPECTED_TAG_OBJECT" \
+            --expected-commit "$FORMALSLT_EXPECTED_COMMIT"
+
+      # This is a run-scoped Actions artifact only. Publication remains a
+      # separate, review-gated GitHub Release and archival-deposit step.
+      - name: Upload deterministic release-asset bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: formalslt-${{ env.FORMALSLT_RELEASE_TAG }}-release-assets
+          path: ${{ steps.package.outputs.path }}
+          if-no-files-found: error
+          retention-days: 90

@@ -56,6 +56,11 @@ downstream:
 python-tests:
 	python3 -m pytest -q tests
 
+# Exercise deterministic release packaging and its fail-closed input checks.
+# This target does not create a tag, release, deployment, or archival deposit.
+verify-release-asset-packaging:
+	python3 -m pytest -q tests/test_package_release_assets.py
+
 # Regenerate exact rational tables for the controlled-queue preprocessing slice.
 generate-controlled-queue-model:
 	python3 scripts/generate_controlled_queue_model.py
@@ -165,6 +170,7 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 		FormalSLT/Applications/ControlledQueueProspectiveStructuredOPEData.lean
 
 .PHONY: sweep build examples tutorials verify-random-refresh-load index api downstream python-tests \
+	verify-release-asset-packaging \
 	generate-controlled-queue-model check-controlled-queue-model verify-controlled-queue-model \
 	generate-controlled-queue-trace check-controlled-queue-trace verify-controlled-queue-trace \
 	generate-controlled-queue-known-kernel-receipt \
