@@ -1,0 +1,41 @@
+{
+  "artifact_status": "PUBLIC OSF CODE FREEZE BINDING",
+  "code_files": [
+    {
+      "bytes": 63440,
+      "path": "scripts/generate_controlled_queue_prospective_trace.py",
+      "role": "trace_generator",
+      "sha256": "409d3fa5302f6617d2ce1b9922f3721f8c1aec5ca30961a45486e597853b64e0"
+    },
+    {
+      "bytes": 49737,
+      "path": "scripts/verify_controlled_queue_prospective_trace.py",
+      "role": "trace_verifier",
+      "sha256": "a18a82f6b1836b55d569eb26a6775b23e8c7a1c239d85342e4a01aabfe470578"
+    },
+    {
+      "bytes": 117690,
+      "path": "scripts/generate_controlled_queue_prospective_receipt.py",
+      "role": "receipt_generator",
+      "sha256": "bf19db7a1dd2f10259ecf3ee63132719eae3b5a3abba92cf9a9cc94d45e81a5b"
+    },
+    {
+      "bytes": 132865,
+      "path": "scripts/verify_controlled_queue_prospective_receipt.py",
+      "role": "receipt_verifier",
+      "sha256": "da8983a73d15f5a5c55f72115419962890c88a45dcc38b3ee0ce7aa3919cee69"
+    }
+  ],
+  "code_freeze": {
+    "commit": "6c3f7de49d545be3e6bcfbb32f70b4aa86ef55de",
+    "tree": "12248252ab3dc2bcd549b61f2678d40618fb1c7e"
+  },
+  "protocol": {
+    "bytes": 26518,
+    "commit": "65d8d56245e3862821fce09bcf30b017f03d2baa",
+    "path": "applications/controlled_queue/structured-ope-protocol-v1.json",
+    "sha256": "070519615ba7cdaf0198a72a03ab6f691a7ff9b37c2eaa97a363d7fd4c3bf153",
+    "tree": "8dbe01780fd2cec94b8b954f6ef1c8c210afee53"
+  },
+  "schema_version": "controlled-queue-prospective-code-freeze-binding-v1"
+}

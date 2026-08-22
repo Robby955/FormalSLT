@@ -129,6 +129,11 @@ verify-controlled-queue-known-kernel-receipt: check-controlled-queue-known-kerne
 check-controlled-queue-structured-ope-protocol:
 	python3 scripts/check_controlled_queue_structured_ope_protocol.py
 
+# Verify the exact pre-registration OSF upload bytes. This check is offline and
+# does not register a project, fetch a beacon, or generate prospective data.
+check-controlled-queue-structured-ope-registration-binding:
+	python3 scripts/build_controlled_queue_code_freeze_binding.py --check
+
 # Run the fail-closed schema/binding/chronology mutation suite. This target
 # never fetches a beacon or generates a trace.
 verify-controlled-queue-structured-ope-protocol: check-controlled-queue-structured-ope-protocol
@@ -137,13 +142,17 @@ verify-controlled-queue-structured-ope-protocol: check-controlled-queue-structur
 # Verify the complete pre-beacon code freeze without fetching evidence or
 # creating any prospective output. The two Lean streams exercise both future
 # generated-data branches using local, already-observed arithmetic fixtures.
-verify-controlled-queue-structured-ope-code-freeze: verify-controlled-queue-structured-ope-protocol
+verify-controlled-queue-structured-ope-code-freeze: \
+	verify-controlled-queue-structured-ope-protocol \
+	check-controlled-queue-structured-ope-registration-binding
 	python3 -m py_compile \
+		scripts/build_controlled_queue_code_freeze_binding.py \
 		scripts/generate_controlled_queue_prospective_trace.py \
 		scripts/verify_controlled_queue_prospective_trace.py \
 		scripts/generate_controlled_queue_prospective_receipt.py \
 		scripts/verify_controlled_queue_prospective_receipt.py
 	python3 -m pytest -q \
+		tests/test_build_controlled_queue_code_freeze_binding.py \
 		tests/test_generate_controlled_queue_prospective_trace.py \
 		tests/test_verify_controlled_queue_prospective_trace.py \
 		tests/test_generate_controlled_queue_prospective_receipt.py \
@@ -177,6 +186,7 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	check-controlled-queue-known-kernel-receipt \
 	verify-controlled-queue-known-kernel-receipt \
 	check-controlled-queue-structured-ope-protocol \
+	check-controlled-queue-structured-ope-registration-binding \
 	verify-controlled-queue-structured-ope-protocol \
 	verify-controlled-queue-structured-ope-code-freeze \
 	verify-controlled-queue-structured-ope-prospective-receipt

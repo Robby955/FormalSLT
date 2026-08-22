@@ -88,6 +88,9 @@ of unknown-kernel target-policy OPE.
   version-one binding deliberately omits the not-yet-created final registration
   GUID; the saved registration response and archived-file metadata must agree on
   that GUID and bind the exact file bytes afterward.
+- `prospective/evidence/code-freeze-binding-v1.json`: the exact version-one
+  pre-registration upload bytes produced and checked offline by
+  `../../scripts/build_controlled_queue_code_freeze_binding.py`.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -131,11 +134,25 @@ bytes, independently reconstructs its arithmetic, and finally elaborates the
 generated Lean certificate in that order. It never generates or overwrites an
 artifact and is expected to fail before the future evidence exists.
 
-The OSF binding file must be uploaded exactly once before the draft is
-registered. It contains the protocol and code-freeze Git objects plus all four
-tool hashes, but no `registration_id`: OSF creates that identifier only at final
-registration. The post-registration API response and archived version-one file
-metadata provide the fail-closed identifier and byte cross-binding.
+The local pre-registration handoff is
+`prospective/evidence/code-freeze-binding-v1.json`, exactly `1,501` bytes with
+SHA-256
+`9dea4b601331717358bf0b9e8610384a4f7fbe71c332c563700ec91dd3a2064e`.
+It binds code-freeze commit
+`6c3f7de49d545be3e6bcfbb32f70b4aa86ef55de` and tree
+`12248252ab3dc2bcd549b61f2678d40618fb1c7e`; verify the bytes and pinned Git
+objects offline with
+`make check-controlled-queue-structured-ope-registration-binding`. This is a
+pre-registration handoff only: no OSF registration or registration ID exists,
+no beacon has been read, and no prospective trace, receipt, or result has been
+generated. Keep the pinned code-freeze commit durably reachable in Git before
+registration; do not squash it away or delete its only preserving ref, because
+the offline builder and verifiers reconstruct the four frozen tools from that
+exact object. The binding file must be uploaded exactly once before the draft
+is registered and deliberately contains no `registration_id`: OSF creates that
+identifier only at final registration. The post-registration API response and
+archived version-one file metadata provide the fail-closed identifier and byte
+cross-binding.
 
 The prospective protocol check validates canonical JSON, exact source hashes,
 analytic constants and allocations, future drand-beacon derivation, and the

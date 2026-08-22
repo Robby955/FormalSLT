@@ -225,22 +225,27 @@ At that historical pre-correction snapshot:
 #### Current locally checked code freeze
 
 The current locally checked code-freeze snapshot is commit
-`b91d6a37938cf1665430ea2a8cc45d8f67995f12` (tree
-`4b476c0c88165f871daa3f5a4094591ef0e52f1e`). It retains the canonical
+`6c3f7de49d545be3e6bcfbb32f70b4aa86ef55de` (tree
+`12248252ab3dc2bcd549b61f2678d40618fb1c7e`). It retains the canonical
 protocol bytes identified above. At this snapshot:
 
 - `scripts/generate_controlled_queue_prospective_trace.py` and
   `scripts/verify_controlled_queue_prospective_trace.py` have SHA-256 values
-  `55d9d8b2b9dbe0e0bc8f21a5e6dc34ff7f18ff53b8cd134d2d1969b1d108e57b`
+  `409d3fa5302f6617d2ce1b9922f3721f8c1aec5ca30961a45486e597853b64e0`
   and
-  `48f127a75318c4a025e4adf1f18cd35631f52ead1ae376a7c85bdb358bbe7eca`,
+  `a18a82f6b1836b55d569eb26a6775b23e8c7a1c239d85342e4a01aabfe470578`,
   respectively;
 - `scripts/generate_controlled_queue_prospective_receipt.py` and
   `scripts/verify_controlled_queue_prospective_receipt.py` have SHA-256 values
-  `5d706fe929ea9683333989f8bfbb9210968a5b15d5456f185eb697e127220322`
+  `bf19db7a1dd2f10259ecf3ee63132719eae3b5a3abba92cf9a9cc94d45e81a5b`
   and
-  `88b49cd659371a1319aafac813379a226bb08ce534429210519fd1dd50375979`,
+  `da8983a73d15f5a5c55f72115419962890c88a45dcc38b3ee0ce7aa3919cee69`,
   respectively; and
+- the offline-built version-one pre-registration binding
+  `applications/controlled_queue/prospective/evidence/code-freeze-binding-v1.json`
+  is exactly `1,501` bytes with SHA-256
+  `9dea4b601331717358bf0b9e8610384a4f7fbe71c332c563700ec91dd3a2064e`,
+  binds the commit and tree above, and contains no `registration_id`; and
 - all six reserved prospective outputs remain absent.
 
 For this ledger, the `oracle_true_kernel_selected_h12_eb` and
@@ -248,9 +253,13 @@ For this ledger, the `oracle_true_kernel_selected_h12_eb` and
 **PLANNED_NOT_CHECKED** arithmetic-only noncertificates. They are not checked
 confidence certificates or theorem results.
 
-This block records only a local code and tool-identity check. It does not claim
-an immutable public registration, a formula-selected beacon round, a
-prospective execution, a prospective result, or a public release.
+This block records only a local pre-registration code, tool-identity, and
+binding-byte check. No OSF registration or registration ID exists, no beacon
+has been read, and no prospective trace, receipt, result, or public release is
+claimed. Commit `6c3f7de49d545be3e6bcfbb32f70b4aa86ef55de` must remain durably
+reachable in Git until the registration handoff is complete; squashing it away
+or deleting its only preserving ref would prevent exact-object reconstruction
+by the offline builder and verifiers.
 
 The future post-beacon gate is ordered: independently verify trace bytes and
 beacon provenance, independently verify receipt bytes and arithmetic, then
