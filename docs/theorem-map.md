@@ -1045,9 +1045,12 @@ failure budgets `1/40`. It has no fresh prospective trace or histogram, no
 named-path good-event membership theorem, and no checked numerical endpoint
 below the protocol threshold `< 0.10`. Its local protocol has not been
 publicly preregistered. The independent generator/verifier implementation and
-pre-beacon gate are checked locally, but the resulting code-freeze commit still
-must be immutably bound with the protocol before the future-beacon seed is
-read.
+pre-beacon gate are checked locally, but a corrected code-freeze commit still
+must be immutably bound with the protocol before the future-beacon seed is read.
+Its version-one binding contains no final OSF registration GUID; the completed
+registration response supplies that GUID, the archived-file metadata target
+must match it, and the metadata size and SHA-256 must match the exact binding
+bytes.
 
 ## Controlled-queue twelve-atom OPE catalog
 

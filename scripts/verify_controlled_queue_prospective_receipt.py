@@ -1240,12 +1240,11 @@ def _verify_osf_binding_file(value: dict[str, Any], registration_id: str, bindin
 
 
 def _validate_code_freeze_binding(
-    binding: dict[str, Any], registration_id: str, protocol_raw: bytes
+    binding: dict[str, Any], protocol_raw: bytes
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    _keys(binding, {"artifact_status", "schema_version", "registration_id", "protocol", "code_freeze", "code_files"}, "code-freeze binding")
+    _keys(binding, {"artifact_status", "schema_version", "protocol", "code_freeze", "code_files"}, "code-freeze binding")
     _exact(binding["artifact_status"], BINDING_STATUS, "binding status")
     _exact(binding["schema_version"], BINDING_SCHEMA, "binding schema")
-    _exact(binding["registration_id"], registration_id, "binding registration id")
     protocol = _object(binding["protocol"], "binding protocol")
     _keys(protocol, {"path", "bytes", "sha256", "commit", "tree"}, "binding protocol")
     _exact(protocol["path"], PROTOCOL_PATH, "binding protocol path")
@@ -1423,7 +1422,7 @@ def validate_trace_manifest(
     registration_id, date_registered, registration_second = _verify_osf_registration(registration_value)
     binding_raw = loaded["osf_registration_binding"][1]
     binding = parse_canonical_object(binding_raw, "OSF code-freeze binding")
-    code_freeze, code_rows = _validate_code_freeze_binding(binding, registration_id, protocol_raw)
+    code_freeze, code_rows = _validate_code_freeze_binding(binding, protocol_raw)
     binding_file = _object(
         parse_json(loaded["osf_registration_binding_file"][1], "OSF binding-file response"),
         "OSF binding-file response",

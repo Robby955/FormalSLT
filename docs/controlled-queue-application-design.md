@@ -220,7 +220,11 @@ inequality. The following application items remain **OPEN**.
    family. The local v1 protocol freezes the primary and comparisons, but the
    independent generator/verifier implementation and pre-beacon gate are
    completed and checked locally. One public OSF registration must still bind
-   the protocol and code-freeze commits
+   the protocol and code-freeze commits through a version-one archived binding.
+   The binding cannot contain the final registration GUID because OSF creates
+   it only when the editable draft is registered; the saved registration API
+   response supplies that GUID, the archived-file metadata target must match
+   it, and the metadata size and SHA-256 must match the exact binding bytes
    before the formula-selected future beacon round is read or a fresh trace is
    generated. The resulting trace, histogram, selected numerical `< 0.10`
    receipt, and every matched comparison must then be reported whether the
@@ -364,6 +368,12 @@ trace byte checking, independent BLS/PRNG replay, receipt byte checking,
 independent receipt arithmetic, and generated-Lean elaboration in that order.
 It performs no generation and therefore fails before those future artifacts
 exist.
+
+The pre-registration binding is uploaded once and contains no
+`registration_id`. After registration, both independent implementations require
+the registration API response and archived version-one file metadata target to
+name the same final registration, while the metadata hash binds the exact
+protocol/code-freeze receipt bytes.
 
 The second preprocessing slice adds `trace-v1.json`, a compact binary trace,
 exact empirical count tables, exact causal Beta prediction streams, a SHA-256

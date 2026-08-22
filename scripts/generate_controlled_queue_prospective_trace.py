@@ -1004,7 +1004,6 @@ def _run_git(arguments: Sequence[str], *, root: Path = ROOT) -> bytes:
 
 def validate_osf_binding(
     raw: bytes,
-    registration_id: str,
     protocol_raw: bytes,
     *,
     root: Path = ROOT,
@@ -1019,14 +1018,12 @@ def validate_osf_binding(
             "code_files",
             "code_freeze",
             "protocol",
-            "registration_id",
             "schema_version",
         },
         "OSF code-freeze binding",
     )
     _exact(binding["artifact_status"], BINDING_STATUS, "OSF binding artifact_status")
     _exact(binding["schema_version"], BINDING_SCHEMA, "OSF binding schema_version")
-    _exact(binding["registration_id"], registration_id, "OSF binding registration_id")
 
     protocol = _object(binding["protocol"], "OSF binding protocol")
     _keys(protocol, {"bytes", "commit", "path", "sha256", "tree"}, "OSF binding protocol")
@@ -1435,9 +1432,7 @@ def expected_artifacts(
     registration_raw = _read(osf_registration_path, "OSF registration response")
     registration = parse_osf_registration(registration_raw)
     binding_raw = _read(osf_binding_path, "OSF code-freeze binding")
-    binding, code_files = validate_osf_binding(
-        binding_raw, registration["id"], protocol_raw
-    )
+    binding, code_files = validate_osf_binding(binding_raw, protocol_raw)
     binding_file_metadata_raw = _read(
         osf_binding_file_path, "OSF binding-file metadata response"
     )

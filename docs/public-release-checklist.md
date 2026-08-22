@@ -120,6 +120,12 @@ in order. Report the outcome whether or not it crosses the frozen threshold.
 No local protocol or compiler fixture is a substitute for that post-beacon
 gate.
 
+The archived code-freeze binding must be version one and must not contain a
+final `registration_id`, because OSF creates that GUID only when it registers
+the editable draft. Save the completed registration API response and archived
+binding-file metadata independently; both verifiers require their registration
+IDs to agree and the metadata SHA-256 to bind the exact archived bytes.
+
 ## Post-tag installation check
 
 Do not run the release-tag smoke as a substitute for the pre-tag checks above.

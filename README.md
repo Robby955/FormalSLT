@@ -251,7 +251,10 @@ allocation. Its OPE composition now preallocates all `3 x 7` candidate--depth
 atoms and permits pathwise candidate, depth, risk-tilt, persistence-tilt,
 posterior, and time selection inside a single `19/20` outer-mass event.
 The prospective protocol, independent trace/receipt tooling, and generic Lean
-histogram reduction are frozen. The pre-beacon
+histogram reduction are frozen. The registration handoff uses a version-one
+binding that omits OSF's not-yet-created final GUID; the completed registration
+response supplies that GUID, the archived-file metadata target must match it,
+and the metadata size and SHA-256 must match the exact binding bytes. The pre-beacon
 `make verify-controlled-queue-structured-ope-code-freeze` gate checks them
 without fetching a beacon or creating a prospective artifact. No fresh
 prospective trace, receipt, or numerical result exists. After immutable public
@@ -271,7 +274,8 @@ For the released v0.1 API:
     require FormalSLT from git
       "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 
-For the exact controlled-queue code-freeze checkpoint:
+For the historical controlled-queue code-freeze checkpoint (before the OSF
+final-GUID cross-binding correction):
 
     require FormalSLT from git
       "https://github.com/Robby955/FormalSLT.git" @
@@ -297,14 +301,18 @@ namespace remains available but is not covered by the v0.2 compatibility
 promise.
 
 Until the `v0.2.0` release exists, pin an exact tested commit instead of moving
-`main`. For example, the banked controlled-queue code-freeze checkpoint can be
-consumed from another Lake package with:
+`main`. For example, the historical controlled-queue code-freeze checkpoint can
+be consumed from another Lake package with:
 
 ```lean
 require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @
   "5eae99f5f217edc7b44bd81dda6fde2a946effda"
 ```
+
+That checkpoint is suitable for theorem/application inspection, not for the
+irreversible OSF registration. Registration requires the later reviewed
+code-freeze checkpoint containing the final-GUID cross-binding correction.
 
 The compatibility commitment starts at the `v0.2.0` tag. The repository also
 contains a separate path-dependent consumer under `tests/downstream/`; it

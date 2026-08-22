@@ -17,13 +17,22 @@ protocol freezes an independent confirmatory experiment before its randomness
 is available.
 
 The protocol commit itself is not enough. Before generation, one public,
-immutable OSF registration must archive receipts for both this commit and the
-still-to-be-written generator/verifier code freeze. Its API `date_registered`
-field is converted to an integer Unix time exactly as specified in the JSON.
-That time determines one scheduled League of Entropy drand `quicknet` round at
-least one hour later. A fetch or signature-verification failure aborts the run;
-it never advances to another round. The chain identity, public key, round
-formula, seed derivation, and counter-stream test vector are frozen in the JSON.
+immutable OSF registration must archive a version-one binding for both this
+commit and the completed generator/verifier code freeze. The editable OSF draft
+does not know the final registration GUID: OSF creates the `Registration` only
+when the draft is registered. The archived binding therefore contains no
+`registration_id`. After registration, the independently saved registration API
+response and archived binding-file metadata must agree on the final GUID, and
+the metadata target and SHA-256 must prove that the exact version-one binding
+belongs to that registration. This ordering follows OSF's registration model,
+which creates the registered node and only then assigns it to the draft
+([pinned source](https://github.com/CenterForOpenScience/osf.io/blob/e2f47e984b5f0c42cf2f1668f44c2d7b14e96054/osf/models/registrations.py#L1452-L1471)).
+Its API `date_registered` field is converted to
+an integer Unix time exactly as specified in the JSON. That time determines one
+scheduled League of Entropy drand `quicknet` round at least one hour later. A
+fetch or signature-verification failure aborts the run; it never advances to
+another round. The chain identity, public key, round formula, seed derivation,
+and counter-stream test vector are frozen in the JSON.
 OSF describes registrations as permanent time-stamped versions, and drand's
 official API documents round retrieval and verification:
 <https://developer.osf.io/>,
@@ -79,8 +88,10 @@ only as descriptive dynamic encountered-risk sums and means.
 
 The generator, independent trace verifier, receipt generator, independent
 receipt verifier, Lean data renderer, and adversarial tests must also be frozen
-before the OSF registration that binds both commits. No fresh output listed in
-the JSON may exist during protocol or code-freeze validation.
+before the OSF registration that binds both commits. The binding is uploaded
+once before registration; it cannot be rewritten afterward to insert the final
+GUID. No fresh output listed in the JSON may exist during protocol or
+code-freeze validation.
 
 ## Reporting contract
 

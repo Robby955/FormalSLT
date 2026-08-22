@@ -390,7 +390,10 @@ locally, but the protocol has not been publicly preregistered and the
 independent generator/verifier implementation and pre-beacon gate are only
 checked locally. Until the protocol and completed code freeze are bound by one
 immutable public OSF registration, no future-beacon seed may be read and no
-prospective numerical claim is made.
+prospective numerical claim is made. The immutable version-one binding omits
+the final GUID that OSF creates at registration; the completed registration
+response supplies that GUID, the archived-file metadata target must match it,
+and the metadata size and SHA-256 must match the exact binding bytes.
 
 The prospective receipt verifier independently reconstructs the endpoint
 arithmetic and generated Lean bytes, but it is not a second beacon-signature or

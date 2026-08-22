@@ -47,6 +47,11 @@ v0.2 release, and no DOI is attached to them yet.
 - A hosted controlled-queue code-freeze gate that checks the prospective
   protocol, generator/verifier lanes, and generated-Lean branches without
   producing prospective evidence.
+- A fail-closed OSF handoff in which the immutable version-one code-freeze
+  binding omits the final registration GUID that OSF creates only at submission;
+  the completed registration response supplies that GUID, the archived-file
+  metadata target must match it, and the metadata size and SHA-256 must match
+  the exact binding bytes.
 - Resolver-bound exact-tag receipts recording the tag object, peeled commit,
   tree, Lean toolchain, pinned Mathlib revision, operating system, timestamp,
   and hosted run URL. Automatic runs bind the initial resolution to the tag

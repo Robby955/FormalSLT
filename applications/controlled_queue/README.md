@@ -84,7 +84,10 @@ of unknown-kernel target-policy OPE.
   fixed sharp primary, adaptive secondary, matched baselines, reporting rule,
   and required theorem/code-freeze work. It contains no fresh trace or result
   and is not publicly preregistered until one immutable OSF registration binds
-  both the protocol commit and the completed code-freeze commit.
+  both the protocol commit and the completed code-freeze commit. The archived
+  version-one binding deliberately omits the not-yet-created final registration
+  GUID; the saved registration response and archived-file metadata must agree on
+  that GUID and bind the exact file bytes afterward.
 - `../../FormalSLT/StochasticDynamics/StationaryTargetPolicyEmpiricalFiniteDepthOPE.lean`:
   generic same-path intersection of signed-residual target-policy OPE and
   augmented empirical-transition confidence for a fixed candidate, depth, and
@@ -127,6 +130,12 @@ beacon signature and every PRNG transition, checks the receipt generator's
 bytes, independently reconstructs its arithmetic, and finally elaborates the
 generated Lean certificate in that order. It never generates or overwrites an
 artifact and is expected to fail before the future evidence exists.
+
+The OSF binding file must be uploaded exactly once before the draft is
+registered. It contains the protocol and code-freeze Git objects plus all four
+tool hashes, but no `registration_id`: OSF creates that identifier only at final
+registration. The post-registration API response and archived version-one file
+metadata provide the fail-closed identifier and byte cross-binding.
 
 The prospective protocol check validates canonical JSON, exact source hashes,
 analytic constants and allocations, future drand-beacon derivation, and the

@@ -682,13 +682,11 @@ def _verify_round_response(value: dict[str, Any], expected_round: int) -> tuple[
 
 def _verify_binding(
     binding: dict[str, Any],
-    registration_id: str,
     protocol_raw: bytes,
 ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
-    _keys(binding, {"artifact_status", "schema_version", "registration_id", "protocol", "code_freeze", "code_files"}, "code-freeze binding")
+    _keys(binding, {"artifact_status", "schema_version", "protocol", "code_freeze", "code_files"}, "code-freeze binding")
     _exact(binding["artifact_status"], BINDING_STATUS, "binding status")
     _exact(binding["schema_version"], BINDING_SCHEMA, "binding schema")
-    _exact(binding["registration_id"], registration_id, "binding registration id")
     protocol = _object(binding["protocol"], "binding protocol")
     _keys(protocol, {"path", "bytes", "sha256", "commit", "tree"}, "binding protocol")
     _exact(protocol["path"], PROTOCOL_PATH, "binding protocol path")
@@ -1058,7 +1056,7 @@ def verify_paths(
     _verify_osf_binding_file_response(
         osf_binding_file, registration_id, raws["osf_registration_binding"]
     )
-    code_freeze, code_rows = _verify_binding(binding, registration_id, raws["protocol"])
+    code_freeze, code_rows = _verify_binding(binding, raws["protocol"])
     _verify_chain_info(chain_info)
     round_number, round_time = _formula_round(registration_second)
     signature, randomness = _verify_round_response(round_response, round_number)

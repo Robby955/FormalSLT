@@ -65,11 +65,12 @@ comparison into an exhaustive prior-art or priority search.
 
 ## Controlled-queue literature and provenance spine
 
-This is a bounded evidence map for code-freeze commit
+This is a bounded evidence map for the historical pre-correction checkpoint
 `5eae99f5f217edc7b44bd81dda6fde2a946effda` (tree
 `255c20fe5297c1adcc0a4ee3b9e3a308b311f48a`). It records the chain from the
 mathematical source families above to the controlled-queue application. It is
-not a novelty or priority search.
+registration-ineligible because it predates the fail-closed OSF final-GUID
+cross-binding correction. It is not a novelty or priority search.
 
 Two classifications are deliberately independent:
 
@@ -113,7 +114,7 @@ overlap, invariant-law, and Poisson assumptions.
 The canonical protocol is
 `applications/controlled_queue/structured-ope-protocol-v1.json`, SHA-256
 `070519615ba7cdaf0198a72a03ab6f691a7ff9b37c2eaa97a363d7fd4c3bf153`.
-At the code-freeze snapshot above:
+At that historical pre-correction snapshot:
 
 - the trace generator, independent trace verifier, receipt generator, and
   independent receipt verifier have SHA-256 values

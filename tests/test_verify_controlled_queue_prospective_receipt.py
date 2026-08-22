@@ -607,7 +607,6 @@ def full_receipt_fixture(tmp_path_factory: pytest.TempPathFactory) -> dict[str, 
     binding_value = {
         "artifact_status": verifier.BINDING_STATUS,
         "schema_version": verifier.BINDING_SCHEMA,
-        "registration_id": registration_id,
         "protocol": {
             "path": verifier.PROTOCOL_PATH,
             "bytes": len(protocol_raw),
@@ -900,3 +899,26 @@ def test_full_independent_fixture_verifies(
     result = _verify_full_fixture(full_receipt_fixture, monkeypatch)
     assert len(result["receipt_sha256"]) == 64
     assert Fraction(result["primary_upper"]) > 0
+
+
+def test_receipt_verifier_rejects_registration_id_inside_immutable_binding(
+    full_receipt_fixture: dict[str, object],
+) -> None:
+    paths = full_receipt_fixture["paths"]
+    binding = json.loads(paths["osf_binding"].read_bytes())
+    binding["registration_id"] = "abc12"
+    with pytest.raises(verifier.VerificationError, match="keys mismatch"):
+        verifier._validate_code_freeze_binding(
+            binding,
+            paths["protocol"].read_bytes(),
+        )
+
+
+def test_receipt_verifier_cross_binds_registration_response_and_file_target(
+    full_receipt_fixture: dict[str, object],
+) -> None:
+    paths = full_receipt_fixture["paths"]
+    metadata = json.loads(paths["osf_binding_file"].read_bytes())
+    binding_raw = paths["osf_binding"].read_bytes()
+    with pytest.raises(verifier.VerificationError, match="binding target data"):
+        verifier._verify_osf_binding_file(metadata, "other", binding_raw)

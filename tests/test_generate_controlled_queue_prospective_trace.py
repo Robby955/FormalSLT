@@ -153,7 +153,6 @@ def _fake_code_freeze(
             "sha256": hashlib.sha256(protocol_raw).hexdigest(),
             "tree": protocol_tree,
         },
-        "registration_id": "abc12",
         "schema_version": generator.BINDING_SCHEMA,
     }
     return binding, git_results
@@ -466,7 +465,6 @@ def test_canonical_osf_binding_proves_git_objects_and_all_four_code_files(
 
     parsed, code_files = generator.validate_osf_binding(
         raw,
-        "abc12",
         protocol_raw,
         root=tmp_path,
         git_runner=fake_git,
@@ -477,7 +475,6 @@ def test_canonical_osf_binding_proves_git_objects_and_all_four_code_files(
     with pytest.raises(generator.ProspectiveTraceError, match="canonical JSON"):
         generator.validate_osf_binding(
             raw + b"\n",
-            "abc12",
             protocol_raw,
             root=tmp_path,
             git_runner=fake_git,
@@ -488,7 +485,6 @@ def test_canonical_osf_binding_proves_git_objects_and_all_four_code_files(
     with pytest.raises(generator.ProspectiveTraceError, match="JSON booleans"):
         generator.validate_osf_binding(
             generator.canonical_json_bytes(boolean_binding),
-            "abc12",
             protocol_raw,
             root=tmp_path,
             git_runner=fake_git,
@@ -499,7 +495,6 @@ def test_canonical_osf_binding_proves_git_objects_and_all_four_code_files(
     with pytest.raises(generator.ProspectiveTraceError, match="code-freeze Git tree"):
         generator.validate_osf_binding(
             raw,
-            "abc12",
             protocol_raw,
             root=tmp_path,
             git_runner=lambda args: wrong_git[tuple(args)],
@@ -510,10 +505,25 @@ def test_canonical_osf_binding_proves_git_objects_and_all_four_code_files(
     with pytest.raises(generator.ProspectiveTraceError, match=f"{first_role}.bytes"):
         generator.validate_osf_binding(
             raw,
-            "abc12",
             protocol_raw,
             root=tmp_path,
             git_runner=fake_git,
+        )
+
+
+def test_binding_rejects_final_registration_id_before_osf_creates_it(
+    tmp_path: Path,
+) -> None:
+    protocol_raw = b'{"protocol":"frozen"}\n'
+    binding, git_results = _fake_code_freeze(tmp_path, protocol_raw)
+    binding["registration_id"] = "abc12"
+
+    with pytest.raises(generator.ProspectiveTraceError, match="keys mismatch"):
+        generator.validate_osf_binding(
+            generator.canonical_json_bytes(binding),
+            protocol_raw,
+            root=tmp_path,
+            git_runner=lambda args: git_results[tuple(args)],
         )
 
 

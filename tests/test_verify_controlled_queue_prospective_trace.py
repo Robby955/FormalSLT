@@ -193,7 +193,6 @@ def _build_fixture(directory: Path) -> dict[str, Any]:
     binding = {
         "artifact_status": "PUBLIC OSF CODE FREEZE BINDING",
         "schema_version": "controlled-queue-prospective-code-freeze-binding-v1",
-        "registration_id": TEST_REGISTRATION_ID,
         "protocol": {
             "path": verifier.PROTOCOL_PATH,
             "bytes": len(paths["protocol"].read_bytes()),
@@ -588,6 +587,49 @@ def test_osf_file_metadata_must_prove_registered_binding_bytes(
     fixture["paths"]["osf_registration_binding_file"].write_bytes(_canonical(metadata))
     _rewrite_manifest_file_binding(fixture, "osf_registration_binding_file")
     with pytest.raises(verifier.VerificationError, match="binding-file SHA-256"):
+        _verify(fixture)
+
+
+def test_osf_registration_response_and_archived_file_target_must_agree(
+    base_fixture: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fixture = _copy_fixture(base_fixture, tmp_path)
+    _patch_evidence(monkeypatch, fixture)
+    metadata = json.loads(
+        fixture["paths"]["osf_registration_binding_file"].read_bytes()
+    )
+    metadata["data"]["relationships"]["target"]["data"]["id"] = "other"
+    fixture["paths"]["osf_registration_binding_file"].write_bytes(
+        _canonical(metadata)
+    )
+    with pytest.raises(verifier.VerificationError, match="registration target"):
+        _verify(fixture)
+
+
+def test_immutable_binding_rejects_post_registration_id_field(
+    base_fixture: Path, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fixture = _copy_fixture(base_fixture, tmp_path)
+    _patch_evidence(monkeypatch, fixture)
+    binding = json.loads(
+        fixture["paths"]["osf_registration_binding"].read_bytes()
+    )
+    binding["registration_id"] = TEST_REGISTRATION_ID
+    binding_raw = _canonical(binding)
+    fixture["paths"]["osf_registration_binding"].write_bytes(binding_raw)
+    metadata = json.loads(
+        fixture["paths"]["osf_registration_binding_file"].read_bytes()
+    )
+    metadata["data"]["attributes"]["size"] = len(binding_raw)
+    metadata["data"]["attributes"]["extra"]["hashes"]["sha256"] = _sha(
+        binding_raw
+    )
+    fixture["paths"]["osf_registration_binding_file"].write_bytes(
+        _canonical(metadata)
+    )
+    _rewrite_manifest_file_binding(fixture, "osf_registration_binding")
+    _rewrite_manifest_file_binding(fixture, "osf_registration_binding_file")
+    with pytest.raises(verifier.VerificationError, match="keys mismatch"):
         _verify(fixture)
 
 
