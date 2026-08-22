@@ -1100,12 +1100,24 @@ def select_adaptive_endpoint(score_catalog: Sequence[dict[str, Any]], hits: int,
 def _git(*arguments: str) -> bytes:
     try:
         completed = subprocess.run(
-            ["git", "-C", str(ROOT), *arguments],
+            [
+                "/usr/bin/git",
+                "--no-replace-objects",
+                "--no-lazy-fetch",
+                "-C",
+                str(ROOT),
+                *arguments,
+            ],
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=False,
-            env={"PATH": "/usr/bin:/bin:/usr/local/bin", "GIT_TERMINAL_PROMPT": "0"},
+            env={
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_TERMINAL_PROMPT": "0",
+                "LC_ALL": "C",
+                "PATH": "/usr/bin:/bin",
+            },
         )
     except OSError as error:
         raise VerificationError(f"cannot execute Git object check: {error}") from error

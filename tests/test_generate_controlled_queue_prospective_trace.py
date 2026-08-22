@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import struct
+import subprocess
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Sequence
@@ -26,6 +27,57 @@ ROUND_42_SEED = (
 ROUND_42_COUNTER_ZERO = (
     "a746f391a82b4fdbcffcdae8e1769f475a663eddbec369976136950619a94017"
 )
+
+
+def test_git_queries_ignore_replacement_refs(tmp_path: Path) -> None:
+    repo = tmp_path / "git-proof"
+    repo.mkdir()
+    subprocess.run(["/usr/bin/git", "init", "-q", str(repo)], check=True)
+    subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "config", "user.name", "Fixture"],
+        check=True,
+    )
+    subprocess.run(
+        [
+            "/usr/bin/git",
+            "-C",
+            str(repo),
+            "config",
+            "user.email",
+            "fixture@example.invalid",
+        ],
+        check=True,
+    )
+    tracked = repo / "proof.txt"
+    original = b"original committed bytes\n"
+    tracked.write_bytes(original)
+    subprocess.run(["/usr/bin/git", "-C", str(repo), "add", "proof.txt"], check=True)
+    subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "commit", "-q", "-m", "original"],
+        check=True,
+    )
+    original_commit = generator._run_git(("rev-parse", "HEAD"), root=repo).strip()
+    tracked.write_bytes(b"replacement bytes\n")
+    subprocess.run(["/usr/bin/git", "-C", str(repo), "add", "proof.txt"], check=True)
+    subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "commit", "-q", "-m", "replacement"],
+        check=True,
+    )
+    replacement_commit = generator._run_git(("rev-parse", "HEAD"), root=repo).strip()
+    subprocess.run(
+        [
+            "/usr/bin/git",
+            "-C",
+            str(repo),
+            "replace",
+            original_commit.decode(),
+            replacement_commit.decode(),
+        ],
+        check=True,
+    )
+    assert generator._run_git(
+        ("show", f"{original_commit.decode()}:proof.txt"), root=repo
+    ) == original
 
 
 def _model() -> dict[str, Any]:

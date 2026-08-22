@@ -748,6 +748,21 @@ def test_git_object_proof_checks_tree_committed_and_current_bytes(
         capture_output=True,
         text=True,
     ).stdout.strip()
+    tracked.write_bytes(b"replacement committed bytes\n")
+    subprocess.run(["git", "-C", str(repo), "add", "proof.txt"], check=True)
+    subprocess.run(
+        ["git", "-C", str(repo), "commit", "-q", "-m", "replacement"],
+        check=True,
+    )
+    replacement = subprocess.run(
+        ["git", "-C", str(repo), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    subprocess.run(
+        ["git", "-C", str(repo), "replace", commit, replacement], check=True
+    )
     monkeypatch.setattr(verifier, "ROOT", repo)
     verifier._verify_git_tree(commit, tree, "fixture")
     verifier._verify_git_ancestor(commit, commit)

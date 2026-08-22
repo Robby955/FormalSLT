@@ -359,12 +359,25 @@ def _read(path: Path, where: str) -> bytes:
 def _git_show(commit: str, path_text: str) -> bytes:
     try:
         completed = subprocess.run(
-            ["git", "-C", str(ROOT), "show", f"{commit}:{path_text}"],
+            [
+                "/usr/bin/git",
+                "--no-replace-objects",
+                "--no-lazy-fetch",
+                "-C",
+                str(ROOT),
+                "show",
+                f"{commit}:{path_text}",
+            ],
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             check=False,
-            env={"PATH": "/usr/bin:/bin:/usr/local/bin", "GIT_TERMINAL_PROMPT": "0"},
+            env={
+                "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_TERMINAL_PROMPT": "0",
+                "LC_ALL": "C",
+                "PATH": "/usr/bin:/bin",
+            },
         )
     except OSError as error:
         raise ProspectiveReceiptError(f"cannot execute Git provenance check: {error}") from error

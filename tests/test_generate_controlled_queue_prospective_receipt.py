@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 import json
 import struct
+import subprocess
 from copy import deepcopy
 from fractions import Fraction
 from pathlib import Path
@@ -11,6 +12,68 @@ from typing import Any
 import pytest
 
 from scripts import generate_controlled_queue_prospective_receipt as generator
+
+
+def test_git_show_ignores_replacement_refs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    repo = tmp_path / "git-proof"
+    repo.mkdir()
+    subprocess.run(["/usr/bin/git", "init", "-q", str(repo)], check=True)
+    subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "config", "user.name", "Fixture"],
+        check=True,
+    )
+    subprocess.run(
+        [
+            "/usr/bin/git",
+            "-C",
+            str(repo),
+            "config",
+            "user.email",
+            "fixture@example.invalid",
+        ],
+        check=True,
+    )
+    tracked = repo / "proof.txt"
+    original = b"original committed bytes\n"
+    tracked.write_bytes(original)
+    subprocess.run(["/usr/bin/git", "-C", str(repo), "add", "proof.txt"], check=True)
+    subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "commit", "-q", "-m", "original"],
+        check=True,
+    )
+    original_commit = subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    tracked.write_bytes(b"replacement bytes\n")
+    subprocess.run(["/usr/bin/git", "-C", str(repo), "add", "proof.txt"], check=True)
+    subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "commit", "-q", "-m", "replacement"],
+        check=True,
+    )
+    replacement_commit = subprocess.run(
+        ["/usr/bin/git", "-C", str(repo), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    subprocess.run(
+        [
+            "/usr/bin/git",
+            "-C",
+            str(repo),
+            "replace",
+            original_commit,
+            replacement_commit,
+        ],
+        check=True,
+    )
+    monkeypatch.setattr(generator, "ROOT", repo)
+    assert generator._git_show(original_commit, "proof.txt") == original
 
 
 def _binary(states: list[int], actions: list[int]) -> bytes:

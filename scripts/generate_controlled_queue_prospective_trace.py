@@ -991,10 +991,24 @@ def _code_rows_by_role(value: Any) -> dict[str, dict[str, Any]]:
 
 def _run_git(arguments: Sequence[str], *, root: Path = ROOT) -> bytes:
     completed = subprocess.run(
-        ["git", "-C", str(root), *arguments],
+        [
+            "/usr/bin/git",
+            "--no-replace-objects",
+            "--no-lazy-fetch",
+            "-C",
+            str(root),
+            *arguments,
+        ],
+        stdin=subprocess.DEVNULL,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         check=False,
+        env={
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_TERMINAL_PROMPT": "0",
+            "LC_ALL": "C",
+            "PATH": "/usr/bin:/bin",
+        },
     )
     if completed.returncode != 0:
         detail = completed.stderr.decode("utf-8", errors="replace").strip()
