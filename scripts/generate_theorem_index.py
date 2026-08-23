@@ -282,6 +282,18 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
 # triggers such as "indicator" would incorrectly tag CDF indicator families as
 # Bernoulli results.
 DECLARATION_CONCEPTS: dict[str, list[str]] = {
+    "FormalSLT.Applications.ControlledQueue.refreshTargetPolicyKernel_dobrushin_le_gamma": [
+        "stationary / invariant law",
+        "transition kernel",
+    ],
+    "FormalSLT.Applications.ControlledQueue.refreshTargetPolicyKernel_existsUnique_invariantPMF": [
+        "stationary / invariant law",
+        "transition kernel",
+    ],
+    "FormalSLT.Applications.ControlledQueue.queueHypothesisStationary_unique_of_refresh": [
+        "stationary / invariant law",
+        "transition kernel",
+    ],
     "FormalSLT.Applications.ControlledQueue.refreshEnvironment_apply_toReal": [
         "transition kernel"
     ],

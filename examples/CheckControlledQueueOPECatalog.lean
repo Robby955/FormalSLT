@@ -37,6 +37,7 @@ open FormalSLT.Applications.ControlledQueue
 #check queueRiskFailureBudget_pos
 #check queueTransitionFailureBudget_pos
 #check queueHypothesisStationary_isInvariant
+#check queueHypothesisStationary_unique_of_refresh
 #check queueHypothesisScore_mem_Icc
 #check queueHypothesis_nominal_isOscillationContraction
 #check queueHypothesis_nominal_centeredRowRiskOscillation_le_one
@@ -60,6 +61,7 @@ open FormalSLT.Applications.ControlledQueue
 #print axioms queueRiskFailureBudget_pos
 #print axioms queueTransitionFailureBudget_pos
 #print axioms queueHypothesisStationary_isInvariant
+#print axioms queueHypothesisStationary_unique_of_refresh
 #print axioms queueHypothesisScore_mem_Icc
 #print axioms queueHypothesis_nominal_isOscillationContraction
 #print axioms queueHypothesis_nominal_centeredRowRiskOscillation_le_one

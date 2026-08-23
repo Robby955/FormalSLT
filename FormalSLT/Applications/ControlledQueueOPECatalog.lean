@@ -4,7 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 
-import FormalSLT.Applications.ControlledQueueContraction
+import FormalSLT.Applications.ControlledQueueRefreshUniqueness
 import FormalSLT.StochasticDynamics.FiniteInvariantExistence
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE
 
@@ -244,6 +244,24 @@ theorem queueHypothesisStationary_isInvariant
       (targetPolicyKernel P (queueHypothesisTargetPolicy hypothesis))
       (queueHypothesisStationary P hypothesis) :=
   finiteInvariantPMF_isInvariant _
+
+/-- For every admissible refresh parameter, invariance identifies a PMF with
+the queue catalog's canonical stationary witness. -/
+theorem queueHypothesisStationary_unique_of_refresh
+    (gamma : PersistenceParameter) (hypothesis : QueueHypothesis)
+    (stationary : PMF PhysicalState)
+    (hstationary :
+      IsInvariantPMF
+        (targetPolicyKernel (refreshEnvironment gamma)
+          (queueHypothesisTargetPolicy hypothesis))
+        stationary) :
+    stationary =
+      queueHypothesisStationary (refreshEnvironment gamma) hypothesis := by
+  exact
+    (refreshTargetPolicyKernel_existsUnique_invariantPMF gamma
+      (queueHypothesisTargetPolicy hypothesis)).unique hstationary
+        (queueHypothesisStationary_isInvariant
+          (refreshEnvironment gamma) hypothesis)
 
 /-- Every hypothesis score is bounded in `[0,1]`. -/
 theorem queueHypothesisScore_mem_Icc
