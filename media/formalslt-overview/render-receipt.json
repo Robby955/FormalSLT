@@ -1,0 +1,273 @@
+{
+  "schema": "formalslt-overview-render-receipt-v2",
+  "fact_commit": "7b1947544905aabf1b5ee8a6c3a7485e8762560e",
+  "source": {
+    "media/formalslt-overview/TRANSCRIPT.md": {
+      "sha256": "caeb98821b3810238799d237ab8117c9f6b6b50c31c7f85de05c7eb00ed485a6",
+      "bytes": 3016
+    },
+    "media/formalslt-overview/compose_soundtrack.py": {
+      "sha256": "ba504fb68318035006105065e54b8197088548f7303a80c0d697e1c3c635446d",
+      "bytes": 12191
+    },
+    "media/formalslt-overview/extract_facts.py": {
+      "sha256": "920300bd5df8d35cc71432791d0aa4157353027b34f3585c40c28854b3db69ad",
+      "bytes": 10729
+    },
+    "media/formalslt-overview/facts.json": {
+      "sha256": "15c72c675215f9da09eb7cdeae2274f1a3612a54f9d40f03ccc73f7c79142d27",
+      "bytes": 2226
+    },
+    "media/formalslt-overview/formalslt_overview.py": {
+      "sha256": "8d62d30fea6dc57cf77867bc0fb2daac5cece17af36b0646595dce9daffafca7",
+      "bytes": 36917
+    },
+    "media/formalslt-overview/manim.cfg": {
+      "sha256": "276ed2761531a1c2489a522716cf0049f261b17749b0889c33aa518e0b13c37c",
+      "bytes": 403
+    },
+    "media/formalslt-overview/render.sh": {
+      "sha256": "4badd75ecdd20f14bda368df3e406bf8b693e0d287cff91a9ff9f55a7cdf0f92",
+      "bytes": 7180
+    },
+    "media/formalslt-overview/requirements.txt": {
+      "sha256": "018d1a7c4387abe1555f6a6e45a93098b3ef198fd8cbcb4d713a935e2aee7ff4",
+      "bytes": 14
+    },
+    "media/formalslt-overview/test_compose_soundtrack.py": {
+      "sha256": "124febe7aac5d6b9b7de16db6df8eb1b9b395ecdb628d9c689508a62ac1b4624",
+      "bytes": 2783
+    },
+    "media/formalslt-overview/write_render_receipt.py": {
+      "sha256": "1382b51fe9b53e420669c98712b4ddefa07cccd1e805e5644e43149dd4b8474a",
+      "bytes": 8911
+    },
+    "media/formalslt-overview/delivery/formalslt-overview.vtt": {
+      "sha256": "658cfc3d8a70df772e8e073ae5e65e6ee043fd1a925a6061bf398d634cd26b86",
+      "bytes": 1397
+    }
+  },
+  "assets": [
+    {
+      "role": "main",
+      "path": "media/formalslt-overview/delivery/formalslt-overview.mp4",
+      "sha256": "6f0d92256c4c1ee71a58131a96a18b29f68abb03bc5b3d6759104df04c7760e9",
+      "bytes": 4490257,
+      "codec": "h264",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1",
+      "pix_fmt": "yuv420p",
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo"
+      },
+      "duration_seconds": "64.233333"
+    },
+    {
+      "role": "social",
+      "path": "media/formalslt-overview/delivery/formalslt-overview-social.mp4",
+      "sha256": "b7e2fcbcea5a15abf31cb4fbb6a32918826e286eab0987884f3ac0c9fa80f6cb",
+      "bytes": 716109,
+      "codec": "h264",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1",
+      "pix_fmt": "yuv420p",
+      "audio": {
+        "codec": "aac",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo"
+      },
+      "duration_seconds": "10.366667"
+    },
+    {
+      "role": "poster",
+      "path": "media/formalslt-overview/delivery/formalslt-overview-poster.jpg",
+      "sha256": "c75c6fe90a6ead13ab21365d1fe216a973f8bd5709faec7049d0dd85b80e6cc7",
+      "bytes": 118359,
+      "codec": "mjpeg",
+      "width": 1200,
+      "height": 675,
+      "r_frame_rate": "25/1",
+      "pix_fmt": "yuvj444p",
+      "duration_seconds": "0.040000"
+    }
+  ],
+  "soundtrack": {
+    "id": "formalslt-dark-ambient-v2",
+    "source": "media/formalslt-overview/compose_soundtrack.py",
+    "generation": "deterministic procedural synthesis",
+    "third_party_audio": false,
+    "license": "MIT",
+    "cut_plans": {
+      "main": {
+        "reference_duration_seconds": 64.228,
+        "sample_rate": 48000,
+        "cues": [
+          {
+            "time": 0.0,
+            "scene": "title",
+            "tone_hz": 73.42,
+            "strength": 0.58,
+            "tension": 0.2,
+            "pan": -0.15
+          },
+          {
+            "time": 4.5,
+            "scene": "adaptive problem",
+            "tone_hz": 77.78,
+            "strength": 0.76,
+            "tension": 0.78,
+            "pan": 0.22
+          },
+          {
+            "time": 9.6,
+            "scene": "structured family",
+            "tone_hz": 73.42,
+            "strength": 0.92,
+            "tension": 0.88,
+            "pan": -0.12
+          },
+          {
+            "time": 13.35,
+            "scene": "hit statistic",
+            "tone_hz": 110.0,
+            "strength": 0.78,
+            "tension": 0.7,
+            "pan": -0.24
+          },
+          {
+            "time": 15.4,
+            "scene": "TV identity",
+            "tone_hz": 146.83,
+            "strength": 0.84,
+            "tension": 0.58,
+            "pan": 0.2
+          },
+          {
+            "time": 20.3,
+            "scene": "proof spine",
+            "tone_hz": 110.0,
+            "strength": 0.66,
+            "tension": 0.42,
+            "pan": -0.28
+          },
+          {
+            "time": 27.55,
+            "scene": "anytime validity",
+            "tone_hz": 146.83,
+            "strength": 0.62,
+            "tension": 0.52,
+            "pan": 0.3
+          },
+          {
+            "time": 34.04,
+            "scene": "adaptive trajectories",
+            "tone_hz": 87.31,
+            "strength": 0.7,
+            "tension": 0.72,
+            "pan": -0.2
+          },
+          {
+            "time": 39.79,
+            "scene": "stationary bridge",
+            "tone_hz": 98.0,
+            "strength": 0.66,
+            "tension": 0.48,
+            "pan": 0.24
+          },
+          {
+            "time": 45.69,
+            "scene": "library map",
+            "tone_hz": 110.0,
+            "strength": 0.62,
+            "tension": 0.38,
+            "pan": -0.24
+          },
+          {
+            "time": 51.14,
+            "scene": "declaration receipt",
+            "tone_hz": 82.41,
+            "strength": 0.68,
+            "tension": 0.56,
+            "pan": 0.18
+          },
+          {
+            "time": 57.79,
+            "scene": "axiom receipt",
+            "tone_hz": 98.0,
+            "strength": 0.56,
+            "tension": 0.3,
+            "pan": -0.12
+          },
+          {
+            "time": 60.89,
+            "scene": "source and close",
+            "tone_hz": 73.42,
+            "strength": 0.54,
+            "tension": 0.18,
+            "pan": 0.0
+          }
+        ]
+      },
+      "social": {
+        "reference_duration_seconds": 10.366,
+        "sample_rate": 48000,
+        "cues": [
+          {
+            "time": 0.0,
+            "scene": "coordinate hook",
+            "tone_hz": 73.42,
+            "strength": 0.82,
+            "tension": 0.7,
+            "pan": -0.18
+          },
+          {
+            "time": 2.6,
+            "scene": "hit statistic",
+            "tone_hz": 77.78,
+            "strength": 0.88,
+            "tension": 0.9,
+            "pan": 0.22
+          },
+          {
+            "time": 3.75,
+            "scene": "TV identity",
+            "tone_hz": 146.83,
+            "strength": 0.96,
+            "tension": 0.66,
+            "pan": -0.24
+          },
+          {
+            "time": 4.4,
+            "scene": "scope boundary",
+            "tone_hz": 110.0,
+            "strength": 0.7,
+            "tension": 0.44,
+            "pan": 0.2
+          },
+          {
+            "time": 7.65,
+            "scene": "source close",
+            "tone_hz": 73.42,
+            "strength": 0.62,
+            "tension": 0.18,
+            "pan": 0.0
+          }
+        ]
+      }
+    }
+  },
+  "renderer": {
+    "python": "3.13.13",
+    "manim": "Manim Community v0.20.1",
+    "ffmpeg": "ffmpeg version 8.1.1 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 8.1.1 Copyright (c) 2007-2026 the FFmpeg developers",
+    "display_font": "Avenir Next",
+    "code_font": "Menlo"
+  }
+}

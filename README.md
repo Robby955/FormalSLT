@@ -21,6 +21,27 @@ costs visible in the theorem statement.
 [Use the library](#use-the-library) ·
 [Reproduce the checks](#verification)
 
+## Watch the idea
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4">
+    <img src="media/formalslt-overview/delivery/formalslt-overview-poster.jpg" width="960" alt="Watch the FormalSLT overview: a generic 4,608-coordinate route and a separate scalar route for a predeclared refresh family.">
+  </a>
+</p>
+
+The one-minute film follows a curated route from adaptive data to anytime
+validity and stationary risk. Its concrete example is a checked result for a
+controlled queue. Inside a predeclared refresh family, one binary hit rate
+supplies time-uniform confidence, and Lean separately proves that the
+physical-row total-variation discrepancy between the true family member and a
+generated candidate equals their hit-probability discrepancy. Click the image
+to play it.
+
+[Play the 1080p film](https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4) ·
+[Read the transcript](./media/formalslt-overview/TRANSCRIPT.md) ·
+[Manim source](./media/formalslt-overview/) ·
+[Render receipt](./media/formalslt-overview/render-receipt.json)
+
 ## Why FormalSLT exists
 
 Probability libraries supply the foundations, while learning-theory papers
@@ -96,9 +117,10 @@ exact Lean names.
 
 A 24-state, two-action queue exercises the stationary and unknown-kernel stack
 on a frozen, replayable trajectory. The generic transition certificate tracks
-4,608 coordinates. Under a declared one-parameter refresh model, the same
-transition question reduces to a persistence-hit statistic. Lean checks the
-structural reduction and the resulting retrospective risk certificate.
+4,608 coordinates. A separate route for a declared one-parameter refresh model
+uses a persistence-hit statistic. Lean checks its row-independent conditional
+mean, a time-uniform scalar confidence event, the exact physical-row TV
+identity, and the resulting retrospective risk certificate.
 
 This is one stress test of the library, not its organizing purpose. It is also
 model-conditional and retrospective: it does not test membership in the
