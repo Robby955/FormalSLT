@@ -1,16 +1,31 @@
 {
-  "schema": "formalslt-overview-v1",
-  "commit": "e18e3f52326c98c878e73557305fc9ee482f499e",
-  "short_commit": "e18e3f5",
+  "schema": "formalslt-overview-v2",
+  "commit": "7b1947544905aabf1b5ee8a6c3a7485e8762560e",
+  "short_commit": "7b19475",
   "library": {
-    "modules": 291,
-    "theorems_and_lemmas": 4232,
-    "lean_lines": 154217,
+    "modules": 296,
+    "theorems_and_lemmas": 4290,
+    "lean_lines": 156339,
     "stable_topic_imports": [
       "FormalSLT.PACBayes",
       "FormalSLT.Sequential",
       "FormalSLT.StochasticDynamics",
       "FormalSLT.VC"
+    ]
+  },
+  "controlled_queue": {
+    "physical_states": 24,
+    "actions": 2,
+    "observations": 48,
+    "transition_coordinate_sides": 2,
+    "transition_coordinates": 4608,
+    "hit_probability": "(1 + 23 * gamma) / 24",
+    "scope": "predeclared refresh family",
+    "row_tv_identity": "TV(true physical row, candidate physical row) = |p_hit(true) - p_hit(candidate)|",
+    "row_tv_label": "EXACT TV IDENTITY   \u00b7   EVERY PHYSICAL ROW",
+    "row_tv_boundary": [
+      "conditional on the predeclared refresh family",
+      "not a family-membership test"
     ]
   },
   "proof_spine": [
@@ -33,6 +48,16 @@
       "stage": "Stationary empirical-catalog certification",
       "file": "FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean",
       "name": "exists_empiricalStationaryCatalog_event"
+    },
+    {
+      "stage": "Controlled-queue scalar confidence",
+      "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
+      "name": "exists_persistenceHitConfidence_event"
+    },
+    {
+      "stage": "Controlled-queue exact structured transfer",
+      "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
+      "name": "refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy"
     }
   ]
 }

@@ -1,0 +1,62 @@
+WEBVTT
+
+00:00.000 --> 00:04.500
+FormalSLT.
+Learning guarantees that survive adaptation.
+
+00:04.500 --> 00:07.450
+The next observation can depend
+on everything seen so far.
+
+00:07.450 --> 00:09.600
+Model selection and repeated looks matter.
+
+00:09.600 --> 00:13.350
+In one refresh family,
+4,608 coordinates reduce to one hit rate.
+
+00:13.350 --> 00:16.050
+A hit records the known deterministic step.
+
+00:16.050 --> 00:20.300
+Hit-rate differences equal row TV.
+Assumes the family; does not test membership.
+
+00:20.300 --> 00:25.400
+Four mechanisms: exponential processes,
+PAC-Bayes, every time, dependent paths.
+
+00:25.400 --> 00:27.550
+Each result is pinned to its Lean source.
+
+00:27.550 --> 00:34.040
+One event stays valid at every time
+for every allowed posterior.
+
+00:34.040 --> 00:39.790
+Choose posterior and tilt from the past.
+Fix the score before the next state.
+
+00:39.790 --> 00:45.690
+For finite-state kernels, a Poisson correction
+connects one path to stationary risk.
+
+00:45.690 --> 00:51.140
+Four layers: PAC-Bayes, sequential inference,
+dynamics, and VC theory.
+
+00:51.140 --> 00:54.890
+Exact Lean receipt:
+forward empirical-Bernstein catalog event.
+
+00:54.890 --> 00:57.790
+Exact Lean receipt:
+refresh-model row-TV identity.
+
+00:57.790 --> 01:00.890
+No project-specific axioms.
+Pinned revision shown.
+
+01:00.890 --> 01:04.228
+FormalSLT.
+Checked learning theory for data that adapt.
