@@ -235,6 +235,258 @@ construct a confidence set; permit post-data candidate or depth selection;
 prove invariant-law existence or a quantitative mixing time; or cover random
 initial laws, controlled dynamics, continuous states, or unrestricted tilts.
 
+### Fixed-candidate finite-depth robust target-policy OPE
+
+`StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` composes the
+fixed approximate target-policy OPE event with a depth-`m` potential built from
+a fixed candidate controlled environment. It assumes true induced target-
+kernel invariance, `[0,1]` controlled transition scores, a common candidate
+target-kernel oscillation-contraction factor `0 <= alpha < 1`, centered
+candidate row-risk oscillation at most `D`, and the uniform physical action-row
+certificate `TV(P(state, action), Q(state, action)) <= etaEnv`. The checked
+span is `B_m = D * (1 - alpha^m) / (1 - alpha)`, and the robust residual is
+
+`alpha^m D + 2 * (1 + B_m) * etaEnv`.
+
+The conclusion retains this value as the posterior average of a constant
+envelope; the posterior-PMF premise makes that average equal to the displayed
+value. It is added outside the importance-weighted OPE boundary and is not
+multiplied by the ratio cap `C`. The one outer event remains simultaneous over
+the observed path, declared finite tilt atom, posterior PMF, and time. The true
+and candidate environments, behavior policy, target-policy and score catalogs,
+true invariant PMFs, candidate reference PMFs, contraction and row-TV
+certificates, and depth are all fixed before the event.
+
+This endpoint does not learn or select a candidate kernel, derive `etaEnv` from
+the observed trajectory, intersect an empirical transition-confidence event,
+adapt the depth to the path, construct the true invariant PMFs, or establish a
+full-trajectory target-versus-behavior change of measure. It is finite-state,
+finite-action, finite-hypothesis, and finite-tilt.
+
+### Same-path empirical robust target-policy OPE
+
+`StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE` intersects
+the signed-residual target-policy OPE event with empirical confidence for every
+row of the augmented behavior kernel under the same controlled path law. The
+two budgets remain separate: `deltaRisk` appears in the OPE boundary,
+`deltaTransition` appears in the empirical transition radius, and the
+complement of the intersected event has real mass at most
+`deltaRisk + deltaTransition` without an independence assumption.
+
+The behavior policy is state-Markov with exact action mass `1/2`. At a displayed
+horizon where every augmented source row has positive visit mass, the empirical
+augmented-row radius `etaAug` gives the physical action-row radius
+`etaEnv = 2 * etaAug`. For the fixed candidate and depth, the resulting
+residual is
+
+`alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`.
+
+The event remains simultaneous over both declared finite tilt catalogs,
+posterior PMFs, and time. The true and candidate environments, true invariant
+PMFs, candidate reference PMFs, target-policy and score catalogs, contraction
+and centered-risk certificates, and depth are fixed before the event. The
+generic theorem does not construct the queue-specific certificates, prove
+all-row visits or good-event membership for the frozen trace, or license
+candidate or depth selection after observing the path. The separate
+application specialization below supplies one fixed queue catalog.
+
+### Controlled-queue structured persistence confidence
+
+`Applications.ControlledQueuePersistenceConfidence` assumes that the true
+physical environment belongs to the one-parameter family
+`(1 - gamma) * Uniform24 + gamma * delta_step`, with fixed
+`gamma in [0,1)`. The true parameter and deterministic initial controlled
+observation are fixed before the outer-mass event. The event is simultaneous
+over the supplied finite tilt catalog and all `n >= 2`; after it is constructed,
+all three generated candidates and all physical state-action rows share the
+same scalar confidence information.
+
+The observed statistic records whether the next state equals the deterministic
+queue-step destination. Uniform refresh can land there too, so its conditional
+mean is `(1 + 23 * gamma) / 24`, not `gamma`. The checked TV identity makes the
+difference of two such hit probabilities exactly the physical-row TV distance,
+with no behavior-action factor. This is a structured or parametric
+unknown-dynamics result, not arbitrary-kernel confidence. It is not uniform
+over `gamma`, does not detect refresh-family misspecification, and does not by
+itself construct invariant laws, compose with the queue OPE event, certify a
+frozen trace, or supply a useful unknown-dynamics numerical endpoint. Since
+the scored mean is row-independent, this route needs no all-source-row
+visitation premise.
+
+### Structured controlled-queue adaptive OPE event
+
+`Applications.ControlledQueueStructuredOPE` preallocates the risk budget over
+all `21 = 3 x 7` generated candidate--depth atoms and intersects their
+signed-residual OPE events with the scalar persistence event on the same path.
+With risk and persistence budgets `1/40`, the common outer complement has real
+mass at most `1/20`; no independence or sample split is assumed. The four
+admissible tilts are the generated prefix `[1/16, 1/8, 1/4, 1/2]`. The
+generated terminal tilt `1` is excluded because both event APIs require a
+strict tilt below one.
+The candidate/depth and tilt supports are generated, but the uniform `1/21`
+candidate--depth and `1/4` tilt weights are fresh checked Lean confidence
+allocations, not fields of the frozen model input.
+
+Inside the common event, candidate, depth, risk tilt, persistence tilt,
+posterior PMF on the twelve fixed policy--predictor atoms, and time may be
+selected from their predeclared catalogs. The true `gamma`, initial
+observation, catalogs, weights, and confidence allocations remain fixed before
+the event. The initial observation is deterministic, and the stationary laws
+are chosen finite invariant witnesses; this theorem does not establish
+arbitrary-`gamma` uniqueness of those witnesses. Candidate `c` at depth `m`
+receives the physical-row residual
+`gamma_c^m + 2 * ((1 + B_c,m) * eta_c)`. The coefficient is `2`, not `4`,
+because the scalar event directly controls physical action-conditioned rows;
+the policy ratio cap `3/2` remains inside the OPE boundary and does not
+multiply the robust residual.
+
+This is structured refresh-family unknown dynamics only. It is pointwise in
+the fixed true parameter, does not test family membership, does not authorize
+a path-fitted catalog atom or causal predictor, does not prove arbitrary-kernel
+confidence, and does not establish named-path event membership, unconditional
+random-initial coverage, or a useful prospective numerical endpoint. Its
+selectors are pointwise substitutions into the common event, not a measurable
+selected process or selected e-process.
+
+### Fixed sharp structured controlled-queue OPE event
+
+`Applications.ControlledQueueRefreshSensitivity` exploits the affine
+one-parameter refresh family. It identifies the true target-policy Poisson
+drift minus the generated-candidate drift exactly as the persistence-hit
+probability discrepancy times a normalized sensitivity. Given an oscillation
+bound for the candidate drift, an oscillation bound for that sensitivity, and
+a bound `eta` on the hit-probability discrepancy, the resulting pointwise
+stationary residual is bounded by
+
+`candidate drift oscillation + sensitivity oscillation * eta`.
+
+This formula has no extra total-variation multiplier `2 * (1 + B)`. It depends
+essentially on the asserted refresh-family model and is not an
+arbitrary-kernel robustness theorem.
+
+`Applications.ControlledQueueSharpStructuredOPE` instantiates the formula with
+the nominal candidate, the supplied shifted depth-twelve potential, and the
+Dirac posterior on the queue-threshold target policy paired with the
+nominal-model fixed predictor. It intersects risk tilt `1/16` and persistence
+tilt `1/64` events with failure budgets `1/40` each. For any true `gamma` and
+deterministic initial controlled observation fixed before the event, the outer
+complement has real mass at most `1/20`. The frozen prospective wrapper fixes
+true `gamma = 149/200`, initial observation `(eco, state 0)`, and evaluation
+horizon `200000`.
+
+The wrapper is an event theorem, not a numerical receipt. It does not generate
+or import a fresh trace or histogram, prove that a named path lies in the good
+event, establish histogram-conditioned or random-initial coverage, or show
+that the selected numerical endpoint is below `< 0.10`. The potential and
+Dirac atom are supplied fixed objects; the theorem does not license fitting
+either object to the prospective path.
+
+The separate `structured-ope-protocol-v1.json` is a local prospective protocol
+input, not a theorem or result. It freezes an off-grid true refresh parameter,
+fixed selected-potential primary, future-public-beacon seed rule, adaptive
+secondary, matched comparisons, and publish-regardless chronology before an
+independent trace. The required sharp drift-sensitivity event is checked
+locally, but the protocol has not been publicly preregistered and the
+independent generator/verifier implementation and pre-beacon gate are only
+checked locally. Until the protocol and completed code freeze are bound by one
+immutable public OSF registration, no future-beacon seed may be read and no
+prospective numerical claim is made. The immutable version-one binding omits
+the final GUID that OSF creates at registration; the completed registration
+response supplies that GUID, the archived-file metadata target must match it,
+and the metadata size and SHA-256 must match the exact binding bytes.
+
+The prospective receipt verifier independently reconstructs the endpoint
+arithmetic and generated Lean bytes, but it is not a second beacon-signature or
+PRNG replay implementation. A receipt-only pass is therefore insufficient.
+The frozen post-beacon gate first runs the independent trace verifier, then the
+receipt byte check, independent receipt verifier, and generated Lean checker in
+that order.
+
+Two prospective comparison rows remain arithmetic-only. The oracle true-kernel
+row and the fixed-range row are both `PLANNED_NOT_CHECKED` noncertificates;
+their `1/20` values are planned allocations, not checked outer-mass bounds. A
+receipt row therefore records either a checked outer-mass bound or a planned
+allocation, together with its certification status. This restriction does not
+relabel the primary, adaptive, generic structured, or premise-qualified
+unstructured rows, and it does not alter the separate checked retrospective
+known-kernel receipt.
+
+### Retrospective sharp structured controlled-queue receipt
+
+`Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` evaluates
+the fixed sharp structured reduction on the existing aligned retrospective
+summary with horizon `199999` and persistence-hit count `152266`. Its exact
+primary endpoint is
+
+`45318758321311224310665458696783373002366549 /
+659558894102351266671449077672292808728248320`,
+
+which is checked to be less than `69 / 1000`. The numerical reduction uses the
+declared histogram, score moments, and persistence-hit count. Its source-policy
+gate excludes the true persistence parameter, true invariant law, stationary
+risk, and the existing oracle closed-form risk theorem from the receipt
+arithmetic.
+
+For every fixed admissible true persistence parameter, under the path law
+started at `knownKernelReceiptInitial = (action = 1, state = 1)`, the theorem
+produces a parameter-dependent good event whose outer complement has real mass
+at most `1/20`; paths in that event with the frozen histogram satisfy the
+checked stationary posterior-risk bound. This is not one event simultaneous
+over all persistence parameters. The result also assumes that the
+data-generating kernel belongs to the declared one-parameter refresh family;
+it is neither a family-specification test nor an arbitrary unknown-kernel
+certificate.
+
+The public failure-event corollary removes good-event membership from the
+receipt conclusion: for every fixed parameter, the outer mass of the paths on
+which the frozen histogram occurs while the displayed risk bound fails is at
+most `1/20`. This is unconditional under the corresponding fixed-parameter,
+fixed-initial path law. It does not prove that the named retrospective trace
+belongs to a particular good event, turn the fixed histogram into conditional
+`19/20` coverage, or provide one event simultaneous over parameters. It is a
+retrospective evaluation of an observable-only theorem reduction, not fresh
+prospective evidence.
+
+### Fixed controlled-queue OPE catalog
+
+`Applications.ControlledQueueOPECatalog` fixes 12 hypotheses: the Cartesian
+product of four generated target policies and three generated fixed Brier
+predictors. The candidate environment is the nominal table `Q`. The true
+environment `P`, deterministic initial augmented observation, and finite depth
+are theorem inputs fixed before the outer event. For each hypothesis the target
+stationary PMF is the canonical noncomputable `finiteInvariantPMF` of the true
+target-policy kernel. The finite-depth reference is uniform over physical
+states and is not claimed invariant.
+
+The checked constants are the contraction upper bound `alpha = 3/4`, centered
+row-risk envelope `D = 1`, and action-ratio cap `C = 3/2`. The application uses
+a fresh uniform full-support prior over the 12 hypotheses and a fresh uniform
+full-support prior over all `48 * 48 * 2 = 4,608` augmented transition
+coordinates. Both the singleton risk tilt and singleton transition tilt equal
+`1/4`. Risk and transition failure budgets are `1/40` each, so the event's
+complement has real mass at most `1/20`. On that event, the conclusion is
+simultaneous over all posterior PMFs and all times `n >= 2`, provided all 48
+augmented source rows have positive visit mass at the displayed time.
+
+The frozen `trace-v1.json` allocation is not instantiated. It has only 48
+coordinate weights, its tilt grid contains `1` although the theorem requires
+every tilt to lie strictly below one, and its five-predictor prior includes the
+two causal predictors and has no target-policy factor. The application-level
+priors and singleton tilts are separate declarations. The catalog event theorem
+does not prove a named trace lies in its event, prove good-event membership,
+bridge the generator's initial-observation offset, permit post-data candidate
+or depth selection, or establish a numerically useful confidence endpoint.
+
+`Applications.ControlledQueueInvariantRisk` is a separate deterministic
+known-model slice. For the nominal environment, target-policy index `1`
+(queue-threshold), and fixed-predictor index `2` (nominal-model overload), it
+constructs an explicit rational 24-state PMF, proves it invariant, identifies
+it with the catalog's canonical witness using strict Dobrushin contraction,
+and proves the stationary Brier risk exactly
+`4338268437 / 67816493056 < 13 / 200`. This does not import the frozen trace,
+prove event membership or a confidence bound, establish unknown-kernel
+usefulness, or license any data-adaptive selection.
+
 ### Empirical transition confidence and selected candidates
 
 `StochasticDynamics.EmpiricalTransitionConfidence` treats each finite
@@ -262,6 +514,20 @@ it does not justify selecting a candidate Poisson potential or stationary-risk
 score from the same data without a predeclared uniform catalog, auxiliary data,
 or sample splitting. The common confidence set is an outer-mass package; no
 separate measurability theorem is claimed.
+
+`StochasticDynamics.EmpiricalTransitionConfidenceCountable` replaces the
+finite transition-tilt catalog in this confidence layer with the predeclared
+natural-number geometric catalog. It requires a fixed full-support coordinate
+prior and `0 < delta <= 1`. One outer-mass event is simultaneous over all
+atoms, times `n >= 2`, and transition coordinates. The explicit geometric atom
+has an unnormalized coordinate boundary tending to zero along every path.
+Normalized coordinate and row radii tend to zero only under a positive
+limiting visit frequency for the source row. The maximum selected
+candidate-kernel budget tends to zero only if those frequency assumptions hold
+for every row and the selected candidate's empirical row discrepancies tend to
+zero. These are supplied pathwise hypotheses, not a generic consistency or
+ergodicity theorem. The application-level finite catalog continues to use its
+own fixed transition atom unless it explicitly imports this extension.
 
 ### Same-trajectory empirical stationary catalogs
 
@@ -354,6 +620,49 @@ or estimate invariant PMFs or Poisson potentials, handle history-dependent
 target policies, correct target-law occupancy through a full-trajectory
 likelihood ratio, or establish doubly robust, continuous-space, or
 unknown-kernel OPE.
+
+### Target-policy robust-candidate bridge
+
+`StochasticDynamics.StationaryTargetPolicyRobustCandidate` compares a true
+environment `P` and candidate environment `Q` under one shared target policy.
+A uniform action-conditioned row bound
+`TV(P(z, a), Q(z, a)) <= etaEnv` implies the same bound for the induced
+target-policy state kernels. For a `[0,1]` transition score and potential of
+span at most `B`, the target-policy drifts differ by at most
+`(1 + B) * etaEnv`. With a supplied invariant PMF for the true induced kernel,
+the checked pointwise residual envelope is
+`oscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`.
+The same module proves that every such bounded target-policy score has centered
+row-risk oscillation at most `1`, for any supplied reference PMF. This is a
+universal envelope, not a sharper model-specific oscillation calculation.
+
+This deterministic bridge does not construct invariant PMFs, estimate `P` or
+`etaEnv`, create a confidence event, or license candidate, certificate, or
+residual-envelope selection after observing the path. The separate checked
+fixed-candidate finite-depth OPE endpoint and its selection boundaries are
+recorded above.
+
+### Approximate-Poisson stationary target-policy OPE
+
+`StochasticDynamics.StationaryTargetPolicyApproximateOPE` accepts a fixed true
+environment, behavior policy, target-policy catalog, supplied invariant PMFs,
+potentials, and pointwise residual envelopes. One behavior-law outer event is
+simultaneous over every `n >= 2`, posterior PMF, and declared finite tilt atom.
+Relative to the exact-Poisson endpoint, its upper bound adds exactly the
+posterior average of the supplied residual envelopes.
+
+The same module also exposes a signed-residual event that leaves the encountered
+posterior residual average explicit. It requires no pointwise residual envelope
+before the event and is the interface used to intersect a second same-path
+certificate.
+
+The fixed-envelope theorem does not construct finite-depth potentials,
+candidates, invariant laws, transition-confidence events, or residual
+envelopes; permit a data-dependent envelope; or itself intersect a second
+event. The separate fixed-candidate empirical theorem supplies that same-path
+intersection under its all-row-visit and fixed-input assumptions. Neither
+result provides full-trajectory importance sampling or a two-sided confidence
+interval.
 
 ### Dynamic target-policy comparators
 
@@ -962,12 +1271,59 @@ risk event on the same path. Every nonempty finite kernel has a noncomputable
 chosen invariant PMF; uniqueness still requires a strict Dobrushin or candidate
 row-TV contraction certificate.
 
-The controlled layer proves exact one-step behavior-law semantics, a
-stationary state-Markov target-policy OPE endpoint under known dynamics and
-supplied invariant and Poisson objects, encountered-prefix comparators for
-history-dependent targets, and exact fixed-horizon target-path change of
-measure. These do not estimate nuisance quantities or give an anytime-valid
-cumulative-likelihood target-value boundary.
+The controlled layer proves exact one-step behavior-law semantics, stationary
+state-Markov target-policy OPE under supplied exact or approximate Poisson
+objects, deterministic candidate-environment robustness, and fixed-candidate
+finite-depth robust OPE. A separate fixed-candidate theorem intersects its
+signed-residual OPE event with augmented empirical-transition confidence on the
+same controlled path, under all-row visitation and exact behavior mass `1/2`.
+For the generated controlled-queue candidates, a table-backed common uniform
+minorization gives target-policy Dobrushin upper bounds `5/8`, `3/4`, and
+`7/8` for every state-Markov target policy. These are contraction upper bounds,
+not exact-coefficient claims, and the uniform reference used in the proof is
+not claimed invariant for an arbitrary target policy.
+The controlled-queue application fixes the nominal candidate, a 12-atom
+target-policy/fixed-Brier catalog, canonical noncomputable true invariant PMFs,
+and fixed depth before a `19/20` outer event. It is simultaneous over posterior
+PMFs and time under all-48-row visitation, but it does not instantiate the
+incompatible frozen trace weights or prove trace/event alignment.
+For one predeclared atom, `ControlledQueueInvariantRisk` additionally supplies
+an explicit 24-state invariant PMF, proves equality to the canonical catalog
+witness by strict-contraction uniqueness, and evaluates its exact stationary
+Brier risk as `4338268437 / 67816493056 < 13 / 200`.
+`ControlledQueueKnownKernelReceipt` fixes that atom, depth `12`, the realized
+initial observation `(1, 1)`, a twelve-way prior, tilt `1/16`, and a `1/40`
+failure budget. An independently reconstructed `24 x 2 x 24` suffix histogram
+implies exact score moments in Lean, and the selected boundary plus residual is
+below `7/100`. The corresponding risk theorem still assumes both the histogram
+and the theorem-event inequality; it does not prove that the named path belongs
+to the event or give unconditional coverage for the upstream random first
+observation.
+The controlled layer also supplies encountered-prefix comparators for
+history-dependent targets and exact fixed-horizon target-path change of
+measure. These results do not construct a useful queue-specific unknown-kernel
+numerical certificate. The structured persistence lane does give a
+time-uniform physical-row TV budget for an arbitrary fixed parameter in the
+frozen refresh family. Its finite-catalog OPE composition is checked, but it is
+not yet evaluated on a fresh prospective trace. A fixed sharp event for the
+nominal selected atom is also checked, with residual equal to candidate-drift
+oscillation plus sensitivity oscillation times its path-dependent persistence
+budget and outer complement mass at most `1/20`. It supplies no fresh
+prospective histogram, named-path good-event membership, or prospective
+numerical receipt. The separate retrospective sharp structured receipt uses
+the aligned horizon `199999` histogram and persistence-hit count to check the
+exact endpoint `0.068710707605557... < 0.069`. For each fixed true persistence
+parameter it uses a parameter-dependent event and the well-specified refresh
+family, with the path law started at `(action = 1, state = 1)`. Its
+frozen-histogram/risk-failure set has outer mass at most `1/20`, but it gives
+neither simultaneous-in-parameter nor histogram-conditioned coverage.
+The controlled results do not license
+data-dependent candidates or depths outside that common predeclared event;
+estimate general nuisance
+quantities; prove named-path event membership; or give an anytime-valid
+cumulative-likelihood target-value boundary. Except for the one explicit atom
+above, the application-level invariant witnesses remain noncomputable choices
+rather than explicit queue stationary laws.
 
 All scored catalogs must be fixed before their outcomes are observed. Same-path
 stationary selection is limited to the finite predeclared candidate family and

@@ -6,11 +6,13 @@ Authors: Robby Sneiderman
 import FormalSLT.AnytimeValid.OptimizedLambdaCS
 
 /-!
-# Non-vacuity witness for the optimized-`lambda` iterated-log confidence sequence
+# Nonzero-model receipt for the finite-grid optimized-`lambda` boundary
 
 This file instantiates `optimized_lambda_confidence_sequence_subGamma` with a genuine
-nonzero increment process, proving the optimized-`lambda` (stitched-grid) bound is not
-vacuous, and exhibits the iterated-log width on concrete numeric data.
+nonzero increment process and evaluates the finite-grid bound and the pointwise
+closed-form width on concrete numeric data. It does not prove that a crossing
+event is inhabited or that one fixed finite grid attains an unbounded all-time
+iterated-log rate.
 
 The witness is a Rademacher (sign) increment on `Ω = Bool` under the uniform
 probability measure: `X 0 ω = if ω then 1 else -1` (so `X 0` takes the values

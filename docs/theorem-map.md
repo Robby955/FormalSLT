@@ -3,6 +3,38 @@
 This page lists the public theorem spine by family. Names are Lean
 declarations; modules are relative to `FormalSLT`.
 
+## Candidate v0.2 endpoint index
+
+This compact index mirrors the 19-declaration candidate allowlist in
+[`api-stability.md`](api-stability.md). Topic imports are the supported public
+entry points; implementation modules are relative to `FormalSLT`. The
+committed signature snapshot remains normative for declaration types and
+axiom sets. This index becomes a stable compatibility surface only when the
+`v0.2.0` tag and GitHub Release exist. The three VC names are public aliases;
+the table lists their canonical implementation modules.
+
+| Declaration | Topic import | Implementation module | Role |
+|---|---|---|---|
+| `FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event` | `FormalSLT.PACBayes` | `PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch` | One event simultaneous over all `n >= 2` and all admissible posterior measures on an arbitrary measurable hypothesis space |
+| `FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes.exists_continuousForwardPredictableMeanBesselPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayes` | One outer-mass event controls every `n >= 2`, eligible posterior measure, and atom of a finite predeclared tilt prior |
+| `FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardBesselPACBayesCountable` | One outer-mass event controls every `n >= 2`, finite posterior PMF, and atom of a positive normalized countable tilt catalog |
+| `FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardBesselPACBayesCountable` | Geometric catalog selection on one outer-mass event, with an exact selected boundary tending to zero |
+| `FormalSLT.PACBayes.TimeUniform.timeUniformPACBayes_tiltMixture_allPosteriors_bound` | `FormalSLT.PACBayes` | `PACBayes.TimeUniformTiltMixture` | One outer-mass event controls every positive time, posterior PMF, and declared finite tilt atom |
+| `FormalSLT.AnytimeValid.eProcess_typeI_control` | `FormalSLT.Sequential` | `AnytimeValid.EProcess` | Ville-based Type-I control for an e-process rejection event |
+| `FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinLowerTiltCatalog_selected_event` | `FormalSLT.Sequential` | `AnytimeValid.ForwardBesselProcess` | Path- and time-dependent selector form of the common finite-catalog event |
+| `FormalSLT.AnytimeValid.SelectionCost.selectedWeightedScore_expectation_le_one` | `FormalSLT.Sequential` | `AnytimeValid.SelectionCost` | Expectation-at-most-one bound for a predeclared-weight correction and observation-dependent selector |
+| `FormalSLT.AnytimeValid.AllocationLogLog.frequently_geometricEpoch_loglogCost` | `FormalSLT.Sequential` | `AnytimeValid.AllocationLogLog` | Explicit iterated-logarithm allocation cost along an unbounded geometric-epoch subsequence |
+| `FormalSLT.AnytimeValid.UniversalBoundaryLowerBound.fairSign_anytimeBoundary_frequently_ge_mul_sqrt` | `FormalSLT.Sequential` | `AnytimeValid.UniversalBoundaryLowerBound` | Universal `sqrt n`-scale lower bound for valid deterministic one-sided fair-sign anytime boundaries |
+| `FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable` | Adaptive finite posteriors on one outer-mass event, with all-time validity and an exact selected boundary tending to zero |
+| `FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.StationaryPoissonDepthSelection` | All-time stationary-risk validity on one outer-mass event, with a vanishing selected boundary |
+| `FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.EmpiricalStationaryCatalog` | Canonical finite invariant-PMF target on one outer-mass event, without a supplied invariant premise |
+| `FormalSLT.StochasticDynamics.exists_stationaryTargetPolicyOPE_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.StationaryTargetPolicyOPE` | One outer-mass event controls every `n >= 2`, posterior PMF, and finite declared tilt atom |
+| `FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Deterministic-start measurable-space trajectory certificate on one outer-mass event over all `n >= 2`, eligible posteriors, and finite tilt atoms |
+| `FormalSLT.StochasticDynamics.markovPACBayes_tiltMixture_prequentialRisk_certificate_initialLaw` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw` | Finite-state certificate for a supplied initial PMF, simultaneous over positive times, posteriors, and tilt atoms |
+| `FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily` | `FormalSLT.VC` | `VC.Dimension` | Sauer-Shelah binomial-sum bound for finite set families |
+| `FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective` | `FormalSLT.VC` | `VC.Rademacher` | Effective-class Massart bound |
+| `FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail` | `FormalSLT.VC` | `VC.SampleComplexity` | Effective-growth ERM excess-risk tail with sharp concentration term; the binary zero-one bridge supplies the VC premise separately |
+
 ## Core definitions
 
 | Declaration | Module | Role |
@@ -126,11 +158,11 @@ declarations; modules are relative to `FormalSLT`.
 | `uniformDeviation_highProb_finiteClass` | `Rademacher.UniformDeviation` | Two-sided finite-class uniform deviation with sharp one-sided tails |
 | `sauerShelah_polynomial_bound` | `VC.SauerShelah` | `sum_{k<=d} C(n,k) <= (en/d)^d` |
 | `empiricalRademacherComplexity_le_massart_effective` | `VC.Rademacher` | Effective-class Massart bound |
-| `vcRademacher_pointwise` | `VC.SampleComplexity` | `Rad <= B * sqrt(2d * log(en/d) / n)` |
-| `genGap_highProb_vcClass` | `VC.SampleComplexity` | VC-style one-sided genGap tail with sharp exponent |
-| `uniformDeviation_highProb_vcClass` | `VC.SampleComplexity` | VC-style two-sided uniform deviation with sharp one-sided tails |
-| `vc_erm_excessRisk_tail` | `VC.SampleComplexity` | VC-style ERM excess-risk tail with sharp concentration term |
-| `vc_erm_sample_complexity` | `VC.SampleComplexity` | Closed-form VC ERM sample-complexity theorem with explicit `72 * B^2` constant |
+| `vcRademacher_pointwise` | `VC.SampleComplexity` | Pointwise effective-growth bound `Rad <= B * sqrt(2d * log(en/d) / n)` |
+| `genGap_highProb_vcClass` | `VC.SampleComplexity` | Effective-growth one-sided genGap tail with sharp exponent |
+| `uniformDeviation_highProb_vcClass` | `VC.SampleComplexity` | Effective-growth two-sided uniform deviation with sharp one-sided tails |
+| `vc_erm_excessRisk_tail` | `VC.SampleComplexity` | Effective-growth ERM excess-risk tail with sharp concentration term |
+| `vc_erm_sample_complexity` | `VC.SampleComplexity` | Closed-form effective-growth ERM sample-complexity theorem with explicit `72 * B^2` constant |
 | `effectiveClass_zeroOneLoss_card_eq_binaryClassTrace` | `VC.BinaryVCBridge` | Effective 0-1 loss patterns equal binary traces |
 | `effectiveClass_zeroOneLoss_card_le_sauerShelah` | `VC.BinaryVCBridge` | Binary VC Sauer-Shelah corollary |
 
@@ -745,13 +777,13 @@ declarations; modules are relative to `FormalSLT`.
 | `subGamma_stitched_boundary_supermartingale` | `AnytimeValid.OptimizedLambdaCS` | Stitched-over-`λ` sub-Gamma exponential process is a nonnegative supermartingale |
 | `stitched_atTop_crossing_bound` | `AnytimeValid.OptimizedLambdaCS` | Ville crossing bound for the stitched sub-Gamma boundary |
 | `optimized_lambda_confidence_sequence_subGamma` | `AnytimeValid.OptimizedLambdaCS` | Optimized-`λ` sub-Gamma confidence sequence with the stitched boundary |
-| `subGammaLogLogWidth_loglog_rate` | `AnytimeValid.OptimizedLambdaCS` | Stitched boundary half-width grows at the iterated-logarithm rate |
+| `subGammaLogLogWidth_loglog_rate` | `AnytimeValid.OptimizedLambdaCS` | Concrete positivity and closed-form shape receipt at `n = 16`, `δ = 1/2`; no asymptotic-rate conclusion |
 | `subGammaLogLogWidth_eq_boundary_optTilt` | `AnytimeValid.OptimizedLambdaCS` | The closed-form log-log width equals the sub-Gamma boundary at the per-time optimal tilt |
-| `optimized_lambda_two_sided_confidence_sequence` | `AnytimeValid.OptimizedLambdaCS` | Two-sided optimized-`λ` iterated-log confidence sequence via the deterministic stitching bridge and the `X`/`-X` transfer |
+| `optimized_lambda_two_sided_confidence_sequence` | `AnytimeValid.OptimizedLambdaCS` | Two-sided finite-grid time-uniform crossing boundary via the `X`/`-X` transfer |
 | `optimized_lambda_two_sided_closed_form_pointwise` | `AnytimeValid.OptimizedLambdaCS` | Closed-form pointwise interval-width form of the two-sided optimized-`λ` confidence sequence |
 | `fixedGrid_logLog_bridge_forces_exact_boundary` | `AnytimeValid.OptimizedLambdaCS` | Obstruction: a fixed finite-grid all-time closed-form bridge forces the grid to attain the exact per-time optimal boundary |
 | `eProcess_typeI_control` | `AnytimeValid.EProcess` | Safe-testing Type-I control: an e-process rejection event has mass at most the level `α` over the Ville maximal inequality |
-| `eProcess_product_of_supermartingale` | `AnytimeValid.EProcess` | Product of nonnegative supermartingale factors with unit start is an e-process |
+| `eProcess_product_of_supermartingale` | `AnytimeValid.EProcess` | Product constructor for e-processes under an explicit product-supermartingale premise |
 | `eProcess_optionalContinuation` | `AnytimeValid.EProcess` | Optional continuation: the stopped value of an e-process keeps integral at most one |
 | `selectedWeightedScore_expectation_le_one` | `AnytimeValid.SelectionCost` | A predeclared-weight correction preserves expectation at most one for an arbitrary observation-dependent selector over a finite nonnegative score catalog |
 | `simultaneous_kraft_upperTail_mass_le_alpha` | `AnytimeValid.SelectionCost` | Finite simultaneous tail control under reciprocal corrections satisfying the Kraft budget |
@@ -783,6 +815,7 @@ declarations; modules are relative to `FormalSLT`.
 
 | Declaration | Module | Role |
 |---|---|---|
+| `forwardEmpiricalBernsteinPsi_le_quadratic` | `AnytimeValid.ForwardBesselProcess` | For `0 <= lam < 1`, bounds the forward empirical-Bernstein cumulant by `lam^2 / (2 * (1 - lam))`; the sharp queue slice uses it to certify the fixed `1/16` and `1/64` tilt costs |
 | `forwardPredictableQuadratic_le_hybrid_bessel` | `AnytimeValid.ForwardBesselProcess` | Bounds the predictable squared-residual penalty by the smaller of two checked Bessel envelopes for every bounded path and `n >= 2` |
 | `forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded` | `AnytimeValid.ForwardBesselProcess` | Packages the actual lower-tail predictable-residual exponential process as an e-process under boundedness, adaptedness, and the conditional-mean model |
 | `forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess` | `AnytimeValid.ForwardBesselProcess` | Makes the stochastic distinction explicit: the hybrid Bessel exponential expression is a pointwise lower envelope of the actual e-process |
@@ -906,6 +939,257 @@ The environment, behavior propensities, invariant PMFs, exact bounded Poisson
 potentials, overlap, and ratio cap are inputs. This section uses one-step action
 importance ratios and does not establish target-occupancy change of measure,
 learn nuisance quantities, or handle unknown dynamics.
+
+## Approximate-Poisson stationary target-policy off-policy evaluation
+
+| Declaration | Module | Role |
+|---|---|---|
+| `stationaryTargetPolicyPredictableMean_eq_drift` | `StochasticDynamics.StationaryTargetPolicyOPE` | Exposes the raw behavior-law predictable mean as the normalized target-policy Poisson drift at the current observed state, before any exact-Poisson flattening |
+| `stationaryTargetPolicyPosteriorResidualAverage` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Averages the true induced-kernel approximate-Poisson residual over the first `n` encountered states and a posterior PMF |
+| `posteriorAverage_forwardPrefixMean_stationaryTargetPolicyPredictableMean_approximate` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Identifies the posterior predictable-mean prefix average with `(posterior stationary risk + posterior residual average + B) / (C * (1 + 2 * B))` |
+| `neg_stationaryTargetPolicyPosteriorResidualAverage_le` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Converts a fixed pointwise absolute residual envelope into exactly `posteriorAverage posterior residualEnvelope`, with no extra importance-ratio, span, horizon, or factor-two multiplier |
+| `exists_stationaryApproximateTargetPolicyOPE_signedResidual_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Leaves the encountered signed residual average explicit on one event simultaneous over path, finite tilt atom, posterior PMF, and time, so a second simultaneous event may certify a pathwise residual bound without fixing that bound before the OPE event |
+| `exists_stationaryApproximateTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every `n >= 2`, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus `posteriorAverage posterior residualEnvelope` |
+
+The environment `P`, behavior policy `beta`, target-policy catalog `pi`,
+invariant PMFs, potentials, and pointwise residual envelopes are fixed before
+the event. The theorem assumes true induced-kernel invariance, `[0,1]`
+transition scores, a common potential-span bound, overlap, a positive
+importance-ratio cap, full-support hypothesis and tilt weights, positive
+declared tilts below one, and a positive failure budget. The event is fixed
+before the realized path `x`, tilt atom, posterior, and time are quantified, so
+those choices may be made after observing the path only within the fixed
+catalogs and envelope contract. The result does not construct finite-depth
+potentials, candidate kernels, transition-confidence events, event
+intersections, invariant laws, or data-dependent residual envelopes. It also
+does not provide full-trajectory importance sampling or a two-sided confidence
+interval.
+
+## Stationary target-policy robust-candidate bridge
+
+| Declaration | Module | Role |
+|---|---|---|
+| `targetPolicyRowRisk_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Proves that the nested target-action and next-state PMF average of any `[0,1]` controlled-transition score remains in `[0,1]` |
+| `targetPolicyRowScore_mem_Icc` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Transfers the unit-range certificate to the constant-next-state Markov row-score adapter |
+| `centered_targetPolicyRowScore_finiteOscillation_le_one` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Supplies the generic centered row-risk oscillation envelope `D = 1` for any reference PMF and any `[0,1]` target-policy score |
+| `abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given an invariant PMF for the true induced target-policy kernel, one target policy shared by the true and candidate environments, a controlled transition score in `[0,1]`, potential span `B`, and a nonnegative uniform action-conditioned environment-row TV radius `etaEnv`, deterministically bounds the true stationary residual by `finiteOscillation(candidate drift) + 2 * ((1 + B) * etaEnv)`; it supplies no confidence event, OPE theorem, or selection license |
+| `abs_approximateTargetPolicyPoissonResidual_le_affineDrift` | `StochasticDynamics.StationaryTargetPolicyRobustCandidate` | Given the exact affine decomposition `true drift = candidate drift + coefficient * sensitivity`, oscillation bounds `epsilon` and `L`, and `abs coefficient <= eta`, bounds the stationary residual by `epsilon + L * eta`; it supplies no event or model-family certificate |
+
+## Fixed-candidate finite-depth robust target-policy off-policy evaluation
+
+| Declaration | Module | Role |
+|---|---|---|
+| `candidateTargetPolicyFiniteDepthPotential` | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | Constructs the depth-`m` target-policy Poisson potential from a fixed candidate environment and supplied candidate reference PMF, without assuming that reference is invariant |
+| `finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le` | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | Transfers the ordinary finite-depth geometric-decay lemma to the candidate target-policy drift and bounds its oscillation by `alpha^m D` |
+| `exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE` | For fixed true and candidate environments, target-policy catalog, candidate references, physical action-row TV radius, oscillation data, and depth, one behavior-law outer event controls every `n >= 2`, posterior PMF, and declared finite tilt atom by the target-policy OPE boundary plus the posterior average of the constant envelope `alpha^m D + 2 (1 + B_m) etaEnv`, which equals that envelope for a posterior PMF |
+
+Here `B_m = finiteDepthPoissonClosedSpanBound alpha D m`. The robust residual
+is outside `stationaryTargetPolicyOPEBoundary` and is not multiplied by the
+importance-ratio cap `C`. The theorem fixes the candidate environment,
+references, contraction and row-TV certificates, and depth before the outer
+event; it licenses no empirical transition event, candidate selection,
+adaptive depth, or invariant-law construction.
+
+## Same-path empirical-kernel finite-depth target-policy OPE
+
+| Declaration | Module | Role |
+|---|---|---|
+| `exists_stationaryEmpiricalRobustCandidateFiniteDepthTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE` | Intersects the signed-residual OPE event with empirical transition confidence for the augmented behavior chain; under exact behavior mass `1/2`, every visited augmented row yields a physical action-row budget `2 * etaAug` and the final residual `alpha^m D + 4 (1 + B_m) etaAug`, outside the importance-weighted OPE boundary |
+
+The true and candidate environments, Markov behavior policy, target-policy
+catalog, supplied true invariant PMFs, candidate references, contraction and
+oscillation certificates, and depth are fixed before the event. The common
+event is simultaneous over both declared finite tilt catalogs, posterior PMFs,
+and time, with complement mass at most `deltaRisk + deltaTransition`. The
+normalized transition certificate requires every augmented source row to be
+visited at the displayed horizon. This theorem does not select the candidate
+or depth, construct invariant PMFs, certify a named path, or instantiate the
+queue-specific contraction, invariant, or numerical certificates.
+
+## Controlled-queue structured persistence confidence
+
+| Declaration | Module | Role |
+|---|---|---|
+| `refreshEnvironment_apply_toReal` | `Applications.ControlledQueuePersistenceConfidence` | Constructs the arbitrary-parameter physical kernel `(1 - gamma) * Uniform24 + gamma * delta_step` for fixed `gamma in [0,1)` and exposes every real-valued mass |
+| `candidateEnvironment_eq_refreshEnvironment` | `Applications.ControlledQueuePersistenceConfidence` | Identifies each of the three generated candidate kernels with its corresponding member of the structured refresh family |
+| `persistenceDestinationHit_rowRisk` | `Applications.ControlledQueuePersistenceConfidence` | Proves that the controlled transition hit statistic has row-independent conditional mean `(1 + 23 * gamma) / 24`; a hit can also arise from uniform refresh and is not the persistence indicator itself |
+| `exists_persistenceHitConfidence_event` | `Applications.ControlledQueuePersistenceConfidence` | Gives one outer-mass event, for true `gamma` and initial observation fixed beforehand, that controls the direct/complement hit statistic at every declared tilt atom and every `n >= 2` |
+| `refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy` | `Applications.ControlledQueuePersistenceConfidence` | Identifies every physical action-row TV distance from the structured true kernel to a generated candidate with the absolute difference of their hit probabilities, equivalently `(23/24) * |gamma - gammaCandidate|` |
+| `exists_structuredCandidateTVConfidence_event` | `Applications.ControlledQueuePersistenceConfidence` | Transfers the scalar event to simultaneous physical-row TV budgets for all three candidates; candidate, tilt atom, and time are quantified after the common event |
+
+The true parameter, initial observation, behavior policy, tilt catalog and
+weights, and failure budget are fixed before the event. The theorem covers only
+the frozen one-parameter refresh family and is not uniform over the true
+parameter. It does not test model-family membership or construct an
+arbitrary-kernel confidence set, invariant law, Poisson/OPE composition,
+measurable selector, frozen-trace membership proof, or numerical OPE endpoint.
+Because the statistic has the same conditional mean in every row, this route
+does not require the all-source-row visitation premise of the general
+4,608-coordinate transition-confidence construction.
+
+## Controlled-queue structured adaptive OPE
+
+| Declaration | Module | Role |
+|---|---|---|
+| `queueCandidateFiniteDepthPotential_span` | `Applications.ControlledQueueStructuredOPE` | Gives each generated candidate and finite depth its own closed Poisson-potential span using that candidate's checked persistence contraction and the universal fixed-Brier row-risk envelope `D = 1` |
+| `exists_structuredControlledQueueFiniteCatalogOPE_event` | `Applications.ControlledQueueStructuredOPE` | Allocates risk confidence over an arbitrary finite predeclared candidate--depth catalog, intersects those signed-residual OPE events with scalar persistence confidence on the same path, and permits catalog atom, two tilt atoms, posterior, and time selection inside the common event |
+| `queueCandidateDepthWeight_apply` | `Applications.ControlledQueueStructuredOPE` | Checks the fresh uniform `1/21` Lean allocation over all three generated candidates crossed with generated depths `[0,1,2,3,5,8,12]` |
+| `queueStructuredTilt_pos` | `Applications.ControlledQueueStructuredOPE` | Binds the admissible generated tilt prefix `[1/16,1/8,1/4,1/2]` and proves positivity; the generated terminal atom `1` is excluded |
+| `queueStructuredTilt_lt_one` | `Applications.ControlledQueueStructuredOPE` | Proves every admitted risk and persistence tilt satisfies the strict `< 1` event premise |
+| `exists_controlledQueueStructuredAdaptiveOPE_event` | `Applications.ControlledQueueStructuredOPE` | Specializes the adaptive-trajectory risk event to the predeclared 21 candidate--depth atoms, fresh uniform four-tilt allocations, separate `1/40` budgets, and one outer complement of mass at most `1/20` |
+| `exists_selectedControlledQueueStructuredAdaptiveOPE_event` | `Applications.ControlledQueueStructuredOPE` | Makes path/time-dependent substitution explicit for candidate--depth atom, risk tilt, persistence tilt, and posterior PMF, all restricted to catalogs fixed before the event |
+
+For selected candidate `c`, depth `m`, and path-dependent scalar physical-row
+budget `eta_c`, the added robust term is
+`gamma_c^m + 2 * ((1 + B_c,m) * eta_c)`. There is no behavior-probability
+conversion, so the coefficient is `2` rather than the `4` in the generic
+augmented-row queue specialization. The ratio cap `3/2` stays inside the OPE
+boundary and does not multiply this residual.
+
+The true `gamma`, initial observation, catalogs, weights, tilts, and confidence
+budgets are fixed before the event. This is pointwise structured
+refresh-family inference, not a family-membership test or arbitrary-kernel
+certificate. The supports are bound to generated tables, while the uniform
+`1/21` and `1/4` weights are fresh checked Lean allocations. The stationary
+laws are chosen finite invariant witnesses; no arbitrary-`gamma` uniqueness is
+claimed. The selectors are pointwise substitutions, not a measurable selected
+process or selected e-process. The theorem does not license a path-fitted
+candidate, depth, potential, or causal predictor; prove named-path membership
+or random-initial coverage; or provide a prospective numerical endpoint or
+matched baseline comparison.
+
+## Controlled-queue refresh sensitivity and fixed sharp OPE
+
+| Declaration | Module | Role |
+|---|---|---|
+| `refreshTargetPolicyPoissonDriftSensitivity` | `Applications.ControlledQueueRefreshSensitivity` | Defines the exact target-policy Poisson-drift slope in the observable persistence-hit coordinate, including the `24/23` conversion from the latent refresh parameter |
+| `targetPolicyPoissonDrift_refresh_sub_candidate_eq` | `Applications.ControlledQueueRefreshSensitivity` | Identifies true refresh-family drift minus generated-candidate drift exactly as hit-probability discrepancy times the normalized sensitivity, with no TV factor two |
+| `abs_approximateTargetPolicyPoissonResidual_le_refreshSensitivity` | `Applications.ControlledQueueRefreshSensitivity` | Combines candidate-drift oscillation, sensitivity oscillation, and a hit-discrepancy budget `eta` into the residual `epsilon + sensitivityBound * eta`, with no extra `2 * (1 + B)` multiplier |
+| `knownKernelSelectedCandidateDrift_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `58989951 / 9007199254740992` for the nominal selected candidate drift directly from the candidate, target-policy, score, transition, and shifted depth-twelve potential tables, without the invariant law, stationary risk, or generated residual table |
+| `knownKernelSelectedRefreshSensitivity_finiteOscillation_le` | `Applications.ControlledQueueSharpStructuredOPE` | Certifies the exact rational upper bound `831542406207231 / 3236962232172544` for the selected normalized refresh sensitivity |
+| `sharpStructuredResidual` | `Applications.ControlledQueueSharpStructuredOPE` | Defines the pathwise sharp residual as the two checked oscillation bounds combined with the nominal candidate's scalar persistence budget |
+| `exists_controlledQueueSharpStructuredOPE_event` | `Applications.ControlledQueueSharpStructuredOPE` | For any true refresh parameter and deterministic initial observation fixed beforehand, intersects the fixed selected-atom risk and persistence events and bounds the stationary target-policy risk on one adaptive-trajectory outer event of complement mass at most `1/20` at every `n >= 2` |
+| `exists_controlledQueueSharpStructuredReceipt_event` | `Applications.ControlledQueueSharpStructuredOPE` | Freezes true `gamma = 149/200`, initial observation `(eco, state 0)`, horizon `200000`, nominal candidate, supplied shifted depth-twelve potential, and queue-threshold/nominal-model Dirac posterior for the stationary target-policy risk on an adaptive trajectory; it is an event theorem, not a trace or numerical receipt |
+| `sharpStructuredReceiptBoundary_evaluation_of_histogram` | `Applications.ControlledQueueSharpStructuredReceiptCore` | For any path matching a supplied physical transition histogram at horizon `200000`, bounds the frozen sharp primary boundary by the exact count-derived affine-Bessel endpoint with risk log/psi bounds `9` and `1/480` and persistence log/psi bounds `7` and `1/8064`; it contains no future histogram or threshold result |
+| `sharpStructuredRetrospectivePathSummary_of_suffixEdgeHistogram` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Derives the selected score moments and persistence-hit count `152266` from the existing aligned `199999`-transition suffix histogram |
+| `sharpStructuredRetrospectiveUpper_eq_primary` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Checks the exact risk-plus-residual ledger against `45318758321311224310665458696783373002366549 / 659558894102351266671449077672292808728248320` using no true parameter, invariant law, or exact stationary risk |
+| `sharpStructuredRetrospectiveBoundary_lt_sixtyNineThousandths` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | Bounds the sharp structured pathwise endpoint by `0.068710707605557... < 0.069` from the aligned retrospective histogram |
+| `exists_controlledQueueSharpStructuredRetrospective_event` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | For every fixed admissible refresh parameter under the path law started at `(action = 1, state = 1)`, supplies an outer event of complement mass at most `1/20` on which any path with the aligned retrospective histogram receives the exact sharp endpoint; it is not a simultaneous-in-parameter event or a named-path membership theorem |
+| `sharpStructuredRetrospectiveFailureEvent_mass_le` | `Applications.ControlledQueueSharpStructuredRetrospectiveReceipt` | For each fixed admissible refresh parameter under the path law started at `(action = 1, state = 1)`, bounds by `1/20` the outer mass of the paths on which the aligned frozen histogram occurs while the displayed risk conclusion fails; the failure set is not asserted measurable, and the statement is neither histogram-conditioned nor simultaneous-in-parameter coverage |
+
+The fixed prospective slice uses risk tilt `1/16`, persistence tilt `1/64`, and separate
+failure budgets `1/40`. It has no fresh prospective trace or histogram, no
+named-path good-event membership theorem, and no checked numerical endpoint
+below the protocol threshold `< 0.10`. Its local protocol has not been
+publicly preregistered. The independent generator/verifier implementation and
+pre-beacon gate are checked locally, but a corrected code-freeze commit still
+must be immutably bound with the protocol before the future-beacon seed is read.
+Its version-one binding contains no final OSF registration GUID; the completed
+registration response supplies that GUID, the archived-file metadata target
+must match it, and the metadata size and SHA-256 must match the exact binding
+bytes.
+
+The retrospective slice uses the already-existing trace histogram rather than
+fresh prospective data. It is an unknown-parameter certificate only within the
+well-specified one-dimensional refresh family. It does not test that family,
+give histogram-conditioned `19/20` coverage, or establish that a named trace
+lies in the theorem-produced event.
+
+## Controlled-queue twelve-atom OPE catalog
+
+| Declaration | Module | Role |
+|---|---|---|
+| `queueHypothesisPrior_apply` | `Applications.ControlledQueueOPECatalog` | Identifies the uniform prior on the four generated target policies paired with the three fixed Brier predictors as mass `1/12` per atom |
+| `queueTransitionPrior_apply` | `Applications.ControlledQueueOPECatalog` | Checks that the fresh uniform prior covers all `48 * 48 * 2 = 4608` augmented transition coordinates with mass `1/4608` each |
+| `queueHypothesisStationary_isInvariant` | `Applications.ControlledQueueOPECatalog` | Supplies a canonical noncomputable invariant PMF for each true target-policy kernel on the finite physical state space; it proves neither uniqueness nor an explicit stationary-risk value |
+| `queueHypothesis_nominal_isOscillationContraction` | `Applications.ControlledQueueOPECatalog` | Specializes the nominal candidate's checked contraction upper bound to `3/4` for every one of the twelve policy--predictor atoms |
+| `exists_nominalControlledQueueEmpiricalFiniteDepthOPE_event` | `Applications.ControlledQueueOPECatalog` | Instantiates one `19/20` outer event for the fixed nominal candidate, all twelve posterior atoms, and any depth fixed before the event, under positive visit mass for every augmented source row; the residual is `(3/4)^m + 4 (1 + B_m) etaAug` |
+
+The application theorem uses `D = 1`, importance cap `3/2`, separate risk and
+transition budgets `1/40`, singleton risk and transition tilts `1/4`, and a
+fresh uniform full-support prior on all `48 * 48 * 2 = 4608` augmented
+transition coordinates. The latter is intentionally not the frozen trace
+configuration's 48 source-row weights; that configuration's tilt grid also
+contains the inadmissible endpoint `1`, and its five-predictor weights include
+two history-dependent predictors rather than the twelve stationary atoms.
+The true environment, initial observation, nominal candidate, depth, catalogs,
+and priors are fixed before the event. The conclusion is simultaneous over
+posterior PMFs and time, but it does not prove all-row visitation or event
+membership for the frozen trace, select a candidate or depth from data, or
+provide a numerical confidence endpoint. A separate deterministic module below
+identifies the invariant law and stationary risk for one fixed catalog atom;
+that calculation is not a statement about the frozen path or the event.
+
+## Controlled-queue explicit invariant law and stationary risk
+
+| Declaration | Module | Role |
+|---|---|---|
+| `queueThresholdStationaryMass_isPMF` | `Applications.ControlledQueueInvariantRisk` | Checks that the explicit 24-entry rational mass vector is nonnegative and sums to one |
+| `queueThresholdStationaryLaw_apply_toReal` | `Applications.ControlledQueueInvariantRisk` | Identifies every real-valued mass of the constructed PMF with its exact rational table entry |
+| `queueThresholdNominalTargetKernel_apply_toReal` | `Applications.ControlledQueueInvariantRisk` | Evaluates the nominal environment under target-policy index `1` as an exact 24-state rational kernel |
+| `queueThresholdStationaryLaw_isInvariant` | `Applications.ControlledQueueInvariantRisk` | Proves the explicit PMF invariant for the nominal candidate and queue-threshold target policy |
+| `queueThresholdStationaryLaw_eq_catalogStationary` | `Applications.ControlledQueueInvariantRisk` | Uses strict Dobrushin contraction to identify the explicit PMF with the canonical noncomputable invariant witness for the corresponding catalog atom |
+| `queueThreshold_nominalModelOverload_rowRisk` | `Applications.ControlledQueueInvariantRisk` | Evaluates the exact one-step Brier row-risk vector for target-policy index `1` and fixed-predictor index `2` |
+| `queueThreshold_nominalModelOverload_stationaryRisk` | `Applications.ControlledQueueInvariantRisk` | Proves that the explicit stationary Brier risk is exactly `4338268437 / 67816493056`, hence below `13/200` |
+| `queueThreshold_nominalModelOverload_catalogStationaryRisk` | `Applications.ControlledQueueInvariantRisk` | Rewrites the same exact risk through the canonical invariant witness and score stored in the twelve-atom catalog |
+
+This is a deterministic known-model calculation for one predeclared atom: the
+nominal environment, queue-threshold target (index `1`), and nominal-model
+overload predictor (index `2`). It neither imports the frozen trace nor proves
+good-event membership, a confidence bound, unknown-kernel usefulness, or any
+data-adaptive selection license.
+
+## Controlled-queue known-kernel numerical receipt
+
+| Declaration | Module | Role |
+|---|---|---|
+| `exists_controlledQueueKnownKernelReceiptOPE_event` | `Applications.ControlledQueueKnownKernelReceipt` | Specializes the twelve-atom approximate target-policy OPE theorem to the generated fixed initial observation `(action = 1, state = 1)`, singleton tilt `1/16`, and failure mass at most `1/40`; the event is simultaneous over posterior PMFs and times `n >= 2` |
+| `knownKernelReceiptPathSummary_of_suffixEdgeHistogram` | `Applications.ControlledQueueKnownKernelReceipt` | Converts the exact aligned `24 x 2 x 24` suffix-edge-histogram premise into the selected score sum and squared-score sum, preventing the off-by-one ambiguity that those two scalar moments alone cannot detect |
+| `knownKernelReceipt_selectedBoundary_add_residual_le_d9_of_suffixEdgeHistogram` | `Applications.ControlledQueueKnownKernelReceipt` | Evaluates the selected queue-threshold/nominal-model depth-twelve boundary plus its exact residual envelope below the generated rational `d9` receipt |
+| `knownKernelReceipt_selectedRisk_lt_seven_hundredths` | `Applications.ControlledQueueKnownKernelReceipt` | Combines the aligned histogram calculation with the event inequality to prove the selected stationary risk is below `7/100` |
+
+The selected atom has exact stationary risk
+`4338268437 / 67816493056`, a twelve-way uniform prior, ratio cap `3/2`, and a
+generated depth-twelve shifted potential. The generator and independent
+verifier bind the raw trace bytes to the aligned suffix histogram, while Lean
+checks histogram-to-score arithmetic and the statistical endpoint. The final
+path theorem still takes both the histogram premise and the event inequality:
+it does not prove that the named path belongs to the theorem-produced event,
+does not identify the generated potential with the generic finite-depth
+constructor, and is not an unknown-kernel certificate.
+
+## Controlled-queue target-policy score certificates
+
+| Declaration | Module | Role |
+|---|---|---|
+| `fixedBrierScore_eq_squaredError` | `Applications.ControlledQueueTargetPolicyScores` | Identifies each of the three fixed queue predictors with squared error against the generated binary overload outcome |
+| `fixedBrierScore_mem_Icc` | `Applications.ControlledQueueTargetPolicyScores` | Proves every fixed-predictor Brier score lies in `[0,1]`; the two causal Beta predictors remain outside this stationary-score interface |
+| `fixedBrierScore_centeredTargetPolicyRowRisk_finiteOscillation_le_one` | `Applications.ControlledQueueTargetPolicyScores` | Instantiates the generic envelope `D = 1` uniformly over all generated candidates, target policies, fixed predictors, and reference PMFs; it does not claim the sharper candidate-specific constants |
+| `controlCostScore_mem_Icc` | `Applications.ControlledQueueTargetPolicyScores` | Proves the generated normalized control cost lies in `[0,1]` |
+| `behavior_targetPolicy_overlap` | `Applications.ControlledQueueTargetPolicyScores` | Lifts exact uniform behavior mass `1/2` to pointwise history-interface overlap for all four generated target policies |
+| `behavior_targetPolicy_ratioBound_three_halves` | `Applications.ControlledQueueTargetPolicyScores` | Lifts the generated target-policy mass bound `3/4` to the exact controlled importance-ratio cap `3/2` |
+
+These score and policy results are deterministic model certificates, not a
+confidence statement. They do not themselves construct invariant PMFs, import
+the frozen trace, or establish membership of any path in a statistical good
+event. They sit alongside the independent contraction layer below; a later
+fixed-catalog instantiation can combine the two layers.
+
+## Controlled-queue candidate contraction
+
+| Declaration | Module | Role |
+|---|---|---|
+| `candidateKernelTable_eq_massTable` | `Applications.ControlledQueueTypedModel` | Identifies the complete exported generated candidate table with the three-dimensional table obtained from the compact typed refresh-mixture mass accessor |
+| `candidateRefreshBase_le_candidateKernelTableMass` | `Applications.ControlledQueueTypedModel` | Derives from the generated refresh-mixture specification that every candidate-kernel cell contains the declared common uniform-refresh mass |
+| `candidateTargetPolicyKernel_common_minorization` | `Applications.ControlledQueueContraction` | Lifts the environment-cell floor through an arbitrary state-Markov target policy to a common uniform minorization of every induced state-kernel row |
+| `candidateTargetPolicyKernel_dobrushin_le_gamma` | `Applications.ControlledQueueContraction` | Bounds the induced target-policy kernel's finite Dobrushin coefficient by the generated candidate weight `5/8`, `3/4`, or `7/8` |
+| `candidateTargetPolicyKernel_isOscillationContraction` | `Applications.ControlledQueueContraction` | Supplies the oscillation-contraction premise used by finite-depth target-policy OPE for every state-Markov target policy |
+
+The result is an upper bound, not a claimed exact coefficient: policy mixing
+can make the induced coefficient smaller. `uniformStateReference` is a valid
+finite-depth Poisson reference but is not claimed invariant for an arbitrary
+target policy. These deterministic certificates do not identify the true
+environment, construct a true invariant PMF, or certify the frozen trace.
 
 ## Dynamic target-policy comparators
 
@@ -1041,6 +1325,7 @@ library theorem index.
 | `exists_stationaryPoissonEmpiricalBernsteinPACBayes_envelope_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Replaces the signed path residual and endpoint by supplied posterior residual envelopes and `B / n` |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson specialization with zero residual and the exact telescoping endpoint term |
 | `exists_stationaryExactPoissonEmpiricalBernsteinPACBayes_span_event` | `StochasticDynamics.StationaryPoissonPACBayes` | Exact-Poisson stationary-risk certificate with only the simple `B / n` endpoint price |
+| `finiteOscillation_add_const_mul_le` | `StochasticDynamics.StationaryPoissonContraction` | Bounds the oscillation of `f + coefficient * g` by `epsilon + L * eta` from oscillation bounds on `f` and `g` and `abs coefficient <= eta` |
 | `finiteDepthPoisson_residual_identity` | `StochasticDynamics.StationaryPoissonContraction` | Identifies the truncated Neumann potential's exact Poisson residual with `T^m (g - R)` |
 | `iteratedMarkovPotentialMean_oscillation_le` | `StochasticDynamics.StationaryPoissonContraction` | Iterates a supplied oscillation contraction to the geometric factor `alpha^t` |
 | `finiteDepthPoissonPotential_span` | `StochasticDynamics.StationaryPoissonContraction` | Bounds the depth-`m` potential span by the finite geometric sum times the centered-risk oscillation envelope |
@@ -1050,7 +1335,10 @@ library theorem index.
 | `finitePMFTotalVariation` | `StochasticDynamics.StationaryPoissonDobrushin` | Finite-PMF total variation using the probabilists' `L1 / 2` convention |
 | `finiteDobrushinCoefficient` | `StochasticDynamics.StationaryPoissonDobrushin` | Maximum pairwise total variation between rows of a known finite transition kernel |
 | `abs_finitePMFExpectation_sub_le_totalVariation_mul_oscillation` | `StochasticDynamics.StationaryPoissonDobrushin` | Sharp finite-PMF expectation duality with no extra factor two under the `L1 / 2` convention |
+| `finitePMFTotalVariation_le_of_common_minorization` | `StochasticDynamics.StationaryPoissonDobrushin` | Bounds TV by `alpha` when two finite PMFs share the subprobability mass `(1 - alpha)` times a common reference PMF |
+| `finiteDobrushinCoefficient_le_of_common_minorization` | `StochasticDynamics.StationaryPoissonDobrushin` | Lifts a common row minorization to a finite-kernel Dobrushin upper bound |
 | `finiteDobrushinCoefficient_isOscillationContraction` | `StochasticDynamics.StationaryPoissonDobrushin` | Derives oscillation contraction directly from the computed finite Dobrushin coefficient |
+| `isOscillationContraction_of_finiteDobrushinCoefficient_le` | `StochasticDynamics.StationaryPoissonDobrushin` | Turns any certified Dobrushin upper bound into an oscillation-contraction factor |
 | `exists_stationaryFiniteDepthDobrushinEmpiricalBernsteinPACBayes_unit_event` | `StochasticDynamics.StationaryPoissonDobrushin` | Unit-range finite-depth stationary-risk certificate with contraction computed from the kernel |
 | `depthTiltPolynomial_log_cost` | `StochasticDynamics.StationaryPoissonDepthSelection` | Expands the nested depth and geometric-tilt allocation to the exact joint logarithmic price |
 | `stationaryPoissonDepthSelectionBoundary_eq_explicit` | `StochasticDynamics.StationaryPoissonDepthSelection` | Displays the complete selected-depth width, including observed hybrid-Bessel, endpoint, and residual terms |
@@ -1107,6 +1395,22 @@ event, continuous-state validity, or unrestricted real-tilt selection.
 | `exists_selectedEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Explicit path- and time-selected candidate specialization with no additional selection cost |
 | `exists_empiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Gives one uniform candidate-kernel row-TV budget when every source row has been visited |
 | `exists_selectedEmpiricalKernelContraction_event` | `StochasticDynamics.EmpiricalTransitionConfidence` | Combines a selected candidate's empirical row-TV budget with Dobrushin perturbation, true-kernel contraction, and uniqueness among supplied invariant PMFs |
+| `countableTransitionCoordinateBoundary` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Direct or complement coordinate boundary for one natural-number geometric tilt atom |
+| `countableTransitionCoordinateRadius` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Two-sided countable-catalog coordinate radius normalized by source visits |
+| `countableEmpiricalTransitionRowRadius` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Countable-catalog row radius in total-variation scale |
+| `countableEmpiricalCandidateKernelTVBudget` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Maximum candidate discrepancy plus countable-catalog row radius |
+| `countableTransitionCoordinateBoundary_selected_tendsto_zero` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Explicit geometric-atom coordinate boundary tends to zero along every path |
+| `countableTransitionCoordinateRadius_selected_tendsto_zero_of_visitFrequency` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Normalized coordinate radius vanishes under positive limiting source frequency |
+| `countableEmpiricalTransitionRowRadius_selected_tendsto_zero_of_visitFrequency` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Complete row-TV statistical radius vanishes under the same visit-frequency condition |
+| `countableEmpiricalCandidateKernelTVBudget_selected_tendsto_zero` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Kernel budget vanishes only with positive row frequencies and vanishing candidate discrepancies |
+| `exists_countableEmpiricalTransitionCoordinate_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | One outer-mass event controls all times, coordinates, and natural-number tilt atoms |
+| `exists_countableEmpiricalTransitionFrequency_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Gives every visited row a normalized countable-catalog frequency band |
+| `exists_countableEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Certifies every candidate row on the same countable event |
+| `exists_selectedCountableEmpiricalCandidateRowTotalVariation_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Substitutes a path- and time-selected candidate row without a new event |
+| `exists_countableEmpiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Gives a kernel-wide candidate TV budget when every row is visited |
+| `exists_selectedCountableEmpiricalCandidateKernelTV_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Substitutes a selected candidate kernel inside the common event |
+| `exists_countableEmpiricalTransitionGeometric_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Selects the explicit sample-size geometric atom and retains coordinate-boundary convergence |
+| `exists_selectedCountableEmpiricalCandidateKernelTVGeometric_event` | `StochasticDynamics.EmpiricalTransitionConfidenceCountable` | Combines selected kernel validity with conditional vanishing of its countable TV budget |
 
 The normalized row statements require positive source visit mass, and the
 uniform kernel statement requires every row to have been visited. Candidate
@@ -1294,7 +1598,7 @@ flowchart BT
     azuma["Azuma tail"]
     massart["Massart"]
     vc["Sauer-Shelah + binary VC bridge"]
-    erm["VC ERM excess-risk tail"]
+    erm["Effective-growth ERM excess-risk tail"]
     contraction["Finite contraction"]
     linear["Linear predictors"]
     finite_chain["Finite sub-Gaussian chaining"]

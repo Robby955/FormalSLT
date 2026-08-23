@@ -6,11 +6,12 @@ Authors: Robby Sneiderman
 import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 
 /-!
-# Non-vacuity witness for the empirical-Bernstein confidence sequence
+# Nonzero-model receipt for the empirical-Bernstein time-uniform boundary
 
 This file instantiates `empiricalBernstein_confidence_sequence_uniformPrior` with a
-genuine nonzero increment process, proving the headline anytime-valid bound is not
-vacuous.
+genuine nonzero increment process. It checks that the assumptions admit more
+than the zero process and records a numeric crossing-probability bound; it does
+not prove that the crossing event itself is inhabited.
 
 The witness is a Rademacher (sign) increment on `Ω = Bool` under the uniform
 probability measure: `X 0 ω = if ω then 1 else -1` (so `X 0` takes the values

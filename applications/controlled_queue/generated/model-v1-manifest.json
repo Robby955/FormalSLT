@@ -1,0 +1,89 @@
+{
+  "artifact_status": "MODEL/PREPROCESSING ONLY",
+  "files": [
+    {
+      "path": "applications/controlled_queue/model-v1.json",
+      "role": "input",
+      "sha256": "4e92a71ddf07e04e202c901d8c7a682cdf306754a69a0e219fca8ef75abee5a0"
+    },
+    {
+      "path": "applications/controlled_queue/generated/model-v1-tables.json",
+      "role": "output",
+      "sha256": "7d8cf4d970f6e41413ccdf7d62b13bc77418076836505d06ebb4a606493ab724"
+    },
+    {
+      "path": "FormalSLT/Applications/ControlledQueueData.lean",
+      "role": "output",
+      "sha256": "92067ab2b14ce57714d1f7f6427768562061a6ef4a5e422b9389b27cc132e0a9"
+    }
+  ],
+  "generator": {
+    "path": "scripts/generate_controlled_queue_model.py",
+    "revision": "controlled-queue-preprocess-v1",
+    "sha256": "381296e800f3d7a802f5889c2d53235a02b1fe39adc3d19e679d5d9f7a0eb9dc"
+  },
+  "model_version": "controlled-queue-v1",
+  "nonclaims": [
+    "not a statistical certificate",
+    "not a theorem-produced good path",
+    "not a proof bridge"
+  ],
+  "parameters": {
+    "action_count": 2,
+    "augmented_behavior_state_count": 48,
+    "candidate_gammas": [
+      "5/8",
+      "3/4",
+      "7/8"
+    ],
+    "confidence_allocation": {
+      "total": "1/20",
+      "trajectory": "1/40",
+      "transition": "1/40"
+    },
+    "depth_grid": [
+      0,
+      1,
+      2,
+      3,
+      5,
+      8,
+      12
+    ],
+    "horizon": 200000,
+    "next_trace_slice_contract": {
+      "prng_sampling_requirement": "language-independent, versioned, byte-reproducible",
+      "required_exact_weight_tables": [
+        "prior_weights",
+        "posterior_weights",
+        "candidate_weights",
+        "coordinate_weights",
+        "tilt_weights"
+      ],
+      "required_fields": [
+        "initial_state",
+        "prng_contract",
+        "sampling_contract"
+      ],
+      "status": "OPEN"
+    },
+    "nominal_candidate": "nominal",
+    "physical_state_count": 24,
+    "posterior_catalog": [
+      "global_climatology",
+      "queue_action_threshold",
+      "nominal_model_overload",
+      "global_beta",
+      "queue_band_action_beta"
+    ],
+    "random_seed": 20260820,
+    "tilt_grid": [
+      "1/16",
+      "1/8",
+      "1/4",
+      "1/2",
+      "1"
+    ]
+  },
+  "schema_version": "controlled-queue-input-v1"
+}

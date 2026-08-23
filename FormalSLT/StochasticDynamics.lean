@@ -8,6 +8,8 @@ import FormalSLT.StochasticDynamics.MarkovRisk
 import FormalSLT.StochasticDynamics.TrajectoryRisk
 import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk
 import FormalSLT.StochasticDynamics.ControlledTrajectory
+import FormalSLT.StochasticDynamics.ControlledMarkovization
+import FormalSLT.StochasticDynamics.ControlledKernelTV
 import FormalSLT.StochasticDynamics.MarkovPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
@@ -22,10 +24,15 @@ import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustCandidate
 import FormalSLT.StochasticDynamics.StationaryPoissonRobustInvariant
 import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidence
+import FormalSLT.StochasticDynamics.EmpiricalTransitionConfidenceCountable
 import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog
 import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness
 import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE
 import FormalSLT.StochasticDynamics.DynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.PrefixDynamicTargetPolicyComparator
 import FormalSLT.StochasticDynamics.TargetPathChangeOfMeasure
@@ -52,17 +59,28 @@ It also exposes the robust fixed-candidate Poisson bridge under an explicit
 row-wise total-variation misspecification budget, together with the induced
 Dobrushin perturbation certificate and uniqueness of supplied invariant laws.
 It additionally exposes time-uniform empirical transition-coordinate and
-row-total-variation confidence certificates for unknown finite kernels.
+row-total-variation confidence certificates for unknown finite kernels,
+including countably allocated geometric tilt selection with vanishing
+statistical radii under positive limiting row-visit frequencies.
 Finite-simplex Cesaro compactness constructs an invariant PMF for every
 nonempty finite kernel; strict Dobrushin or candidate row-TV certificates
 upgrade existence to uniqueness.
 
 It additionally exports finite state--action behavior-law semantics and
 normalized one-step importance-weighting interfaces.  For finite state-based
-Markov target policies, it exports a stationary target-policy OPE endpoint
-under a known environment and behavior policy, supplied invariant target
-laws and exact Poisson potentials, and declared overlap and span bounds.  It
-also exports encountered-prefix dynamic comparators for finite catalogs of
+behavior policies, the controlled prefix kernel and path law are identified
+exactly with the ordinary Markov law on action--state pairs.  Under a positive
+behavior-probability floor, augmented-kernel row-TV control also yields
+action-conditioned environment-row control with the explicit inverse-floor
+factor.  For finite state-based Markov target policies, it exports a stationary
+target-policy OPE endpoint under a known environment and behavior policy,
+supplied invariant target laws and exact Poisson potentials, and declared
+overlap and span bounds.  It also exports the deterministic robust-candidate
+bridge from action-conditioned environment-row total variation to induced
+target-policy drift and stationary-residual envelopes, together with the
+fixed-candidate, fixed-depth robust OPE event under supplied contraction and
+physical action-row total-variation certificates.  It also exports
+encountered-prefix dynamic comparators for finite catalogs of
 history-dependent target policies, including a known prefix/time-dependent
 environment kernel.  For a supplied target policy, it also exports an exact
 finite-horizon target-path change-of-measure identity, target state occupancy

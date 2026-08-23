@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 THEOREM_MAP = ROOT / "docs" / "theorem-map.md"
 OUTPUT = ROOT / "docs" / "proof-frontier-manifest.json"
 
-EXPECTED_PUBLIC_AXIOMS = ["propext", "Classical.choice", "Quot.sound"]
+ALLOWED_TRANSITIVE_AXIOMS = ["propext", "Classical.choice", "Quot.sound"]
 
 LEAN_DECLARATION_KINDS = {
     "theorem": "theorem",
@@ -69,6 +69,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "predeclared candidate--depth catalog combines the stationary "
             "risk and transition events on the same path and permits "
             "post-path candidate, depth, tilt, and posterior substitution. "
+            "For the controlled-queue refresh family, a separate scalar "
+            "persistence-hit event gives exact physical-row TV budgets "
+            "simultaneously for all three generated candidates without an "
+            "all-row-visit premise. "
             "Finite-simplex Cesaro averages construct a chosen invariant PMF "
             "for every nonempty finite kernel. A finite controlled-trajectory "
             "semantic layer derives exact behavior-law predictable means for "
@@ -120,9 +124,14 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "fixed candidate transfers under a deterministic row-TV envelope. "
             "The combined empirical catalog event permits same-path selection "
             "only within a finite predeclared candidate family and only after "
-            "every required row is visited; it does not validate a newly "
-            "path-fitted Poisson score, establish a mixing time, cover "
-            "continuous-state stationary risk, or provide a measurable-event "
+            "every required row is visited. A separate countable geometric "
+            "transition-confidence event has selected coordinate boundaries "
+            "tending to zero; normalized row radii additionally require "
+            "positive limiting visit frequencies, and its selected kernel "
+            "budget vanishes only when empirical candidate discrepancies do. "
+            "Neither layer validates a newly "
+            "path-fitted Poisson score, establishes a mixing time, covers "
+            "continuous-state stationary risk, or provides a measurable-event "
             "theorem. The controlled semantic "
             "layer by itself is behavior-law and one-step. The separate "
             "stationary target-policy OPE theorem requires known dynamics and "
@@ -133,7 +142,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "The separate target-path change-of-measure theorem is exact at "
             "each fixed finite horizon and exposes worst-case weight range "
             "C ^ n; it is not an anytime-valid cumulative-weight boundary. "
-            "No controlled lane is a learned-nuisance or unknown-kernel result. "
+            "Controlled unknown-dynamics results are limited to finite "
+            "predeclared catalogs or the queue's one-parameter structured "
+            "family. No controlled lane provides a learned-nuisance guarantee "
+            "or a useful queue-specific unknown-kernel OPE endpoint. "
             "The arbitrary-state endpoint requires a supplied "
             "jointly measurable score and does not construct a measurable "
             "posterior selector or selected process. The basic Real checker "
@@ -772,7 +784,18 @@ def build_manifest() -> dict[str, Any]:
             "theorem_map_entries": sum(len(family["entries"]) for family in theorem_families),
         },
         "audit": {
-            "expected_public_axioms": EXPECTED_PUBLIC_AXIOMS,
+            "transitive_axiom_policy": {
+                "allowed": ALLOWED_TRANSITIVE_AXIOMS,
+                "command": "bash scripts/check_axioms.sh",
+                "coverage": "curated public theorem allowlist in scripts/check_axioms.sh",
+                "mechanism": "live Lean #print axioms with fail-closed target accounting",
+                "result_embedded": False,
+                "result_note": (
+                    "The manifest records policy, not a cached pass result. CI queries every "
+                    "allowlisted theorem and rejects missing reports or axioms outside the "
+                    "allowed set."
+                ),
+            },
             **audit,
         },
         "theorem_families": theorem_families,
@@ -790,6 +813,7 @@ def build_manifest() -> dict[str, Any]:
                 "docs/open-formalization-problems.md",
                 "lakefile.lean",
                 "lean-toolchain",
+                "scripts/check_axioms.sh",
             ],
         },
     }

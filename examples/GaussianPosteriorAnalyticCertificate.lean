@@ -55,7 +55,8 @@ theorem gaussianPosteriorAnalytic_kl_within_complexity :
 /-- Computed Bernstein-PAC-Bayes upper side for the worked certificate. -/
 theorem gaussianPosteriorAnalytic_bound_certificate :
     analyticBoundSideMilli = 185 := by
-  native_decide
+  norm_num [analyticBoundSideMilli, empiricalRiskMilli, bernsteinVarianceMilli,
+    complexityMilli]
 
 #eval sampleSize
 #eval analyticBoundSideMilli

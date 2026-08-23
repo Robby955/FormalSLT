@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en" data-formalslt-site="research">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FormalSLT is a Lean 4 library of checked results in statistical learning theory, anytime-valid inference, and stochastic dynamics.">
+  <meta name="theme-color" content="#0b172b">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FormalSLT">
+  <meta property="og:title" content="FormalSLT | Checked statistical learning theory">
+  <meta property="og:description" content="Machine-checked PAC-Bayes bounds, anytime-valid inference, and learning along dependent trajectories.">
+  <meta property="og:url" content="https://robby955.github.io/FormalSLT/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FormalSLT | Checked statistical learning theory">
+  <meta name="twitter:description" content="Machine-checked PAC-Bayes bounds, anytime-valid inference, and learning along dependent trajectories.">
+  <title>FormalSLT | Checked statistical learning theory</title>
+  <link rel="canonical" href="https://robby955.github.io/FormalSLT/">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="./" aria-label="FormalSLT home">FormalSLT</a>
+    <nav aria-label="Primary navigation">
+      <a href="#results">Results</a>
+      <a href="theorems/">Theorem index</a>
+      <a href="search.html">API search</a>
+      <a href="api.html">Lean docs</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Lean 4 · probability · statistical learning</p>
+        <h1>Statistical guarantees you can inspect down to the theorem.</h1>
+        <p class="lede">FormalSLT develops reusable, machine-checked foundations for PAC-Bayes bounds, anytime-valid inference, and learning along dependent trajectories. The public surface below separates proved endpoints from their assumptions and nonclaims.</p>
+        <div class="actions">
+          <a class="button button-primary" href="#endpoints">Choose a theorem</a>
+          <a class="button button-secondary" href="api.html">Browse the checked API</a>
+        </div>
+        <p class="release-note"><strong>Candidate v0.2 surface.</strong> Links on this deployment resolve to the exact source commit shown in the footer. Release tags, archived artifacts, and paper claims remain separate gates.</p>
+      </div>
+      <figure class="hero-figure">
+        <a class="theorem-map-link" href="assets/theorem-chain.svg" aria-label="Open the full-size FormalSLT theorem map">
+          <img src="assets/theorem-chain.svg" width="1400" height="1470" alt="A theorem chain from exponential processes through PAC-Bayes and adaptive trajectories to stationary and unknown-kernel certificates.">
+          <span class="map-action" aria-hidden="true">Open full-size theorem map ↗</span>
+        </a>
+        <figcaption>Reusable mechanisms lead to theorem-level statistical endpoints.</figcaption>
+      </figure>
+    </section>
+
+    <section class="proof-key" aria-labelledby="proof-key-title">
+      <h2 id="proof-key-title">How claims are labeled</h2>
+      <dl>
+        <div><dt>Proved</dt><dd>A Lean theorem in this build, with the public axiom audit limited to <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>.</dd></div>
+        <div><dt>Proved composition</dt><dd>A proved public endpoint assembled from checked mechanism lemmas. This describes proof structure, not its relationship to prior literature.</dd></div>
+        <div><dt>Conditional</dt><dd>A public application claim that materially relies on a supplied certificate or explicitly unproved proposition, not merely an ordinary theorem hypothesis.</dd></div>
+        <div><dt>Open</dt><dd>A target or generalization that is not represented as a completed theorem.</dd></div>
+        <div><dt>Literature fidelity</dt><dd><code>REPRODUCTION</code>, <code>SPECIALIZATION</code>, and <code>DERIVED VARIANT</code> are an independent axis recorded in the <a href="https://github.com/Robby955/FormalSLT/blob/__FORMALSLT_SOURCE_REF__/docs/LITERATURE.md">literature ledger</a>.</dd></div>
+      </dl>
+    </section>
+
+    <section class="section" id="results" aria-labelledby="results-title">
+      <div class="section-heading">
+        <p class="eyebrow">Three flagship families</p>
+        <h2 id="results-title">From IID posteriors to adaptive dependent data</h2>
+        <p>The project is organized around a common proof spine: exponential control, simultaneous change of measure, selection costs, and concrete risk statements.</p>
+      </div>
+
+      <article class="flagship">
+        <div class="flagship-number" aria-hidden="true">01</div>
+        <div>
+          <p class="status">Proved composition · IID endpoint</p>
+          <h3>All-sample-size empirical-Bernstein PAC-Bayes</h3>
+          <p>The flagship endpoint is an IID all-sample-size event for continuous posterior measures. A separate forward predictable-residual e-process for finite hypothesis families supplies a process-level supporting route.</p>
+        </div>
+        <a class="text-link" href="readers/stats-ml/">Read for statistics and ML <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="flagship">
+        <div class="flagship-number" aria-hidden="true">02</div>
+        <div>
+          <p class="status">Proved compositions · two state-space regimes</p>
+          <h3>Adaptive trajectory inference</h3>
+          <p>The finite-state endpoint supports countable allocation and a selected width tending to zero. A second endpoint supports continuous posterior measures on arbitrary measurable state and hypothesis spaces under a joint score-measurability contract.</p>
+        </div>
+        <a class="text-link" href="readers/probability/">Read for probability <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="flagship">
+        <div class="flagship-number" aria-hidden="true">03</div>
+        <div>
+          <p class="status">Proved compositions · finite-state stationary layer</p>
+          <h3>Stationary Poisson and unknown-kernel certification</h3>
+          <p>Finite-depth Poisson corrections connect trajectory risk to stationary risk. A selected empirical catalog adds transition confidence, contraction transfer, and the exact branch under which the invariant law is unique.</p>
+        </div>
+        <a class="text-link" href="readers/verification/">Inspect the verification boundary <span aria-hidden="true">→</span></a>
+      </article>
+    </section>
+
+    <section class="section endpoint-section" id="endpoints" aria-labelledby="endpoints-title">
+      <div class="section-heading">
+        <p class="eyebrow">Five checked endpoints</p>
+        <h2 id="endpoints-title">Choose by assumptions, not by slogan</h2>
+        <p>Each row gives the usable theorem and the nearest boundary it does not cross.</p>
+      </div>
+
+      <ol class="endpoint-list">
+        <li>
+          <div class="endpoint-index">A</div>
+          <div class="endpoint-body">
+            <p class="status">Proved composition · IID · continuous posterior measures</p>
+            <h3><a href="FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.html#FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event"><code>exists_continuousInfiniteEmpiricalBernstein_event</code></a></h3>
+            <p>One prior-dependent event works for every <code>n ≥ 2</code> and every admissible posterior measure on an arbitrary measurable hypothesis space, for bounded losses over a finite IID observation type.</p>
+            <p class="boundary"><strong>Boundary.</strong> This is an offline simultaneous event built by reverse stitching. It is not itself a forward e-process, an optional-stopping result, or an all-real-tilt optimization.</p>
+          </div>
+        </li>
+        <li>
+          <div class="endpoint-index">B</div>
+          <div class="endpoint-body">
+            <p class="status">Proved composition · adaptive finite-state dynamics</p>
+            <h3><a href="FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.html#FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"><code>exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event</code></a></h3>
+            <p>For finite states, arbitrary prefix-dependent kernels, and bounded predeclared trajectory scores, the common event covers every declared tilt atom and path- and time-dependent posterior PMFs. The capstone substitutes the explicit <code>n</code>-dependent geometric atom and proves that selected width vanishes.</p>
+            <p class="boundary"><strong>Boundary.</strong> The endpoint starts from a fixed state and does not allow new score-catalog members learned after observing outcomes. Countable confidence allocation is not itself a master e-process.</p>
+          </div>
+        </li>
+        <li>
+          <div class="endpoint-index">C</div>
+          <div class="endpoint-body">
+            <p class="status">Proved composition · arbitrary measurable spaces</p>
+            <h3><a href="FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html#FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event"><code>exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event</code></a></h3>
+            <p>One outer event supports every sample size, declared finite tilt, and eligible post-data posterior measure for prefix-dependent kernels on arbitrary measurable state and hypothesis spaces.</p>
+            <p class="boundary"><strong>Boundary.</strong> The endpoint starts from a fixed state, uses a finite predeclared tilt catalog, and requires a jointly strongly measurable bounded score family. It does not prove a selected width tends to zero.</p>
+          </div>
+        </li>
+        <li>
+          <div class="endpoint-index">D</div>
+          <div class="endpoint-body">
+            <p class="status">Proved composition · conditional inputs · known finite-state kernel</p>
+            <h3><a href="FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html#FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event"><code>exists_stationaryPoissonDepthSelection_allTime_vanishing_event</code></a></h3>
+            <p>Given an invariant PMF, a nonnegative <code>D</code> bounding each centered row-risk oscillation, and explicit oscillation contraction, logarithmic finite-depth Poisson potentials and geometric tilt selection yield an all-time stationary boundary that tends to zero.</p>
+            <p class="boundary"><strong>Boundary.</strong> The theorem is finite-state and assumes the kernel, invariant PMF, contraction, and oscillation bound are supplied. It is not a continuous-state mixing-time result or a learned-nuisance guarantee.</p>
+          </div>
+        </li>
+        <li>
+          <div class="endpoint-index">E</div>
+          <div class="endpoint-body">
+            <p class="status">Proved composition · empirical transitions · finite catalog</p>
+            <h3><a href="FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.html#FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event"><code>exists_selectedCanonicalEmpiricalStationaryCatalog_event</code></a></h3>
+            <p>A finite predeclared candidate and depth catalog combines same-path risk and transition confidence, post-path selection, contraction transfer, a canonical invariant PMF, and a conditional uniqueness conclusion.</p>
+            <p class="boundary"><strong>Boundary.</strong> Every state row must be visited, candidates must be predeclared, and uniqueness only follows on the selected strict-contraction branch. Arbitrary path-fitted candidates are outside the theorem.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section readers" aria-labelledby="readers-title">
+      <div class="section-heading">
+        <p class="eyebrow">Four ways in</p>
+        <h2 id="readers-title">Start from the language you use</h2>
+      </div>
+      <div class="reader-links">
+        <a href="readers/stats-ml/"><span>Statistics &amp; ML</span><small>Bounds, estimands, selection, and examples</small></a>
+        <a href="readers/probability/"><span>Probability</span><small>Processes, filtrations, kernels, and events</small></a>
+        <a href="readers/lean/"><span>Lean</span><small>Imports, namespaces, receipts, and reuse</small></a>
+        <a href="readers/verification/"><span>Verification</span><small>Claim classes, axioms, assumptions, and nonclaims</small></a>
+      </div>
+    </section>
+
+    <section class="closing" aria-labelledby="closing-title">
+      <p class="eyebrow">Inspect the artifact</p>
+      <h2 id="closing-title">Every public route ends at declarations or source.</h2>
+      <div class="actions">
+        <a class="button button-primary" href="theorems/">Search by mathematical concept</a>
+        <a class="button button-secondary" href="FormalSLT.html">Open the module tree</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p><strong>FormalSLT</strong> · Lean 4 formalization of statistical learning theory and probability.</p>
+    <p>Built from <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__"><code>__FORMALSLT_SOURCE_REF__</code></a>. Source pinning identifies this documentation build; it is not by itself a release tag.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,33 @@
+import FormalSLT.Applications
+
+/-!
+# Twenty-state random-refresh application surface
+
+This is the one-command integration checker for the model, balanced arithmetic
+path, common-event certificate, numerical receipt, adaptive selectors, and
+separate-event baselines. It also checks the independent all-time two-sided
+oracle event, which does not depend on the named arithmetic path. The component
+checkers provide exhaustive public declaration and axiom coverage.
+-/
+
+open FormalSLT.StochasticDynamics
+
+#check RandomRefreshLoadModel.candidate_stationaryRisk
+#check RandomRefreshLoadModel.exists_randomRefreshLoad_matched_event
+#check RandomRefreshLoadPath.balancedPath_empiricalTransitionFrequency
+#check RandomRefreshLoadReceipt.exists_balancedPath_conditional_numeric_certificate
+#check RandomRefreshLoadAdaptiveSelection.exists_randomRefreshLoad_adaptiveSelection_event
+#check RandomRefreshLoadBaselines.balancedPath_fixedRangeRightHandSide_lt
+#check RandomRefreshLoadBaselines.balancedPath_fixedDepthRightHandSide_lt
+#check RandomRefreshLoadBaselines.balancedPath_nonVarianceRightHandSide_lt
+#check RandomRefreshLoadOracleCertificate.exists_randomRefreshLoad_twoSidedOracle_le_event
+
+#print axioms RandomRefreshLoadModel.candidate_stationaryRisk
+#print axioms RandomRefreshLoadModel.exists_randomRefreshLoad_matched_event
+#print axioms RandomRefreshLoadPath.balancedPath_empiricalTransitionFrequency
+#print axioms RandomRefreshLoadReceipt.exists_balancedPath_conditional_numeric_certificate
+#print axioms RandomRefreshLoadAdaptiveSelection.exists_randomRefreshLoad_adaptiveSelection_event
+#print axioms RandomRefreshLoadBaselines.balancedPath_fixedRangeRightHandSide_lt
+#print axioms RandomRefreshLoadBaselines.balancedPath_fixedDepthRightHandSide_lt
+#print axioms RandomRefreshLoadBaselines.balancedPath_nonVarianceRightHandSide_lt
+#print axioms RandomRefreshLoadOracleCertificate.exists_randomRefreshLoad_twoSidedOracle_le_event

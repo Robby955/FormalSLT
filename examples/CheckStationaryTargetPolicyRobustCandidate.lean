@@ -1,0 +1,40 @@
+import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate
+
+/-!
+# Stationary target-policy robust-candidate API receipt
+
+This checker audits every public declaration in the deterministic bridge.
+The target policy is shared between true and candidate environments, while
+`etaEnv` always denotes an action-conditioned environment-row radius.
+-/
+
+open FormalSLT.StochasticDynamics
+
+#check targetPolicyRowScore
+#check targetPolicyRowRisk_mem_Icc
+#check targetPolicyRowScore_mem_Icc
+#check centered_targetPolicyRowScore_finiteOscillation_le_one
+#check markovRowRisk_targetPolicyRowScore
+#check stationaryMarkovRisk_targetPolicyRowScore
+#check targetPolicyPoissonDrift
+#check targetPolicyPoissonDrift_eq_markovPoissonDrift
+#check approximateTargetPolicyPoissonResidual
+#check approximateTargetPolicyPoissonResidual_eq_inducedKernel
+#check targetPolicyPoissonDrift_stationary_mean
+#check finitePMFTotalVariation_targetPolicyKernel_le_weighted_environment
+#check finitePMFTotalVariation_targetPolicyKernel_le_environmentRadius
+#check abs_targetPolicyPoissonDrift_sub_candidate_le
+#check abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation
+
+#print axioms FormalSLT.StochasticDynamics.markovRowRisk_targetPolicyRowScore
+#print axioms FormalSLT.StochasticDynamics.targetPolicyRowRisk_mem_Icc
+#print axioms FormalSLT.StochasticDynamics.targetPolicyRowScore_mem_Icc
+#print axioms FormalSLT.StochasticDynamics.centered_targetPolicyRowScore_finiteOscillation_le_one
+#print axioms FormalSLT.StochasticDynamics.stationaryMarkovRisk_targetPolicyRowScore
+#print axioms FormalSLT.StochasticDynamics.targetPolicyPoissonDrift_eq_markovPoissonDrift
+#print axioms FormalSLT.StochasticDynamics.approximateTargetPolicyPoissonResidual_eq_inducedKernel
+#print axioms FormalSLT.StochasticDynamics.targetPolicyPoissonDrift_stationary_mean
+#print axioms FormalSLT.StochasticDynamics.finitePMFTotalVariation_targetPolicyKernel_le_weighted_environment
+#print axioms FormalSLT.StochasticDynamics.finitePMFTotalVariation_targetPolicyKernel_le_environmentRadius
+#print axioms FormalSLT.StochasticDynamics.abs_targetPolicyPoissonDrift_sub_candidate_le
+#print axioms FormalSLT.StochasticDynamics.abs_approximateTargetPolicyPoissonResidual_le_candidateOscillation

@@ -158,19 +158,19 @@ theorem targetPolicyPoissonControlledScore_mem_Icc
   exact poissonCorrectedTransitionScore_mem_Icc
     hB (fun x y ↦ hscore x a y) hspan z y
 
-/-- Exact target-policy conditional-mean identity.  The left side is the
-quantity obtained after behavior-law importance weighting; the right side is
-independent of the realized behavior history. -/
-theorem stationaryTargetPolicyPredictableMean_eq
+/-- Unflattened target-policy conditional-mean identity.  Importance weighting
+recovers the target-policy Poisson drift at the current observed state.  No
+exact Poisson equation is used in this identity. -/
+theorem stationaryTargetPolicyPredictableMean_eq_drift
     (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
-    (stationary : PMF Z) (score : TargetPolicyTransitionScore Z A)
+    (score : TargetPolicyTransitionScore Z A)
     (potential : Z → ℝ) {B C : ℝ} (hB : 0 ≤ B) (hC : 0 < C)
-    (hpoisson : IsExactTargetPolicyPoissonSolution
-      P π stationary score potential)
     (n : ℕ) (x : ℕ → ControlledObservation Z A) :
     stationaryTargetPolicyPredictableMean
         P π score potential B C n x =
-      (stationaryTargetPolicyRisk P π stationary score + B) /
+      (targetPolicyRowRisk P π score (x n).2 +
+          targetPolicyPotentialMean P π potential (x n).2 -
+          potential (x n).2 + B) /
         (C * (1 + 2 * B)) := by
   classical
   let u := Preorder.frestrictLe n x
@@ -271,7 +271,25 @@ theorem stationaryTargetPolicyPredictableMean_eq
           intro y _hy
           ring]
     rw [hnum]
-  rw [hscaled, hpoisson z]
+  simpa [u, z] using hscaled
+
+/-- Exact target-policy conditional-mean identity.  The left side is the
+quantity obtained after behavior-law importance weighting; the right side is
+independent of the realized behavior history. -/
+theorem stationaryTargetPolicyPredictableMean_eq
+    (P : Z → A → PMF Z) (π : MarkovTargetPolicy Z A)
+    (stationary : PMF Z) (score : TargetPolicyTransitionScore Z A)
+    (potential : Z → ℝ) {B C : ℝ} (hB : 0 ≤ B) (hC : 0 < C)
+    (hpoisson : IsExactTargetPolicyPoissonSolution
+      P π stationary score potential)
+    (n : ℕ) (x : ℕ → ControlledObservation Z A) :
+    stationaryTargetPolicyPredictableMean
+        P π score potential B C n x =
+      (stationaryTargetPolicyRisk P π stationary score + B) /
+        (C * (1 + 2 * B)) := by
+  rw [stationaryTargetPolicyPredictableMean_eq_drift
+    P π score potential hB hC n x]
+  rw [hpoisson (x n).2]
 
 /-- Direct conditional-expectation form of the stationary target-policy
 identity under the history-dependent behavior trajectory law. -/

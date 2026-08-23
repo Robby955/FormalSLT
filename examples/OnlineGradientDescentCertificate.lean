@@ -50,15 +50,19 @@ def formalRegretBound : Int := 1000
 
 def pacBoundNumerator : Int := 1500
 
+/-- Exact evaluated regret reused by the two numerical certificates. -/
+theorem onlineGradientDescent_regret_eq : empiricalRegret = 500 := by
+  set_option maxRecDepth 10000 in rfl
+
 /-- Exact integer certificate for the finite-grid OGD smoke workload. -/
 theorem onlineGradientDescent_regret_certificate :
     empiricalRegret ≤ formalRegretBound := by
-  native_decide
+  norm_num [onlineGradientDescent_regret_eq, formalRegretBound]
 
 /-- Exact integer certificate for the composed PAC-side numerical bound. -/
 theorem onlineGradientDescent_pac_certificate :
     empiricalRegret + 500 ≤ pacBoundNumerator := by
-  native_decide
+  norm_num [onlineGradientDescent_regret_eq, pacBoundNumerator]
 
 #eval ogdCumulativeLoss
 #eval bestComparatorLoss

@@ -17,16 +17,82 @@ rest to an explicit human/adversarial sign-off:
 It does NOT replace the adversarial-falsify reasoning pass — it forces it. Run on a Lean file; exit 1 on flags.
 Usage: statement_fidelity_check.py <file.lean> [theorem_name ...]
 """
-import re, sys
+import re
+import sys
 
 NORM = r'(?:‖|\bnorm\b|abs |\|)'  # a magnitude on the LHS of a bound
 ID_CHARS = r"A-Za-z0-9_\'₀-₉Ͱ-Ͽ"
 ID = r"[" + ID_CHARS + r"]+"
 DECL_RE = re.compile(
-    r"(?m)^\s*(?:@\[[^\]]*\]\s*)*(?:(?:private|protected|noncomputable)\s+)*(?:theorem|lemma)\s+("
+    r"(?m)^[ \t]*(?:@\[[^\]]*\][ \t]*)*(?:(?:private|protected|noncomputable)[ \t]+)*(?:theorem|lemma)[ \t]+("
     + ID
     + r")"
 )
+DECL_BOUNDARY_RE = re.compile(
+    r"(?m)^[ \t]*(?:@\[[^\]]*\][ \t]*)*"
+    r"(?:(?:private|protected|noncomputable|nonrec|unsafe)[ \t]+)*"
+    r"(?:theorem|lemma|example|def|abbrev|instance|structure|class|inductive|"
+    r"opaque|axiom|constant)\b"
+    r"|^[ \t]*(?:#(?:check|print|eval|reduce|synth)\b|"
+    r"(?:namespace|section|end|open|variable|universe)\b)"
+)
+
+
+def strip_lean_comments_and_strings(text):
+    """Blank nested comments and strings while preserving byte positions."""
+    result = []
+    i = 0
+    block_depth = 0
+    in_string = False
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+        if block_depth:
+            if ch == "/" and nxt == "-":
+                block_depth += 1
+                result.extend("  ")
+                i += 2
+                continue
+            if ch == "-" and nxt == "/":
+                block_depth -= 1
+                result.extend("  ")
+                i += 2
+                continue
+            result.append("\n" if ch == "\n" else " ")
+            i += 1
+            continue
+        if in_string:
+            if ch == "\\":
+                result.append(" ")
+                if nxt:
+                    result.append(" ")
+                    i += 2
+                else:
+                    i += 1
+                continue
+            if ch == '"':
+                in_string = False
+            result.append("\n" if ch == "\n" else " ")
+            i += 1
+            continue
+        if ch == "/" and nxt == "-":
+            block_depth = 1
+            result.extend("  ")
+            i += 2
+            continue
+        if ch == "-" and nxt == "-":
+            while i < len(text) and text[i] != "\n":
+                result.append(" ")
+                i += 1
+            continue
+        if ch == '"':
+            in_string = True
+            result.append(" ")
+            i += 1
+            continue
+        result.append(ch)
+        i += 1
+    return "".join(result)
 
 
 def has_fidelity_signoff(comment_block):
@@ -105,15 +171,16 @@ def theorems(src):
     # yield a `signoff` window that spans from the preceding comment block through the body up to the next
     # top-level decl. Without this, a legitimate `-- fidelity:` override never registers (the sign-off line
     # is outside `stmt`), and the gate would block genuine ∃c-∀var theorems with no working escape hatch.
-    matches = list(DECL_RE.finditer(src))
-    starts = [m.start() for m in matches]
-    for i, m in enumerate(matches):
+    clean = strip_lean_comments_and_strings(src)
+    matches = list(DECL_RE.finditer(clean))
+    for m in matches:
         name = m.group(1)
         start = m.start()
-        nxt = starts[i + 1] if i + 1 < len(starts) else len(src)
-        # bound the body to THIS declaration (next top-level decl, capped) so a statement that ends with
-        # `:= term` (no newline after `:=`) does not bleed into the following theorem and mis-attribute flags.
-        body = src[start:min(nxt, start + 1600)]
+        next_boundary = DECL_BOUNDARY_RE.search(clean, m.end())
+        nxt = next_boundary.start() if next_boundary else len(src)
+        # Scan the COMPLETE declaration. The old 1600-byte cap could silently
+        # omit a long flagship conclusion and therefore miss a vacuity flag.
+        body = clean[start:nxt]
         proof_start = top_level_proof_delimiter(body)
         stmt = body[:proof_start] if proof_start is not None else body
         # Sign-offs must be genuine contiguous comment lines on the declaration.
@@ -127,7 +194,15 @@ def theorems(src):
         while k >= 0 and lines[k].lstrip().startswith('--'):
             k -= 1
         comment_block = '\n'.join(lines[k + 1:j + 1])
-        yield name, stmt, has_fidelity_signoff(comment_block)
+        parse_error = None
+        if proof_start is None:
+            line = clean.count('\n', 0, start) + 1
+            parse_error = (
+                f"UNPARSED-DECLARATION: '{name}' at line {line} has no top-level `:=` "
+                "before the next top-level declaration or command; "
+                "statement fidelity cannot be checked"
+            )
+        yield name, stmt, has_fidelity_signoff(comment_block), parse_error
 
 def flags_for(name, stmt):
     out = []
@@ -172,9 +247,13 @@ def main():
     src = open(sys.argv[1], encoding='utf-8', errors='ignore').read()
     only = set(sys.argv[2:])
     flagged = 0; checked = 0
-    for name, stmt, signed in theorems(src):
+    for name, stmt, signed, parse_error in theorems(src):
         if only and name not in only: continue
         checked += 1
+        if parse_error is not None:
+            print(f"  FLAG {parse_error}")
+            flagged += 1
+            continue
         fl = flags_for(name, stmt)
         for f in fl:
             if signed:

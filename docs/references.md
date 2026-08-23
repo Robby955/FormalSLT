@@ -20,8 +20,11 @@ source.
 | Metric entropy and Dudley chaining | Dudley (1967); Boucheron, Lugosi, and Massart (2013, Section 13); Massart (2007); Talagrand (2014) | Finite chaining, covering-number entropy budgets, and continuous-integral boundary interfaces | Finite-net constructions plus explicitly stated separability, measurability, and boundary certificates where required |
 | Algorithmic stability | Bousquet and Elisseeff (2002); McDiarmid (1989) | Expected-gap and bounded-differences route from uniform stability to generalization | Stability is supplied as a hypothesis; the library does not infer it for every learning algorithm |
 | PAC-Bayes change of measure and finite confidence bounds | Donsker and Varadhan (1975); McAllester (1999, 2003); Seeger (2002); Catoni (2007) | KL change of measure, fixed-tilt bounds, square-root consequences, finite confidence shells, and Bernoulli-KL infrastructure | Finite priors/posteriors for the main finite-sample layer; continuous results have their own explicit measure-theoretic assumptions |
-| PAC-Bayes Bernstein and Gaussian/variational interfaces | Tolstikhin and Seldin (2013); Alquier, Ridgway, and Chopin (2016); Chugg, Wang, and Ramdas (2023); Jang, Jun, Kuzborskij, and Orabona (2023) | Variance-sensitive penalties, the source-normalized finite empirical-variance MGF, fixed-parameter and finite-catalog observable empirical-Bernstein risk, the retained-Bennett joint mean/variance score, its one-event finite posterior catalog, a closed-form logarithmic-grid endpoint, a reverse-epoch all-sample-size finite-IID endpoint, and continuous-posterior analytic interfaces | The empirical-variance moment, posterior-uniform variance lift, general bounded-loss Bernstein event, two-event rational risk endpoint, separately weighted finite `eta`/`lambda` catalogs, one-event finite joint-pair catalog, zero-residual specialization, exact attained residual penalty, direct fixed-sample square-root bound, and offline all-sample-size reverse-epoch stitch are checked for finite-valued IID observations with `[0,1]` losses. The all-sample-size endpoint is uniform over admissible posterior measures on an arbitrary measurable hypothesis space while retaining finite observations. All-real optimization and a forward exact-Bessel e-process with optional-stopping semantics retain explicit boundaries |
+| PAC-Bayes Bernstein and Gaussian/variational interfaces | Tolstikhin and Seldin (2013); Alquier, Ridgway, and Chopin (2016); Chugg, Wang, and Ramdas (2023); Jang, Jun, Kuzborskij, and Orabona (2023) | Variance-sensitive penalties, the source-normalized finite empirical-variance MGF, fixed-parameter and finite-catalog observable empirical-Bernstein risk, the retained-Bennett joint mean/variance score, its one-event finite posterior catalog, a closed-form logarithmic-grid endpoint, a reverse-epoch all-sample-size finite-IID endpoint, and continuous-posterior analytic interfaces | The empirical-variance moment, posterior-uniform variance lift, general bounded-loss Bernstein event, two-event rational risk endpoint, separately weighted finite `eta`/`lambda` catalogs, one-event finite joint-pair catalog, zero-residual specialization, exact attained residual penalty, direct fixed-sample square-root bound, and offline all-sample-size reverse-epoch stitch are checked for finite-valued IID observations with `[0,1]` losses. The all-sample-size endpoint is uniform over admissible posterior measures on an arbitrary measurable hypothesis space while retaining finite observations. All-real optimization and a forward exact-Bessel e-process with optional-stopping semantics remain outside the checked scope. |
 | Anytime-valid inference and e-processes | Ville (1939); Seldin et al. (2012); Howard et al. (2020, 2021); Chugg, Wang, and Ramdas (2023); Jang et al. (2023); Ramdas et al. (2023); Grünwald, de Heide, and Koolen (2024) | Ville inequalities, confidence sequences, time-uniform PAC-Bayes mixtures, line-crossing bounds, and safe-testing interfaces | Discrete-time processes with the adaptedness, integrability, conditional-MGF, or supermartingale assumptions shown in the signatures |
+| Finite stationary laws and Dobrushin contraction | Gaubert and Qu (2015; online 2014); Wolfer (2020); Mitrophanov (2005); the classical finite Krylov--Bogolyubov/Cesaro route | Probabilists' row total variation, maximum row-pair Dobrushin coefficient, oscillation contraction, row-perturbation certificates, finite invariant-law existence, and contraction-based uniqueness | Finite nonempty state spaces. FormalSLT uses `TV = L1 / 2`; its oscillation contraction has no extra factor two, while a uniform row-TV error `eta` yields the candidate perturbation term `2 * eta` after conversion to maximum row `L1` |
+| Poisson-corrected stationary risk | Glynn and Meyn (1996); Gaubert and Qu (2015; online 2014); Howard et al. (2021); Chugg, Wang, and Ramdas (2023) | Poisson coboundary/telescoping structure, finite-depth potential and explicit residual, contraction-controlled span, and a forward empirical-Bernstein PAC-Bayes event | Known finite kernel, supplied invariant PMF, deterministic start, finite predictor catalog, bounded transition scores, supplied contraction and centered-risk oscillation envelope, and confidence-allocated finite depths. The library does not assume or construct an exact infinite-series Poisson solution in this capstone |
+| Unknown-transition confidence and stationary catalogs | Wolfer (2020); Kueffner, Meggendorfer, Weininger, and Wienhöft (2026); Mitrophanov (2005); Howard et al. (2021); Chugg, Wang, and Ramdas (2023) | One-trajectory visit/edge counts, visit-gated time-uniform coordinate confidence, normalized empirical transition rows, row-TV candidate certificates, Dobrushin perturbation, and stationary-risk composition | One deterministic-start, non-reset finite-state trajectory; predeclared candidate and tilt catalogs; every row visited at the reported time; separate risk and transition failure budgets. This is not the reset/simulation-access MDP sampling model or Wolfer's stationary-ergodic mixing-time interval |
 | Probability and statistics interfaces | Durrett (2019); van der Vaart (1998); the corresponding Mathlib declarations | Background for convergence, moments, estimation, Fisher information, and asymptotic-statistics wrappers | The wrappers preserve the hypotheses and generality of the Mathlib results they expose |
 
 ## Repository routes
@@ -37,6 +40,8 @@ The table maps to these public module families:
 - PAC-Bayes: `FormalSLT.PACBayes`, including the older compatibility modules
   re-exported by that topic import.
 - Sequential inference: `FormalSLT.Sequential` and `FormalSLT.AnytimeValid.*`.
+- Stochastic dynamics, stationary laws, Poisson correction, and transition
+  confidence: `FormalSLT.StochasticDynamics.*`.
 - Probability and statistics: `FormalSLT.Probability.*` and
   `FormalSLT.Statistics.*`.
 
@@ -100,7 +105,8 @@ from supplied interfaces and open boundaries.
   233--269. [Open article](https://www.jmlr.org/papers/v3/seeger02a.html).
 - Tolstikhin, I. O., and Seldin, Y. (2013). "PAC-Bayes-Empirical-Bernstein
   inequality." In *Advances in Neural Information Processing Systems 26*.
-  [Proceedings record](https://proceedings.neurips.cc/paper_files/paper/2013/hash/a97da629b098b75c294dffdc3e463904-Abstract.html).
+  [Paper](https://proceedings.neurips.cc/paper/2013/file/a97da629b098b75c294dffdc3e463904-Paper.pdf),
+  especially Eq. (9) and Theorems 3--4.
 - Maurer, A., and Pontil, M. (2009). "Empirical Bernstein bounds and sample
   variance penalization." In *Proceedings of the 22nd Annual Conference on
   Learning Theory*.
@@ -120,14 +126,17 @@ from supplied interfaces and open boundaries.
 - Howard, S. R., Ramdas, A., McAuliffe, J., and Sekhon, J. (2021).
   "Time-uniform, nonparametric, nonasymptotic confidence sequences."
   *The Annals of Statistics* 49(2), 1055--1080.
-  [Publisher record](https://doi.org/10.1214/20-AOS1991).
+  [Preprint](https://arxiv.org/pdf/1810.08240), especially Theorem 4 and
+  Appendix A.8.
 - Chugg, B., Wang, H., and Ramdas, A. (2023). "A unified recipe for
   deriving (time-uniform) PAC-Bayes bounds." *Journal of Machine Learning
   Research* 24(372), 1--61.
-  [Open article](https://jmlr.org/papers/v24/23-0401.html).
+  [Open article](https://jmlr.org/papers/v24/23-0401.html), especially
+  Corollary 27 and Appendix A.11.
 - Jang, K., Jun, K.-S., Kuzborskij, I., and Orabona, F. (2023). "Tighter
   PAC-Bayes bounds through coin-betting." In *Proceedings of COLT 2023*.
-  [Open article](https://proceedings.mlr.press/v195/jang23a.html).
+  [Open article](https://proceedings.mlr.press/v195/jang23a.html), especially
+  Theorem 1 and Corollary 4.
 - Seldin, Y., Cesa-Bianchi, N., Auer, P., Laviolette, F., and Shawe-Taylor,
   J. (2012). "PAC-Bayes-Bernstein inequality for martingales and its
   application to multiarmed bandits." In *Proceedings of the Workshop on
@@ -144,6 +153,55 @@ from supplied interfaces and open boundaries.
   Markov chains." In *Proceedings of the 29th International Conference on
   Artificial Intelligence and Statistics*, PMLR 300.
   [OpenReview record](https://openreview.net/forum?id=GlAeeN1Lhp).
+
+### Markov chains, Poisson equations, and transition confidence
+
+- Glynn, P. W., and Meyn, S. P. (1996). "A Liapounov bound for solutions of
+  the Poisson equation." *The Annals of Probability* 24(2), 916--931.
+  [Author-hosted paper](https://web.stanford.edu/~glynn/papers/1996/GM96.pdf).
+  FormalSLT's source dictionary uses the discrete Poisson equation (1),
+  additive functional (3), and martingale decomposition (4). The numbered-result
+  audit found that its finite-depth Neumann potential and explicit contraction
+  residual are derived variants, not reproductions of the paper's exact-solution,
+  Harris-chain, continuous-time, functional-CLT, or perturbation theorems.
+- Gaubert, S., and Qu, Z. (2015; published online 2014). "Dobrushin's
+  ergodicity coefficient for Markov operators on cones." *Integral Equations
+  and Operator Theory* 81(1), 127--150.
+  [Author-hosted paper](https://www.cmap.polytechnique.fr/~gaubert/PAPERS/GaubertQuIEOTD14QuFinal.pdf) ·
+  [publisher record](https://doi.org/10.1007/s00020-014-2193-2).
+  Equations (1) and (4) are the finite row-TV and Hopf-oscillation comparators.
+- Mitrophanov, A. Yu. (2005). "Sensitivity and convergence of uniformly
+  ergodic Markov chains." *Journal of Applied Probability* 42(4), 1003--1014.
+  [Publisher record](https://doi.org/10.1239/jap/1134587812). Its finite-state
+  coefficient is FormalSLT's maximum row-pair TV after normalization. Its
+  invariant-law sensitivity bound is a comparator; FormalSLT proves coefficient
+  robustness and conditional uniqueness, not stationary-law sensitivity. The
+  elementary row-triangle/Wolfer route remains the source of `+ 2 * eta`.
+- Wolfer, G. (2020). "Mixing time estimation in ergodic Markov chains from a
+  single trajectory with contraction methods." In *Proceedings of ALT 2020*,
+  PMLR 117, 890--905.
+  [Open article](https://proceedings.mlr.press/v117/wolfer20a.html).
+  The exact comparators are the `TV = L1 / 2` convention (1), Dobrushin
+  coefficient and contraction (6)--(7), visit/edge counts (11), empirical
+  transition matrix (12), and coefficient perturbation Fact 5.1.
+- Kueffner, K., Meggendorfer, T., Weininger, M., and Wienhöft, P. (2026).
+  "Confidence sequences for online statistical model checking of Markov
+  decision processes." arXiv:2606.25797v1.
+  [Preprint](https://arxiv.org/abs/2606.25797v1). Theorem 3's four confidence
+  sequences were compared formula by formula. Betting Bernstein is the closest
+  process comparator through its predictable-residual term, but it uses an
+  adaptive weighted tilt and a row-local IID clock. FormalSLT instead uses fixed
+  predeclared tilt atoms, global visit gating, a prior charge, a hybrid-Bessel
+  envelope, and later positive-visit normalization on one non-reset trajectory.
+
+The exact source-to-declaration classifications and total-variation conversion
+are in the [literature and theorem-fidelity ledger](./LITERATURE.md). Formal
+proof-assistant comparators are recorded in [Related work](./related-work.md).
+Neither page makes a priority claim. The combined risk-plus-transition
+informative receipt, Econlib clean-build and exact-axiom receipt, and public or
+upstream integration of the locally verified Mathlib bridge remain explicitly
+open. Any item still marked **UNSWEPT** is a named audit or release-evidence
+obligation, not evidence of absence.
 
 ## How this relates to TheoremPath
 

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A statistics and machine-learning route through FormalSLT.">
+  <meta name="theme-color" content="#0b172b">
+  <title>FormalSLT for statistics and ML</title>
+  <link rel="canonical" href="https://robby955.github.io/FormalSLT/readers/stats-ml/">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../assets/site.css">
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="../../" aria-label="FormalSLT home">FormalSLT</a>
+    <nav aria-label="Primary navigation">
+      <a href="../../#endpoints">Results</a>
+      <a href="../../theorems/">Theorem index</a>
+      <a href="../../search.html">API search</a>
+      <a href="../../api.html">Lean docs</a>
+    </nav>
+  </header>
+  <main id="content">
+    <section class="reader-hero">
+      <p class="eyebrow">Reader route · statistics and ML</p>
+      <h1>Start with the estimand and the selection rule.</h1>
+      <p>FormalSLT’s flagship endpoints control posterior risk under explicit observation, dependence, variance, and selection assumptions. This route translates the checked statements into the choices a statistician or learning theorist makes.</p>
+    </section>
+
+    <section class="reader-intro" aria-labelledby="first-question">
+      <h2 id="first-question">First question</h2>
+      <div class="reading">
+        <p>What quantity do you want to control?</p>
+        <ul>
+          <li><strong>IID population risk:</strong> use the continuous-posterior empirical-Bernstein event.</li>
+          <li><strong>Conditional mean under sequential observations:</strong> use the forward predictable-residual result.</li>
+          <li><strong>Prequential risk under changing dynamics:</strong> use the adaptive trajectory event.</li>
+          <li><strong>Stationary Markov risk:</strong> use the Poisson depth or empirical catalog layer.</li>
+        </ul>
+        <div class="callout"><p><strong>Selection is inside the theorem only where stated.</strong> Posterior, time, tilt, candidate, and depth choices are not interchangeable. Follow the endpoint declaration before treating a choice as post-data valid.</p></div>
+      </div>
+    </section>
+
+    <section class="reader-section" aria-labelledby="stats-results">
+      <h2 id="stats-results">Theorem routes</h2>
+      <div class="reading">
+        <ul class="route-list">
+          <li><a href="../../FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.html">Continuous-posterior empirical-Bernstein event</a><p>One IID event, every sample size from two onward, and every posterior measure satisfying the theorem’s absolute-continuity and integrability conditions.</p></li>
+          <li><a href="../../FormalSLT/PACBayes/ForwardBesselPACBayesCountable.html">Supporting forward e-process route</a><p>Finite hypotheses, adapted bounded observations, a predeclared countable tilt allocation, and path- and time-dependent posterior PMFs. This supports the program but is not one of the five landing-page endpoints.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.html">Trajectory empirical-Bernstein PAC-Bayes</a><p>Finite-state prefix-dependent dynamics with observed prequential scores and a selected boundary that converges to zero.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html">Arbitrary-measurable trajectory PAC-Bayes</a><p>Arbitrary measurable state and hypothesis spaces, continuous posterior measures, a finite tilt catalog, and a jointly measurable bounded score family.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html">Stationary Poisson depth selection</a><p>Known finite-state Markov kernels with an invariant PMF, explicit oscillation contraction, and a supplied nonnegative bound on centered row-risk oscillation.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.html">Empirical stationary catalog</a><p>Finite candidate kernels plus empirical transition confidence, with full-row visitation required.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/EmpiricalTransitionConfidenceCountable.html">Countable transition confidence</a><p>A predeclared geometric tilt catalog gives simultaneous coordinate bands; normalized row and kernel-budget convergence retains explicit visit-frequency and candidate-discrepancy premises.</p></li>
+          <li><a href="https://github.com/Robby955/FormalSLT/blob/__FORMALSLT_SOURCE_REF__/docs/random-refresh-load-application.md">20-state worked application</a><p>A checked finite-state numerical receipt and baseline comparison, imported through the opt-in Applications umbrella and outside the 19-name compatibility promise.</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="reader-section" aria-labelledby="stats-boundaries">
+      <h2 id="stats-boundaries">Read the boundary</h2>
+      <div class="reading">
+        <p>The formal statements do not turn every adaptive analysis into an anytime-valid one. In particular:</p>
+        <ul>
+          <li>The continuous-posterior IID result is simultaneous in sample size but is not presented as a forward e-process.</li>
+          <li>The forward and trajectory catalog atoms are predeclared; data cannot create a new atom after outcomes are seen.</li>
+          <li>The arbitrary-measurable trajectory result has a finite tilt catalog and does not include the finite-state endpoint’s vanishing-width conclusion.</li>
+          <li>The stationary layer is finite-state. Unknown-kernel claims use a finite candidate catalog and observed transition rows.</li>
+          <li>Vanishing width is an asymptotic property of the selected boundary, not a finite-sample sharpness claim for every instance.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="reader-next">
+      <p class="eyebrow">Next step</p>
+      <h2>Search by statistical concept, then inspect the declaration.</h2>
+      <p>The concept index finds the relevant family; doc-gen gives the checked type and dependencies.</p>
+      <div class="actions">
+        <a class="button button-primary" href="../../theorems/">Open the theorem index</a>
+        <a class="button button-secondary" href="../../FormalSLT/PACBayes.html">Open the PAC-Bayes umbrella</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <p><strong>FormalSLT</strong> · statistics and ML route.</p>
+    <p>Exact source: <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__"><code>__FORMALSLT_SOURCE_REF__</code></a>.</p>
+  </footer>
+</body>
+</html>

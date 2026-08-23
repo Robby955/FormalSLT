@@ -10,8 +10,8 @@ url: "https://github.com/Robby955/FormalSLT"
 repository-code: "https://github.com/Robby955/FormalSLT"
 license: MIT
 abstract: >-
-  Lean 4 formalization of finite-sample statistical learning theory bounds,
-  including ERM, Rademacher symmetrization, VC-style generalization,
-  finite contraction, linear predictors, finite sub-Gaussian chaining,
-  algorithmic stability, finite PAC-Bayes confidence bounds, and
-  total-bounded Dudley boundary adapters.
+  Lean 4 formalization of statistical learning theory and sequential
+  inference, including all-sample-size empirical-Bernstein PAC-Bayes bounds,
+  adaptive trajectory inference, finite-state stationary and unknown-kernel
+  certification, and finite-sample Rademacher, VC, stability, and chaining
+  results with explicit assumptions and axiom audits.

@@ -6,11 +6,10 @@ Authors: Robby Sneiderman
 import FormalSLT.PACBayesSeeger
 
 /-!
-# Maurer kl-form PAC-Bayes bound (fully closed)
+# Maurer-form PAC-Bayes-kl bound conditional on the prior moment estimate
 
 This module lands the **Maurer (2004) kl-form PAC-Bayes bound** as the
-named-result capstone of the PAC-Bayes lane.  The headline is the canonical,
-tightest named PAC-Bayes statement
+named-result capstone of the PAC-Bayes lane. The headline has the standard form
 
 `binKL (L̂(Q)) (L(Q)) ≤ (KL(Q‖P) + log(2√n / δ)) / n`
 
@@ -24,22 +23,21 @@ bernoulli-moment variant) **carry** the binary-kl posterior-mixture Jensen step
 as a named hypothesis `hbinaryKLJensen`.  This module's contribution is to
 **discharge that Jensen step in-house** — from the log-sum inequality, proved
 here from the same `Real.log_le_sub_one_of_pos` primitive the in-house Gibbs
-inequality uses — so the Maurer headline closes with no carried Jensen
+inequality uses — so the Maurer-form theorem carries no separate Jensen
 hypothesis.
 
-The only hypotheses the headline keeps are the genuine domain hypotheses of the
-bound: the empirical risks lie in `[0,1]` and the population risks in `(0,1)`
-(valid Bernoulli parameters), exactly as the McAllester square-root form carries
-`0 < populationRisk < 1`.  These are statement-domain hypotheses, not
-proof-gap-equivalent carries.
+The theorem still assumes the substantive per-hypothesis exponential-moment
+estimate bounded by `2√n`; it does not derive that estimate from an IID sampling
+model. It also keeps the Bernoulli-domain hypotheses that empirical risks lie in
+`[0,1]` and population risks in `(0,1)`.
 
 ## Main results
 
 * `logSum_ineq` — the scalar log-sum inequality on a finite index type.
 * `binKL_posteriorMixture_jensen` — binary-kl posterior-mixture Jensen (the
   discharged step): `binKL (E_ρ â) (E_ρ a) ≤ E_ρ (binKL â a)`.
-* `maurer_pacbayes_kl_bound` — the Maurer kl-form good-event headline, with the
-  Jensen step discharged (no `hbinaryKLJensen` hypothesis).
+* `maurer_pacbayes_kl_bound` — the Maurer-form good-event theorem, conditional
+  on the per-hypothesis moment estimate, with the Jensen step discharged.
 * `maurer_pacbayes_kl_pinsker_corollary` — the standard `√(KL/2n)` Pinsker
   corollary `L(Q) − L̂(Q) ≤ √((KL + log(2√n/δ)) / (2n))`.
 * `maurer_pacbayes_kl_complexity_nonneg` — the structural fact that the Maurer
@@ -158,7 +156,8 @@ posterior mixture: with posterior weights `ρ` (a PMF), empirical risks
 
 This is exactly the `hbinaryKLJensen` hypothesis carried by the Seeger kl-form
 good-event theorems.  Discharging it here is the contribution that turns those
-hypothesis-carrying theorems into the fully-closed Maurer headline.
+hypothesis-carrying theorems into a Maurer-form result with no separate Jensen
+premise; the per-hypothesis moment estimate remains explicit.
 
 The proof applies `logSum_ineq` to the two Bernoulli arms `(ρ â, ρ a)` and
 `(ρ (1 − â), ρ (1 − a))` and recombines.
@@ -256,12 +255,11 @@ and population risk obeys
 
 `binKL (L̂(Q)) (L(Q)) ≤ (KL(Q‖P) + log(2√n / δ)) / n`.
 
-This is the fully-closed Maurer headline: the binary-kl posterior-mixture Jensen
-step is discharged by `binKL_posteriorMixture_jensen`, so there is **no carried
-`hbinaryKLJensen` hypothesis**.  The only kept hypotheses are the genuine
-Bernoulli-parameter domain hypotheses on the risk functions
-(`empiricalRiskFn ω ∈ [0,1]`, `riskFn ∈ (0,1)`) plus the prior exponential-moment
-bound that supplies the `2√n` constant.
+The binary-kl posterior-mixture Jensen step is discharged by
+`binKL_posteriorMixture_jensen`, so there is no carried
+`hbinaryKLJensen` hypothesis. The theorem remains conditional on the explicit
+per-hypothesis exponential-moment bound that supplies the `2√n` constant, in
+addition to the Bernoulli-parameter domain hypotheses on the risk functions.
 
 -- fidelity: the ∀ρ inside the good event is the correct direction — `δ`, `n` are
 -- fixed before the universally-quantified posterior `ρ`, not a hidden ∀ρ∃const.

@@ -318,6 +318,80 @@
     trajectory results to continuous priors and arbitrary states; study
     predictable tilt families without optimizing an uncontrolled real
     parameter after observing the path.
+  - Implement the [controlled queue application design](controlled-queue-application-design.md):
+    - [x] Freeze and independently replay the exact model and deterministic
+      200,000-transition preprocessing trace.
+    - [x] Check controlled Markovization, generated-row reindexing, typed
+      table-backed PMFs, and the sharp uniform-behavior factor-two TV transfer.
+    - [x] Check generic target-policy candidate robustness, fixed-envelope
+      approximate-Poisson OPE, and fixed-candidate finite-depth robust OPE.
+    - [x] Intersect the signed-residual OPE and augmented-transition events on
+      the same controlled path. With behavior mass `1/2` and every augmented
+      row visited, the checked endpoint uses `etaEnv = 2 * etaAug`, residual
+      `alpha ^ m * D + 4 * ((1 + B_m) * etaAug)`, and failure budget
+      `deltaRisk + deltaTransition`.
+    - [x] Bind the generated fixed Brier/control-cost scores, overlap and
+      `3/2` ratio cap, and certify each candidate target-kernel contraction
+      from its common uniform minorization. The bounded-score adapter supplies
+      the universal centered row-risk envelope `D = 1`.
+    - [x] Instantiate the nominal candidate with the 12 atoms formed from four
+      fixed target policies and three fixed Brier predictors. For true `P`,
+      initial observation, and depth fixed before the event, canonical
+      noncomputable invariant witnesses, the uniform reference,
+      `alpha = 3/4`, `D = 1`, `C = 3/2`, fresh uniform 4,608-coordinate prior,
+      singleton tilts `1/4`, and two `1/40` budgets give a posterior/time-
+      simultaneous event with complement mass at most `1/20`, conditional on
+      all 48 augmented rows being visited.
+    - [x] For the nominal environment, queue-threshold target-policy index `1`,
+      and nominal-model fixed-predictor index `2`, construct an explicit
+      rational 24-state invariant PMF, prove it equals the catalog's canonical
+      witness by strict-contraction uniqueness, evaluate the exact row risks,
+      and prove stationary Brier risk
+      `4338268437 / 67816493056 < 13 / 200`.
+    - [x] Add an aligned known-kernel receipt for the same atom: fixed initial
+      observation `(1, 1)`, depth `12`, twelve-way prior, tilt `1/16`, exact
+      suffix histogram and score moments, `1/40` failure mass, and a selected
+      endpoint below `7/100`. The pathwise conclusion remains conditional on
+      the histogram and theorem-event inequality; named-path event membership
+      is not claimed.
+    - [x] Embed the three generated kernels in an arbitrary-parameter refresh
+      family and check one scalar, time-uniform direct/complement outer-mass
+      event whose hit-probability discrepancy equals every physical-row TV
+      discrepancy. The true parameter is fixed before the event; candidate,
+      tilt, and time are simultaneous afterward.
+    - [x] Compose the structured scalar event with preallocated OPE risk events
+      for all three candidates and generated depths `[0,1,2,3,5,8,12]`.
+      Candidate, depth, two four-atom admissible tilt choices, posterior, and
+      time are selectable inside one common event of complement mass at most
+      `1/20`; the residual is `gamma_c^m + 2 (1+B_c,m) eta_c`.
+    - [x] Check the exact affine refresh-family drift sensitivity and the fixed
+      prospective sharp event for the nominal candidate, supplied shifted
+      depth-twelve potential, and queue-threshold/nominal-model Dirac atom.
+      The residual is candidate-drift oscillation plus sensitivity oscillation
+      times the path-dependent persistence budget, with no extra
+      `2 * (1 + B)` factor. Risk tilt `1/16`, persistence tilt `1/64`, and two
+      `1/40` budgets give outer complement mass at most `1/20` for fixed true
+      `gamma` and fixed initial observation.
+    - [x] Freeze a local prospective protocol input for an independent
+      `gamma = 149/200`, 200,000-transition trace: fixed full-horizon initial
+      observation, future drand-beacon seed rule, selected depth-12 sharp
+      primary, 21-atom adaptive secondary, matched comparisons, and a
+      publish-regardless rule. This is protocol-only and has no public
+      timestamp, trace, result, or confidence receipt yet.
+    - [ ] Add a useful unknown-kernel numerical certificate and matched
+      baselines. The independent generator/verifier implementation and
+      pre-beacon gate are checked locally. Next bind that code freeze and the
+      protocol commit in one immutable public OSF registration before
+      selecting the formula-determined beacon round. Generate the fresh trace
+      once and report its histogram, selected endpoint, `< 0.10` threshold
+      outcome, and every declared comparison whether the primary succeeds or
+      fails. No fresh trace, histogram, good-event membership proof, or
+      numerical receipt exists yet. The present 4,608-coordinate transition
+      allocation is vacuous on the pilot trace. The old frozen config has only
+      48 coordinate weights, includes tilt `1`, and uses a five-predictor prior
+      with causal predictors and no target-policy factor.
+    - [ ] Add any claimed named-path good-event witness or a random-initial
+      mixture/conditioning bridge for unconditional simulator coverage.
   - Keep unvisited-row normalization, quantitative mixing, continuous-state
     stationary risk, multistep conclusions, and atomless transition evidence
     as separate later theorem families.

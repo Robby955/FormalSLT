@@ -11,11 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Install elan
         run: |
-          curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
-          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Get Mathlib cache
         run: lake exe cache get
@@ -23,15 +25,34 @@ jobs:
       - name: Build
         run: lake build FormalSLT
 
-      - name: Verify no orphaned Lean modules
+      # Applications are rooted through their own optional umbrella; the
+      # default FormalSLT umbrella must not reach them.
+      - name: Verify module reachability and opt-in applications
         run: python3 scripts/check_no_orphan_lean_modules.py
 
       - name: Check examples and tutorials
-        run: |
-          for f in $(find examples -name '*.lean' | sort); do
-            echo "$f"
-            lake env lean "$f"
-          done
+        run: make examples
+
+      - name: Verify public API and v0.1 compatibility
+        run: make api
+
+      - name: Install repository-tool test dependency
+        run: python3 -m pip install -r requirements-dev.txt
+
+      - name: Verify controlled-queue structured-OPE code freeze
+        run: make verify-controlled-queue-structured-ope-code-freeze
+
+      - name: Verify controlled-queue generated artifacts
+        run: make check-controlled-queue-model
+
+      - name: Verify controlled-queue trace preprocessing
+        run: make check-controlled-queue-trace
+
+      - name: Verify controlled-queue known-kernel receipt
+        run: make check-controlled-queue-known-kernel-receipt
+
+      - name: Run repository-tool self-tests
+        run: make python-tests
 
       - name: Verify documentation source anchors
         run: |
@@ -81,10 +102,10 @@ jobs:
 
       # A `#check` cannot fail on a vacuous theorem, so it certifies typing and
       # axiom-cleanliness, not satisfiability. This gate fails if any headline
-      # witness file degenerates to `#check`/`#print`-only with no concrete
-      # instantiation, and self-tests its detector against a check-only /
-      # concrete fixture pair.
-      - name: Verify witness quality (ban fake check-only witnesses)
+      # witness file lacks an executable declaration linked to the audited
+      # project surface. The parser ignores comments and rejects check-only or
+      # unrelated-trivial declarations in its self-tests.
+      - name: Verify witness quality (ban fake receipt files)
         run: bash scripts/check_witness_quality.sh
 
       # Statement-level non-vacuity: lints the .lean files CHANGED by this PR
@@ -112,3 +133,26 @@ jobs:
           find FormalSLT/ -name '*.lean' -exec cat {} + | wc -l
           echo "Module count:"
           find FormalSLT/ -name '*.lean' | wc -l
+
+  downstream:
+    name: downstream (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install elan
+        run: |
+          curl -sSf https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Get downstream Mathlib cache
+        working-directory: tests/downstream
+        run: lake exe cache get
+
+      - name: Build downstream consumer
+        working-directory: tests/downstream
+        run: lake build Downstream

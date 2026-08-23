@@ -64,6 +64,39 @@ lemma finiteOscillation_nonneg (f : Z → ℝ) : 0 ≤ finiteOscillation f := by
     (Classical.choice inferInstance)
   simpa using h
 
+/-- The oscillation of an affine perturbation is controlled by the
+oscillations of its two state-dependent terms.  The coefficient is constant
+over the state space, so only its absolute value enters the bound. -/
+lemma finiteOscillation_add_const_mul_le
+    (f g : Z → ℝ) (coefficient : ℝ) {ε L η : ℝ}
+    (hf : finiteOscillation f ≤ ε)
+    (hg : finiteOscillation g ≤ L)
+    (hcoefficient : |coefficient| ≤ η) :
+    finiteOscillation (fun z ↦ f z + coefficient * g z) ≤ ε + L * η := by
+  have hη : 0 ≤ η := (abs_nonneg coefficient).trans hcoefficient
+  apply finiteOscillation_le
+  intro x y
+  rw [show
+      f y + coefficient * g y - (f x + coefficient * g x) =
+        (f y - f x) + coefficient * (g y - g x) by ring]
+  calc
+    |(f y - f x) + coefficient * (g y - g x)| ≤
+        |f y - f x| + |coefficient| * |g y - g x| := by
+      simpa only [abs_mul] using abs_add_le
+        (f y - f x) (coefficient * (g y - g x))
+    _ ≤ finiteOscillation f +
+        |coefficient| * finiteOscillation g := by
+      exact add_le_add (abs_sub_le_finiteOscillation f x y)
+        (mul_le_mul_of_nonneg_left
+          (abs_sub_le_finiteOscillation g x y) (abs_nonneg coefficient))
+    _ ≤ ε + η * finiteOscillation g := by
+      exact add_le_add hf
+        (mul_le_mul_of_nonneg_right hcoefficient
+          (finiteOscillation_nonneg g))
+    _ ≤ ε + η * L := by
+      exact add_le_add (le_refl ε) (mul_le_mul_of_nonneg_left hg hη)
+    _ = ε + L * η := by ring
+
 variable [MeasurableSpace Z] [MeasurableSingletonClass Z]
 
 omit [Fintype Z] [Nonempty Z] [MeasurableSingletonClass Z] in

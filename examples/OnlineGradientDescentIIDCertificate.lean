@@ -22,7 +22,7 @@ def pacBoundNumerator : Int := 1500
 /-- Exact integer certificate for the iid-derived PAC-side numerical bound. -/
 theorem onlineGradientDescent_iid_pac_certificate :
     empiricalRegretMilli + iidDeviationMilli ≤ pacBoundNumerator := by
-  native_decide
+  norm_num [empiricalRegretMilli, iidDeviationMilli, pacBoundNumerator]
 
 #eval rounds
 #eval lossBoundMilli

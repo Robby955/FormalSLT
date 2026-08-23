@@ -7,22 +7,20 @@ import FormalSLT.AnytimeValid.MixtureCS
 import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-!
-# Optimized-`lambda` sub-Gamma confidence sequence with iterated-log width
+# Finite-grid sub-Gamma time-uniform boundaries and a pointwise optimized-tilt bridge
 
 This file upgrades the anytime-valid sub-Gamma lane from a single fixed tilt
-`lambda` to an **optimized-`lambda` (stitched-grid)** confidence sequence whose
-half-width achieves the Howard-Ramdas-Sekhon-McAuliffe (Ann. Statist. 2021)
-**iterated-log** rate
+`lambda` to a finite mixture over a predeclared tilt grid. It proves all-time
+crossing bounds for the resulting grid boundary and separately relates the
+single-time optimum to the closed-form candidate
 
 `subGammaLogLogWidth sigma2 b n delta`
   `= sqrt (2 * sigma2 * (log (log n) + log (1/delta)) / n)`
     `+ b * (log (log n) + log (1/delta)) / (3 * n)`,
 
-valid uniformly over `n >= n0`. This is the iterated-log generalization of the
-fixed-budget `subGammaWidth` from `SubGaussianCS.lean`: the `log (1/delta)` budget
-is inflated to `log (log n) + log (1/delta)`, which is the price the stitched /
-line-crossing boundary pays to be time-uniform over all `n` (Howard-Ramdas-
-McAuliffe-Sekhon, Probab. Surv. 2020, line-crossing construction).
+at a fixed `n`. A fixed finite grid does not by itself yield one unbounded
+all-`n` closed-form iterated-log boundary; the precise obstruction and the
+pointwise bridge are stated below.
 
 ## Route
 
@@ -36,7 +34,7 @@ supermartingale by the uniform average
 A finite average of nonnegative supermartingales is a nonnegative supermartingale
 (`MeasureTheory.Supermartingale.add` / `.smul_nonneg`), and it equals `1` at `n = 0`.
 Inverting through the in-house countable-time Ville maximal inequality
-`ville_atTop_maximal_ineq` gives a `1 - delta` confidence sequence. The fixed-tilt
+`ville_atTop_maximal_ineq` gives a time-uniform crossing bound. The fixed-tilt
 bricks (`condSubGamma_supermartingale_step`,
 `nonneg_supermartingale_of_condSubGamma`,
 `stronglyAdapted_subGammaExponentialProcess_of_adapted`) are reused unchanged; the
@@ -47,10 +45,10 @@ The line-crossing budget. Inverting the *average* at threshold `1/delta` forces 
 single grid tilt to reach `Lam.card / delta` (average `>= 1/delta` needs some term
 `>= Lam.card / delta`). That single-tilt crossing translates to the running-mean
 boundary `cgf(lam)/lam + log (Lam.card / delta) / (n*lam)`: the budget picks up the
-grid-size term `log (Lam.card)`, which is the stitching union-bound inflation. When
-the grid is sized `Lam.card ~ log (log n)` over the relevant horizon this is exactly
-the iterated-log term; `subGammaLogLogWidth` is the closed-form envelope of that
-boundary.
+grid-size term `log (Lam.card)`, which is the finite-mixture inflation. For a
+horizon-specific grid of size on the order of `log N`, this penalty is on the
+order of `log (log N)`; that observation does not turn one fixed grid into an
+unbounded all-`n` closed-form iterated-log boundary.
 
 ## Two-sided interval-width upgrade
 
@@ -75,7 +73,7 @@ Obstruction (documented, honest): an *unbounded all-`n`* closed-form CS with one
 grid is impossible — the stitching budget `log (Lam.card / (delta/2))` is constant in `n` while
 `logLogBudget n delta` grows, and `optTilt → 0` cannot lie in a fixed finite tilt set for all
 `n`. The all-`n` closed-form rate genuinely requires a per-`n` / horizon-growing stitched grid
-(a countable mixture / dyadic epoch stitch), which is absent from this lane and from mathlib;
+(a countable mixture / dyadic epoch stitch), which is absent from this lane;
 the all-`n` headline here is therefore the grid-boundary two-sided theorem with the bridge
 identities certifying the boundary equals the closed form at the per-`n` optimal tilt.
 
@@ -422,11 +420,11 @@ theorem logLogBudget_pos {n : ℕ} {delta : ℝ}
   linarith
 
 /--
-**Iterated-log rate witness.** At concrete numeric parameters the iterated-log width
-`subGammaLogLogWidth` is strictly positive and finite, and dominated by the explicit
-closed form. With `sigma2 = 1`, `b = 1`, `delta = 1/2`, `n = 16`
+**Numeric positivity and shape receipt.** At one concrete parameter choice,
+`subGammaLogLogWidth` is strictly positive and equals its defining closed form.
+With `sigma2 = 1`, `b = 1`, `delta = 1/2`, `n = 16`
 (`16 > e^e ≈ 15.15`, so `log (log 16) > 0`), the width is a genuine positive number,
-witnessing the iterated-log shape on real data rather than a `#check`. -/
+but this theorem alone does not establish an asymptotic rate. -/
 theorem subGammaLogLogWidth_loglog_rate :
     0 < subGammaLogLogWidth 1 1 16 (1 / 2)
       ∧ subGammaLogLogWidth 1 1 16 (1 / 2)
@@ -700,7 +698,7 @@ theorem fixedGrid_logLog_bridge_forces_exact_boundary
     subGammaLogLogWidth_le_boundary hσ hb hn hg hlam_pos hlam_adm
   exact ⟨lam, hlam_mem, le_antisymm hle hge⟩
 
-/-! ## Two-sided iterated-log interval-width confidence sequence
+/-! ## Two-sided finite-grid time-uniform boundary
 
 The one-sided endpoint controls only the upper crossing of the optimized boundary. The
 **two-sided** interval-width result `|runningMean X n ω| ≤ Width(n)` simultaneously for all
@@ -727,10 +725,10 @@ theorem incrementAdapted_neg {Ω : Type*} {mΩ : MeasurableSpace Ω} {ℱ : Filt
   fun k => (hX k).neg
 
 /--
-**Two-sided iterated-log interval-width confidence sequence.** From the conditional sub-Gamma
+**Two-sided finite-grid time-uniform boundary.** From the conditional sub-Gamma
 increment model on the centered increment process `X` (`μ[X_k | F_k] = 0`) and a nonempty
-admissible tilt grid `Lam`, with probability at least `1 - delta` the centered running mean stays
-within the optimized (best-of-grid) stitched boundary on *both* sides simultaneously for all
+admissible finite tilt grid `Lam`, the centered running mean stays within the
+best-of-grid boundary on *both* sides simultaneously for all
 `n > 0`:
 
 `|runningMean X n omega| < min_{lam ∈ Lam} (cgf(lam)/lam + log (2*Lam.card / delta) / (n*lam))`.
@@ -743,11 +741,12 @@ the same model: `IncrementAdapted` is closed under negation (`incrementAdapted_n
 `|(-X)_k| ≤ b`, `μ[(-X)_k | F_k] = 0` (`condExp_neg`), `((-X)_k)^2 = (X_k)^2`, and
 `runningMean (-X) n = -runningMean X n` (`runningMean_neg`).
 
-The boundary is the optimized-`lambda` envelope `subGammaBoundary` at budget
+The boundary is the finite-grid `lambda` envelope `subGammaBoundary` at budget
 `log (2*Lam.card / delta)`; by `subGammaLogLogWidth_le_boundary` /
 `subGammaLogLogWidth_eq_boundary_optTilt` this envelope is exactly the closed-form
 `subGammaLogLogWidth` at the per-`n` optimal tilt once the grid budget matches the iterated-log
-budget `logLogBudget n delta`.
+budget `logLogBudget n delta`. Those extra pointwise budget and tilt conditions are not
+conclusions of this finite-grid theorem.
 -/
 theorem optimized_lambda_two_sided_confidence_sequence
     {Ω : Type*} {mΩ : MeasurableSpace Ω}

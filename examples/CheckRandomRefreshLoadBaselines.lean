@@ -1,0 +1,96 @@
+import FormalSLT.Applications.RandomRefreshLoadBaselines
+
+open FormalSLT.StochasticDynamics
+
+namespace FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines
+
+#check fixedRangeD
+#check fixedRangeD_nonneg
+#check brierScore_centeredOscillation_le_fixedRange
+#check fixedRangePotential
+#check fixedRangeSpan_eq
+#check fixedRangeResidual_eq
+#check fixedRangeCorrectedTransitionScore
+#check fixedRangeCorrectedScore
+#check fixedRangeCorrectedScore_eq_catalog
+#check fixedRangeCorrectedScore_affine_primary
+#check balancedPath_fixedRangeCorrectedScoreBesselQ_eq
+#check fixedRangeCorrectedPenalty_le
+#check fixedRangeExceptionalEvent
+#check fixedRangeExceptionalEvent_mass_le
+#check fixedRangeTrajectoryBoundary
+#check balancedPath_fixedRangeTrajectoryBoundary_le
+#check fixedRangeBoundary
+#check balancedPath_fixedRangeBoundary_le
+#check balancedPath_fixedRangeRightHandSide_lt
+#check balancedPath_fixedRange_certificate_of_not_mem
+
+#check stationaryRisk_lt_empirical_add_of_corrected
+#check primaryPotential
+#check receiptCorrectedScore_eq_primary
+#check primaryPotential_span
+#check primaryPotential_residual
+
+#check fixedDepthRiskDelta
+#check fixedDepthRiskDelta_eq
+#check fixedDepthRiskLogCost_le_thirteen
+#check fixedDepthExceptionalEvent
+#check fixedDepthExceptionalEvent_mass_le
+#check fixedDepthTrajectoryBoundary
+#check fixedDepthBoundary
+#check balancedPath_fixedDepthTrajectoryBoundary_le
+#check balancedPath_fixedDepthBoundary_le
+#check balancedPath_fixedDepthRightHandSide_lt
+#check balancedPath_fixedDepth_certificate_of_not_mem
+
+#check nonVarianceWeight
+#check nonVarianceTilt
+#check nonVarianceWeight_isFullSupport
+#check nonVarianceTilt_pos
+#check nonVarianceTilt_lt_three
+#check nonVarianceRiskDelta
+#check nonVarianceRiskDelta_eq
+#check nonVarianceRiskDelta_pos
+#check nonVarianceRiskLogCost_le_eight
+#check nonVarianceSubGamma_eq
+#check nonVarianceBoundary
+#check balancedPath_nonVarianceBoundary_le
+#check balancedPath_nonVarianceRightHandSide_lt
+#check exists_nonVarianceAdaptive_event
+
+#print axioms fixedRangeD_nonneg
+#print axioms brierScore_centeredOscillation_le_fixedRange
+#print axioms fixedRangeSpan_eq
+#print axioms fixedRangeResidual_eq
+#print axioms fixedRangeCorrectedScore_eq_catalog
+#print axioms fixedRangeCorrectedScore_affine_primary
+#print axioms balancedPath_fixedRangeCorrectedScoreBesselQ_eq
+#print axioms fixedRangeCorrectedPenalty_le
+#print axioms fixedRangeExceptionalEvent_mass_le
+#print axioms balancedPath_fixedRangeTrajectoryBoundary_le
+#print axioms balancedPath_fixedRangeBoundary_le
+#print axioms balancedPath_fixedRangeRightHandSide_lt
+#print axioms balancedPath_fixedRange_certificate_of_not_mem
+#print axioms stationaryRisk_lt_empirical_add_of_corrected
+#print axioms receiptCorrectedScore_eq_primary
+#print axioms primaryPotential_span
+#print axioms primaryPotential_residual
+#print axioms fixedDepthRiskDelta_eq
+#print axioms fixedDepthRiskLogCost_le_thirteen
+#print axioms fixedDepthExceptionalEvent_mass_le
+#print axioms balancedPath_fixedDepthTrajectoryBoundary_le
+#print axioms balancedPath_fixedDepthBoundary_le
+#print axioms balancedPath_fixedDepthRightHandSide_lt
+#print axioms balancedPath_fixedDepth_certificate_of_not_mem
+#print axioms nonVarianceWeight_isFullSupport
+#print axioms nonVarianceTilt_pos
+#print axioms nonVarianceTilt_lt_three
+#print axioms nonVarianceRiskDelta_eq
+#print axioms nonVarianceRiskDelta_pos
+#print axioms nonVarianceRiskLogCost_le_eight
+#print axioms nonVarianceSubGamma_eq
+#print axioms balancedPath_nonVarianceBoundary_le
+#print axioms balancedPath_nonVarianceRightHandSide_lt
+#print axioms exists_nonVarianceAdaptive_event
+
+end FormalSLT.StochasticDynamics.RandomRefreshLoadBaselines

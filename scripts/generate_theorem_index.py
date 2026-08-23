@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the FormalSLT concept-keyed searchable theorem index.
 
-The proof-frontier manifest already records the public theorem spine
+The proof-frontier manifest already records the curated theorem spine
 (concept family -> declaration -> module -> one-line role). This script projects
 that data into a *human-searchable* index: it resolves each declaration to a
 `file:line`, tags it with the mathematical concepts it touches (Bernstein,
@@ -44,6 +44,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = ROOT / "docs" / "proof-frontier-manifest.json"
 OUT_HTML = ROOT / "docs" / "INDEX.html"
 OUT_MD = ROOT / "docs" / "INDEX.md"
+SITE_CSS = ROOT / "docs" / "site" / "assets" / "site.css"
 REPO_URL = "https://github.com/Robby955/FormalSLT/blob/main"
 
 # Concept keywords: a declaration is tagged with every concept whose trigger
@@ -53,6 +54,111 @@ REPO_URL = "https://github.com/Robby955/FormalSLT/blob/main"
 # declaration in the table.
 CONCEPT_TRIGGERS: dict[str, list[str]] = {
     "Markov": ["markov"],
+    "adaptive trajectory": [
+        "trajectory",
+        "prequential",
+        "full-prefix",
+        "full prefix",
+        "prefix-dependent",
+        "prefix dependent",
+        "controlledtrajectory",
+        "controlled trajectory",
+        "controlledobserved",
+        "controlledimportance",
+        "controlledtarget",
+        "controlledcontinuation",
+        "controlledfinite",
+        "prefixcontrolled",
+        "targetpolicy",
+        "target policy",
+        "dynamictargetpolicy",
+    ],
+    "stationary / invariant law": [
+        "stationaryrisk",
+        "stationary risk",
+        "stationary-risk",
+        "stationarymarkov",
+        "stationary markov",
+        "empiricalstationary",
+        "empirical stationary",
+        "stationarypoisson",
+        "stationary poisson",
+        "stationarytarget",
+        "stationary target",
+        "invariantpmf",
+        "invariant pmf",
+        "invariant law",
+        "invariant distribution",
+        "dobrushin",
+    ],
+    "Poisson equation": [
+        "empiricalstationary",
+        "empirical stationary",
+        "stationarypoisson",
+        "stationary_poisson",
+        "poissonpotential",
+        "poisson_potential",
+        "poisson potential",
+        "poissonresidual",
+        "poisson_residual",
+        "poisson residual",
+        "poissoncorrect",
+        "poisson_correct",
+        "poisson-correct",
+        "poisson equation",
+        "poissondrift",
+        "poisson_drift",
+        "poisson drift",
+        "poisson_depth",
+        "poisson depth",
+        "exactpoisson",
+        "exact_poisson",
+        "finitedepthpoisson",
+        "finite-depth poisson",
+        "finite depth poisson",
+    ],
+    "transition kernel": [
+        "empiricalstationary",
+        "empirical stationary",
+        "empiricaltransition",
+        "empirical transition",
+        "stationarypoisson",
+        "stationary poisson",
+        "transitioncoordinate",
+        "transition coordinate",
+        "transitionfrequency",
+        "transition frequency",
+        "transitionrow",
+        "transition row",
+        "transitionedge",
+        "transition edge",
+        "transitionvisit",
+        "transition visit",
+        "transitionkernel",
+        "transition_kernel",
+        "transition kernel",
+        "candidatekernel",
+        "candidate kernel",
+        "markov kernel",
+        "environment kernel",
+        "transition pmf",
+        "transition matrix",
+        "kernelpush",
+        "kernel push",
+        "finitekernel",
+        "finite kernel",
+        "prefixkernel",
+        "prefix kernel",
+        "inducedkernel",
+        "induced kernel",
+        "candidaterow",
+        "candidate row",
+        "rowtotalvariation",
+        "row total variation",
+        "row-tv",
+        "rowtv",
+        "dobrushin",
+    ],
     "Chebyshev": ["chebyshev"],
     "Hoeffding": ["hoeffding"],
     "Bernstein": ["bernstein"],
@@ -86,8 +192,24 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
     ],
     "PAC-Bayes": ["pacbayes", "pac-bayes", "kldiv", "mcallester", "seeger", "maurer", "catoni"],
     "KL divergence": ["kldiv", "kl ", "kl-", "divergence", "donsker", "variational"],
-    "Rademacher": ["rademacher", "massart", "symmetriz", "contraction"],
-    "VC dimension": ["vc", "sauer", "shelah", "shatter"],
+    "Rademacher": [
+        "rademacher",
+        "massart",
+        "symmetriz",
+        "one_step_contraction",
+        "contraction_1lip",
+    ],
+    "VC dimension": [
+        ".vc.",
+        "vc_",
+        "_vc",
+        "vcdimension",
+        "vc dimension",
+        "vc-dimension",
+        "sauer",
+        "shelah",
+        "shatter",
+    ],
     "covering / chaining": [
         "covering",
         "dudley",
@@ -111,7 +233,7 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
         "empirical risk minimizer",
         "empirical-risk minimizer",
     ],
-    "stability": ["stability", "stable"],
+    "stability": ["stability", " stable ", "stable_", "_stable"],
     "sample statistics": [
         "samplemean",
         "samplevariance",
@@ -160,6 +282,33 @@ CONCEPT_TRIGGERS: dict[str, list[str]] = {
 # triggers such as "indicator" would incorrectly tag CDF indicator families as
 # Bernoulli results.
 DECLARATION_CONCEPTS: dict[str, list[str]] = {
+    "FormalSLT.Applications.ControlledQueue.refreshEnvironment_apply_toReal": [
+        "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.candidateEnvironment_eq_refreshEnvironment": [
+        "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.persistenceDestinationHit_rowRisk": [
+        "adaptive trajectory", "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.exists_persistenceHitConfidence_event": [
+        "adaptive trajectory", "transition kernel", "confidence sequence"
+    ],
+    "FormalSLT.Applications.ControlledQueue.refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy": [
+        "transition kernel"
+    ],
+    "FormalSLT.Applications.ControlledQueue.exists_structuredCandidateTVConfidence_event": [
+        "adaptive trajectory", "transition kernel", "confidence sequence"
+    ],
+    "FormalSLT.StochasticDynamics.candidateTargetPolicyFiniteDepthPotential": [
+        "adaptive trajectory", "Poisson equation", "transition kernel"
+    ],
+    "FormalSLT.StochasticDynamics.finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le": [
+        "adaptive trajectory", "stationary / invariant law", "Poisson equation", "transition kernel"
+    ],
+    "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event": [
+        "adaptive trajectory", "stationary / invariant law", "Poisson equation", "PAC-Bayes", "transition kernel"
+    ],
     "FormalSLT.PACBayes.IndicatorVariance.indicatorPopulationRisk_mem_Icc": ["Bernoulli"],
     "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_centered": ["Bernoulli"],
     "FormalSLT.PACBayes.IndicatorVariance.indicatorDeviation_secondMoment_eq": ["Bernoulli"],
@@ -252,6 +401,7 @@ def render_md(rows: list[dict[str, Any]]) -> str:
         "`docs/proof-frontier-manifest.json` plus the Lean sources by",
         "`scripts/generate_theorem_index.py`. For a searchable version with a live",
         "filter box, open `docs/INDEX.html`.",
+        "This is a discovery index, not an API compatibility promise.",
         "",
         f"{len(rows)} declarations, {n_resolved} resolved to a `file:line`.",
         "",
@@ -280,6 +430,7 @@ def render_md(rows: list[dict[str, Any]]) -> str:
 def render_html(rows: list[dict[str, Any]]) -> str:
     n_resolved = sum(1 for r in rows if r["line"] is not None)
     all_concepts = sorted({c for r in rows for c in r["concepts"]})
+    shared_site_css = SITE_CSS.read_text(encoding="utf-8")
 
     def esc(s: str) -> str:
         return html.escape(s, quote=True)
@@ -312,61 +463,138 @@ def render_html(rows: list[dict[str, Any]]) -> str:
         )
 
     concept_buttons = "".join(
-        f'<button type="button" class="cbtn" data-concept="{esc(c)}">{esc(c)}</button>'
+        f'<button type="button" class="cbtn" data-concept="{esc(c)}" '
+        f'aria-pressed="false">{esc(c)}</button>'
         for c in all_concepts
     )
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
+    return f"""<!doctype html>
+<html lang="en" data-formalslt-site="theorem-index">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Search the checked FormalSLT theorem surface by mathematical concept, declaration, module, or role.">
+<meta name="theme-color" content="#0b172b">
 <title>FormalSLT theorem index</title>
+<link rel="canonical" href="https://robby955.github.io/FormalSLT/theorems/">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <style>
-:root {{ --bg:#0f1115; --fg:#e6e6e6; --muted:#9aa4b2; --card:#1a1d24; --accent:#7aa2f7; --chip:#283041; }}
-* {{ box-sizing:border-box; }}
-body {{ margin:0; font:15px/1.5 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--fg); }}
-header {{ position:sticky; top:0; background:var(--bg); padding:18px 20px 12px; border-bottom:1px solid #232733; z-index:5; }}
-h1 {{ margin:0 0 4px; font-size:20px; }}
-.sub {{ color:var(--muted); font-size:13px; margin-bottom:10px; }}
-#q {{ width:100%; padding:10px 12px; font-size:15px; border-radius:8px; border:1px solid #2c3340; background:#11141a; color:var(--fg); }}
-.concepts {{ margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; }}
-.cbtn {{ background:var(--chip); color:var(--fg); border:1px solid #313a4d; border-radius:14px; padding:3px 10px; font-size:12px; cursor:pointer; }}
-.cbtn.active {{ background:var(--accent); color:#0f1115; border-color:var(--accent); }}
-main {{ padding:14px 20px 60px; }}
-.count {{ color:var(--muted); font-size:13px; margin:8px 0 14px; }}
-.row {{ background:var(--card); border:1px solid #232733; border-radius:10px; padding:12px 14px; margin-bottom:10px; }}
-.decl code {{ font-size:15px; color:var(--accent); word-break:break-all; }}
-.kind {{ color:var(--muted); font-size:11px; margin-left:8px; text-transform:uppercase; letter-spacing:.04em; }}
-.meta {{ margin:6px 0; display:flex; flex-wrap:wrap; gap:5px; }}
-.chip {{ background:var(--chip); color:#cdd6e4; border-radius:10px; padding:1px 8px; font-size:11px; }}
-.summary {{ color:#d3d8e0; font-size:14px; }}
-.locline {{ margin-top:6px; font-size:12px; }}
-.loc {{ color:var(--muted); text-decoration:none; font-family:ui-monospace,Menlo,monospace; }}
-.loc:hover {{ color:var(--accent); text-decoration:underline; }}
-.fam {{ color:var(--muted); margin-left:10px; font-style:italic; }}
-.hidden {{ display:none; }}
+{shared_site_css}
+input:focus-visible, summary:focus-visible {{ outline: 3px solid var(--accent-light); outline-offset: 4px; }}
+.index-header {{ background: var(--ink-deep); color: var(--paper-bright); }}
+.index-header-inner, .search-inner, main {{ width: min(calc(100% - 2.5rem), var(--measure)); margin-inline: auto; }}
+.index-header-inner {{ padding: 2rem 0 clamp(3rem, 7vw, 6rem); }}
+.index-nav {{ display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: clamp(3rem, 7vw, 6rem); }}
+.index-header .wordmark {{ color: var(--paper-bright); }}
+.index-nav-links {{ display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .6rem 1.25rem; }}
+.index-nav-links a {{ color: #d8dfeb; font-size: .78rem; font-weight: 700; letter-spacing: .05em; text-decoration: none; text-transform: uppercase; }}
+.eyebrow {{ margin: 0 0 1rem; color: var(--accent-light); font-size: .76rem; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }}
+h1 {{ max-width: 14ch; margin: 0 0 1.25rem; font: 600 clamp(2.6rem, 7vw, 5.8rem)/1.02 var(--serif); letter-spacing: -.045em; text-wrap: balance; }}
+.sub {{ max-width: 50rem; margin: 0; color: #d8dfeb; font-size: 1.02rem; }}
+.search-shell {{ position: sticky; top: 0; z-index: 8; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper-bright) 96%, transparent); backdrop-filter: blur(12px); }}
+.search-inner {{ display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .75rem; align-items: end; padding-block: .9rem; }}
+.search-field {{ display: grid; gap: .35rem; }}
+.search-field label {{ color: var(--muted); font-size: .76rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }}
+#q {{ width: 100%; min-height: 3rem; padding: .7rem .85rem; border: 1px solid var(--line-dark); border-radius: 0; background: var(--paper-bright); color: var(--ink); font: 1rem var(--sans); }}
+.clear {{ min-height: 3rem; padding: .65rem 1rem; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-weight: 720; cursor: pointer; }}
+.clear:disabled {{ border-color: var(--line); color: var(--muted); cursor: default; }}
+main {{ padding-block: clamp(2.5rem, 6vw, 5rem) 6rem; }}
+.concept-filter {{ margin-bottom: 2rem; border-block: 1px solid var(--line); }}
+.concept-filter summary {{ display: flex; min-height: 3.25rem; align-items: center; justify-content: space-between; gap: 1rem; cursor: pointer; font-weight: 720; }}
+.filter-state {{ color: var(--muted); font-size: .78rem; font-weight: 500; }}
+.concepts {{ display: flex; flex-wrap: wrap; gap: .45rem; padding: 0 0 1.1rem; }}
+.cbtn {{ min-height: 2.15rem; padding: .3rem .7rem; border: 1px solid var(--line-dark); border-radius: 999px; background: transparent; color: var(--ink); font-size: .76rem; cursor: pointer; }}
+.cbtn.active, .cbtn[aria-pressed="true"] {{ border-color: var(--accent); background: var(--accent); color: var(--paper-bright); }}
+.count {{ display: block; margin: 0 0 1rem; color: var(--muted); font-size: .84rem; }}
+.row {{ display: grid; grid-template-columns: minmax(16rem, .8fr) minmax(0, 1.2fr); gap: .65rem clamp(1.5rem, 4vw, 4rem); padding: 1.5rem 0; border-top: 1px solid var(--line); }}
+.row > * {{ min-width: 0; }}
+.row:last-child {{ border-bottom: 1px solid var(--line); }}
+.decl {{ min-width: 0; }}
+.decl code {{ color: var(--accent); font: 650 .9rem/1.45 var(--mono); overflow-wrap: anywhere; }}
+.kind {{ margin-left: .55rem; color: var(--muted); font-size: .66rem; letter-spacing: .06em; text-transform: uppercase; }}
+.meta {{ display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .65rem; }}
+.chip {{ padding: .05rem .45rem; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: .67rem; }}
+.summary {{ align-self: start; color: var(--ink); font-size: .92rem; overflow-wrap: anywhere; }}
+.locline {{ grid-column: 2; color: var(--muted); font-size: .72rem; }}
+.loc {{ color: var(--muted); font-family: var(--mono); overflow-wrap: anywhere; text-decoration: none; }}
+.loc:hover {{ color: var(--accent); text-decoration: underline; }}
+.fam {{ margin-left: .7rem; font-style: italic; }}
+.index-footer {{ width: min(calc(100% - 2.5rem), var(--measure)); margin-inline: auto; padding: 2rem 0 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .78rem; }}
+.index-footer p {{ margin: 0; }}
+.hidden {{ display: none; }}
+@media (max-width: 720px) {{
+  .index-nav {{ align-items: flex-start; }}
+  .index-nav-links {{ display: grid; gap: .25rem; text-align: right; }}
+  .search-inner {{ grid-template-columns: 1fr; }}
+  .clear {{ width: 100%; }}
+  .concepts {{ max-height: 14rem; overflow: auto; padding-right: .25rem; }}
+  .row {{ grid-template-columns: minmax(0, 1fr); }}
+  .locline {{ grid-column: 1; }}
+  .fam {{ display: block; margin: .25rem 0 0; }}
+}}
+@media (prefers-reduced-motion: reduce) {{
+  html {{ scroll-behavior: auto; }}
+  *, *::before, *::after {{ transition-duration: .01ms !important; }}
+}}
 </style>
 </head>
 <body>
-<header>
-  <h1>FormalSLT theorem index</h1>
-  <div class="sub">{len(rows)} public declarations &middot; {n_resolved} linked to source &middot; search by concept or name</div>
-  <input id="q" type="search" aria-label="Search the theorem index" placeholder="Search: Bernstein, sample mean, PAC-Bayes, confidence sequence, ...">
-  <div class="concepts">{concept_buttons}</div>
+<a class="skip-link" href="#results">Skip to results</a>
+<header class="index-header">
+  <div class="index-header-inner">
+    <nav class="index-nav" aria-label="Theorem index navigation">
+      <a class="wordmark" href="../">FormalSLT</a>
+      <div class="index-nav-links">
+        <a href="../">Research overview</a>
+        <a href="../api.html">Lean docs</a>
+      </div>
+    </nav>
+    <p class="eyebrow">Concept-keyed discovery</p>
+    <h1>Find the theorem before the declaration name.</h1>
+    <p class="sub">{len(rows)} indexed declarations &middot; {n_resolved} linked to source &middot; discovery surface, not an API compatibility promise</p>
+  </div>
 </header>
-<main>
-  <div class="count" id="count"></div>
+<div class="search-shell">
+  <div class="search-inner">
+    <div class="search-field">
+      <label for="q">Search declarations</label>
+      <input id="q" type="search" autocomplete="off" spellcheck="false" aria-controls="results" placeholder="Empirical Bernstein, adaptive trajectory, Poisson equation, transition kernel">
+    </div>
+    <button class="clear" id="clear" type="button" disabled>Clear filters</button>
+  </div>
+</div>
+<main id="results">
+  <details class="concept-filter" id="concept-filter">
+    <summary>Filter by concept <span class="filter-state" id="filter-state">No concept selected</span></summary>
+    <div class="concepts" aria-label="Theorem concepts">{concept_buttons}</div>
+  </details>
+  <output class="count" id="count" role="status" aria-live="polite" aria-atomic="true"></output>
   {"".join(cards)}
 </main>
+<footer class="index-footer">
+  <p>Built from <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__"><code>__FORMALSLT_SOURCE_REF__</code></a>. Source links are pinned to the same documentation commit during staging.</p>
+</footer>
 <script>
 const rows = Array.from(document.querySelectorAll('.row'));
 const q = document.getElementById('q');
 const count = document.getElementById('count');
 const cbtns = Array.from(document.querySelectorAll('.cbtn'));
+const clear = document.getElementById('clear');
+const filterState = document.getElementById('filter-state');
+const conceptFilter = document.getElementById('concept-filter');
 let activeConcept = null;
+if (!window.matchMedia('(max-width: 720px)').matches) conceptFilter.open = true;
 function normalize(value) {{
   return value.toLowerCase().replace(/[-\u2010-\u2015]/g, '');
+}}
+function selectConcept(concept) {{
+  activeConcept = concept;
+  for (const b of cbtns) {{
+    const active = b.dataset.concept === activeConcept;
+    b.classList.toggle('active', active);
+    b.setAttribute('aria-pressed', String(active));
+  }}
+  filterState.textContent = activeConcept || 'No concept selected';
 }}
 function apply() {{
   const term = normalize(q.value.trim());
@@ -380,16 +608,22 @@ function apply() {{
     r.classList.toggle('hidden', !show);
     if (show) shown++;
   }}
-  count.textContent = shown + ' / ' + rows.length + ' shown';
+  count.textContent = shown + ' of ' + rows.length + ' declarations shown';
+  clear.disabled = !term && !activeConcept;
 }}
 q.addEventListener('input', apply);
 for (const b of cbtns) {{
   b.addEventListener('click', () => {{
-    if (activeConcept === b.dataset.concept) {{ activeConcept = null; b.classList.remove('active'); }}
-    else {{ cbtns.forEach(x => x.classList.remove('active')); activeConcept = b.dataset.concept; b.classList.add('active'); }}
+    selectConcept(activeConcept === b.dataset.concept ? null : b.dataset.concept);
     apply();
   }});
 }}
+clear.addEventListener('click', () => {{
+  q.value = '';
+  selectConcept(null);
+  apply();
+  q.focus();
+}});
 apply();
 </script>
 </body>
@@ -423,7 +657,43 @@ def main() -> int:
         assert "ERM" not in concepts_for("genGap", "generalization gap", "")
         assert "ERM" in concepts_for("IsERM", "empirical risk minimizer", "")
         assert "ERM" in concepts_for("vc_erm_sample_complexity", "", "")
+        structured_tags = concepts_for(
+            "FormalSLT.Applications.ControlledQueue."
+            "exists_structuredCandidateTVConfidence_event",
+            "Simultaneous physical-row TV budgets for the generated candidates",
+            "",
+        )
+        assert "VC dimension" not in structured_tags
+        assert {
+            "adaptive trajectory", "transition kernel", "confidence sequence"
+        }.issubset(structured_tags)
         assert "covering / chaining" not in concepts_for("bennett_mgf", "Bennett MGF", "")
+        assert "Rademacher" in concepts_for(
+            "one_step_contraction", "One coordinate replacement step", ""
+        )
+        assert "Rademacher" in concepts_for(
+            "contraction_1lip", "Finite-sample scalar contraction", ""
+        )
+        assert "Rademacher" not in concepts_for(
+            "queueHypothesis_nominal_isOscillationContraction",
+            "Target-policy Dobrushin kernel-contraction certificate",
+            "",
+        )
+        assert "Rademacher" not in concepts_for(
+            "finiteDobrushinCoefficient_isOscillationContraction",
+            "Finite-state Markov-kernel oscillation contraction",
+            "",
+        )
+        assert "stability" not in concepts_for(
+            "candidateKernelTable_eq_massTable",
+            "Exact generated transition-kernel table identity",
+            "",
+        )
+        assert "stability" in concepts_for(
+            "expectedGeneralizationGap_le_uniformStability",
+            "Uniform stability generalization theorem",
+            "",
+        )
         assert "risk" not in concepts_for(
             "finiteWeightedUnionBound_sum_le_of_exists_mem",
             "Plain-sum finite weighted union bound",
@@ -463,6 +733,67 @@ def main() -> int:
                 "",
             )
         )
+        assert "adaptive trajectory" in concepts_for(
+            "exists_trajectoryCountableEmpiricalBernsteinPACBayes_event", "", ""
+        )
+        assert "adaptive trajectory" in concepts_for(
+            "markovPACBayes_prequentialRisk_certificate", "", ""
+        )
+        assert "adaptive trajectory" in concepts_for(
+            "controlledObservedImportanceScore_condExp", "", ""
+        )
+        assert {
+            "Poisson equation", "stationary / invariant law", "transition kernel"
+        }.issubset(
+            concepts_for(
+                "exists_selectedCanonicalEmpiricalStationaryCatalog_event", "", ""
+            )
+        )
+        assert "stationary / invariant law" in concepts_for(
+            "finiteInvariantPMF_isInvariant", "", ""
+        )
+        assert "Poisson equation" in concepts_for(
+            "finiteDepthPoisson_residual_identity", "", ""
+        )
+        assert "Poisson equation" in concepts_for(
+            "finiteDepthPoissonSpanBound_closed", "", ""
+        )
+        assert "transition kernel" in concepts_for(
+            "exists_empiricalCandidateKernelTV_event", "", ""
+        )
+        assert "transition kernel" in concepts_for(
+            "finiteDobrushinCoefficient",
+            "Maximum row distance for a finite transition kernel",
+            "",
+        )
+        assert {
+            "stationary / invariant law", "transition kernel"
+        }.issubset(concepts_for("finiteDobrushinCoefficient", "", ""))
+        assert "stationary / invariant law" not in concepts_for(
+            "finiteJointMeanVarianceXi_eq_interior_of_lt",
+            "The interior stationary point is the maximizer",
+            "",
+        )
+        assert "Poisson equation" not in concepts_for(
+            "poissonDistribution_pmf", "Poisson count distribution", ""
+        )
+        assert "transition kernel" not in concepts_for(
+            "kernelizedLoss", "RKHS kernel risk bound", ""
+        )
+        assert "adaptive trajectory" not in concepts_for(
+            "boundedRisk", "Risk is controlled by a deterministic bound", ""
+        )
+        family_only_tags = concepts_for(
+            "plainBound",
+            "A declaration-local summary",
+            "Adaptive trajectory, stationary Poisson, and transition kernels",
+        )
+        assert not {
+            "adaptive trajectory",
+            "stationary / invariant law",
+            "Poisson equation",
+            "transition kernel",
+        }.intersection(family_only_tags)
         filter_fixture = render_html([
             {
                 "name": "notCramerRao",
@@ -477,6 +808,17 @@ def main() -> int:
         ])
         assert 'data-concepts="[&quot;Fisher information&quot;]"' in filter_fixture
         assert "concepts.includes(activeConcept)" in filter_fixture
+        assert "1 indexed declarations" in filter_fixture
+        assert "discovery surface, not an API compatibility promise" in filter_fixture
+        assert "public declarations" not in filter_fixture
+        assert 'href="../">FormalSLT</a>' in filter_fixture
+        assert 'rel="canonical" href="https://robby955.github.io/FormalSLT/theorems/"' in filter_fixture
+        assert 'rel="icon" href="../assets/favicon.svg"' in filter_fixture
+        assert 'aria-pressed="false"' in filter_fixture
+        assert 'role="status" aria-live="polite" aria-atomic="true"' in filter_fixture
+        assert '<details class="concept-filter" id="concept-filter">' in filter_fixture
+        assert "setAttribute('aria-pressed', String(active))" in filter_fixture
+        assert filter_fixture.count("__FORMALSLT_SOURCE_REF__") == 2
         print("theorem-index self-test passed")
         return 0
 

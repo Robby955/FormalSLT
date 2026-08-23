@@ -5,16 +5,17 @@ import FormalSLT.Rademacher.UniformDeviation
 import FormalSLT.ERM
 
 /-!
-# VC-dimension sample complexity via Rademacher complexity
+# Effective-growth sample complexity via Rademacher complexity
 
 ## Scope
 
-Composes the Sauer-Shelah polynomial bound with the effective-class Massart
-bound to obtain the classic VC-dimension Rademacher complexity bound:
+Composes a Sauer-Shelah-shaped effective-class growth premise with the
+effective-class Massart bound to obtain the classic Rademacher complexity
+bound:
 
     empiricalRademacherComplexity ℓ z ≤ B · √(2d · log(en/d) / n)
 
-and derives the high-probability VC sample-complexity theorem:
+and derives the corresponding high-probability sample-complexity theorem:
 
     P(genGap ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(2B²))
 
@@ -40,10 +41,11 @@ losses, and an iid product sample law.
 
 ## Current boundaries
 
-The VC route is a finite-sample high-probability wrapper. It uses the checked
-sharp genGap tail where the concentration exponent appears, but it does not
-state an arbitrary non-iid product-space theorem or a localized-Rademacher
-sample-complexity theorem.
+The effective-growth route is a finite-sample high-probability wrapper. The
+binary zero-one module separately derives its growth premises from a uniform
+trace VC-dimension bound. This module uses the checked sharp genGap tail where
+the concentration exponent appears, but it does not state an arbitrary non-iid
+product-space theorem or a localized-Rademacher sample-complexity theorem.
 
 No `sorry`, no `admit`, no custom `axiom`.
 -/
@@ -120,7 +122,7 @@ private lemma empiricalRademacherComplexity_eq_zero_of_singleton
     rw [sum_signOfBool_eq_zero k, zero_mul]
   rw [h_sum_zero, mul_zero]
 
-/-- **Pointwise VC-Rademacher bound.**
+/-- **Pointwise effective-growth Rademacher bound.**
 
 For a sample `z` where the effective class (distinct loss patterns) has
 cardinality bounded by the Sauer-Shelah growth function `∑_{k≤d} C(n,k)`,
@@ -129,8 +131,9 @@ the empirical Rademacher complexity satisfies:
     Rad(z) ≤ B · √(2d · log(en/d) / n)
 
 This replaces `log|H|` in the standard Massart bound with the tighter
-`d · log(en/d)`, where `d` is the VC dimension (or any upper bound on the
-effective class growth exponent).
+`d · log(en/d)`, where `d` indexes the supplied effective-class growth bound.
+For binary zero-one loss, the separate binary VC bridge derives that premise
+from a trace VC-dimension bound.
 
 The singleton case (all hypotheses agree on the sample) is handled by
 showing Rad = 0, which is ≤ the nonneg bound. -/
@@ -189,13 +192,14 @@ theorem vcRademacher_pointwise
     rw [h_zero]
     positivity
 
-/-- The expected empirical Rademacher complexity is bounded by the VC-Rademacher
+/-- The expected empirical Rademacher complexity is bounded by the effective-growth
 bound. The pointwise bound holds for ALL samples (handling both the singleton
 and nontrivial effective-class cases), so the integral is also bounded.
 
 Hypothesis `hGrowth_uniform`: for every sample z, the effective class card is
-bounded by the growth function ∑_{k≤d} C(n,k). This follows from the
-hypothesis class having VC dimension ≤ d. -/
+bounded by the growth function ∑_{k≤d} C(n,k). For binary zero-one loss,
+the separate binary VC bridge derives this premise from a uniform trace
+VC-dimension bound. -/
 lemma expected_rademacher_le_vc
     [MeasurableSpace Z]
     {ℓ : ι → Z → ℝ} {B : ℝ} (hB : 0 < B)
@@ -219,17 +223,18 @@ lemma expected_rademacher_le_vc
   · rw [integral_undef h_int]
     exact hC_nn
 
-/-- **High-probability VC sample-complexity bound.**
+/-- **High-probability effective-growth sample-complexity bound.**
 
-For a hypothesis class with uniformly bounded effective class cardinality
-(as guaranteed by VC dimension ≤ d via Sauer-Shelah), with `B`-bounded loss
-and an iid sample `S ~ μⁿ`:
+For a hypothesis class whose effective loss-pattern cardinality satisfies the
+supplied binomial-sum growth bound for every sample, with `B`-bounded loss and
+an iid sample `S ~ μⁿ`:
 
     P(genGap(S) ≥ 2B · √(2d · log(en/d) / n) + ε) ≤ exp(-ε²n/(2B²))
 
-This is the classic VC sample-complexity theorem expressed through the
-Rademacher complexity route: Sauer-Shelah → Massart → Rademacher high-probability
-bound with the sharp genGap tail.
+This is the effective-growth form of the classic VC sample-complexity route:
+Sauer-Shelah-shaped growth bound → Massart → Rademacher high-probability bound
+with the sharp genGap tail. The binary zero-one bridge separately derives the
+growth premise from a VC-dimension bound.
 
 The one-sided genGap is `sup_h (risk(h) - empiricalRisk(h))`, so this
 bounds the worst-case overfitting of any hypothesis in the class. -/
@@ -249,14 +254,14 @@ theorem genGap_highProb_vcClass
       ≤ Real.exp (- ε ^ 2 * ↑n / (2 * B ^ 2)) := by
   -- Step 1: High-prob Rademacher gives P(genGap ≥ 2·E[Rad] + ε) ≤ exp(...).
   have h_highProb := genGap_highProb_rademacher (μ := μ) (n := n) hB hℓ_meas hℓ_bdd hn hε
-  -- Step 2: E[Rad] ≤ B·√(2d·log(en/d)/n) by the VC bound.
+  -- Step 2: E[Rad] ≤ B·√(2d·log(en/d)/n) by the effective-growth bound.
   have h_vc : ∫ S', empiricalRademacherComplexity ℓ S' ∂(piMeasure μ n)
       ≤ B * Real.sqrt (2 * ↑d * Real.log (Real.exp 1 * ↑n / ↑d) / (n : ℝ)) := by
     have : IsProbabilityMeasure (piMeasure μ n) := by
       unfold piMeasure; infer_instance
     exact expected_rademacher_le_vc hB hℓ_bdd hn hd hdn
       hGrowth_uniform (piMeasure μ n)
-  -- Step 3: Monotonicity: the event {genGap ≥ 2·VC_bound + ε} ⊆ {genGap ≥ 2·E[Rad] + ε}.
+  -- Step 3: Monotonicity: the displayed event is contained in {genGap ≥ 2·E[Rad] + ε}.
   simp only [piMeasure] at h_highProb h_vc ⊢
   set μn := Measure.pi (fun _ : Fin n => μ)
   set E_rad := ∫ S', empiricalRademacherComplexity ℓ S' ∂μn
@@ -270,10 +275,11 @@ theorem genGap_highProb_vcClass
         · exact measure_ne_top μn _
     _ ≤ Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := h_highProb
 
-/-- **Two-sided VC uniform deviation bound.**
+/-- **Two-sided effective-growth uniform deviation bound.**
 
-For a hypothesis class with VC dimension ≤ d (effective class card bounded by
-the growth function for all samples), with `B`-bounded loss and iid sample:
+For a hypothesis class whose loss and negated-loss effective classes satisfy
+the two supplied binomial-sum growth bounds for every sample, with `B`-bounded
+loss and an iid sample:
 
     P(sup_h |risk(h) - emp(h)| ≥ 2B·√(2d·log(en/d)/n) + ε) ≤ 2·exp(-ε²n/(2B²))
 
@@ -335,19 +341,21 @@ theorem uniformDeviation_highProb_vcClass
         add_le_add h_upper h_lower
     _ = 2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := by ring
 
-/-- **VC-ERM excess-risk tail bound.**
+/-- **Effective-growth ERM excess-risk tail bound.**
 
-For a hypothesis class with VC dimension ≤ d, uniformly `B`-bounded loss,
-an iid sample `S ~ μⁿ`, and any exact empirical-risk minimizer `hhat(S)`:
+For a hypothesis class whose loss and negated-loss effective classes satisfy
+the two supplied binomial-sum growth bounds, uniformly `B`-bounded loss, an iid
+sample `S ~ μⁿ`, and any exact empirical-risk minimizer `hhat(S)`:
 
     P(risk(hhat(S)) - risk(i*) ≥ 4B·√(2d·log(en/d)/n) + 2ε) ≤ 2·exp(-ε²n/(2B²))
 
-This is the standard PAC-learning guarantee for finite VC-dimension classes:
-ERM achieves excess risk O(√(d·log(n/d)/n)) with high probability.
+It yields the standard finite-VC-class rate once a separate bridge derives the
+two growth premises from VC dimension. The theorem itself assumes those growth
+bounds rather than a VC-dimension certificate.
 
 Proof chains:
 1. Deterministic ERM: excessRisk(ERM) ≤ 2·uniformDeviation
-2. VC uniform deviation: P(uniformDev ≥ 2B√(2d·log(en/d)/n) + ε) ≤ 2·exp(...)
+2. Effective-growth uniform deviation: P(uniformDev ≥ 2B√(2d·log(en/d)/n) + ε) ≤ 2·exp(...)
 3. Combine via subset monotonicity. -/
 theorem vc_erm_excessRisk_tail
     [MeasurableSpace Z] [Nonempty Z] [StandardBorelSpace Z]
@@ -384,7 +392,7 @@ theorem vc_erm_excessRisk_tail
     have h_det := erm_excessRisk_le_two_uniformDeviation (μ := μ) (ℓ := ℓ)
       (z := S) (î := hhat S) (i_star := i_star) (hERM S)
     linarith
-  -- The VC uniform deviation tail bound.
+  -- The effective-growth uniform deviation tail bound.
   have h_ud := uniformDeviation_highProb_vcClass (μ := μ) (n := n)
     hB hℓ_meas hℓ_bdd hn hd hdn
     hGrowth_uniform hGrowth_neg hε
@@ -398,10 +406,11 @@ theorem vc_erm_excessRisk_tail
         measureReal_mono h_subset (measure_ne_top μn _)
     _ ≤ 2 * Real.exp (-ε ^ 2 * ↑n / (2 * B ^ 2)) := h_ud
 
-/-- **VC-ERM closed-form sample complexity.**
+/-- **Effective-growth ERM closed-form sample complexity.**
 
-For a hypothesis class with VC dimension ≤ d, uniformly `B`-bounded loss,
-an iid sample `S ~ μⁿ`, and any exact ERM `ĥ(S)`, if the sample size satisfies
+For a hypothesis class whose loss and negated-loss effective classes satisfy
+the two supplied binomial-sum growth bounds, uniformly `B`-bounded loss, an iid
+sample `S ~ μⁿ`, and any exact ERM `ĥ(S)`, if the sample size satisfies
 
     n · ε² ≥ 72 · B² · (d · log(en/d) + log(2/δ))
 
@@ -409,8 +418,9 @@ then with probability at least 1 − δ over S, the ERM has excess risk ≤ ε:
 
     P(risk(ĥ(S)) − risk(i★) ≥ ε) ≤ δ
 
-This is the classical PAC sample-complexity statement for finite VC classes,
-expressed with the explicit constant **C = 72 B²**.
+This is the effective-growth form of the classical PAC sample-complexity
+statement, with explicit constant **C = 72 B²**. The binary zero-one bridge
+separately supplies the growth hypotheses from a VC-dimension bound.
 
 **Proof sketch.** Apply `vc_erm_excessRisk_tail` with tail parameter `ε' := ε/6`,
 yielding the bound on the event {excess ≥ 4B·√(2d·log(en/d)/n) + ε/3}. The
@@ -418,7 +428,7 @@ hypothesis splits into two halves (each ≤ n·ε² since the discarded summand 
 nonnegative):
 
 * `72 B² · d · log(en/d) ≤ n ε²`: ensures `4B·√(2d·log(en/d)/n) ≤ 2ε/3`, so
-  the deterministic VC piece is absorbed.
+  the deterministic growth-bound piece is absorbed.
 * `72 B² · log(2/δ) ≤ n ε²`: ensures `2 · exp(-(ε/6)² n / (2B²)) ≤ δ`,
   i.e. the concentration tail is at most δ.
 
