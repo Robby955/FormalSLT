@@ -143,6 +143,11 @@ THEOREMS=(
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinUpperBesselFailure_mass_le_delta"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinTwoSidedBesselFailure_mass_le_delta"
   "FormalSLT.AnytimeValid.exists_forwardEmpiricalBernsteinTwoSidedBessel_event"
+  "FormalSLT.AnytimeValid.empiricalBernstein_confidence_sequence_of_proxy"
+  "FormalSLT.AnytimeValid.isPredictableVarianceProxy_const"
+  "FormalSLT.AnytimeValid.stronglyAdapted_regularizedLaggedSecondMomentProxy"
+  "FormalSLT.AnytimeValid.isPredictableVarianceProxy_regularizedLagged_of_condSecondMoment_le"
+  "FormalSLT.AnytimeValid.isPredictableVarianceProxy_regularizedLagged"
   "FormalSLT.AnytimeValid.finiteWeightedProcess_eProcess"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerTiltMixtureProcess_eProcess_of_bounded"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerTiltMixtureProcess_atTop_crossing_mass_le_delta"
@@ -956,6 +961,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.AnytimeValid.ForwardBesselProcess"
+  echo "import FormalSLT.AnytimeValid.PredictableVarianceProxy"
   echo "import FormalSLT.AnytimeValid.SelectionCost"
   echo "import FormalSLT.AnytimeValid.AllocationLogLog"
   echo "import FormalSLT.PACBayes.ForwardBesselPACBayes"
@@ -1058,6 +1064,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
   FormalSLT.AnytimeValid.ForwardBesselProcess \
+  FormalSLT.AnytimeValid.PredictableVarianceProxy \
   FormalSLT.AnytimeValid.SelectionCost \
   FormalSLT.AnytimeValid.AllocationLogLog \
   FormalSLT.PACBayes.ForwardBesselPACBayes \

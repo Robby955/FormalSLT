@@ -159,9 +159,9 @@ declarations and the compatibility rules.
 
 ## Verification
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C250-brightgreen.svg)](#verification)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-295-blue.svg)](#verification)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-155%2C477-brightgreen.svg)](#verification)
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C256-brightgreen.svg)](#verification)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-296-blue.svg)](#verification)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-155%2C754-brightgreen.svg)](#verification)
 
 The line count covers the library and examples, including the generated
 controlled-queue data module. The curated public theorem surface reports only
