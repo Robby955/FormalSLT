@@ -533,7 +533,7 @@ if package_match is None:
 package_name = package_match.group(1)
 
 install_surfaces = {
-    "README.md": 2,
+    "README.md": 1,
     "docs/site/readers/lean/index.html": 2,
 }
 for path, expected_count in install_surfaces.items():
@@ -545,6 +545,29 @@ for path, expected_count in install_surfaces.items():
             f"snippets using the Lake package name {package_name!r}; "
             f"found {dependency_names!r}"
         )
+
+# The README presents only the latest tagged release. Before v0.2 is tagged,
+# unreleased users should choose and review an immutable commit themselves,
+# rather than copy a stale candidate hash or track a moving branch.
+readme = Path("README.md").read_text(encoding="utf-8")
+readme_words = " ".join(readme.split())
+readme_dependency_refs = re.findall(
+    r'require\s+\S+\s+from\s+git\s+\S+\s+@\s+"([^"]+)"', readme
+)
+if readme_dependency_refs != ["v0.1.0"]:
+    raise SystemExit(
+        "ERROR: README.md must install only the latest tagged release v0.1.0; "
+        f"found refs {readme_dependency_refs!r}"
+    )
+if (
+    "pin a full commit SHA that you have reviewed rather than the moving branch"
+    not in readme_words
+):
+    raise SystemExit(
+        "ERROR: README.md must direct unreleased users to a reviewed full commit SHA"
+    )
+if re.search(r'require\s+\S+\s+from\s+git[\s\S]*?@\s*"main"', readme):
+    raise SystemExit("ERROR: README.md must not install FormalSLT from moving main")
 
 print(
     "public API provenance passed: 19 exact endpoints, audit rows, and bounded "
