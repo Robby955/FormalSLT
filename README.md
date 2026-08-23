@@ -6,137 +6,91 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-FormalSLT is an open Lean 4 library for a difficult part of learning theory:
-proving guarantees that still hold after models, times, or hypotheses are
-chosen from the data, and when observations come from a dependent process.
+FormalSLT is a Lean 4 library for finite-sample learning guarantees under
+adaptive selection and dependent data.
 
-The library connects PAC-Bayes generalization, confidence sequences,
-Rademacher and VC theory, adaptive trajectories, and stationary Markov risk.
-Its aim is broader than one application: build a reusable, machine-checked
-foundation for statistical learning theory, with assumptions and selection
-costs visible in the theorem statement.
+It includes PAC-Bayes bounds, confidence sequences, e-processes, Rademacher and
+VC theory, and finite-state results for trajectories and stationary Markov risk.
 
-[Explore the research map](https://robby955.github.io/FormalSLT/) ·
-[Find a theorem](https://robby955.github.io/FormalSLT/theorems/) ·
-[Use the library](#use-the-library) ·
-[Reproduce the checks](#verification)
+[Documentation](https://robby955.github.io/FormalSLT/) ·
+[Theorem map](./docs/theorem-map.md) ·
+[Search declarations](https://robby955.github.io/FormalSLT/search.html) ·
+[Install](#install)
 
-## Watch the idea
+## Overview video
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4">
-    <img src="media/formalslt-overview/delivery/formalslt-overview-poster.jpg" width="960" alt="Watch the FormalSLT overview: a generic 4,608-coordinate route and a separate scalar route for a predeclared refresh family.">
+    <img src="media/formalslt-overview/delivery/formalslt-overview-poster.jpg" width="960" alt="FormalSLT overview film">
   </a>
 </p>
 
-The one-minute film follows a curated route from adaptive data to anytime
-validity and stationary risk. Its concrete example is a checked result for a
-controlled queue. Inside a predeclared refresh family, one binary hit rate
-supplies time-uniform confidence, and Lean separately proves that the
-physical-row total-variation discrepancy between the true family member and a
-generated candidate equals their hit-probability discrepancy. Click the image
-to play it.
+A 64-second introduction to FormalSLT and its controlled-queue example. Under
+a specified refresh model, the transition calculation reduces from 4,608
+coordinates to one hit count.
 
-[Play the 1080p film](https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4) ·
-[Read the transcript](./media/formalslt-overview/TRANSCRIPT.md) ·
-[Manim source](./media/formalslt-overview/) ·
-[Render receipt](./media/formalslt-overview/render-receipt.json)
+[Play the film](https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4) ·
+[Transcript](./media/formalslt-overview/TRANSCRIPT.md) ·
+[Manim source](./media/formalslt-overview/)
 
-## Why FormalSLT exists
+## Results
 
-Probability libraries supply the foundations, while learning-theory papers
-usually end in prose and LaTeX. FormalSLT works on the layer between them:
-generalization and sequential-inference results that can be imported, composed,
-and checked by Lean.
+### Anytime PAC-Bayes and empirical Bernstein
 
-Today, FormalSLT tackles four recurring questions:
-
-- How can one event control every sample size and every eligible posterior?
-- What remains valid when a policy, predictor, or posterior adapts to a path?
-- How can a trajectory guarantee be transferred to stationary risk?
-- What changes when the transition kernel must be learned from that same path?
-
-FormalSLT is not Mathlib-scale today. The long-term goal is a serious shared
-library for formal statistical learning and machine-learning theory, built
-from small reusable mechanisms rather than isolated demo proofs.
-
-## What is proved
-
-The results below are checked in Lean. Some applications require supplied
-certificates; the [scope ledger](./docs/assumptions-and-nonclaims.md) records
-the complete assumptions, nonclaims, and open endpoints.
-
-### Empirical-Bernstein PAC-Bayes at every sample size
-
-One event on an infinite IID path controls every sample size `n ≥ 2` and every
+On an infinite IID path, one event controls every sample size `n ≥ 2` and every
 admissible posterior. The bound uses Bessel sample variance and
-measure-theoretic KL divergence.
-
-**Boundary:** this is an offline all-sample-size result, not an optional-stopping
-claim. The separate forward route uses predictable residuals.
+measure-theoretic KL divergence. A separate forward construction handles
+predictable residuals for sequential use. The first result is uniform over
+sample size, but it is not an optional-stopping theorem.
 
 [Lean source](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [checker](./examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [positive-KL example](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean)
 
-### Adaptive trajectory inference
+### Adaptive trajectories
 
-The finite-state result permits path- and time-dependent posterior selection
-from score and tilt catalogs fixed before scoring, with a selected width that
-tends to zero. A second result handles arbitrary measurable state and
-hypothesis spaces under a joint measurability contract.
-
-**Boundary:** both results start from a deterministic initial state and target
-prefix-conditional risk. They do not turn predictors chosen after observing
-their scored outcomes into valid candidates.
+For a finite score family fixed in advance, one event allows the posterior and
+tilt to depend on the observed prefix and time. With the geometric time
+selector, the resulting width tends to zero. A separate theorem covers
+measurable state and hypothesis spaces with a finite tilt family. These results
+start from a deterministic initial state and bound prefix-conditional risk.
 
 [finite-state source](./FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean) ·
 [measurable-space source](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean) ·
-[informative checker](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean)
+[worked checker](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean)
 
-### Stationary risk with known and unknown kernels
+### Stationary and Markov risk
 
-The stationary layer combines prequential bounds with finite-depth Poisson
-corrections. One route handles a known contracting finite kernel. Another adds
-same-trajectory transition confidence over a predeclared finite candidate
-family.
-
-**Boundary:** the known-kernel route takes an invariant law, contraction, and
-oscillation certificate as inputs. The unknown-kernel route requires positive
-row visits and strict selected contraction; it does not estimate an arbitrary
-kernel without structure or coverage conditions.
+Prequential bounds combine with finite-depth Poisson corrections to control
+stationary risk. One route uses a known contracting kernel. The empirical route
+uses a finite catalog of contracting candidates and requires every source row
+to be visited. A selected empirical contraction bound below one additionally
+proves uniqueness of the true invariant law.
 
 [known-kernel source](./FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean) ·
-[unknown-kernel source](./FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean) ·
-[informative checker](./examples/CheckEmpiricalStationaryCatalogInformative.lean)
+[candidate-family source](./FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean) ·
+[worked checker](./examples/CheckEmpiricalStationaryCatalogInformative.lean)
 
-The [theorem map](./docs/theorem-map.md) lists the supported endpoints and their
-exact Lean names.
+### Controlled queue
 
-## Worked application: a controlled queue
+For a 24-state controlled queue, the generic transition bound allocates
+confidence across `48 × 48 × 2 = 4,608` coordinates. Under a specified
+one-parameter refresh model, a single destination-hit statistic has a
+row-independent conditional mean, and Lean proves that its parameter
+discrepancy equals physical-row total variation. This example is retrospective
+and conditional on the refresh model; it does not test family membership.
 
-A 24-state, two-action queue exercises the stationary and unknown-kernel stack
-on a frozen, replayable trajectory. The generic transition certificate tracks
-4,608 coordinates. A separate route for a declared one-parameter refresh model
-uses a persistence-hit statistic. Lean checks its row-independent conditional
-mean, a time-uniform scalar confidence event, the exact physical-row TV
-identity, and the resulting retrospective risk certificate.
+[application](./applications/controlled_queue/README.md) ·
+[design](./docs/controlled-queue-application-design.md) ·
+[Lean receipt](./FormalSLT/Applications/ControlledQueueSharpStructuredRetrospectiveReceipt.lean)
 
-This is one stress test of the library, not its organizing purpose. It is also
-model-conditional and retrospective: it does not test membership in the
-refresh family or establish prospective performance for arbitrary kernels.
+The [theorem map](./docs/theorem-map.md) also covers Rademacher complexity, VC
+theory, concentration inequalities, change of measure, and e-process tools.
 
-[Application overview](./applications/controlled_queue/README.md) ·
-[design and evidence ledger](./docs/controlled-queue-application-design.md) ·
-[checked receipt](./FormalSLT/Applications/ControlledQueueSharpStructuredRetrospectiveReceipt.lean)
+## Install
 
-Applications are opt-in through `import FormalSLT.Applications`; they are not
-part of the stable topic-import promise.
-
-## Use the library
-
-FormalSLT uses Lean 4.32.2 and Mathlib 4.32.2. The four supported topic imports
-are:
+FormalSLT currently uses Lean 4.32.2 and Mathlib 4.32.2. The stable topic
+imports are:
 
 ```lean
 import FormalSLT.PACBayes
@@ -145,19 +99,14 @@ import FormalSLT.StochasticDynamics
 import FormalSLT.VC
 ```
 
-Use the latest tagged release for stable work:
+Add the latest tagged release to a Lake project:
 
 ```lean
 require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 ```
 
-The next release is being prepared from `main`. Its
-[candidate record](./docs/releases/v0.2.0.md) describes the planned scope and
-release gates. For reproducible work before the tag, pin a full commit SHA that
-you have reviewed rather than the moving branch.
-
-In the downstream Lake project, run:
+Then run:
 
 ```bash
 lake update
@@ -165,31 +114,16 @@ lake exe cache get
 lake build
 ```
 
-Repository maintainers can run `make downstream` from a FormalSLT checkout to
-exercise the bundled external-consumer fixture.
+## Repository layout
 
-The [API policy](./docs/api-stability.md) defines the 19 candidate v0.2
-declarations and the compatibility rules.
+- `FormalSLT/PACBayes`: PAC-Bayes inequalities and change-of-measure tools
+- `FormalSLT/Sequential`: confidence sequences, e-processes, and Ville bounds
+- `FormalSLT/StochasticDynamics`: adaptive paths, kernels, and stationary risk
+- `FormalSLT/VC`: VC dimension, growth functions, and uniform convergence
+- `examples`: small checker files for public results
+- `applications`: end-to-end worked examples
 
-## Find what you need
-
-- **Statistics and ML:** [bounds, assumptions, and receipts](https://robby955.github.io/FormalSLT/readers/stats-ml/)
-- **Probability:** [e-processes, path laws, and Poisson equations](https://robby955.github.io/FormalSLT/readers/probability/)
-- **Lean:** [imports, theorem names, and source layout](https://robby955.github.io/FormalSLT/readers/lean/)
-- **Verification:** [axioms, fidelity gates, and release checks](https://robby955.github.io/FormalSLT/readers/verification/)
-- **Search:** [concept index](./docs/INDEX.md) · [declaration search](https://robby955.github.io/FormalSLT/search.html)
-
-## Verification
-
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C290-brightgreen.svg)](#verification)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-296-blue.svg)](#verification)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-156%2C339-brightgreen.svg)](#verification)
-
-The line count covers the library and examples, including the generated
-controlled-queue data module. The curated public theorem surface reports only
-`[propext, Classical.choice, Quot.sound]`. The checked library and examples
-contain no executable `sorry` or `admit`, no custom axiom or constant
-declarations, and no uses of `native_decide`.
+## Verify
 
 ```bash
 lake exe cache get
@@ -198,37 +132,21 @@ make examples
 make tutorials
 make api
 make downstream
-python3 scripts/generate_badge_counts.py --check
-python3 scripts/check_doc_anchors.py --self-test
-git diff --check
 ```
 
-The [release checklist](./docs/public-release-checklist.md) contains the full
-exact-SHA gate, including statement-fidelity, application, artifact, and
-fresh-tag installation checks.
+[Verification details](https://robby955.github.io/FormalSLT/readers/verification/)
 
-## Scope, sources, and citation
+## Papers and references
 
-The [scope ledger](./docs/assumptions-and-nonclaims.md) distinguishes proved,
-conditional, and open endpoints. The [literature ledger](./docs/LITERATURE.md)
-records agreement and differences with prior mathematics; the
-[source map](./docs/references.md) and [related-work guide](./docs/related-work.md)
-record mathematical and formalization provenance. Lean signatures and checker
-files remain authoritative.
-
-An earlier paper based on FormalSLT was accepted to the ICML 2026 AI for Math
-workshop:
-[*From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
-
-Use [CITATION.cff](./CITATION.cff) for the current software citation. A v0.2 DOI
-will be citable only after the exact tagged artifact, GitHub Release, and
-archival deposit are published.
+- [From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory](https://openreview.net/pdf?id=EsEqPLc0ef), ICML 2026 AI for Math workshop
+- [Literature notes](./docs/LITERATURE.md)
+- [Source map](./docs/references.md)
+- [Citation metadata](./CITATION.cff)
 
 ## Contributing
 
-Read [CONTRIBUTING.md](./CONTRIBUTING.md) and
-[Good first issues](./docs/good-first-issues.md). New public theorems need a
-focused checker, an axiom receipt, and explicit scope.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) and the
+[good first issues](./docs/good-first-issues.md).
 
 ## License
 
