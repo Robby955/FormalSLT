@@ -3,24 +3,24 @@
   "fact_commit": "7b1947544905aabf1b5ee8a6c3a7485e8762560e",
   "source": {
     "media/formalslt-overview/TRANSCRIPT.md": {
-      "sha256": "caeb98821b3810238799d237ab8117c9f6b6b50c31c7f85de05c7eb00ed485a6",
-      "bytes": 3016
+      "sha256": "25a036df0064d183d482c12c0765ba716fa3aba30ba11137c0ec12cd865e7221",
+      "bytes": 3018
     },
     "media/formalslt-overview/compose_soundtrack.py": {
-      "sha256": "ba504fb68318035006105065e54b8197088548f7303a80c0d697e1c3c635446d",
-      "bytes": 12191
+      "sha256": "72df197196d2c2e78c224df14ffbed702b4f938b27e8859348d7a3112337a6e0",
+      "bytes": 12309
     },
     "media/formalslt-overview/extract_facts.py": {
-      "sha256": "920300bd5df8d35cc71432791d0aa4157353027b34f3585c40c28854b3db69ad",
-      "bytes": 10729
+      "sha256": "7a6b970a9a437e2daefb51ac59325a459f5f96e228e9b98d921442be66ec9efb",
+      "bytes": 10953
     },
     "media/formalslt-overview/facts.json": {
       "sha256": "15c72c675215f9da09eb7cdeae2274f1a3612a54f9d40f03ccc73f7c79142d27",
       "bytes": 2226
     },
     "media/formalslt-overview/formalslt_overview.py": {
-      "sha256": "8d62d30fea6dc57cf77867bc0fb2daac5cece17af36b0646595dce9daffafca7",
-      "bytes": 36917
+      "sha256": "2f00a76f972f25512b8209c7d71ab0c75bc1cd8594fc6d792474fc4ec4538516",
+      "bytes": 36785
     },
     "media/formalslt-overview/manim.cfg": {
       "sha256": "276ed2761531a1c2489a522716cf0049f261b17749b0889c33aa518e0b13c37c",

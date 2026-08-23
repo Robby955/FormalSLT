@@ -218,11 +218,15 @@ def compose(
                 )
                 drone_left = sum(
                     weight * oscillator.next(SAMPLE_RATE)
-                    for weight, oscillator in zip(weights, left_oscillators)
+                    for weight, oscillator in zip(
+                        weights, left_oscillators, strict=True
+                    )
                 )
                 drone_right = sum(
                     weight * oscillator.next(SAMPLE_RATE)
-                    for weight, oscillator in zip(weights, right_oscillators)
+                    for weight, oscillator in zip(
+                        weights, right_oscillators, strict=True
+                    )
                 )
 
                 noise_left = (1664525 * noise_left + 1013904223) & 0xFFFFFFFF

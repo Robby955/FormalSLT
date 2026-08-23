@@ -265,11 +265,11 @@ class FormalSLTOverview(Scene):
     def construct(self) -> None:
         self.intro()
         self.problem()
-        self.structured_reduction(section="03")
+        self.structured_reduction()
         self.proof_spine()
-        self.anytime(section="04")
-        self.trajectories(section="05")
-        self.stationary_layer(section="06")
+        self.anytime()
+        self.trajectories()
+        self.stationary_layer()
         self.theorem_graph()
         self.close()
 
@@ -430,7 +430,7 @@ class FormalSLTOverview(Scene):
         self.wait(0.9)
         self.clear_for_next()
 
-    def structured_reduction(self, section: str = "06") -> None:
+    def structured_reduction(self) -> None:
         queue = FACTS["controlled_queue"]
         head = caption(
             "One family, one checked reduction",
@@ -560,7 +560,7 @@ class FormalSLTOverview(Scene):
         self.wait(3.25)
         self.clear_for_next()
 
-    def anytime(self, section: str = "03") -> None:
+    def anytime(self) -> None:
         head = caption(
             "One guarantee, valid at every time",
             "The same event covers every allowed posterior.",
@@ -609,7 +609,7 @@ class FormalSLTOverview(Scene):
         self.wait(0.7)
         self.clear_for_next()
 
-    def trajectories(self, section: str = "04") -> None:
+    def trajectories(self) -> None:
         head = caption(
             "The next prediction may use the path",
             "Choose from the past. Score before the next state arrives.",
@@ -659,7 +659,7 @@ class FormalSLTOverview(Scene):
         self.wait(0.9)
         self.clear_for_next()
 
-    def stationary_layer(self, section: str = "05") -> None:
+    def stationary_layer(self) -> None:
         head = caption(
             "From one path to long-run risk",
             "For finite-state kernels, a Poisson correction makes the bridge.",

@@ -66,10 +66,14 @@ DECLARATION_STATEMENT_SHAPES = {
     "exists_forwardEmpiricalBernsteinLowerTiltCatalog_event": (
         r"∃\s+goodEvent\s*:\s*Set\s+Ω",
         r"μ\.real\s+goodEventᶜ\s*≤\s*delta",
-        r"∀\s+ω\s+∈\s+goodEvent,\s*∀\s+j\s*:\s*κ,\s*∀\s+n\s*:\s*ℕ,"
-        r"\s*2\s*≤\s*n",
-        r"mean\s*<\s*forwardPrefixMean[\s\S]*?"
-        r"forwardEmpiricalBernsteinTiltCatalogBoundary",
+        (
+            r"∀\s+ω\s+∈\s+goodEvent,\s*∀\s+j\s*:\s*κ,\s*∀\s+n\s*:\s*ℕ,"
+            r"\s*2\s*≤\s*n"
+        ),
+        (
+            r"mean\s*<\s*forwardPrefixMean[\s\S]*?"
+            r"forwardEmpiricalBernsteinTiltCatalogBoundary"
+        ),
     ),
     "timeUniformPACBayes_tiltMixture_allPosteriors_bound": (
         r"μ\.real\s*\(timeUniformPACBayesTiltMixtureAnyPosteriorUpperFailure",
@@ -78,33 +82,43 @@ DECLARATION_STATEMENT_SHAPES = {
     "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event": (
         r"∃\s+goodEvent\s*:\s*Set\s*\(ℕ\s*→\s*Z\)",
         r"\(trajectoryMeasure\s+K\s+x0\)\.real\s+goodEventᶜ\s*≤\s*delta",
-        r"trajectoryPosteriorAverageConditionalRisk[\s\S]*?<"
-        r"[\s\S]*?trajectoryPosteriorEmpiricalPrequentialRisk"
-        r"[\s\S]*?trajectoryCountableEmpiricalBernsteinPACBayesBoundary",
+        (
+            r"trajectoryPosteriorAverageConditionalRisk[\s\S]*?<"
+            r"[\s\S]*?trajectoryPosteriorEmpiricalPrequentialRisk"
+            r"[\s\S]*?trajectoryCountableEmpiricalBernsteinPACBayesBoundary"
+        ),
         r"Filter\.Tendsto[\s\S]*?Filter\.atTop\s*\(nhds\s+0\)",
     ),
     "exists_empiricalStationaryCatalog_event": (
         r"∃\s+goodEvent\s*:\s*Set\s*\(ℕ\s*→\s*Z\)",
-        r"\(markovPathMeasure\s+P\s+x0\)\.real\s+goodEventᶜ\s*≤"
-        r"[\s\S]*?deltaRisk\s*\+\s*deltaTransition",
+        (
+            r"\(markovPathMeasure\s+P\s+x0\)\.real\s+goodEventᶜ\s*≤"
+            r"[\s\S]*?deltaRisk\s*\+\s*deltaTransition"
+        ),
         r"let\s+eta\s*:=\s*empiricalCandidateKernelTVBudget",
-        r"stationaryPosteriorMarkovRisk[\s\S]*?<"
-        r"[\s\S]*?empiricalTransitionPosteriorRisk"
-        r"[\s\S]*?empiricalStationaryCatalogBoundary",
+        (
+            r"stationaryPosteriorMarkovRisk[\s\S]*?<"
+            r"[\s\S]*?empiricalTransitionPosteriorRisk"
+            r"[\s\S]*?empiricalStationaryCatalogBoundary"
+        ),
     ),
     "exists_persistenceHitConfidence_event": (
         r"∃\s+goodEvent\s*:\s*Set\s*\(ℕ\s*→\s*Observation\)",
-        r"∀\s+path\s+∈\s+goodEvent[\s\S]*?"
-        r"\|persistenceHitProbability\s+gamma\s*-\s*"
-        r"empiricalPersistenceHitRate\s+n\s+path\|\s*<\s*"
-        r"persistenceHitRadius",
+        (
+            r"∀\s+path\s+∈\s+goodEvent[\s\S]*?"
+            r"\|persistenceHitProbability\s+gamma\s*-\s*"
+            r"empiricalPersistenceHitRate\s+n\s+path\|\s*<\s*"
+            r"persistenceHitRadius"
+        ),
     ),
     "refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy": (
-        r"finitePMFTotalVariation\s*"
-        r"\(refreshEnvironment\s+gamma\s+state\s+action\)\s*"
-        r"\(candidateEnvironment\s+candidate\s+state\s+action\)\s*=\s*"
-        r"\|persistenceHitProbability\s+gamma\s*-\s*"
-        r"candidatePersistenceHitProbability\s+candidate\|",
+        (
+            r"finitePMFTotalVariation\s*"
+            r"\(refreshEnvironment\s+gamma\s+state\s+action\)\s*"
+            r"\(candidateEnvironment\s+candidate\s+state\s+action\)\s*=\s*"
+            r"\|persistenceHitProbability\s+gamma\s*-\s*"
+            r"candidatePersistenceHitProbability\s+candidate\|"
+        ),
     ),
 }
 

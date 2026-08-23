@@ -15,10 +15,10 @@ models, dependent data, and repeated looks must be handled by the theorem.
 
 ## 00:09.600 — One family, one checked reduction
 
-Inside the predeclared controlled-queue refresh family, a generic transition
-route tracks 48 current observations × 48 next observations × 2 orientations:
-4,608 coordinates. Each physical row is a uniform refresh plus extra mass on
-one known deterministic step.
+The generic transition route tracks 48 current observations × 48 next
+observations × 2 orientations: 4,608 coordinates. Inside the predeclared
+controlled-queue refresh family, each physical row is a uniform refresh plus
+extra mass on one known deterministic step.
 
 The binary hit records whether the next state takes that step. Its conditional
 mean is `p_gamma = E[hit | past] = (1 + 23 * gamma) / 24`. Lean proves the exact
