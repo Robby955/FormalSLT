@@ -6,130 +6,101 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C232-brightgreen.svg)](#verification)
-[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-291-blue.svg)](#use-the-library)
-[![Lean lines](https://img.shields.io/badge/Lean%20lines-154%2C217-brightgreen.svg)](#verification)
-[![Zero sorry](https://img.shields.io/badge/sorry-0-brightgreen.svg)](#verification)
-[![Axioms](https://img.shields.io/badge/axioms-propext%2C%20Classical.choice%2C%20Quot.sound-brightgreen.svg)](#verification)
+**Machine-checked learning theory for adaptive and dependent data.**
 
-The `154,217` count covers the library and examples, including the 4,867-line
-generated data-definition module `FormalSLT/Applications/ControlledQueueData.lean`.
+FormalSLT is a Lean 4 library for PAC-Bayes bounds, anytime-valid inference,
+adaptive trajectories, and stationary-risk certification. Public results come
+with Lean source, focused checker files, and explicit assumptions.
 
-FormalSLT is a Lean 4 library for **machine-checked statistical learning under
-adaptive and dependent data**. Its main results connect empirical-Bernstein
-PAC-Bayes bounds, anytime-valid inference, prefix-dependent trajectories,
-Poisson equations, contraction, and empirical transition certificates.
+[Research guide](https://robby955.github.io/FormalSLT/) ·
+[Install](#use-the-library) ·
+[Browse by concept](https://robby955.github.io/FormalSLT/theorems/) ·
+[Verify](#verification)
 
-[Start with the research guide](https://robby955.github.io/FormalSLT/) ·
-[search by mathematical concept](https://robby955.github.io/FormalSLT/theorems/) ·
-[browse Lean declarations](https://robby955.github.io/FormalSLT/search.html) ·
-[read the theorem map](./docs/theorem-map.md)
+FormalSLT v0.2 is being prepared from `main`. It is not released yet;
+`v0.1.0` remains the latest tagged version. See the
+[v0.2 candidate record](./docs/releases/v0.2.0.md) for the exact release
+boundary.
 
-FormalSLT v0.1.0 was tagged on May 8, 2026; it has no GitHub Release or DOI.
-The larger theorem program is integrated in the v0.2 release candidate, but
-`v0.2.0` is **not released**: no v0.2 tag, GitHub Release, archived artifact, or
-DOI is asserted. See the [candidate record](./docs/releases/v0.2.0.md) and
-[changelog](./CHANGELOG.md).
+## What is proved
 
-## Choose a result
+The results below are checked in Lean. Some applications require supplied
+certificates; the [scope ledger](./docs/assumptions-and-nonclaims.md) records
+the complete assumptions, nonclaims, and open endpoints.
 
-Proof status and literature status are separate. **PROVED** means Lean closes
-the stated signature; **CONDITIONAL** flags a material supplied certificate or
-open premise; **OPEN** means the endpoint is absent. **REPRODUCTION**,
-**SPECIALIZATION**, and **DERIVED VARIANT** describe agreement with prior
-mathematics. A theorem can be both **PROVED** and a **DERIVED VARIANT**. The
-theorem signature, not the prose, is authoritative, and the repository makes no
-novelty or priority claim without a versioned literature audit.
+### Empirical-Bernstein PAC-Bayes at every sample size
 
-| If you need | Start with | Essential boundary | Status |
-|---|---|---|---|
-| IID empirical-Bernstein PAC-Bayes for every sample size <code>n ≥ 2</code> | <code>FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch.exists_continuousInfiniteEmpiricalBernstein_event</code> | Finite-valued IID observations; offline reverse stitching; no optional-stopping claim | **PROVED · DERIVED VARIANT** |
-| Adaptive finite-state trajectory inference with a selected width tending to zero | <code>FormalSLT.StochasticDynamics.exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event</code> | Deterministic start; fixed finite score catalog; countable confidence allocation is not itself a master e-process | **PROVED · DERIVED VARIANT** |
-| Adaptive inference on arbitrary measurable state and hypothesis spaces | <code>FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event</code> | Deterministic start; finite tilt catalog; supplied jointly measurable score family | **PROVED · DERIVED VARIANT** |
-| Stationary risk for a known contracting finite kernel | <code>FormalSLT.StochasticDynamics.exists_stationaryPoissonDepthSelection_allTime_vanishing_event</code> | Supplied invariant law, strict contraction, and a uniform centered row-risk oscillation bound | **PROVED · CONDITIONAL INPUTS · LITERATURE AUDIT PENDING** |
-| Same-trajectory certification with an unknown finite kernel | <code>FormalSLT.StochasticDynamics.exists_selectedCanonicalEmpiricalStationaryCatalog_event</code> | Predeclared finite candidates; every source row visited; strict selected contraction for uniqueness | **PROVED · LITERATURE AUDIT PENDING** |
+One event on an infinite IID path controls every sample size `n ≥ 2` and every
+admissible posterior. The bound uses Bessel sample variance and
+measure-theoretic KL divergence.
 
-The [scope ledger](./docs/assumptions-and-nonclaims.md) records the full
-assumption and nonclaim boundary.
+**Boundary:** this is an offline all-sample-size result, not an optional-stopping
+claim. The separate forward route uses predictable residuals.
 
-## Three result families
-
-### 1. All-sample-size empirical-Bernstein PAC-Bayes
-
-One posterior-independent event on an infinite IID path space controls every
-sample size `n ≥ 2` and every admissible posterior measure, using Bessel sample
-variance and measure-theoretic KL. This endpoint is offline: it is not a forward
-e-process and does not authorize optional stopping. The separate forward route
-uses predictable residuals; its hybrid Bessel expression is a checked pointwise
-lower envelope, not itself an e-process.
-
-[Endpoint](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
+[Lean source](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [checker](./examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
-[positive-KL receipt](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean)
+[positive-KL example](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean)
 
-### 2. Adaptive trajectory inference
+### Adaptive trajectory inference
 
-The finite-state endpoint supports path- and time-dependent posterior selection
-over a score and tilt catalog fixed before scoring, with a selected boundary
-tending to zero. A second endpoint supports arbitrary measurable state and
-hypothesis spaces under a joint score-measurability contract. Both target
-encountered prefix-conditional risk, not stationary risk or predictors invented
-after observing their scored outcomes.
+The finite-state result permits path- and time-dependent posterior selection
+from score and tilt catalogs fixed before scoring, with a selected width that
+tends to zero. A second result handles arbitrary measurable state and
+hypothesis spaces under a joint measurability contract.
 
-[Finite-state endpoint](./FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean) ·
-[measurable endpoint](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean) ·
-[trajectory receipt](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean)
+**Boundary:** both results start from a deterministic initial state and target
+prefix-conditional risk. They do not turn predictors chosen after observing
+their scored outcomes into valid candidates.
 
-### 3. Stationary Poisson and unknown-kernel certification
+[finite-state source](./FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean) ·
+[measurable-space source](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean) ·
+[informative checker](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean)
+
+### Stationary risk with known and unknown kernels
 
 The stationary layer combines prequential bounds with finite-depth Poisson
-corrections. The known-kernel result requires a supplied invariant law,
-contraction, and oscillation bound. The unknown-kernel result adds same-path
-transition confidence over predeclared candidates. Normalized radii require
-positive limiting row frequencies; candidate-budget convergence also requires
-empirical discrepancy convergence. Invariant-law uniqueness requires a strict
-contraction certificate, and the chosen finite invariant PMF is a witness, not
-an executable stationary solver.
+corrections. One route handles a known contracting finite kernel. Another adds
+same-trajectory transition confidence over a predeclared finite candidate
+family.
 
-[Known-kernel endpoint](./FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean) ·
-[unknown-kernel endpoint](./FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean) ·
-[informative receipt](./examples/CheckEmpiricalStationaryCatalogInformative.lean)
+**Boundary:** the known-kernel route takes an invariant law, contraction, and
+oscillation certificate as inputs. The unknown-kernel route requires positive
+row visits and strict selected contraction; it does not estimate an arbitrary
+kernel without structure or coverage conditions.
 
-![FormalSLT flagship theorem chain](./docs/theorem-chain.svg)
+[known-kernel source](./FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.lean) ·
+[unknown-kernel source](./FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean) ·
+[informative checker](./examples/CheckEmpiricalStationaryCatalogInformative.lean)
 
-This diagram is a theorem-family map, not a literal import graph. Solid nodes
-name checked surfaces; conditional and open nodes state real boundaries.
+The [theorem map](./docs/theorem-map.md) lists the supported endpoints and their
+exact Lean names.
 
-## Read FormalSLT from your field
+## Flagship application: a controlled queue
 
-| Reader | Route |
-|---|---|
-| Statistics and ML | [Bounds, assumptions, receipts, and matched benchmarks](https://robby955.github.io/FormalSLT/readers/stats-ml/) |
-| Probability | [e-processes, path laws, Poisson equations, and contraction](https://robby955.github.io/FormalSLT/readers/probability/) |
-| Lean | [Topic imports, theorem names, and source organization](https://robby955.github.io/FormalSLT/readers/lean/) |
-| Verification | [Axiom receipts, statement-fidelity gates, and release checks](https://robby955.github.io/FormalSLT/readers/verification/) |
+The main application is a 24-state, two-action controlled queue with a frozen,
+replayable trace. In the declared one-parameter refresh family, the
+transition-confidence calculation replaces the generic 4,608-coordinate
+construction with one persistence-hit count. On the retrospective trace, Lean
+proves that a rational endpoint whose decimal expansion begins
+`0.068710707605557...` is below `69/1000`. For each fixed admissible refresh
+parameter, Lean also bounds by `1/20` the outer mass of paths that reproduce
+that histogram while violating the displayed risk conclusion.
 
-For exhaustive detail, use the [concept index](./docs/INDEX.md),
-[theorem map](./docs/theorem-map.md), [literature ledger](./docs/LITERATURE.md),
-and [proof frontier](./docs/proof-frontier.md).
+This is a retrospective demonstration under the stated refresh-family model.
+It is not a prospective result, a family-membership test, or a guarantee for
+arbitrary unknown kernels.
 
-## Current boundaries
+[Application overview](./applications/controlled_queue/README.md) ·
+[design and evidence ledger](./docs/controlled-queue-application-design.md) ·
+[checked receipt](./FormalSLT/Applications/ControlledQueueSharpStructuredRetrospectiveReceipt.lean)
 
-| Boundary | Current status |
-|---|---|
-| Arbitrary measurable hypotheses for IID empirical-Bernstein PAC-Bayes | **PROVED**, with finite-valued observations |
-| Arbitrary measurable states and hypotheses for prefix trajectories | **PROVED**, with deterministic start and finite predeclared tilts |
-| Countable tilt master e-process | **PROVED** for finite hypotheses and fixed conditional means |
-| Countable finite-state trajectory selector | **PROVED** by confidence allocation; not claimed to be a countable master e-process |
-| Unknown finite transition kernel | **PROVED** under positive row visits and declared candidate semantics |
-| Sharp constant-one LIL boundary floor | **CONDITIONAL** on the explicit open <code>FairSignUpperLIL</code> premise and bounded normalized ratio |
-| All-real or arbitrary predictable tilt optimization | **OPEN** |
-| Continuous-state stationary Poisson certification | **OPEN** |
+Applications are opt-in through `import FormalSLT.Applications`; they are not
+part of the stable topic-import promise.
 
 ## Use the library
 
-FormalSLT uses Lean 4.32.2 and Mathlib 4.32.2. Prefer one supported topic
-import over the root convenience umbrella:
+FormalSLT uses Lean 4.32.2 and Mathlib 4.32.2. The four supported topic imports
+are:
 
 ```lean
 import FormalSLT.PACBayes
@@ -138,71 +109,55 @@ import FormalSLT.StochasticDynamics
 import FormalSLT.VC
 ```
 
-The [candidate API policy](./docs/api-stability.md) endorses 19 declarations.
-Each topic has an isolated checker under
-[examples/stable_imports](./examples/stable_imports); application declarations
-are not part of that compatibility promise.
-
-For the released v0.1 API:
+Use the latest tagged release for stable work:
 
 ```lean
 require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 ```
 
-For the exact tested v0.2 theorem/API candidate at this documentation
-checkpoint:
+To test the merged v0.2 candidate before release, pin its exact integration
+commit rather than moving `main`:
 
 ```lean
 require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @
-  "e3acdaf5687408c202e7557cded7158292cd83d1"
+  "660b03a4f5003acb4337b5c9f3aab21218ff31fc"
 ```
 
-That SHA is the latest recorded exact-head hosted-CI checkpoint, not a release
-tag or DOI-backed artifact. Until `v0.2.0` exists, pin an exact tested candidate
-commit rather than moving `main`.
+In the downstream Lake project, run:
 
 ```bash
+lake update
 lake exe cache get
-lake build FormalSLT
-make api
-make downstream
+lake build
 ```
 
-`make downstream` builds a separate Lake package with one concrete module for
-each supported topic import.
+Repository maintainers can run `make downstream` from a FormalSLT checkout to
+exercise the bundled external-consumer fixture.
 
-## Applications
+The [API policy](./docs/api-stability.md) defines the 19 candidate v0.2
+declarations and the compatibility rules.
 
-Applications are opt-in through `import FormalSLT.Applications`:
+## Find what you need
 
-- [20-state random-refresh load application](./docs/random-refresh-load-application.md)
-- [24-state controlled-queue design and evidence ledger](./docs/controlled-queue-application-design.md)
-- [controlled-queue protocol and commands](./applications/controlled_queue/README.md)
-
-The controlled-queue repository contains checked retrospective and known-kernel
-receipts plus a frozen prospective protocol. It contains **no fresh prospective
-trace, receipt, or numerical result**. The oracle true-kernel and fixed-range
-comparison rows are arithmetic-only `PLANNED_NOT_CHECKED` noncertificates; their
-`1/20` entries are planned allocations, not checked outer-mass bounds. The named
-retrospective suffix histogram now bounds the sharp structured pathwise boundary
-by the exact observable endpoint `0.068710707605557... < 0.069`. For every fixed
-admissible parameter in the
-well-specified one-parameter refresh family, under the path law started at
-`(action = 1, state = 1)`, Lean bounds by `1/20` the outer mass of the paths on
-which that histogram occurs while the displayed risk conclusion fails. This is
-pointwise in the fixed parameter and unconditional under that fixed-initial
-path law; it is not coverage conditional on the histogram or one event
-simultaneous over all parameters. The named deterministic path is not proved to
-lie in a particular good event, and refresh-family well-specification is an
-assumption rather than a tested conclusion.
+- **Statistics and ML:** [bounds, assumptions, and receipts](https://robby955.github.io/FormalSLT/readers/stats-ml/)
+- **Probability:** [e-processes, path laws, and Poisson equations](https://robby955.github.io/FormalSLT/readers/probability/)
+- **Lean:** [imports, theorem names, and source layout](https://robby955.github.io/FormalSLT/readers/lean/)
+- **Verification:** [axioms, fidelity gates, and release checks](https://robby955.github.io/FormalSLT/readers/verification/)
+- **Search:** [concept index](./docs/INDEX.md) · [declaration search](https://robby955.github.io/FormalSLT/search.html)
 
 ## Verification
 
-The curated public theorem surface reports only
-`[propext, Classical.choice, Quot.sound]`. The checked library and examples have
-no executable `sorry`, `admit`, custom axiom, or custom constant declarations.
+[![theorems and lemmas](https://img.shields.io/badge/theorems%2Flemmas-4%2C232-brightgreen.svg)](#verification)
+[![FormalSLT modules](https://img.shields.io/badge/FormalSLT%20modules-291-blue.svg)](#verification)
+[![Lean lines](https://img.shields.io/badge/Lean%20lines-154%2C217-brightgreen.svg)](#verification)
+
+The line count covers the library and examples, including the generated
+controlled-queue data module. The curated public theorem surface reports only
+`[propext, Classical.choice, Quot.sound]`. The checked library and examples
+contain no executable `sorry` or `admit`, no custom axiom or constant
+declarations, and no uses of `native_decide`.
 
 ```bash
 lake exe cache get
@@ -216,30 +171,32 @@ python3 scripts/check_doc_anchors.py --self-test
 git diff --check
 ```
 
-The [release checklist](./docs/public-release-checklist.md) records the complete
-exact-SHA gate, including statement fidelity, application code-freeze checks,
-repository-tool tests, documentation generation, and fresh tag-install smoke.
+The [release checklist](./docs/public-release-checklist.md) contains the full
+exact-SHA gate, including statement-fidelity, application, artifact, and
+fresh-tag installation checks.
 
-## Provenance and citation
+## Scope, sources, and citation
 
-The [source map](./docs/references.md) records mathematical sources; the
-[literature ledger](./docs/LITERATURE.md) records agreement, differences, and
-review requirements; [related work](./docs/related-work.md) records other formal
-libraries. Lean theorem signatures and checker files remain authoritative.
+The [scope ledger](./docs/assumptions-and-nonclaims.md) distinguishes proved,
+conditional, and open endpoints. The [literature ledger](./docs/LITERATURE.md)
+records agreement and differences with prior mathematics; the
+[source map](./docs/references.md) and [related-work guide](./docs/related-work.md)
+record mathematical and formalization provenance. Lean signatures and checker
+files remain authoritative.
 
-An earlier verifier-gated route built on FormalSLT was accepted at the ICML 2026
-AI for Math workshop: [*From Agents to Axioms: Verifier-Gated Lean Formalization
-for Statistical Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
+An earlier paper based on FormalSLT was accepted to the ICML 2026 AI for Math
+workshop:
+[*From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory*](https://openreview.net/pdf?id=EsEqPLc0ef).
 
 Use [CITATION.cff](./CITATION.cff) for the current software citation. A v0.2 DOI
-is citable only after the archival deposit and GitHub Release are published and
-the DOI resolves to the exact tagged artifact.
+will be citable only after the exact tagged artifact, GitHub Release, and
+archival deposit are published.
 
 ## Contributing
 
 Read [CONTRIBUTING.md](./CONTRIBUTING.md) and
-[Good first issues](./docs/good-first-issues.md). New public theorems require a
-focused checker, `#print axioms` receipt, explicit scope, and repository gates.
+[Good first issues](./docs/good-first-issues.md). New public theorems need a
+focused checker, an axiom receipt, and explicit scope.
 
 ## License
 
