@@ -46,7 +46,9 @@ crossing event. The hybrid Bessel exponential is only a pointwise lower
 envelope of that actual e-process, not itself an e-process. A finite
 full-support tilt catalog mixes the actual processes and supplies one
 outer-mass event for every `n >= 2` and every declared positive tilt below one,
-including path-and-time-selected atoms.
+including path-and-time-selected atoms. At a fixed tilt, the primary upper
+tail and complemented lower tail use the same observable hybrid penalty; a
+`delta / 2` split and union bound give a two-sided time-uniform endpoint.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -417,6 +419,23 @@ theorem sum_mean_sub_eq_mul_sub_forwardPrefixMean
   simp only [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   field_simp [hn0]
 
+/-- The centered upper-tail sum is `n` times the gap between the empirical
+prefix mean and the candidate mean. -/
+theorem sum_sub_mean_eq_mul_sub_forwardPrefixMean
+    (x : ℕ → ℝ) (mean : ℝ) {n : ℕ} (hn : 0 < n) :
+    (∑ k ∈ Finset.range n, (x k - mean)) =
+      (n : ℝ) * (forwardPrefixMean x n - mean) := by
+  have h := sum_mean_sub_eq_mul_sub_forwardPrefixMean x mean hn
+  calc
+    (∑ k ∈ Finset.range n, (x k - mean)) =
+        -(∑ k ∈ Finset.range n, (mean - x k)) := by
+      rw [← Finset.sum_neg_distrib]
+      apply Finset.sum_congr rfl
+      intro k _
+      ring
+    _ = -((n : ℝ) * (mean - forwardPrefixMean x n)) := by rw [h]
+    _ = (n : ℝ) * (forwardPrefixMean x n - mean) := by ring
+
 /-- The seed `1/2` and every later empirical predictor commute with
 complementation. -/
 theorem forwardPredictor_one_sub (x : ℕ → ℝ) (k : ℕ) :
@@ -451,6 +470,13 @@ theorem forwardBesselQ_one_sub (x : ℕ → ℝ) (n : ℕ) :
     intro k _
     rw [forwardPrefixMean_one_sub x hnpos]
     ring
+
+/-- The observable hybrid-Bessel penalty is invariant under complementing
+`[0,1]` observations. -/
+theorem forwardHybridBesselPenalty_one_sub (x : ℕ → ℝ) (n : ℕ) :
+    forwardHybridBesselPenalty (fun k ↦ 1 - x k) n =
+      forwardHybridBesselPenalty x n := by
+  simp only [forwardHybridBesselPenalty, forwardBesselQ_one_sub]
 
 /-! ### Honest stochastic interface
 
@@ -1213,6 +1239,41 @@ theorem forwardEmpiricalBernsteinProcess_eProcess_of_bounded
     hlam0 hlam1 hX_meas hX_int hP_adapted hX_unit_ae hP_unit_ae hmean
     hprocess_adapted hprocess_int hfactor_int hprocess_bdd
 
+/-- Countable-time Ville bound for the primary positive-tilt e-process. -/
+theorem forwardEmpiricalBernsteinProcess_atTop_crossing_mass_le_delta
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam delta : ℝ}
+    (hδ : 0 < delta) (hlam0 : 0 ≤ lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    μ.real
+        (atTopCrossingEvent
+          (forwardEmpiricalBernsteinProcess X mean lam) (1 / delta)) ≤
+      delta := by
+  have hE := forwardEmpiricalBernsteinProcess_eProcess_of_bounded
+    hlam0 hlam1 hX_adapted hX_unit hmean
+  have hville := ville_atTop_maximal_ineq
+    (μ := μ) (𝒢 := ℱ)
+    (M := forwardEmpiricalBernsteinProcess X mean lam)
+    hE.supermartingale hE.nonneg (one_div_pos.mpr hδ)
+  rw [hE.integral_start_eq_one] at hville
+  calc
+    μ.real
+        (atTopCrossingEvent
+          (forwardEmpiricalBernsteinProcess X mean lam) (1 / delta)) =
+        delta *
+          ((1 / delta) *
+            μ.real
+              (atTopCrossingEvent
+                (forwardEmpiricalBernsteinProcess X mean lam)
+                (1 / delta))) := by
+      field_simp [hδ.ne']
+    _ ≤ delta * 1 := mul_le_mul_of_nonneg_left hville hδ.le
+    _ = delta := by ring
+
 /-- **Bounded-model lower-tail e-process.**
 
 Positive tilts of `forwardEmpiricalBernsteinProcess` control upward deviations
@@ -1349,6 +1410,14 @@ def forwardEmpiricalBernsteinLowerBesselFailure {Ω : Type*}
     forwardEmpiricalBernsteinBesselBoundary X lam delta n ω ≤
       mean - forwardPrefixMean (fun k ↦ X k ω) n}
 
+/-- An upper-tail boundary failure at some time `n >= 2`.  It uses the same
+observable hybrid-Bessel penalty as the lower-tail failure. -/
+def forwardEmpiricalBernsteinUpperBesselFailure {Ω : Type*}
+    (X : ℕ → Ω → ℝ) (mean lam delta : ℝ) : Set Ω :=
+  {ω | ∃ n : ℕ, 2 ≤ n ∧
+    forwardEmpiricalBernsteinBesselBoundary X lam delta n ω ≤
+      forwardPrefixMean (fun k ↦ X k ω) n - mean}
+
 /-- The lower-tail Bessel expression is pointwise dominated by the actual
 lower-tail e-process.  This theorem intentionally does not give the envelope
 an e-process or supermartingale structure. -/
@@ -1402,6 +1471,48 @@ theorem forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
     (forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess
       hlam.le hlam1 hn ω (fun i hi ↦ hX_unit i ω))
 
+/-- Upper-tail boundary failure forces the primary positive-tilt e-process to
+cross `1 / delta` at the same time. -/
+theorem forwardEmpiricalBernsteinUpperBesselFailure_subset_crossing
+    {Ω : Type*} {X : ℕ → Ω → ℝ} {mean lam delta : ℝ}
+    (hδ : 0 < delta) (hlam : 0 < lam) (hlam1 : lam < 1)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1) :
+    forwardEmpiricalBernsteinUpperBesselFailure X mean lam delta ⊆
+      atTopCrossingEvent
+        (forwardEmpiricalBernsteinProcess X mean lam) (1 / delta) := by
+  intro ω hω
+  rcases hω with ⟨n, hn, hboundary⟩
+  refine ⟨n, ?_⟩
+  have hnpos : 0 < n := by omega
+  have hdenpos : 0 < (n : ℝ) * lam :=
+    mul_pos (Nat.cast_pos.mpr hnpos) hlam
+  have hmul := (div_le_iff₀ hdenpos).mp hboundary
+  have hsum := sum_sub_mean_eq_mul_sub_forwardPrefixMean
+    (fun k ↦ X k ω) mean hnpos
+  have hlog_le :
+      Real.log (1 / delta) ≤
+        lam * (∑ k ∈ Finset.range n, (X k ω - mean)) -
+          forwardEmpiricalBernsteinPsi lam *
+            forwardHybridBesselPenalty (fun k ↦ X k ω) n := by
+    rw [hsum]
+    nlinarith
+  have hthreshold :
+      (1 / delta) ≤
+        forwardBesselExponentialEnvelope X mean lam
+          (forwardEmpiricalBernsteinPsi lam) n ω := by
+    rw [← Real.exp_log (one_div_pos.mpr hδ)]
+    exact Real.exp_le_exp.mpr hlog_le
+  have henvelope :
+      forwardBesselExponentialEnvelope X mean lam
+          (forwardEmpiricalBernsteinPsi lam) n ω ≤
+        forwardEmpiricalBernsteinProcess X mean lam n ω := by
+    simpa [forwardEmpiricalBernsteinProcess] using
+      (forwardBesselExponentialEnvelope_le_forwardPlugIn
+        X mean lam (forwardEmpiricalBernsteinPsi lam) hn
+        (forwardEmpiricalBernsteinPsi_nonneg hlam.le hlam1) ω
+        (fun i hi ↦ hX_unit i ω))
+  exact hthreshold.trans henvelope
+
 /-- **Fixed-tilt, all-time lower empirical-Bernstein bound with hybrid Bessel
 penalty.**  Under the standard bounded conditional-mean model, the probability
 that the explicit boundary fails at any `n >= 2` is at most `delta`. -/
@@ -1421,6 +1532,28 @@ theorem forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
     (forwardEmpiricalBernsteinLowerBesselFailure_subset_crossing
       hδ hlam hlam1 hX_unit)).trans
     (forwardEmpiricalBernsteinLowerProcess_atTop_crossing_mass_le_delta
+      hδ hlam.le hlam1 hX_adapted hX_unit hmean)
+
+/-- **Fixed-tilt, all-time upper empirical-Bernstein bound with hybrid Bessel
+penalty.**  Under the standard bounded conditional-mean model, the outer mass
+of paths where the explicit boundary fails at some `n >= 2` is at most
+`delta`. -/
+theorem forwardEmpiricalBernsteinUpperBesselFailure_mass_le_delta
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam delta : ℝ}
+    (hδ : 0 < delta) (hlam : 0 < lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    μ.real
+        (forwardEmpiricalBernsteinUpperBesselFailure X mean lam delta) ≤
+      delta := by
+  exact (measureReal_mono
+    (forwardEmpiricalBernsteinUpperBesselFailure_subset_crossing
+      hδ hlam hlam1 hX_unit)).trans
+    (forwardEmpiricalBernsteinProcess_atTop_crossing_mass_le_delta
       hδ hlam.le hlam1 hX_adapted hX_unit hmean)
 
 /-- One event of mass at least `1 - delta` carries the explicit fixed-tilt
@@ -1457,6 +1590,120 @@ theorem exists_forwardEmpiricalBernsteinLowerBessel_event
           forwardEmpiricalBernsteinBesselBoundary X lam delta n ω :=
       lt_of_not_ge hnot
     linarith
+
+/-! ### Two-sided fixed-tilt boundary -/
+
+/-- Failure of the fixed-tilt hybrid-Bessel boundary on either side at some
+time `n >= 2`.  The total confidence budget `delta` is split equally between
+the two tails. -/
+def forwardEmpiricalBernsteinTwoSidedBesselFailure {Ω : Type*}
+    (X : ℕ → Ω → ℝ) (mean lam delta : ℝ) : Set Ω :=
+  {ω | ∃ n : ℕ, 2 ≤ n ∧
+    forwardEmpiricalBernsteinBesselBoundary X lam (delta / 2) n ω ≤
+      |mean - forwardPrefixMean (fun k ↦ X k ω) n|}
+
+/-- Every two-sided boundary failure is either a lower-tail or upper-tail
+failure at budget `delta / 2`. -/
+theorem forwardEmpiricalBernsteinTwoSidedBesselFailure_subset_tail_union
+    {Ω : Type*} {X : ℕ → Ω → ℝ} {mean lam delta : ℝ} :
+    forwardEmpiricalBernsteinTwoSidedBesselFailure X mean lam delta ⊆
+      forwardEmpiricalBernsteinLowerBesselFailure
+          X mean lam (delta / 2) ∪
+        forwardEmpiricalBernsteinUpperBesselFailure
+          X mean lam (delta / 2) := by
+  intro ω hω
+  rcases hω with ⟨n, hn, hboundary⟩
+  rcases abs_cases
+      (mean - forwardPrefixMean (fun k ↦ X k ω) n) with
+    ⟨habs, _⟩ | ⟨habs, _⟩
+  · left
+    refine ⟨n, hn, ?_⟩
+    rw [habs] at hboundary
+    exact hboundary
+  · right
+    refine ⟨n, hn, ?_⟩
+    rw [habs] at hboundary
+    simpa only [neg_sub] using hboundary
+
+/-- **Fixed-tilt, two-sided, time-uniform empirical-Bernstein bound with the
+hybrid Bessel penalty.**  Each tail uses the exact same observable penalty and
+receives confidence budget `delta / 2`; the two failure masses are combined by
+a union bound. -/
+theorem forwardEmpiricalBernsteinTwoSidedBesselFailure_mass_le_delta
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam delta : ℝ}
+    (hδ : 0 < delta) (hlam : 0 < lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    μ.real
+        (forwardEmpiricalBernsteinTwoSidedBesselFailure
+          X mean lam delta) ≤
+      delta := by
+  have hδ2 : 0 < delta / 2 := by linarith
+  have hlower := forwardEmpiricalBernsteinLowerBesselFailure_mass_le_delta
+    (μ := μ) (ℱ := ℱ) (X := X) (mean := mean) (lam := lam)
+    (delta := delta / 2)
+    hδ2 hlam hlam1 hX_adapted hX_unit hmean
+  have hupper := forwardEmpiricalBernsteinUpperBesselFailure_mass_le_delta
+    (μ := μ) (ℱ := ℱ) (X := X) (mean := mean) (lam := lam)
+    (delta := delta / 2)
+    hδ2 hlam hlam1 hX_adapted hX_unit hmean
+  calc
+    μ.real
+        (forwardEmpiricalBernsteinTwoSidedBesselFailure
+          X mean lam delta) ≤
+        μ.real
+          (forwardEmpiricalBernsteinLowerBesselFailure
+              X mean lam (delta / 2) ∪
+            forwardEmpiricalBernsteinUpperBesselFailure
+              X mean lam (delta / 2)) :=
+      measureReal_mono
+        forwardEmpiricalBernsteinTwoSidedBesselFailure_subset_tail_union
+    _ ≤ μ.real
+          (forwardEmpiricalBernsteinLowerBesselFailure
+            X mean lam (delta / 2)) +
+        μ.real
+          (forwardEmpiricalBernsteinUpperBesselFailure
+            X mean lam (delta / 2)) :=
+      measureReal_union_le _ _
+    _ ≤ delta / 2 + delta / 2 := add_le_add hlower hupper
+    _ = delta := by ring
+
+/-- One event whose complement has outer mass at most `delta` carries the
+explicit two-sided fixed-tilt hybrid-Bessel confidence sequence for every
+`n >= 2`.  The event is not separately asserted measurable. -/
+theorem exists_forwardEmpiricalBernsteinTwoSidedBessel_event
+    {Ω : Type*} [mΩ : MeasurableSpace Ω]
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ → Ω → ℝ} {mean lam delta : ℝ}
+    (hδ : 0 < delta) (hlam : 0 < lam) (hlam1 : lam < 1)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hX_unit : ∀ k ω, 0 ≤ X k ω ∧ X k ω ≤ 1)
+    (hmean : ∀ k, μ[X k | ℱ k] =ᵐ[μ] fun _ ↦ mean) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent, ∀ n : ℕ, 2 ≤ n →
+          |mean - forwardPrefixMean (fun k ↦ X k ω) n| <
+            forwardEmpiricalBernsteinBesselBoundary
+              X lam (delta / 2) n ω := by
+  let badEvent :=
+    forwardEmpiricalBernsteinTwoSidedBesselFailure X mean lam delta
+  refine ⟨badEventᶜ, ?_, ?_⟩
+  · simpa [badEvent] using
+      (forwardEmpiricalBernsteinTwoSidedBesselFailure_mass_le_delta
+        hδ hlam hlam1 hX_adapted hX_unit hmean)
+  · intro ω hω n hn
+    have hnot :
+        ¬forwardEmpiricalBernsteinBesselBoundary
+            X lam (delta / 2) n ω ≤
+          |mean - forwardPrefixMean (fun k ↦ X k ω) n| := by
+      intro hfailure
+      exact hω ⟨n, hn, hfailure⟩
+    exact lt_of_not_ge hnot
 
 /-! ### Finite predeclared tilt catalog -/
 
