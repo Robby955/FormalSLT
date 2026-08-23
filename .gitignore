@@ -33,3 +33,8 @@ paper/*.synctex.gz
 paper/*.pdf
 paper/missfont.log
 .gstack/
+.playwright-cli/
+
+# Generated FormalSLT overview video artifacts
+media/formalslt-overview/media/
+media/formalslt-overview/out/

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1470" viewBox="0 0 1400 1470" role="img" aria-labelledby="title desc">
-  <title id="title">FormalSLT flagship theorem chains</title>
-  <desc id="desc">A source-faithful map of three FormalSLT flagship stories: offline reverse-IID and forward e-process empirical-Bernstein PAC-Bayes, adaptive full-prefix trajectory inference, and known- plus unknown-kernel stationary Poisson certification. Status labels distinguish directly proved components, proved compositions, conditional applications, and open nonclaims.</desc>
+  <title id="title">FormalSLT proof architecture</title>
+  <desc id="desc">A source-faithful map of three connected FormalSLT research layers: offline reverse-IID and forward e-process empirical-Bernstein PAC-Bayes, adaptive full-prefix trajectory inference, and known- plus unknown-kernel stationary Poisson certification. Status labels distinguish directly proved components, proved compositions, conditional applications, and open nonclaims.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
       <path d="M0,0 L10,4 L0,8 Z" fill="#475569"/>
@@ -39,7 +39,7 @@
   </defs>
 
   <rect width="1400" height="1470" class="bg"/>
-  <text x="700" y="45" text-anchor="middle" class="title">FormalSLT flagship theorem chains</text>
+  <text x="700" y="45" text-anchor="middle" class="title">FormalSLT proof architecture</text>
   <text x="700" y="75" text-anchor="middle" class="subtitle">Five checked capstones, with application conditions and nonclaims kept visible</text>
 
   <rect x="70" y="98" width="22" height="22" rx="5" class="proved"/>

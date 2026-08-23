@@ -6,21 +6,38 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-**Machine-checked learning theory for adaptive and dependent data.**
+FormalSLT is an open Lean 4 library for a difficult part of learning theory:
+proving guarantees that still hold after models, times, or hypotheses are
+chosen from the data, and when observations come from a dependent process.
 
-FormalSLT is a Lean 4 library for PAC-Bayes bounds, anytime-valid inference,
-adaptive trajectories, and stationary-risk certification. Public results come
-with Lean source, focused checker files, and explicit assumptions.
+The library connects PAC-Bayes generalization, confidence sequences,
+Rademacher and VC theory, adaptive trajectories, and stationary Markov risk.
+Its aim is broader than one application: build a reusable, machine-checked
+foundation for statistical learning theory, with assumptions and selection
+costs visible in the theorem statement.
 
-[Research guide](https://robby955.github.io/FormalSLT/) ·
-[Install](#use-the-library) ·
-[Browse by concept](https://robby955.github.io/FormalSLT/theorems/) ·
-[Verify](#verification)
+[Explore the research map](https://robby955.github.io/FormalSLT/) ·
+[Find a theorem](https://robby955.github.io/FormalSLT/theorems/) ·
+[Use the library](#use-the-library) ·
+[Reproduce the checks](#verification)
 
-FormalSLT v0.2 is being prepared from `main`. It is not released yet;
-`v0.1.0` remains the latest tagged version. See the
-[v0.2 candidate record](./docs/releases/v0.2.0.md) for the exact release
-boundary.
+## Why FormalSLT exists
+
+Probability libraries supply the foundations, while learning-theory papers
+usually end in prose and LaTeX. FormalSLT works on the layer between them:
+generalization and sequential-inference results that can be imported, composed,
+and checked by Lean.
+
+Today, FormalSLT tackles four recurring questions:
+
+- How can one event control every sample size and every eligible posterior?
+- What remains valid when a policy, predictor, or posterior adapts to a path?
+- How can a trajectory guarantee be transferred to stationary risk?
+- What changes when the transition kernel must be learned from that same path?
+
+FormalSLT is not Mathlib-scale today. The long-term goal is a serious shared
+library for formal statistical learning and machine-learning theory, built
+from small reusable mechanisms rather than isolated demo proofs.
 
 ## What is proved
 
@@ -75,20 +92,17 @@ kernel without structure or coverage conditions.
 The [theorem map](./docs/theorem-map.md) lists the supported endpoints and their
 exact Lean names.
 
-## Flagship application: a controlled queue
+## Worked application: a controlled queue
 
-The main application is a 24-state, two-action controlled queue with a frozen,
-replayable trace. In the declared one-parameter refresh family, the
-transition-confidence calculation replaces the generic 4,608-coordinate
-construction with one persistence-hit count. On the retrospective trace, Lean
-proves that a rational endpoint whose decimal expansion begins
-`0.068710707605557...` is below `69/1000`. For each fixed admissible refresh
-parameter, Lean also bounds by `1/20` the outer mass of paths that reproduce
-that histogram while violating the displayed risk conclusion.
+A 24-state, two-action queue exercises the stationary and unknown-kernel stack
+on a frozen, replayable trajectory. The generic transition certificate tracks
+4,608 coordinates. Under a declared one-parameter refresh model, the same
+transition question reduces to a persistence-hit statistic. Lean checks the
+structural reduction and the resulting retrospective risk certificate.
 
-This is a retrospective demonstration under the stated refresh-family model.
-It is not a prospective result, a family-membership test, or a guarantee for
-arbitrary unknown kernels.
+This is one stress test of the library, not its organizing purpose. It is also
+model-conditional and retrospective: it does not test membership in the
+refresh family or establish prospective performance for arbitrary kernels.
 
 [Application overview](./applications/controlled_queue/README.md) ·
 [design and evidence ledger](./docs/controlled-queue-application-design.md) ·
@@ -116,14 +130,10 @@ require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 ```
 
-To test the merged v0.2 candidate before release, pin its exact integration
-commit rather than moving `main`:
-
-```lean
-require «formal-slt» from git
-  "https://github.com/Robby955/FormalSLT.git" @
-  "660b03a4f5003acb4337b5c9f3aab21218ff31fc"
-```
+The next release is being prepared from `main`. Its
+[candidate record](./docs/releases/v0.2.0.md) describes the planned scope and
+release gates. For reproducible work before the tag, pin a full commit SHA that
+you have reviewed rather than the moving branch.
 
 In the downstream Lake project, run:
 

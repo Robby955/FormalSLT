@@ -17,6 +17,7 @@
   <link rel="canonical" href="https://robby955.github.io/FormalSLT/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css">
+  <script defer src="assets/research-map.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#content">Skip to content</a>
@@ -33,21 +34,111 @@
   <main id="content">
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Lean 4 · probability · statistical learning</p>
-        <h1>Statistical guarantees you can inspect down to the theorem.</h1>
-        <p class="lede">FormalSLT develops reusable, machine-checked foundations for PAC-Bayes bounds, anytime-valid inference, and learning along dependent trajectories. The public surface below separates proved endpoints from their assumptions and nonclaims.</p>
+        <p class="eyebrow">Formal statistical learning · Lean 4</p>
+        <h1>A checked foundation for learning from data that adapts.</h1>
+        <p class="lede">FormalSLT connects PAC-Bayes generalization, confidence sequences, adaptive trajectories, and stationary Markov risk. It is built for the point where informal arguments are most fragile: data-dependent selection and dependence in the observations.</p>
         <div class="actions">
-          <a class="button button-primary" href="#endpoints">Choose a theorem</a>
-          <a class="button button-secondary" href="api.html">Browse the checked API</a>
+          <a class="button button-primary" href="#research-map">Explore the proof map</a>
+          <a class="button button-secondary" href="#overview-film">Watch the 48-second overview</a>
         </div>
-        <p class="release-note"><strong>Candidate v0.2 surface.</strong> Links on this deployment resolve to the exact source commit shown in the footer. Release tags, archived artifacts, and paper claims remain separate gates.</p>
       </div>
       <figure class="hero-figure">
         <a class="theorem-map-link" href="assets/theorem-chain.svg" aria-label="Open the full-size FormalSLT theorem map">
           <img src="assets/theorem-chain.svg" width="1400" height="1470" alt="A theorem chain from exponential processes through PAC-Bayes and adaptive trajectories to stationary and unknown-kernel certificates.">
-          <span class="map-action" aria-hidden="true">Open full-size theorem map ↗</span>
+          <span class="map-action" aria-hidden="true">Open the full proof architecture ↗</span>
         </a>
-        <figcaption>Reusable mechanisms lead to theorem-level statistical endpoints.</figcaption>
+        <figcaption>Probability mechanisms are composed into learning statements with explicit selection costs and scope.</figcaption>
+      </figure>
+    </section>
+
+    <section class="research-map-section" id="research-map" aria-labelledby="research-map-title">
+      <div class="research-map-intro">
+        <p class="eyebrow">Interactive proof map</p>
+        <h2 id="research-map-title">Follow a guarantee from data to risk.</h2>
+        <p>Select a regime. The mechanism changes, but the library keeps the same question in view: what may be chosen from the observed data without invalidating the conclusion?</p>
+      </div>
+
+      <div class="proof-lab" data-proof-lab>
+        <div class="proof-lab-tabs" role="tablist" aria-label="Statistical regime">
+          <button id="proof-tab-iid" type="button" role="tab" aria-controls="proof-route-panel" aria-selected="true" tabindex="0" data-route="iid">IID generalization</button>
+          <button id="proof-tab-sequential" type="button" role="tab" aria-controls="proof-route-panel" aria-selected="false" tabindex="-1" data-route="sequential">Anytime inference</button>
+          <button id="proof-tab-trajectory" type="button" role="tab" aria-controls="proof-route-panel" aria-selected="false" tabindex="-1" data-route="trajectory">Adaptive trajectories</button>
+          <button id="proof-tab-stationary" type="button" role="tab" aria-controls="proof-route-panel" aria-selected="false" tabindex="-1" data-route="stationary">Stationary systems</button>
+        </div>
+
+        <div class="proof-lab-display">
+          <ol class="proof-route-mobile" aria-label="Selected proof route">
+            <li><span>01 · Data</span><strong data-node-label="input">IID sample</strong><small data-node-detail="input">bounded loss</small></li>
+            <li><span>02 · Control</span><strong data-node-label="control">Bessel variance</strong><small data-node-detail="control">Bernstein scale</small></li>
+            <li><span>03 · Select</span><strong data-node-label="selection">PAC-Bayes</strong><small data-node-detail="selection">posterior after data</small></li>
+            <li><span>04 · Result</span><strong data-node-label="endpoint">All n</strong><small data-node-detail="endpoint">one event</small></li>
+          </ol>
+          <svg class="proof-route" viewBox="0 0 920 330" role="img" aria-labelledby="proof-route-title proof-route-description">
+            <title id="proof-route-title">IID generalization proof route</title>
+            <desc id="proof-route-description">An IID sample passes through empirical variance, PAC-Bayes change of measure, and simultaneous selection to reach one event controlling every sample size and eligible posterior.</desc>
+            <defs>
+              <marker id="route-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z"></path>
+              </marker>
+            </defs>
+            <path class="proof-edge" d="M 180 165 H 280"></path>
+            <path class="proof-edge" d="M 440 165 H 540"></path>
+            <path class="proof-edge" d="M 700 165 H 800"></path>
+            <g class="proof-node" transform="translate(20 110)">
+              <rect width="160" height="110"></rect>
+              <text x="18" y="32" class="proof-node-step">01 · DATA</text>
+              <text x="18" y="65" class="proof-node-label" data-node-label="input">IID sample</text>
+              <text x="18" y="88" class="proof-node-detail" data-node-detail="input">bounded loss</text>
+            </g>
+            <g class="proof-node" transform="translate(280 110)">
+              <rect width="160" height="110"></rect>
+              <text x="18" y="32" class="proof-node-step">02 · CONTROL</text>
+              <text x="18" y="65" class="proof-node-label" data-node-label="control">Empirical variance</text>
+              <text x="18" y="88" class="proof-node-detail" data-node-detail="control">Bernstein scale</text>
+            </g>
+            <g class="proof-node" transform="translate(540 110)">
+              <rect width="160" height="110"></rect>
+              <text x="18" y="32" class="proof-node-step">03 · SELECT</text>
+              <text x="18" y="65" class="proof-node-label" data-node-label="selection">PAC-Bayes</text>
+              <text x="18" y="88" class="proof-node-detail" data-node-detail="selection">posterior after data</text>
+            </g>
+            <g class="proof-node proof-node-endpoint" transform="translate(800 110)">
+              <rect width="100" height="110"></rect>
+              <text x="16" y="32" class="proof-node-step">04 · RESULT</text>
+              <text x="16" y="65" class="proof-node-label" data-node-label="endpoint">All n</text>
+              <text x="16" y="88" class="proof-node-detail" data-node-detail="endpoint">one event</text>
+            </g>
+          </svg>
+
+          <div id="proof-route-panel" class="proof-route-panel" role="tabpanel" aria-labelledby="proof-tab-iid" aria-live="polite">
+            <p class="status" data-route-kicker>IID generalization</p>
+            <h3 data-route-title>One event controls every sample size and eligible posterior.</h3>
+            <p data-route-summary>The posterior may be selected after seeing the sample. The prior and loss family may not.</p>
+            <dl>
+              <div><dt>Starts with</dt><dd data-route-assumptions>IID observations and bounded measurable losses</dd></div>
+              <div><dt>Returns</dt><dd data-route-result>An empirical-Bernstein PAC-Bayes bound, simultaneous over all n ≥ 2</dd></div>
+            </dl>
+            <a class="text-link" data-route-link href="theorems/">Open the Lean theorem <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <noscript><p class="noscript-note">The interactive map needs JavaScript. The <a href="assets/theorem-chain.svg">complete static theorem map</a> remains available.</p></noscript>
+    </section>
+
+    <section class="overview-film" id="overview-film" aria-labelledby="overview-film-title">
+      <div class="overview-film-copy">
+        <p class="eyebrow">48-second overview</p>
+        <h2 id="overview-film-title">The library in motion.</h2>
+        <p>The film follows the checked route from exponential processes to PAC-Bayes, anytime validity, adaptive trajectories, and stationary risk with empirical catalog selection. It is caption-led and contains no application-specific numerical claim.</p>
+        <a class="text-link" href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__/media/formalslt-overview">Inspect the Manim source and fact receipt <span aria-hidden="true">→</span></a>
+      </div>
+      <figure>
+        <video controls playsinline preload="metadata" poster="assets/formalslt-overview-poster.jpg" aria-label="FormalSLT overview film">
+          <source src="assets/formalslt-overview.mp4" type="video/mp4">
+          <p>Your browser cannot play the embedded film. <a href="assets/formalslt-overview.mp4">Download the MP4</a>.</p>
+        </video>
+        <figcaption>Rendered from facts bound to merged main <code>e18e3f5</code>. Duration 47.7 seconds; 1080p; no audio.</figcaption>
       </figure>
     </section>
 
@@ -64,23 +155,23 @@
 
     <section class="section" id="results" aria-labelledby="results-title">
       <div class="section-heading">
-        <p class="eyebrow">Three flagship families</p>
+        <p class="eyebrow">Three connected research layers</p>
         <h2 id="results-title">From IID posteriors to adaptive dependent data</h2>
         <p>The project is organized around a common proof spine: exponential control, simultaneous change of measure, selection costs, and concrete risk statements.</p>
       </div>
 
-      <article class="flagship">
-        <div class="flagship-number" aria-hidden="true">01</div>
+      <article class="research-family">
+        <div class="research-family-number" aria-hidden="true">01</div>
         <div>
           <p class="status">Proved composition · IID endpoint</p>
           <h3>All-sample-size empirical-Bernstein PAC-Bayes</h3>
-          <p>The flagship endpoint is an IID all-sample-size event for continuous posterior measures. A separate forward predictable-residual e-process for finite hypothesis families supplies a process-level supporting route.</p>
+          <p>The IID endpoint gives one all-sample-size event for continuous posterior measures. A separate forward predictable-residual e-process for finite hypothesis families supplies a process-level route.</p>
         </div>
         <a class="text-link" href="readers/stats-ml/">Read for statistics and ML <span aria-hidden="true">→</span></a>
       </article>
 
-      <article class="flagship">
-        <div class="flagship-number" aria-hidden="true">02</div>
+      <article class="research-family">
+        <div class="research-family-number" aria-hidden="true">02</div>
         <div>
           <p class="status">Proved compositions · two state-space regimes</p>
           <h3>Adaptive trajectory inference</h3>
@@ -89,8 +180,8 @@
         <a class="text-link" href="readers/probability/">Read for probability <span aria-hidden="true">→</span></a>
       </article>
 
-      <article class="flagship">
-        <div class="flagship-number" aria-hidden="true">03</div>
+      <article class="research-family">
+        <div class="research-family-number" aria-hidden="true">03</div>
         <div>
           <p class="status">Proved compositions · finite-state stationary layer</p>
           <h3>Stationary Poisson and unknown-kernel certification</h3>
@@ -102,8 +193,8 @@
 
     <section class="section endpoint-section" id="endpoints" aria-labelledby="endpoints-title">
       <div class="section-heading">
-        <p class="eyebrow">Five checked endpoints</p>
-        <h2 id="endpoints-title">Choose by assumptions, not by slogan</h2>
+        <p class="eyebrow">Five public endpoints</p>
+        <h2 id="endpoints-title">Start from the data regime.</h2>
         <p>Each row gives the usable theorem and the nearest boundary it does not cross.</p>
       </div>
 
