@@ -950,20 +950,29 @@ learn nuisance quantities, or handle unknown dynamics.
 | `neg_stationaryTargetPolicyPosteriorResidualAverage_le` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Converts a fixed pointwise absolute residual envelope into exactly `posteriorAverage posterior residualEnvelope`, with no extra importance-ratio, span, horizon, or factor-two multiplier |
 | `exists_stationaryApproximateTargetPolicyOPE_signedResidual_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Leaves the encountered signed residual average explicit on one event simultaneous over path, finite tilt atom, posterior PMF, and time, so a second simultaneous event may certify a pathwise residual bound without fixing that bound before the OPE event |
 | `exists_stationaryApproximateTargetPolicyOPE_event` | `StochasticDynamics.StationaryTargetPolicyApproximateOPE` | Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every `n >= 2`, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus `posteriorAverage posterior residualEnvelope` |
+| `stationaryTargetPolicyFixedRangeOPEBoundary` | `StochasticDynamics.StationaryTargetPolicyFixedRangeOPE` | Defines the non-variance-adaptive target-policy OPE boundary with deterministic fixed-range correction `lambda / (8 * (1 - lambda / 3))` |
+| `exists_stationaryApproximateTargetPolicyFixedRangeOPE_signedResidual_event` | `StochasticDynamics.StationaryTargetPolicyFixedRangeOPE` | Gives one fixed-range event simultaneous over positive times, posterior PMFs, and a fixed finite tilt catalog while leaving the encountered signed approximate-Poisson residual explicit |
+| `exists_stationaryApproximateTargetPolicyFixedRangeOPE_event` | `StochasticDynamics.StationaryTargetPolicyFixedRangeOPE` | Converts the signed-residual fixed-range event to a supplied pointwise residual envelope, with no empirical-variance term |
 
 The environment `P`, behavior policy `beta`, target-policy catalog `pi`,
 invariant PMFs, potentials, and pointwise residual envelopes are fixed before
 the event. The theorem assumes true induced-kernel invariance, `[0,1]`
 transition scores, a common potential-span bound, overlap, a positive
-importance-ratio cap, full-support hypothesis and tilt weights, positive
-declared tilts below one, and a positive failure budget. The event is fixed
-before the realized path `x`, tilt atom, posterior, and time are quantified, so
-those choices may be made after observing the path only within the fixed
-catalogs and envelope contract. The result does not construct finite-depth
-potentials, candidate kernels, transition-confidence events, event
+importance-ratio cap, full-support hypothesis and tilt weights, and a positive
+failure budget. The empirical-Bernstein variants require positive declared
+tilts below one; the fixed-range variants require positive declared tilts below
+three. The event is fixed before the realized path `x`, tilt atom, posterior,
+and time are quantified, so those choices may be made after observing the path
+only within the fixed catalogs and envelope contract. The result does not
+construct finite-depth potentials, candidate kernels, transition-confidence events, event
 intersections, invariant laws, or data-dependent residual envelopes. It also
 does not provide full-trajectory importance sampling or a two-sided confidence
 interval.
+
+The fixed-range signed-residual theorem retains the invariant-law premise to
+identify the supplied laws as stationary and to match this interface. Its
+concentration proof uses the explicit signed-residual identity and does not
+otherwise consume that premise.
 
 ## Stationary target-policy robust-candidate bridge
 
@@ -1026,6 +1035,22 @@ measurable selector, frozen-trace membership proof, or numerical OPE endpoint.
 Because the statistic has the same conditional mean in every row, this route
 does not require the all-source-row visitation premise of the general
 4,608-coordinate transition-confidence construction.
+
+## Controlled-queue fixed-range comparator
+
+| Declaration | Module | Role |
+|---|---|---|
+| `exists_fixedRangePersistenceHitConfidence_event` | `Applications.ControlledQueueFixedRangePersistenceConfidence` | For a true refresh parameter and initial observation fixed beforehand, gives one two-sided persistence-hit event over all positive times with complement outer mass at most the supplied budget |
+| `fixedRangeSelectedRiskBoundary` | `Applications.ControlledQueueFixedRangeComparator` | Instantiates the selected controlled-queue risk boundary with the fixed tilt `1/16` and risk budget `1/40`, without an empirical-variance term |
+| `fixedRangeStructuredPersistenceBudget` | `Applications.ControlledQueueFixedRangeComparator` | Instantiates the scalar persistence-hit radius with tilt `1/64` and persistence budget `1/40` |
+| `fixedRangeStructuredOPEBoundary` | `Applications.ControlledQueueFixedRangeComparator` | Combines the selected fixed-range risk boundary with the checked affine refresh-sensitivity residual |
+| `exists_controlledQueueFixedRangeComparator_event` | `Applications.ControlledQueueFixedRangeComparator` | For each fixed true refresh parameter and initial observation, intersects the fixed-range risk and persistence events and controls the selected stationary risk at every positive time on one event of complement outer mass at most `1/20` |
+
+The structural event is pointwise in the fixed true refresh parameter and
+initial observation; it is not one event simultaneous over all parameters.
+The prospective numerical report row remains `PLANNED_NOT_CHECKED`: there is
+no checked trace evaluation, named-path event membership, numerical endpoint,
+or proved width comparison with the empirical-Bernstein row.
 
 ## Controlled-queue structured adaptive OPE
 

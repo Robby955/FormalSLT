@@ -402,14 +402,19 @@ The frozen post-beacon gate first runs the independent trace verifier, then the
 receipt byte check, independent receipt verifier, and generated Lean checker in
 that order.
 
-Two prospective comparison rows remain arithmetic-only. The oracle true-kernel
-row and the fixed-range row are both `PLANNED_NOT_CHECKED` noncertificates;
-their `1/20` values are planned allocations, not checked outer-mass bounds. A
-receipt row therefore records either a checked outer-mass bound or a planned
-allocation, together with its certification status. This restriction does not
-relabel the primary, adaptive, generic structured, or premise-qualified
-unstructured rows, and it does not alter the separate checked retrospective
-known-kernel receipt.
+Two prospective numerical comparison rows remain arithmetic-only. The oracle
+true-kernel row is a `PLANNED_NOT_CHECKED` noncertificate whose `1/20` entry is
+a planned allocation and which has no checked event theorem. The fixed-range
+report row is also `PLANNED_NOT_CHECKED`: it has no checked trace evaluation,
+named-path event membership, numerical endpoint, or width comparison. This is
+separate from the checked structural fixed-range theorem, which for each fixed
+true refresh parameter and initial observation supplies an event of complement
+outer mass at most `1/20`; it is not one event simultaneous over all parameters
+and does not certify the numerical row. A receipt row records its checked
+outer-mass bound or planned allocation together with its certification status.
+These restrictions do not relabel the primary, adaptive, generic structured,
+or premise-qualified unstructured rows, and they do not alter the separate
+checked retrospective known-kernel receipt.
 
 ### Retrospective sharp structured controlled-queue receipt
 

@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 236,
-    "library_and_example_lean_lines": 154361,
-    "library_lean_lines": 124109,
-    "library_modules": 292,
-    "theorem_map_entries": 1106
+    "example_lean_files": 238,
+    "library_and_example_lean_lines": 155477,
+    "library_lean_lines": 125097,
+    "library_modules": 295,
+    "theorem_map_entries": 1114
   },
   "theorem_families": [
     {
@@ -4896,6 +4896,24 @@
           "module": "StochasticDynamics.StationaryTargetPolicyApproximateOPE",
           "name": "exists_stationaryApproximateTargetPolicyOPE_event",
           "summary": "Under true induced-kernel invariance and fixed nuisance inputs, one outer event gives every n >= 2, posterior PMF, and declared finite tilt atom the existing target-policy OPE boundary plus posteriorAverage posterior residualEnvelope"
+        },
+        {
+          "kind": "definition",
+          "module": "StochasticDynamics.StationaryTargetPolicyFixedRangeOPE",
+          "name": "stationaryTargetPolicyFixedRangeOPEBoundary",
+          "summary": "Defines the non-variance-adaptive target-policy OPE boundary with deterministic fixed-range correction lambda / (8 * (1 - lambda / 3))"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyFixedRangeOPE",
+          "name": "exists_stationaryApproximateTargetPolicyFixedRangeOPE_signedResidual_event",
+          "summary": "Gives one fixed-range event simultaneous over positive times, posterior PMFs, and a fixed finite tilt catalog while leaving the encountered signed approximate-Poisson residual explicit"
+        },
+        {
+          "kind": "theorem",
+          "module": "StochasticDynamics.StationaryTargetPolicyFixedRangeOPE",
+          "name": "exists_stationaryApproximateTargetPolicyFixedRangeOPE_event",
+          "summary": "Converts the signed-residual fixed-range event to a supplied pointwise residual envelope, with no empirical-variance term"
         }
       ],
       "name": "Approximate-Poisson stationary target-policy off-policy evaluation"
@@ -5003,6 +5021,41 @@
         }
       ],
       "name": "Controlled-queue structured persistence confidence"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueFixedRangePersistenceConfidence",
+          "name": "exists_fixedRangePersistenceHitConfidence_event",
+          "summary": "For a true refresh parameter and initial observation fixed beforehand, gives one two-sided persistence-hit event over all positive times with complement outer mass at most the supplied budget"
+        },
+        {
+          "kind": "definition",
+          "module": "Applications.ControlledQueueFixedRangeComparator",
+          "name": "fixedRangeSelectedRiskBoundary",
+          "summary": "Instantiates the selected controlled-queue risk boundary with the fixed tilt 1/16 and risk budget 1/40, without an empirical-variance term"
+        },
+        {
+          "kind": "definition",
+          "module": "Applications.ControlledQueueFixedRangeComparator",
+          "name": "fixedRangeStructuredPersistenceBudget",
+          "summary": "Instantiates the scalar persistence-hit radius with tilt 1/64 and persistence budget 1/40"
+        },
+        {
+          "kind": "definition",
+          "module": "Applications.ControlledQueueFixedRangeComparator",
+          "name": "fixedRangeStructuredOPEBoundary",
+          "summary": "Combines the selected fixed-range risk boundary with the checked affine refresh-sensitivity residual"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueFixedRangeComparator",
+          "name": "exists_controlledQueueFixedRangeComparator_event",
+          "summary": "For each fixed true refresh parameter and initial observation, intersects the fixed-range risk and persistence events and controls the selected stationary risk at every positive time on one event of complement outer mass at most 1/20"
+        }
+      ],
+      "name": "Controlled-queue fixed-range comparator"
     },
     {
       "entries": [

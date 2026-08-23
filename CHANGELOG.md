@@ -79,10 +79,16 @@ v0.2 release, and no DOI is attached to them yet.
   discrepancy convergence.
 - Application declarations are opt-in and are outside the 19-name public API
   candidate.
-- The prospective oracle true-kernel and fixed-range rows are arithmetic-only
-  `PLANNED_NOT_CHECKED` comparisons. Their `1/20` entries are planned
-  allocations, not checked outer-mass bounds; neither row has a checked event
-  theorem or is a confidence certificate.
+- The prospective oracle true-kernel row is an arithmetic-only
+  `PLANNED_NOT_CHECKED` comparison. Its `1/20` entry is a planned allocation,
+  not a checked outer-mass bound; it has no checked event theorem and is not a
+  confidence certificate.
+- The fixed-range numerical report row remains `PLANNED_NOT_CHECKED`: it has
+  no checked trace evaluation, named-path event membership, numerical endpoint,
+  or width comparison. Separately, for each fixed true refresh parameter and
+  initial observation, a checked structural theorem supplies an event of
+  complement outer mass at most `1/20`; it is not one event simultaneous over
+  all parameters and does not certify the numerical row.
 - The retrospective sharp endpoint assumes the well-specified refresh family.
   Its `1/20` failure-event bound is pointwise in the fixed true persistence
   parameter; it is neither histogram-conditioned coverage nor one event

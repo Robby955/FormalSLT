@@ -171,13 +171,18 @@ receipt, manifest, or generated Lean output already exists. It does not fetch a
 beacon or generate data.
 
 The seven-row reporting contract distinguishes a checked outer-mass bound from
-a planned allocation. The prospective oracle true-kernel and fixed-range rows are
-arithmetic-only `PLANNED_NOT_CHECKED` noncertificates; each carries a planned
-`1/20` allocation, not a checked outer-mass bound. The receipt reports that
-planned allocation and status instead of a checked outer-mass bound. The
-primary, adaptive, generic structured, and premise-qualified unstructured rows
-retain their separate checked-event labels. This prospective oracle row is not
-the checked retrospective known-kernel receipt described above.
+a planned allocation. The prospective oracle true-kernel row is an
+arithmetic-only `PLANNED_NOT_CHECKED` noncertificate with a planned `1/20`
+allocation and no checked event theorem. The fixed-range numerical report row
+also remains `PLANNED_NOT_CHECKED`: there is no checked trace evaluation,
+named-path event membership, numerical endpoint, or width comparison.
+Separately, for each fixed true refresh parameter and initial observation, the
+structural fixed-range theorem supplies an event of complement outer mass at
+most `1/20`; it is not one event simultaneous over all parameters and does not
+certify the numerical report row. The primary, adaptive, generic structured,
+and premise-qualified unstructured rows retain their separate checked-event
+labels. The prospective oracle row is not the checked retrospective
+known-kernel receipt described above.
 
 The pre-beacon code-freeze target runs the four prospective generator/verifier
 test lanes, verifies the pinned `py-ecc` quicknet signature path, builds the

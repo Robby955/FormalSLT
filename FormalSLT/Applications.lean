@@ -24,6 +24,8 @@ import FormalSLT.Applications.ControlledQueueInvariantRisk
 import FormalSLT.Applications.ControlledQueueKnownKernelReceipt
 import FormalSLT.Applications.ControlledQueueRefreshSensitivity
 import FormalSLT.Applications.ControlledQueueSharpStructuredOPE
+import FormalSLT.Applications.ControlledQueueFixedRangePersistenceConfidence
+import FormalSLT.Applications.ControlledQueueFixedRangeComparator
 import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
 import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 
@@ -67,6 +69,14 @@ theorem-produced event inequality. `ControlledQueueRefreshSensitivity` proves
 the exact affine drift identity for the queue refresh family, and
 `ControlledQueueSharpStructuredOPE` combines it with the risk and persistence
 events under the prospectively frozen constants.
+For each fixed true refresh parameter and initial observation,
+`ControlledQueueFixedRangePersistenceConfidence` keeps the matched
+non-variance-adaptive persistence comparator outside the frozen primary source.
+For those same fixed inputs, `ControlledQueueFixedRangeComparator` proves the
+event theorem underlying the planned non-variance-adaptive row with the same
+selected potential, tilts, and confidence allocation. Its numerical report
+remains planned; trace evaluation and named-path event membership stay
+separate.
 `ControlledQueueSharpStructuredReceiptCore` reduces any matching physical
 transition histogram to the preregistered affine-Bessel primary endpoint,
 without containing future counts. These modules do not prove that any named

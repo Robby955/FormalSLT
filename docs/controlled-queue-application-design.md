@@ -452,8 +452,11 @@ slices, not preprocessing claims.
 All displayed methods must use the same frozen trace and horizon. Each row's
 candidate, depth, policy, predictor, posterior, and selection rule is fixed by
 the canonical protocol. Every row has a nominal `1/20` reporting allocation;
-for the oracle and fixed-range rows, that value is planned and is not a checked
-failure budget.
+the oracle value is planned and is not a checked failure budget. The
+fixed-range numerical row also remains planned because it has no checked trace
+evaluation or endpoint. Separately, its structural theorem checks an outer
+event bound of `1/20` for each fixed true refresh parameter and initial
+observation; that theorem does not certify the numerical row.
 
 Report these seven rows in the frozen order:
 
@@ -469,19 +472,21 @@ The report must show empirical loss, correction width, total upper endpoint,
 and the exact checked outer-mass bound or planned allocation for every row. It
 must distinguish those two fields and display the certification status. The
 prospective oracle true-kernel and fixed-range rows are arithmetic-only
-`PLANNED_NOT_CHECKED` noncertificates: their `1/20` values
-are planned allocations, not checked outer-mass bounds. The primary, adaptive,
-generic structured, and premise-qualified unstructured rows retain their
-separate checked-event semantics. Report the ordering even if the primary
-method does not win.
+`PLANNED_NOT_CHECKED` numerical noncertificates. The oracle has only a planned
+`1/20` allocation. The fixed-range row has a separate checked structural event
+bound at `1/20`, pointwise in the fixed true parameter and initial observation,
+but no checked trace evaluation, endpoint, or width comparison. The primary,
+adaptive, generic structured, and premise-qualified unstructured rows retain
+their separate checked-event semantics. Report the ordering even if the
+primary method does not win.
 
 ## Receipt and review contract
 
 The final package needs both:
 
 - the checked theorem-produced event statements named for the primary,
-  adaptive, two generic structured, and premise-qualified unstructured rows;
-  and
+  adaptive, two generic structured, premise-qualified unstructured, and
+  structural fixed-range rows; and
 - exact Lean arithmetic evaluating all seven rows while preserving the oracle
   and fixed-range rows as `PLANNED_NOT_CHECKED`.
 
