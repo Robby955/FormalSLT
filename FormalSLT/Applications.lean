@@ -17,6 +17,7 @@ import FormalSLT.Applications.ControlledQueueTypedModel
 import FormalSLT.Applications.ControlledQueuePersistenceConfidence
 import FormalSLT.Applications.ControlledQueueTargetPolicyScores
 import FormalSLT.Applications.ControlledQueueContraction
+import FormalSLT.Applications.ControlledQueueRefreshUniqueness
 import FormalSLT.Applications.ControlledQueueOPECatalog
 import FormalSLT.Applications.ControlledQueueStructuredOPE
 import FormalSLT.Applications.ControlledQueueInvariantRisk
@@ -47,6 +48,9 @@ minorization and target-policy contraction factor.
 arbitrary-parameter refresh family and gives one scalar time-uniform outer-mass
 event whose hit-probability discrepancy is exactly every physical-row TV
 discrepancy.
+`ControlledQueueRefreshUniqueness` proves that every admissible member of this
+family induces a target-policy kernel with Dobrushin coefficient at most its
+persistence parameter and therefore has a unique invariant PMF.
 `ControlledQueueOPECatalog` combines the earlier deterministic receipts into a
 twelve-atom, fixed-nominal-candidate event for any depth fixed before the event.
 `ControlledQueueStructuredOPE` intersects preallocated candidate--depth OPE

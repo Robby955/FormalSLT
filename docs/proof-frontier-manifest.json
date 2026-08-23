@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 235,
-    "library_and_example_lean_lines": 154217,
-    "library_lean_lines": 123993,
-    "library_modules": 291,
-    "theorem_map_entries": 1103
+    "example_lean_files": 236,
+    "library_and_example_lean_lines": 154361,
+    "library_lean_lines": 124109,
+    "library_modules": 292,
+    "theorem_map_entries": 1106
   },
   "theorem_families": [
     {
@@ -5139,6 +5139,29 @@
         }
       ],
       "name": "Controlled-queue refresh sensitivity and fixed sharp OPE"
+    },
+    {
+      "entries": [
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueRefreshUniqueness",
+          "name": "refreshTargetPolicyKernel_dobrushin_le_gamma",
+          "summary": "Bounds the Dobrushin coefficient of every target-policy kernel in the refresh family by its persistence parameter; it does not claim equality"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueRefreshUniqueness",
+          "name": "refreshTargetPolicyKernel_existsUnique_invariantPMF",
+          "summary": "Uses the strict refresh-parameter bound to prove existence and uniqueness of an invariant PMF for every state-based target policy; it does not compute the PMF"
+        },
+        {
+          "kind": "theorem",
+          "module": "Applications.ControlledQueueOPECatalog",
+          "name": "queueHypothesisStationary_unique_of_refresh",
+          "summary": "Identifies the catalog's chosen invariant PMF as the unique invariant law for its generated refresh-family kernel; it does not compute a stationary-risk value"
+        }
+      ],
+      "name": "Controlled-queue refresh-family invariant uniqueness"
     },
     {
       "entries": [

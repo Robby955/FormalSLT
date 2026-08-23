@@ -1095,6 +1095,14 @@ well-specified one-dimensional refresh family. It does not test that family,
 give histogram-conditioned `19/20` coverage, or establish that a named trace
 lies in the theorem-produced event.
 
+## Controlled-queue refresh-family invariant uniqueness
+
+| Declaration | Module | Role |
+|---|---|---|
+| `refreshTargetPolicyKernel_dobrushin_le_gamma` | `Applications.ControlledQueueRefreshUniqueness` | Bounds the Dobrushin coefficient of every target-policy kernel in the refresh family by its persistence parameter; it does not claim equality |
+| `refreshTargetPolicyKernel_existsUnique_invariantPMF` | `Applications.ControlledQueueRefreshUniqueness` | Uses the strict refresh-parameter bound to prove existence and uniqueness of an invariant PMF for every state-based target policy; it does not compute the PMF |
+| `queueHypothesisStationary_unique_of_refresh` | `Applications.ControlledQueueOPECatalog` | Identifies the catalog's chosen invariant PMF as the unique invariant law for its generated refresh-family kernel; it does not compute a stationary-risk value |
+
 ## Controlled-queue twelve-atom OPE catalog
 
 | Declaration | Module | Role |

@@ -79,6 +79,7 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake build FormalSLT.Applications.ControlledQueueTargetPolicyScores
 	lake build FormalSLT.Applications.ControlledQueueContraction
 	lake build FormalSLT.Applications.ControlledQueuePersistenceConfidence
+	lake build FormalSLT.Applications.ControlledQueueRefreshUniqueness
 	lake build FormalSLT.Applications.ControlledQueueOPECatalog
 	lake build FormalSLT.Applications.ControlledQueueStructuredOPE
 	lake build FormalSLT.Applications.ControlledQueueInvariantRisk
@@ -91,6 +92,7 @@ verify-controlled-queue-model: check-controlled-queue-model
 	lake env lean examples/CheckControlledQueueTargetPolicyScores.lean
 	lake env lean examples/CheckControlledQueueContraction.lean
 	lake env lean examples/CheckControlledQueuePersistenceConfidence.lean
+	lake env lean examples/CheckControlledQueueRefreshUniqueness.lean
 	lake env lean examples/CheckControlledQueueOPECatalog.lean
 	lake env lean examples/CheckControlledQueueStructuredOPE.lean
 	lake env lean examples/CheckControlledQueueInvariantRisk.lean
