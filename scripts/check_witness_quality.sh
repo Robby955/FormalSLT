@@ -234,6 +234,11 @@ classify_witness() {
 #      most 1/8; every fixed hypothesis has positive observed Bessel variance;
 #      posterior empirical risk is 1/2 and the complete RHS is below one;
 #      fixed posterior and tilt, and the state law itself has two-point support)
+#   empirical-Bernstein / forward-Bessel exact arithmetic interface
+#     (heterogeneous rational witnesses for prefix indexing, Bessel sums, both
+#     hybrid branches, the `n = 2` and zero-variance edges, distinct cumulants,
+#     boundary assembly, and catalog-weight multiplication; this is a
+#     cross-language formula pin, not a stochastic non-vacuity receipt)
 #   exists_balancedPath_conditional_numeric_certificate
 #     (twenty-state frozen arithmetic path with exactly 200,000 transitions;
 #      every row has 10,000 visits; exact oracle empirical risk 3/20; known-
@@ -302,6 +307,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckEmpiricalStationaryCatalog.lean"
   "examples/CheckEmpiricalStationaryCatalogInformative.lean"
   "examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean"
+  "examples/CheckEmpiricalBernsteinBoundaryWitnessBattery.lean"
   "examples/CheckRandomRefreshLoadReceipt.lean"
 )
 
@@ -403,5 +409,8 @@ if [ "$fail" -ne 0 ]; then
   echo "witness-quality gate FAILED" >&2
   exit 1
 fi
+
+echo "== empirical-Bernstein boundary cross-language mirror =="
+python3 "$ROOT/scripts/verify_empirical_bernstein_boundary_witnesses.py"
 
 echo "witness-quality gate passed: all headline witnesses have linked executable receipts"
