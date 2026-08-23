@@ -484,6 +484,7 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.orientedPersistenceHitScore_mem_Icc"
   "FormalSLT.Applications.ControlledQueue.persistenceDestinationHit_rowRisk"
   "FormalSLT.Applications.ControlledQueue.exists_persistenceHitConfidence_event"
+  "FormalSLT.Applications.ControlledQueue.exists_fixedRangePersistenceHitConfidence_event"
   "FormalSLT.Applications.ControlledQueue.refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy"
   "FormalSLT.Applications.ControlledQueue.exists_structuredCandidateTVConfidence_event"
   "FormalSLT.Applications.ControlledQueue.queueCandidateFiniteDepthPotential_span"
@@ -575,6 +576,7 @@ THEOREMS=(
   "FormalSLT.Applications.ControlledQueue.knownKernelSelectedCandidateDrift_finiteOscillation_le"
   "FormalSLT.Applications.ControlledQueue.knownKernelSelectedRefreshSensitivity_finiteOscillation_le"
   "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredOPE_event"
+  "FormalSLT.Applications.ControlledQueue.exists_controlledQueueFixedRangeComparator_event"
   "FormalSLT.Applications.ControlledQueue.exists_controlledQueueSharpStructuredReceipt_event"
   "FormalSLT.Applications.ControlledQueue.sharpStructuredReceiptBoundary_evaluation_of_histogram"
   "FormalSLT.Applications.ControlledQueue.sharpStructuredRetrospectivePathSummary_of_suffixEdgeHistogram"
@@ -788,6 +790,10 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.neg_stationaryTargetPolicyPosteriorResidualAverage_le"
   "FormalSLT.StochasticDynamics.exists_stationaryApproximateTargetPolicyOPE_signedResidual_event"
   "FormalSLT.StochasticDynamics.exists_stationaryApproximateTargetPolicyOPE_event"
+  "FormalSLT.StochasticDynamics.trajectoryPosteriorAverageConditionalRisk_controlledPoissonScore_eq"
+  "FormalSLT.StochasticDynamics.trajectoryPosteriorEmpiricalPrequentialRisk_controlledPoissonScore_eq"
+  "FormalSLT.StochasticDynamics.exists_stationaryApproximateTargetPolicyFixedRangeOPE_signedResidual_event"
+  "FormalSLT.StochasticDynamics.exists_stationaryApproximateTargetPolicyFixedRangeOPE_event"
   "FormalSLT.StochasticDynamics.finiteOscillation_targetPolicyPoissonDrift_finiteDepth_le"
   "FormalSLT.StochasticDynamics.exists_stationaryRobustCandidateFiniteDepthTargetPolicyOPE_event"
   "FormalSLT.StochasticDynamics.exists_stationaryEmpiricalRobustCandidateFiniteDepthTargetPolicyOPE_event"
@@ -993,6 +999,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueKnownKernelReceipt"
   echo "import FormalSLT.Applications.ControlledQueueRefreshSensitivity"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredOPE"
+  echo "import FormalSLT.Applications.ControlledQueueFixedRangePersistenceConfidence"
+  echo "import FormalSLT.Applications.ControlledQueueFixedRangeComparator"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
@@ -1000,6 +1008,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE"
+  echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyFixedRangeOPE"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE"
   echo "import FormalSLT.StochasticDynamics.ControlledTrajectory"
@@ -1090,6 +1099,8 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueInvariantRisk \
   FormalSLT.Applications.ControlledQueueRefreshSensitivity \
   FormalSLT.Applications.ControlledQueueSharpStructuredOPE \
+  FormalSLT.Applications.ControlledQueueFixedRangePersistenceConfidence \
+  FormalSLT.Applications.ControlledQueueFixedRangeComparator \
   FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore \
   FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
@@ -1098,6 +1109,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyApproximateOPE \
+  FormalSLT.StochasticDynamics.StationaryTargetPolicyFixedRangeOPE \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustFiniteDepthOPE \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyEmpiricalFiniteDepthOPE \
   FormalSLT.StochasticDynamics.ControlledTrajectory \
