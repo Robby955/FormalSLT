@@ -7,54 +7,139 @@ on:
     branches: [release-candidate, main]
 
 jobs:
-  build:
+  scope:
+    name: classify changes
     runs-on: ubuntu-latest
+    outputs:
+      base: ${{ steps.classify.outputs.base }}
+      scope: ${{ steps.classify.outputs.scope }}
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
+      - name: Classify changed paths
+        id: classify
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          set -euo pipefail
+          python3 scripts/classify_ci_scope.py --self-test
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="$PR_BASE_SHA"
+          else
+            base="$PUSH_BEFORE_SHA"
+          fi
+          if [[ -z "$base" || "$base" =~ ^0+$ ]] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            echo "Diff base is unavailable; running the full suite."
+            echo "scope=full" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "base=$base" >> "$GITHUB_OUTPUT"
+          git diff --name-only -z "$base" "${{ github.sha }}" |
+            python3 scripts/classify_ci_scope.py --stdin0 --github-output
+
+  build:
+    needs: scope
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a valid scope classification
+        env:
+          CI_SCOPE: ${{ needs.scope.outputs.scope }}
+        run: |
+          case "$CI_SCOPE" in
+            docs|full) ;;
+            *)
+              echo "Invalid or unavailable CI scope: ${CI_SCOPE:-<empty>}"
+              exit 1
+              ;;
+          esac
+
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Verify prose and media-only changes
+        if: needs.scope.outputs.scope == 'docs'
+        env:
+          DIFF_BASE: ${{ needs.scope.outputs.base }}
+        run: |
+          python3 scripts/generate_theorem_index.py --self-test
+          python3 scripts/generate_theorem_index.py --check
+          python3 scripts/stage_docs_site.py --check-source
+          python3 scripts/stage_docs_site.py --self-test
+          python3 scripts/check_doc_anchors.py --self-test
+          git ls-files -z -- '*.md' '*.mdx' | \
+            xargs -0 python3 scripts/check_doc_anchors.py
+          if [[ -f docs/site/assets/research-map.js ]]; then
+            node --check docs/site/assets/research-map.js
+          fi
+          if [[ -f media/formalslt-overview/extract_facts.py ]]; then
+            python3 -m py_compile \
+              media/formalslt-overview/extract_facts.py \
+              media/formalslt-overview/formalslt_overview.py
+            python3 media/formalslt-overview/extract_facts.py
+            git diff --exit-code -- media/formalslt-overview/facts.json
+            bash -n media/formalslt-overview/render.sh
+          fi
+          git diff --check "$DIFF_BASE" "${{ github.sha }}"
+
       - name: Install elan
+        if: needs.scope.outputs.scope == 'full'
         run: |
           curl -sSf https://raw.githubusercontent.com/leanprover/elan/464c9d28395000a2a0128e07081e4956d50eced2/elan-init.sh | sh -s -- -y --default-toolchain none
           echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Get Mathlib cache
+        if: needs.scope.outputs.scope == 'full'
         run: lake exe cache get
 
       - name: Build
+        if: needs.scope.outputs.scope == 'full'
         run: lake build FormalSLT
 
       # Applications are rooted through their own optional umbrella; the
       # default FormalSLT umbrella must not reach them.
       - name: Verify module reachability and opt-in applications
+        if: needs.scope.outputs.scope == 'full'
         run: python3 scripts/check_no_orphan_lean_modules.py
 
       - name: Check examples and tutorials
+        if: needs.scope.outputs.scope == 'full'
         run: make examples
 
       - name: Verify public API and v0.1 compatibility
+        if: needs.scope.outputs.scope == 'full'
         run: make api
 
       - name: Install repository-tool test dependency
+        if: needs.scope.outputs.scope == 'full'
         run: python3 -m pip install -r requirements-dev.txt
 
       - name: Verify controlled-queue structured-OPE code freeze
+        if: needs.scope.outputs.scope == 'full'
         run: make verify-controlled-queue-structured-ope-code-freeze
 
       - name: Verify controlled-queue generated artifacts
+        if: needs.scope.outputs.scope == 'full'
         run: make check-controlled-queue-model
 
       - name: Verify controlled-queue trace preprocessing
+        if: needs.scope.outputs.scope == 'full'
         run: make check-controlled-queue-trace
 
       - name: Verify controlled-queue known-kernel receipt
+        if: needs.scope.outputs.scope == 'full'
         run: make check-controlled-queue-known-kernel-receipt
 
       - name: Run repository-tool self-tests
+        if: needs.scope.outputs.scope == 'full'
         run: make python-tests
 
       - name: Verify documentation source anchors
+        if: needs.scope.outputs.scope == 'full'
         run: |
           python3 scripts/check_doc_anchors.py --self-test
           git ls-files -z -- '*.md' '*.mdx' | \
@@ -64,14 +149,17 @@ jobs:
       # checks drift on every content commit, so they must NOT gate the build.
       # Refresh anytime with the two generator scripts (no --check).
       - name: Check proof frontier manifest (non-blocking)
+        if: needs.scope.outputs.scope == 'full'
         continue-on-error: true
         run: python3 scripts/generate_proof_frontier_manifest.py --check
 
       - name: Check badge counts (non-blocking)
+        if: needs.scope.outputs.scope == 'full'
         continue-on-error: true
         run: python3 scripts/generate_badge_counts.py --check
 
       - name: Verify no sorry
+        if: needs.scope.outputs.scope == 'full'
         run: |
           # Match 'sorry' as a standalone tactic (not in comments or strings)
           if grep -rnE --include="*.lean" '^[[:space:]]*sorry([[:space:]]|$)' FormalSLT/ FormalSLT.lean examples/; then
@@ -80,6 +168,7 @@ jobs:
           fi
 
       - name: Verify no admit
+        if: needs.scope.outputs.scope == 'full'
         run: |
           if grep -rnE --include="*.lean" '^[[:space:]]*admit([[:space:]]|$)' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: admit found in source files"
@@ -87,6 +176,7 @@ jobs:
           fi
 
       - name: Verify no custom axioms
+        if: needs.scope.outputs.scope == 'full'
         run: |
           if grep -rnE --include="*.lean" '^[[:space:]]*axiom[[:space:]]+' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: custom axiom found in source files"
@@ -94,10 +184,11 @@ jobs:
           fi
 
       # The grep above only catches literal `axiom` declarations. This step
-      # prints the axioms of the flagship public theorems and fails on any
+      # prints the axioms of the public capstone theorems and fails on any
       # axiom outside {propext, Classical.choice, Quot.sound}, which catches
       # kernel-trusting tactics (e.g. native_decide leaking Lean.ofReduceBool).
-      - name: Verify flagship axiom cleanliness
+      - name: Verify public capstone axiom cleanliness
+        if: needs.scope.outputs.scope == 'full'
         run: bash scripts/check_axioms.sh
 
       # A `#check` cannot fail on a vacuous theorem, so it certifies typing and
@@ -106,6 +197,7 @@ jobs:
       # project surface. The parser ignores comments and rejects check-only or
       # unrelated-trivial declarations in its self-tests.
       - name: Verify witness quality (ban fake receipt files)
+        if: needs.scope.outputs.scope == 'full'
         run: bash scripts/check_witness_quality.sh
 
       # Statement-level non-vacuity: lints the .lean files CHANGED by this PR
@@ -116,11 +208,13 @@ jobs:
       # vacuous/genuine fixture pair. The base ref is passed so the diff is
       # scoped to the PR; on push it falls back to HEAD~1, else all files.
       - name: Verify statement fidelity (non-vacuity, changed files)
+        if: needs.scope.outputs.scope == 'full'
         env:
           FIDELITY_BASE_REF: ${{ github.event.pull_request.base.sha }}
         run: bash scripts/check_statement_fidelity.sh
 
       - name: Verify no custom constants
+        if: needs.scope.outputs.scope == 'full'
         run: |
           if grep -rnE --include="*.lean" '^[[:space:]]*constant[[:space:]]+[^:]+:' FormalSLT/ FormalSLT.lean examples/; then
             echo "ERROR: custom constant found in source files"
@@ -128,6 +222,7 @@ jobs:
           fi
 
       - name: Count lines
+        if: needs.scope.outputs.scope == 'full'
         run: |
           echo "Total Lean lines:"
           find FormalSLT/ -name '*.lean' -exec cat {} + | wc -l
@@ -136,6 +231,8 @@ jobs:
 
   downstream:
     name: downstream (${{ matrix.os }})
+    needs: scope
+    if: needs.scope.outputs.scope == 'full'
     strategy:
       fail-fast: false
       matrix:
