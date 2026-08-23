@@ -31,6 +31,9 @@ SITE_MARKER = 'data-formalslt-site="research"'
 SITE_FILES = (
     "index.html",
     "assets/favicon.svg",
+    "assets/formalslt-overview.mp4",
+    "assets/formalslt-overview-poster.jpg",
+    "assets/research-map.js",
     "assets/site.css",
     "assets/theorem-chain.svg",
     "readers/stats-ml/index.html",
@@ -57,7 +60,7 @@ DOCGEN_PATHS = (
     "FormalSLT/StochasticDynamics/EmpiricalTransitionConfidenceCountable.html",
 )
 
-FLAGSHIP_ENDPOINTS = (
+PUBLIC_ENDPOINTS = (
     "exists_continuousInfiniteEmpiricalBernstein_event",
     "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event",
     "exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event",
@@ -80,10 +83,14 @@ class SiteHTMLParser(HTMLParser):
         values = dict(attrs)
         if tag == "a" and values.get("href"):
             self.targets.append(values["href"] or "")
-        if tag in {"link", "script", "img"}:
+        if tag in {"link", "script", "img", "source"}:
             target = values.get("href") if tag == "link" else values.get("src")
             if target:
                 self.targets.append(target)
+        if tag == "video":
+            for attribute in ("src", "poster"):
+                if values.get(attribute):
+                    self.targets.append(values[attribute] or "")
         if tag == "img" and "alt" not in values:
             self.images_without_alt += 1
 
@@ -119,10 +126,10 @@ def validate_source_tree() -> None:
     root_html = (SITE_ROOT / "index.html").read_text(encoding="utf-8")
     if SITE_MARKER not in root_html:
         raise ValueError("docs/site/index.html is missing the research-site marker")
-    for endpoint in FLAGSHIP_ENDPOINTS:
+    for endpoint in PUBLIC_ENDPOINTS:
         # Each endpoint occurs once in the doc-gen fragment and once as the
         # visible declaration label. Requiring the pair catches missing or
-        # accidentally duplicated flagship rows.
+        # accidentally duplicated public rows.
         if root_html.count(endpoint) != 2:
             raise ValueError(
                 f"docs/site/index.html must contain endpoint {endpoint!r} "

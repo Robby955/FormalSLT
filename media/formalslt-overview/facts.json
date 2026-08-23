@@ -1,0 +1,38 @@
+{
+  "schema": "formalslt-overview-v1",
+  "commit": "e18e3f52326c98c878e73557305fc9ee482f499e",
+  "short_commit": "e18e3f5",
+  "library": {
+    "modules": 291,
+    "theorems_and_lemmas": 4232,
+    "lean_lines": 154217,
+    "stable_topic_imports": [
+      "FormalSLT.PACBayes",
+      "FormalSLT.Sequential",
+      "FormalSLT.StochasticDynamics",
+      "FormalSLT.VC"
+    ]
+  },
+  "proof_spine": [
+    {
+      "stage": "Exponential processes",
+      "file": "FormalSLT/AnytimeValid/ForwardBesselProcess.lean",
+      "name": "exists_forwardEmpiricalBernsteinLowerTiltCatalog_event"
+    },
+    {
+      "stage": "PAC-Bayes and anytime validity",
+      "file": "FormalSLT/PACBayes/TimeUniformTiltMixture.lean",
+      "name": "timeUniformPACBayes_tiltMixture_allPosteriors_bound"
+    },
+    {
+      "stage": "Adaptive trajectories",
+      "file": "FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean",
+      "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"
+    },
+    {
+      "stage": "Stationary empirical-catalog certification",
+      "file": "FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean",
+      "name": "exists_empiricalStationaryCatalog_event"
+    }
+  ]
+}

@@ -3,8 +3,18 @@ name: Docs
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - README.md
+      - LICENSE
+      - CITATION.cff
+      - media/**
   pull_request:
     branches: [main]
+    paths-ignore:
+      - README.md
+      - LICENSE
+      - CITATION.cff
+      - media/**
   workflow_dispatch:
 
 permissions:
