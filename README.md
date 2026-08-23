@@ -138,6 +138,10 @@ make downstream
 
 ## Papers and references
 
+- [A Machine-Checked Anytime-Valid Confidence Sequence by the Method of Mixtures](https://github.com/Robby955/anytime-valid-mixture-cs/blob/main/paper/sneiderman-copa2026-anytime-valid-mixture-cs.pdf),
+  accepted poster at [COPA 2026](https://copa-conference.com/#nav-program);
+  forthcoming in PMLR 329
+  ([artifact and reproduction](https://github.com/Robby955/anytime-valid-mixture-cs))
 - [From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory](https://openreview.net/pdf?id=EsEqPLc0ef), ICML 2026 AI for Math workshop
 - [Literature notes](./docs/LITERATURE.md)
 - [Source map](./docs/references.md)
