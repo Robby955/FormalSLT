@@ -18,12 +18,12 @@ OPE theorem to the nominal candidate, the uniform physical-state reference,
 contraction factor `3 / 4`, centered row-risk envelope `D = 1`, and importance
 ratio cap `3 / 2`.
 
-The true environment and finite depth remain fixed inputs to the event. The
-left-hand stationary risks use the canonical invariant PMFs supplied by finite
-state-space existence; no uniqueness or explicit stationary-risk value is
-claimed. The event is simultaneous over all posterior PMFs and all times, but
-still requires every augmented behavior row to have been visited at the
-displayed horizon.
+The true environment and finite depth remain fixed inputs to the event. For
+arbitrary true environments, stationary risks use canonical invariant PMFs
+from finite-state existence; the event claims neither uniqueness nor an exact
+risk. Within the refresh family, `queueHypothesisStationary_unique_of_refresh`
+separately identifies any invariant PMF with that witness. Simultaneous
+posterior/time control still requires every augmented row to be visited.
 
 This is not a named-trace certificate, a good-event membership proof, a
 data-selected candidate or depth, or a final numerical receipt. The two causal
