@@ -20,14 +20,14 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 
-SOUNDTRACK_ID = "formalslt-dark-ambient-v2"
+SOUNDTRACK_ID = "formalslt-dark-ambient-v3"
 SAMPLE_RATE = 48_000
 CHANNELS = 2
 SAMPLE_WIDTH_BYTES = 2
 BLOCK_FRAMES = 2_048
 MAX_DURATION_SECONDS = 10 * 60
 MASTER_GAIN = 1.55
-REFERENCE_DURATIONS = {"main": 64.228, "social": 10.366}
+REFERENCE_DURATIONS = {"main": 72.0, "social": 13.0}
 MAX_REFERENCE_DRIFT_SECONDS = 0.50
 
 
@@ -49,25 +49,19 @@ class Cue:
 CUT_CUES: dict[str, tuple[Cue, ...]] = {
     "main": (
         Cue(0.00, "title", 73.42, 0.58, 0.20, -0.15),
-        Cue(4.50, "adaptive problem", 77.78, 0.76, 0.78, 0.22),
-        Cue(9.60, "structured family", 73.42, 0.92, 0.88, -0.12),
-        Cue(13.35, "hit statistic", 110.00, 0.78, 0.70, -0.24),
-        Cue(15.40, "TV identity", 146.83, 0.84, 0.58, 0.20),
-        Cue(20.30, "proof spine", 110.00, 0.66, 0.42, -0.28),
-        Cue(27.55, "anytime validity", 146.83, 0.62, 0.52, 0.30),
-        Cue(34.04, "adaptive trajectories", 87.31, 0.70, 0.72, -0.20),
-        Cue(39.79, "stationary bridge", 98.00, 0.66, 0.48, 0.24),
-        Cue(45.69, "library map", 110.00, 0.62, 0.38, -0.24),
-        Cue(51.14, "declaration receipt", 82.41, 0.68, 0.56, 0.18),
-        Cue(57.79, "axiom receipt", 98.00, 0.56, 0.30, -0.12),
-        Cue(60.89, "source and close", 73.42, 0.54, 0.18, 0.00),
+        Cue(5.00, "field map", 77.78, 0.68, 0.36, 0.18),
+        Cue(14.00, "classical spine", 98.00, 0.64, 0.32, -0.18),
+        Cue(23.00, "PAC-Bayes", 110.00, 0.74, 0.52, 0.22),
+        Cue(32.00, "anytime validity", 146.83, 0.70, 0.65, -0.20),
+        Cue(41.00, "dependent path", 87.31, 0.76, 0.78, 0.24),
+        Cue(50.00, "queue case study", 73.42, 0.88, 0.82, -0.12),
+        Cue(59.00, "theorem map", 110.00, 0.72, 0.46, 0.18),
+        Cue(66.00, "close", 73.42, 0.58, 0.18, 0.00),
     ),
     "social": (
-        Cue(0.00, "coordinate hook", 73.42, 0.82, 0.70, -0.18),
-        Cue(2.60, "hit statistic", 77.78, 0.88, 0.90, 0.22),
-        Cue(3.75, "TV identity", 146.83, 0.96, 0.66, -0.24),
-        Cue(4.40, "scope boundary", 110.00, 0.70, 0.44, 0.20),
-        Cue(7.65, "source close", 73.42, 0.62, 0.18, 0.00),
+        Cue(0.00, "field hook", 73.42, 0.76, 0.35, -0.18),
+        Cue(4.00, "theorem spine", 110.00, 0.82, 0.58, 0.22),
+        Cue(9.00, "close", 73.42, 0.62, 0.18, 0.00),
     ),
 }
 

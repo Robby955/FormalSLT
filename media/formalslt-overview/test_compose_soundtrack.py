@@ -12,6 +12,24 @@ import compose_soundtrack
 
 
 class SoundtrackTests(unittest.TestCase):
+    def test_field_map_cut_timing_is_reviewed(self) -> None:
+        self.assertEqual(
+            compose_soundtrack.SOUNDTRACK_ID,
+            "formalslt-dark-ambient-v3",
+        )
+        self.assertEqual(
+            compose_soundtrack.REFERENCE_DURATIONS,
+            {"main": 72.0, "social": 13.0},
+        )
+        self.assertEqual(
+            [cue.time for cue in compose_soundtrack.CUT_CUES["main"]],
+            [0.0, 5.0, 14.0, 23.0, 32.0, 41.0, 50.0, 59.0, 66.0],
+        )
+        self.assertEqual(
+            [cue.time for cue in compose_soundtrack.CUT_CUES["social"]],
+            [0.0, 4.0, 9.0],
+        )
+
     def test_cue_ledgers_are_ordered_and_begin_at_zero(self) -> None:
         for cut, cues in compose_soundtrack.CUT_CUES.items():
             self.assertGreater(len(cues), 1, cut)

@@ -6,11 +6,16 @@
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-FormalSLT is a Lean 4 library for finite-sample learning guarantees under
-adaptive selection and dependent data.
+FormalSLT is a Lean 4 library for statistical learning theory and modern
+finite-sample inference.
 
-It includes PAC-Bayes bounds, confidence sequences, e-processes, Rademacher and
-VC theory, and finite-state results for trajectories and stationary Markov risk.
+It develops reusable results in VC and Rademacher theory, metric entropy and
+chaining, PAC-Bayes bounds, confidence sequences and e-processes, and learning
+from adaptive or dependent trajectories. The goal is a coherent Lean
+foundation in which classical learning theory and newer sequential methods can
+be composed and extended.
+
+Worked applications show how these parts of the library combine.
 
 [Documentation](https://robby955.github.io/FormalSLT/) ·
 [Theorem map](./docs/theorem-map.md) ·
@@ -25,9 +30,8 @@ VC theory, and finite-state results for trajectories and stationary Markov risk.
   </a>
 </p>
 
-A 64-second introduction to FormalSLT and its controlled-queue example. Under
-a specified refresh model, the transition calculation reduces from 4,608
-coordinates to one hit count.
+An overview of VC and Rademacher theory, chaining, PAC-Bayes, sequential
+inference, and dependent-data results, followed by one worked application.
 
 [Play the film](https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4) ·
 [Transcript](./media/formalslt-overview/TRANSCRIPT.md) ·
@@ -35,12 +39,26 @@ coordinates to one hit count.
 
 ## Results
 
+### Classical learning theory
+
+FormalSLT includes Sauer-Shelah bounds for finite set families, VC-based
+uniform-deviation and ERM excess-risk bounds for binary zero-one loss,
+finite-sample Rademacher symmetrization, Massart bounds, contraction,
+linear-predictor bounds, and metric-entropy estimates. Its chaining results
+reach total-bounded spaces and continuous entropy-integral bounds while
+keeping the required boundary, separability, and modulus assumptions explicit.
+
+[VC source](./FormalSLT/VC/) ·
+[Rademacher source](./FormalSLT/Rademacher/) ·
+[chaining source](./FormalSLT/Covering/) ·
+[theorem map](./docs/theorem-map.md)
+
 ### Anytime PAC-Bayes and empirical Bernstein
 
-On an infinite IID path, one event controls every sample size `n ≥ 2` and every
-admissible posterior. The bound uses Bessel sample variance and
+For an infinite IID sequence, one event controls every sample size `n ≥ 2` and
+every admissible posterior. The bound uses Bessel sample variance and
 measure-theoretic KL divergence. A separate forward construction handles
-predictable residuals for sequential use. The first result is uniform over
+predictable residuals for sequential use. The all-sample result is uniform over
 sample size, but it is not an optional-stopping theorem.
 
 [Lean source](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
@@ -84,9 +102,6 @@ and conditional on the refresh model; it does not test family membership.
 [design](./docs/controlled-queue-application-design.md) ·
 [Lean receipt](./FormalSLT/Applications/ControlledQueueSharpStructuredRetrospectiveReceipt.lean)
 
-The [theorem map](./docs/theorem-map.md) also covers Rademacher complexity, VC
-theory, concentration inequalities, change of measure, and e-process tools.
-
 ## Install
 
 FormalSLT currently uses Lean 4.32.2 and Mathlib 4.32.2. The stable topic
@@ -120,6 +135,8 @@ lake build
 ## Repository layout
 
 - `FormalSLT/PACBayes`: PAC-Bayes inequalities and change-of-measure tools
+- `FormalSLT/Rademacher`: symmetrization, contraction, and generalization bounds
+- `FormalSLT/Covering`: metric entropy and chaining
 - `FormalSLT/Sequential`: confidence sequences, e-processes, and Ville bounds
 - `FormalSLT/StochasticDynamics`: adaptive paths, kernels, and stationary risk
 - `FormalSLT/VC`: VC dimension, growth functions, and uniform convergence

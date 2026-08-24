@@ -3,8 +3,27 @@
   if (!lab) return;
 
   const routes = {
+    classical: {
+      kicker: "Classical learning theory",
+      title: "Capacity control becomes a finite-sample learning guarantee.",
+      summary:
+        "Sauer–Shelah bounds the realized label patterns; Rademacher complexity turns that growth control into uniform deviation and ERM excess risk.",
+      assumptions:
+        "A finite binary hypothesis class and a trace VC-dimension bound",
+      result:
+        "A finite-sample uniform-deviation and ERM excess-risk bound",
+      href: "theorems/",
+      nodes: {
+        input: ["Binary class", "finite trace"],
+        control: ["Sauer–Shelah", "growth bound"],
+        selection: ["Rademacher", "uniform deviation"],
+        endpoint: ["ERM risk", "finite sample"],
+      },
+      description:
+        "A binary hypothesis class passes through Sauer–Shelah growth control and Rademacher complexity to reach a finite-sample ERM excess-risk bound.",
+    },
     iid: {
-      kicker: "IID generalization",
+      kicker: "PAC-Bayes generalization",
       title: "One event controls every sample size and eligible posterior.",
       summary:
         "The posterior may be selected after seeing the sample. The prior and loss family may not.",
@@ -143,5 +162,5 @@
     });
   }
 
-  setRoute("iid");
+  setRoute("classical");
 })();

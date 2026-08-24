@@ -33,6 +33,7 @@ SITE_FILES = (
     "assets/favicon.svg",
     "assets/formalslt-overview.mp4",
     "assets/formalslt-overview-poster.jpg",
+    "assets/formalslt-overview.vtt",
     "assets/research-map.js",
     "assets/site.css",
     "assets/theorem-chain.svg",
