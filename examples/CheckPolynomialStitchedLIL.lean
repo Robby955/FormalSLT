@@ -52,9 +52,18 @@ theorem first_epoch_exact_optimizer :
 #check optTiltAtBudget
 #check optTiltAtBudget_pos
 #check optTiltAtBudget_admissible
+#check optTiltAtBudget_eq_optTilt_exp
 #check subGammaBoundary_eq_widthAtBudget_optTilt
+#check polynomialGeometricEpochFloor_pos
+#check polynomialGeometricEpochHorizon_eq_four_mul_floor
 #check polynomialGeometricEpochBudget_eq
+#check polynomialGeometricEpochBudget_pos
 #check polynomialGeometricEpochIndex_spec
+#check polynomialGeometricEpochTilt_pos
+#check polynomialGeometricEpochTilt_admissible
+#check integrable_subGammaExponentialProcess_of_bounded
+#check subGammaBoundary_mono_time
+#check subGammaWidthAtBudget_epoch_le
 #check polynomialStitchedLILAtomFailure_mass_le
 #check polynomialStitchedLILFailure_mass_le
 #check polynomialStitchedLIL_lt_epochWidth_of_not_mem
@@ -68,7 +77,9 @@ theorem first_epoch_exact_optimizer :
 #print axioms polynomialGeometricEpochBudget_eq
 #print axioms polynomialStitchedLILAtomFailure_mass_le
 #print axioms polynomialStitchedLILFailure_mass_le
+#print axioms polynomialStitchedLIL_lt_epochWidth_of_not_mem
 #print axioms polynomialStitchedLIL_lt_explicit_of_not_mem
+#print axioms exists_polynomialStitchedLIL_event
 #print axioms exists_polynomialStitchedLIL_explicit_event
 #print axioms first_epoch_budget
 #print axioms first_epoch_exact_optimizer
