@@ -26,17 +26,21 @@ Worked applications show how these parts of the library combine.
 ## Overview video
 
 <p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@v0.2.0/media/formalslt-overview/delivery/formalslt-overview.mp4">
+  <a href="https://robby955.github.io/FormalSLT/#overview-film">
     <img src="media/formalslt-overview/delivery/formalslt-overview-poster.jpg" width="960" alt="FormalSLT overview film">
   </a>
 </p>
 
-An overview of VC and Rademacher theory, chaining, PAC-Bayes, sequential
-inference, and dependent-data results, followed by one worked application.
+Fixed-time guarantees can fail under repeated monitoring; one checked event
+can cover repeated looks. The repo-wide film starts there, then maps reusable proof
+infrastructure across VC and Rademacher theory, chaining, PAC-Bayes,
+e-processes, and dependent-data inference. It establishes the platform and its
+current interfaces; it does not claim end-to-end verification of an ML system.
 
-[Play the film](https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@v0.2.0/media/formalslt-overview/delivery/formalslt-overview.mp4) ·
+[Play the responsive film](https://robby955.github.io/FormalSLT/#overview-film) ·
 [Transcript](./media/formalslt-overview/TRANSCRIPT.md) ·
-[Manim source](./media/formalslt-overview/)
+[Manim source](./media/formalslt-overview/) ·
+[Pinned v0.2.0 film receipt](https://github.com/Robby955/FormalSLT/blob/v0.2.0/media/formalslt-overview/render-receipt.json)
 
 ## Results
 

@@ -1,14 +1,14 @@
 {
-  "schema": "formalslt-overview-render-receipt-v2",
+  "schema": "formalslt-overview-render-receipt-v4",
   "fact_commit": "501fee458a539db654097dbec8933427dae9fee9",
   "source": {
     "media/formalslt-overview/TRANSCRIPT.md": {
-      "sha256": "73fb1770e131335a3a3bbdcc2730d5c21ed683eef8e1543fbbed8bb0ef130f2d",
-      "bytes": 3347
+      "sha256": "435312392f0c664a441ce27cc847d545bd5baf9467dbfcbcd50d7dc7b5fb455d",
+      "bytes": 3657
     },
     "media/formalslt-overview/compose_soundtrack.py": {
-      "sha256": "340ef4bf6193a130bb542d7d809d1883ab2810543c5e2d6a3dde93e2ca2bcff4",
-      "bytes": 11884
+      "sha256": "b3481233a4e1278169264f488915c38def0b1312749096e52d51cdd68cca8e65",
+      "bytes": 13634
     },
     "media/formalslt-overview/extract_facts.py": {
       "sha256": "17be0780e0082190edd8b021d5700721032842e61ed09e4eee4e8e11c5b66157",
@@ -19,76 +19,94 @@
       "bytes": 3243
     },
     "media/formalslt-overview/formalslt_overview.py": {
-      "sha256": "17ad48061362ab597389c06f7345c5ac981558be883af9c3ffc81b9f42d10d20",
-      "bytes": 43505
+      "sha256": "e1cc784783a2d4a6a61c27e3e4d79cff16d9f5380a236c85ebb53bad2c05dbd9",
+      "bytes": 49491
     },
     "media/formalslt-overview/manim.cfg": {
-      "sha256": "276ed2761531a1c2489a522716cf0049f261b17749b0889c33aa518e0b13c37c",
-      "bytes": 403
+      "sha256": "49abc85ef0c982487dc83d88261b2a2bb1702d010b1f5141b4fa9123be623bed",
+      "bytes": 429
+    },
+    "media/formalslt-overview/manim-social.cfg": {
+      "sha256": "3d323525d14f1dc57c6b5d4d5de26c7f5864a522fa77ad7fe9bfedfba972dc4c",
+      "bytes": 473
     },
     "media/formalslt-overview/render.sh": {
-      "sha256": "4badd75ecdd20f14bda368df3e406bf8b693e0d287cff91a9ff9f55a7cdf0f92",
-      "bytes": 7180
+      "sha256": "482b7c22b9a7f4d01147cdf69ad2ba26d6833aefa2bc89806448b9a708d03829",
+      "bytes": 8624
     },
     "media/formalslt-overview/requirements.txt": {
       "sha256": "018d1a7c4387abe1555f6a6e45a93098b3ef198fd8cbcb4d713a935e2aee7ff4",
       "bytes": 14
     },
     "media/formalslt-overview/test_compose_soundtrack.py": {
-      "sha256": "74c7484e725b056fe1a3521c16021b7fac1c9806e32f2b5fabf42d9cbe919227",
-      "bytes": 3411
+      "sha256": "f5f2b6b0b3b42f6a9a626280e630059007a5d630c4d8ea2a3bdc73b34368b4e6",
+      "bytes": 5935
+    },
+    "media/formalslt-overview/test_formalslt_overview_source.py": {
+      "sha256": "6ac6c12dc2e7ac668dd216d8f31b57de3ffb6cd5bf5e84b39b933a33b073d745",
+      "bytes": 4308
     },
     "media/formalslt-overview/write_render_receipt.py": {
-      "sha256": "1382b51fe9b53e420669c98712b4ddefa07cccd1e805e5644e43149dd4b8474a",
-      "bytes": 8911
+      "sha256": "ff0efcf292a7b911b6d4b39b9e492123efb8f8fadeb443d1c46e09a272f222c2",
+      "bytes": 11300
     },
     "media/formalslt-overview/delivery/formalslt-overview.vtt": {
-      "sha256": "1c27a1b0e97e29cf7865d768a6b8be3837fe8585a5319820c5a681fdaa0ca1ab",
-      "bytes": 1765
+      "sha256": "a8d991687f8fe1ebab775b5b56455f1b41b6e4ebb0253e0128ba50460959dad6",
+      "bytes": 1943
     }
   },
   "assets": [
     {
       "role": "main",
       "path": "media/formalslt-overview/delivery/formalslt-overview.mp4",
-      "sha256": "dd0d1ea949aaa52d09259575d2002d530ff3b6f9d44574700f2fb46152468e88",
-      "bytes": 4753770,
+      "sha256": "2665eac1cdfd42e29822970a4e0e8941c614ec4c7e6e7bd80564819e22380f58",
+      "bytes": 4406513,
       "codec": "h264",
       "width": 1920,
       "height": 1080,
       "r_frame_rate": "30/1",
       "pix_fmt": "yuv420p",
+      "duration_seconds": "72.000000",
       "audio": {
         "codec": "aac",
         "sample_rate": "48000",
         "channels": 2,
-        "channel_layout": "stereo"
-      },
-      "duration_seconds": "72.000000"
+        "channel_layout": "stereo",
+        "loudness": {
+          "integrated_lufs": -22.6,
+          "loudness_range_lu": 9.2,
+          "true_peak_dbfs": -12.3
+        }
+      }
     },
     {
       "role": "social",
       "path": "media/formalslt-overview/delivery/formalslt-overview-social.mp4",
-      "sha256": "a631acc2aa112a07b0635c417abfea6cebf7684beb7841e2bb0aa67c8afd66c7",
-      "bytes": 858793,
+      "sha256": "2b9601241b6bd7cdf641a18d6c344f2a8b72aa13456f85768a4bcb580470c179",
+      "bytes": 1098191,
       "codec": "h264",
-      "width": 1920,
-      "height": 1080,
+      "width": 1080,
+      "height": 1350,
       "r_frame_rate": "30/1",
       "pix_fmt": "yuv420p",
+      "duration_seconds": "13.000000",
       "audio": {
         "codec": "aac",
         "sample_rate": "48000",
         "channels": 2,
-        "channel_layout": "stereo"
-      },
-      "duration_seconds": "13.000000"
+        "channel_layout": "stereo",
+        "loudness": {
+          "integrated_lufs": -22.3,
+          "loudness_range_lu": 7.3,
+          "true_peak_dbfs": -13.5
+        }
+      }
     },
     {
       "role": "poster",
       "path": "media/formalslt-overview/delivery/formalslt-overview-poster.jpg",
-      "sha256": "4715e0ed2b59b70601a1689927ecdf5ee1b6c856671f1c57c34c6d2a3a1df9d9",
-      "bytes": 102233,
+      "sha256": "0a49eaa55a5071a0089053a444ad3a27335fd2103474aaa93486aa02b84342ec",
+      "bytes": 94613,
       "codec": "mjpeg",
       "width": 1200,
       "height": 675,
@@ -98,86 +116,127 @@
     }
   ],
   "soundtrack": {
-    "id": "formalslt-dark-ambient-v3",
+    "id": "formalslt-sparse-tension-v4",
     "source": "media/formalslt-overview/compose_soundtrack.py",
-    "generation": "deterministic procedural synthesis",
+    "generation": "deterministic original synthesis; 80 Hz high-pass and EBU R128 delivery normalization",
     "third_party_audio": false,
     "license": "MIT",
     "cut_plans": {
       "main": {
         "reference_duration_seconds": 72.0,
         "sample_rate": 48000,
-        "cues": [
+        "swells": [
           {
-            "time": 0.0,
-            "scene": "title",
-            "tone_hz": 73.42,
+            "start": 0.0,
+            "end": 5.8,
+            "scene": "thesis",
+            "frequencies": [
+              146.83,
+              220.0,
+              311.13
+            ],
             "strength": 0.58,
-            "tension": 0.2,
-            "pan": -0.15
+            "attack": 0.85,
+            "release": 1.85,
+            "pan": -0.1
           },
           {
-            "time": 5.0,
-            "scene": "field map",
-            "tone_hz": 77.78,
-            "strength": 0.68,
-            "tension": 0.36,
-            "pan": 0.18
+            "start": 13.5,
+            "end": 25.2,
+            "scene": "foundations",
+            "frequencies": [
+              110.0,
+              146.83,
+              220.0,
+              293.66
+            ],
+            "strength": 0.48,
+            "attack": 1.0,
+            "release": 2.2,
+            "pan": 0.08
           },
           {
-            "time": 14.0,
-            "scene": "classical spine",
-            "tone_hz": 98.0,
-            "strength": 0.64,
-            "tension": 0.32,
+            "start": 31.4,
+            "end": 45.8,
+            "scene": "adaptive validity",
+            "frequencies": [
+              110.0,
+              155.56,
+              233.08,
+              311.13
+            ],
+            "strength": 0.55,
+            "attack": 0.95,
+            "release": 2.15,
+            "pan": -0.08
+          },
+          {
+            "start": 49.4,
+            "end": 60.6,
+            "scene": "worked case",
+            "frequencies": [
+              98.0,
+              146.83,
+              207.65,
+              293.66
+            ],
+            "strength": 0.52,
+            "attack": 0.9,
+            "release": 2.0,
+            "pan": 0.1
+          },
+          {
+            "start": 65.3,
+            "end": 72.0,
+            "scene": "resolution",
+            "frequencies": [
+              110.0,
+              146.83,
+              220.0,
+              293.66
+            ],
+            "strength": 0.5,
+            "attack": 0.8,
+            "release": 2.25,
+            "pan": 0.0
+          }
+        ],
+        "accents": [
+          {
+            "time": 32.0,
+            "scene": "adaptive validity",
+            "frequencies": [
+              293.66,
+              415.3,
+              622.25
+            ],
+            "strength": 0.16,
+            "decay": 1.55,
             "pan": -0.18
           },
           {
-            "time": 23.0,
-            "scene": "PAC-Bayes",
-            "tone_hz": 110.0,
-            "strength": 0.74,
-            "tension": 0.52,
-            "pan": 0.22
-          },
-          {
-            "time": 32.0,
-            "scene": "anytime validity",
-            "tone_hz": 146.83,
-            "strength": 0.7,
-            "tension": 0.65,
-            "pan": -0.2
-          },
-          {
-            "time": 41.0,
-            "scene": "dependent path",
-            "tone_hz": 87.31,
-            "strength": 0.76,
-            "tension": 0.78,
-            "pan": 0.24
-          },
-          {
             "time": 50.0,
-            "scene": "queue case study",
-            "tone_hz": 73.42,
-            "strength": 0.88,
-            "tension": 0.82,
-            "pan": -0.12
-          },
-          {
-            "time": 59.0,
-            "scene": "theorem map",
-            "tone_hz": 110.0,
-            "strength": 0.72,
-            "tension": 0.46,
-            "pan": 0.18
+            "scene": "worked case",
+            "frequencies": [
+              293.66,
+              440.0,
+              659.26
+            ],
+            "strength": 0.18,
+            "decay": 1.35,
+            "pan": 0.16
           },
           {
             "time": 66.0,
-            "scene": "close",
-            "tone_hz": 73.42,
-            "strength": 0.58,
-            "tension": 0.18,
+            "scene": "resolution",
+            "frequencies": [
+              293.66,
+              440.0,
+              587.33,
+              880.0
+            ],
+            "strength": 0.14,
+            "decay": 1.8,
             "pan": 0.0
           }
         ]
@@ -185,30 +244,76 @@
       "social": {
         "reference_duration_seconds": 13.0,
         "sample_rate": 48000,
-        "cues": [
+        "swells": [
           {
-            "time": 0.0,
-            "scene": "field hook",
-            "tone_hz": 73.42,
-            "strength": 0.76,
-            "tension": 0.35,
-            "pan": -0.18
+            "start": 0.0,
+            "end": 2.6,
+            "scene": "hook",
+            "frequencies": [
+              146.83,
+              220.0,
+              311.13
+            ],
+            "strength": 0.56,
+            "attack": 0.45,
+            "release": 0.8,
+            "pan": -0.08
           },
           {
+            "start": 4.1,
+            "end": 6.8,
+            "scene": "proof stack",
+            "frequencies": [
+              110.0,
+              155.56,
+              233.08,
+              311.13
+            ],
+            "strength": 0.53,
+            "attack": 0.45,
+            "release": 0.85,
+            "pan": 0.08
+          },
+          {
+            "start": 9.1,
+            "end": 13.0,
+            "scene": "resolution",
+            "frequencies": [
+              110.0,
+              146.83,
+              220.0,
+              293.66
+            ],
+            "strength": 0.5,
+            "attack": 0.45,
+            "release": 1.2,
+            "pan": 0.0
+          }
+        ],
+        "accents": [
+          {
             "time": 4.0,
-            "scene": "theorem spine",
-            "tone_hz": 110.0,
-            "strength": 0.82,
-            "tension": 0.58,
-            "pan": 0.22
+            "scene": "proof stack",
+            "frequencies": [
+              293.66,
+              415.3,
+              622.25
+            ],
+            "strength": 0.15,
+            "decay": 1.0,
+            "pan": -0.14
           },
           {
             "time": 9.0,
-            "scene": "close",
-            "tone_hz": 73.42,
-            "strength": 0.62,
-            "tension": 0.18,
-            "pan": 0.0
+            "scene": "resolution",
+            "frequencies": [
+              293.66,
+              440.0,
+              587.33
+            ],
+            "strength": 0.13,
+            "decay": 1.2,
+            "pan": 0.12
           }
         ]
       }

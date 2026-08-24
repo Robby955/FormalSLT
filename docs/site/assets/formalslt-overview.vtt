@@ -1,15 +1,16 @@
 WEBVTT
 
 00:00.000 --> 00:05.000
-FormalSLT: machine-checked statistical learning in Lean.
+Fixed-time guarantees can fail under repeated monitoring.
+One checked event can cover repeated looks.
 
 00:05.000 --> 00:09.500
-VC theory, Rademacher complexity, chaining,
-PAC-Bayes, sequential inference, and dependent data.
+The library then builds outward through VC generalization, PAC-Bayes,
+e-processes, and dependent-data inference.
 
 00:09.500 --> 00:14.000
-One stack connecting capacity, complexity,
-selection, time, and dependence.
+One proof stack moves from fixed samples through adaptive selection,
+repeated looks, and dependent paths.
 
 00:14.000 --> 00:18.500
 VC growth bounds and metric entropy
@@ -24,8 +25,8 @@ PAC-Bayes prices posterior selection
 with relative entropy.
 
 00:27.500 --> 00:32.000
-One event covers every allowed posterior;
-the bound fails with probability at most delta.
+One event covers every allowed posterior and declared tilt;
+the declared bound fails with probability at most delta.
 
 00:32.000 --> 00:36.500
 Confidence sequences and e-processes
@@ -37,7 +38,7 @@ an e-process exceeds 1/alpha with probability at most alpha.
 
 00:41.000 --> 00:45.500
 Choose from the observed prefix.
-Fix the score before the next state.
+Fix the next score before the next state.
 
 00:45.500 --> 00:50.000
 With a supplied invariant law and Poisson potential,
@@ -45,20 +46,20 @@ the correction connects path evidence to stationary risk.
 
 00:50.000 --> 00:54.500
 One controlled-queue case study: 4,608 coordinates
-reduce to one hit rate, p = (1 + 23 gamma) / 24.
+reduce to one exact hit-rate parameter.
 
 00:54.500 --> 00:59.000
-Row TV equals the hit-rate gap inside
-the declared family; this is not a membership test.
+For every physical row, total variation equals the hit-rate gap
+inside the declared family; this is not a membership test.
 
 00:59.000 --> 01:03.000
-Four checked declarations, by name: VC ERM, metric
-entropy, anytime PAC-Bayes, adaptive trajectories.
+Four representative theorem anchors: VC ERM, metric entropy,
+anytime PAC-Bayes, and adaptive trajectories.
 
 01:03.000 --> 01:06.000
 Declarations and files are pinned at 501fee4;
 the queue is one application of the library.
 
 01:06.000 --> 01:12.000
-FormalSLT: a Lean foundation for statistical learning
-and modern finite-sample inference.
+FormalSLT: reusable Lean infrastructure for statistical guarantees,
+from classical generalization to adaptive data.
