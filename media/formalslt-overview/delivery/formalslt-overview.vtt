@@ -16,24 +16,24 @@ VC growth bounds and metric entropy
 feed complexity estimates.
 
 00:18.500 --> 00:23.000
-Those estimates lead to
-finite-sample learning guarantees.
+Two checked routes: a VC tail bound
+and a metric-entropy integral bound.
 
 00:23.000 --> 00:27.500
 PAC-Bayes prices posterior selection
 with relative entropy.
 
 00:27.500 --> 00:32.000
-One event covers every posterior
-allowed by the theorem.
+One event covers every allowed posterior;
+the bound fails with probability at most delta.
 
 00:32.000 --> 00:36.500
 Confidence sequences and e-processes
 remain valid under repeated looks.
 
 00:36.500 --> 00:41.000
-One event covers every time
-and every declared choice.
+One event covers every time and every declared choice;
+an e-process exceeds 1/alpha with probability at most alpha.
 
 00:41.000 --> 00:45.500
 Choose from the observed prefix.
@@ -44,21 +44,21 @@ A Poisson correction connects path evidence
 to stationary risk in the setting shown.
 
 00:50.000 --> 00:54.500
-One controlled-queue case study:
-4,608 coordinates reduce to one hit rate.
+One controlled-queue case study: 4,608 coordinates
+reduce to one hit rate, p = (1 + 23 gamma) / 24.
 
 00:54.500 --> 00:59.000
-Hit-rate discrepancy equals row TV inside
+Row TV equals the hit-rate gap inside
 the declared family; this is not a membership test.
 
 00:59.000 --> 01:03.000
-Checked anchors span VC ERM, metric entropy,
-anytime PAC-Bayes, and adaptive trajectories.
+Four checked declarations, by name: VC ERM, metric
+entropy, anytime PAC-Bayes, adaptive trajectories.
 
 01:03.000 --> 01:06.000
-The queue is one application
-of this wider library.
+Declarations and files are pinned at 501fee4;
+the queue is one application of the library.
 
-01:06.000 --> 01:12.164
+01:06.000 --> 01:12.000
 FormalSLT: a Lean foundation for statistical learning
 and modern finite-sample inference.

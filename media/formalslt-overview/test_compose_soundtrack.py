@@ -19,7 +19,7 @@ class SoundtrackTests(unittest.TestCase):
         )
         self.assertEqual(
             compose_soundtrack.REFERENCE_DURATIONS,
-            {"main": 72.164, "social": 13.032},
+            {"main": 72.0, "social": 13.0},
         )
         self.assertEqual(
             [cue.time for cue in compose_soundtrack.CUT_CUES["main"]],

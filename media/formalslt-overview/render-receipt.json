@@ -3,12 +3,12 @@
   "fact_commit": "501fee458a539db654097dbec8933427dae9fee9",
   "source": {
     "media/formalslt-overview/TRANSCRIPT.md": {
-      "sha256": "22075a89cdf003f078a9d5ad2e42f79af7c910df1805f87e40ca9dc80a56ee4f",
-      "bytes": 2514
+      "sha256": "501508d8b4467e43e6bfdd9b52036ff90f64666c4f32be914e0d193280bd0de2",
+      "bytes": 3300
     },
     "media/formalslt-overview/compose_soundtrack.py": {
-      "sha256": "78eb7a5011352ca2cf5cd30a4687e6bfe83db77ef57226cb280354ca2986d6df",
-      "bytes": 11888
+      "sha256": "340ef4bf6193a130bb542d7d809d1883ab2810543c5e2d6a3dde93e2ca2bcff4",
+      "bytes": 11884
     },
     "media/formalslt-overview/extract_facts.py": {
       "sha256": "d54966e7d7aa1f049d641ae201e263a11e0fd7ae26b841e39d6ad0518f3d3a8f",
@@ -19,8 +19,8 @@
       "bytes": 3017
     },
     "media/formalslt-overview/formalslt_overview.py": {
-      "sha256": "05294d62dd5f268ba740c16e61b2dfdf5cde93c377873541078848203ee97303",
-      "bytes": 34916
+      "sha256": "f36fdcc2817af61459ce1ed31ff54ad559d1b27285a174b26f8b430e7dcf7993",
+      "bytes": 43347
     },
     "media/formalslt-overview/manim.cfg": {
       "sha256": "276ed2761531a1c2489a522716cf0049f261b17749b0889c33aa518e0b13c37c",
@@ -35,24 +35,24 @@
       "bytes": 14
     },
     "media/formalslt-overview/test_compose_soundtrack.py": {
-      "sha256": "4fc898fbb16689280dab2ef6d5db4a71d16c48cb9178a7191851efde393549ee",
-      "bytes": 3415
+      "sha256": "74c7484e725b056fe1a3521c16021b7fac1c9806e32f2b5fabf42d9cbe919227",
+      "bytes": 3411
     },
     "media/formalslt-overview/write_render_receipt.py": {
       "sha256": "1382b51fe9b53e420669c98712b4ddefa07cccd1e805e5644e43149dd4b8474a",
       "bytes": 8911
     },
     "media/formalslt-overview/delivery/formalslt-overview.vtt": {
-      "sha256": "6cff43a06d9d775675b7ff4b2b48397999d1afeec920950c57ca9ea1cbc051bc",
-      "bytes": 1560
+      "sha256": "d87dd5ac838625850e9b1e59a878980fd09fda00d5e54f8a6a4966f479d2ee73",
+      "bytes": 1739
     }
   },
   "assets": [
     {
       "role": "main",
       "path": "media/formalslt-overview/delivery/formalslt-overview.mp4",
-      "sha256": "8b7a79da4f25d95e4aab915cb08d8582e6395a4bbe1ee6f5d480da06abdd1902",
-      "bytes": 4386186,
+      "sha256": "b8ed1bf75cbfb676d948c7f3d8a3a61240e8e6cd14e9b4da0f1ad5bc3ae79c64",
+      "bytes": 4741304,
       "codec": "h264",
       "width": 1920,
       "height": 1080,
@@ -64,13 +64,13 @@
         "channels": 2,
         "channel_layout": "stereo"
       },
-      "duration_seconds": "72.166667"
+      "duration_seconds": "72.000000"
     },
     {
       "role": "social",
       "path": "media/formalslt-overview/delivery/formalslt-overview-social.mp4",
-      "sha256": "436c4db2ae525f4f3dc040d7bbd1d9ac12e3255fa938b793fc43895d20dc17ec",
-      "bytes": 807865,
+      "sha256": "a631acc2aa112a07b0635c417abfea6cebf7684beb7841e2bb0aa67c8afd66c7",
+      "bytes": 858793,
       "codec": "h264",
       "width": 1920,
       "height": 1080,
@@ -82,7 +82,7 @@
         "channels": 2,
         "channel_layout": "stereo"
       },
-      "duration_seconds": "13.033333"
+      "duration_seconds": "13.000000"
     },
     {
       "role": "poster",
@@ -105,7 +105,7 @@
     "license": "MIT",
     "cut_plans": {
       "main": {
-        "reference_duration_seconds": 72.164,
+        "reference_duration_seconds": 72.0,
         "sample_rate": 48000,
         "cues": [
           {
@@ -183,7 +183,7 @@
         ]
       },
       "social": {
-        "reference_duration_seconds": 13.032,
+        "reference_duration_seconds": 13.0,
         "sample_rate": 48000,
         "cues": [
           {
@@ -216,7 +216,7 @@
   },
   "renderer": {
     "python": "3.13.13",
-    "manim": "Manim Community v0.20.1",
+    "manim": "Manim Community \u001b[32mv0.\u001b[0m\u001b[32m20.1\u001b[0m",
     "ffmpeg": "ffmpeg version 8.1.1 Copyright (c) 2000-2026 the FFmpeg developers",
     "ffprobe": "ffprobe version 8.1.1 Copyright (c) 2007-2026 the FFmpeg developers",
     "display_font": "Avenir Next",
