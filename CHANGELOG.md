@@ -1,102 +1,54 @@
 # Changelog
 
-This file records user-visible changes to FormalSLT. Each version entry states
-which publication artifacts actually exist; a source tag alone is not treated
-as evidence of a GitHub Release or DOI.
-
 ## Unreleased
 
-The changes below are candidates for FormalSLT v0.2.0. They are not a published
-v0.2 release, and no DOI is attached to them yet.
+No entries yet.
 
-### Added
+## v0.2.0 - 2026-08-24
 
-- All-sample-size empirical-Bernstein PAC-Bayes endpoints, forward e-process
-  infrastructure, and confidence-allocated vanishing selectors.
-- Adaptive trajectory inference for finite and general measurable state and
-  hypothesis spaces.
-- Finite-state stationary Poisson, contraction, empirical-transition,
-  unknown-kernel, controlled-dynamics, and target-policy certification layers.
-- A checked 20-state random-refresh load application with matched baselines,
-  adaptive selection, and explicit known- and unknown-kernel certificates.
-- An opt-in 24-state controlled-queue application with exact model and trace
-  data, a checked invariant-risk atom, structured OPE events, and an aligned
-  known-kernel receipt.
-- A retrospective sharp structured queue receipt at horizon `199999`, with an
-  exact observable endpoint `0.068710707605557... < 0.069` and, for every fixed
-  admissible refresh parameter under the path law started at `(action = 1,
-  state = 1)`, a `1/20` outer-mass bound on the paths where the frozen histogram
-  occurs while the displayed risk conclusion fails.
-- A frozen prospective controlled-queue protocol, independent trace and receipt
-  tooling, and a generic Lean histogram-to-bound reduction. These contain no
-  fresh prospective artifact or result.
-- A countable transition-confidence extension with geometric allocation and
-  conditional vanishing row and candidate-kernel budgets.
+### Learning theory
 
-### Public API candidate
+- Expanded finite-sample Rademacher, VC, stability, metric-entropy, and
+  chaining results, with executable examples and explicit assumptions.
+- Added a four-topic stable import surface and a checked 19-declaration
+  compatibility allowlist.
+- Retained the published v0.1 examples and deprecated compatibility wrappers
+  for the two renamed Bousquet--Elisseeff declarations.
 
-- Four supported topic imports: `FormalSLT.PACBayes`,
-  `FormalSLT.Sequential`, `FormalSLT.StochasticDynamics`, and `FormalSLT.VC`.
-- A 19-declaration candidate compatibility allowlist with isolated import,
-  signature, and axiom checks.
-- Exact replay of the examples published with v0.1.0 and retained compatibility
-  wrappers for the two renamed Bousquet--Elisseeff declarations.
-- A separate downstream Lake consumer, configured for Linux and macOS CI.
+### PAC-Bayes and anytime-valid inference
+
+- Added all-sample-size empirical-Bernstein PAC-Bayes bounds for IID data.
+- Added forward predictable-mean and variance-proxy interfaces for sequential
+  use.
+- Added e-process, mixture, stitched-boundary, and adaptive-selection
+  components, including a polynomial stitched iterated-logarithm bound.
+- Added rational witness checks that exercise the numerical boundary formulas.
+
+### Adaptive and dependent data
+
+- Added PAC-Bayes guarantees for adaptive trajectories with finite hypothesis
+  catalogs and with arbitrary measurable state and hypothesis spaces.
+- Added finite-state stationary-risk bounds using Poisson corrections,
+  Dobrushin contraction, and empirical transition confidence.
+- Added predeclared candidate-kernel and depth selection, target-policy
+  evaluation, and finite controlled-process adapters.
+- Added checked random-refresh and controlled-queue applications. The
+  controlled-queue receipt is retrospective and conditional on its specified
+  refresh-family model.
 
 ### Documentation and verification
 
-- A theorem-oriented landing page, concept index, reader routes, theorem map,
-  literature ledger, and explicit proof-status and literature-fidelity labels.
-- Fail-closed statement-fidelity, witness-quality, transitive-axiom,
-  module-reachability, API-snapshot, and tagged-install gates.
-- A hosted controlled-queue code-freeze gate that checks the prospective
-  protocol, generator/verifier lanes, and generated-Lean branches without
-  producing prospective evidence.
-- A fail-closed OSF handoff in which the immutable version-one code-freeze
-  binding omits the final registration GUID that OSF creates only at submission;
-  the completed registration response supplies that GUID, the archived-file
-  metadata target must match it, and the metadata size and SHA-256 must match
-  the exact binding bytes.
-- Resolver-bound exact-tag receipts recording the tag object, peeled commit,
-  tree, Lean toolchain, pinned Mathlib revision, operating system, timestamp,
-  and hosted run URL. Automatic runs bind the initial resolution to the tag
-  push event commit; a final gate requires matching Linux/macOS receipts and
-  rechecks the remote without asserting a Release or DOI.
-- GitHub workflows fetch the Elan installer from exact upstream commit
-  `464c9d28395000a2a0128e07081e4956d50eced2` rather than a moving branch.
-- Candidate release notes and a publication checklist in
-  [`docs/releases/v0.2.0.md`](docs/releases/v0.2.0.md).
+- Added theorem-oriented documentation, declaration search, a concept index,
+  literature and assumption ledgers, focused checker files, and an overview
+  film.
+- Added Linux and macOS downstream consumers for the supported imports.
+- Added fail-closed checks for public signatures, axiom sets, statement
+  fidelity, witness quality, module reachability, and generated artifacts.
+- Added exact-tag identity receipts and deterministic source/documentation
+  release assets.
 
-### Known boundaries
-
-- The all-sample-size IID empirical-Bernstein endpoint is offline and does not
-  license optional stopping.
-- The named deterministic application path is not proved to lie in the
-  theorem-produced probability event; the corresponding application statement
-  remains conditional.
-- Vanishing normalized unknown-kernel budgets require positive limiting row
-  frequencies, and candidate-kernel vanishing also requires empirical
-  discrepancy convergence.
-- Application declarations are opt-in and are outside the 19-name public API
-  candidate.
-- The prospective oracle true-kernel row is an arithmetic-only
-  `PLANNED_NOT_CHECKED` comparison. Its `1/20` entry is a planned allocation,
-  not a checked outer-mass bound; it has no checked event theorem and is not a
-  confidence certificate.
-- The fixed-range numerical report row remains `PLANNED_NOT_CHECKED`: it has
-  no checked trace evaluation, named-path event membership, numerical endpoint,
-  or width comparison. Separately, for each fixed true refresh parameter and
-  initial observation, a checked structural theorem supplies an event of
-  complement outer mass at most `1/20`; it is not one event simultaneous over
-  all parameters and does not certify the numerical row.
-- The retrospective sharp endpoint assumes the well-specified refresh family.
-  Its `1/20` failure-event bound is pointwise in the fixed true persistence
-  parameter; it is neither histogram-conditioned coverage nor one event
-  simultaneous over all persistence parameters.
-- No fresh prospective controlled-queue trace, receipt, or numerical outcome is
-  included. After immutable registration and the single authorized generation,
-  the ordered post-beacon verification gate is required and the result must be
-  reported regardless of outcome.
+See the [v0.2.0 release notes](docs/releases/v0.2.0.md) for installation,
+verification, and scope boundaries.
 
 ## v0.1.0 - 2026-05-08
 
@@ -106,5 +58,6 @@ v0.2 release, and no DOI is attached to them yet.
   complexity, VC theory, concentration, PAC-Bayes, stability, and initial
   sequential-inference interfaces.
 
-[Unreleased]: https://github.com/Robby955/FormalSLT/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/Robby955/FormalSLT/compare/v0.2.0...HEAD
+[v0.2.0]: https://github.com/Robby955/FormalSLT/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/Robby955/FormalSLT/tree/v0.1.0

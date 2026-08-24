@@ -1,7 +1,6 @@
 # Public API stability
 
-Status: candidate policy for FormalSLT v0.2.0. It becomes a compatibility
-commitment when the `v0.2.0` tag and GitHub Release exist.
+Status: compatibility policy for FormalSLT v0.2.0.
 
 ## Supported imports
 
@@ -12,7 +11,7 @@ FormalSLT supports four topic imports:
 - `FormalSLT.StochasticDynamics`
 - `FormalSLT.VC`
 
-The 19 declarations below are the candidate v0.2 allowlist. The four isolated
+The 19 declarations below are the v0.2 allowlist. The four isolated
 files under `examples/stable_imports/` import one topic each and check the
 corresponding declaration types and axiom sets. The committed signature
 snapshot is normative; prose summaries are not substitutes for Lean theorem
