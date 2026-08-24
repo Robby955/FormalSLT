@@ -1,18 +1,79 @@
 {
-  "schema": "formalslt-overview-v2",
-  "commit": "7b1947544905aabf1b5ee8a6c3a7485e8762560e",
-  "short_commit": "7b19475",
-  "library": {
-    "modules": 296,
-    "theorems_and_lemmas": 4290,
-    "lean_lines": 156339,
-    "stable_topic_imports": [
-      "FormalSLT.PACBayes",
-      "FormalSLT.Sequential",
-      "FormalSLT.StochasticDynamics",
-      "FormalSLT.VC"
-    ]
-  },
+  "schema": "formalslt-overview-v3",
+  "commit": "501fee458a539db654097dbec8933427dae9fee9",
+  "short_commit": "501fee4",
+  "research_map": [
+    "VC theory",
+    "Rademacher complexity",
+    "Metric entropy and chaining",
+    "PAC-Bayes",
+    "Sequential inference",
+    "Dependent data"
+  ],
+  "film_anchors": [
+    {
+      "label": "Sauer-Shelah and VC ERM",
+      "file": "FormalSLT/VC/BinaryCapstone.lean",
+      "name": "vc_erm_excessRisk_tail_binary_zeroOneLoss"
+    },
+    {
+      "label": "Metric-entropy generalization",
+      "file": "FormalSLT/Rademacher/MetricEntropyGeneralization.lean",
+      "name": "metricEntropy_generalization_mean"
+    },
+    {
+      "label": "Anytime PAC-Bayes",
+      "file": "FormalSLT/PACBayes/TimeUniformTiltMixture.lean",
+      "name": "timeUniformPACBayes_tiltMixture_allPosteriors_bound"
+    },
+    {
+      "label": "Adaptive trajectory guarantee",
+      "file": "FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean",
+      "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"
+    }
+  ],
+  "all_anchors": [
+    {
+      "label": "Sauer-Shelah and VC ERM",
+      "file": "FormalSLT/VC/BinaryCapstone.lean",
+      "name": "vc_erm_excessRisk_tail_binary_zeroOneLoss"
+    },
+    {
+      "label": "Metric-entropy generalization",
+      "file": "FormalSLT/Rademacher/MetricEntropyGeneralization.lean",
+      "name": "metricEntropy_generalization_mean"
+    },
+    {
+      "label": "Finite sub-Gaussian chaining",
+      "file": "FormalSLT/Covering/FiniteSubGaussianChaining.lean",
+      "name": "finite_chaining_expectation_bound"
+    },
+    {
+      "label": "Anytime PAC-Bayes",
+      "file": "FormalSLT/PACBayes/TimeUniformTiltMixture.lean",
+      "name": "timeUniformPACBayes_tiltMixture_allPosteriors_bound"
+    },
+    {
+      "label": "E-process Type-I control",
+      "file": "FormalSLT/AnytimeValid/EProcess.lean",
+      "name": "eProcess_typeI_control"
+    },
+    {
+      "label": "Adaptive trajectory guarantee",
+      "file": "FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean",
+      "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"
+    },
+    {
+      "label": "Controlled-queue scalar confidence",
+      "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
+      "name": "exists_persistenceHitConfidence_event"
+    },
+    {
+      "label": "Controlled-queue exact structured transfer",
+      "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
+      "name": "refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy"
+    }
+  ],
   "controlled_queue": {
     "physical_states": 24,
     "actions": 2,
@@ -20,44 +81,7 @@
     "transition_coordinate_sides": 2,
     "transition_coordinates": 4608,
     "hit_probability": "(1 + 23 * gamma) / 24",
-    "scope": "predeclared refresh family",
-    "row_tv_identity": "TV(true physical row, candidate physical row) = |p_hit(true) - p_hit(candidate)|",
-    "row_tv_label": "EXACT TV IDENTITY   \u00b7   EVERY PHYSICAL ROW",
-    "row_tv_boundary": [
-      "conditional on the predeclared refresh family",
-      "not a family-membership test"
-    ]
-  },
-  "proof_spine": [
-    {
-      "stage": "Exponential processes",
-      "file": "FormalSLT/AnytimeValid/ForwardBesselProcess.lean",
-      "name": "exists_forwardEmpiricalBernsteinLowerTiltCatalog_event"
-    },
-    {
-      "stage": "PAC-Bayes and anytime validity",
-      "file": "FormalSLT/PACBayes/TimeUniformTiltMixture.lean",
-      "name": "timeUniformPACBayes_tiltMixture_allPosteriors_bound"
-    },
-    {
-      "stage": "Adaptive trajectories",
-      "file": "FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean",
-      "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"
-    },
-    {
-      "stage": "Stationary empirical-catalog certification",
-      "file": "FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.lean",
-      "name": "exists_empiricalStationaryCatalog_event"
-    },
-    {
-      "stage": "Controlled-queue scalar confidence",
-      "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
-      "name": "exists_persistenceHitConfidence_event"
-    },
-    {
-      "stage": "Controlled-queue exact structured transfer",
-      "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
-      "name": "refreshEnvironment_candidate_rowTV_eq_hitDiscrepancy"
-    }
-  ]
+    "scope": "declared refresh family",
+    "row_tv_identity": "TV(true physical row, candidate physical row) = |p_hit(true) - p_hit(candidate)|"
+  }
 }

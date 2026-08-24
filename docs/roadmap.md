@@ -1,5 +1,42 @@
 # Roadmap
 
+FormalSLT's long-term program is broader than any one application. It is
+building a reusable Lean foundation for statistical learning theory and
+finite-sample inference, with four connected tracks:
+
+1. classical learning theory: uniform convergence, VC theory, Rademacher
+   complexity, stability, concentration, and PAC-Bayes;
+2. stochastic-process tools: metric entropy, chaining, martingales, Gaussian
+   and sub-Gaussian processes, and eventually counting and point processes;
+3. inference under adaptation and dependence: confidence sequences,
+   e-processes, adaptive trajectories, Markov data, and model selection;
+4. checked applications that compose the general theory without redefining the
+   project around a single model.
+
+The controlled queue belongs to the fourth track. It is a worked application,
+not the scope of the library.
+
+## Current research frontier
+
+- **Next general endpoint:** a two-sided, all-sample-size sub-Gamma confidence
+  sequence with polynomial epoch allocation and an explicit iterated-logarithm
+  envelope.
+- **Classical theory:** finish a turnkey Dudley interface, then extend the
+  localized Rademacher and infinite-class learning layers.
+- **Sequential theory:** predictable time-varying empirical-Bernstein tilts,
+  sharper LIL boundaries, and a compositional e-process calculus.
+- **Stochastic processes:** build actual Gaussian-process and Poisson
+  counting/point-process foundations. The existing Gaussian examples and
+  Markov-chain Poisson equation are not substitutes for those libraries.
+- **Dependent learning:** random-start and continuous-state trajectory and
+  stationary-risk results, followed by verified conformal coverage and richer
+  online-learning interfaces.
+
+Claims of being first are made theorem by theorem only after a pinned
+cross-prover and literature audit. The mathematical source map is in
+[`references.md`](references.md); checked endpoints and explicit gaps are in
+[`theorem-map.md`](theorem-map.md).
+
 ## Completed
 
 - [x] Population risk, empirical risk, ERM definitions

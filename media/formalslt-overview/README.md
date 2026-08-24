@@ -1,16 +1,19 @@
 # FormalSLT overview film
 
 This directory contains the fact-bound source for a caption-led overview of
-FormalSLT. The main cut follows a curated route through the library, while the
-short cut centers one concrete comparison: the generic augmented-coordinate
-route has 4,608 coordinates, while a separate route inside the predeclared
-refresh family uses one scalar hit-confidence problem for physical-row TV.
+FormalSLT. The 72-second main cut opens with the library's full mathematical
+range: VC theory, Rademacher complexity, chaining, PAC-Bayes, sequential
+inference, and dependent data. It then follows the shared ideas from classical
+generalization to adaptive trajectories. The controlled queue appears later as
+one worked case study, not as the scope of the project. A 13-second cut carries
+the same broad framing for social previews.
 
 The checked facts are extracted from the exact merged-main commit
-`7b1947544905aabf1b5ee8a6c3a7485e8762560e`. The extractor fails if that commit
-does not contain the named declarations, the controlled-queue cardinalities,
-the row-independent hit-mean theorem, the exact row-TV transfer theorem, or the
-published library counts.
+`501fee458a539db654097dbec8933427dae9fee9`. The extractor fails if that commit
+does not contain the named VC, metric-entropy, chaining, PAC-Bayes, e-process,
+trajectory, and controlled-queue declarations with the expected statement
+shapes. It also checks the queue cardinalities, hit-probability formula, and
+exact row-TV transfer anchor.
 
 ## Render
 
@@ -56,7 +59,7 @@ replacing the public files; a failed audio generation, mux, metadata check, or
 promotion restores the prior set. Intermediate movies and WAV files are under
 `media/formalslt-overview/out/` and are intentionally ignored by Git.
 
-The films have no narration. Explanatory text is burned into the frames for
+The films have no voiceover. Explanatory text is burned into the frames for
 muted playback; the main cut also ships with a WebVTT track and a searchable
 transcript.
 
@@ -67,13 +70,13 @@ oscillators and a fixed pseudorandom noise sequence using only the Python
 standard library. It reads no recordings, samples, or third-party audio. The
 source and generated score are covered by the repository's MIT license.
 
-The main score places restrained impacts at the reviewed scene boundaries;
-the social score follows its hook, structured-family reduction, scalar-hit
-collapse, TV identity, and close. `render.sh` reads the actual rendered movie
-duration, creates a 48 kHz stereo WAV, and muxes it as 192 kbps AAC while
-copying the Manim video stream. Generation stops if a cut drifts more than half
-a second from its reviewed timing, forcing the cue ledger to be retimed before
-release. Inspect either cue ledger without rendering:
+The main score places restrained impacts at the nine reviewed scene
+boundaries, from the field map through the closing lockup. The social score
+follows its field hook, theorem spine, and close. `render.sh` reads the actual
+rendered movie duration, creates a 48 kHz stereo WAV, and muxes it as 192 kbps
+AAC while copying the Manim video stream. Generation stops if a cut drifts more
+than half a second from its reviewed timing, forcing the cue ledger to be
+retimed before release. Inspect either cue ledger without rendering:
 
 ```bash
 python3 media/formalslt-overview/compose_soundtrack.py --describe main
@@ -91,7 +94,7 @@ ignored output path:
 
 ```bash
 python3 media/formalslt-overview/compose_soundtrack.py \
-  --cut main --duration 64.228 \
+  --cut main --duration 72.164 \
   --output media/formalslt-overview/out/formalslt-overview-main-soundtrack.wav
 ```
 
@@ -103,7 +106,7 @@ audio codecs, durations, soundtrack provenance, and renderer versions.
 
 ## Public delivery
 
-- The README poster opens the fast-start 1080p H.264 main cut directly.
+- The repository poster opens the fast-start 1080p H.264 main cut directly.
 - The main cut, short cut, poster, and captions live in `delivery/` so a film
   release remains independent of documentation-site generation.
 - The receipt records the film's fact-bound commit separately from the later

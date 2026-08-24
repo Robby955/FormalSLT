@@ -56,8 +56,8 @@ CONTENT_BOTTOM = -2.08
 SCENE_TITLE_SIZE = 46
 SCENE_DETAIL_SIZE = 29
 BODY_SIZE = 28
-LABEL_SIZE = 26
-SMALL_SIZE = 22
+LABEL_SIZE = 28
+SMALL_SIZE = 24
 
 DISPLAY_FONT = "Avenir Next"
 CODE_FONT = "Menlo"
@@ -205,40 +205,39 @@ def coordinate_panel(width: float = 4.6, height: float = 3.15) -> VGroup:
     return VGroup(frame, lines)
 
 
-def split_code_identifier(name: str, max_chars: int = 42) -> list[str]:
-    """Wrap a Lean identifier at visible boundaries without dropping characters."""
-    lines: list[str] = []
-    remaining = name
-    while len(remaining) > max_chars:
-        candidates = [
-            index + 1
-            for index, character in enumerate(remaining[:max_chars])
-            if character == "_"
-        ]
-        candidates.extend(
-            index
-            for index in range(1, min(len(remaining), max_chars + 1))
-            if remaining[index].isupper() and remaining[index - 1].islower()
-        )
-        split_at = max(candidates, default=max_chars)
-        lines.append(remaining[:split_at])
-        remaining = remaining[split_at:]
-    lines.append(remaining)
-    return lines
-
-
-def declaration_focus_card(item: dict[str, str]) -> VGroup:
-    stage = label(item["stage"].upper(), SMALL_SIZE, CYAN, "BOLD")
-    name = text_lines(
-        split_code_identifier(item["name"], max_chars=36),
-        29,
-        IVORY,
-        "MEDIUM",
-        CODE_FONT,
-        buff=0.04,
+def topic_card(text: str, *, active: bool = False, width: float = 3.5) -> VGroup:
+    box = RoundedRectangle(
+        width=width,
+        height=0.95,
+        corner_radius=0.12,
+        color=CYAN if active else DEEP,
+        stroke_width=2.2,
+        fill_color="#0B1625",
+        fill_opacity=0.98,
     )
-    source = label(Path(item["file"]).name, 21, MUTED, "MEDIUM", CODE_FONT)
-    return VGroup(stage, name, source).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
+    copy_size = 24 if width < 3.5 and len(text) >= 12 else 28
+    copy = label(text, copy_size, IVORY, "BOLD")
+    if copy.width > width - 0.22:
+        raise ValueError(f"Topic label does not fit its card: {text!r}")
+    copy.move_to(box)
+    return VGroup(box, copy)
+
+
+def result_card(title: str, *, active: bool = False) -> VGroup:
+    box = RoundedRectangle(
+        width=6.15,
+        height=1.25,
+        corner_radius=0.12,
+        color=CYAN if active else DEEP,
+        stroke_width=2.0,
+        fill_color="#0B1625",
+        fill_opacity=0.98,
+    )
+    copy = label(title, 28, IVORY, "BOLD")
+    if copy.width > box.width - 0.44:
+        raise ValueError(f"Result card copy does not fit: {title!r}")
+    copy.move_to(box)
+    return VGroup(box, copy)
 
 
 def play_mark(radius: float = 0.52) -> VGroup:
@@ -264,13 +263,13 @@ def play_mark(radius: float = 0.52) -> VGroup:
 class FormalSLTOverview(Scene):
     def construct(self) -> None:
         self.intro()
-        self.problem()
-        self.structured_reduction()
-        self.proof_spine()
+        self.field_map()
+        self.classical_spine()
+        self.pac_bayes()
         self.anytime()
-        self.trajectories()
-        self.stationary_layer()
-        self.theorem_graph()
+        self.dependent_path()
+        self.structured_case_study()
+        self.proof_map()
         self.close()
 
     def clear_for_next(self, *keep) -> None:
@@ -294,18 +293,23 @@ class FormalSLTOverview(Scene):
         mark.shift(UP * 1.4)
         title = label("FormalSLT", 75, IVORY, "BOLD")
         title.next_to(mark, DOWN, buff=0.4)
-        subtitle = label("Learning guarantees that survive adaptation.", 34, IVORY, "MEDIUM")
+        subtitle = label(
+            "Machine-checked statistical learning in Lean.",
+            34,
+            IVORY,
+            "MEDIUM",
+        )
         subtitle.next_to(title, DOWN, buff=0.22)
         scope = label(
-            "PAC-Bayes  ·  anytime inference  ·  dependent paths",
+            "VC  ·  Rademacher  ·  PAC-Bayes  ·  sequential inference",
             26,
             CYAN,
             "MEDIUM",
         )
         scope.next_to(subtitle, DOWN, buff=0.36)
         stamp = label(
-            f"FACTS CHECKED AT  {FACTS['short_commit']}",
-            19,
+            f"SOURCE  {FACTS['short_commit']}",
+            18,
             MUTED,
             "BOLD",
             CODE_FONT,
@@ -314,256 +318,240 @@ class FormalSLTOverview(Scene):
         self.play(Create(mark), run_time=0.8)
         self.play(FadeIn(title, shift=UP * 0.08), FadeIn(subtitle, shift=UP * 0.12), run_time=0.75)
         self.play(FadeIn(scope), FadeIn(stamp), run_time=0.55)
-        self.wait(1.85)
+        self.wait(2.35)
         self.clear_for_next()
 
-    def problem(self) -> None:
+    def field_map(self) -> None:
         head = caption(
-            "When the data are not IID",
-            "The next observation can depend on everything seen so far.",
+            "One library across the field",
+            "Classical generalization and modern sequential inference.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
-        xs = np.linspace(-5.3, 5.0, 12)
-        ys = [0.0, 0.15, -0.08, 0.25, 0.5, 0.1, -0.5, -0.15, -0.75, -0.35, 0.3, 0.7]
-        dots = VGroup(*[
-            Dot(np.array([x, y - 0.35, 0]), radius=0.08, color=IVORY)
-            for x, y in zip(xs, ys)
-        ])
-        links = VGroup(*[
-            Line(dots[i].get_center(), dots[i + 1].get_center(), color=MUTED, stroke_width=2)
-            for i in range(len(dots) - 1)
-        ])
-        path = VGroup(links, dots)
-
-        iid = label("independent samples", LABEL_SIZE, MUTED).next_to(path, DOWN, buff=0.42)
-        self.play(LaggedStart(*[GrowFromCenter(d) for d in dots], lag_ratio=0.06), run_time=0.9)
-        self.play(Create(links), FadeIn(iid), run_time=0.7)
-
-        feedback = VGroup()
-        for left, right, lift in [(2, 6, 0.85), (5, 9, 1.15), (7, 11, 0.75)]:
-            start = dots[left].get_center() + UP * 0.06
-            end = dots[right].get_center() + UP * 0.06
-            arc = path_curve([start, start + UP * lift, end + UP * lift, end], RED, 2.5)
-            feedback.add(arc)
-
-        adaptive = label("adaptive or dependent path", LABEL_SIZE, RED, "BOLD")
-        adaptive.move_to(iid)
-        self.play(FadeOut(iid), FadeIn(adaptive), Create(feedback), run_time=0.75)
-
-        warning = VGroup(
-            label("data-selected model", 25, IVORY, "BOLD"),
-            label("dependent data", 25, IVORY, "BOLD"),
-            label("repeated looks", 25, IVORY, "BOLD"),
-        ).arrange(RIGHT, buff=1.0).next_to(path, DOWN, buff=0.45)
-        assert_in_content(VGroup(path, warning), "problem scene")
-        assert_horizontal_gap(warning[0], warning[1], "problem labels", gap=0.3)
-        assert_horizontal_gap(warning[1], warning[2], "problem labels", gap=0.3)
-        self.play(FadeOut(adaptive), run_time=0.20)
-        self.play(
-            LaggedStart(
-                *[FadeIn(w, shift=UP * 0.1) for w in warning], lag_ratio=0.15
-            ),
-            run_time=0.60,
-        )
-        self.wait(0.8)
-        self.clear_for_next()
-
-    def proof_spine(self) -> None:
-        head = caption(
-            "Four mechanisms, checked in Lean",
-            "From exponential processes to guarantees along a path.",
-        )
-        self.play(FadeIn(head), run_time=0.6)
-
-        stages = [
-            ("EXP", "e-process"),
-            ("KL", "change of measure\n+ PAC-Bayes"),
-            ("∀t", "every time"),
-            ("PATH", "dependent\npath"),
+        names = [
+            "VC theory",
+            "Rademacher",
+            "Chaining",
+            "PAC-Bayes",
+            "Sequential",
+            "Dependent data",
         ]
-        nodes = VGroup()
-        for symbol, text in stages:
-            ring = Circle(radius=0.44, color=CYAN, stroke_width=3, stroke_opacity=0.48)
-            symbol_size = 25 if len(symbol) > 3 else 27 if len(symbol) > 2 else 29
-            glyph = label(symbol, symbol_size, CYAN, "BOLD", CODE_FONT)
-            glyph.move_to(ring)
-            name = label(text, 22, MUTED, "MEDIUM")
-            name.next_to(ring, DOWN, buff=0.22)
-            nodes.add(VGroup(ring, glyph, name))
-        nodes.arrange(RIGHT, buff=1.05).shift(DOWN * 0.15)
+        topics = VGroup(*[
+            topic_card(name, active=index in (0, 3), width=3.55)
+            for index, name in enumerate(names)
+        ]).arrange_in_grid(rows=2, cols=3, buff=(0.42, 0.34)).shift(DOWN * 0.05)
+        top_row = VGroup(*topics[:3])
+        bottom_row = VGroup(*topics[3:])
+        links = VGroup(
+            *[
+                Line(
+                    topics[index][0].get_bottom(),
+                    topics[index + 3][0].get_top(),
+                    color=DEEP,
+                    stroke_width=2.6,
+                )
+                for index in range(3)
+            ],
+            Line(
+                topics[0][0].get_right(),
+                topics[1][0].get_left(),
+                color=DEEP,
+                stroke_width=2.6,
+            ),
+            Line(
+                topics[1][0].get_right(),
+                topics[2][0].get_left(),
+                color=DEEP,
+                stroke_width=2.6,
+            ),
+            Line(
+                topics[3][0].get_right(),
+                topics[4][0].get_left(),
+                color=DEEP,
+                stroke_width=2.6,
+            ),
+            Line(
+                topics[4][0].get_right(),
+                topics[5][0].get_left(),
+                color=DEEP,
+                stroke_width=2.6,
+            ),
+        )
+        center = Dot(radius=0.10, color=CYAN).move_to(topics[0])
+        route = VMobject().set_points_as_corners(
+            [topics[index].get_center() for index in (0, 1, 2, 5, 4, 3)]
+        )
+        thesis = label(
+            "Capacity  ·  complexity  ·  selection  ·  time  ·  dependence",
+            28,
+            CYAN,
+            "BOLD",
+        ).next_to(topics, DOWN, buff=0.30)
+        assert_in_content(VGroup(topics, thesis), "field map")
+        assert_in_frame(VGroup(topics, thesis), "field map")
 
-        arrows = VGroup(*[
+        self.play(
+            LaggedStart(*[FadeIn(card, shift=UP * 0.1) for card in top_row], lag_ratio=0.12),
+            run_time=0.8,
+        )
+        self.play(
+            LaggedStart(*[FadeIn(card, shift=UP * 0.1) for card in bottom_row], lag_ratio=0.12),
+            run_time=0.8,
+        )
+        self.play(Create(links), run_time=0.8)
+        self.add(center)
+        self.play(MoveAlongPath(center, route, rate_func=linear), run_time=1.6)
+        self.play(FadeOut(center), FadeIn(thesis, shift=UP * 0.08), run_time=0.7)
+        self.wait(3.15)
+        self.clear_for_next()
+
+    def classical_spine(self) -> None:
+        head = caption(
+            "From capacity to generalization",
+            "VC growth and metric entropy meet at complexity bounds.",
+        )
+        self.play(FadeIn(head), run_time=0.6)
+
+        top = VGroup(*[
+            topic_card(name, active=index in (0, 3), width=2.55)
+            for index, name in enumerate(
+                ["VC dimension", "Growth bound", "Rademacher", "Risk bound"]
+            )
+        ]).arrange(RIGHT, buff=0.48).shift(UP * 0.32)
+        lower = VGroup(
+            topic_card("Covering numbers", width=3.25),
+            topic_card("Chaining", active=True, width=2.65),
+        ).arrange(RIGHT, buff=0.72).move_to(DOWN * 0.88 + LEFT * 0.85)
+
+        top_arrows = VGroup(*[
             Arrow(
-                nodes[i][0].get_right(),
-                nodes[i + 1][0].get_left(),
-                buff=0.12,
+                top[index][0].get_right(),
+                top[index + 1][0].get_left(),
+                buff=0.08,
                 color=MUTED,
                 stroke_width=2.5,
                 stroke_opacity=0.65,
                 max_tip_length_to_length_ratio=0.18,
             )
-            for i in range(len(nodes) - 1)
+            for index in range(len(top) - 1)
         ])
-        pulse = Dot(nodes[0][0].get_center(), radius=0.08, color=CYAN)
+        lower_arrow = Arrow(
+            lower[0][0].get_right(),
+            lower[1][0].get_left(),
+            buff=0.08,
+            color=MUTED,
+            stroke_width=2.5,
+            max_tip_length_to_length_ratio=0.18,
+        )
+        join = Arrow(
+            lower[1][0].get_top(),
+            top[2][0].get_bottom(),
+            buff=0.10,
+            color=CYAN,
+            stroke_width=2.8,
+            max_tip_length_to_length_ratio=0.18,
+        )
+        pulse = Dot(top[0].get_center(), radius=0.09, color=CYAN)
+        top_route = VMobject().set_points_as_corners(
+            [card.get_center() for card in top]
+        )
+        lower_pulse = Dot(lower[0].get_center(), radius=0.09, color=CYAN)
+        lower_route = VMobject().set_points_as_corners(
+            [lower[0].get_center(), lower[1].get_center(), top[2].get_center()]
+        )
 
-        self.play(LaggedStart(*[FadeIn(n, shift=UP * 0.12) for n in nodes], lag_ratio=0.12), run_time=1.2)
-        self.play(Create(arrows), run_time=0.8)
-        route = VMobject().set_points_as_corners([n[0].get_center() for n in nodes])
-        self.add(pulse)
-        self.play(MoveAlongPath(pulse, route, rate_func=linear), run_time=1.8)
         self.play(
-            *[n[0].animate.set_stroke(CYAN, width=3, opacity=1) for n in nodes],
+            LaggedStart(
+                *[FadeIn(node, shift=UP * 0.1) for node in VGroup(*top, *lower)],
+                lag_ratio=0.10,
+            ),
+            run_time=1.1,
+        )
+        self.play(Create(top_arrows), Create(lower_arrow), Create(join), run_time=0.8)
+        self.add(pulse)
+        self.play(MoveAlongPath(pulse, top_route, rate_func=linear), run_time=1.0)
+        self.add(lower_pulse)
+        self.play(
             FadeOut(pulse),
+            MoveAlongPath(lower_pulse, lower_route, rate_func=linear),
+            run_time=1.0,
+        )
+        self.play(
+            top[2][0].animate.set_stroke(CYAN, width=3, opacity=1),
+            top[3][0].animate.set_stroke(CYAN, width=3, opacity=1),
+            FadeOut(lower_pulse),
             run_time=0.7,
         )
 
-        receipt = label(
-            "Every displayed result is tied to the pinned Lean source.",
+        result = label(
+            "Two routes to finite-sample learning guarantees.",
             BODY_SIZE,
             IVORY,
             "BOLD",
         )
-        receipt.next_to(nodes, DOWN, buff=0.62)
-        assert_in_content(VGroup(nodes, receipt), "mechanism route")
-        self.play(FadeIn(receipt, shift=UP * 0.1), run_time=0.7)
-        self.wait(0.9)
+        result.next_to(lower, DOWN, buff=0.22).shift(RIGHT * 0.85)
+        assert_in_content(VGroup(top, lower, result), "classical learning routes")
+        assert_in_frame(VGroup(top, lower, result), "classical learning routes")
+        self.play(FadeIn(result, shift=UP * 0.1), run_time=0.7)
+        self.wait(2.55)
         self.clear_for_next()
 
-    def structured_reduction(self) -> None:
-        queue = FACTS["controlled_queue"]
+    def pac_bayes(self) -> None:
         head = caption(
-            "One family, one checked reduction",
-            "4,608 transition coordinates become one hit rate.",
+            "Choose after seeing the data",
+            "PAC-Bayes prices posterior selection with relative entropy.",
         )
-        self.play(FadeIn(head), run_time=0.55)
+        self.play(FadeIn(head), run_time=0.6)
 
-        grid = coordinate_panel(width=4.0, height=2.55).move_to(LEFT * 3.55 + DOWN * 0.12)
-        coordinate_count = label(
-            f"{queue['observations']} × {queue['observations']} × "
-            f"{queue['transition_coordinate_sides']} = "
-            f"{queue['transition_coordinates']:,}",
-            32,
-            IVORY,
-            "BOLD",
-            CODE_FONT,
-        ).next_to(grid, UP, buff=0.16)
-        dimensions = text_lines(
-            ["48 current × 48 next × 2 orientations"],
-            SMALL_SIZE,
-            MUTED,
-            "BOLD",
-            buff=0.04,
-        ).next_to(grid, DOWN, buff=0.15)
-
-        row_nodes = VGroup(*[
-            Dot(
-                radius=0.11 if index != 15 else 0.16,
-                color=CYAN if index == 15 else MUTED,
-            )
-            for index in range(queue["physical_states"])
-        ]).arrange_in_grid(rows=3, cols=8, buff=(0.34, 0.35)).move_to(RIGHT * 3.5)
-        step_ring = Circle(radius=0.22, color=CYAN, stroke_width=2.6).move_to(row_nodes[15])
-        row_title = text_lines(
-            ["Each row is a uniform refresh", "+ extra mass on one known step"],
-            25,
-            IVORY,
-            "BOLD",
-            buff=0.06,
-        ).next_to(row_nodes, UP, buff=0.3)
-        mixture = text_lines(
-            ["(1 − γ) · Uniform24", "+ γ · δ(step)"],
-            24,
-            CYAN,
-            "BOLD",
-            CODE_FONT,
-            buff=0.04,
-        ).next_to(row_nodes, DOWN, aligned_edge=LEFT, buff=0.25)
-        first_beat = VGroup(grid, coordinate_count, dimensions, row_nodes, step_ring, row_title, mixture)
-        assert_in_content(first_beat, "structured family overview")
-        assert_in_frame(first_beat, "structured family overview")
-
-        self.play(FadeIn(grid), FadeIn(coordinate_count), FadeIn(dimensions), run_time=0.7)
-        self.play(
-            LaggedStart(*[GrowFromCenter(node) for node in row_nodes], lag_ratio=0.025),
-            FadeIn(row_title),
-            run_time=0.85,
+        prior = topic_card("prior  π", active=True, width=2.5).move_to(LEFT * 4.5)
+        data = VGroup(
+            *[
+                Dot(radius=0.08, color=IVORY if index < 5 else CYAN)
+                for index in range(8)
+            ]
+        ).arrange(RIGHT, buff=0.24).move_to(UP * 0.48)
+        data_label = label("observed data", 26, MUTED, "BOLD").next_to(
+            data, DOWN, buff=0.20
         )
-        self.play(Create(step_ring), FadeIn(mixture), run_time=0.55)
-        self.wait(0.65)
-
-        self.play(FadeOut(first_beat, shift=LEFT * 0.12), run_time=0.45)
-
-        hit = VGroup(
-            Circle(radius=0.62, color=CYAN, stroke_width=3),
-            label("hit", 29, CYAN, "BOLD", CODE_FONT),
-        ).move_to(LEFT * 4.9 + UP * 0.35)
-        hit[1].move_to(hit[0])
-        hit_definition = text_lines(
-            ["hit = 1 when the next state", "is the known deterministic step"],
-            28,
-            IVORY,
-            "BOLD",
-            buff=0.05,
-        ).next_to(hit, RIGHT, buff=0.48)
-        hit_mean = label(
-            f"pγ = E[hit | past] = {queue['hit_probability']}",
-            28,
-            CYAN,
-            "BOLD",
-            CODE_FONT,
-        ).next_to(hit_definition, DOWN, aligned_edge=LEFT, buff=0.27)
-        hit_beat = VGroup(hit, hit_definition, hit_mean)
-        hit_beat.shift(LEFT * 0.12)
-        assert_in_content(hit_beat, "structured hit definition")
-        assert_in_frame(hit_beat, "structured hit definition")
-        identity = label(
-            "TV(row γ, row γ′) = |pγ − pγ′|",
-            34,
-            IVORY,
-            "BOLD",
-            CODE_FONT,
-        ).move_to(RIGHT * 1.25 + UP * 0.42)
-        exact = label("EXACT FOR EVERY PHYSICAL ROW", 24, CYAN, "BOLD")
-        exact.next_to(identity, DOWN, aligned_edge=LEFT, buff=0.18)
-        scope_copy = text_lines(
-            [
-                "Assumes the predeclared refresh family.",
-                "Does not test whether the data belong to it.",
-            ],
-            24,
-            AMBER,
-            "BOLD",
-            buff=0.05,
+        posterior = topic_card("posterior  ρ", active=True, width=2.9).move_to(RIGHT * 4.35)
+        arrows = VGroup(
+            Arrow(prior[0].get_right(), data.get_left(), buff=0.18, color=MUTED),
+            Arrow(data.get_right(), posterior[0].get_left(), buff=0.18, color=CYAN),
         )
-        scope_box = RoundedRectangle(
-            width=scope_copy.width + 0.48,
-            height=scope_copy.height + 0.32,
-            corner_radius=0.1,
-            color=AMBER,
-            stroke_width=1.8,
-            fill_color="#241B12",
-            fill_opacity=0.72,
-        ).move_to(scope_copy)
-        scope = VGroup(scope_box, scope_copy)
-        scope.next_to(exact, DOWN, aligned_edge=LEFT, buff=0.18)
-        result_beat = VGroup(hit, identity, exact, scope)
-        assert_in_content(result_beat, "structured reduction result")
-        assert_in_frame(result_beat, "structured reduction result")
+        kl = label("selection cost:  KL(ρ ‖ π)", 31, CYAN, "BOLD", CODE_FONT)
+        kl.move_to(DOWN * 0.52)
+        guarantee = label(
+            "One event covers every allowed posterior.",
+            30,
+            IVORY,
+            "BOLD",
+        ).next_to(kl, DOWN, buff=0.34)
+        posterior_choices = VGroup(*[
+            Dot(radius=0.07, color=CYAN if index == 2 else MUTED)
+            for index in range(5)
+        ]).arrange(RIGHT, buff=0.20).next_to(posterior, DOWN, buff=0.25)
+        assert_in_content(
+            VGroup(prior, data, posterior, kl, guarantee, posterior_choices),
+            "PAC-Bayes scene",
+        )
+        assert_in_frame(
+            VGroup(prior, data, posterior, kl, guarantee, posterior_choices),
+            "PAC-Bayes scene",
+        )
 
-        self.play(GrowFromCenter(hit), FadeIn(hit_definition), run_time=0.55)
-        self.play(FadeIn(hit_mean, shift=UP * 0.08), run_time=0.5)
-        self.wait(0.6)
-        self.play(FadeOut(hit_definition), FadeOut(hit_mean), run_time=0.4)
-        self.play(FadeIn(identity, shift=UP * 0.08), FadeIn(exact), run_time=0.65)
-        self.play(FadeIn(scope), run_time=0.45)
-        self.wait(3.25)
+        self.play(FadeIn(prior, shift=RIGHT * 0.1), run_time=0.8)
+        self.play(LaggedStart(*[GrowFromCenter(dot) for dot in data], lag_ratio=0.08), FadeIn(data_label), run_time=0.6)
+        self.play(FadeIn(posterior, shift=LEFT * 0.1), Create(arrows), run_time=0.8)
+        self.play(FadeIn(kl, shift=UP * 0.08), run_time=0.7)
+        self.play(FadeIn(guarantee, shift=UP * 0.08), run_time=0.8)
+        self.play(LaggedStart(*[GrowFromCenter(dot) for dot in posterior_choices], lag_ratio=0.15), run_time=1.2)
+        self.wait(2.95)
         self.clear_for_next()
 
     def anytime(self) -> None:
         head = caption(
-            "One guarantee, valid at every time",
-            "The same event covers every allowed posterior.",
+            "Keep looking. Keep the guarantee.",
+            "Confidence sequences and e-processes cover repeated looks.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
@@ -602,25 +590,26 @@ class FormalSLTOverview(Scene):
         quantifier = VGroup(
             label("ONE EVENT", LABEL_SIZE, CYAN, "BOLD"),
             label("EVERY TIME", LABEL_SIZE, IVORY, "BOLD"),
-            label("EVERY ALLOWED POSTERIOR", LABEL_SIZE, IVORY, "BOLD"),
+            label("EVERY DECLARED CHOICE", LABEL_SIZE, IVORY, "BOLD"),
         ).arrange(RIGHT, buff=0.9).move_to(DOWN * 1.9)
         assert_in_content(VGroup(axes, quantifier), "anytime scene")
         self.play(LaggedStart(*[FadeIn(x, shift=UP * 0.08) for x in quantifier], lag_ratio=0.12), run_time=0.8)
-        self.wait(0.7)
+        self.wait(3.21)
         self.clear_for_next()
 
-    def trajectories(self) -> None:
+    def dependent_path(self) -> None:
         head = caption(
-            "The next prediction may use the path",
-            "Choose from the past. Score before the next state arrives.",
+            "Learning along a path",
+            "Choose from the prefix. Score before the next state.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
         centers = [
-            np.array([-5.3, -0.2, 0]), np.array([-3.7, 0.65, 0]),
-            np.array([-2.1, -0.55, 0]), np.array([-0.3, 0.4, 0]),
-            np.array([1.5, -0.35, 0]), np.array([3.3, 0.55, 0]),
-            np.array([5.15, -0.1, 0]),
+            np.array([-5.7, 0.00, 0]),
+            np.array([-4.7, 0.50, 0]),
+            np.array([-3.7, -0.28, 0]),
+            np.array([-2.65, 0.36, 0]),
+            np.array([-1.55, -0.18, 0]),
         ]
         nodes = VGroup(*[Circle(radius=0.24, color=IVORY, stroke_width=2.6).move_to(p) for p in centers])
         arrows = VGroup(*[
@@ -628,195 +617,228 @@ class FormalSLTOverview(Scene):
             for i in range(len(centers) - 1)
         ])
         memory = VGroup()
-        for i in [2, 3, 4, 5]:
+        for index in [2, 3, 4]:
             arc = path_curve([
                 centers[0] + UP * 0.23,
-                centers[0] + UP * (0.45 + 0.10 * i),
-                centers[i] + UP * (0.45 + 0.10 * i),
-                centers[i] + UP * 0.23,
+                centers[0] + UP * (0.42 + 0.10 * index),
+                centers[index] + UP * (0.42 + 0.10 * index),
+                centers[index] + UP * 0.23,
             ], CYAN, 1.8)
-            arc.set_stroke(opacity=0.3 + i * 0.1)
+            arc.set_stroke(opacity=0.3 + index * 0.1)
             memory.add(arc)
 
         self.play(LaggedStart(*[GrowFromCenter(n) for n in nodes], lag_ratio=0.09), run_time=0.9)
         self.play(Create(arrows), run_time=0.8)
-        self.play(LaggedStart(*[Create(a) for a in memory], lag_ratio=0.12), run_time=1.1)
+        self.play(LaggedStart(*[Create(a) for a in memory], lag_ratio=0.12), run_time=1.0)
 
-        history = label("OBSERVED PREFIX", SMALL_SIZE, CYAN, "BOLD")
+        history = label("OBSERVED PREFIX", 24, CYAN, "BOLD")
         history.next_to(memory, UP, buff=0.05)
         choice = VGroup(
-            VGroup(
-                label("POSTERIOR + TILT", 21, CYAN, "BOLD"),
-                label("chosen from the observed prefix", 26, IVORY, "BOLD"),
-            ).arrange(DOWN, buff=0.08),
-            VGroup(
-                label("NEXT-STEP SCORE", 21, CYAN, "BOLD"),
-                label("fixed before the next state", 26, IVORY, "BOLD"),
-            ).arrange(DOWN, buff=0.08),
-        ).arrange(RIGHT, buff=1.25).next_to(nodes, DOWN, buff=0.5)
-        assert_in_content(VGroup(memory, nodes, choice), "trajectory scene")
-        self.play(FadeIn(history), LaggedStart(*[FadeIn(x, shift=UP * 0.1) for x in choice], lag_ratio=0.1), run_time=0.9)
-        self.wait(0.9)
-        self.clear_for_next()
+            label("posterior + tilt", 24, CYAN, "BOLD"),
+            label("chosen from the prefix", 27, IVORY, "BOLD"),
+        ).arrange(DOWN, buff=0.08).next_to(nodes, DOWN, buff=0.42)
 
-    def stationary_layer(self) -> None:
-        head = caption(
-            "From one path to long-run risk",
-            "For finite-state kernels, a Poisson correction makes the bridge.",
+        bridge = Arrow(
+            LEFT * 0.65 + DOWN * 0.02,
+            RIGHT * 1.45 + DOWN * 0.02,
+            color=CYAN,
+            stroke_width=4,
+            buff=0.05,
         )
-        self.play(FadeIn(head), run_time=0.6)
+        bridge_label = label("Poisson correction", 25, CYAN, "BOLD")
+        bridge_label.next_to(bridge, UP, buff=0.18)
 
-        left_center = LEFT * 4.15 + DOWN * 0.2
-        path_nodes = VGroup(*[
-            Dot(left_center + RIGHT * i * 0.72 + UP * (0.28 * np.sin(i * 1.7)), radius=0.07, color=IVORY)
-            for i in range(8)
-        ])
-        path_links = VGroup(*[
-            Line(path_nodes[i].get_center(), path_nodes[i + 1].get_center(), color=MUTED, stroke_width=2.2)
-            for i in range(7)
-        ])
-        path_title = label("observed path", LABEL_SIZE, MUTED).next_to(path_nodes, DOWN, buff=0.32)
-
-        bridge = Arrow(RIGHT * 1.0 + DOWN * 0.2, RIGHT * 2.72 + DOWN * 0.2, color=CYAN, stroke_width=4, buff=0.05)
-        bridge_label = label("Poisson\ncorrection", LABEL_SIZE, CYAN, "BOLD")
-        bridge_label.next_to(bridge, UP, buff=0.22)
-
-        ring_center = RIGHT * 4.1 + DOWN * 0.2
+        ring_center = RIGHT * 4.25 + DOWN * 0.02
         orbit = Circle(radius=1.2, color=DEEP, stroke_width=3).move_to(ring_center)
         orbit_nodes = VGroup(*[
             Dot(ring_center + 1.2 * np.array([np.cos(a), np.sin(a), 0]), radius=0.08, color=CYAN)
             for a in np.linspace(0, 2 * np.pi, 9)[:-1]
         ])
         pi = label("π", 40, IVORY, "BOLD", CODE_FONT).move_to(ring_center)
-        stationary_title = label("stationary target", 22, MUTED, "BOLD")
+        stationary_title = label("stationary risk", 27, MUTED, "BOLD")
         stationary_title.next_to(orbit, UP, buff=0.16)
 
-        self.play(Create(path_links), LaggedStart(*[GrowFromCenter(x) for x in path_nodes], lag_ratio=0.07), FadeIn(path_title), run_time=1.0)
-        self.play(Create(bridge), FadeIn(bridge_label), run_time=0.75)
-        self.play(Create(orbit), LaggedStart(*[GrowFromCenter(x) for x in orbit_nodes], lag_ratio=0.06), FadeIn(pi), FadeIn(stationary_title), run_time=1.0)
-
-        routes = VGroup(
-            label("KNOWN KERNEL", 23, IVORY, "BOLD"),
-            label("PREDECLARED KERNEL CATALOG", 23, CYAN, "BOLD"),
-        ).arrange(RIGHT, buff=1.4).move_to(DOWN * 1.95)
-        assert_in_content(VGroup(path_nodes, bridge, orbit, routes), "stationary scene")
-        assert_no_overlap(stationary_title, bridge_label, "stationary labels")
-        assert_no_overlap(orbit, routes, "stationary target and route labels")
-        self.play(FadeIn(routes, shift=UP * 0.1), run_time=0.7)
-        self.play(orbit.animate.set_stroke(CYAN, width=3.4), run_time=0.5)
-        self.wait(0.8)
+        result = label(
+            "trajectory evidence  →  long-run target",
+            28,
+            IVORY,
+            "BOLD",
+        ).move_to(DOWN * 1.82 + RIGHT * 2.0)
+        scene = VGroup(
+            memory,
+            nodes,
+            choice,
+            bridge,
+            bridge_label,
+            orbit,
+            orbit_nodes,
+            pi,
+            stationary_title,
+            result,
+        )
+        assert_in_content(scene, "dependent path scene")
+        assert_in_frame(scene, "dependent path scene")
+        assert_no_overlap(stationary_title, bridge_label, "dependent path labels")
+        self.play(FadeIn(history), FadeIn(choice, shift=UP * 0.1), run_time=0.8)
+        self.play(Create(bridge), FadeIn(bridge_label), run_time=0.7)
+        self.play(
+            Create(orbit),
+            LaggedStart(*[GrowFromCenter(x) for x in orbit_nodes], lag_ratio=0.06),
+            FadeIn(pi),
+            FadeIn(stationary_title),
+            run_time=0.9,
+        )
+        self.play(FadeIn(result, shift=UP * 0.08), run_time=0.6)
+        self.wait(2.15)
         self.clear_for_next()
 
-    def theorem_graph(self) -> None:
+    def structured_case_study(self) -> None:
+        queue = FACTS["controlled_queue"]
         head = caption(
-            "One library, four mathematical layers",
-            "PAC-Bayes, sequential inference, dynamics, and VC theory.",
+            "One worked case study",
+            "Controlled queue · declared one-parameter transition family.",
+        )
+        self.play(FadeIn(head), run_time=0.55)
+
+        case_label = eyebrow("CONTROLLED QUEUE")
+        case_label.move_to(UP * 1.42)
+        self.play(FadeIn(case_label), run_time=0.45)
+
+        grid = coordinate_panel(width=3.5, height=2.35).move_to(LEFT * 3.75 + DOWN * 0.18)
+        generic_count = VGroup(
+            label(f"{queue['transition_coordinates']:,}", 39, IVORY, "BOLD", CODE_FONT),
+            label("generic coordinates", 25, MUTED, "BOLD"),
+        ).arrange(DOWN, buff=0.05).next_to(grid, UP, buff=0.18)
+        hit = VGroup(
+            Circle(radius=0.72, color=CYAN, stroke_width=3.2),
+            label("hit", 33, CYAN, "BOLD", CODE_FONT),
+        ).move_to(RIGHT * 3.9 + UP * 0.12)
+        hit[1].move_to(hit[0])
+        scalar_count = VGroup(
+            label("1", 39, IVORY, "BOLD", CODE_FONT),
+            label("hit rate", 25, MUTED, "BOLD"),
+        ).arrange(DOWN, buff=0.05).next_to(hit, UP, buff=0.24)
+        collapse = Arrow(
+            grid.get_right() + RIGHT * 0.12,
+            hit.get_left() + LEFT * 0.12,
+            buff=0.05,
+            color=CYAN,
+            stroke_width=5,
+            max_tip_length_to_length_ratio=0.20,
+        )
+        identity = label(
+            "row TV = hit-rate gap",
+            37,
+            IVORY,
+            "BOLD",
+        ).move_to(RIGHT * 1.65 + DOWN * 0.95)
+        exact = label("EXACT FOR EVERY PHYSICAL ROW", 24, CYAN, "BOLD")
+        exact.next_to(identity, DOWN, buff=0.12)
+        scope = label(
+            "Declared refresh family  ·  not a membership test",
+            26,
+            AMBER,
+            "BOLD",
+        ).move_to(DOWN * 1.86)
+        scene = VGroup(
+            case_label,
+            grid,
+            generic_count,
+            hit,
+            scalar_count,
+            collapse,
+            identity,
+            exact,
+            scope,
+        )
+        assert_in_content(VGroup(grid, hit, identity, exact, scope), "queue case study")
+        assert_in_frame(scene, "queue case study")
+        assert_no_overlap(scalar_count, hit, "queue scalar label", gap=0.16)
+
+        self.play(FadeIn(grid), FadeIn(generic_count), run_time=0.8)
+        self.play(Create(collapse), GrowFromCenter(hit), FadeIn(scalar_count), run_time=1.0)
+        self.play(FadeIn(identity, shift=UP * 0.08), run_time=0.7)
+        self.play(FadeIn(exact), run_time=0.45)
+        self.play(FadeIn(scope), run_time=0.45)
+        self.wait(4.05)
+        self.clear_for_next()
+
+    def proof_map(self) -> None:
+        head = caption(
+            "Reusable results across the field",
+            "Classical and adaptive results share a common foundation.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
-        topic_names = ["PAC-Bayes", "Sequential", "Dynamics", "VC theory"]
-        topics = VGroup()
-        for index, name in enumerate(topic_names):
-            box = RoundedRectangle(
-                width=4.3,
-                height=1.15,
-                corner_radius=0.12,
-                color=CYAN if index in (0, 2) else DEEP,
-                stroke_width=2.2,
-                fill_color="#0B1625",
-                fill_opacity=0.96,
-            )
-            text = label(name, 28, IVORY, "BOLD")
-            text.move_to(box)
-            topics.add(VGroup(box, text))
-        topics.arrange_in_grid(rows=2, cols=2, buff=(0.48, 0.38)).move_to(UP * 0.12)
-        topic_links = VGroup(*[
-            Line(
-                topics[index][0].get_right(),
-                topics[index + 1][0].get_left(),
-                color=DEEP,
-                stroke_width=3,
-            )
-            for index in (0, 2)
-        ])
+        cards = VGroup(
+            result_card("Sauer–Shelah and VC ERM", active=True),
+            result_card("Metric-entropy generalization"),
+            result_card("Anytime PAC-Bayes"),
+            result_card("Adaptive trajectory guarantee", active=True),
+        ).arrange_in_grid(rows=2, cols=2, buff=(0.36, 0.28)).shift(UP * 0.10)
+        card_links = VGroup(
+            Line(cards[0][0].get_right(), cards[1][0].get_left(), color=DEEP, stroke_width=2.5),
+            Line(cards[2][0].get_right(), cards[3][0].get_left(), color=DEEP, stroke_width=2.5),
+        )
+        source_stamp = label(
+            f"LEAN SOURCE PINNED AT  {FACTS['short_commit']}",
+            21,
+            MUTED,
+            "BOLD",
+            CODE_FONT,
+        ).to_edge(DOWN, buff=0.50)
 
-        self.play(LaggedStart(*[FadeIn(topic, shift=UP * 0.1) for topic in topics], lag_ratio=0.12), run_time=0.9)
-        self.play(Create(topic_links), run_time=0.7)
-
-        receipt = label(
-            "Reusable statements, explicit assumptions, exact source.",
-            BODY_SIZE,
+        self.play(
+            LaggedStart(*[FadeIn(card, shift=UP * 0.1) for card in cards], lag_ratio=0.12),
+            run_time=0.9,
+        )
+        self.play(Create(card_links), run_time=0.7)
+        self.play(
+            cards[0][0].animate.set_stroke(CYAN, width=3, opacity=1),
+            cards[3][0].animate.set_stroke(CYAN, width=3, opacity=1),
+            run_time=0.8,
+        )
+        result = label(
+            "The queue is one application of this wider library.",
+            28,
             CYAN,
-            "MEDIUM",
-        ).next_to(topics, DOWN, buff=0.22)
-        assert_in_content(VGroup(topics, receipt), "library layers")
-        self.play(FadeIn(receipt, shift=UP * 0.08), run_time=0.7)
-        self.wait(2.0)
+            "BOLD",
+        ).next_to(cards, DOWN, buff=0.20)
+        assert_in_content(VGroup(cards, result), "proof map with result")
+        assert_in_frame(VGroup(cards, source_stamp, result), "proof map")
+        self.play(FadeIn(source_stamp), FadeIn(result, shift=UP * 0.08), run_time=0.6)
+        self.wait(2.85)
         self.clear_for_next()
 
     def close(self) -> None:
-        ey = eyebrow("EXACT LEAN RECEIPT")
-        ey.to_edge(LEFT, buff=0.72).to_edge(UP, buff=0.55)
-        title = label("Two declarations used in the film", 46, IVORY, "BOLD")
-        title.next_to(ey, DOWN, aligned_edge=LEFT, buff=0.24)
-        self.play(FadeIn(ey), FadeIn(title, shift=UP * 0.1), run_time=0.7)
-
-        declarations = FACTS["proof_spine"]
-        first_page = declaration_focus_card(declarations[0])
-        second_page = declaration_focus_card(declarations[-1])
-        panel = RoundedRectangle(
-            width=12.5,
-            height=3.65,
-            corner_radius=0.12,
-            color=DEEP,
-            stroke_width=1.5,
-            fill_color="#0B1625",
-            fill_opacity=1,
-        ).move_to(DOWN * 0.15)
-        for page in (first_page, second_page):
-            page.move_to(panel).align_to(panel, LEFT).shift(RIGHT * 0.52)
-        assert_in_content(panel, "declaration receipt panel")
-        self.play(
-            FadeIn(panel),
-            FadeIn(first_page, shift=RIGHT * 0.12),
-            run_time=0.7,
-        )
-        self.wait(2.35)
-        self.play(
-            FadeOut(first_page, shift=LEFT * 0.12),
-            FadeIn(second_page, shift=LEFT * 0.12),
-            run_time=0.55,
-        )
-        self.wait(2.35)
-
-        axiom_card = VGroup(
-            label("No project-specific axioms", 38, IVORY, "BOLD"),
-            label(
-                "Audited primitives: propext · Classical.choice · Quot.sound",
-                24,
-                MUTED,
-                "MEDIUM",
-                CODE_FONT,
-            ),
-            label(
-                f"FACTS CHECKED AT  {FACTS['short_commit']}",
-                21,
-                CYAN,
-                "BOLD",
-                CODE_FONT,
-            ),
-        ).arrange(DOWN, aligned_edge=LEFT, buff=0.25)
-        axiom_card.move_to(panel).align_to(panel, LEFT).shift(RIGHT * 0.55)
-        self.play(FadeOut(second_page), FadeIn(axiom_card, shift=UP * 0.08), run_time=0.65)
-        self.wait(1.8)
-
-        self.play(FadeOut(VGroup(ey, title, panel, axiom_card)), run_time=0.65)
+        mark = VGroup(
+            Line(LEFT * 0.38, RIGHT * 0.38, color=CYAN, stroke_width=5),
+            Dot(radius=0.07, color=CYAN).shift(LEFT * 0.38),
+            Dot(radius=0.07, color=CYAN).shift(RIGHT * 0.38),
+        ).shift(UP * 1.55)
         final = label("FormalSLT", 70, IVORY, "BOLD")
-        line = label("Checked learning theory for data that adapt.", 30, CYAN, "MEDIUM")
+        final.next_to(mark, DOWN, buff=0.34)
+        line = label(
+            "A Lean foundation for statistical learning",
+            31,
+            CYAN,
+            "MEDIUM",
+        )
+        line.next_to(final, DOWN, buff=0.22)
+        second_line = label(
+            "and modern finite-sample inference.",
+            31,
+            CYAN,
+            "MEDIUM",
+        ).next_to(line, DOWN, buff=0.08)
         url = label("github.com/Robby955/FormalSLT", 23, MUTED, "MEDIUM", CODE_FONT)
-        lockup = VGroup(final, line, url).arrange(DOWN, buff=0.24)
-        self.play(FadeIn(lockup, shift=UP * 0.15), run_time=0.8)
-        self.wait(2.2)
+        url.next_to(second_line, DOWN, buff=0.35)
+        lockup = VGroup(mark, final, line, second_line, url)
+        assert_in_frame(lockup, "closing lockup")
+        self.play(FadeIn(mark), FadeIn(final, shift=UP * 0.12), run_time=0.8)
+        self.play(FadeIn(line), FadeIn(second_line), run_time=0.7)
+        self.play(FadeIn(url), run_time=0.55)
+        self.wait(3.95)
 
 
 class FormalSLTSocial(FormalSLTOverview):
@@ -824,133 +846,128 @@ class FormalSLTSocial(FormalSLTOverview):
 
     def construct(self) -> None:
         self.social_hook()
-        self.social_reduction()
+        self.social_spine()
         self.social_close()
 
     def social_hook(self) -> None:
-        grid = coordinate_panel(width=4.4, height=3.05).move_to(RIGHT * 3.75 + DOWN * 0.15)
         brand = eyebrow("FORMALSLT")
         brand.to_edge(LEFT, buff=0.72).to_edge(UP, buff=0.48)
         title = text_lines(
-            ["4,608 transition", "coordinates"],
+            ["Machine-checked", "statistical learning"],
             48,
             IVORY,
             "BOLD",
             buff=0.04,
         )
         title.to_edge(LEFT, buff=0.72).shift(UP * 0.28)
-        sub = label("One checked reduction", 30, CYAN, "BOLD")
+        sub = label("Built in Lean", 31, CYAN, "BOLD")
         sub.next_to(title, DOWN, aligned_edge=LEFT, buff=0.34)
-        scope = label(
-            "Inside a predeclared refresh family",
-            26,
-            AMBER,
-            "BOLD",
-        ).next_to(sub, DOWN, aligned_edge=LEFT, buff=0.45)
-        left_column = VGroup(brand, title, sub, scope)
-        assert_horizontal_gap(left_column, grid, "social hook")
-        assert_in_frame(VGroup(left_column, grid), "social hook")
+        topics = VGroup(*[
+            topic_card(name, active=index in (0, 3), width=2.75)
+            for index, name in enumerate(
+                ["VC", "Rademacher", "Chaining", "PAC-Bayes", "Anytime", "Dependent data"]
+            )
+        ]).arrange_in_grid(rows=3, cols=2, buff=(0.32, 0.25)).move_to(RIGHT * 3.50)
+        left_column = VGroup(brand, title, sub)
+        assert_horizontal_gap(left_column, topics, "social hook", gap=0.35)
+        assert_in_frame(VGroup(left_column, topics), "social hook")
         self.play(
             FadeIn(brand),
-            FadeIn(grid),
             FadeIn(title, shift=UP * 0.12),
             run_time=0.7,
         )
-        self.play(FadeIn(sub), FadeIn(scope), run_time=0.6)
-        self.wait(0.75)
+        self.play(
+            FadeIn(sub),
+            LaggedStart(*[FadeIn(topic, shift=UP * 0.08) for topic in topics], lag_ratio=0.08),
+            run_time=0.8,
+        )
+        self.wait(1.95)
         self.clear_for_next()
 
-    def social_reduction(self) -> None:
-        queue = FACTS["controlled_queue"]
+    def social_spine(self) -> None:
         head = caption(
-            "4,608 coordinates become one hit rate",
-            "The transfer is exact inside the declared family.",
+            "From classical theory to adaptive data",
+            "Capacity bounds meet sequential inference.",
         )
-        hit = VGroup(
-            Circle(radius=0.72, color=CYAN, stroke_width=3.2),
-            label("hit", 32, CYAN, "BOLD", CODE_FONT),
-        ).move_to(LEFT * 4.85 + UP * 0.2)
-        hit[1].move_to(hit[0])
-        definition = text_lines(
-            ["hit = 1 on the known step", f"pγ = {queue['hit_probability']}"],
-            29,
-            IVORY,
-            "BOLD",
-            buff=0.15,
-        ).next_to(hit, RIGHT, buff=0.52)
-        definition[1].set_color(CYAN)
-        identity = label(
-            "TV(row γ, row γ′) = |pγ − pγ′|",
-            37,
-            IVORY,
-            "BOLD",
-            CODE_FONT,
-        ).next_to(definition, DOWN, aligned_edge=LEFT, buff=0.42)
-        scope = label(
-            "Assumes the family. Does not test membership.",
-            27,
-            AMBER,
-            "BOLD",
-        ).next_to(identity, DOWN, aligned_edge=LEFT, buff=0.38)
-        result = VGroup(hit, definition, identity, scope)
-        assert_in_content(result, "social reduction")
-        assert_in_frame(result, "social reduction")
-
         self.play(FadeIn(head), run_time=0.5)
-        self.play(GrowFromCenter(hit), FadeIn(definition), run_time=0.65)
-        self.play(FadeIn(identity, shift=UP * 0.08), run_time=0.65)
-        self.play(FadeIn(scope), run_time=0.4)
-        self.wait(2.3)
+        names = ["VC", "Rad", "PAC", "Seq", "Path"]
+        nodes = VGroup(*[
+            VGroup(
+                Circle(radius=0.43, color=CYAN if index in (0, 4) else DEEP, stroke_width=2.8),
+                label(name, 25 if len(name) < 8 else 22, IVORY, "BOLD"),
+            )
+            for index, name in enumerate(names)
+        ]).arrange(RIGHT, buff=0.95).shift(DOWN * 0.1)
+        for node in nodes:
+            node[1].move_to(node[0])
+        arrows = VGroup(*[
+            Arrow(
+                nodes[index][0].get_right(),
+                nodes[index + 1][0].get_left(),
+                buff=0.10,
+                color=MUTED,
+                stroke_width=2.3,
+                max_tip_length_to_length_ratio=0.18,
+            )
+            for index in range(len(nodes) - 1)
+        ])
+        line = label(
+            "generalization  ·  selection  ·  repeated looks  ·  dependence",
+            27,
+            CYAN,
+            "BOLD",
+        ).next_to(nodes, DOWN, buff=0.55)
+        assert_in_content(VGroup(nodes, line), "social theorem spine")
+        assert_in_frame(VGroup(nodes, line), "social theorem spine")
+        self.play(LaggedStart(*[GrowFromCenter(node) for node in nodes], lag_ratio=0.10), run_time=0.7)
+        self.play(Create(arrows), run_time=0.8)
+        self.play(FadeIn(line, shift=UP * 0.08), run_time=0.7)
+        self.wait(1.75)
         self.clear_for_next()
 
     def social_close(self) -> None:
         mark = play_mark(radius=0.42).shift(UP * 1.55)
         title = label("FormalSLT", 70, IVORY, "BOLD")
         title.next_to(mark, DOWN, buff=0.32)
-        line = label("Checked learning theory for data that adapt", 31, CYAN, "MEDIUM")
+        line = label("Statistical learning theory, checked in Lean", 31, CYAN, "MEDIUM")
         line.next_to(title, DOWN, buff=0.2)
-        detail = label(
-            "The theorem, assumptions, and exact source are linked below.",
-            25,
-            MUTED,
-            "MEDIUM",
-        ).next_to(line, DOWN, buff=0.42)
         url = label(
             "github.com/Robby955/FormalSLT",
-            22,
+            24,
             IVORY,
             "BOLD",
             CODE_FONT,
-        ).next_to(detail, DOWN, buff=0.2)
-        self.play(FadeIn(mark), FadeIn(title), FadeIn(line), run_time=0.75)
-        self.play(FadeIn(detail), FadeIn(url), run_time=0.55)
-        self.wait(1.35)
+        ).next_to(line, DOWN, buff=0.38)
+        self.play(FadeIn(mark), FadeIn(title), run_time=0.75)
+        self.play(FadeIn(line), run_time=0.55)
+        self.play(FadeIn(url), run_time=0.45)
+        self.wait(2.25)
 
 
 class FormalSLTPoster(Scene):
     """Stable click-to-play poster; independent of scene timing and counts."""
 
     def construct(self) -> None:
-        brand = eyebrow("FORMALSLT")
+        brand = label("FORMALSLT", 29, CYAN, "BOLD")
         title = text_lines(
-            ["Learning guarantees", "that survive", "adaptation."],
-            49,
+            ["Machine-checked", "statistical learning", "in Lean."],
+            50,
             IVORY,
             "BOLD",
             buff=0.04,
         )
         body = text_lines(
             [
-                "PAC-Bayes · anytime inference",
-                "dependent paths · stationary risk",
+                "Classical generalization",
+                "through adaptive data",
             ],
-            30,
+            31,
             MUTED,
             "MEDIUM",
             buff=0.08,
         )
         play = play_mark(radius=0.5)
-        watch = label("WATCH THE FILM", 24, IVORY, "BOLD", CODE_FONT)
+        watch = label("WATCH THE FILM", 28, IVORY, "BOLD", CODE_FONT)
         cta = VGroup(play, watch).arrange(RIGHT, buff=0.3)
         left_column = VGroup(brand, title, body, cta).arrange(
             DOWN,
@@ -959,43 +976,22 @@ class FormalSLTPoster(Scene):
         )
         left_column.to_edge(LEFT, buff=0.72).shift(UP * 0.18)
 
-        grid = coordinate_panel(width=3.55, height=2.55).move_to(RIGHT * 4.70 + UP * 0.05)
-        grid.set_opacity(0.88)
-        scalar = VGroup(
-            Circle(radius=0.64, color=CYAN, stroke_width=3),
-            label("hit", 28, CYAN, "BOLD", CODE_FONT),
-        ).move_to(RIGHT * 1.45 + UP * 0.05)
-        scalar[1].move_to(scalar[0])
-        collapse = Arrow(
-            grid.get_left() + LEFT * 0.12,
-            scalar.get_right() + RIGHT * 0.12,
+        topics = VGroup(*[
+            topic_card(name, active=index in (0, 3), width=2.85)
+            for index, name in enumerate(
+                ["VC theory", "Rademacher", "Chaining", "PAC-Bayes", "Anytime", "Dependent data"]
+            )
+        ]).arrange_in_grid(rows=3, cols=2, buff=(0.32, 0.25)).move_to(RIGHT * 3.50)
+        spine = Line(
+            [topics.get_center()[0], topics.get_top()[1] + 0.18, 0],
+            [topics.get_center()[0], topics.get_bottom()[1] - 0.18, 0],
             color=CYAN,
-            stroke_width=5,
-            buff=0.02,
-            max_tip_length_to_length_ratio=0.24,
+            stroke_width=3,
+            stroke_opacity=0.35,
         )
-        if collapse.get_length() < 0.5:
-            raise ValueError("Poster reduction arrow is too short to read.")
-        grid_count = VGroup(
-            label("4,608", 39, IVORY, "BOLD", CODE_FONT),
-            label("GENERIC COORDINATES", 21, MUTED, "BOLD", CODE_FONT),
-        ).arrange(DOWN, buff=0.03).next_to(grid, UP, buff=0.18)
-        scalar_count = VGroup(
-            label("1", 39, IVORY, "BOLD", CODE_FONT),
-            label("HIT RATE", 21, MUTED, "BOLD", CODE_FONT),
-        ).arrange(DOWN, buff=0.03).next_to(scalar, UP, buff=0.40)
-        scope = text_lines(
-            ["Inside one predeclared family", "Not a membership test"],
-            25,
-            AMBER,
-            "BOLD",
-            buff=0.04,
-        ).move_to(RIGHT * 3.45 + DOWN * 1.82)
-        right_column = VGroup(grid, scalar, collapse, grid_count, scalar_count, scope)
+        right_column = VGroup(spine, topics)
 
         assert_horizontal_gap(left_column, right_column, "poster", gap=0.42)
-        assert_no_overlap(scalar_count, scalar, "poster scalar count", gap=0.2)
-        assert_no_overlap(scalar_count, grid, "poster count and grid", gap=0.16)
         assert_in_frame(left_column, "poster left column")
         assert_in_frame(right_column, "poster right column")
 
