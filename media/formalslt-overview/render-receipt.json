@@ -3,24 +3,24 @@
   "fact_commit": "501fee458a539db654097dbec8933427dae9fee9",
   "source": {
     "media/formalslt-overview/TRANSCRIPT.md": {
-      "sha256": "501508d8b4467e43e6bfdd9b52036ff90f64666c4f32be914e0d193280bd0de2",
-      "bytes": 3300
+      "sha256": "73fb1770e131335a3a3bbdcc2730d5c21ed683eef8e1543fbbed8bb0ef130f2d",
+      "bytes": 3347
     },
     "media/formalslt-overview/compose_soundtrack.py": {
       "sha256": "340ef4bf6193a130bb542d7d809d1883ab2810543c5e2d6a3dde93e2ca2bcff4",
       "bytes": 11884
     },
     "media/formalslt-overview/extract_facts.py": {
-      "sha256": "d54966e7d7aa1f049d641ae201e263a11e0fd7ae26b841e39d6ad0518f3d3a8f",
-      "bytes": 7694
+      "sha256": "17be0780e0082190edd8b021d5700721032842e61ed09e4eee4e8e11c5b66157",
+      "bytes": 8370
     },
     "media/formalslt-overview/facts.json": {
-      "sha256": "c48fc785016d900a0f45da50f3729a8c03c838464fa95215b47f6d489fd9f0ea",
-      "bytes": 3017
+      "sha256": "8e4be99e525f527701fa10e518c9eab685c217d1fb0251de729659fd03ca7d12",
+      "bytes": 3243
     },
     "media/formalslt-overview/formalslt_overview.py": {
-      "sha256": "f36fdcc2817af61459ce1ed31ff54ad559d1b27285a174b26f8b430e7dcf7993",
-      "bytes": 43347
+      "sha256": "17ad48061362ab597389c06f7345c5ac981558be883af9c3ffc81b9f42d10d20",
+      "bytes": 43505
     },
     "media/formalslt-overview/manim.cfg": {
       "sha256": "276ed2761531a1c2489a522716cf0049f261b17749b0889c33aa518e0b13c37c",
@@ -43,16 +43,16 @@
       "bytes": 8911
     },
     "media/formalslt-overview/delivery/formalslt-overview.vtt": {
-      "sha256": "d87dd5ac838625850e9b1e59a878980fd09fda00d5e54f8a6a4966f479d2ee73",
-      "bytes": 1739
+      "sha256": "1c27a1b0e97e29cf7865d768a6b8be3837fe8585a5319820c5a681fdaa0ca1ab",
+      "bytes": 1765
     }
   },
   "assets": [
     {
       "role": "main",
       "path": "media/formalslt-overview/delivery/formalslt-overview.mp4",
-      "sha256": "b8ed1bf75cbfb676d948c7f3d8a3a61240e8e6cd14e9b4da0f1ad5bc3ae79c64",
-      "bytes": 4741304,
+      "sha256": "dd0d1ea949aaa52d09259575d2002d530ff3b6f9d44574700f2fb46152468e88",
+      "bytes": 4753770,
       "codec": "h264",
       "width": 1920,
       "height": 1080,
@@ -216,7 +216,7 @@
   },
   "renderer": {
     "python": "3.13.13",
-    "manim": "Manim Community \u001b[32mv0.\u001b[0m\u001b[32m20.1\u001b[0m",
+    "manim": "Manim Community v0.20.1",
     "ffmpeg": "ffmpeg version 8.1.1 Copyright (c) 2000-2026 the FFmpeg developers",
     "ffprobe": "ffprobe version 8.1.1 Copyright (c) 2007-2026 the FFmpeg developers",
     "display_font": "Avenir Next",

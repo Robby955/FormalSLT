@@ -11,9 +11,9 @@ the same broad framing for social previews.
 The checked facts are extracted from the exact merged-main commit
 `501fee458a539db654097dbec8933427dae9fee9`. The extractor fails if that commit
 does not contain the named VC, metric-entropy, chaining, PAC-Bayes, e-process,
-trajectory, and controlled-queue declarations with the expected statement
-shapes. It also checks the queue cardinalities, hit-probability formula, and
-exact row-TV transfer anchor.
+trajectory, supplied-Poisson stationary-risk, and controlled-queue
+declarations with the expected statement shapes. It also checks the queue
+cardinalities, hit-probability formula, and exact row-TV transfer anchor.
 
 ## Render
 

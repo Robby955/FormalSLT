@@ -121,6 +121,9 @@ require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
 ```
 
+For unreleased work, pin a full commit SHA that you have reviewed rather than
+the moving branch.
+
 Then run:
 
 ```bash

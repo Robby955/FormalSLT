@@ -52,6 +52,14 @@ ANCHORS = [
         ),
     },
     {
+        "label": "Supplied-Poisson stationary-risk certificate",
+        "file": (
+            "FormalSLT/StochasticDynamics/"
+            "StationaryPoissonPACBayes.lean"
+        ),
+        "name": "exists_stationaryPoissonEmpiricalBernsteinPACBayes_event",
+    },
+    {
         "label": "Controlled-queue scalar confidence",
         "file": (
             "FormalSLT/Applications/"
@@ -99,6 +107,14 @@ STATEMENT_SHAPES = {
         r"trajectoryPosteriorAverageConditionalRisk",
         r"trajectoryPosteriorEmpiricalPrequentialRisk",
         r"Filter\.Tendsto",
+    ),
+    "exists_stationaryPoissonEmpiricalBernsteinPACBayes_event": (
+        r"IsInvariantPMF\s+P\s+stationary",
+        r"∃\s+goodEvent\s*:\s*Set\s*\(ℕ\s*→\s*Z\)",
+        r"\(markovPathMeasure\s+P\s+x0\)\.real\s+goodEventᶜ\s*≤\s*delta",
+        r"stationaryPosteriorMarkovRisk",
+        r"empiricalTransitionPosteriorRisk",
+        r"stationaryPoissonEmpiricalBernsteinPACBayesBoundary",
     ),
     "exists_persistenceHitConfidence_event": (
         r"∃\s+goodEvent\s*:\s*Set\s*\(ℕ\s*→\s*Observation\)",

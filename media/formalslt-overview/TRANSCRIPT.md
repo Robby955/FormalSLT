@@ -45,8 +45,8 @@ probability at most `α`.
 
 For dependent observations, the posterior and tilt may use the observed
 prefix, while the next score is fixed before the next state arrives. In the
-finite-state setting shown here, a Poisson correction connects pathwise
-evidence to stationary risk.
+finite-state setting shown here, with a supplied invariant law and Poisson
+potential, the correction connects pathwise evidence to stationary risk.
 
 ## 00:50.000 · One worked case study
 

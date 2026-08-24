@@ -40,8 +40,8 @@ Choose from the observed prefix.
 Fix the score before the next state.
 
 00:45.500 --> 00:50.000
-A Poisson correction connects path evidence
-to stationary risk in the setting shown.
+With a supplied invariant law and Poisson potential,
+the correction connects path evidence to stationary risk.
 
 00:50.000 --> 00:54.500
 One controlled-queue case study: 4,608 coordinates

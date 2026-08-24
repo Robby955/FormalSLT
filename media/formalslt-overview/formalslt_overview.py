@@ -801,12 +801,15 @@ class FormalSLTOverview(Scene):
         stationary_title = label("stationary risk", 27, MUTED, "BOLD")
         stationary_title.next_to(orbit, DOWN, buff=0.16)
 
-        result = label(
-            "trajectory evidence  →  long-run target",
-            28,
-            IVORY,
-            "BOLD",
-        ).move_to(DOWN * 1.86 + RIGHT * 1.3)
+        result = VGroup(
+            label(
+                "SUPPLIED INVARIANT LAW  ·  POISSON POTENTIAL",
+                18,
+                MUTED,
+                "BOLD",
+            ),
+            label("path evidence  →  stationary risk", 26, IVORY, "BOLD"),
+        ).arrange(DOWN, buff=0.05).move_to(DOWN * 1.77 + RIGHT * 1.65)
         scene = VGroup(
             memory,
             history,

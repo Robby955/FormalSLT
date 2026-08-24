@@ -64,6 +64,11 @@
       "name": "exists_trajectoryCountableEmpiricalBernsteinPACBayes_allTime_vanishing_event"
     },
     {
+      "label": "Supplied-Poisson stationary-risk certificate",
+      "file": "FormalSLT/StochasticDynamics/StationaryPoissonPACBayes.lean",
+      "name": "exists_stationaryPoissonEmpiricalBernsteinPACBayes_event"
+    },
+    {
       "label": "Controlled-queue scalar confidence",
       "file": "FormalSLT/Applications/ControlledQueuePersistenceConfidence.lean",
       "name": "exists_persistenceHitConfidence_event"
