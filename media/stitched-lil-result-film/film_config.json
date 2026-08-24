@@ -1,0 +1,68 @@
+{
+  "schema": "formalslt-stitched-lil-film-v1",
+  "title": "One guarantee across every n >= 4.",
+  "duration_seconds": 86.0,
+  "frame_rate": 30,
+  "resolution": [1920, 1080],
+  "source_commit": "285921b60231cb45e4aa9a4fc8068f3f7c98a2fa",
+  "scenes": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 8.0,
+      "title": "One guarantee across every n >= 4.",
+      "detail": "A fixed-time interval answers only one fixed-time question."
+    },
+    {
+      "id": "model",
+      "start": 8.0,
+      "end": 20.0,
+      "title": "The process model",
+      "detail": "X_k is revealed at time k+1 and centered given F_k."
+    },
+    {
+      "id": "epochs",
+      "start": 20.0,
+      "end": 33.0,
+      "title": "Divide time geometrically",
+      "detail": "Each sample size n >= 4 belongs to one factor-four epoch."
+    },
+    {
+      "id": "allocation",
+      "start": 33.0,
+      "end": 46.0,
+      "title": "Spend the error budget once",
+      "detail": "The polynomial weights telescope exactly to one."
+    },
+    {
+      "id": "tilts",
+      "start": 46.0,
+      "end": 60.0,
+      "title": "Precommit one tilt per epoch",
+      "detail": "The tilt is optimized at the epoch floor, before seeing the path."
+    },
+    {
+      "id": "stitch",
+      "start": 60.0,
+      "end": 74.0,
+      "title": "Stitch the epochs",
+      "detail": "Countable subadditivity yields one two-sided guarantee."
+    },
+    {
+      "id": "result",
+      "start": 74.0,
+      "end": 86.0,
+      "title": "A checked log-log confidence sequence",
+      "detail": "Every n >= 4. One failure set of mass at most delta."
+    }
+  ],
+  "palette": {
+    "background": "#08111E",
+    "ivory": "#F4F1E8",
+    "cyan": "#64D8D2",
+    "muted": "#A7B3C2",
+    "deep": "#172539",
+    "amber": "#F0B35A",
+    "red": "#EF6A68"
+  }
+}
