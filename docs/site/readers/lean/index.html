@@ -25,7 +25,7 @@
     <section class="reader-hero">
       <p class="eyebrow">Reader route · Lean</p>
       <h1>Import a topic, then narrow to a theorem.</h1>
-      <p>The candidate v0.2 API is organized around four topic umbrellas. They are the supported discovery surface; individual implementation modules remain available when a downstream proof needs a smaller import.</p>
+      <p>The v0.2 API is organized around four topic umbrellas. They are the supported discovery surface; individual implementation modules remain available when a downstream proof needs a smaller import.</p>
     </section>
 
     <section class="reader-intro" aria-labelledby="lean-imports">
@@ -44,14 +44,10 @@
     <section class="reader-section" aria-labelledby="lean-install">
       <h2 id="lean-install">Pin the dependency</h2>
       <div class="reading">
-        <p>For the released v0.1 API:</p>
+        <p>Use the v0.2 release tag:</p>
         <pre><code>require «formal-slt» from git
-  "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"</code></pre>
-        <p>For the exact v0.2 candidate represented by this documentation build:</p>
-        <pre><code>require «formal-slt» from git
-  "https://github.com/Robby955/FormalSLT.git" @
-  "__FORMALSLT_SOURCE_REF__"</code></pre>
-        <div class="callout"><p><strong>The candidate is not a release.</strong> Until <code>v0.2.0</code> exists, use this page's exact source commit rather than a moving branch.</p></div>
+  "https://github.com/Robby955/FormalSLT.git" @ "v0.2.0"</code></pre>
+        <div class="callout"><p><strong>Pin unreleased work by commit.</strong> Use a full reviewed commit SHA for development beyond v0.2.0 rather than a moving branch.</p></div>
       </div>
     </section>
 
@@ -64,7 +60,7 @@
           <li>Use the stable-import examples as executable API receipts for the four umbrellas.</li>
           <li>For public capstone endpoints, inspect the associated <code>#print axioms</code> receipt. The intended public profile is <code>[propext, Classical.choice, Quot.sound]</code>.</li>
         </ul>
-        <div class="callout"><p><strong>Candidate API means reviewable, not immutable.</strong> The release tag and API stability policy govern compatibility. A green documentation build does not create a release by itself.</p></div>
+        <div class="callout"><p><strong>Compatibility is scoped.</strong> The release tag and API stability policy cover the four topic imports and the named declaration allowlist, not every implementation module.</p></div>
       </div>
     </section>
 
