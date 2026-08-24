@@ -246,6 +246,78 @@ def subGammaWidthAtBudget (sigma2 b : ℝ) (n : ℕ) (budget : ℝ) : ℝ :=
   Real.sqrt (2 * sigma2 * budget / (n : ℝ))
     + b * budget / (3 * (n : ℝ))
 
+/-! ## Generic-budget sub-Gamma optimizer -/
+
+/-- The tilt minimizing the sub-Gamma line boundary at a positive generic
+budget.  This is the budget-parametric form of `optTilt`, whose public
+definition is specialized to `logLogBudget`. -/
+def optTiltAtBudget (sigma2 b : ℝ) (n : ℕ) (budget : ℝ) : ℝ :=
+  Real.sqrt (2 * budget / (sigma2 * (n : ℝ))) /
+    (1 + (b / 3) * Real.sqrt (2 * budget / (sigma2 * (n : ℝ))))
+
+/-- A positive budget can be represented as a `logLogBudget`.  This lets the
+generic optimizer reuse the checked exact optimization in
+`OptimizedLambdaCS` rather than duplicating its algebra. -/
+private theorem logLogBudget_exp_sub (n : ℕ) (budget : ℝ) :
+    logLogBudget n
+        (Real.exp (Real.log (Real.log (n : ℝ)) - budget)) = budget := by
+  unfold logLogBudget
+  rw [one_div, ← Real.exp_neg, Real.log_exp]
+  ring
+
+/-- The generic-budget tilt is the existing `optTilt` after representing the
+budget as a `logLogBudget`. -/
+theorem optTiltAtBudget_eq_optTilt_exp (sigma2 b : ℝ) (n : ℕ) (budget : ℝ) :
+    optTiltAtBudget sigma2 b n budget =
+      optTilt sigma2 b n
+        (Real.exp (Real.log (Real.log (n : ℝ)) - budget)) := by
+  unfold optTiltAtBudget optTilt
+  rw [logLogBudget_exp_sub]
+
+/-- The generic-budget optimal tilt is positive. -/
+theorem optTiltAtBudget_pos {sigma2 b budget : ℝ} {n : ℕ}
+    (hσ : 0 < sigma2) (_hb : 0 < b) (hn : 0 < n) (hbudget : 0 < budget) :
+    0 < optTiltAtBudget sigma2 b n budget := by
+  unfold optTiltAtBudget
+  have hn' : (0 : ℝ) < (n : ℝ) := Nat.cast_pos.mpr hn
+  have hsqrt : 0 < Real.sqrt (2 * budget / (sigma2 * (n : ℝ))) := by
+    apply Real.sqrt_pos.mpr
+    positivity
+  apply div_pos hsqrt
+  positivity
+
+/-- The generic-budget optimal tilt lies in the sub-Gamma admissible range. -/
+theorem optTiltAtBudget_admissible {sigma2 b budget : ℝ} {n : ℕ}
+    (hσ : 0 < sigma2) (hb : 0 < b) (hn : 0 < n) (hbudget : 0 < budget) :
+    b * optTiltAtBudget sigma2 b n budget < 3 := by
+  let delta := Real.exp (Real.log (Real.log (n : ℝ)) - budget)
+  have hlog : logLogBudget n delta = budget := by
+    simpa [delta] using logLogBudget_exp_sub n budget
+  have htilt : optTiltAtBudget sigma2 b n budget = optTilt sigma2 b n delta := by
+    simpa [delta] using optTiltAtBudget_eq_optTilt_exp sigma2 b n budget
+  rw [htilt]
+  exact optTilt_admissible hσ hb hn (by simpa [hlog] using hbudget)
+
+/-- Exact optimization of the sub-Gamma boundary at an arbitrary positive
+budget. -/
+theorem subGammaBoundary_eq_widthAtBudget_optTilt
+    {sigma2 b budget : ℝ} {n : ℕ}
+    (hσ : 0 < sigma2) (hb : 0 < b) (hn : 0 < n) (hbudget : 0 < budget) :
+    subGammaBoundary sigma2 b budget n
+        (optTiltAtBudget sigma2 b n budget) =
+      subGammaWidthAtBudget sigma2 b n budget := by
+  let delta := Real.exp (Real.log (Real.log (n : ℝ)) - budget)
+  have hlog : logLogBudget n delta = budget := by
+    simpa [delta] using logLogBudget_exp_sub n budget
+  have htilt : optTiltAtBudget sigma2 b n budget = optTilt sigma2 b n delta := by
+    simpa [delta] using optTiltAtBudget_eq_optTilt_exp sigma2 b n budget
+  rw [htilt, ← hlog]
+  change
+    subGammaBoundary sigma2 b (logLogBudget n delta) n
+        (optTilt sigma2 b n delta) =
+      subGammaLogLogWidth sigma2 b n delta
+  exact subGammaLogLogWidth_eq_boundary_optTilt hσ hb hn (by simpa [hlog] using hbudget)
+
 /--
 Width-level penalty induced by adding `extraBudget` to the iterated-log budget.
 This is the deterministic "closed-form width plus stitching penalty" wrapper:

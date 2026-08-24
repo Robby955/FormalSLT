@@ -810,6 +810,8 @@ the table lists their canonical implementation modules.
 | `subGammaLogLogWidth_add_stitchingPenalty` | `AnytimeValid.DyadicEpochCS` | The all-`n` dyadic-epoch boundary is the log-log width plus the explicit per-epoch stitching penalty |
 | `dyadic_epoch_confidence_sequence_subGamma` | `AnytimeValid.DyadicEpochCS` | One-sided all-`n` dyadic-epoch sub-Gamma confidence sequence with the explicit grid budget |
 | `dyadic_epoch_two_sided_confidence_sequence` | `AnytimeValid.DyadicEpochCS` | Two-sided all-`n` dyadic-epoch confidence sequence via the `X`/`-X` transfer and the explicit stitching penalty |
+| `polynomialStitchedLILFailure_mass_le` | `AnytimeValid.PolynomialStitchedLIL` | The countable union of polynomially allocated fixed-tilt geometric-epoch failures has mass at most `delta`; this confidence allocation is not itself an e-process |
+| `exists_polynomialStitchedLIL_explicit_event` | `AnytimeValid.PolynomialStitchedLIL` | One event controls every `n >= 4` with the explicit actual-time constant-factor boundary from the polynomially allocated fixed-tilt geometric stitch; the construction is not itself an e-process |
 
 ## Forward empirical-Bernstein and PAC-Bayes
 
