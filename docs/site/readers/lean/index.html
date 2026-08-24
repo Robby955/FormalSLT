@@ -47,7 +47,11 @@
         <p>Use the v0.2 release tag:</p>
         <pre><code>require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.2.0"</code></pre>
-        <div class="callout"><p><strong>Pin unreleased work by commit.</strong> Use a full reviewed commit SHA for development beyond v0.2.0 rather than a moving branch.</p></div>
+        <p>To reproduce this documentation build exactly:</p>
+        <pre><code>require «formal-slt» from git
+  "https://github.com/Robby955/FormalSLT.git" @
+  "__FORMALSLT_SOURCE_REF__"</code></pre>
+        <div class="callout"><p><strong>Pin unreleased work by commit.</strong> The generated site replaces <code>__FORMALSLT_SOURCE_REF__</code> with its full source commit. Use that commit for development beyond v0.2.0 rather than a moving branch.</p></div>
       </div>
     </section>
 
