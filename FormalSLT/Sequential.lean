@@ -10,6 +10,7 @@ import FormalSLT.AnytimeValid.AtTopCS
 import FormalSLT.AnytimeValid.MixtureCS
 import FormalSLT.AnytimeValid.OptimizedLambdaCS
 import FormalSLT.AnytimeValid.DyadicEpochCS
+import FormalSLT.AnytimeValid.PolynomialStitchedLIL
 import FormalSLT.AnytimeValid.EmpiricalBernsteinCS
 import FormalSLT.AnytimeValid.ForwardBesselProcess
 import FormalSLT.AnytimeValid.EProcess
