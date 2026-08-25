@@ -7,6 +7,7 @@ SOURCE="media/formalslt-overview/formalslt_overview.py"
 COMPOSER="media/formalslt-overview/compose_soundtrack.py"
 OUT_DIR="media/formalslt-overview/out"
 MEDIA_DIR="media/formalslt-overview/media"
+SOCIAL_MEDIA_DIR="media/formalslt-overview/media-social"
 RELEASE_STAGE=""
 
 cleanup_release_stage() {
@@ -71,7 +72,8 @@ add_soundtrack() {
     -i "$movie" -i "$soundtrack" \
     -map 0:v:0 -map 1:a:0 \
     -c:v copy -c:a aac -b:a 192k -ar 48000 -ac 2 \
-    -af apad -shortest -movflags +faststart \
+    -af "highpass=f=80,loudnorm=I=-22:LRA=7:TP=-3.5,aresample=48000,apad" \
+    -shortest -movflags +faststart \
     "$muxed"
   if [[ "$("$FFPROBE_BIN" -v error -select_streams a:0 \
     -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 \
@@ -85,15 +87,18 @@ add_soundtrack() {
 render_movie() {
   local scene="$1"
   local quality="$2"
-  local output="$3"
-  local cut="$4"
+  local resolution="$3"
+  local config_file="$4"
+  local media_dir="$5"
+  local output="$6"
+  local cut="$7"
 
-  "$MANIM_BIN" --config_file media/formalslt-overview/manim.cfg \
-    "$quality" --fps 30 --format mp4 --output_file "$output" \
+  "$MANIM_BIN" --config_file "$config_file" \
+    "$quality" --resolution "$resolution" --fps 30 --format mp4 --output_file "$output" \
     "$SOURCE" "$scene"
 
   local rendered
-  rendered="$(find "$MEDIA_DIR/videos" -type f -name "$output" -print -quit)"
+  rendered="$(find "$media_dir/videos" -type f -name "$output" -print -quit)"
   if [[ -z "$rendered" ]]; then
     echo "render completed without the expected output: $output" >&2
     exit 1
@@ -135,12 +140,18 @@ publish_release_asset_set() {
     "formalslt-overview-social.mp4"
     "formalslt-overview-poster.jpg"
     "render-receipt.json"
+    "site-formalslt-overview.mp4"
+    "site-formalslt-overview-poster.jpg"
+    "site-formalslt-overview.vtt"
   )
   local destinations=(
     "media/formalslt-overview/delivery/formalslt-overview.mp4"
     "media/formalslt-overview/delivery/formalslt-overview-social.mp4"
     "media/formalslt-overview/delivery/formalslt-overview-poster.jpg"
     "media/formalslt-overview/render-receipt.json"
+    "docs/site/assets/formalslt-overview.mp4"
+    "docs/site/assets/formalslt-overview-poster.jpg"
+    "docs/site/assets/formalslt-overview.vtt"
   )
   local index
   local rollback_index
@@ -170,41 +181,57 @@ publish_release_asset_set() {
 
 case "$MODE" in
   proof)
-    render_movie FormalSLTOverview -ql formalslt-overview-proof.mp4 main
+    render_movie FormalSLTOverview -ql 854,480 \
+      media/formalslt-overview/manim.cfg "$MEDIA_DIR" \
+      formalslt-overview-proof.mp4 main
     echo "$OUT_DIR/formalslt-overview-proof.mp4"
     ;;
   social-proof)
-    render_movie FormalSLTSocial -ql formalslt-overview-social-proof.mp4 social
+    render_movie FormalSLTSocial -ql 432,540 \
+      media/formalslt-overview/manim-social.cfg "$SOCIAL_MEDIA_DIR" \
+      formalslt-overview-social-proof.mp4 social
     echo "$OUT_DIR/formalslt-overview-social-proof.mp4"
     ;;
   proofs)
-    render_movie FormalSLTOverview -ql formalslt-overview-proof.mp4 main
-    render_movie FormalSLTSocial -ql formalslt-overview-social-proof.mp4 social
+    render_movie FormalSLTOverview -ql 854,480 \
+      media/formalslt-overview/manim.cfg "$MEDIA_DIR" \
+      formalslt-overview-proof.mp4 main
+    render_movie FormalSLTSocial -ql 432,540 \
+      media/formalslt-overview/manim-social.cfg "$SOCIAL_MEDIA_DIR" \
+      formalslt-overview-social-proof.mp4 social
     echo "$OUT_DIR/formalslt-overview-proof.mp4"
     echo "$OUT_DIR/formalslt-overview-social-proof.mp4"
     ;;
   final)
-    render_movie FormalSLTOverview -qh formalslt-overview-1080p.mp4 main
+    render_movie FormalSLTOverview -qh 1920,1080 \
+      media/formalslt-overview/manim.cfg "$MEDIA_DIR" \
+      formalslt-overview-1080p.mp4 main
     echo "$OUT_DIR/formalslt-overview-1080p.mp4"
     ;;
   social)
-    render_movie FormalSLTSocial -qh formalslt-overview-social-1080p.mp4 social
-    echo "$OUT_DIR/formalslt-overview-social-1080p.mp4"
+    render_movie FormalSLTSocial -qh 1080,1350 \
+      media/formalslt-overview/manim-social.cfg "$SOCIAL_MEDIA_DIR" \
+      formalslt-overview-social-1080x1350.mp4 social
+    echo "$OUT_DIR/formalslt-overview-social-1080x1350.mp4"
     ;;
   poster)
     render_poster
     echo "$OUT_DIR/formalslt-overview-poster.png"
     ;;
   release)
-    render_movie FormalSLTOverview -qh formalslt-overview-1080p.mp4 main
-    render_movie FormalSLTSocial -qh formalslt-overview-social-1080p.mp4 social
+    render_movie FormalSLTOverview -qh 1920,1080 \
+      media/formalslt-overview/manim.cfg "$MEDIA_DIR" \
+      formalslt-overview-1080p.mp4 main
+    render_movie FormalSLTSocial -qh 1080,1350 \
+      media/formalslt-overview/manim-social.cfg "$SOCIAL_MEDIA_DIR" \
+      formalslt-overview-social-1080x1350.mp4 social
     render_poster
     RELEASE_STAGE="$(mktemp -d "$OUT_DIR/release-stage.XXXXXX")"
     stage_movie \
       "$OUT_DIR/formalslt-overview-1080p.mp4" \
       "$RELEASE_STAGE/formalslt-overview.mp4"
     stage_movie \
-      "$OUT_DIR/formalslt-overview-social-1080p.mp4" \
+      "$OUT_DIR/formalslt-overview-social-1080x1350.mp4" \
       "$RELEASE_STAGE/formalslt-overview-social.mp4"
     "$FFMPEG_BIN" -hide_banner -loglevel error -y \
       -i "$OUT_DIR/formalslt-overview-poster.png" \
@@ -216,6 +243,12 @@ case "$MODE" in
       --manim-bin "$MANIM_BIN" \
       --ffmpeg-bin "$FFMPEG_BIN" \
       --ffprobe-bin "$FFPROBE_BIN"
+    ln "$RELEASE_STAGE/formalslt-overview.mp4" \
+      "$RELEASE_STAGE/site-formalslt-overview.mp4"
+    ln "$RELEASE_STAGE/formalslt-overview-poster.jpg" \
+      "$RELEASE_STAGE/site-formalslt-overview-poster.jpg"
+    cp media/formalslt-overview/delivery/formalslt-overview.vtt \
+      "$RELEASE_STAGE/site-formalslt-overview.vtt"
     publish_release_asset_set "$RELEASE_STAGE"
     echo "media/formalslt-overview/delivery/formalslt-overview.mp4"
     echo "media/formalslt-overview/delivery/formalslt-overview-social.mp4"

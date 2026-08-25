@@ -19,6 +19,7 @@ from manim import (
     LaggedStart,
     LEFT,
     Line,
+    MathTex,
     MoveAlongPath,
     Polygon,
     Rectangle,
@@ -54,6 +55,15 @@ FRAME_BOTTOM = -3.72
 CONTENT_TOP = 1.72
 CONTENT_BOTTOM = -2.08
 
+# The social cut is authored against its own 4:5 Manim frame, not cropped from
+# the 16:9 overview.  Keep a generous inner safe area for mobile overlays.
+SOCIAL_FRAME_WIDTH = 6.4
+SOCIAL_FRAME_HEIGHT = 8.0
+SOCIAL_LEFT = -2.95
+SOCIAL_RIGHT = 2.95
+SOCIAL_TOP = 3.68
+SOCIAL_BOTTOM = -3.68
+
 SCENE_TITLE_SIZE = 46
 SCENE_DETAIL_SIZE = 29
 BODY_SIZE = 28
@@ -64,8 +74,8 @@ FORMULA_SIZE = 24
 DISPLAY_FONT = "Avenir Next"
 CODE_FONT = "Menlo"
 
-# Scene start times in seconds. compose_soundtrack.py places its impacts on
-# these boundaries; the render fails if a scene drifts off its cue.
+# Reviewed scene start times in seconds. The render fails if a scene drifts
+# from these boundaries, keeping the caption ledger synchronized.
 MAIN_SCENE_STARTS = {
     "intro": 0.0,
     "field_map": 5.0,
@@ -110,6 +120,21 @@ def label(
 
 def code(text: str, size: float = FORMULA_SIZE, color: str = SOFT_CYAN) -> Text:
     return label(text, size, color, "BOLD", CODE_FONT)
+
+
+def math_display(
+    latex: str,
+    size: float = 32,
+    color: str = SOFT_CYAN,
+) -> MathTex:
+    """Render mathematical content as TeX, never as code-styled prose."""
+    item = MathTex(latex, font_size=size, color=color)
+    if item.width > 11.9:
+        raise ValueError(
+            "Math display exceeds the film safe width; split the equation "
+            "instead of shrinking it into unreadable pseudo-math."
+        )
+    return item
 
 
 def eyebrow(text: str) -> Text:
@@ -168,6 +193,33 @@ def assert_in_content(item, name: str) -> None:
             f"{name} leaves the caption-safe content band: "
             f"top={item.get_top()[1]:.3f}, bottom={item.get_bottom()[1]:.3f}, "
             f"allowed=[{CONTENT_BOTTOM:.3f}, {CONTENT_TOP:.3f}]"
+        )
+
+
+def assert_social_geometry() -> None:
+    if (
+        abs(float(config.frame_width) - SOCIAL_FRAME_WIDTH) > 0.01
+        or abs(float(config.frame_height) - SOCIAL_FRAME_HEIGHT) > 0.01
+        or abs(float(config.pixel_width) / float(config.pixel_height) - 0.8) > 0.001
+    ):
+        raise ValueError(
+            "FormalSLTSocial requires the native 4:5 configuration: "
+            f"frame={config.frame_width}x{config.frame_height}, "
+            f"pixels={config.pixel_width}x{config.pixel_height}"
+        )
+
+
+def assert_in_social_frame(item, name: str) -> None:
+    if (
+        item.get_left()[0] < SOCIAL_LEFT
+        or item.get_right()[0] > SOCIAL_RIGHT
+        or item.get_top()[1] > SOCIAL_TOP
+        or item.get_bottom()[1] < SOCIAL_BOTTOM
+    ):
+        raise ValueError(
+            f"{name} leaves the social-safe frame: "
+            f"left={item.get_left()[0]:.3f}, right={item.get_right()[0]:.3f}, "
+            f"top={item.get_top()[1]:.3f}, bottom={item.get_bottom()[1]:.3f}"
         )
 
 
@@ -280,8 +332,8 @@ def topic_card(text: str, *, active: bool = False, width: float = 3.5) -> VGroup
     return VGroup(box, copy)
 
 
-def formula_chip(text: str, size: float = FORMULA_SIZE, color: str = SOFT_CYAN) -> VGroup:
-    copy = code(text, size, color)
+def equation_chip(latex: str, size: float = 32, color: str = SOFT_CYAN) -> VGroup:
+    copy = math_display(latex, size, color)
     box = RoundedRectangle(
         width=copy.width + 0.44,
         height=copy.height + 0.24,
@@ -295,13 +347,13 @@ def formula_chip(text: str, size: float = FORMULA_SIZE, color: str = SOFT_CYAN) 
     return VGroup(box, copy)
 
 
-def formula_row(name: str, formula: str, size: float = FORMULA_SIZE) -> VGroup:
-    """A muted route name followed by the checked bound shape in code font."""
+def equation_row(name: str, latex: str, size: float = 30) -> VGroup:
+    """A readable route label followed by a theorem-faithful TeX display."""
     tag = label(name, 23, MUTED, "BOLD")
-    chip = formula_chip(formula, size)
-    row = VGroup(tag, chip).arrange(RIGHT, buff=0.30)
+    equation = math_display(latex, size)
+    row = VGroup(tag, equation).arrange(RIGHT, buff=0.30)
     if row.width > 12.0:
-        raise ValueError(f"Formula row exceeds the film safe width: {name!r}")
+        raise ValueError(f"Equation row exceeds the film safe width: {name!r}")
     return row
 
 
@@ -348,7 +400,7 @@ class FormalSLTOverview(Scene):
         self.close()
 
     def on_cue(self, scene_name: str) -> None:
-        """Fail the render if a scene starts off its soundtrack cue."""
+        """Fail the render if a scene starts off its reviewed boundary."""
         expected = self.scene_starts[scene_name]
         actual = float(self.renderer.time)
         if abs(actual - expected) > SCENE_CLOCK_TOLERANCE:
@@ -382,20 +434,27 @@ class FormalSLTOverview(Scene):
 
     def intro(self) -> None:
         self.on_cue("intro")
-        mark = brand_mark().shift(UP * 1.55)
-        title = label("FormalSLT", 75, IVORY, "BOLD")
-        title.next_to(mark, DOWN, buff=0.36)
-        subtitle = label(
-            "Machine-checked statistical learning in Lean.",
-            34,
+        mark = brand_mark().shift(UP * 1.72)
+        title = label("FormalSLT", 72, IVORY, "BOLD")
+        title.next_to(mark, DOWN, buff=0.28)
+        hook = label(
+            "Repeated monitoring can break fixed-time guarantees",
+            32,
             IVORY,
-            "MEDIUM",
+            "BOLD",
         )
-        subtitle.next_to(title, DOWN, buff=0.22)
-        scope = label(
-            "VC · Rademacher · chaining · PAC-Bayes · sequential · dependent data",
-            24,
+        hook.next_to(title, DOWN, buff=0.18)
+        subtitle = label(
+            "One checked event can cover repeated looks.",
+            26,
             CYAN,
+            "BOLD",
+        )
+        subtitle.next_to(hook, DOWN, buff=0.18)
+        scope = label(
+            "Then builds outward: VC  ·  PAC-Bayes  ·  e-processes  ·  dependent data",
+            21,
+            MUTED,
             "MEDIUM",
         )
         scope.next_to(subtitle, DOWN, buff=0.36)
@@ -407,12 +466,13 @@ class FormalSLTOverview(Scene):
             "BOLD",
             CODE_FONT,
         ).to_edge(DOWN, buff=0.42)
-        assert_in_frame(VGroup(mark, title, subtitle, scope, band, stamp), "intro")
+        assert_in_frame(VGroup(mark, title, hook, subtitle, scope, band, stamp), "intro")
         assert_no_overlap(scope, band, "intro band")
         assert_no_overlap(band, stamp, "intro stamp")
 
         self.play(Create(mark), Create(band), run_time=0.8)
-        self.play(FadeIn(title, shift=UP * 0.08), FadeIn(subtitle, shift=UP * 0.12), run_time=0.75)
+        self.play(FadeIn(title, shift=UP * 0.08), FadeIn(hook, shift=UP * 0.12), run_time=0.75)
+        self.play(FadeIn(subtitle), run_time=0.35)
         self.play(FadeIn(scope), FadeIn(stamp), run_time=0.55)
         self.hold_until("field_map")
         self.clear_for_next()
@@ -420,8 +480,8 @@ class FormalSLTOverview(Scene):
     def field_map(self) -> None:
         self.on_cue("field_map")
         head = caption(
-            "One library across the field",
-            "Classical generalization and modern sequential inference.",
+            "One proof stack, multiple regimes",
+            "From fixed samples to adaptive and dependent data.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
@@ -479,8 +539,8 @@ class FormalSLTOverview(Scene):
             [topics[index].get_center() for index in (0, 1, 2, 5, 4, 3)]
         )
         thesis = label(
-            "Capacity  ·  complexity  ·  selection  ·  time  ·  dependence",
-            28,
+            "fixed sample  →  selection  →  repeated looks  →  dependent paths",
+            26,
             CYAN,
             "BOLD",
         ).next_to(topics, DOWN, buff=0.42)
@@ -498,7 +558,10 @@ class FormalSLTOverview(Scene):
         self.play(Create(links), run_time=0.8)
         self.add(center)
         self.play(MoveAlongPath(center, route, rate_func=linear), run_time=1.6)
-        self.play(FadeOut(center), FadeIn(thesis, shift=UP * 0.08), run_time=0.7)
+        # Same-position copy must not cross-fade: intermediate frames read as
+        # doubled text, particularly after mobile downscaling.
+        self.play(FadeOut(center), run_time=0.25)
+        self.play(FadeIn(thesis, shift=UP * 0.08), run_time=0.45)
         self.hold_until("classical_spine")
         self.clear_for_next()
 
@@ -517,9 +580,9 @@ class FormalSLTOverview(Scene):
             )
         ]).arrange(RIGHT, buff=0.48).move_to(UP * 1.05)
         lower = VGroup(
-            topic_card("Covering numbers", width=3.25),
+            topic_card("Metric entropy", width=3.25),
             topic_card("Chaining", active=True, width=2.65),
-        ).arrange(RIGHT, buff=0.72).move_to(DOWN * 0.22 + LEFT * 0.85)
+        ).arrange(RIGHT, buff=0.72).move_to(DOWN * 0.22 + LEFT * 1.15)
 
         top_arrows = VGroup(*[
             Arrow(
@@ -560,23 +623,26 @@ class FormalSLTOverview(Scene):
 
         # Bound shapes copied from the pinned declarations; the extractor
         # checks the leading constants 2 and 8 and the sqrt / exp forms.
-        vc_route = formula_row(
-            "VC route",
-            "P[ excess risk ≥ 4√(2d·log(en/d)/n) + 2ε ] ≤ 2·exp(−ε²n/8)",
-            20,
+        vc_route = equation_row(
+            "VC tail",
+            r"\mathbb{P}\!\left(R(\widehat h_S)-R(h^\star)\ge "
+            r"4\sqrt{\frac{2d\log(en/d)}{n}}+2\varepsilon\right)"
+            r"\le 2e^{-\varepsilon^2n/8}",
+            27,
         )
-        entropy_route = formula_row(
-            "Entropy route",
-            "E[ generalization gap ] ≤ 8·√(2/n) · ∫ √(log N(ε)) dε",
-            20,
+        entropy_route = equation_row(
+            "Entropy mean",
+            r"\mathbb{E}_S[\operatorname{gap}(S)]\le "
+            r"8\sqrt{\frac{2}{n}}\!\int_{r/2^{m+1}}^{r/2}"
+            r"\sqrt{\log N(\varepsilon)}\,d\varepsilon",
+            26,
         )
-        routes = VGroup(vc_route, entropy_route).arrange(
-            DOWN, aligned_edge=LEFT, buff=0.14
-        )
-        routes.move_to(DOWN * 1.46)
-        assert_in_content(VGroup(top, lower, routes), "classical learning routes")
-        assert_in_frame(VGroup(top, lower, routes), "classical learning routes")
-        assert_no_overlap(lower, routes, "classical routes vs formulas")
+        vc_route.move_to(DOWN * 1.42)
+        entropy_route.move_to(DOWN * 1.42)
+        for route_name, route in (("VC", vc_route), ("entropy", entropy_route)):
+            assert_in_content(VGroup(top, lower, route), f"{route_name} learning route")
+            assert_in_frame(VGroup(top, lower, route), f"{route_name} learning route")
+            assert_no_overlap(lower, route, f"classical map vs {route_name} equation")
 
         self.play(
             LaggedStart(
@@ -601,7 +667,9 @@ class FormalSLTOverview(Scene):
             run_time=0.7,
         )
         self.play(FadeIn(vc_route, shift=UP * 0.08), run_time=0.5)
-        self.play(FadeIn(entropy_route, shift=UP * 0.08), run_time=0.5)
+        self.wait(0.35)
+        self.play(FadeOut(vc_route, shift=UP * 0.05), run_time=0.25)
+        self.play(FadeIn(entropy_route, shift=UP * 0.05), run_time=0.40)
         self.hold_until("pac_bayes")
         self.clear_for_next()
 
@@ -638,18 +706,21 @@ class FormalSLTOverview(Scene):
         choices_label = label("every allowed ρ", 22, MUTED, "BOLD").next_to(
             posterior_choices, DOWN, buff=0.10
         )
-        kl = formula_chip("selection cost:  KL(ρ ‖ π)", 28, CYAN)
+        kl = VGroup(
+            label("selection cost", 23, MUTED, "BOLD"),
+            equation_chip(r"\mathrm{KL}(\rho\Vert\pi)", 34, CYAN),
+        ).arrange(RIGHT, buff=0.24)
         kl.move_to(DOWN * 0.38 + LEFT * 0.45)
         guarantee = label(
-            "One event covers every allowed posterior.",
-            30,
+            "One event covers every allowed posterior and declared tilt.",
+            28,
             IVORY,
             "BOLD",
         ).next_to(kl, DOWN, buff=0.24).set_x(0)
-        delta = formula_row(
-            "Checked",
-            "P[ the bound fails for some allowed ρ ] ≤ δ",
-            20,
+        delta = math_display(
+            r"\mathbb{P}\!\left(\exists\,\rho,j,n:\ "
+            r"\text{the declared bound fails}\right)\le\delta",
+            31,
         ).next_to(guarantee, DOWN, buff=0.18).set_x(0)
         scene = VGroup(
             prior, data, data_label, posterior, posterior_choices, choices_label,
@@ -710,13 +781,18 @@ class FormalSLTOverview(Scene):
             assert_no_overlap(band_label, probe, f"anytime band label vs look at {x}")
             assert_no_overlap(band_label, probe_label, f"anytime band label vs look label at {x}")
 
-        eprocess = formula_row("E-process", "P[ max E_k ≥ 1/α ] ≤ α", 20)
+        eprocess = equation_row(
+            "E-process",
+            r"\mathbb{P}\!\left(\max_{k\le n}E_k\ge\frac{1}{\alpha}\right)"
+            r"\le\alpha",
+            32,
+        )
         eprocess.move_to(DOWN * 1.30)
         quantifier = VGroup(
-            label("ONE EVENT", LABEL_SIZE, CYAN, "BOLD"),
-            label("EVERY TIME", LABEL_SIZE, IVORY, "BOLD"),
-            label("EVERY DECLARED CHOICE", LABEL_SIZE, IVORY, "BOLD"),
-        ).arrange(RIGHT, buff=0.9).move_to(DOWN * 1.88)
+            label("ONE EVENT", 23, CYAN, "BOLD"),
+            label("EVERY TIME", 23, IVORY, "BOLD"),
+            label("EVERY DECLARED CHOICE", 23, IVORY, "BOLD"),
+        ).arrange(RIGHT, buff=0.72).move_to(DOWN * 1.93)
         assert_in_content(VGroup(axes, band_label, eprocess, quantifier), "anytime scene")
         assert_no_overlap(axes, eprocess, "anytime axes vs e-process")
         assert_no_overlap(band_label, eprocess, "anytime band label vs e-process")
@@ -745,18 +821,18 @@ class FormalSLTOverview(Scene):
     def dependent_path(self) -> None:
         self.on_cue("dependent_path")
         head = caption(
-            "Learning along a path",
-            "Choose from the prefix. Score before the next state.",
+            "Guarantees under dependent data",
+            "Use the prefix. Fix the next score before the next state.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
-        base_y = 0.30
+        base_y = 0.24
         centers = [
-            np.array([-6.05, base_y + 0.00, 0]),
-            np.array([-5.05, base_y + 0.50, 0]),
-            np.array([-4.05, base_y - 0.28, 0]),
-            np.array([-3.00, base_y + 0.36, 0]),
-            np.array([-1.90, base_y - 0.18, 0]),
+            np.array([-5.70, base_y + 0.00, 0]),
+            np.array([-4.82, base_y + 0.46, 0]),
+            np.array([-3.94, base_y - 0.26, 0]),
+            np.array([-3.02, base_y + 0.34, 0]),
+            np.array([-2.08, base_y - 0.16, 0]),
         ]
         nodes = VGroup(*[Circle(radius=0.24, color=IVORY, stroke_width=2.6).move_to(p) for p in centers])
         arrows = VGroup(*[
@@ -775,45 +851,46 @@ class FormalSLTOverview(Scene):
             memory.add(arc)
 
         history = label("OBSERVED PREFIX", 24, CYAN, "BOLD")
-        history.next_to(memory, UP, buff=0.06)
+        history.next_to(memory, UP, buff=0.12)
         choice = VGroup(
             label("posterior + tilt", 24, CYAN, "BOLD"),
-            label("chosen from the prefix", 27, IVORY, "BOLD"),
-        ).arrange(DOWN, buff=0.08).next_to(nodes, DOWN, buff=0.40)
+            label("may use the prefix", 27, IVORY, "BOLD"),
+        ).arrange(DOWN, buff=0.08).next_to(nodes, DOWN, buff=0.34)
 
         bridge = Arrow(
-            LEFT * 1.15 + UP * base_y,
-            RIGHT * 1.25 + UP * base_y,
+            LEFT * 0.72 + UP * base_y,
+            RIGHT * 1.38 + UP * base_y,
             color=CYAN,
             stroke_width=4,
             buff=0.05,
         )
         bridge_label = label("Poisson correction", 25, CYAN, "BOLD")
-        bridge_label.next_to(bridge, UP, buff=0.18)
+        bridge_label.next_to(bridge, UP, buff=0.28)
 
-        ring_center = RIGHT * 4.35 + UP * base_y
-        orbit = Circle(radius=1.12, color=DEEP, stroke_width=3).move_to(ring_center)
+        ring_center = RIGHT * 4.15 + UP * base_y
+        orbit = Circle(radius=1.02, color=DEEP, stroke_width=3).move_to(ring_center)
         orbit_nodes = VGroup(*[
-            Dot(ring_center + 1.12 * np.array([np.cos(a), np.sin(a), 0]), radius=0.08, color=CYAN)
+            Dot(ring_center + 1.02 * np.array([np.cos(a), np.sin(a), 0]), radius=0.08, color=CYAN)
             for a in np.linspace(0, 2 * np.pi, 9)[:-1]
         ])
-        pi = label("π", 40, IVORY, "BOLD", CODE_FONT).move_to(ring_center)
+        pi = math_display(r"\pi", 52, IVORY).move_to(ring_center)
         stationary_title = label("stationary risk", 27, MUTED, "BOLD")
         stationary_title.next_to(orbit, DOWN, buff=0.16)
 
         result = VGroup(
             label(
-                "SUPPLIED INVARIANT LAW  ·  POISSON POTENTIAL",
+                "SUPPLIED: INVARIANT LAW  ·  POISSON POTENTIAL",
                 18,
                 MUTED,
                 "BOLD",
             ),
             label("path evidence  →  stationary risk", 26, IVORY, "BOLD"),
-        ).arrange(DOWN, buff=0.05).move_to(DOWN * 1.77 + RIGHT * 1.65)
+        ).arrange(DOWN, buff=0.05).move_to(DOWN * 1.76 + RIGHT * 1.65)
         scene = VGroup(
             memory,
             history,
             nodes,
+            arrows,
             choice,
             bridge,
             bridge_label,
@@ -826,7 +903,18 @@ class FormalSLTOverview(Scene):
         assert_in_content(scene, "dependent path scene")
         assert_in_frame(scene, "dependent path scene")
         assert_no_overlap(stationary_title, bridge_label, "dependent path labels")
-        assert_no_overlap(bridge_label, memory, "dependent path bridge vs prefix arcs")
+        assert_no_overlap(
+            bridge_label,
+            memory,
+            "dependent path bridge vs prefix arcs",
+            gap=0.30,
+        )
+        assert_no_overlap(
+            bridge,
+            memory,
+            "dependent path bridge vs prefix arcs",
+            gap=0.20,
+        )
         assert_no_overlap(choice, result, "dependent path choice vs result")
         assert_no_overlap(stationary_title, result, "dependent path stationary vs result")
         self.play(LaggedStart(*[GrowFromCenter(n) for n in nodes], lag_ratio=0.09), run_time=0.9)
@@ -877,21 +965,29 @@ class FormalSLTOverview(Scene):
             max_tip_length_to_length_ratio=0.20,
         )
         collapse_label = label("one parameter", 23, MUTED, "BOLD").next_to(collapse, UP, buff=0.12)
-        identity = VGroup(
-            label("row TV = hit-rate gap", 34, IVORY, "BOLD"),
-            label("EXACT FOR EVERY PHYSICAL ROW", 22, CYAN, "BOLD"),
-        ).arrange(RIGHT, buff=0.40).move_to(DOWN * 0.85)
-        formulas = VGroup(
-            code("p_hit(γ) = (1 + 23γ) / 24", 24),
-            code("TV(row γ, row γ′) = |p_γ − p_γ′|", 24),
-        ).arrange(RIGHT, buff=0.70).move_to(DOWN * 1.40)
+        identity = label(
+            "Exact transfer for every physical row",
+            24,
+            IVORY,
+            "BOLD",
+        ).move_to(DOWN * 0.53 + RIGHT * 0.80)
+        hit_formula = math_display(
+            r"p_{\mathrm{hit}}(\gamma)=\frac{1+23\gamma}{24}",
+            34,
+        ).move_to(DOWN * 1.22 + RIGHT * 0.80)
+        tv_formula = math_display(
+            r"\left\lVert P_{\gamma}(x,a,\cdot)-P_{\gamma_c}(x,a,\cdot)"
+            r"\right\rVert_{\mathrm{TV}}="
+            r"\left|p_{\mathrm{hit}}(\gamma)-p_{\mathrm{hit}}(\gamma_c)\right|",
+            29,
+        ).move_to(DOWN * 1.22 + RIGHT * 0.80)
         scope = label(
             "Declared refresh family  ·  not a membership test",
-            24,
+            20,
             AMBER,
             "BOLD",
-        ).move_to(DOWN * 1.88)
-        scene = VGroup(
+        ).move_to(DOWN * 1.93 + RIGHT * 0.80)
+        common_scene = VGroup(
             grid,
             generic_count,
             hit,
@@ -899,15 +995,28 @@ class FormalSLTOverview(Scene):
             collapse,
             collapse_label,
             identity,
-            formulas,
             scope,
         )
-        assert_in_content(scene, "queue case study")
-        assert_in_frame(scene, "queue case study")
+        for formula_name, formula in (
+            ("hit-rate formula", hit_formula),
+            ("TV transfer formula", tv_formula),
+        ):
+            scene = VGroup(common_scene, formula)
+            assert_in_content(scene, f"queue case study {formula_name}")
+            assert_in_frame(scene, f"queue case study {formula_name}")
+            assert_no_overlap(
+                identity,
+                formula,
+                f"queue identity vs {formula_name}",
+                gap=0.10,
+            )
+            assert_no_overlap(
+                formula,
+                scope,
+                f"queue {formula_name} vs scope",
+            )
         assert_no_overlap(scalar_count, hit, "queue scalar label", gap=0.10)
         assert_no_overlap(grid, identity, "queue grid vs identity")
-        assert_no_overlap(identity, formulas, "queue identity vs formulas")
-        assert_no_overlap(formulas, scope, "queue formulas vs scope")
         assert_no_overlap(collapse_label, generic_count, "queue arrow label vs count")
         assert_no_overlap(collapse_label, scalar_count, "queue arrow label vs scalar")
 
@@ -924,7 +1033,10 @@ class FormalSLTOverview(Scene):
         self.remove(ghost)
         self.add(hit)
         self.play(FadeIn(identity, shift=UP * 0.08), run_time=0.7)
-        self.play(FadeIn(formulas, shift=UP * 0.06), run_time=0.5)
+        self.play(FadeIn(hit_formula, shift=UP * 0.06), run_time=0.45)
+        self.wait(0.55)
+        self.play(FadeOut(hit_formula, shift=UP * 0.04), run_time=0.25)
+        self.play(FadeIn(tv_formula, shift=UP * 0.04), run_time=0.40)
         self.play(FadeIn(scope), run_time=0.45)
         self.hold_until("proof_map")
         self.clear_for_next()
@@ -932,62 +1044,82 @@ class FormalSLTOverview(Scene):
     def proof_map(self) -> None:
         self.on_cue("proof_map")
         head = caption(
-            "Reusable results across the field",
-            "Four checked declarations. The queue is one application.",
+            "Representative checked interfaces",
+            "Four theorem anchors from a wider, reusable library.",
         )
         self.play(FadeIn(head), run_time=0.6)
 
         anchors = FACTS["film_anchors"]
-        rows = VGroup()
-        rails = VGroup()
-        names = VGroup()
+        summaries = (
+            "binary zero-one loss",
+            "finite metric-entropy endpoint",
+            "posterior + tilt + time",
+            "adaptive dependent trajectories",
+        )
+        source_labels = (
+            "VC · BinaryCapstone",
+            "Rademacher · MetricEntropy",
+            "PACBayes · TimeUniform",
+            "StochasticDynamics · Trajectory EB",
+        )
+        cards = VGroup()
         for index, anchor in enumerate(anchors):
-            number = code(f"{index + 1:02d}", 20, CYAN)
-            title = label(anchor["label"].replace("-", "–", 1), 26, IVORY, "BOLD")
-            name = code(anchor["name"], 20, MUTED)
-            if name.width > 11.45:
-                raise ValueError(f"Declaration name does not fit the ledger: {anchor['name']}")
-            body = VGroup(title, name).arrange(DOWN, aligned_edge=LEFT, buff=0.07)
-            number.next_to(body, LEFT, buff=0.28).align_to(title, UP)
-            row = VGroup(number, body)
-            rows.add(row)
-            names.add(name)
-        rows.arrange(DOWN, aligned_edge=LEFT, buff=0.22)
-        rows.move_to(DOWN * 0.18)
-        for index, row in enumerate(rows):
-            active = index in (0, 3)
-            rail = Line(
-                row.get_top() + LEFT * 0.0,
-                row.get_bottom(),
-                color=CYAN if active else DEEP,
-                stroke_width=4 if active else 2.5,
-            ).next_to(row, LEFT, buff=0.22)
-            rails.add(rail)
-        source_stamp = label(
-            f"DECLARATIONS AND FILES PINNED AT  {FACTS['short_commit']}  ·  media/formalslt-overview/facts.json",
-            18,
-            MUTED,
-            "BOLD",
-            CODE_FONT,
-        ).to_edge(DOWN, buff=0.50)
-        if rows.width + 0.35 > 12.6:
-            raise ValueError("Proof ledger exceeds the film safe width")
-        assert_in_content(rows, "proof ledger")
-        assert_in_frame(VGroup(rows, rails, source_stamp), "proof map")
-        assert_no_overlap(rows, source_stamp, "proof ledger vs stamp")
+            badge = VGroup(
+                code(f"{index + 1:02d}", 18, CYAN),
+                label("LEAN-CHECKED", 17, CYAN, "BOLD"),
+            ).arrange(RIGHT, buff=0.18)
+            title = label(
+                anchor["label"].replace("-", "–", 1),
+                25,
+                IVORY,
+                "BOLD",
+            )
+            scope = label(summaries[index], 20, MUTED, "MEDIUM")
+            source = code(source_labels[index], 16, MUTED)
+            copy = VGroup(badge, title, scope, source).arrange(
+                DOWN,
+                aligned_edge=LEFT,
+                buff=0.06,
+            )
+            box = RoundedRectangle(
+                width=5.72,
+                height=1.40,
+                corner_radius=0.12,
+                color=CYAN if index in (0, 3) else DEEP,
+                stroke_width=2.4,
+                fill_color="#0B1625",
+                fill_opacity=0.98,
+            )
+            copy.move_to(box).align_to(box, LEFT).shift(RIGHT * 0.28)
+            cards.add(VGroup(box, copy))
+        cards.arrange_in_grid(rows=2, cols=2, buff=(0.34, 0.26)).move_to(DOWN * 0.18)
+        source_stamp = VGroup(
+            label(
+                f"SOURCE-PINNED AT  {FACTS['short_commit']}",
+                18,
+                CYAN,
+                "BOLD",
+                CODE_FONT,
+            ),
+            label(
+                "Exact declarations and files: facts.json",
+                17,
+                MUTED,
+                "BOLD",
+                CODE_FONT,
+            ),
+        ).arrange(DOWN, buff=0.05).to_edge(DOWN, buff=0.42)
+        assert_in_content(cards, "proof cards")
+        assert_in_frame(VGroup(cards, source_stamp), "proof map")
+        assert_no_overlap(cards, source_stamp, "proof cards vs stamp")
 
         self.play(
             LaggedStart(
-                *[FadeIn(VGroup(row[0], row[1][0]), shift=UP * 0.1) for row in rows],
+                *[FadeIn(card, shift=UP * 0.1) for card in cards],
                 lag_ratio=0.12,
             ),
-            run_time=0.9,
+            run_time=1.2,
         )
-        self.play(
-            LaggedStart(*[FadeIn(name, shift=RIGHT * 0.08) for name in names], lag_ratio=0.15),
-            run_time=0.7,
-        )
-        self.play(Create(rails), run_time=0.8)
         self.play(FadeIn(source_stamp), run_time=0.6)
         self.hold_until("close")
         self.clear_for_next()
@@ -998,16 +1130,16 @@ class FormalSLTOverview(Scene):
         final = label("FormalSLT", 70, IVORY, "BOLD")
         final.next_to(mark, DOWN, buff=0.34)
         line = label(
-            "A Lean foundation for statistical learning",
+            "Reusable Lean infrastructure for statistical guarantees",
             31,
             CYAN,
             "MEDIUM",
         )
         line.next_to(final, DOWN, buff=0.22)
         second_line = label(
-            "and modern finite-sample inference.",
-            31,
-            CYAN,
+            "From classical generalization to adaptive data.",
+            27,
+            MUTED,
             "MEDIUM",
         ).next_to(line, DOWN, buff=0.08)
         url = label("github.com/Robby955/FormalSLT", 23, MUTED, "MEDIUM", CODE_FONT)
@@ -1023,11 +1155,12 @@ class FormalSLTOverview(Scene):
 
 
 class FormalSLTSocial(FormalSLTOverview):
-    """Short cut with all explanatory text burned into the frame."""
+    """Native 4:5 short cut with a mobile-first composition."""
 
     scene_starts = SOCIAL_SCENE_STARTS
 
     def construct(self) -> None:
+        assert_social_geometry()
         self.social_hook()
         self.social_spine()
         self.social_close()
@@ -1035,26 +1168,36 @@ class FormalSLTSocial(FormalSLTOverview):
     def social_hook(self) -> None:
         self.on_cue("social_hook")
         brand = eyebrow("FORMALSLT")
-        brand.to_edge(LEFT, buff=0.72).to_edge(UP, buff=0.48)
+        brand.move_to(UP * 3.32)
         title = text_lines(
-            ["Machine-checked", "statistical learning"],
-            48,
+            ["Repeated monitoring", "breaks fixed-time", "guarantees"],
+            35,
             IVORY,
             "BOLD",
-            buff=0.04,
-        )
-        title.to_edge(LEFT, buff=0.72).shift(UP * 0.28)
-        sub = label("Built in Lean", 31, CYAN, "BOLD")
-        sub.next_to(title, DOWN, aligned_edge=LEFT, buff=0.34)
+            buff=0.06,
+        ).move_to(UP * 2.25)
+        sub = text_lines(
+            [
+                "One checked event can cover repeated looks.",
+                "Then build reusable proof infrastructure",
+                "across statistical regimes.",
+            ],
+            21,
+            MUTED,
+            "MEDIUM",
+            buff=0.06,
+        ).move_to(UP * 0.86)
         topics = VGroup(*[
-            topic_card(name, active=index in (0, 3), width=2.75)
+            topic_card(name, active=index in (0, 3), width=2.72)
             for index, name in enumerate(
-                ["VC", "Rademacher", "Chaining", "PAC-Bayes", "Anytime", "Dependent data"]
+                ["VC", "Rademacher", "Chaining", "PAC-Bayes", "E-processes", "Dependent data"]
             )
-        ]).arrange_in_grid(rows=3, cols=2, buff=(0.32, 0.25)).move_to(RIGHT * 3.50)
-        left_column = VGroup(brand, title, sub)
-        assert_horizontal_gap(left_column, topics, "social hook", gap=0.35)
-        assert_in_frame(VGroup(left_column, topics), "social hook")
+        ]).arrange_in_grid(rows=3, cols=2, buff=(0.28, 0.23)).move_to(DOWN * 1.53)
+        composition = VGroup(brand, title, sub, topics)
+        assert_in_social_frame(composition, "social hook")
+        assert_no_overlap(brand, title, "social brand vs title", gap=0.16)
+        assert_no_overlap(title, sub, "social title vs subtitle", gap=0.18)
+        assert_no_overlap(sub, topics, "social subtitle vs topics", gap=0.22)
         self.play(
             FadeIn(brand),
             FadeIn(title, shift=UP * 0.12),
@@ -1070,72 +1213,113 @@ class FormalSLTSocial(FormalSLTOverview):
 
     def social_spine(self) -> None:
         self.on_cue("social_spine")
-        head = caption(
-            "From classical theory to adaptive data",
-            "Capacity bounds meet sequential inference.",
-        )
+        head = text_lines(
+            ["One proof stack", "across statistical regimes"],
+            34,
+            IVORY,
+            "BOLD",
+            buff=0.04,
+        ).move_to(UP * 3.10)
+        detail = text_lines(
+            ["Fixed samples to adaptive selection,", "repeated looks, and dependent paths."],
+            21,
+            MUTED,
+            "MEDIUM",
+            buff=0.04,
+        ).move_to(UP * 2.15)
         self.play(FadeIn(head), run_time=0.5)
-        names = ["VC", "Rad", "PAC", "Seq", "Path"]
-        roles = ["capacity", "complexity", "selection", "time", "dependence"]
-        nodes = VGroup(*[
-            VGroup(
-                Circle(radius=0.55, color=CYAN if index in (0, 4) else DEEP, stroke_width=3.0),
-                label(name, 30, IVORY, "BOLD"),
+
+        stages = (
+            ("01  FIXED SAMPLE", "VC + metric entropy"),
+            ("02  SELECT AFTER DATA", "PAC-Bayes"),
+            ("03  REPEATED LOOKS", "e-processes"),
+            ("04  DEPENDENT PATH", "trajectory guarantees"),
+        )
+        cards = VGroup()
+        for index, (stage, result) in enumerate(stages):
+            box = RoundedRectangle(
+                width=5.35,
+                height=0.95,
+                corner_radius=0.12,
+                color=CYAN if index in (0, 3) else DEEP,
+                stroke_width=2.2,
+                fill_color="#0B1625",
+                fill_opacity=0.98,
             )
-            for index, name in enumerate(names)
-        ]).arrange(RIGHT, buff=1.05).shift(UP * 0.30)
-        for node in nodes:
-            node[1].move_to(node[0])
-        role_labels = VGroup(*[
-            label(role, 23, MUTED, "BOLD").next_to(node, DOWN, buff=0.18)
-            for role, node in zip(roles, nodes)
-        ])
+            stage_label = label(stage, 17, CYAN, "BOLD", CODE_FONT)
+            result_label = label(result, 21, IVORY, "BOLD")
+            copy = VGroup(stage_label, result_label).arrange(
+                DOWN,
+                aligned_edge=LEFT,
+                buff=0.04,
+            )
+            copy.move_to(box).align_to(box, LEFT).shift(RIGHT * 0.24)
+            cards.add(VGroup(box, copy))
+        cards.arrange(DOWN, buff=0.22).move_to(DOWN * 0.59)
         arrows = VGroup(*[
-            Arrow(
-                nodes[index][0].get_right(),
-                nodes[index + 1][0].get_left(),
-                buff=0.10,
+            Line(
+                cards[index][0].get_bottom(),
+                cards[index + 1][0].get_top(),
                 color=MUTED,
-                stroke_width=2.3,
-                max_tip_length_to_length_ratio=0.18,
+                stroke_width=2.0,
             )
-            for index in range(len(nodes) - 1)
+            for index in range(len(cards) - 1)
         ])
         line = label(
-            "generalization  ·  selection  ·  repeated looks  ·  dependence",
-            27,
+            "ONE REUSABLE PROOF STACK",
+            22,
             CYAN,
             "BOLD",
-        ).next_to(role_labels, DOWN, buff=0.55)
-        assert_in_content(VGroup(nodes, role_labels, line), "social theorem spine")
-        assert_in_frame(VGroup(nodes, role_labels, line), "social theorem spine")
-        for first, second in zip(role_labels[:-1], role_labels[1:]):
-            assert_no_overlap(first, second, "social role labels")
-        self.play(LaggedStart(*[GrowFromCenter(node) for node in nodes], lag_ratio=0.10), run_time=0.7)
-        self.play(Create(arrows), FadeIn(role_labels), run_time=0.8)
+            CODE_FONT,
+        ).move_to(DOWN * 3.28)
+        composition = VGroup(head, detail, cards, arrows, line)
+        assert_in_social_frame(composition, "social theorem spine")
+        assert_no_overlap(head, detail, "social spine heading vs detail", gap=0.14)
+        assert_no_overlap(detail, cards, "social spine detail vs cards", gap=0.18)
+        assert_no_overlap(cards, line, "social spine cards vs conclusion", gap=0.20)
+        self.play(FadeIn(detail), run_time=0.35)
+        self.play(LaggedStart(*[FadeIn(card, shift=UP * 0.08) for card in cards], lag_ratio=0.10), run_time=0.8)
+        self.play(Create(arrows), run_time=0.55)
         self.play(FadeIn(line, shift=UP * 0.08), run_time=0.7)
         self.hold_until("social_close")
         self.clear_for_next()
 
     def social_close(self) -> None:
         self.on_cue("social_close")
-        mark = play_mark(radius=0.42).shift(UP * 1.55)
-        title = label("FormalSLT", 70, IVORY, "BOLD")
+        mark = play_mark(radius=0.42).shift(UP * 2.25)
+        title = label("FormalSLT", 64, IVORY, "BOLD")
         title.next_to(mark, DOWN, buff=0.32)
-        line = label("Statistical learning theory, checked in Lean", 31, CYAN, "MEDIUM")
-        line.next_to(title, DOWN, buff=0.2)
+        line = text_lines(
+            ["Reusable Lean infrastructure", "for statistical guarantees"],
+            29,
+            CYAN,
+            "BOLD",
+            buff=0.04,
+        ).next_to(title, DOWN, buff=0.24)
+        scope = text_lines(
+            ["VC  ·  PAC-Bayes  ·  e-processes", "dependent-data inference"],
+            21,
+            MUTED,
+            "MEDIUM",
+            buff=0.05,
+        ).next_to(line, DOWN, buff=0.28)
         url = label(
             "github.com/Robby955/FormalSLT",
-            24,
+            20,
             IVORY,
             "BOLD",
             CODE_FONT,
-        ).next_to(line, DOWN, buff=0.38)
-        band = band_motif(opacity=0.18).move_to(DOWN * 2.55)
+        ).next_to(scope, DOWN, buff=0.42)
+        band = band_motif(width=5.25, height=0.55, opacity=0.18).move_to(DOWN * 2.92)
+        composition = VGroup(mark, title, line, scope, url, band)
+        assert_in_social_frame(composition, "social closing lockup")
+        assert_no_overlap(title, line, "social closing title vs hook", gap=0.12)
+        assert_no_overlap(line, scope, "social closing hook vs scope", gap=0.14)
+        assert_no_overlap(scope, url, "social closing scope vs URL", gap=0.18)
         assert_no_overlap(url, band, "social closing band")
         self.play(FadeIn(mark), FadeIn(title), Create(band), run_time=0.75)
         self.play(FadeIn(line), run_time=0.55)
-        self.play(FadeIn(url), run_time=0.45)
+        self.play(FadeIn(scope), FadeIn(url), run_time=0.45)
         self.hold_until("end", clear=0.0)
 
 
@@ -1145,18 +1329,19 @@ class FormalSLTPoster(Scene):
     def construct(self) -> None:
         brand = label("FORMALSLT", 29, CYAN, "BOLD")
         title = text_lines(
-            ["Machine-checked", "statistical learning", "in Lean."],
-            50,
+            ["Keep checking.", "Keep the guarantee."],
+            42,
             IVORY,
             "BOLD",
             buff=0.04,
         )
         body = text_lines(
             [
-                "Classical generalization",
-                "through adaptive data",
+                "One checked event can cover",
+                "repeated looks.",
+                "Lean infrastructure builds outward.",
             ],
-            31,
+            25,
             MUTED,
             "MEDIUM",
             buff=0.08,
@@ -1174,7 +1359,7 @@ class FormalSLTPoster(Scene):
         topics = VGroup(*[
             topic_card(name, active=index in (0, 3), width=2.85)
             for index, name in enumerate(
-                ["VC theory", "Rademacher", "Chaining", "PAC-Bayes", "Anytime", "Dependent data"]
+                ["VC theory", "Rademacher", "Chaining", "PAC-Bayes", "E-processes", "Dependent data"]
             )
         ]).arrange_in_grid(rows=3, cols=2, buff=(0.32, 0.25)).move_to(RIGHT * 3.50)
         spine = Line(
