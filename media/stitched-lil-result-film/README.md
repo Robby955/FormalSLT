@@ -83,10 +83,12 @@ sample size under declared positive
 parameters (`sigma^2 = 0.08`, `b = 0.25`, `delta = 0.05`); only its sample path
 is illustrative.
 
-The original score is synthesized deterministically without samples or
-third-party audio. It uses finite mid-register swells, three restrained accents,
-and deliberate silence instead of a continuous sub-bass drone. Final receipts
-include peak, integrated loudness, loudness range, and true-peak measurements.
+The default score is synthesized deterministically without samples or
+third-party audio. A user-supplied Suno master may be selected only with the
+absolute-path, source-hash, and rights/provenance contract in `SOUNDTRACK.md`.
+Both modes produce source-bound receipts with loudness and true-peak
+measurements; external mode also binds the master, provenance, filters, and
+FFmpeg toolchain.
 
 ## Validate without Lean or a render
 
@@ -131,7 +133,7 @@ audio, and hash verification.
 - `film_config.json`: independent timing and resolution contracts.
 - `extract_facts.py`, `facts.json`, `claim-receipt.json`: exact-commit claim pin.
 - `stitched_lil_result.py`: both native compositions and posters.
-- `compose_soundtrack.py`, `SOUNDTRACK.md`: deterministic original score.
+- `compose_soundtrack.py`, `SOUNDTRACK.md`: built-in score and external-master contract.
 - `render.sh`, `verify_media.py`, `stage_delivery.py`: bounded render, receipt,
   and delivery pipeline.
 - `test_*.py`: source, layout, soundtrack, and receipt gates.

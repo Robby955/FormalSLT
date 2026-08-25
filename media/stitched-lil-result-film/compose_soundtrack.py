@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Synthesize the original sparse score for the stitched-LIL films.
+"""Build a source-bound soundtrack for the stitched-LIL films.
 
-The score is deterministic and sample-free. It uses finite harmonic swells,
-three restrained transition accents, and audible negative space. Generated WAV
-files are render intermediates and inherit the repository MIT license.
+The default score is deterministic and sample-free. An explicitly supplied
+external master can instead be trimmed and normalized when accompanied by a
+rights/provenance record whose source hash matches the master.
 """
 
 from __future__ import annotations
@@ -12,17 +12,25 @@ import argparse
 import hashlib
 import json
 import math
+import re
+import shutil
+import subprocess
 import sys
 import wave
 from array import array
 from dataclasses import asdict, dataclass
+from datetime import datetime
 from pathlib import Path
+from typing import Any
+from urllib.parse import urlparse
 
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 CONFIG = json.loads((PACKAGE_DIR / "film_config.json").read_text(encoding="utf-8"))
 
 SOUNDTRACK_ID = "formalslt-stitched-lil-sparse-score-v2"
+EXTERNAL_SOUNDTRACK_ID = "formalslt-stitched-lil-external-master-v1"
+EXTERNAL_PROVENANCE_SCHEMA = "formalslt-external-soundtrack-provenance-v1"
 SAMPLE_RATE = 48_000
 CHANNELS = 2
 SAMPLE_WIDTH_BYTES = 2
@@ -36,6 +44,13 @@ REFERENCE_DURATIONS = {
     "main": float(CONFIG["duration_seconds"]),
     "social": float(CONFIG["social"]["duration_seconds"]),
 }
+EXTERNAL_TRIM_START_SECONDS = {"main": 0.0, "social": 0.0}
+EXTERNAL_FADE_IN_SECONDS = 0.75
+EXTERNAL_FADE_OUT_SECONDS = 2.0
+EXTERNAL_TARGET_I_LUFS = -22.0
+EXTERNAL_TARGET_LRA_LU = 7.0
+EXTERNAL_TARGET_TP_DBFS = -3.5
+SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 
 
 @dataclass(frozen=True)
@@ -113,6 +128,335 @@ def _write_metadata(path: Path, metadata: dict[str, object]) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     temporary.replace(path)
+
+
+def _resolve_executable(value: str, label: str) -> Path:
+    candidate = Path(value)
+    resolved = candidate if candidate.is_absolute() else Path(shutil.which(value) or "")
+    if not str(resolved) or not resolved.is_file():
+        raise ValueError(f"{label} executable was not found: {value}")
+    return resolved.resolve()
+
+
+def _iso8601_utc(value: Any, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"missing {label}")
+    normalized = value.strip().replace("Z", "+00:00")
+    try:
+        parsed = datetime.fromisoformat(normalized)
+    except ValueError as error:
+        raise ValueError(f"invalid {label}: {value!r}") from error
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        raise ValueError(f"{label} must include a UTC offset")
+    return value.strip()
+
+
+def validate_external_provenance(
+    provenance_path: Path,
+    master_path: Path,
+) -> dict[str, Any]:
+    if not master_path.is_absolute() or not provenance_path.is_absolute():
+        raise ValueError("external master and provenance paths must be absolute")
+    if not master_path.is_file():
+        raise ValueError(f"external soundtrack master is missing: {master_path}")
+    if not provenance_path.is_file():
+        raise ValueError(f"external soundtrack provenance is missing: {provenance_path}")
+    try:
+        payload = json.loads(provenance_path.read_text(encoding="utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("external soundtrack provenance must be UTF-8 JSON") from error
+    if not isinstance(payload, dict):
+        raise ValueError("external soundtrack provenance must be a JSON object")
+    if payload.get("schema") != EXTERNAL_PROVENANCE_SCHEMA:
+        raise ValueError("unexpected external soundtrack provenance schema")
+    if str(payload.get("source_service", "")).strip().casefold() != "suno":
+        raise ValueError("external soundtrack source_service must be Suno")
+    source_url = str(payload.get("source_url", "")).strip()
+    parsed_url = urlparse(source_url)
+    if parsed_url.scheme != "https" or not parsed_url.netloc:
+        raise ValueError("external soundtrack source_url must be an HTTPS URL")
+    if not (
+        parsed_url.hostname == "suno.com"
+        or str(parsed_url.hostname).endswith(".suno.com")
+    ):
+        raise ValueError("external soundtrack source_url must be hosted on suno.com")
+    track_title = str(payload.get("track_title", "")).strip()
+    license_basis = str(payload.get("license_basis", "")).strip()
+    rights_attested_by = str(payload.get("rights_attested_by", "")).strip()
+    if not track_title:
+        raise ValueError("external soundtrack track_title is required")
+    if not license_basis:
+        raise ValueError("external soundtrack license_basis is required")
+    if payload.get("commercial_use_authorized") is not True:
+        raise ValueError("external soundtrack must authorize commercial use")
+    if payload.get("rights_attested") is not True or not rights_attested_by:
+        raise ValueError("external soundtrack rights must be explicitly attested")
+    generated_at_utc = _iso8601_utc(payload.get("generated_at_utc"), "generated_at_utc")
+    rights_attested_at_utc = _iso8601_utc(
+        payload.get("rights_attested_at_utc"),
+        "rights_attested_at_utc",
+    )
+    expected_master_hash = str(payload.get("master_sha256", ""))
+    if SHA256_PATTERN.fullmatch(expected_master_hash) is None:
+        raise ValueError("external soundtrack master_sha256 must be lowercase SHA-256")
+    observed_master_hash = _sha256(master_path)
+    if expected_master_hash != observed_master_hash:
+        raise ValueError("external soundtrack master hash does not match provenance")
+    return {
+        "schema": EXTERNAL_PROVENANCE_SCHEMA,
+        "source_service": "Suno",
+        "source_url": source_url,
+        "track_title": track_title,
+        "generated_at_utc": generated_at_utc,
+        "license_basis": license_basis,
+        "commercial_use_authorized": True,
+        "rights_attested": True,
+        "rights_attested_by": rights_attested_by,
+        "rights_attested_at_utc": rights_attested_at_utc,
+        "master_sha256": observed_master_hash,
+    }
+
+
+def _tool_identity(executable: Path) -> dict[str, str]:
+    completed = subprocess.run(
+        [str(executable), "-version"],
+        check=True,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    first_line = completed.stdout.splitlines()[0] if completed.stdout else ""
+    if not first_line:
+        raise ValueError(f"could not read version from {executable}")
+    return {
+        "path": str(executable),
+        "sha256": _sha256(executable),
+        "version": first_line,
+    }
+
+
+def _loudnorm_measurement(stderr: str) -> dict[str, float]:
+    matches = re.findall(r'\{\s*"input_i"[\s\S]*?\}', stderr)
+    if len(matches) != 1:
+        raise ValueError(f"expected one loudnorm JSON object, found {len(matches)}")
+    payload = json.loads(matches[0])
+    fields = (
+        "input_i",
+        "input_tp",
+        "input_lra",
+        "input_thresh",
+        "output_i",
+        "output_tp",
+        "output_lra",
+        "output_thresh",
+        "target_offset",
+    )
+    try:
+        values = {field: float(payload[field]) for field in fields}
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("loudnorm returned an incomplete measurement") from error
+    if not all(math.isfinite(value) for value in values.values()):
+        raise ValueError("loudnorm returned a non-finite measurement")
+    return values
+
+
+def _measure_with_filter(
+    master: Path,
+    ffmpeg: Path,
+    audio_filter: str,
+) -> dict[str, float]:
+    completed = subprocess.run(
+        [
+            str(ffmpeg),
+            "-hide_banner",
+            "-nostats",
+            "-i",
+            str(master),
+            "-map",
+            "0:a:0",
+            "-af",
+            audio_filter,
+            "-f",
+            "null",
+            "-",
+        ],
+        check=True,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    return _loudnorm_measurement(completed.stderr)
+
+
+def _external_master_duration(master: Path, ffprobe: Path) -> float:
+    completed = subprocess.run(
+        [
+            str(ffprobe),
+            "-v",
+            "error",
+            "-select_streams",
+            "a",
+            "-show_entries",
+            "stream=index:format=duration",
+            "-of",
+            "json",
+            str(master),
+        ],
+        check=True,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    payload = json.loads(completed.stdout)
+    streams = payload.get("streams", [])
+    if len(streams) != 1:
+        raise ValueError(f"external soundtrack master must contain one audio stream, found {len(streams)}")
+    try:
+        duration = float(payload["format"]["duration"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise ValueError("external soundtrack master has no finite duration") from error
+    if not math.isfinite(duration) or duration <= 0.0:
+        raise ValueError("external soundtrack master has no finite duration")
+    return duration
+
+
+def _filter_hash(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def compose_external(
+    output: Path,
+    cut: str,
+    duration: float,
+    master: Path,
+    provenance: Path,
+    *,
+    ffmpeg_executable: str = "ffmpeg",
+    ffprobe_executable: str = "ffprobe",
+    enforce_reference: bool = False,
+) -> dict[str, object]:
+    if cut not in REFERENCE_DURATIONS:
+        raise ValueError(f"unknown cut: {cut}")
+    if not math.isfinite(duration) or not 0.25 <= duration <= MAX_DURATION_SECONDS:
+        raise ValueError(f"duration must be between 0.25 and {MAX_DURATION_SECONDS} seconds")
+    reference = REFERENCE_DURATIONS[cut]
+    if enforce_reference and abs(duration - reference) > MAX_REFERENCE_DRIFT_SECONDS:
+        raise ValueError(f"{cut} duration {duration:.3f}s drifted from {reference:.3f}s")
+    provenance_summary = validate_external_provenance(provenance, master)
+    ffmpeg = _resolve_executable(ffmpeg_executable, "ffmpeg")
+    ffprobe = _resolve_executable(ffprobe_executable, "ffprobe")
+    trim_start = EXTERNAL_TRIM_START_SECONDS[cut]
+    master_duration = _external_master_duration(master, ffprobe)
+    if master_duration + 0.01 < trim_start + duration:
+        raise ValueError(
+            f"external soundtrack master is {master_duration:.3f}s; "
+            f"{cut} requires at least {trim_start + duration:.3f}s"
+        )
+    fade_out_start = max(0.0, duration - EXTERNAL_FADE_OUT_SECONDS)
+    prefix = (
+        f"atrim=start={trim_start:.6f}:duration={duration:.6f},"
+        "asetpts=PTS-STARTPTS,"
+        f"afade=t=in:st=0:d={EXTERNAL_FADE_IN_SECONDS:.6f},"
+        f"afade=t=out:st={fade_out_start:.6f}:d={EXTERNAL_FADE_OUT_SECONDS:.6f},"
+        f"aformat=sample_rates={SAMPLE_RATE}:channel_layouts=stereo"
+    )
+    analysis_filter = (
+        f"{prefix},loudnorm=I={EXTERNAL_TARGET_I_LUFS}:LRA={EXTERNAL_TARGET_LRA_LU}:"
+        f"TP={EXTERNAL_TARGET_TP_DBFS}:print_format=json"
+    )
+    pass_one = _measure_with_filter(master, ffmpeg, analysis_filter)
+    normalization = (
+        f"loudnorm=I={EXTERNAL_TARGET_I_LUFS}:LRA={EXTERNAL_TARGET_LRA_LU}:"
+        f"TP={EXTERNAL_TARGET_TP_DBFS}:measured_I={pass_one['input_i']}:"
+        f"measured_LRA={pass_one['input_lra']}:measured_TP={pass_one['input_tp']}:"
+        f"measured_thresh={pass_one['input_thresh']}:offset={pass_one['target_offset']}:"
+        "linear=true:print_format=summary"
+    )
+    render_filter = f"{prefix},{normalization},aresample={SAMPLE_RATE}"
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.unlink(missing_ok=True)
+    try:
+        subprocess.run(
+            [
+                str(ffmpeg),
+                "-hide_banner",
+                "-loglevel",
+                "error",
+                "-y",
+                "-i",
+                str(master),
+                "-map",
+                "0:a:0",
+                "-af",
+                render_filter,
+                "-c:a",
+                "pcm_s16le",
+                "-ar",
+                str(SAMPLE_RATE),
+                "-ac",
+                str(CHANNELS),
+                str(output),
+            ],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        with wave.open(str(output), "rb") as wav:
+            if wav.getframerate() != SAMPLE_RATE or wav.getnchannels() != CHANNELS:
+                raise ValueError("derived external soundtrack is not 48 kHz stereo")
+            derived_duration = wav.getnframes() / SAMPLE_RATE
+        if abs(derived_duration - duration) > 1.0 / SAMPLE_RATE:
+            raise ValueError("derived external soundtrack duration drifted from the picture lock")
+        output_filter = (
+            f"loudnorm=I={EXTERNAL_TARGET_I_LUFS}:LRA={EXTERNAL_TARGET_LRA_LU}:"
+            f"TP={EXTERNAL_TARGET_TP_DBFS}:print_format=json"
+        )
+        output_measurement = _measure_with_filter(output, ffmpeg, output_filter)
+    except Exception:
+        output.unlink(missing_ok=True)
+        raise
+    derived_hash = _sha256(output)
+    return {
+        "soundtrack_id": EXTERNAL_SOUNDTRACK_ID,
+        "soundtrack_mode": "external_master",
+        "cut": cut,
+        "duration_seconds": derived_duration,
+        "reference_duration_seconds": reference,
+        "sample_rate": SAMPLE_RATE,
+        "channels": CHANNELS,
+        "sample_width_bits": SAMPLE_WIDTH_BYTES * 8,
+        "third_party_audio": True,
+        "sha256": derived_hash,
+        "raw_master": {
+            "file": master.name,
+            "bytes": master.stat().st_size,
+            "sha256": provenance_summary["master_sha256"],
+            "duration_seconds": master_duration,
+        },
+        "provenance": {
+            **provenance_summary,
+            "file": provenance.name,
+            "bytes": provenance.stat().st_size,
+            "sha256": _sha256(provenance),
+        },
+        "derivation": {
+            "trim_start_seconds": trim_start,
+            "trim_duration_seconds": duration,
+            "fade_in_seconds": EXTERNAL_FADE_IN_SECONDS,
+            "fade_out_seconds": EXTERNAL_FADE_OUT_SECONDS,
+            "target_integrated_lufs": EXTERNAL_TARGET_I_LUFS,
+            "target_loudness_range_lu": EXTERNAL_TARGET_LRA_LU,
+            "target_true_peak_dbfs": EXTERNAL_TARGET_TP_DBFS,
+            "analysis_filter": analysis_filter,
+            "analysis_filter_sha256": _filter_hash(analysis_filter),
+            "render_filter": render_filter,
+            "render_filter_sha256": _filter_hash(render_filter),
+            "ffmpeg": _tool_identity(ffmpeg),
+            "ffprobe": _tool_identity(ffprobe),
+            "pass_one_measurement": pass_one,
+            "derived_measurement": output_measurement,
+        },
+    }
 
 
 def _swell_envelope(swell: Swell, time: float) -> float:
@@ -267,6 +611,7 @@ def compose(output: Path, cut: str, duration: float, *, enforce_reference: bool 
     active_seconds = sum(min(duration, swell.end) - swell.start for swell in swells)
     return {
         "soundtrack_id": SOUNDTRACK_ID,
+        "soundtrack_mode": "built_in",
         "cut": cut,
         "duration_seconds": frame_count / SAMPLE_RATE,
         "reference_duration_seconds": reference,
@@ -295,6 +640,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--duration", type=float)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--metadata-output", type=Path)
+    parser.add_argument("--external-master", type=Path)
+    parser.add_argument("--external-provenance", type=Path)
+    parser.add_argument("--ffmpeg", default="ffmpeg")
+    parser.add_argument("--ffprobe", default="ffprobe")
     parser.add_argument("--describe", choices=sorted(CUT_SWELLS))
     parser.add_argument("--version", action="store_true")
     args = parser.parse_args()
@@ -303,6 +652,14 @@ def parse_args() -> argparse.Namespace:
     missing = [name for name in ("cut", "duration", "output") if getattr(args, name) is None]
     if missing:
         parser.error("generation requires " + ", ".join(f"--{name}" for name in missing))
+    if (args.external_master is None) != (args.external_provenance is None):
+        parser.error("--external-master and --external-provenance must be supplied together")
+    for label, path in (
+        ("--external-master", args.external_master),
+        ("--external-provenance", args.external_provenance),
+    ):
+        if path is not None and not path.is_absolute():
+            parser.error(f"{label} must be an absolute path")
     return args
 
 
@@ -322,7 +679,19 @@ def main() -> None:
             "accents": [asdict(accent) for accent in accents],
         }, indent=2))
         return
-    metadata = compose(args.output, args.cut, args.duration, enforce_reference=True)
+    if args.external_master is None:
+        metadata = compose(args.output, args.cut, args.duration, enforce_reference=True)
+    else:
+        metadata = compose_external(
+            args.output,
+            args.cut,
+            args.duration,
+            args.external_master,
+            args.external_provenance,
+            ffmpeg_executable=args.ffmpeg,
+            ffprobe_executable=args.ffprobe,
+            enforce_reference=True,
+        )
     if args.metadata_output is not None:
         _write_metadata(args.metadata_output, metadata)
     print(json.dumps(metadata, indent=2))

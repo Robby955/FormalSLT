@@ -27,6 +27,10 @@ MIN_MUXED_INTEGRATED_LUFS = -36.0
 MAX_MUXED_INTEGRATED_LUFS = -16.0
 MAX_MUXED_TRUE_PEAK_DBFS = -2.0
 MAX_MUXED_LRA_LU = 20.0
+BUILT_IN_SOUNDTRACK_ID = "formalslt-stitched-lil-sparse-score-v2"
+EXTERNAL_SOUNDTRACK_ID = "formalslt-stitched-lil-external-master-v1"
+EXTERNAL_PROVENANCE_SCHEMA = "formalslt-external-soundtrack-provenance-v1"
+SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 
 SOURCE_ASSETS = (
     ".gitignore",
@@ -35,7 +39,9 @@ SOURCE_ASSETS = (
     "SOUNDTRACK.md",
     "STORYBOARD.md",
     "TRANSCRIPT.md",
+    "TRANSCRIPT.template.md",
     "TRANSCRIPT-SOCIAL.md",
+    "TRANSCRIPT-SOCIAL.template.md",
     "boundary_model.py",
     "captions-main.vtt",
     "captions-social.vtt",
@@ -261,29 +267,61 @@ def validate_loudness(measurement: dict[str, Any]) -> dict[str, float]:
     }
 
 
-def validate_soundtrack(
+def _soundtrack_common(
     metadata: dict[str, Any],
     soundtrack: Path,
     composition: str,
-) -> dict[str, Any]:
-    contract = composition_contract(composition)
-    if metadata.get("sha256") != sha256(soundtrack):
+) -> tuple[float, str]:
+    derived_hash = sha256(soundtrack)
+    if metadata.get("sha256") != derived_hash:
         raise ValueError("soundtrack hash does not match its metadata")
     if metadata.get("cut") != composition:
         raise ValueError("soundtrack cut does not match the composition")
-    if metadata.get("soundtrack_id") != "formalslt-stitched-lil-sparse-score-v2":
-        raise ValueError("unexpected soundtrack identity")
-    if metadata.get("third_party_audio") is not False:
-        raise ValueError("soundtrack must declare that it contains no third-party audio")
-    peak = _finite_float(metadata.get("peak_dbfs"), "soundtrack peak")
-    if peak >= MAX_SCORE_PEAK_DBFS:
-        raise ValueError(f"soundtrack peak {peak:.2f} dBFS violates the ceiling")
+    contract = composition_contract(composition)
     duration = _finite_float(metadata.get("duration_seconds"), "soundtrack duration")
-    expected_duration = contract["duration_seconds"]
-    if abs(duration - expected_duration) > MAX_DURATION_DRIFT_SECONDS:
+    if abs(duration - contract["duration_seconds"]) > MAX_DURATION_DRIFT_SECONDS:
         raise ValueError("soundtrack duration drifted from the picture lock")
     if int(metadata.get("sample_rate", 0)) != 48_000 or int(metadata.get("channels", 0)) != 2:
         raise ValueError("soundtrack metadata is not 48 kHz stereo")
+    return duration, derived_hash
+
+
+def _sha_field(value: Any, label: str) -> str:
+    text = str(value)
+    if SHA256_PATTERN.fullmatch(text) is None:
+        raise ValueError(f"invalid {label} SHA-256")
+    return text
+
+
+def _measurement(metadata: Any, label: str) -> dict[str, float]:
+    if not isinstance(metadata, dict):
+        raise ValueError(f"missing {label} measurement")
+    fields = (
+        "input_i",
+        "input_tp",
+        "input_lra",
+        "input_thresh",
+        "output_i",
+        "output_tp",
+        "output_lra",
+        "output_thresh",
+        "target_offset",
+    )
+    return {field: _finite_float(metadata.get(field), f"{label} {field}") for field in fields}
+
+
+def _validate_built_in_soundtrack(
+    metadata: dict[str, Any],
+    duration: float,
+    derived_hash: str,
+) -> dict[str, Any]:
+    if metadata.get("soundtrack_id") != BUILT_IN_SOUNDTRACK_ID:
+        raise ValueError("unexpected built-in soundtrack identity")
+    if metadata.get("third_party_audio") is not False:
+        raise ValueError("built-in soundtrack must contain no third-party audio")
+    peak = _finite_float(metadata.get("peak_dbfs"), "soundtrack peak")
+    if peak >= MAX_SCORE_PEAK_DBFS:
+        raise ValueError(f"soundtrack peak {peak:.2f} dBFS violates the ceiling")
     duty = _finite_float(metadata.get("active_duty_ratio"), "active duty ratio")
     if not 0.0 < duty < 0.75:
         raise ValueError("soundtrack lacks the required negative space")
@@ -294,12 +332,154 @@ def validate_soundtrack(
         "peak_dbfs": peak,
         "rms_dbfs": _finite_float(metadata.get("rms_dbfs"), "soundtrack RMS"),
         "active_duty_ratio": duty,
-        "sha256": metadata["sha256"],
+        "sha256": derived_hash,
         "sample_rate": int(metadata["sample_rate"]),
         "channels": int(metadata["channels"]),
         "soundtrack_id": metadata["soundtrack_id"],
+        "soundtrack_mode": "built_in",
         "third_party_audio": False,
     }
+
+
+def _validate_external_soundtrack(
+    metadata: dict[str, Any],
+    duration: float,
+    derived_hash: str,
+) -> dict[str, Any]:
+    if metadata.get("soundtrack_id") != EXTERNAL_SOUNDTRACK_ID:
+        raise ValueError("unexpected external soundtrack identity")
+    if metadata.get("third_party_audio") is not True:
+        raise ValueError("external soundtrack must identify third-party audio")
+    raw_master = metadata.get("raw_master")
+    provenance = metadata.get("provenance")
+    derivation = metadata.get("derivation")
+    if not isinstance(raw_master, dict) or not isinstance(provenance, dict):
+        raise ValueError("external soundtrack is missing master or provenance data")
+    if not isinstance(derivation, dict):
+        raise ValueError("external soundtrack is missing derivation data")
+    master_hash = _sha_field(raw_master.get("sha256"), "raw master")
+    if provenance.get("schema") != EXTERNAL_PROVENANCE_SCHEMA:
+        raise ValueError("unexpected external soundtrack provenance schema")
+    provenance_hash = _sha_field(provenance.get("sha256"), "provenance")
+    if provenance.get("master_sha256") != master_hash:
+        raise ValueError("external soundtrack provenance binds a different master")
+    if provenance.get("source_service") != "Suno":
+        raise ValueError("external soundtrack provenance is not from Suno")
+    if provenance.get("commercial_use_authorized") is not True:
+        raise ValueError("external soundtrack does not authorize commercial use")
+    if provenance.get("rights_attested") is not True:
+        raise ValueError("external soundtrack rights were not attested")
+    analysis_filter = str(derivation.get("analysis_filter", ""))
+    render_filter = str(derivation.get("render_filter", ""))
+    if hashlib.sha256(analysis_filter.encode("utf-8")).hexdigest() != _sha_field(
+        derivation.get("analysis_filter_sha256"),
+        "analysis filter",
+    ):
+        raise ValueError("external soundtrack analysis-filter hash drifted")
+    if hashlib.sha256(render_filter.encode("utf-8")).hexdigest() != _sha_field(
+        derivation.get("render_filter_sha256"),
+        "render filter",
+    ):
+        raise ValueError("external soundtrack render-filter hash drifted")
+    tool_receipts: dict[str, dict[str, str]] = {}
+    for label in ("ffmpeg", "ffprobe"):
+        tool = derivation.get(label)
+        if not isinstance(tool, dict):
+            raise ValueError(f"external soundtrack is missing {label} identity")
+        executable = Path(str(tool.get("path", "")))
+        expected_hash = _sha_field(tool.get("sha256"), label)
+        if not executable.is_absolute() or not executable.is_file():
+            raise ValueError(f"external soundtrack {label} path is not an absolute file")
+        if sha256(executable) != expected_hash:
+            raise ValueError(f"external soundtrack {label} binary hash drifted")
+        version = str(tool.get("version", ""))
+        if not version:
+            raise ValueError(f"external soundtrack {label} version is missing")
+        tool_receipts[label] = {
+            "path": str(executable),
+            "sha256": expected_hash,
+            "version": version,
+        }
+    pass_one = _measurement(derivation.get("pass_one_measurement"), "pass one")
+    derived_measurement = _measurement(
+        derivation.get("derived_measurement"),
+        "derived soundtrack",
+    )
+    integrated = derived_measurement["input_i"]
+    true_peak = derived_measurement["input_tp"]
+    if not -24.0 <= integrated <= -20.0:
+        raise ValueError(f"external soundtrack loudness {integrated:.2f} LUFS missed its target")
+    if true_peak > -3.0:
+        raise ValueError(f"external soundtrack true peak {true_peak:.2f} dBFS violates the ceiling")
+    return {
+        "duration_seconds": duration,
+        "peak_dbfs": true_peak,
+        "integrated_lufs": integrated,
+        "sha256": derived_hash,
+        "sample_rate": int(metadata["sample_rate"]),
+        "channels": int(metadata["channels"]),
+        "soundtrack_id": metadata["soundtrack_id"],
+        "soundtrack_mode": "external_master",
+        "third_party_audio": True,
+        "raw_master": {
+            "file": str(raw_master.get("file", "")),
+            "bytes": int(raw_master.get("bytes", -1)),
+            "sha256": master_hash,
+            "duration_seconds": _finite_float(
+                raw_master.get("duration_seconds"),
+                "raw master duration",
+            ),
+        },
+        "provenance": {
+            "file": str(provenance.get("file", "")),
+            "bytes": int(provenance.get("bytes", -1)),
+            "sha256": provenance_hash,
+            "schema": provenance["schema"],
+            "source_service": provenance["source_service"],
+            "source_url": str(provenance.get("source_url", "")),
+            "track_title": str(provenance.get("track_title", "")),
+            "generated_at_utc": str(provenance.get("generated_at_utc", "")),
+            "license_basis": str(provenance.get("license_basis", "")),
+            "commercial_use_authorized": True,
+            "rights_attested": True,
+            "rights_attested_by": str(provenance.get("rights_attested_by", "")),
+            "rights_attested_at_utc": str(provenance.get("rights_attested_at_utc", "")),
+            "master_sha256": master_hash,
+        },
+        "derivation": {
+            "trim_start_seconds": _finite_float(
+                derivation.get("trim_start_seconds"),
+                "trim start",
+            ),
+            "trim_duration_seconds": _finite_float(
+                derivation.get("trim_duration_seconds"),
+                "trim duration",
+            ),
+            "fade_in_seconds": _finite_float(derivation.get("fade_in_seconds"), "fade in"),
+            "fade_out_seconds": _finite_float(derivation.get("fade_out_seconds"), "fade out"),
+            "analysis_filter_sha256": derivation["analysis_filter_sha256"],
+            "render_filter_sha256": derivation["render_filter_sha256"],
+            **tool_receipts,
+            "pass_one_measurement": pass_one,
+            "derived_measurement": derived_measurement,
+        },
+    }
+
+
+def validate_soundtrack(
+    metadata: dict[str, Any],
+    soundtrack: Path,
+    composition: str,
+) -> dict[str, Any]:
+    duration, derived_hash = _soundtrack_common(metadata, soundtrack, composition)
+    mode = metadata.get("soundtrack_mode")
+    if mode is None and metadata.get("soundtrack_id") == BUILT_IN_SOUNDTRACK_ID:
+        mode = "built_in"
+    if mode == "built_in":
+        return _validate_built_in_soundtrack(metadata, duration, derived_hash)
+    if mode == "external_master":
+        return _validate_external_soundtrack(metadata, duration, derived_hash)
+    raise ValueError(f"unexpected soundtrack mode {mode!r}")
 
 
 def build_receipt(

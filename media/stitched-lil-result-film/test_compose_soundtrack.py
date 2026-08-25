@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import math
+import hashlib
+import json
 import tempfile
 import unittest
 import wave
@@ -58,6 +60,7 @@ class SoundtrackTests(unittest.TestCase):
             self.assertLess(first_metadata["peak_dbfs"], -3.0)
             self.assertGreater(first_metadata["peak_dbfs"], -30.0)
             self.assertFalse(first_metadata["third_party_audio"])
+            self.assertEqual(first_metadata["soundtrack_mode"], "built_in")
             with wave.open(str(first), "rb") as wav:
                 self.assertEqual(wav.getnchannels(), compose_soundtrack.CHANNELS)
                 self.assertEqual(wav.getsampwidth(), compose_soundtrack.SAMPLE_WIDTH_BYTES)
@@ -91,6 +94,40 @@ class SoundtrackTests(unittest.TestCase):
                     40.0,
                     enforce_reference=True,
                 )
+
+    def test_external_provenance_requires_matching_master_and_rights(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="stitched-lil-audio-") as temp_dir:
+            root = Path(temp_dir).resolve()
+            master = root / "master.wav"
+            provenance = root / "provenance.json"
+            master.write_bytes(b"licensed-master")
+            payload = {
+                "schema": compose_soundtrack.EXTERNAL_PROVENANCE_SCHEMA,
+                "source_service": "Suno",
+                "source_url": "https://suno.com/song/checked-source",
+                "track_title": "Checked path",
+                "generated_at_utc": "2026-08-24T12:00:00Z",
+                "license_basis": "Paid-plan commercial-use grant",
+                "commercial_use_authorized": True,
+                "rights_attested": True,
+                "rights_attested_by": "Robert Sneiderman",
+                "rights_attested_at_utc": "2026-08-24T12:05:00Z",
+                "master_sha256": hashlib.sha256(master.read_bytes()).hexdigest(),
+            }
+            provenance.write_text(json.dumps(payload), encoding="utf-8")
+            summary = compose_soundtrack.validate_external_provenance(provenance, master)
+            self.assertEqual(summary["master_sha256"], payload["master_sha256"])
+            payload["commercial_use_authorized"] = False
+            provenance.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "commercial use"):
+                compose_soundtrack.validate_external_provenance(provenance, master)
+
+    def test_external_provenance_rejects_relative_paths(self) -> None:
+        with self.assertRaisesRegex(ValueError, "absolute"):
+            compose_soundtrack.validate_external_provenance(
+                Path("provenance.json"),
+                Path("master.wav"),
+            )
 
 
 if __name__ == "__main__":

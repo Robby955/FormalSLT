@@ -11,9 +11,11 @@ posters pass their source-bound checks. It contains:
 - `delivery-receipt.json` and `MANIFEST.sha256`.
 
 The media receipts bind the films to the committed render source and the
-FormalSLT v0.2.0 theorem source. The delivery receipt checks both media hashes,
-the poster dimensions, and the common render-source commit before copying any
-artifact. The manifest covers every delivered file except itself.
+FormalSLT theorem source. The delivery receipt checks both media hashes, the
+poster dimensions, the common render-source commit, and the soundtrack mode
+before copying any artifact. If an external master is selected, both cuts must
+bind the same master and provenance hashes. The raw master is not delivered.
+The manifest covers every delivered file except itself.
 
 Generate it after the final sequential render:
 

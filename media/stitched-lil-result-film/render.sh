@@ -12,8 +12,35 @@ OUT_DIR="$PACKAGE/out"
 ACTIVE_TEMP_DIR=""
 ACTIVE_CANDIDATE_VIDEO=""
 ACTIVE_CANDIDATE_RECEIPT=""
+SOUNDTRACK_ARGS=()
 
 cd "$ROOT"
+
+configure_soundtrack() {
+  local master="${FORMALSLT_FILM_SOUNDTRACK_MASTER:-}"
+  local provenance="${FORMALSLT_FILM_SOUNDTRACK_PROVENANCE:-}"
+  if [[ -n "$master" && -z "$provenance" ]] || [[ -z "$master" && -n "$provenance" ]]; then
+    echo "FORMALSLT_FILM_SOUNDTRACK_MASTER and FORMALSLT_FILM_SOUNDTRACK_PROVENANCE must be set together" >&2
+    exit 2
+  fi
+  if [[ -z "$master" ]]; then
+    return
+  fi
+  if [[ "$master" != /* || "$provenance" != /* ]]; then
+    echo "external soundtrack master and provenance paths must be absolute" >&2
+    exit 2
+  fi
+  if [[ ! -f "$master" || ! -f "$provenance" ]]; then
+    echo "external soundtrack master or provenance file is missing" >&2
+    exit 2
+  fi
+  SOUNDTRACK_ARGS=(
+    --external-master "$master"
+    --external-provenance "$provenance"
+  )
+}
+
+configure_soundtrack
 
 cleanup_temp_tree() {
   local target="$1"
@@ -146,7 +173,10 @@ PY
   duration="$(movie_duration "$rendered")"
   python3 "$COMPOSER" --cut "$composition" --duration "$duration" \
     --output "$soundtrack" \
-    --metadata-output "$soundtrack_metadata"
+    --metadata-output "$soundtrack_metadata" \
+    --ffmpeg "$FFMPEG_BIN" \
+    --ffprobe "$FFPROBE_BIN" \
+    "${SOUNDTRACK_ARGS[@]}"
   "$FFMPEG_BIN" -hide_banner -loglevel error -y \
     -i "$rendered" -i "$soundtrack" \
     -map 0:v:0 -map 1:a:0 \

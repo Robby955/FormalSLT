@@ -22,6 +22,11 @@ class DeliveryTests(unittest.TestCase):
                 "theorem_source_commit": stage_delivery.FACTS["commit"],
                 "theorem_blob_oid": stage_delivery.CLAIMS["theorem_blob_oid"],
                 "render_source_commit": "1" * 40,
+                "soundtrack": {
+                    "soundtrack_id": stage_delivery.BUILT_IN_SOUNDTRACK_ID,
+                    "soundtrack_mode": "built_in",
+                    "third_party_audio": False,
+                },
                 "video": {
                     "file": video.name,
                     "bytes": video.stat().st_size,
@@ -49,6 +54,11 @@ class DeliveryTests(unittest.TestCase):
                 "theorem_source_commit": stage_delivery.FACTS["commit"],
                 "theorem_blob_oid": stage_delivery.CLAIMS["theorem_blob_oid"],
                 "render_source_commit": "2" * 40,
+                "soundtrack": {
+                    "soundtrack_id": stage_delivery.BUILT_IN_SOUNDTRACK_ID,
+                    "soundtrack_mode": "built_in",
+                    "third_party_audio": False,
+                },
                 "video": {
                     "file": video.name,
                     "bytes": video.stat().st_size,
@@ -59,6 +69,25 @@ class DeliveryTests(unittest.TestCase):
             }
             with self.assertRaisesRegex(ValueError, "dimensions"):
                 stage_delivery.validate_media_receipt(receipt, "social", video)
+
+    def test_external_cuts_must_bind_one_master_and_provenance(self) -> None:
+        def receipt(master_hash: str) -> dict[str, object]:
+            return {
+                "soundtrack": {
+                    "soundtrack_mode": "external_master",
+                    "raw_master": {"sha256": master_hash},
+                    "provenance": {"sha256": "2" * 64},
+                }
+            }
+
+        matching = {"main": receipt("1" * 64), "social": receipt("1" * 64)}
+        self.assertEqual(
+            stage_delivery.validate_common_soundtrack_source(matching),
+            "external_master",
+        )
+        mismatched = {"main": receipt("1" * 64), "social": receipt("3" * 64)}
+        with self.assertRaisesRegex(ValueError, "same external master"):
+            stage_delivery.validate_common_soundtrack_source(mismatched)
 
 
 if __name__ == "__main__":

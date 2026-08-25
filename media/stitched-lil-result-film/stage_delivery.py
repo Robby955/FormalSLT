@@ -44,6 +44,7 @@ STATIC_FILES = (
     "SOUNDTRACK.md",
     "DELIVERY.md",
 )
+BUILT_IN_SOUNDTRACK_ID = "formalslt-stitched-lil-sparse-score-v2"
 
 
 def sha256(path: Path) -> str:
@@ -52,6 +53,35 @@ def sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def soundtrack_mode(soundtrack: dict[str, Any]) -> str | None:
+    mode = soundtrack.get("soundtrack_mode")
+    if mode is None and soundtrack.get("soundtrack_id") == BUILT_IN_SOUNDTRACK_ID:
+        return "built_in"
+    return mode
+
+
+def validate_common_soundtrack_source(cut_receipts: dict[str, Any]) -> str:
+    modes = {
+        soundtrack_mode(receipt["soundtrack"]) for receipt in cut_receipts.values()
+    }
+    if len(modes) != 1:
+        raise ValueError("the two films use different soundtrack modes")
+    mode = next(iter(modes))
+    if mode == "external_master":
+        source_pairs = {
+            (
+                receipt["soundtrack"]["raw_master"].get("sha256"),
+                receipt["soundtrack"]["provenance"].get("sha256"),
+            )
+            for receipt in cut_receipts.values()
+        }
+        if len(source_pairs) != 1:
+            raise ValueError("the two films do not bind the same external master and provenance")
+    if mode not in ("built_in", "external_master"):
+        raise ValueError("the two films have an invalid soundtrack mode")
+    return mode
 
 
 def probe_image(path: Path, ffprobe: str) -> dict[str, Any]:
@@ -104,6 +134,16 @@ def validate_media_receipt(
         raise ValueError(f"media receipt hash does not match {video.name}")
     if int(video_receipt.get("bytes", -1)) != video.stat().st_size:
         raise ValueError(f"media receipt size does not match {video.name}")
+    soundtrack = receipt.get("soundtrack", {})
+    mode = soundtrack_mode(soundtrack)
+    if mode not in ("built_in", "external_master"):
+        raise ValueError(f"media receipt has an invalid soundtrack mode for {composition}")
+    if mode == "external_master":
+        if soundtrack.get("third_party_audio") is not True:
+            raise ValueError(f"external soundtrack disclosure is missing for {composition}")
+        for section in ("raw_master", "provenance", "derivation"):
+            if not isinstance(soundtrack.get(section), dict):
+                raise ValueError(f"external soundtrack {section} is missing for {composition}")
     expected = CUTS[composition]["resolution"]
     observed = [video_receipt.get("width"), video_receipt.get("height")]
     if observed != expected:
@@ -149,6 +189,7 @@ def stage(ffprobe: str) -> Path:
 
     if len(render_commits) != 1:
         raise ValueError("the two films were not rendered from one source commit")
+    validate_common_soundtrack_source(cut_receipts)
     for name in STATIC_FILES:
         payloads[name] = PACKAGE_DIR / name
     for name, path in payloads.items():
@@ -169,6 +210,7 @@ def stage(ffprobe: str) -> Path:
             "cuts": {
                 composition: {
                     "video": receipt["video"],
+                    "soundtrack": receipt["soundtrack"],
                     "muxed_audio_measurement": receipt["muxed_audio_measurement"],
                 }
                 for composition, receipt in cut_receipts.items()
