@@ -172,6 +172,55 @@ def polynomialStitchedLILFailure {Ω : Type*}
     (X : ℕ -> Ω -> ℝ) (sigma2 b delta : ℝ) : Set Ω :=
   ⋃ j : ℕ, polynomialStitchedLILAtomFailure X sigma2 b delta j
 
+/-- Each fixed-epoch failure event is measurable when the increments are
+measurable. -/
+theorem measurableSet_polynomialStitchedLILAtomFailure
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {X : ℕ -> Ω -> ℝ} (hX_meas : ∀ k, Measurable (X k))
+    (sigma2 b delta : ℝ) (j : ℕ) :
+    MeasurableSet (polynomialStitchedLILAtomFailure X sigma2 b delta j) := by
+  rw [show polynomialStitchedLILAtomFailure X sigma2 b delta j =
+      ⋃ n : ℕ, if 0 < n then
+        {omega |
+          subGammaBoundary sigma2 b (polynomialGeometricEpochBudget delta j) n
+              (polynomialGeometricEpochTilt sigma2 b delta j) <=
+            |runningMean X n omega|}
+      else ∅ by
+    ext omega
+    simp [polynomialStitchedLILAtomFailure]]
+  refine MeasurableSet.iUnion fun n => ?_
+  split_ifs
+  · exact measurableSet_le measurable_const (by
+      simpa only [Real.norm_eq_abs] using
+        (measurable_runningMean hX_meas n).norm)
+  · exact MeasurableSet.empty
+
+/-- The countable stitched failure event is measurable when the increments
+are measurable. -/
+theorem measurableSet_polynomialStitchedLILFailure
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {X : ℕ -> Ω -> ℝ} (hX_meas : ∀ k, Measurable (X k))
+    (sigma2 b delta : ℝ) :
+    MeasurableSet (polynomialStitchedLILFailure X sigma2 b delta) := by
+  unfold polynomialStitchedLILFailure
+  exact MeasurableSet.iUnion fun j =>
+    measurableSet_polynomialStitchedLILAtomFailure hX_meas sigma2 b delta j
+
+/-- Canonical good event for the polynomially stitched LIL bound. -/
+def polynomialStitchedLILGoodEvent {Ω : Type*}
+    (X : ℕ -> Ω -> ℝ) (sigma2 b delta : ℝ) : Set Ω :=
+  (polynomialStitchedLILFailure X sigma2 b delta)ᶜ
+
+/-- The canonical stitched-LIL good event is measurable when the increments
+are measurable. -/
+theorem measurableSet_polynomialStitchedLILGoodEvent
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {X : ℕ -> Ω -> ℝ} (hX_meas : ∀ k, Measurable (X k))
+    (sigma2 b delta : ℝ) :
+    MeasurableSet (polynomialStitchedLILGoodEvent X sigma2 b delta) := by
+  exact (measurableSet_polynomialStitchedLILFailure
+    hX_meas sigma2 b delta).compl
+
 /-- One epoch atom costs at most its predeclared polynomial confidence
 allocation. -/
 theorem polynomialStitchedLILAtomFailure_mass_le
@@ -288,6 +337,30 @@ theorem polynomialStitchedLILFailure_mass_le
     μ.real (⋃ j, event j) <= (ENNReal.ofReal delta).toReal := by
       exact ENNReal.toReal_mono (by simp) hunionENNReal
     _ = delta := ENNReal.toReal_ofReal hδ.le
+
+/-- The canonical measurable good event has probability at least
+`1 - delta`. -/
+theorem polynomialStitchedLILGoodEvent_probability_ge
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ -> Ω -> ℝ} {sigma2 b delta : ℝ}
+    (hδ : 0 < delta) (hδ_one : delta <= 1)
+    (hb : 0 < b) (hσ : 0 < sigma2)
+    (hX_meas : ∀ k, Measurable (X k))
+    (hX_int : ∀ k, Integrable (X k) μ)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hbound : ∀ k, ∀ᵐ omega ∂μ, |X k omega| <= b)
+    (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
+    (hvar : ∀ k, μ[fun omega => (X k omega) ^ 2 | ℱ k] ≤ᵐ[μ]
+      fun _ => sigma2) :
+    1 - delta <= μ.real (polynomialStitchedLILGoodEvent X sigma2 b delta) := by
+  rw [polynomialStitchedLILGoodEvent,
+    probReal_compl_eq_one_sub
+      (measurableSet_polynomialStitchedLILFailure hX_meas sigma2 b delta)]
+  have hfailure := polynomialStitchedLILFailure_mass_le
+    hδ hδ_one hb hσ hX_meas hX_int hX_adapted hbound hcenter hvar
+  linarith
 
 /-- The sub-Gamma line boundary decreases with the sample size when its
 budget and tilt are nonnegative. -/
@@ -439,6 +512,47 @@ theorem polynomialStitchedLIL_lt_explicit_of_not_mem
     (polynomialGeometricEpochBudget_pos hδ hδ_one j).le
     hN hNn hn4N
   exact hwidth.trans_le (by simpa [N, budget, j] using henvelope)
+
+/-- Standard measurable-event confidence sequence form of the explicit
+polynomial stitched-LIL bound.  The canonical good event is measurable, has probability at least
+`1 - delta`, and controls every sample size `n >= 4`. -/
+theorem polynomialStitchedLIL_explicit_measurable_event
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {ℱ : Filtration ℕ mΩ}
+    {X : ℕ -> Ω -> ℝ} {sigma2 b delta : ℝ}
+    (hδ : 0 < delta) (hδ_one : delta <= 1)
+    (hb : 0 < b) (hσ : 0 < sigma2)
+    (hX_meas : ∀ k, Measurable (X k))
+    (hX_int : ∀ k, Integrable (X k) μ)
+    (hX_adapted : IncrementAdapted ℱ X)
+    (hbound : ∀ k, ∀ᵐ omega ∂μ, |X k omega| <= b)
+    (hcenter : ∀ k, μ[X k | ℱ k] =ᵐ[μ] 0)
+    (hvar : ∀ k, μ[fun omega => (X k omega) ^ 2 | ℱ k] ≤ᵐ[μ]
+      fun _ => sigma2) :
+    MeasurableSet (polynomialStitchedLILGoodEvent X sigma2 b delta) ∧
+      1 - delta <=
+        μ.real (polynomialStitchedLILGoodEvent X sigma2 b delta) ∧
+      ∀ omega ∈ polynomialStitchedLILGoodEvent X sigma2 b delta,
+        ∀ n : ℕ, 4 <= n ->
+          |runningMean X n omega| <
+            2 * Real.sqrt
+              (2 * sigma2 *
+                polynomialGeometricEpochBudget delta
+                  (polynomialGeometricEpochIndex n) / (n : ℝ)) +
+              4 * b *
+                polynomialGeometricEpochBudget delta
+                  (polynomialGeometricEpochIndex n) /
+                (3 * (n : ℝ)) := by
+  refine ⟨measurableSet_polynomialStitchedLILGoodEvent
+    hX_meas sigma2 b delta, ?_, ?_⟩
+  · exact polynomialStitchedLILGoodEvent_probability_ge
+      hδ hδ_one hb hσ hX_meas hX_int hX_adapted hbound hcenter hvar
+  · intro omega homega n hn
+    apply polynomialStitchedLIL_lt_explicit_of_not_mem hσ hb hδ hδ_one
+      (omega := omega) (n := n)
+    · exact homega
+    · exact hn
 
 /-- User-facing all-time theorem: one good event controls every `n >= 4`
 with the polynomially stitched geometric-epoch width. -/

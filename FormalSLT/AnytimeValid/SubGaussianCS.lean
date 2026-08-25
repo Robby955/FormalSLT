@@ -80,6 +80,22 @@ def runningSum {Ω : Type*} (X : ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) : ℝ :
 def runningMean {Ω : Type*} (X : ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   runningSum X n ω / (n : ℝ)
 
+/-- A finite running sum of measurable increments is measurable. -/
+theorem measurable_runningSum
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {X : ℕ → Ω → ℝ} (hX_meas : ∀ k, Measurable (X k)) (n : ℕ) :
+    Measurable (runningSum X n) := by
+  unfold runningSum
+  fun_prop
+
+/-- A finite running mean of measurable increments is measurable. -/
+theorem measurable_runningMean
+    {Ω : Type*} {mΩ : MeasurableSpace Ω}
+    {X : ℕ → Ω → ℝ} (hX_meas : ∀ k, Measurable (X k)) (n : ℕ) :
+    Measurable (runningMean X n) := by
+  unfold runningMean runningSum
+  fun_prop
+
 /-- Fixed-`lambda` sub-Gamma exponential process. -/
 def subGammaExponentialProcess {Ω : Type*}
     (X : ℕ → Ω → ℝ) (sigma2 b lam : ℝ) (n : ℕ) (ω : Ω) : ℝ :=

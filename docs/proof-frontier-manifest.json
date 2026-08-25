@@ -4379,6 +4379,12 @@
           "module": "AnytimeValid.PolynomialStitchedLIL",
           "name": "exists_polynomialStitchedLIL_explicit_event",
           "summary": "One event controls every n >= 4 with the explicit actual-time constant-factor boundary from the polynomially allocated fixed-tilt geometric stitch; the construction is not itself an e-process"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.PolynomialStitchedLIL",
+          "name": "polynomialStitchedLIL_explicit_measurable_event",
+          "summary": "The canonical measurable event has probability at least 1 - delta and simultaneously controls the explicit polynomial stitched boundary for every n >= 4"
         }
       ],
       "name": "Anytime-valid confidence sequences"

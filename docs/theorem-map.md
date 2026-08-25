@@ -822,6 +822,7 @@ the table lists their canonical implementation modules.
 | `dyadic_epoch_two_sided_confidence_sequence` | `AnytimeValid.DyadicEpochCS` | Two-sided all-`n` dyadic-epoch confidence sequence via the `X`/`-X` transfer and the explicit stitching penalty |
 | `polynomialStitchedLILFailure_mass_le` | `AnytimeValid.PolynomialStitchedLIL` | The countable union of polynomially allocated fixed-tilt geometric-epoch failures has mass at most `delta`; this confidence allocation is not itself an e-process |
 | `exists_polynomialStitchedLIL_explicit_event` | `AnytimeValid.PolynomialStitchedLIL` | One event controls every `n >= 4` with the explicit actual-time constant-factor boundary from the polynomially allocated fixed-tilt geometric stitch; the construction is not itself an e-process |
+| `polynomialStitchedLIL_explicit_measurable_event` | `AnytimeValid.PolynomialStitchedLIL` | The canonical measurable event has probability at least `1 - delta` and simultaneously controls the explicit polynomial stitched boundary for every `n >= 4` |
 
 ## Forward empirical-Bernstein and PAC-Bayes
 

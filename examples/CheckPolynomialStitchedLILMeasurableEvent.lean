@@ -1,0 +1,26 @@
+import FormalSLT.AnytimeValid.PolynomialStitchedLIL
+
+/-!
+# Measurable polynomial stitched-LIL event checker
+
+Checks the measurability bridge and the standard probability-event endpoint.
+-/
+
+open FormalSLT.AnytimeValid
+
+#check measurable_runningSum
+#check measurable_runningMean
+#check measurableSet_polynomialStitchedLILAtomFailure
+#check measurableSet_polynomialStitchedLILFailure
+#check polynomialStitchedLILGoodEvent
+#check measurableSet_polynomialStitchedLILGoodEvent
+#check polynomialStitchedLILGoodEvent_probability_ge
+#check polynomialStitchedLIL_explicit_measurable_event
+
+#print axioms measurable_runningSum
+#print axioms measurable_runningMean
+#print axioms measurableSet_polynomialStitchedLILAtomFailure
+#print axioms measurableSet_polynomialStitchedLILFailure
+#print axioms measurableSet_polynomialStitchedLILGoodEvent
+#print axioms polynomialStitchedLILGoodEvent_probability_ge
+#print axioms polynomialStitchedLIL_explicit_measurable_event
