@@ -2,7 +2,7 @@
   "schema": "formalslt-stitched-lil-delivery-receipt-v1",
   "theorem_source_commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
   "theorem_blob_oid": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
-  "render_source_commit": "0f7b1f10d97f7997fa88cc843c38e75b1ff2c9c9",
+  "render_source_commit": "6fc884f59490d21762debba30f2662c3e10b6aca",
   "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
   "posters": {
     "main": {
@@ -26,8 +26,8 @@
     "main": {
       "video": {
         "file": "stitched-lil-result-1920x1080.mp4",
-        "bytes": 3908852,
-        "sha256": "9b51bec4c9e46d83c70ed7d735cec08d64a608705ccd501b0f1007234fa2e5f7",
+        "bytes": 3923389,
+        "sha256": "850b00c62e772aac3635cc90510261f4f878efd9a23dc35ed3fca268bfd1070b",
         "duration_seconds": 86.0,
         "width": 1920,
         "height": 1080,
@@ -105,7 +105,7 @@
     },
     "stitched-lil-result-1080x1350-receipt.json": {
       "bytes": 3971,
-      "sha256": "169cc382b5ff947d6aee1ae95b0782bf87e8faaf03546f817c39cdd0642afc8e"
+      "sha256": "849e0db52c48f9d23aad89110bc86070b43e2fa9297fb1bbae1f9ca6a52a3037"
     },
     "stitched-lil-result-1080x1350.mp4": {
       "bytes": 2366120,
@@ -113,11 +113,11 @@
     },
     "stitched-lil-result-1920x1080-receipt.json": {
       "bytes": 3963,
-      "sha256": "b969630f376829036579469c744e0a50c6a3aa36888661cf774d346638d97238"
+      "sha256": "a8b04824cc66d962f10108bf1870467645f86e59562032189251c900176254da"
     },
     "stitched-lil-result-1920x1080.mp4": {
-      "bytes": 3908852,
-      "sha256": "9b51bec4c9e46d83c70ed7d735cec08d64a608705ccd501b0f1007234fa2e5f7"
+      "bytes": 3923389,
+      "sha256": "850b00c62e772aac3635cc90510261f4f878efd9a23dc35ed3fca268bfd1070b"
     },
     "stitched-lil-result-poster-1080x1350.png": {
       "bytes": 140669,
