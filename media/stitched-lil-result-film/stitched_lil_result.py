@@ -1382,7 +1382,7 @@ class StitchedLILResultSocial(Scene):
             color=RED,
             size=36,
         ).move_to(DOWN * 2.70)
-        foot = label("One event controls the path.", 21, IVORY, "BOLD").move_to(
+        foot = label("One event controls every running mean.", 21, IVORY, "BOLD").move_to(
             DOWN * 3.30
         )
         composition = VGroup(head, plot, cuts, plot_note, ledger, guarantee, foot)
