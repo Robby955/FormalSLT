@@ -50,18 +50,16 @@ current interfaces; it does not claim end-to-end verification of an ML system.
   </a>
 </p>
 
-A fixed-time bound assumes one fixed look. This Lean theorem gives one set
-`G` on which the running mean of bounded, conditionally centered adapted
-increments stays inside an explicit boundary for every sample size `n >= 4`.
-The increment bound, conditional-centering equality, and conditional
-second-moment inequality are stated almost everywhere.
-
-The scope is exact: the complement has `mu.real` mass at most `delta`, and the
-theorem does not assert that `G` is measurable.
+A fixed-time bound assumes one fixed look. This Lean theorem gives one
+measurable event `G`, with `mu.real(G) >= 1 - delta`, on which the running mean
+of bounded, conditionally centered adapted increments stays inside an explicit
+boundary for every sample size `n >= 4`. The increment bound,
+conditional-centering equality, and conditional second-moment inequality are
+stated almost everywhere.
 
 [Watch the theorem film](https://robby955.github.io/FormalSLT/#stitched-lil-film) ·
 [Lean theorem](./FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean) ·
-[checker](./examples/CheckPolynomialStitchedLIL.lean) ·
+[checker](./examples/CheckPolynomialStitchedLILMeasurableEvent.lean) ·
 [claim receipt](./media/stitched-lil-result-film/claim-receipt.json) ·
 [film source](./media/stitched-lil-result-film/)
 

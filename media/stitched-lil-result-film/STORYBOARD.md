@@ -1,11 +1,10 @@
 # Storyboard: one checked event, every sample size from four onward
 
 Two caption-led films explain the checked endpoint bound by `film_config.json`
-and `claim-receipt.json`. The source checkout defaults to FormalSLT v0.2.0
-commit `e01f857d1604788be35fdc2f3dc7108851471a88`; the final release pass may be
-explicitly rebound to the public-main measurable-event endpoint. There is no
-voiceover. The score supports transitions but carries no mathematical
-information.
+and `claim-receipt.json`. The current source is pinned to the public-main
+measurable-event merge `44ebbff74aea1dcd5b25592aefb561aeede51696`.
+There is no voiceover. The interim cut is silent; a later score may support
+transitions but carries no mathematical information.
 
 ## Main composition: 86 seconds, 16:9
 
@@ -64,8 +63,7 @@ sample size in the four plotted epochs under the same declared parameters.
 They split at each epoch jump. The path between them is explicitly labeled
 illustrative. Epoch cuts remain visible while the allocation ledger resolves
 to `sum_j delta w_j = delta` and the confidence-mass formula extracted from the
-bound theorem. The v0.2 profile displays `mu.real(G^c) <= delta`; the measurable
-profile displays `mu.real(G) >= 1 - delta`.
+bound theorem: `mu.real(G) >= 1 - delta`.
 
 The proof uses countable subadditivity. It does not construct a countable
 e-process.

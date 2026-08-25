@@ -28,15 +28,11 @@ B_j = log(2/delta) + log(j+1) + log(j+2)
 W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n).
 ```
 
-The default v0.2.0 receipt uses the original endpoint: a set `G` with complement
-real mass at most `delta` and the displayed two-sided bound for every `n >= 4`
-on `G`. That endpoint does not assert that `G` is measurable. When the package
-is explicitly rebound to a public-main commit containing the measurable-event
-endpoint, the generated receipt, accessible transcripts, and displayed theorem
-instead state that one measurable event has probability at least `1-delta`.
-
-On screen, `mu_R(G^c)` denotes Lean's `mu.real G^c`, not an unqualified event
-probability.
+The current receipt is bound to public-main commit
+`44ebbff74aea1dcd5b25592aefb561aeede51696`. Its endpoint proves that `G` is
+measurable, that `mu.real(G) >= 1 - delta`, and that the displayed two-sided
+bound holds for every `n >= 4` on `G`. The extractor retains the older v0.2.0
+outer-mass profile only so that the tagged release remains reproducible.
 
 This is an allocated polynomial fixed-tilt stitch with an
 iterated-logarithm-order confidence price. It is not the sharp law of the
@@ -47,18 +43,19 @@ first-formalization or priority claim is made.
 ## Evidence binding
 
 `extract_facts.py` reads every theorem and documentation anchor using `git show`
-at the exact commit in `film_config.json`. The committed default remains the
-v0.2.0 commit `e01f857d1604788be35fdc2f3dc7108851471a88`. It verifies the complete endpoint
-assumptions, quantifier order, selected-epoch definition, displayed width, the
-running-mean definition, checker surface, and public nonclaims. It writes:
+at the exact commit in `film_config.json`. The current pin is the measurable
+endpoint merge `44ebbff74aea1dcd5b25592aefb561aeede51696`. The extractor verifies the
+complete endpoint assumptions, quantifier order, selected-epoch definition,
+displayed width, running-mean definition, checker surface, and public nonclaims.
+It writes:
 
 - `facts.json`, the source-oriented extraction;
 - `claim-receipt.json`, the canonical public claim and TeX surface consumed by
   both film classes;
 - `TRANSCRIPT.md` and `TRANSCRIPT-SOCIAL.md`, generated from checked templates.
 
-After the measurable-event theorem is merged, fetch public main and bind its
-exact merge SHA once:
+To repin the film after a future public theorem change, fetch public main and
+bind the exact new merge SHA:
 
 ```bash
 git fetch origin main
@@ -70,9 +67,9 @@ fetched `origin/main`, commits missing the measurable theorem/checker, or any
 source whose checked statement no longer matches the displayed formula. It
 does not render media.
 
-The pinned theorem blob is unchanged from its original merge, but the public
-media binds to the released commit. `verify_media.py` records source hashes,
-the theorem commit, stream metadata, audio measurements, and final media hashes.
+`verify_media.py` records the pinned theorem blob, render-source hashes, stream
+metadata, final media hashes, and audio measurements when the selected mode has
+audio.
 
 ## Visual and audio contracts
 
@@ -83,12 +80,11 @@ sample size under declared positive
 parameters (`sigma^2 = 0.08`, `b = 0.25`, `delta = 0.05`); only its sample path
 is illustrative.
 
-The default score is synthesized deterministically without samples or
+The built-in score is synthesized deterministically without samples or
 third-party audio. A user-supplied Suno master may be selected only with the
 absolute-path, source-hash, and rights/provenance contract in `SOUNDTRACK.md`.
-Both modes produce source-bound receipts with loudness and true-peak
-measurements; external mode also binds the master, provenance, filters, and
-FFmpeg toolchain.
+Both scored modes record loudness and true peak; external mode also binds the
+master, provenance, filters, and FFmpeg toolchain.
 
 An interim silent release is available only through the explicit `--silent`
 flag or `FORMALSLT_FILM_AUDIO_MODE=silent`. It produces H.264 files with no
