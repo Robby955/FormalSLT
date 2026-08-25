@@ -1,7 +1,10 @@
 {
-  "schema": "formalslt-stitched-lil-facts-v1",
+  "schema": "formalslt-stitched-lil-facts-v2",
   "commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
   "short_commit": "e01f857",
+  "source_ref": "v0.2.0",
+  "release_tag": "v0.2.0",
+  "source_profile": "v0.2-outer-mass-event-v1",
   "blob_oids": {
     "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
     "FormalSLT/AnytimeValid/AllocationLogLog.lean": "14e4dee6b93e61f118043abbd35a34a8303d7ee0",
@@ -45,6 +48,9 @@
     "theorem": "exists_polynomialStitchedLIL_explicit_event",
     "minimum_n": 4,
     "failure_mass": "mu.real goodEvent^c <= delta",
+    "confidence_statement": "mu.real goodEvent^c <= delta",
+    "confidence_tex": "\\mu_{\\mathbb R}(G^{\\mathsf c})\\le\\delta",
+    "event_measurable": false,
     "budget_symbol": "B_j",
     "budget": "log(2/delta) + log(j+1) + log(j+2)",
     "width_symbol": "W_n",

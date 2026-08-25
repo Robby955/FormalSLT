@@ -992,7 +992,7 @@ class StitchedLILResultFilm(Scene):
             AMBER,
         ).move_to(ledger_box)
         failure = math_chip(
-            DISPLAY_MATH["failure_mass"],
+            DISPLAY_MATH["confidence_mass"],
             width=4.10,
             color=RED,
             size=33,
@@ -1042,7 +1042,7 @@ class StitchedLILResultFilm(Scene):
             24,
             IVORY,
         )
-        failure = math_display(DISPLAY_MATH["failure_mass"], 27, RED)
+        failure = math_display(DISPLAY_MATH["confidence_mass"], 27, RED)
         event_bound = math_display(
             DISPLAY_MATH["event_bound"],
             26,
@@ -1129,7 +1129,7 @@ class StitchedLILResultPoster(Scene):
             math_display(DISPLAY_MATH["budget"], 25, AMBER),
             math_display(DISPLAY_MATH["width"], 27, SOFT_CYAN),
         ).arrange(DOWN, buff=0.08).move_to(UP * 0.52)
-        failure = math_display(DISPLAY_MATH["failure_mass"], 34, RED)
+        failure = math_display(DISPLAY_MATH["confidence_mass"], 34, RED)
         event = math_display(DISPLAY_MATH["event_conclusion"], 31, IVORY)
         guarantee_copy = VGroup(failure, event).arrange(DOWN, buff=0.15)
         guarantee_box = RoundedRectangle(
@@ -1423,7 +1423,7 @@ class StitchedLILResultSocial(Scene):
             max_width=4.6,
         ).move_to(DOWN * 1.86)
         guarantee = math_chip(
-            DISPLAY_MATH["failure_mass"],
+            DISPLAY_MATH["confidence_mass"],
             width=3.65,
             color=RED,
             size=36,
@@ -1478,7 +1478,7 @@ class StitchedLILResultSocial(Scene):
             IVORY,
             max_width=5.15,
         )
-        failure = math_display(DISPLAY_MATH["failure_mass"], 33, RED, max_width=3.2)
+        failure = math_display(DISPLAY_MATH["confidence_mass"], 33, RED, max_width=3.2)
         epoch_index = math_display(
             DISPLAY_MATH["selector"],
             24,
@@ -1558,7 +1558,7 @@ class StitchedLILResultSocialPoster(Scene):
             width=4.2,
         )
         motif = VGroup(upper, lower).move_to(DOWN * 0.25)
-        failure = math_display(DISPLAY_MATH["failure_mass"], 28, RED, max_width=4.8)
+        failure = math_display(DISPLAY_MATH["confidence_mass"], 28, RED, max_width=4.8)
         event_top = math_display(
             DISPLAY_MATH["event_condition"],
             23,

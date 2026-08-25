@@ -14,9 +14,6 @@ from pathlib import Path
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 ROOT = PACKAGE_DIR.parents[1]
-BOUND_SHA = "e01f857d1604788be35fdc2f3dc7108851471a88"
-
-
 def timestamp_seconds(minutes: str, seconds: str, milliseconds: str) -> float:
     return int(minutes) * 60 + int(seconds) + int(milliseconds) / 1000
 
@@ -79,7 +76,9 @@ class PackageTests(unittest.TestCase):
             "SOUNDTRACK.md",
             "STORYBOARD.md",
             "TRANSCRIPT.md",
+            "TRANSCRIPT.template.md",
             "TRANSCRIPT-SOCIAL.md",
+            "TRANSCRIPT-SOCIAL.template.md",
             "boundary_model.py",
             "captions-main.vtt",
             "captions-social.vtt",
@@ -113,10 +112,23 @@ class PackageTests(unittest.TestCase):
             stderr=subprocess.PIPE,
         )
         self.assertEqual(completed.returncode, 0, completed.stderr)
-        self.assertIn(BOUND_SHA, completed.stdout)
-        self.assertEqual(self.facts["commit"], BOUND_SHA)
-        self.assertEqual(self.claims["theorem_source_commit"], BOUND_SHA)
-        self.assertEqual(self.config["source_commit"], BOUND_SHA)
+        source_commit = self.config["source_commit"]
+        self.assertRegex(source_commit, r"^[0-9a-f]{40}$")
+        self.assertIn(source_commit, completed.stdout)
+        self.assertEqual(self.facts["commit"], source_commit)
+        self.assertEqual(self.claims["theorem_source_commit"], source_commit)
+        self.assertEqual(self.claims["source_profile"], self.facts["source_profile"])
+
+    def test_explicit_source_binding_is_public_main_and_exact_sha_gated(self) -> None:
+        extractor = (PACKAGE_DIR / "extract_facts.py").read_text(encoding="utf-8")
+        render_script = (PACKAGE_DIR / "render.sh").read_text(encoding="utf-8")
+        self.assertIn('SOURCE_COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")', extractor)
+        self.assertIn('"merge-base",', extractor)
+        self.assertIn('"--is-ancestor",', extractor)
+        self.assertIn('"origin/main",', extractor)
+        self.assertIn('MEASURABLE_THEOREM = "polynomialStitchedLIL_explicit_measurable_event"', extractor)
+        self.assertIn("bind-source)", render_script)
+        self.assertIn('--source-commit "$2" --write', render_script)
 
     def test_picture_timing_is_contiguous_and_locked_for_both_cuts(self) -> None:
         contracts = (
@@ -185,7 +197,16 @@ class PackageTests(unittest.TestCase):
         self.assertIn("not the law of the iterated logarithm", nonclaims)
         self.assertIn("not a sharp-constant or optimality result", nonclaims)
         self.assertIn("not an optional-stopping theorem", nonclaims)
-        self.assertIn("measurability is not asserted", nonclaims)
+        if self.facts["result"]["event_measurable"]:
+            self.assertNotIn("measurability is not asserted", nonclaims)
+            self.assertIn("one measurable event", claim)
+            self.assertIn("probability at least 1 - delta", claim)
+            self.assertEqual(
+                self.facts["result"]["theorem"],
+                "polynomialStitchedLIL_explicit_measurable_event",
+            )
+        else:
+            self.assertIn("measurability is not asserted", nonclaims)
         self.assertIn("no first-formalization or priority claim", nonclaims)
 
     def test_display_math_is_canonical_and_consumed_by_both_cuts(self) -> None:
@@ -198,10 +219,12 @@ class PackageTests(unittest.TestCase):
             display["width"],
             r"W_n=2\sqrt{\frac{2\sigma^2B_j}{n}}+\frac{4bB_j}{3n}",
         )
-        self.assertEqual(
-            display["failure_mass"],
-            r"\mu_{\mathbb R}(G^{\mathsf c})\le\delta",
+        expected_confidence = (
+            r"\mu_{\mathbb R}(G)\ge 1-\delta"
+            if self.facts["result"]["event_measurable"]
+            else r"\mu_{\mathbb R}(G^{\mathsf c})\le\delta"
         )
+        self.assertEqual(display["confidence_mass"], expected_confidence)
         source = (PACKAGE_DIR / "stitched_lil_result.py").read_text(encoding="utf-8")
         self.assertIn('DISPLAY_MATH = CLAIMS["display_math"]', source)
         for key in (
@@ -210,7 +233,7 @@ class PackageTests(unittest.TestCase):
             "width",
             "width_first_line",
             "width_second_line",
-            "failure_mass",
+            "confidence_mass",
             "event_condition",
             "event_bound",
             "event_conclusion",

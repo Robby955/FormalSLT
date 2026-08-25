@@ -28,10 +28,12 @@ B_j = log(2/delta) + log(j+1) + log(j+2)
 W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n).
 ```
 
-The theorem produces a set `G` with complement real mass at most `delta` and
-the displayed two-sided bound for every `n >= 4` on `G`. The theorem does not
-assert that `G` is measurable, so the film does not rewrite this as “with
-probability at least `1-delta`.”
+The default v0.2.0 receipt uses the original endpoint: a set `G` with complement
+real mass at most `delta` and the displayed two-sided bound for every `n >= 4`
+on `G`. That endpoint does not assert that `G` is measurable. When the package
+is explicitly rebound to a public-main commit containing the measurable-event
+endpoint, the generated receipt, accessible transcripts, and displayed theorem
+instead state that one measurable event has probability at least `1-delta`.
 
 On screen, `mu_R(G^c)` denotes Lean's `mu.real G^c`, not an unqualified event
 probability.
@@ -45,14 +47,28 @@ first-formalization or priority claim is made.
 ## Evidence binding
 
 `extract_facts.py` reads every theorem and documentation anchor using `git show`
-at the exact v0.2.0 commit
-`e01f857d1604788be35fdc2f3dc7108851471a88`. It verifies the complete endpoint
+at the exact commit in `film_config.json`. The committed default remains the
+v0.2.0 commit `e01f857d1604788be35fdc2f3dc7108851471a88`. It verifies the complete endpoint
 assumptions, quantifier order, selected-epoch definition, displayed width, the
 running-mean definition, checker surface, and public nonclaims. It writes:
 
 - `facts.json`, the source-oriented extraction;
 - `claim-receipt.json`, the canonical public claim and TeX surface consumed by
-  both film classes.
+  both film classes;
+- `TRANSCRIPT.md` and `TRANSCRIPT-SOCIAL.md`, generated from checked templates.
+
+After the measurable-event theorem is merged, fetch public main and bind its
+exact merge SHA once:
+
+```bash
+git fetch origin main
+./media/stitched-lil-result-film/render.sh bind-source <40-character-merge-sha>
+```
+
+The binding command refuses abbreviated SHAs, commits not reachable from the
+fetched `origin/main`, commits missing the measurable theorem/checker, or any
+source whose checked statement no longer matches the displayed formula. It
+does not render media.
 
 The pinned theorem blob is unchanged from its original merge, but the public
 media binds to the released commit. `verify_media.py` records source hashes,
@@ -113,7 +129,7 @@ audio, and hash verification.
 - `TRANSCRIPT.md`, `TRANSCRIPT-SOCIAL.md`: accessible main and mobile copy.
 - `captions-main.vtt`, `captions-social.vtt`: timed caption sidecars.
 - `film_config.json`: independent timing and resolution contracts.
-- `extract_facts.py`, `facts.json`, `claim-receipt.json`: exact-tag claim pin.
+- `extract_facts.py`, `facts.json`, `claim-receipt.json`: exact-commit claim pin.
 - `stitched_lil_result.py`: both native compositions and posters.
 - `compose_soundtrack.py`, `SOUNDTRACK.md`: deterministic original score.
 - `render.sh`, `verify_media.py`, `stage_delivery.py`: bounded render, receipt,

@@ -1,8 +1,11 @@
 # Storyboard: one checked event, every sample size from four onward
 
-Two caption-led films explain the checked endpoint at FormalSLT v0.2.0 commit
-`e01f857d1604788be35fdc2f3dc7108851471a88`. There is no voiceover. The score
-supports transitions but carries no mathematical information.
+Two caption-led films explain the checked endpoint bound by `film_config.json`
+and `claim-receipt.json`. The source checkout defaults to FormalSLT v0.2.0
+commit `e01f857d1604788be35fdc2f3dc7108851471a88`; the final release pass may be
+explicitly rebound to the public-main measurable-event endpoint. There is no
+voiceover. The score supports transitions but carries no mathematical
+information.
 
 ## Main composition: 86 seconds, 16:9
 
@@ -60,21 +63,19 @@ The upper and lower segments evaluate the displayed `W_n` at every integer
 sample size in the four plotted epochs under the same declared parameters.
 They split at each epoch jump. The path between them is explicitly labeled
 illustrative. Epoch cuts remain visible while the allocation ledger resolves
-to `sum_j delta w_j = delta` and `mu.real(G^c) <= delta`.
+to `sum_j delta w_j = delta` and the confidence-mass formula extracted from the
+bound theorem. The v0.2 profile displays `mu.real(G^c) <= delta`; the measurable
+profile displays `mu.real(G) >= 1 - delta`.
 
 The proof uses countable subadditivity. It does not construct a countable
 e-process.
 
 ### 01:14-01:26 — Checked endpoint
 
-The final card binds the selected epoch, budget, width, event complement mass,
-and all-sample-size conclusion. It identifies
-
-`FormalSLT.AnytimeValid.PolynomialStitchedLIL.exists_polynomialStitchedLIL_explicit_event`
-
-at source `e01f857`. The boundary line says: allocated fixed-tilt stitch; no
-sharp-constant claim; not itself an e-process. `G` is a set; its measurability
-is not asserted by this theorem.
+The final card binds the selected epoch, budget, width, event mass, and
+all-sample-size conclusion. It identifies the exact theorem name and source SHA
+from the generated receipt. The boundary line says: allocated fixed-tilt
+stitch; no sharp-constant claim; not itself an e-process.
 
 ## Mobile composition: 44 seconds, 4:5
 
@@ -106,6 +107,6 @@ The extractor checks at the exact release commit:
 - `FormalSLT/AnytimeValid/AllocationLogLog.lean` for polynomial weights;
 - `FormalSLT/AnytimeValid/SubGaussianCS.lean` for the running mean;
 - `FormalSLT/AnytimeValid/MixtureCS.lean` for increment adaptedness;
-- `examples/CheckPolynomialStitchedLIL.lean` for the public theorem and axiom
+- the checker named in `facts.json` for the selected public theorem and axiom
   query;
 - public frontier/nonclaim documents for scope and priority boundaries.

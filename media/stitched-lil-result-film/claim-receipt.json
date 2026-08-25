@@ -1,6 +1,8 @@
 {
-  "schema": "formalslt-stitched-lil-claim-receipt-v1",
+  "schema": "formalslt-stitched-lil-claim-receipt-v2",
+  "source_ref": "v0.2.0",
   "release_tag": "v0.2.0",
+  "source_profile": "v0.2-outer-mass-event-v1",
   "theorem_source_commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
   "theorem_blob_oid": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
   "theorem_module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
@@ -22,7 +24,7 @@
     "width": "W_n=2\\sqrt{\\frac{2\\sigma^2B_j}{n}}+\\frac{4bB_j}{3n}",
     "width_first_line": "W_n=2\\sqrt{\\frac{2\\sigma^2B_j}{n}}",
     "width_second_line": "\\phantom{W_n={}}+\\frac{4bB_j}{3n}",
-    "failure_mass": "\\mu_{\\mathbb R}(G^{\\mathsf c})\\le\\delta",
+    "confidence_mass": "\\mu_{\\mathbb R}(G^{\\mathsf c})\\le\\delta",
     "event_condition": "\\omega\\in G\\Longrightarrow\\forall n\\ge4:",
     "event_bound": "\\left|\\frac1n\\sum_{k<n}X_k(\\omega)\\right|<W_n",
     "event_conclusion": "\\omega\\in G\\Longrightarrow\\forall n\\ge4:\\ \\left|\\frac1n\\sum_{k<n}X_k(\\omega)\\right|<W_n"

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import subprocess
 import sys
@@ -12,22 +13,31 @@ from pathlib import Path
 from typing import Any
 
 
-BOUND_SHA = "e01f857d1604788be35fdc2f3dc7108851471a88"
-BOUND_TAG = "v0.2.0"
+DEFAULT_BOUND_SHA = "e01f857d1604788be35fdc2f3dc7108851471a88"
+DEFAULT_BOUND_TAG = "v0.2.0"
+SOURCE_COMMIT_ENV = "FORMALSLT_FILM_SOURCE_COMMIT"
 ROOT = Path(__file__).resolve().parents[2]
+CONFIG = Path(__file__).with_name("film_config.json")
 OUTPUT = Path(__file__).with_name("facts.json")
 CLAIM_OUTPUT = Path(__file__).with_name("claim-receipt.json")
+TRANSCRIPT_TEMPLATE = Path(__file__).with_name("TRANSCRIPT.template.md")
+TRANSCRIPT_OUTPUT = Path(__file__).with_name("TRANSCRIPT.md")
+SOCIAL_TRANSCRIPT_TEMPLATE = Path(__file__).with_name(
+    "TRANSCRIPT-SOCIAL.template.md"
+)
+SOCIAL_TRANSCRIPT_OUTPUT = Path(__file__).with_name("TRANSCRIPT-SOCIAL.md")
 
 POLYNOMIAL_FILE = "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean"
 ALLOCATION_FILE = "FormalSLT/AnytimeValid/AllocationLogLog.lean"
 MIXTURE_FILE = "FormalSLT/AnytimeValid/MixtureCS.lean"
 SUBGAUSSIAN_FILE = "FormalSLT/AnytimeValid/SubGaussianCS.lean"
 CHECKER_FILE = "examples/CheckPolynomialStitchedLIL.lean"
+MEASURABLE_CHECKER_FILE = "examples/CheckPolynomialStitchedLILMeasurableEvent.lean"
 FRONTIER_FILE = "docs/proof-frontier.md"
 NONCLAIMS_FILE = "docs/assumptions-and-nonclaims.md"
 RELATED_WORK_FILE = "docs/related-work.md"
 
-PINNED_FILES = (
+BASE_PINNED_FILES = (
     POLYNOMIAL_FILE,
     ALLOCATION_FILE,
     MIXTURE_FILE,
@@ -37,6 +47,9 @@ PINNED_FILES = (
     NONCLAIMS_FILE,
     RELATED_WORK_FILE,
 )
+
+MEASURABLE_THEOREM = "polynomialStitchedLIL_explicit_measurable_event"
+SOURCE_COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
 
 
 def git(*args: str) -> str:
@@ -49,8 +62,59 @@ def git(*args: str) -> str:
     ).stdout
 
 
-def source_at(file_name: str) -> str:
-    return git("show", f"{BOUND_SHA}:{file_name}")
+def source_at(source_commit: str, file_name: str) -> str:
+    return git("show", f"{source_commit}:{file_name}")
+
+
+def configured_source_commit() -> str:
+    try:
+        config = json.loads(CONFIG.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise SystemExit(f"cannot read source commit from {CONFIG}: {error}") from error
+    source_commit = config.get("source_commit")
+    if not isinstance(source_commit, str):
+        raise SystemExit(f"missing string source_commit in {CONFIG}")
+    return source_commit
+
+
+def resolve_source_commit(requested: str) -> str:
+    if SOURCE_COMMIT_PATTERN.fullmatch(requested) is None:
+        raise SystemExit(
+            "source commit must be an exact lowercase 40-character Git SHA"
+        )
+    try:
+        resolved = git("rev-parse", f"{requested}^{{commit}}").strip()
+    except subprocess.CalledProcessError as error:
+        raise SystemExit(f"source commit does not resolve: {requested}") from error
+    if resolved != requested:
+        raise SystemExit(
+            f"source commit did not resolve exactly: requested {requested}, got {resolved}"
+        )
+    return resolved
+
+
+def require_public_main_commit(source_commit: str) -> None:
+    """Reject an explicit film binding until the exact commit is on origin/main."""
+    completed = subprocess.run(
+        [
+            "git",
+            "-C",
+            str(ROOT),
+            "merge-base",
+            "--is-ancestor",
+            source_commit,
+            "origin/main",
+        ],
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    )
+    if completed.returncode != 0:
+        raise SystemExit(
+            f"refusing film binding: {source_commit} is not reachable from "
+            "the fetched origin/main; fetch after the theorem PR merges"
+        )
 
 
 def require(
@@ -62,7 +126,7 @@ def require(
 ) -> re.Match[str]:
     match = re.search(pattern, source, flags=flags)
     if match is None:
-        raise SystemExit(f"missing pinned fact at {BOUND_SHA}: {description}")
+        raise SystemExit(f"missing pinned fact: {description}")
     return match
 
 
@@ -102,11 +166,78 @@ def canonical_json(data: dict[str, Any]) -> str:
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
 
 
+def rendered_transcripts(facts: dict[str, Any]) -> dict[Path, str]:
+    theorem_fqn = f"{facts['result']['module']}.{facts['result']['theorem']}"
+    if facts["result"]["event_measurable"]:
+        values = {
+            "MAIN_CONFIDENCE_PARAGRAPH": (
+                "The theorem's canonical measurable event `G` satisfies "
+                "`mu.real(G) >= 1 - delta`. For every\n"
+                "`omega` in `G` and every sample size `n >= 4`,\n"
+                "`|(1/n) sum_(k<n) X_k(omega)| < W_n`."
+            ),
+            "SOCIAL_CONFIDENCE_PARAGRAPH": (
+                "The theorem's measurable event `G` has\n"
+                "`mu.real(G) >= 1 - delta`, and on `G` the running-mean bound "
+                "holds for every\n"
+                "`n >= 4`."
+            ),
+            "MEASURABILITY_SENTENCE": (
+                "The theorem proves that `G` is measurable, so the displayed\n"
+                "mass bound is an ordinary probability-at-least statement."
+            ),
+            "SOURCE_DESCRIPTION": f"FormalSLT main commit\n`{facts['commit']}`",
+        }
+    else:
+        values = {
+            "MAIN_CONFIDENCE_PARAGRAPH": (
+                "The theorem produces a set `G` satisfying "
+                "`mu.real(G^c) <= delta`. For every\n"
+                "`omega` in `G` and every sample size `n >= 4`,\n"
+                "`|(1/n) sum_(k<n) X_k(omega)| < W_n`."
+            ),
+            "SOCIAL_CONFIDENCE_PARAGRAPH": (
+                "The theorem produces a set\n"
+                "`G` with `mu.real(G^c) <= delta`, and on `G` the running-mean "
+                "bound holds for\n"
+                "every `n >= 4`."
+            ),
+            "MEASURABILITY_SENTENCE": (
+                "The theorem does not assert that `G` is measurable, so the\n"
+                "mass statement is not paraphrased as a probability-at-least\n"
+                "statement."
+            ),
+            "SOURCE_DESCRIPTION": (
+                f"FormalSLT {DEFAULT_BOUND_TAG} commit\n`{facts['commit']}`"
+            ),
+        }
+    values["THEOREM_FQN"] = theorem_fqn
+
+    rendered: dict[Path, str] = {}
+    for template, output in (
+        (TRANSCRIPT_TEMPLATE, TRANSCRIPT_OUTPUT),
+        (SOCIAL_TRANSCRIPT_TEMPLATE, SOCIAL_TRANSCRIPT_OUTPUT),
+    ):
+        text = template.read_text(encoding="utf-8")
+        for key, value in values.items():
+            text = text.replace(f"{{{{{key}}}}}", value)
+        unresolved = re.findall(r"\{\{[A-Z_]+\}\}", text)
+        if unresolved:
+            raise SystemExit(
+                f"unresolved transcript placeholders in {template.name}: "
+                f"{', '.join(sorted(set(unresolved)))}"
+            )
+        rendered[output] = text
+    return rendered
+
+
 def build_claim_receipt(facts: dict[str, Any]) -> dict[str, Any]:
     """Return the exact public claim surface displayed by both compositions."""
     return {
-        "schema": "formalslt-stitched-lil-claim-receipt-v1",
-        "release_tag": BOUND_TAG,
+        "schema": "formalslt-stitched-lil-claim-receipt-v2",
+        "source_ref": facts["source_ref"],
+        "release_tag": facts["release_tag"],
+        "source_profile": facts["source_profile"],
         "theorem_source_commit": facts["commit"],
         "theorem_blob_oid": facts["blob_oids"][POLYNOMIAL_FILE],
         "theorem_module": facts["result"]["module"],
@@ -120,7 +251,7 @@ def build_claim_receipt(facts: dict[str, Any]) -> dict[str, Any]:
             "width": r"W_n=2\sqrt{\frac{2\sigma^2B_j}{n}}+\frac{4bB_j}{3n}",
             "width_first_line": r"W_n=2\sqrt{\frac{2\sigma^2B_j}{n}}",
             "width_second_line": r"\phantom{W_n={}}+\frac{4bB_j}{3n}",
-            "failure_mass": r"\mu_{\mathbb R}(G^{\mathsf c})\le\delta",
+            "confidence_mass": facts["result"]["confidence_tex"],
             "event_condition": r"\omega\in G\Longrightarrow\forall n\ge4:",
             "event_bound": r"\left|\frac1n\sum_{k<n}X_k(\omega)\right|<W_n",
             "event_conclusion": (
@@ -133,24 +264,29 @@ def build_claim_receipt(facts: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def extract() -> dict[str, Any]:
-    resolved = git("rev-parse", BOUND_SHA).strip()
-    if resolved != BOUND_SHA:
-        raise SystemExit(f"commit did not resolve exactly: {resolved}")
-    tagged = git("rev-parse", f"{BOUND_TAG}^{{commit}}").strip()
-    if tagged != BOUND_SHA:
-        raise SystemExit(
-            f"{BOUND_TAG} resolves to {tagged}, expected theorem commit {BOUND_SHA}"
-        )
+def extract(source_commit: str) -> dict[str, Any]:
+    measurable_profile = source_commit != DEFAULT_BOUND_SHA
+    if not measurable_profile:
+        tagged = git("rev-parse", f"{DEFAULT_BOUND_TAG}^{{commit}}").strip()
+        if tagged != source_commit:
+            raise SystemExit(
+                f"{DEFAULT_BOUND_TAG} resolves to {tagged}, expected theorem "
+                f"commit {source_commit}"
+            )
 
-    polynomial = source_at(POLYNOMIAL_FILE)
-    allocation = source_at(ALLOCATION_FILE)
-    mixture = source_at(MIXTURE_FILE)
-    subgaussian = source_at(SUBGAUSSIAN_FILE)
-    checker = source_at(CHECKER_FILE)
-    frontier = source_at(FRONTIER_FILE)
-    nonclaims = source_at(NONCLAIMS_FILE)
-    related = source_at(RELATED_WORK_FILE)
+    polynomial = source_at(source_commit, POLYNOMIAL_FILE)
+    allocation = source_at(source_commit, ALLOCATION_FILE)
+    mixture = source_at(source_commit, MIXTURE_FILE)
+    subgaussian = source_at(source_commit, SUBGAUSSIAN_FILE)
+    checker = source_at(source_commit, CHECKER_FILE)
+    measurable_checker = (
+        source_at(source_commit, MEASURABLE_CHECKER_FILE)
+        if measurable_profile
+        else ""
+    )
+    frontier = source_at(source_commit, FRONTIER_FILE)
+    nonclaims = source_at(source_commit, NONCLAIMS_FILE)
+    related = source_at(source_commit, RELATED_WORK_FILE)
 
     require(
         r"Epoch `j` receives confidence weight\s+"
@@ -293,6 +429,47 @@ def extract() -> dict[str, Any]:
         result_statement,
         "complete explicit width and all-sample-size quantifier order",
     )
+    measurable_result_line: int | None = None
+    if measurable_profile:
+        measurable_result, measurable_result_line = declaration_statement(
+            polynomial,
+            "theorem",
+            MEASURABLE_THEOREM,
+        )
+        for shape, description in result_shapes[:11]:
+            require(shape, measurable_result, f"measurable endpoint {description}")
+        for shape, description in (
+            (
+                r"MeasurableSet\s*\(polynomialStitchedLILGoodEvent\s+"
+                r"X\s+sigma2\s+b\s+delta\)",
+                "measurable canonical event",
+            ),
+            (
+                r"1\s*-\s*delta\s*<=\s*μ\.real\s*"
+                r"\(polynomialStitchedLILGoodEvent\s+X\s+sigma2\s+b\s+delta\)",
+                "ordinary probability at least one minus delta",
+            ),
+            (
+                r"∀\s+omega\s+∈\s+polynomialStitchedLILGoodEvent\s+"
+                r"X\s+sigma2\s+b\s+delta,\s*∀\s+n\s*:\s*ℕ,\s*4\s*<=\s*n",
+                "single canonical event controls every n at least four",
+            ),
+            (r"\|runningMean\s+X\s+n\s+omega\|\s*<", "two-sided running mean"),
+            (r"2\s*\*\s*Real\.sqrt", "square-root constant"),
+            (r"4\s*\*\s*b", "linear constant"),
+            (r"3\s*\*\s*\(n\s*:\s*ℝ\)", "linear denominator"),
+        ):
+            require(shape, measurable_result, f"measurable endpoint {description}")
+        require(
+            rf"#check\s+{MEASURABLE_THEOREM}",
+            measurable_checker,
+            "measurable endpoint public check",
+        )
+        require(
+            rf"#print\s+axioms\s+{MEASURABLE_THEOREM}",
+            measurable_checker,
+            "measurable endpoint public axiom query",
+        )
     require(
         r"def\s+runningMean[\s\S]*?\s*:=\s*\n\s*runningSum\s+X\s+n\s+ω\s*/\s*\(n\s*:\s*ℝ\)",
         subgaussian,
@@ -417,23 +594,94 @@ def extract() -> dict[str, Any]:
             "checker axiom-query anchor",
         ),
     ]
+    if measurable_profile:
+        if measurable_result_line is None:
+            raise AssertionError("measurable result line was not recorded")
+        anchors.extend(
+            [
+                {
+                    "file": POLYNOMIAL_FILE,
+                    "line": measurable_result_line,
+                    "name": MEASURABLE_THEOREM,
+                },
+                anchor(
+                    measurable_checker,
+                    MEASURABLE_CHECKER_FILE,
+                    f"axioms:{MEASURABLE_THEOREM}",
+                    rf"^#print\s+axioms\s+{MEASURABLE_THEOREM}\s*$",
+                    "measurable checker axiom-query anchor",
+                ),
+            ]
+        )
 
+    pinned_files = BASE_PINNED_FILES + (
+        (MEASURABLE_CHECKER_FILE,) if measurable_profile else ()
+    )
     blob_oids = {
-        file_name: git("rev-parse", f"{BOUND_SHA}:{file_name}").strip()
-        for file_name in PINNED_FILES
+        file_name: git("rev-parse", f"{source_commit}:{file_name}").strip()
+        for file_name in pinned_files
     }
 
+    source_profile = (
+        "measurable-probability-event-v1"
+        if measurable_profile
+        else "v0.2-outer-mass-event-v1"
+    )
+    result_theorem = (
+        MEASURABLE_THEOREM
+        if measurable_profile
+        else "exists_polynomialStitchedLIL_explicit_event"
+    )
+    public_claim = (
+        "An explicit two-sided confidence sequence for bounded increments "
+        "revealed at time k+1 and centered given F_k; one measurable event "
+        "of probability at least 1 - delta controls every n >= 4 with an "
+        "exact iterated-logarithm-order budget."
+        if measurable_profile
+        else
+        "An explicit two-sided confidence sequence for bounded increments "
+        "revealed at time k+1 and centered given F_k; one failure set of mass "
+        "at most delta controls every n >= 4 with an exact "
+        "iterated-logarithm-order budget."
+    )
+    confidence_statement = (
+        "1 - delta <= mu.real goodEvent"
+        if measurable_profile
+        else "mu.real goodEvent^c <= delta"
+    )
+    confidence_tex = (
+        r"\mu_{\mathbb R}(G)\ge 1-\delta"
+        if measurable_profile
+        else r"\mu_{\mathbb R}(G^{\mathsf c})\le\delta"
+    )
+    result_nonclaims = [
+        "not the law of the iterated logarithm",
+        "not a sharp-constant or optimality result",
+        "the countable confidence allocation is not itself an e-process",
+        "not an optional-stopping theorem",
+        "not a predictable or data-selected tilt construction",
+    ]
+    if not measurable_profile:
+        result_nonclaims.append(
+            "goodEvent is a Set; its measurability is not asserted by the theorem"
+        )
+    result_nonclaims.append("no first-formalization or priority claim")
+
     return {
-        "schema": "formalslt-stitched-lil-facts-v1",
-        "commit": BOUND_SHA,
-        "short_commit": BOUND_SHA[:7],
-        "blob_oids": blob_oids,
-        "public_claim": (
-            "An explicit two-sided confidence sequence for bounded increments "
-            "revealed at time k+1 and centered given F_k; one failure set of mass "
-            "at most delta controls every n >= 4 with an exact "
-            "iterated-logarithm-order budget."
+        "schema": "formalslt-stitched-lil-facts-v2",
+        "commit": source_commit,
+        "short_commit": source_commit[:7],
+        "source_ref": (
+            DEFAULT_BOUND_TAG
+            if source_commit == DEFAULT_BOUND_SHA
+            else f"origin/main@{source_commit}"
         ),
+        "release_tag": (
+            DEFAULT_BOUND_TAG if source_commit == DEFAULT_BOUND_SHA else None
+        ),
+        "source_profile": source_profile,
+        "blob_oids": blob_oids,
+        "public_claim": public_claim,
         "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
         "process_model": [
             "mu is a probability measure",
@@ -460,9 +708,12 @@ def extract() -> dict[str, Any]:
         },
         "result": {
             "module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
-            "theorem": "exists_polynomialStitchedLIL_explicit_event",
+            "theorem": result_theorem,
             "minimum_n": 4,
             "failure_mass": "mu.real goodEvent^c <= delta",
+            "confidence_statement": confidence_statement,
+            "confidence_tex": confidence_tex,
+            "event_measurable": measurable_profile,
             "budget_symbol": "B_j",
             "budget": "log(2/delta) + log(j+1) + log(j+2)",
             "width_symbol": "W_n",
@@ -472,32 +723,37 @@ def extract() -> dict[str, Any]:
             "conclusion": "|runningMean X n| < W_n for every n >= 4",
         },
         "checker": {
-            "file": CHECKER_FILE,
+            "file": (
+                MEASURABLE_CHECKER_FILE if measurable_profile else CHECKER_FILE
+            ),
             "first_epoch_index": "j(4) = 0",
             "first_epoch_floor": "N_0 = 4",
             "first_epoch_budget": "delta = 1/2, j = 0: B_0 = log 8",
             "queries_public_axioms": True,
         },
-        "nonclaims": [
-            "not the law of the iterated logarithm",
-            "not a sharp-constant or optimality result",
-            "the countable confidence allocation is not itself an e-process",
-            "not an optional-stopping theorem",
-            "not a predictable or data-selected tilt construction",
-            "goodEvent is a Set; its measurability is not asserted by the theorem",
-            "no first-formalization or priority claim",
-        ],
+        "nonclaims": result_nonclaims,
         "anchors": anchors,
     }
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--source-commit",
+        metavar="SHA",
+        help=(
+            "exact 40-character commit to bind; non-v0.2 commits must be "
+            "reachable from the fetched origin/main and expose the measurable endpoint"
+        ),
+    )
     action = parser.add_mutually_exclusive_group()
     action.add_argument(
         "--write",
         action="store_true",
-        help="replace facts.json with facts extracted from the pinned commit",
+        help=(
+            "replace fact receipts; with an explicit source override, also bind "
+            "film_config.json to that commit"
+        ),
     )
     action.add_argument(
         "--print",
@@ -510,21 +766,45 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    facts = extract()
+    environment_commit = os.environ.get(SOURCE_COMMIT_ENV)
+    if args.source_commit and environment_commit:
+        raise SystemExit(
+            f"set the source commit with either --source-commit or {SOURCE_COMMIT_ENV}, not both"
+        )
+    source_override = args.source_commit or environment_commit
+    requested = source_override or configured_source_commit()
+    source_commit = resolve_source_commit(requested)
+    if source_commit != DEFAULT_BOUND_SHA:
+        require_public_main_commit(source_commit)
+    facts = extract(source_commit)
     rendered = canonical_json(facts)
     claim_rendered = canonical_json(build_claim_receipt(facts))
+    transcript_outputs = rendered_transcripts(facts)
     if args.print_only:
         sys.stdout.write(rendered)
         return
     if args.write:
         OUTPUT.write_text(rendered, encoding="utf-8")
         CLAIM_OUTPUT.write_text(claim_rendered, encoding="utf-8")
+        for path, transcript in transcript_outputs.items():
+            path.write_text(transcript, encoding="utf-8")
+        if source_override is not None:
+            config = json.loads(CONFIG.read_text(encoding="utf-8"))
+            config["source_commit"] = source_commit
+            config["source_profile"] = facts["source_profile"]
+            CONFIG.write_text(canonical_json(config), encoding="utf-8")
         print(
             f"wrote {OUTPUT.relative_to(ROOT)} and "
-            f"{CLAIM_OUTPUT.relative_to(ROOT)} from {BOUND_TAG} ({BOUND_SHA})"
+            f"{CLAIM_OUTPUT.relative_to(ROOT)} from {facts['source_ref']} "
+            f"({source_commit})"
         )
         return
-    for path, expected in ((OUTPUT, rendered), (CLAIM_OUTPUT, claim_rendered)):
+    expected_outputs = {
+        OUTPUT: rendered,
+        CLAIM_OUTPUT: claim_rendered,
+        **transcript_outputs,
+    }
+    for path, expected in expected_outputs.items():
         if not path.is_file():
             raise SystemExit(f"missing committed receipt: {path.relative_to(ROOT)}")
         committed = path.read_text(encoding="utf-8")
@@ -535,7 +815,7 @@ def main() -> None:
             )
     print(
         f"checked {OUTPUT.relative_to(ROOT)} and {CLAIM_OUTPUT.relative_to(ROOT)} "
-        f"against {BOUND_TAG} ({BOUND_SHA})"
+        f"against {facts['source_ref']} ({source_commit})"
     )
 
 

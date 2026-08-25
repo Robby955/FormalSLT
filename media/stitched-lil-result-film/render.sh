@@ -210,6 +210,20 @@ case "$MODE" in
   validate)
     validate_source
     ;;
+  bind-source)
+    if [[ -n "${2:-}" && -n "${FORMALSLT_FILM_SOURCE_COMMIT:-}" ]]; then
+      echo "set the source commit with either argument 2 or FORMALSLT_FILM_SOURCE_COMMIT, not both" >&2
+      exit 2
+    fi
+    if [[ -n "${2:-}" ]]; then
+      python3 "$PACKAGE/extract_facts.py" --source-commit "$2" --write
+    elif [[ -n "${FORMALSLT_FILM_SOURCE_COMMIT:-}" ]]; then
+      python3 "$PACKAGE/extract_facts.py" --write
+    else
+      echo "usage: $0 bind-source <merged-main-sha>" >&2
+      exit 2
+    fi
+    ;;
   facts)
     python3 "$PACKAGE/extract_facts.py" --print
     ;;
@@ -308,7 +322,7 @@ case "$MODE" in
     python3 "$STAGER" --ffprobe "$FFPROBE_BIN"
     ;;
   *)
-    echo "usage: $0 [validate|facts|soundtrack-plan|layout-check|proof-main|proof-social|proofs|final-main|final-social|finals|poster-main|poster-social|posters|release|stage-delivery]" >&2
+    echo "usage: $0 [validate|bind-source <merged-main-sha>|facts|soundtrack-plan|layout-check|proof-main|proof-social|proofs|final-main|final-social|finals|poster-main|poster-social|posters|release|stage-delivery]" >&2
     exit 2
     ;;
 esac
