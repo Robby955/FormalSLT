@@ -13,13 +13,20 @@ TMP="$(mktemp "${TMPDIR:-/tmp}/formalslt-api.XXXXXX")"
 COMPAT_TMP="$(mktemp "${TMPDIR:-/tmp}/formalslt-v01-api.XXXXXX")"
 trap 'rm -f "$TMP" "$COMPAT_TMP"' EXIT
 
-if [ "$#" -gt 1 ] || { [ "$#" -eq 1 ] && [ "$1" != "--update" ]; }; then
-  echo "usage: $0 [--update]" >&2
+if [ "$#" -gt 1 ] || {
+    [ "$#" -eq 1 ] &&
+      [ "$1" != "--update" ] &&
+      [ "$1" != "--static-only" ]
+  }; then
+  echo "usage: $0 [--update|--static-only]" >&2
   exit 2
 fi
 UPDATE=false
+STATIC_ONLY=false
 if [ "${1:-}" = "--update" ]; then
   UPDATE=true
+elif [ "${1:-}" = "--static-only" ]; then
+  STATIC_ONLY=true
 fi
 
 CHECKERS=(
@@ -61,8 +68,6 @@ for file in "${CHECKERS[@]}"; do
   check_count=$((check_count + $(grep -Ec '^#check ' "$file")))
   print_count=$((print_count + $(grep -Ec '^#print axioms ' "$file")))
 done
-
-"$LAKE" env lean examples/CheckV01Compatibility.lean > "$COMPAT_TMP" 2>&1
 
 if [ "$check_count" -ne 19 ] || [ "$print_count" -ne 19 ]; then
   echo "ERROR: expected 19 #check and 19 #print axioms entries; found $check_count and $print_count" >&2
@@ -546,18 +551,45 @@ for path, expected_count in install_surfaces.items():
             f"found {dependency_names!r}"
         )
 
-# The README presents only the latest tagged release. Before v0.2 is tagged,
-# unreleased users should choose and review an immutable commit themselves,
-# rather than copy a stale candidate hash or track a moving branch.
+# The install surfaces must agree with the version being prepared in the
+# citation metadata. Remote tag existence and exact tag identity are checked by
+# the release workflow; this source-level gate also needs to pass before that
+# tag can be created.
+citation = Path("CITATION.cff").read_text(encoding="utf-8")
+version_match = re.search(
+    r'^version:\s*["\']?([^"\'\s#]+)["\']?\s*$', citation, re.MULTILINE
+)
+if version_match is None:
+    raise SystemExit("ERROR: CITATION.cff must declare one release version")
+release_ref = f"v{version_match.group(1)}"
+release_notes = Path(f"docs/releases/{release_ref}.md")
+if not release_notes.is_file():
+    raise SystemExit(
+        f"ERROR: CITATION.cff version {release_ref} has no {release_notes}"
+    )
+
 readme = Path("README.md").read_text(encoding="utf-8")
 readme_words = " ".join(readme.split())
 readme_dependency_refs = re.findall(
     r'require\s+\S+\s+from\s+git\s+\S+\s+@\s+"([^"]+)"', readme
 )
-if readme_dependency_refs != ["v0.1.0"]:
+if readme_dependency_refs != [release_ref]:
     raise SystemExit(
-        "ERROR: README.md must install only the latest tagged release v0.1.0; "
+        f"ERROR: README.md must install only the release in CITATION.cff "
+        f"({release_ref}); "
         f"found refs {readme_dependency_refs!r}"
+    )
+
+lean_reader = Path("docs/site/readers/lean/index.html").read_text(encoding="utf-8")
+lean_reader_dependency_refs = re.findall(
+    r'require\s+\S+\s+from\s+git\s+\S+\s+@\s+"([^"]+)"', lean_reader
+)
+expected_lean_reader_refs = [release_ref, "__FORMALSLT_SOURCE_REF__"]
+if lean_reader_dependency_refs != expected_lean_reader_refs:
+    raise SystemExit(
+        "ERROR: Lean reader install refs must contain the release version and "
+        f"the exact-build placeholder {expected_lean_reader_refs!r}; found "
+        f"{lean_reader_dependency_refs!r}"
     )
 if (
     "pin a full commit SHA that you have reviewed rather than the moving branch"
@@ -575,6 +607,13 @@ print(
     "install snippets and dependency pins match"
 )
 PY
+
+if [ "$STATIC_ONLY" = true ]; then
+  echo "public API static preflight passed"
+  exit 0
+fi
+
+"$LAKE" env lean examples/CheckV01Compatibility.lean > "$COMPAT_TMP" 2>&1
 
 for file in "${CHECKERS[@]}"; do
   printf '== %s ==\n' "$file" >> "$TMP"

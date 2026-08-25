@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Robby955/FormalSLT/actions/workflows/ci.yml)
 [![Docs](https://github.com/Robby955/FormalSLT/actions/workflows/docs.yml/badge.svg?branch=main)](https://robby955.github.io/FormalSLT/)
+[![Release](https://img.shields.io/github/v/release/Robby955/FormalSLT)](https://github.com/Robby955/FormalSLT/releases/latest)
 [![Lean 4](https://img.shields.io/badge/Lean-4.32.2-blue.svg)](https://lean-lang.org/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-905b958-blueviolet.svg)](https://github.com/leanprover-community/mathlib4)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
@@ -25,17 +26,21 @@ Worked applications show how these parts of the library combine.
 ## Overview video
 
 <p align="center">
-  <a href="https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4">
+  <a href="https://robby955.github.io/FormalSLT/#overview-film">
     <img src="media/formalslt-overview/delivery/formalslt-overview-poster.jpg" width="960" alt="FormalSLT overview film">
   </a>
 </p>
 
-An overview of VC and Rademacher theory, chaining, PAC-Bayes, sequential
-inference, and dependent-data results, followed by one worked application.
+Fixed-time guarantees can fail under repeated monitoring; one checked event
+can cover repeated looks. The repo-wide film starts there, then maps reusable proof
+infrastructure across VC and Rademacher theory, chaining, PAC-Bayes,
+e-processes, and dependent-data inference. It establishes the platform and its
+current interfaces; it does not claim end-to-end verification of an ML system.
 
-[Play the film](https://cdn.jsdelivr.net/gh/Robby955/FormalSLT@main/media/formalslt-overview/delivery/formalslt-overview.mp4) ·
+[Play the responsive film](https://robby955.github.io/FormalSLT/#overview-film) ·
 [Transcript](./media/formalslt-overview/TRANSCRIPT.md) ·
-[Manim source](./media/formalslt-overview/)
+[Manim source](./media/formalslt-overview/) ·
+[Pinned v0.2.0 film receipt](https://github.com/Robby955/FormalSLT/blob/v0.2.0/media/formalslt-overview/render-receipt.json)
 
 ## Results
 
@@ -118,7 +123,7 @@ Add the latest tagged release to a Lake project:
 
 ```lean
 require «formal-slt» from git
-  "https://github.com/Robby955/FormalSLT.git" @ "v0.1.0"
+  "https://github.com/Robby955/FormalSLT.git" @ "v0.2.0"
 ```
 
 For unreleased work, pin a full commit SHA that you have reviewed rather than
@@ -131,6 +136,8 @@ lake update
 lake exe cache get
 lake build
 ```
+
+[v0.2.0 release notes](./docs/releases/v0.2.0.md)
 
 ## Repository layout
 

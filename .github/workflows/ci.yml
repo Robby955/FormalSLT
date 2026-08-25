@@ -40,6 +40,9 @@ jobs:
           git diff --name-only -z "$base" "${{ github.sha }}" |
             python3 scripts/classify_ci_scope.py --stdin0 --github-output
 
+      - name: Verify public API metadata before builds
+        run: bash scripts/check_public_api_snapshot.sh --static-only
+
   build:
     needs: scope
     if: always()
@@ -48,7 +51,12 @@ jobs:
       - name: Require a valid scope classification
         env:
           CI_SCOPE: ${{ needs.scope.outputs.scope }}
+          SCOPE_RESULT: ${{ needs.scope.result }}
         run: |
+          if [[ "$SCOPE_RESULT" != "success" ]]; then
+            echo "Change classification or static preflight failed."
+            exit 1
+          fi
           case "$CI_SCOPE" in
             docs|full) ;;
             *)
@@ -232,7 +240,7 @@ jobs:
   downstream:
     name: downstream (${{ matrix.os }})
     needs: scope
-    if: needs.scope.outputs.scope == 'full'
+    if: needs.scope.result == 'success' && needs.scope.outputs.scope == 'full'
     strategy:
       fail-fast: false
       matrix:
