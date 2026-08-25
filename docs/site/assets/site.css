@@ -522,6 +522,8 @@ h3 {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
   border: 1px solid var(--line-dark);
   background: #08111e;
 }

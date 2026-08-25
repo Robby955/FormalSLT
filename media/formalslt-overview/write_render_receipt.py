@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import platform
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -24,9 +25,11 @@ SOURCE_PATHS = (
     MEDIA_ROOT / "facts.json",
     MEDIA_ROOT / "formalslt_overview.py",
     MEDIA_ROOT / "manim.cfg",
+    MEDIA_ROOT / "manim-social.cfg",
     MEDIA_ROOT / "render.sh",
     MEDIA_ROOT / "requirements.txt",
     MEDIA_ROOT / "test_compose_soundtrack.py",
+    MEDIA_ROOT / "test_formalslt_overview_source.py",
     MEDIA_ROOT / "write_render_receipt.py",
     MEDIA_ROOT / "delivery/formalslt-overview.vtt",
 )
@@ -42,7 +45,7 @@ ASSET_SPECS = (
         "social",
         "formalslt-overview-social.mp4",
         "media/formalslt-overview/delivery/formalslt-overview-social.mp4",
-        (1920, 1080),
+        (1080, 1350),
     ),
     (
         "poster",
@@ -88,8 +91,61 @@ def soundtrack_plan(cut: str) -> dict[str, object]:
     return {
         "reference_duration_seconds": payload["reference_duration_seconds"],
         "sample_rate": payload["sample_rate"],
-        "cues": payload["cues"],
+        "swells": payload["swells"],
+        "accents": payload["accents"],
     }
+
+
+def loudness_metadata(role: str, path: Path, ffmpeg_bin: str) -> dict[str, float]:
+    measured = subprocess.run(
+        [
+            ffmpeg_bin,
+            "-hide_banner",
+            "-nostats",
+            "-i",
+            str(path),
+            "-filter_complex",
+            "ebur128=peak=true",
+            "-f",
+            "null",
+            "-",
+        ],
+        check=True,
+        text=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.PIPE,
+    ).stderr
+    patterns = {
+        "integrated_lufs": r"Integrated loudness:\s+I:\s+(-?\d+(?:\.\d+)?) LUFS",
+        "loudness_range_lu": r"Loudness range:\s+LRA:\s+(-?\d+(?:\.\d+)?) LU",
+        "true_peak_dbfs": r"True peak:\s+Peak:\s+(-?\d+(?:\.\d+)?) dBFS",
+    }
+    values: dict[str, float] = {}
+    for name, pattern in patterns.items():
+        matches = re.findall(pattern, measured, flags=re.MULTILINE)
+        if not matches:
+            raise SystemExit(f"could not parse {name} for {role}")
+        values[name] = float(matches[-1])
+
+    integrated_low = -23.5 if role == "main" else -24.0
+    if not integrated_low <= values["integrated_lufs"] <= -21.0:
+        raise SystemExit(
+            f"{role} soundtrack loudness {values['integrated_lufs']} LUFS leaves "
+            f"the reviewed [{integrated_low}, -21.0] LUFS range"
+        )
+    # A flat procedural bed can hit integrated loudness while still sounding
+    # inert. Gate meaningful dynamic range in both the long and social cuts.
+    lra_low, lra_high = ((6.0, 10.0) if role == "main" else (5.0, 9.0))
+    if not lra_low <= values["loudness_range_lu"] <= lra_high:
+        raise SystemExit(
+            f"{role} soundtrack LRA {values['loudness_range_lu']} leaves the "
+            f"reviewed [{lra_low}, {lra_high}] LU range"
+        )
+    if values["true_peak_dbfs"] > -3.0:
+        raise SystemExit(
+            f"{role} soundtrack true peak {values['true_peak_dbfs']} dBFS exceeds -3 dBFS"
+        )
+    return values
 
 
 def media_metadata(
@@ -98,6 +154,7 @@ def media_metadata(
     receipt_path: str,
     expected_size: tuple[int, int],
     ffprobe_bin: str,
+    ffmpeg_bin: str,
 ) -> dict[str, object]:
     probe = subprocess.run(
         [
@@ -145,6 +202,7 @@ def media_metadata(
             raise SystemExit(
                 f"{role} must be 30 fps, got {video.get('r_frame_rate')}"
             )
+    if role in {"main", "social"}:
         if len(audio_streams) != 1:
             raise SystemExit(f"{role} must contain exactly one AAC soundtrack")
         audio = audio_streams[0]
@@ -159,7 +217,7 @@ def media_metadata(
                 f"{audio.get('channels')} channels"
             )
     elif audio_streams:
-        raise SystemExit(f"{role} must not contain an audio stream")
+        raise SystemExit(f"{role} poster must not contain an audio stream")
 
     metadata: dict[str, object] = {
         "role": role,
@@ -173,6 +231,8 @@ def media_metadata(
     for key in ("r_frame_rate", "pix_fmt"):
         if key in video:
             metadata[key] = video[key]
+    if "duration" in fmt:
+        metadata["duration_seconds"] = fmt["duration"]
     if role in {"main", "social"}:
         audio = audio_streams[0]
         metadata["audio"] = {
@@ -180,9 +240,8 @@ def media_metadata(
             "sample_rate": audio["sample_rate"],
             "channels": audio["channels"],
             "channel_layout": audio.get("channel_layout"),
+            "loudness": loudness_metadata(role, path, ffmpeg_bin),
         }
-    if "duration" in fmt:
-        metadata["duration_seconds"] = fmt["duration"]
     return metadata
 
 
@@ -233,7 +292,7 @@ def main() -> None:
 
     facts = json.loads((MEDIA_ROOT / "facts.json").read_text(encoding="utf-8"))
     receipt = {
-        "schema": "formalslt-overview-render-receipt-v2",
+        "schema": "formalslt-overview-render-receipt-v4",
         "fact_commit": facts["commit"],
         "source": {
             str(path.relative_to(ROOT)): {
@@ -249,6 +308,7 @@ def main() -> None:
                 receipt_path,
                 expected_size,
                 args.ffprobe_bin,
+                args.ffmpeg_bin,
             )
             for role, path, receipt_path, expected_size in assets
         ],
@@ -259,7 +319,10 @@ def main() -> None:
                 "--version",
             ),
             "source": "media/formalslt-overview/compose_soundtrack.py",
-            "generation": "deterministic procedural synthesis",
+            "generation": (
+                "deterministic original synthesis; 80 Hz high-pass and "
+                "EBU R128 delivery normalization"
+            ),
             "third_party_audio": False,
             "license": "MIT",
             "cut_plans": {
