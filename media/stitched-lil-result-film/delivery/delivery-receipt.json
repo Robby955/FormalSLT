@@ -1,0 +1,131 @@
+{
+  "schema": "formalslt-stitched-lil-delivery-receipt-v1",
+  "theorem_source_commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
+  "theorem_blob_oid": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
+  "render_source_commit": "0f7b1f10d97f7997fa88cc843c38e75b1ff2c9c9",
+  "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
+  "posters": {
+    "main": {
+      "codec": "png",
+      "width": 1920,
+      "height": 1080,
+      "file": "stitched-lil-result-poster-1920x1080.png",
+      "bytes": 135835,
+      "sha256": "acf027b16b91a226a3eab8d221abaacb43cdfeb8d8b241d28ba18cc3c2b70c7c"
+    },
+    "social": {
+      "codec": "png",
+      "width": 1080,
+      "height": 1350,
+      "file": "stitched-lil-result-poster-1080x1350.png",
+      "bytes": 140669,
+      "sha256": "224394a69009a2e9698facd886c1451f96bd5f80d5f3b518afcc0434d4906b4d"
+    }
+  },
+  "cuts": {
+    "main": {
+      "video": {
+        "file": "stitched-lil-result-1920x1080.mp4",
+        "bytes": 3908852,
+        "sha256": "9b51bec4c9e46d83c70ed7d735cec08d64a608705ccd501b0f1007234fa2e5f7",
+        "duration_seconds": 86.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "30",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "audio_channels": 2,
+        "audio_sample_rate": 48000
+      },
+      "muxed_audio_measurement": {
+        "integrated_lufs": -19.7,
+        "true_peak_dbfs": -10.36,
+        "loudness_range_lu": 8.6,
+        "measurement_threshold_lufs": -30.17
+      }
+    },
+    "social": {
+      "video": {
+        "file": "stitched-lil-result-1080x1350.mp4",
+        "bytes": 2366120,
+        "sha256": "885367f5472ab66318a214b469102b5fc40dae3f57bf323c49ba69309403d8a5",
+        "duration_seconds": 43.966667,
+        "width": 1080,
+        "height": 1350,
+        "frame_rate": "30",
+        "video_codec": "h264",
+        "audio_codec": "aac",
+        "audio_channels": 2,
+        "audio_sample_rate": 48000
+      },
+      "muxed_audio_measurement": {
+        "integrated_lufs": -19.51,
+        "true_peak_dbfs": -10.42,
+        "loudness_range_lu": 8.4,
+        "measurement_threshold_lufs": -30.12
+      }
+    }
+  },
+  "files": {
+    "DELIVERY.md": {
+      "bytes": 874,
+      "sha256": "1ff3db1683318988fb8f93d0746c93d876ba1e384a78bbfb6104257bb23e0750"
+    },
+    "README.md": {
+      "bytes": 5163,
+      "sha256": "eb2132ca4373c680d25a0926fa4f7eacd18b1050f85f3f473bf113a2a9801e3b"
+    },
+    "SOUNDTRACK.md": {
+      "bytes": 1538,
+      "sha256": "14fd3d9801617fc2b7a34f53153f672cb82e421afea860e466f20c9c33523439"
+    },
+    "TRANSCRIPT-SOCIAL.md": {
+      "bytes": 1636,
+      "sha256": "86bdeb8f7f08ad8fa2446f46ca0340f7edf335ab50d4eb179382b5a496019fca"
+    },
+    "TRANSCRIPT.md": {
+      "bytes": 3086,
+      "sha256": "312c31471cb31ece05673c7b43990f91840ca8c9a2b44139d552e162ee80e094"
+    },
+    "captions-main.vtt": {
+      "bytes": 870,
+      "sha256": "1dc73bf90cd619dd326c8eccf619ef0430d682c8695d0f6c16c4f673e4f53f9e"
+    },
+    "captions-social.vtt": {
+      "bytes": 520,
+      "sha256": "b1a449522985f4388a96c36d8c85d8fa0a434cfcc9de2dcbe8de4b113ac83583"
+    },
+    "claim-receipt.json": {
+      "bytes": 3265,
+      "sha256": "31ff6849be1fe3caa9306d1852acfa7f1b9fbc139dac4e789adeef037f045e5f"
+    },
+    "facts.json": {
+      "bytes": 4195,
+      "sha256": "33af72366e6bc3da287d61009d95a2f46e4cec0648f529b5832cd393f8790d77"
+    },
+    "stitched-lil-result-1080x1350-receipt.json": {
+      "bytes": 3971,
+      "sha256": "169cc382b5ff947d6aee1ae95b0782bf87e8faaf03546f817c39cdd0642afc8e"
+    },
+    "stitched-lil-result-1080x1350.mp4": {
+      "bytes": 2366120,
+      "sha256": "885367f5472ab66318a214b469102b5fc40dae3f57bf323c49ba69309403d8a5"
+    },
+    "stitched-lil-result-1920x1080-receipt.json": {
+      "bytes": 3963,
+      "sha256": "b969630f376829036579469c744e0a50c6a3aa36888661cf774d346638d97238"
+    },
+    "stitched-lil-result-1920x1080.mp4": {
+      "bytes": 3908852,
+      "sha256": "9b51bec4c9e46d83c70ed7d735cec08d64a608705ccd501b0f1007234fa2e5f7"
+    },
+    "stitched-lil-result-poster-1080x1350.png": {
+      "bytes": 140669,
+      "sha256": "224394a69009a2e9698facd886c1451f96bd5f80d5f3b518afcc0434d4906b4d"
+    },
+    "stitched-lil-result-poster-1920x1080.png": {
+      "bytes": 135835,
+      "sha256": "acf027b16b91a226a3eab8d221abaacb43cdfeb8d8b241d28ba18cc3c2b70c7c"
+    }
+  }
+}

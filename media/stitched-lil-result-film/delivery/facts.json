@@ -1,0 +1,112 @@
+{
+  "schema": "formalslt-stitched-lil-facts-v1",
+  "commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
+  "short_commit": "e01f857",
+  "blob_oids": {
+    "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
+    "FormalSLT/AnytimeValid/AllocationLogLog.lean": "14e4dee6b93e61f118043abbd35a34a8303d7ee0",
+    "FormalSLT/AnytimeValid/MixtureCS.lean": "6ac332127962a99e3e48c4100b15307171c55cab",
+    "FormalSLT/AnytimeValid/SubGaussianCS.lean": "37c1b1a60eaef6e4ee35e701057e0bfa20d3b334",
+    "examples/CheckPolynomialStitchedLIL.lean": "fddc9b7f5e912c32f79179a1e7f27ddf1265ec6c",
+    "docs/proof-frontier.md": "5fcf097020f29242af8fb1d108a10c7d968068d6",
+    "docs/assumptions-and-nonclaims.md": "ae540fe5605b2231d6ff918704121dd5e58016ea",
+    "docs/related-work.md": "be99cee162129b831827d020283cbfda02bd6b60"
+  },
+  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one failure set of mass at most delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
+  "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
+  "process_model": [
+    "mu is a probability measure",
+    "X_k is measurable and integrable",
+    "X_k is revealed at time k+1 (strongly measurable with respect to F_(k+1))",
+    "|X_k| <= b almost everywhere",
+    "E[X_k | F_k] = 0 almost everywhere",
+    "E[X_k^2 | F_k] <= sigma^2 almost everywhere",
+    "0 < delta <= 1, b > 0, sigma^2 > 0"
+  ],
+  "epochs": {
+    "floor": "4^(j+1)",
+    "exclusive_horizon": "4^(j+2)",
+    "selected_index": "(Nat.log 4 n).pred",
+    "examples": [
+      "[4,16)",
+      "[16,64)",
+      "[64,256)",
+      "[256,1024)"
+    ]
+  },
+  "allocation": {
+    "weight": "1 / ((j+1)(j+2))",
+    "telescoping_form": "1/(j+1) - 1/(j+2)",
+    "total_mass": "sum_j w_j = 1",
+    "two_sided_epoch_budget": "log(2/delta) + log(j+1) + log(j+2)"
+  },
+  "result": {
+    "module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
+    "theorem": "exists_polynomialStitchedLIL_explicit_event",
+    "minimum_n": 4,
+    "failure_mass": "mu.real goodEvent^c <= delta",
+    "budget_symbol": "B_j",
+    "budget": "log(2/delta) + log(j+1) + log(j+2)",
+    "width_symbol": "W_n",
+    "width": "2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n)",
+    "conclusion": "|runningMean X n| < W_n for every n >= 4"
+  },
+  "checker": {
+    "file": "examples/CheckPolynomialStitchedLIL.lean",
+    "first_epoch_index": "j(4) = 0",
+    "first_epoch_floor": "N_0 = 4",
+    "first_epoch_budget": "delta = 1/2, j = 0: B_0 = log 8",
+    "queries_public_axioms": true
+  },
+  "nonclaims": [
+    "not the law of the iterated logarithm",
+    "not a sharp-constant or optimality result",
+    "the countable confidence allocation is not itself an e-process",
+    "not an optional-stopping theorem",
+    "not a predictable or data-selected tilt construction",
+    "goodEvent is a Set; its measurability is not asserted by the theorem",
+    "no first-formalization or priority claim"
+  ],
+  "anchors": [
+    {
+      "file": "FormalSLT/AnytimeValid/MixtureCS.lean",
+      "line": 522,
+      "name": "IncrementAdapted"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 62,
+      "name": "polynomialGeometricEpochIndex_spec"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 83,
+      "name": "polynomialGeometricEpochBudget_eq"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 241,
+      "name": "polynomialStitchedLILFailure_mass_le"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 478,
+      "name": "exists_polynomialStitchedLIL_explicit_event"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/AllocationLogLog.lean",
+      "line": 252,
+      "name": "polynomialEpochWeight_hasSum"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLIL.lean",
+      "line": 27,
+      "name": "first_epoch_budget"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLIL.lean",
+      "line": 83,
+      "name": "axioms:exists_polynomialStitchedLIL_explicit_event"
+    }
+  ]
+}
