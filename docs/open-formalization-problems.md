@@ -61,11 +61,12 @@ interfaces once the theorem assumptions are clean enough to reuse.
 ### 3. Joint hypothesis--tilt processes and continuous-posterior extensions
 
 **Target.** Extend the checked countable finite-hypothesis forward master to
-arbitrary measurable hypothesis priors and arbitrary measurable states, then
-develop predictable tilt families and honest all-real localization. Any such
-extension should retain explicit predeclared weights or a proved localization
-penalty; it must not silently turn selected catalog atoms into unrestricted
-post-sample optimization over all real tilts.
+arbitrary measurable hypothesis priors and arbitrary measurable states. Build
+on the checked bounded predictable-tilt empirical-Bernstein e-process to add
+joint hypothesis--tilt processes, then pursue honest all-real localization.
+Any such extension should retain explicit predeclared weights or a proved
+localization penalty; it must not silently turn selected catalog atoms into
+unrestricted post-sample optimization over all real tilts.
 
 The current repo proves finite PMFs, KL divergence nonnegativity, Gibbs
 inequality, Donsker-Varadhan, the finite iid product MGF bridge, the

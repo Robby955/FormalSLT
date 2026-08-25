@@ -53,11 +53,11 @@
       "status": "partially_closed"
     },
     {
-      "boundary": "The spherical-Gaussian i.i.d. process theorem fixes its posterior and tilt. The reverse stitched theorem is posterior-uniform on an arbitrary measurable hypothesis space, but it is an offline reverse-exchangeability result. The forward hybrid-Bessel master is an actual predictable-residual e-process. For finite hypotheses it has both finite-catalog and normalized countable-catalog masters; the latter has an explicit selected boundary tending to zero. The arbitrary measurable-hypothesis master retains a finite tilt catalog, and the hybrid expression is only a pointwise lower envelope. Its arbitrary-state adapter starts deterministically and does not construct a measurable selector or selected process. The Gaussian/fair-Boolean receipt fixes posterior and tilt, has KL = 1/32 and boundary at most 489/1024, and uses two-atom dynamics. The allocation guardrails are specific to predeclared Kraft or countable confidence weights. The finite-state trajectory countable theorem uses confidence allocation rather than asserting a countable master e-process. No checked forward result is simultaneous over all real tilts or uses predictable time-varying tilts, and no allocation result is a universal minimax or LIL lower bound.",
+      "boundary": "The spherical-Gaussian i.i.d. process theorem fixes its posterior and tilt. The reverse stitched theorem is posterior-uniform on an arbitrary measurable hypothesis space, but it is an offline reverse-exchangeability result. The forward hybrid-Bessel master is an actual predictable-residual e-process. For finite hypotheses it has both finite-catalog and normalized countable-catalog masters; the latter has an explicit selected boundary tending to zero. The arbitrary measurable-hypothesis master retains a finite tilt catalog, and the hybrid expression is only a pointwise lower envelope. Its arbitrary-state adapter starts deterministically and does not construct a measurable selector or selected process. The Gaussian/fair-Boolean receipt fixes posterior and tilt, has KL = 1/32 and boundary at most 489/1024, and uses two-atom dynamics. The allocation guardrails are specific to predeclared Kraft or countable confidence weights. The finite-state trajectory countable theorem uses confidence allocation rather than asserting a countable master e-process. The checked predictable-tilt result requires one past-measurable schedule with pointwise 0 <= lambda_k <= L < 1; it is not simultaneous over all real tilts or a post-hoc selector. No allocation result is a universal minimax or LIL lower bound.",
       "difficulty": "medium-hard",
       "id": "pac-bayes-all-real-lambda",
-      "next_step": "Extend the checked countable finite-hypothesis construction to the continuous-prior and arbitrary-state layers, then pursue predictable tilt families and honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
-      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a finite adaptive-selection guardrail with exact predeclared-weight/Kraft upper bounds and diagonal-witness cardinality necessity; a countable-allocation guardrail with a blockwise reciprocal-weight obstruction and geometric-epoch log-log subsequence cost; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope, a finite weighted PAC-Bayes tilt catalog, and a normalized positive natural-number tilt master whose explicit geometric selector has an exact boundary tending to zero; a forward continuous-prior master over arbitrary measurable hypotheses with an arbitrary-measurable-state full-prefix trajectory adapter under a supplied joint score contract; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
+      "next_step": "Extend the checked countable finite-hypothesis construction to the continuous-prior and arbitrary-state layers, lift the checked bounded predictable-tilt process into joint hypothesis--tilt masters, then pursue honest all-real localization using continuous score control or a supremum-to-integral argument. Keep that forward-process target distinct from the checked offline reverse continuous-posterior endpoint.",
+      "scope": "finite hypotheses plus spherical-Gaussian continuous-hypothesis single-pair and finite fixed-catalog specializations; a generic finite normalized hypothesis--tilt e-process with one Ville event and selected-atom weight penalty; a finite adaptive-selection guardrail with exact predeclared-weight/Kraft upper bounds and diagonal-witness cardinality necessity; a countable-allocation guardrail with a blockwise reciprocal-weight obstruction and geometric-epoch log-log subsequence cost; a forward finite-hypothesis predictable-residual e-process with a hybrid Bessel lower envelope, a finite weighted PAC-Bayes tilt catalog, and a normalized positive natural-number tilt master whose explicit geometric selector has an exact boundary tending to zero; a bounded predictable time-varying empirical-Bernstein e-process with finite-horizon Ville control; a forward continuous-prior master over arbitrary measurable hypotheses with an arbitrary-measurable-state full-prefix trajectory adapter under a supplied joint score contract; and an offline reverse all-sample-size empirical-Bernstein endpoint over arbitrary measurable hypothesis spaces",
       "source": "docs/open-formalization-problems.md#near-term",
       "status": "partially_closed"
     },
@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 242,
-    "library_and_example_lean_lines": 157540,
-    "library_lean_lines": 126381,
-    "library_modules": 297,
-    "theorem_map_entries": 1121
+    "example_lean_files": 243,
+    "library_and_example_lean_lines": 158383,
+    "library_lean_lines": 127054,
+    "library_modules": 298,
+    "theorem_map_entries": 1123
   },
   "theorem_families": [
     {
@@ -4408,6 +4408,18 @@
           "module": "AnytimeValid.ForwardBesselProcess",
           "name": "forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded",
           "summary": "Packages the actual lower-tail predictable-residual exponential process as an e-process under boundedness, adaptedness, and the conditional-mean model"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.ForwardPredictableTiltEmpiricalBernstein",
+          "name": "forwardPredictableTiltMeanEmpiricalBernsteinProcess_eProcess_of_bounded",
+          "summary": "Allows the empirical-Bernstein tilt to vary predictably with time and the observed past while preserving the e-process property when 0 <= lambda_k <= L < 1 under the bounded conditional-mean model"
+        },
+        {
+          "kind": "theorem",
+          "module": "AnytimeValid.ForwardPredictableTiltEmpiricalBernstein",
+          "name": "forwardPredictableTiltMeanEmpiricalBernstein_typeI_control",
+          "summary": "Under the same predictable range 0 <= lambda_k <= L < 1, controls the probability that the process crosses 1 / alpha at any time up to an arbitrary finite horizon by alpha"
         },
         {
           "kind": "theorem",

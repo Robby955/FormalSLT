@@ -135,6 +135,8 @@ THEOREMS=(
   "FormalSLT.AnytimeValid.forwardPredictableQuadratic_le_hybrid_bessel"
   "FormalSLT.AnytimeValid.forwardBessel_coefficient_one_bool_obstruction"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinProcess_eProcess_of_bounded"
+  "FormalSLT.AnytimeValid.forwardPredictableTiltMeanEmpiricalBernsteinProcess_eProcess_of_bounded"
+  "FormalSLT.AnytimeValid.forwardPredictableTiltMeanEmpiricalBernstein_typeI_control"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerProcess_eProcess_of_bounded"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerProcess_atTop_crossing_mass_le_delta"
   "FormalSLT.AnytimeValid.forwardEmpiricalBernsteinLowerBesselEnvelope_le_lowerProcess"
@@ -964,6 +966,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.AnytimeValid.ForwardBesselProcess"
+  echo "import FormalSLT.AnytimeValid.ForwardPredictableTiltEmpiricalBernstein"
   echo "import FormalSLT.AnytimeValid.PredictableVarianceProxy"
   echo "import FormalSLT.AnytimeValid.SelectionCost"
   echo "import FormalSLT.AnytimeValid.AllocationLogLog"
@@ -1067,6 +1070,7 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
   FormalSLT.AnytimeValid.ForwardBesselProcess \
+  FormalSLT.AnytimeValid.ForwardPredictableTiltEmpiricalBernstein \
   FormalSLT.AnytimeValid.PredictableVarianceProxy \
   FormalSLT.AnytimeValid.SelectionCost \
   FormalSLT.AnytimeValid.AllocationLogLog \
