@@ -252,6 +252,8 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "lower envelope, a finite weighted PAC-Bayes tilt catalog, and a "
             "normalized positive natural-number tilt master whose explicit "
             "geometric selector has an exact boundary tending to zero; a "
+            "bounded predictable time-varying empirical-Bernstein e-process "
+            "with finite-horizon Ville control; a "
             "forward continuous-prior master over arbitrary measurable "
             "hypotheses with an arbitrary-measurable-state full-prefix "
             "trajectory adapter under a supplied joint score contract; "
@@ -263,8 +265,9 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
             "Extend the checked countable finite-hypothesis construction to "
-            "the continuous-prior and arbitrary-state layers, then pursue "
-            "predictable tilt families and honest all-real localization using continuous "
+            "the continuous-prior and arbitrary-state layers, lift the checked "
+            "bounded predictable-tilt process into joint hypothesis--tilt "
+            "masters, then pursue honest all-real localization using continuous "
             "score control or a supremum-to-integral argument. Keep that "
             "forward-process target distinct from the checked offline reverse "
             "continuous-posterior endpoint."
@@ -286,9 +289,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "dynamics. The allocation guardrails are specific to predeclared "
             "Kraft or countable confidence weights. The finite-state trajectory "
             "countable theorem uses confidence allocation rather than asserting "
-            "a countable master e-process. No checked forward result is "
-            "simultaneous over all real tilts or uses predictable time-varying "
-            "tilts, and no allocation result is "
+            "a countable master e-process. The checked predictable-tilt result "
+            "requires one past-measurable schedule with pointwise "
+            "0 <= lambda_k <= L < 1; it is not simultaneous over all real tilts "
+            "or a post-hoc selector. No allocation result is "
             "a universal minimax or LIL lower bound."
         ),
     },
