@@ -285,6 +285,16 @@ the table lists their canonical implementation modules.
 | `continuous_dudley_entropy_integral_iSup_totalBounded_minimalMetricCoveringNumber_shifted` | `Covering.TotalBoundedDudleyMinimalShift` | Generic totally bounded continuous Dudley capstone with pure genuine minimal-cover entropy in the conclusion, paid by shifted boundary certificates and constants |
 | `unitInterval_shiftedMinimalMetricCoveringEntropy_sample_nonneg` | `Covering.TotalBoundedDudleyMinimalShift` | Unit-interval non-vacuity witness for the shifted minimal-cover entropy profile |
 
+## Arbitrary-measure one-scale entropy
+
+| Declaration | Module | Role |
+|---|---|---|
+| `MeasureSubGaussianProcess` | `Covering.MeasureDudley` | Arbitrary-measure sub-Gaussian process interface with explicit evaluation measurability and increment/exponential integrability |
+| `integral_finiteSup_le_of_subGaussian_mgf_sqrt_nonempty` | `Covering.MeasureDudley` | Optimized Bochner-integral finite-maximum bound, including singleton families |
+| `MeasureSubGaussianProcess.integral_incrementFamilySup_le_radius_sqrt_nonempty` | `Covering.MeasureDudley` | One-scale square-root entropy bound for an arbitrary finite increment family |
+| `MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt` | `Covering.MeasureDudley` | Arbitrary-measure projection-pair bound derived from two finite nets and their chosen cardinalities, without `MeasureChainingBudget` |
+| `integral_boolProjectionPairSup_eq_half` | `Covering.MeasureDudley` | Nonzero Boolean witness: the one-point-to-full-net projection-pair maximum has exact mean `1/2` |
+
 ## Two-point Dudley example
 
 | Declaration | Module | Role |
