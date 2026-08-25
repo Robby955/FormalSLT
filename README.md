@@ -42,6 +42,29 @@ current interfaces; it does not claim end-to-end verification of an ML system.
 [Manim source](./media/formalslt-overview/) ·
 [Pinned v0.2.0 film receipt](https://github.com/Robby955/FormalSLT/blob/v0.2.0/media/formalslt-overview/render-receipt.json)
 
+## Theorem film: one event across every sample size
+
+<p align="center">
+  <a href="https://robby955.github.io/FormalSLT/#stitched-lil-film">
+    <img src="media/stitched-lil-result-film/delivery/stitched-lil-result-poster-1920x1080.png" width="960" alt="Stitched LIL theorem film: one event controls every sample size from four onward">
+  </a>
+</p>
+
+A fixed-time bound assumes one fixed look. This Lean theorem gives one set
+`G` on which the running mean of bounded, conditionally centered adapted
+increments stays inside an explicit boundary for every sample size `n >= 4`.
+The increment bound, conditional-centering equality, and conditional
+second-moment inequality are stated almost everywhere.
+
+The scope is exact: the complement has `mu.real` mass at most `delta`, and the
+theorem does not assert that `G` is measurable.
+
+[Watch the theorem film](https://robby955.github.io/FormalSLT/#stitched-lil-film) ·
+[Lean theorem](./FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean) ·
+[checker](./examples/CheckPolynomialStitchedLIL.lean) ·
+[claim receipt](./media/stitched-lil-result-film/claim-receipt.json) ·
+[film source](./media/stitched-lil-result-film/)
+
 ## Results
 
 ### Classical learning theory
