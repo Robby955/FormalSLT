@@ -147,12 +147,23 @@ def math_display(
 
 def caption(scene_id: str) -> VGroup:
     scene = SCENE_COPY[scene_id]
-    heading = label(scene["title"], TITLE_SIZE, IVORY, "BOLD")
-    detail = label(scene["detail"], DETAIL_SIZE, MUTED)
-    if heading.width > 12.0 or detail.width > 12.0:
-        raise ValueError(f"{scene_id} caption exceeds the 12-unit safe width")
+    heading = text_lines(
+        wrap_copy(scene["title"], 40, 11.85, "BOLD"),
+        40,
+        IVORY,
+        "BOLD",
+        buff=0.04,
+    )
+    detail = text_lines(
+        wrap_copy(scene["detail"], 22, 11.85),
+        22,
+        MUTED,
+        buff=0.04,
+    )
     group = VGroup(heading, detail).arrange(DOWN, aligned_edge=LEFT, buff=0.16)
     group.to_edge(LEFT, buff=0.72).to_edge(UP, buff=0.54)
+    if group.get_bottom()[1] < 1.78:
+        raise ValueError(f"{scene_id} caption leaves insufficient content clearance")
     return group
 
 
@@ -170,6 +181,31 @@ def text_lines(
     if group.width > 12.0:
         raise ValueError("text block exceeds the 12-unit safe width")
     return group
+
+
+def wrap_copy(
+    text: str,
+    size: float,
+    max_width: float,
+    weight: str = "MEDIUM",
+) -> list[str]:
+    """Wrap human copy by measured font width; never shrink a full sentence."""
+    words = text.split()
+    if not words:
+        raise ValueError("cannot wrap empty copy")
+    lines: list[str] = []
+    current = words[0]
+    for word in words[1:]:
+        candidate = f"{current} {word}"
+        if label(candidate, size, IVORY, weight).width <= max_width:
+            current = candidate
+        else:
+            lines.append(current)
+            current = word
+    lines.append(current)
+    if any(label(line, size, IVORY, weight).width > max_width for line in lines):
+        raise ValueError(f"one copy token exceeds the safe width: {text!r}")
+    return lines
 
 
 def assert_in_frame(item, name: str, margin: float = 0.12) -> None:
@@ -380,35 +416,28 @@ def assert_in_social_frame(item, name: str, margin: float = 0.08) -> None:
         )
 
 
-SOCIAL_HEADINGS = {
-    "social_hook": ["A fixed-time guarantee", "assumes one fixed look."],
-    "social_model": ["What the theorem", "actually assumes"],
-    "social_mechanism": ["Geometric time.", "One error budget."],
-    "social_stitch": ["Stitch the epochs"],
-    "social_result": ["One checked event.", "Every sample size."],
-}
-
-
 def social_header(scene_id: str) -> VGroup:
+    scene = SOCIAL_SCENE_COPY[scene_id]
     heading = text_lines(
-        SOCIAL_HEADINGS[scene_id],
-        SOCIAL_TITLE_SIZE,
+        wrap_copy(scene["title"], 30, 5.35, "BOLD"),
+        30,
         IVORY,
         "BOLD",
         DISPLAY_FONT,
-        buff=0.06,
+        buff=0.04,
     )
-    detail = label(
-        SOCIAL_SCENE_COPY[scene_id]["detail"],
-        22,
+    detail = text_lines(
+        wrap_copy(scene["detail"], 16, 5.35),
+        16,
         MUTED,
         "MEDIUM",
+        DISPLAY_FONT,
+        buff=0.03,
     )
-    if detail.width > 5.45:
-        raise ValueError(f"{scene_id} social detail is too wide")
     group = VGroup(heading, detail).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
-    group.move_to(UP * 2.92)
-    group.align_to(LEFT * 2.72, LEFT)
+    group.to_edge(LEFT, buff=0.35).to_edge(UP, buff=0.40)
+    if group.get_bottom()[1] < 1.98:
+        raise ValueError(f"{scene_id} social header leaves insufficient content clearance")
     assert_in_social_frame(group, f"{scene_id} header")
     return group
 
