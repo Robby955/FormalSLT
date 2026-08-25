@@ -88,9 +88,14 @@ files.
   claim about the finite Bernstein theorem.
 - `continuous-dudley-entropy-integral`: the finite-outcome continuous integral
   and `iSup` endpoints are checked under explicit antitonicity, integrability,
-  separable-terminal, modulus, and boundary hypotheses. What remains is the
-  construction of arbitrary measurable suprema and a general measure-side
-  chaining budget rather than supplied interfaces.
+  separable-terminal, modulus, and boundary hypotheses. The arbitrary-measure
+  lane now has a typed sub-Gaussian process, integrability closure for finite
+  maxima, a singleton-safe optimized finite-family bound, and a one-scale
+  finite-net projection-pair theorem in the chosen-net cardinalities that does
+  not take `MeasureChainingBudget`. These are the supplied nets' cardinalities,
+  not a minimization over all metric covers. What remains is to sum these
+  internally constructed one-scale bounds over a finite chain and then pass to
+  an arbitrary measurable supremum with a discharged separability boundary.
 - `anytime-boundary-lower-bounds`: for the fair-Rademacher walk, the CLT and
   Portmanteau give a fixed-Gaussian-tail `sqrt n` boundary floor, while a
   disjoint-block Borel--Cantelli argument proves that every valid deterministic

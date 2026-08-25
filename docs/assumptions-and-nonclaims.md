@@ -1253,9 +1253,16 @@ and a supplied-supremum boundary adapter with an explicit terminal
 approximation error. The finite-outcome theorem
 `continuous_dudley_entropy_integral` checks the continuous integral endpoint
 under explicit antitonicity, integrability, separable-terminal, modulus, and
-boundary hypotheses. The library does not yet construct arbitrary measurable
-suprema or a general measure-side chaining budget, and it does not prove a
-full unrestricted empirical-process chaining theorem.
+boundary hypotheses. `Covering.MeasureDudley` now defines an arbitrary-measure
+sub-Gaussian process with explicit measurability and integrability fields and
+proves the optimized one-scale projection-pair bound directly from two finite
+nets and their chosen cardinalities, without `MeasureChainingBudget`. These
+`FiniteNet.coveringNumber` values count the supplied net centers; this theorem
+does not minimize them over all covers. Its Boolean checker has exact expected
+projection-pair maximum `1/2`. This is not yet a multiscale continuous Dudley
+theorem: the terminal measure-side integral wrapper still takes
+`MeasureChainingBudget`, and the library does not yet construct the full chain,
+its arbitrary measurable supremum, or its separability boundary.
 
 ### Stochastic-dynamics extensions
 

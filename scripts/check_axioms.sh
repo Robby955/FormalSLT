@@ -919,6 +919,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorAverageConditionalRisk_eq_generic"
   "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorEmpiricalPrequentialRisk_eq_generic"
   "FormalSLT.StochasticDynamics.exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event"
+  "FormalSLT.Covering.MeasureDudley.MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt"
+  "FormalSLT.Covering.MeasureDudley.integral_boolProjectionPairSup_eq_half"
 )
 
 # Axioms permitted in a clean proof.
@@ -930,6 +932,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
   echo "import FormalSLT.Stability.BousquetElisseeff"
+  echo "import FormalSLT.Covering.MeasureDudley"
   echo "import FormalSLT.AnytimeValid.EProcess"
   echo "import FormalSLT.VC"
   echo "import FormalSLT.PACBayes.FinitePMFBridge"
