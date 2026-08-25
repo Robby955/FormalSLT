@@ -1088,13 +1088,19 @@ class StitchedLILResultFilm(Scene):
 
 class StitchedLILResultPoster(Scene):
     def construct(self) -> None:
-        title = label(FILM["title"], 54, IVORY, "BOLD")
-        title.move_to(UP * 2.55)
+        title = text_lines(
+            ["One checked event.", "Every sample size from four onward."],
+            48,
+            IVORY,
+            "BOLD",
+            DISPLAY_FONT,
+            buff=0.05,
+        ).move_to(UP * 2.78)
         subtitle = label(
             "A machine-checked log-log confidence sequence in Lean.",
             32,
             MUTED,
-        ).next_to(title, DOWN, buff=0.23)
+        ).next_to(title, DOWN, buff=0.18)
 
         definitions = VGroup(
             math_display(DISPLAY_MATH["selector"], 22, MUTED),
@@ -1106,7 +1112,7 @@ class StitchedLILResultPoster(Scene):
         guarantee_copy = VGroup(failure, event).arrange(DOWN, buff=0.15)
         guarantee_box = RoundedRectangle(
             width=11.35,
-            height=1.32,
+            height=1.64,
             corner_radius=0.13,
             color=CYAN,
             stroke_width=2.0,
@@ -1114,11 +1120,12 @@ class StitchedLILResultPoster(Scene):
             fill_opacity=0.98,
         )
         guarantee_copy.move_to(guarantee_box)
-        result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.22)
+        result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.32)
         stamp = source_stamp().move_to(DOWN * 2.82)
 
         composition = VGroup(title, subtitle, definitions, result, stamp)
         assert_in_frame(composition, "poster")
+        assert_contains(guarantee_box, guarantee_copy, "poster guarantee")
         assert_no_overlap(subtitle, definitions, "poster subtitle and definitions", gap=0.16)
         assert_no_overlap(definitions, result, "poster definitions and result", gap=0.18)
         self.add(composition)
@@ -1544,6 +1551,7 @@ class StitchedLILResultSocialPoster(Scene):
         stamp = source_stamp().scale(0.88).move_to(DOWN * 3.48)
         composition = VGroup(title, definitions, motif, result, subtitle, stamp)
         assert_in_social_frame(composition, "social poster")
+        assert_contains(guarantee_box, guarantee_copy, "social poster guarantee")
         assert_no_overlap(title, definitions, "social poster title and definitions")
         assert_no_overlap(definitions, motif, "social poster definitions and motif")
         assert_no_overlap(motif, result, "social poster motif and result")

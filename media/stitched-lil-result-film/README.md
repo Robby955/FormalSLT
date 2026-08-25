@@ -1,4 +1,4 @@
-# One event across every sample size
+# One checked event, every sample size from four onward
 
 This package explains one checked FormalSLT theorem in two native cuts:
 

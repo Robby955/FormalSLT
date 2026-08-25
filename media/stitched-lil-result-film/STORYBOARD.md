@@ -1,4 +1,4 @@
-# Storyboard: one event across every sample size
+# Storyboard: one checked event, every sample size from four onward
 
 Two caption-led films explain the checked endpoint at FormalSLT v0.2.0 commit
 `e01f857d1604788be35fdc2f3dc7108851471a88`. There is no voiceover. The score

@@ -1,6 +1,6 @@
 {
   "schema": "formalslt-stitched-lil-film-v2",
-  "title": "One event across every sample size",
+  "title": "One checked event. Every sample size from four onward.",
   "duration_seconds": 86.0,
   "frame_rate": 30,
   "resolution": [1920, 1080],
@@ -16,7 +16,7 @@
     {"id": "result", "start": 74.0, "end": 86.0, "title": "A checked log-log confidence sequence", "detail": "One event controls every sample size from four onward."}
   ],
   "social": {
-    "title": "One checked event across every sample size",
+    "title": "One checked event. Every sample size from four onward.",
     "duration_seconds": 44.0,
     "resolution": [1080, 1350],
     "frame": [6.4, 8.0],

@@ -242,6 +242,8 @@ class PackageTests(unittest.TestCase):
             "Most guarantees",
             "Not sharp",
             "DERIVED VARIANT",
+            "One event across every sample size",
+            "One checked event across every sample size",
         ):
             self.assertNotIn(stale, corpus)
 
