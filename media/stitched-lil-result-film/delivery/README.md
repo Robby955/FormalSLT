@@ -28,13 +28,11 @@ B_j = log(2/delta) + log(j+1) + log(j+2)
 W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n).
 ```
 
-The theorem produces a set `G` with complement real mass at most `delta` and
-the displayed two-sided bound for every `n >= 4` on `G`. The theorem does not
-assert that `G` is measurable, so the film does not rewrite this as “with
-probability at least `1-delta`.”
-
-On screen, `mu_R(G^c)` denotes Lean's `mu.real G^c`, not an unqualified event
-probability.
+The current receipt is bound to public-main commit
+`44ebbff74aea1dcd5b25592aefb561aeede51696`. Its endpoint proves that `G` is
+measurable, that `mu.real(G) >= 1 - delta`, and that the displayed two-sided
+bound holds for every `n >= 4` on `G`. The extractor retains the older v0.2.0
+outer-mass profile only so that the tagged release remains reproducible.
 
 This is an allocated polynomial fixed-tilt stitch with an
 iterated-logarithm-order confidence price. It is not the sharp law of the
@@ -45,18 +43,33 @@ first-formalization or priority claim is made.
 ## Evidence binding
 
 `extract_facts.py` reads every theorem and documentation anchor using `git show`
-at the exact v0.2.0 commit
-`e01f857d1604788be35fdc2f3dc7108851471a88`. It verifies the complete endpoint
-assumptions, quantifier order, selected-epoch definition, displayed width, the
-running-mean definition, checker surface, and public nonclaims. It writes:
+at the exact commit in `film_config.json`. The current pin is the measurable
+endpoint merge `44ebbff74aea1dcd5b25592aefb561aeede51696`. The extractor verifies the
+complete endpoint assumptions, quantifier order, selected-epoch definition,
+displayed width, running-mean definition, checker surface, and public nonclaims.
+It writes:
 
 - `facts.json`, the source-oriented extraction;
 - `claim-receipt.json`, the canonical public claim and TeX surface consumed by
-  both film classes.
+  both film classes;
+- `TRANSCRIPT.md` and `TRANSCRIPT-SOCIAL.md`, generated from checked templates.
 
-The pinned theorem blob is unchanged from its original merge, but the public
-media binds to the released commit. `verify_media.py` records source hashes,
-the theorem commit, stream metadata, audio measurements, and final media hashes.
+To repin the film after a future public theorem change, fetch public main and
+bind the exact new merge SHA:
+
+```bash
+git fetch origin main
+./media/stitched-lil-result-film/render.sh bind-source <40-character-merge-sha>
+```
+
+The binding command refuses abbreviated SHAs, commits not reachable from the
+fetched `origin/main`, commits missing the measurable theorem/checker, or any
+source whose checked statement no longer matches the displayed formula. It
+does not render media.
+
+`verify_media.py` records the pinned theorem blob, render-source hashes, stream
+metadata, final media hashes, and audio measurements when the selected mode has
+audio.
 
 ## Visual and audio contracts
 
@@ -67,10 +80,16 @@ sample size under declared positive
 parameters (`sigma^2 = 0.08`, `b = 0.25`, `delta = 0.05`); only its sample path
 is illustrative.
 
-The original score is synthesized deterministically without samples or
-third-party audio. It uses finite mid-register swells, three restrained accents,
-and deliberate silence instead of a continuous sub-bass drone. Final receipts
-include peak, integrated loudness, loudness range, and true-peak measurements.
+The built-in score is synthesized deterministically without samples or
+third-party audio. A user-supplied Suno master may be selected only with the
+absolute-path, source-hash, and rights/provenance contract in `SOUNDTRACK.md`.
+Both scored modes record loudness and true peak; external mode also binds the
+master, provenance, filters, and FFmpeg toolchain.
+
+An interim silent release is available only through the explicit `--silent`
+flag or `FORMALSLT_FILM_AUDIO_MODE=silent`. It produces H.264 files with no
+audio streams and receipts that disclose the silent mode. It is not the final
+scored film; see `SOUNDTRACK.md`.
 
 ## Validate without Lean or a render
 
@@ -103,6 +122,9 @@ then stage only the verified artifacts:
 ./media/stitched-lil-result-film/render.sh stage-delivery
 ```
 
+For the interim silent package, append `--silent` to `release`. Both native
+cuts must use the same audio mode before staging.
+
 Fresh render intermediates remain under the ignored `out/` and temporary media
 directories. Final delivery files are copied into `delivery/` only after visual,
 audio, and hash verification.
@@ -113,9 +135,9 @@ audio, and hash verification.
 - `TRANSCRIPT.md`, `TRANSCRIPT-SOCIAL.md`: accessible main and mobile copy.
 - `captions-main.vtt`, `captions-social.vtt`: timed caption sidecars.
 - `film_config.json`: independent timing and resolution contracts.
-- `extract_facts.py`, `facts.json`, `claim-receipt.json`: exact-tag claim pin.
+- `extract_facts.py`, `facts.json`, `claim-receipt.json`: exact-commit claim pin.
 - `stitched_lil_result.py`: both native compositions and posters.
-- `compose_soundtrack.py`, `SOUNDTRACK.md`: deterministic original score.
+- `compose_soundtrack.py`, `SOUNDTRACK.md`: built-in score and external-master contract.
 - `render.sh`, `verify_media.py`, `stage_delivery.py`: bounded render, receipt,
   and delivery pipeline.
 - `test_*.py`: source, layout, soundtrack, and receipt gates.
