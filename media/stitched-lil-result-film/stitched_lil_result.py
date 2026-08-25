@@ -767,11 +767,11 @@ class StitchedLILResultFilm(Scene):
             run_time=1.25,
         )
         self.play(FadeIn(telescope), run_time=0.55)
-        telescope_copy = telescope.copy()
-        self.add(telescope_copy)
-        self.play(Transform(telescope_copy, total), run_time=0.75)
-        self.remove(telescope_copy)
-        self.add(total)
+        self.play(
+            FadeOut(telescope, shift=DOWN * 0.08),
+            FadeIn(total, shift=DOWN * 0.08),
+            run_time=0.75,
+        )
         self.hold_until("tilts")
 
     def tilts(self) -> None:
