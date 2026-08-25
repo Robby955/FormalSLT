@@ -513,8 +513,8 @@ theorem polynomialStitchedLIL_lt_explicit_of_not_mem
     hN hNn hn4N
   exact hwidth.trans_le (by simpa [N, budget, j] using henvelope)
 
-/-- Standard measurable-event form of the explicit polynomial stitched-LIL
-bound.  The canonical good event is measurable, has probability at least
+/-- Standard measurable-event confidence sequence form of the explicit
+polynomial stitched-LIL bound.  The canonical good event is measurable, has probability at least
 `1 - delta`, and controls every sample size `n >= 4`. -/
 theorem polynomialStitchedLIL_explicit_measurable_event
     {Ω : Type*} {mΩ : MeasurableSpace Ω}
