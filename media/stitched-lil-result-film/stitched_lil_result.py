@@ -1488,7 +1488,7 @@ class StitchedLILResultSocialPoster(Scene):
         assert_social_geometry()
         title = text_lines(
             ["ONE CHECKED EVENT", "EVERY SAMPLE SIZE", "FROM FOUR ONWARD"],
-            42,
+            36,
             IVORY,
             "BOLD",
             DISPLAY_FONT,
@@ -1499,7 +1499,7 @@ class StitchedLILResultSocialPoster(Scene):
             math_display(DISPLAY_MATH["budget"], 19, AMBER, max_width=5.1),
             math_display(DISPLAY_MATH["width_first_line"], 23, SOFT_CYAN, max_width=5.1),
             math_display(DISPLAY_MATH["width_second_line"], 23, SOFT_CYAN, max_width=5.1),
-        ).arrange(DOWN, buff=0.04).move_to(UP * 1.18)
+        ).arrange(DOWN, buff=0.04).move_to(UP * 1.13)
         upper, lower = stitched_envelope_segments(
             -2.45,
             2.45,
@@ -1507,7 +1507,7 @@ class StitchedLILResultSocialPoster(Scene):
             scale=0.32,
             width=4.2,
         )
-        motif = VGroup(upper, lower).move_to(DOWN * 0.18)
+        motif = VGroup(upper, lower).move_to(DOWN * 0.25)
         failure = math_display(DISPLAY_MATH["failure_mass"], 28, RED, max_width=4.8)
         event_top = math_display(
             DISPLAY_MATH["event_condition"],
@@ -1532,7 +1532,7 @@ class StitchedLILResultSocialPoster(Scene):
             fill_opacity=0.98,
         )
         guarantee_copy.move_to(guarantee_box)
-        result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.48)
+        result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.59)
         subtitle = text_lines(
             ["MACHINE-CHECKED IN LEAN", "FORMALSLT"],
             23,
@@ -1540,7 +1540,7 @@ class StitchedLILResultSocialPoster(Scene):
             "BOLD",
             DISPLAY_FONT,
             buff=0.08,
-        ).move_to(DOWN * 2.75)
+        ).move_to(DOWN * 2.83)
         stamp = source_stamp().scale(0.88).move_to(DOWN * 3.48)
         composition = VGroup(title, definitions, motif, result, subtitle, stamp)
         assert_in_social_frame(composition, "social poster")

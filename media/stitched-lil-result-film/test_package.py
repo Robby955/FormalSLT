@@ -271,6 +271,14 @@ class PackageTests(unittest.TestCase):
             'layout_check_composition "$PACKAGE/manim-social.cfg" StitchedLILResultSocial',
             script,
         )
+        self.assertIn(
+            'layout_check_composition "$PACKAGE/manim.cfg" StitchedLILResultPoster',
+            script,
+        )
+        self.assertIn(
+            'layout_check_composition "$PACKAGE/manim-social.cfg" StitchedLILResultSocialPoster',
+            script,
+        )
         release = script.split("  release)", maxsplit=1)[1].split("    ;;", maxsplit=1)[0]
         self.assertLess(release.index("layout_check_all"), release.index("render_movie"))
 

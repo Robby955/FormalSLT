@@ -100,6 +100,8 @@ layout_check_all() {
   mkdir -p "$OUT_DIR"
   layout_check_composition "$PACKAGE/manim.cfg" StitchedLILResultFilm
   layout_check_composition "$PACKAGE/manim-social.cfg" StitchedLILResultSocial
+  layout_check_composition "$PACKAGE/manim.cfg" StitchedLILResultPoster
+  layout_check_composition "$PACKAGE/manim-social.cfg" StitchedLILResultSocialPoster
 }
 
 render_movie() {
