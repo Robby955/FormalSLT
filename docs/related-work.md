@@ -41,6 +41,14 @@ This is a source-level audit, not an exhaustive prior-art search. In particular:
 - the pinned StatLean theorem is direct fixed-sample PAC-Bayes prior art, while
   Pythia's sequential Ville/e-process layer is proved but its two named
   `PACBayesCS` capstones are `True` placeholders;
+- a 2026-08-25 refresh confirmed that Pythia `main` still resolves to
+  `65404339b5c6fe8004d91fdd9c0c14ceb0bf7cd3`. Its proved e-process layer is
+  direct prior art for the sequential substrate, while its checked
+  `PACBayesCS.lean` endpoints still have proposition `True`. Searches over the
+  named pinned Lean sources and primary statistical references found no exact
+  checked match for FormalSLT's finite-posterior, time-uniform predictable-tilt
+  score inequality plus full-prefix trajectory adapter. This is a bounded
+  comparator result, not a firstness claim;
 - the exact AFP `afp-2026-08-12` artifact and the named pinned Rocq sources were
   scanned for the stated theorem families. Those bounded source scans are
   complete, but they do not establish semantic absence across other sources or

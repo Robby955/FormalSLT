@@ -68,6 +68,7 @@ import FormalSLT.PACBayes.ChangeOfMeasure
 import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformScorePACBayes
+import FormalSLT.PACBayes.ForwardPredictableTiltPACBayes
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.ForwardBesselPACBayes
@@ -99,5 +100,7 @@ layer, score e-process, finite weighted tilt e-process and its finite-IID
 bounded-loss adapter, the finite-hypothesis/finite-declared-tilt
 predictable-residual master e-process with a hybrid-Bessel lower-envelope
 boundary for `n >= 2`, its IID bounded-loss outer-mass wrapper, and
-time-uniform PAC-Bayes surfaces.
+time-uniform PAC-Bayes surfaces. It also exports the finite-hypothesis
+predictable time-varying tilt compiler: one event controls every time and
+posterior while retaining the weighted linear and quadratic score terms.
 -/

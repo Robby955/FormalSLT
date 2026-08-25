@@ -85,6 +85,28 @@ empirical-variance boundary, countable tilt family, or stationary long-run
 conclusion. The checked target is the posterior average of the one-step
 prefix-conditional risks encountered along the realized trajectory.
 
+### Predictable time-varying empirical-Bernstein PAC-Bayes
+
+`PACBayes.ForwardPredictableTiltPACBayes` assigns each member of a finite
+hypothesis catalog one tilt rule fixed before observation. At time `k`, the
+rule is measurable with respect to the current filtration and satisfies
+`0 <= lambda_k <= L < 1`. One outer-mass event then controls every natural
+time and every posterior PMF. The posterior may depend pointwise on the path
+and reporting time because the event already quantifies over all posteriors.
+
+The conclusion retains the weighted sum
+`sum lambda_k * (conditionalMean_k - observation_k)` and its observed
+predictable quadratic penalty. It is not an unweighted empirical-risk bound.
+The common event does not permit choosing a new tilt schedule after seeing the
+path and does not construct a selected e-process.
+
+`StochasticDynamics.TrajectoryPredictableTiltPACBayes` specializes this result
+to the full-prefix trajectory law above. A supplied tilt rule may read exactly
+the prefix available before the next state is sampled. This specialization is
+finite-state, finite-hypothesis, deterministic-start, and outer-mass
+controlled. It does not add continuous posteriors or states, random starts,
+stationary risk, or a separately stated optional-stopping theorem.
+
 ### Finite Markov prequential risk
 
 `StochasticDynamics.MarkovRisk` constructs a dependent path law from an actual
