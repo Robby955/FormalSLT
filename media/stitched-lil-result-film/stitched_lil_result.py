@@ -394,6 +394,10 @@ def source_stamp() -> Text:
     )
 
 
+def formalslt_stamp(size: float = 20, color: str = CYAN) -> Text:
+    return label("FormalSLT", size, color, "BOLD")
+
+
 def assert_social_geometry() -> None:
     expected_width, expected_height = SOCIAL_FILM["frame"]
     expected_pixels = SOCIAL_FILM["resolution"]
@@ -570,11 +574,17 @@ class StitchedLILResultFilm(Scene):
             IVORY,
             "MEDIUM",
         ).move_to(DOWN * 2.18)
+        promise = VGroup(
+            label("ONE EVENT", 22, CYAN, "BOLD"),
+            math_display(r"\forall n\ge4", 41, IVORY),
+        ).arrange(DOWN, buff=0.07).move_to(DOWN * 2.30)
 
         content = VGroup(axis, trace, fixed_slice, cap_top, cap_bottom, fixed_label)
         assert_in_content(content, "hook plot")
-        assert_in_frame(VGroup(head, content, question, stamp), "hook")
+        assert_in_frame(VGroup(head, content, question, stamp), "hook question beat")
+        assert_in_frame(VGroup(head, content, promise, stamp), "hook promise beat")
         assert_no_overlap(content, question, "hook plot and question")
+        assert_no_overlap(content, promise, "hook plot and promise", gap=0.12)
 
         self.play(FadeIn(head), FadeIn(stamp), run_time=0.65)
         self.play(Create(axis), Create(trace), run_time=1.65)
@@ -586,6 +596,9 @@ class StitchedLILResultFilm(Scene):
             run_time=0.75,
         )
         self.play(FadeIn(question, shift=UP * 0.08), run_time=0.55)
+        self.wait(1.75)
+        self.play(FadeOut(question, shift=UP * 0.05), run_time=0.25)
+        self.play(FadeIn(promise, shift=UP * 0.05), run_time=0.50)
         self.hold_until("model")
 
     def model(self) -> None:
@@ -1060,9 +1073,12 @@ class StitchedLILResultFilm(Scene):
         theorem_card.move_to(theorem_box)
         result_group = VGroup(theorem_box, theorem_card).move_to(DOWN * 0.05)
 
-        module_name = code("AnytimeValid.PolynomialStitchedLIL", 20, MUTED)
+        receipt_header = VGroup(
+            formalslt_stamp(20),
+            code("AnytimeValid.PolynomialStitchedLIL", 20, MUTED),
+        ).arrange(RIGHT, buff=0.32)
         theorem_name = code(FACTS["result"]["theorem"], 20, MUTED)
-        receipt = VGroup(module_name, theorem_name).arrange(
+        receipt = VGroup(receipt_header, theorem_name).arrange(
             DOWN,
             aligned_edge=LEFT,
             buff=0.06,
@@ -1127,7 +1143,10 @@ class StitchedLILResultPoster(Scene):
         )
         guarantee_copy.move_to(guarantee_box)
         result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.32)
-        stamp = source_stamp().move_to(DOWN * 2.82)
+        stamp = VGroup(
+            formalslt_stamp(25),
+            source_stamp(),
+        ).arrange(RIGHT, buff=0.42).move_to(DOWN * 2.82)
 
         composition = VGroup(title, subtitle, definitions, result, stamp)
         assert_in_frame(composition, "poster")
@@ -1272,12 +1291,12 @@ class StitchedLILResultSocial(Scene):
         interval_latex = (r"[4,16)", r"[16,64)", r"[64,256)", r"[256,1024)")
         weight_latex = (r"w_0=\frac12", r"w_1=\frac16", r"w_2=\frac1{12}", r"w_3=\frac1{20}")
         rows = VGroup()
-        for index, (interval, weight) in enumerate(zip(interval_latex, weight_latex, strict=True)):
+        for interval, weight in zip(interval_latex, weight_latex, strict=True):
             box = RoundedRectangle(
                 width=5.30,
                 height=0.60,
                 corner_radius=0.08,
-                color=CYAN if index % 2 == 0 else DEEP,
+                color=DEEP,
                 stroke_width=1.6,
                 fill_color="#0B1625",
                 fill_opacity=0.98,
@@ -1288,6 +1307,14 @@ class StitchedLILResultSocial(Scene):
             row_copy.move_to(box)
             rows.add(VGroup(box, row_copy))
         rows.arrange(DOWN, buff=0.10).move_to(UP * 0.30)
+        selected_epoch = RoundedRectangle(
+            width=5.30,
+            height=0.60,
+            corner_radius=0.08,
+            color=CYAN,
+            stroke_width=3.0,
+            fill_opacity=0,
+        ).move_to(rows[0])
         total = math_display(
             r"\sum_{j=0}^{\infty}w_j=1",
             28,
@@ -1312,7 +1339,7 @@ class StitchedLILResultSocial(Scene):
         foot = label("One fixed tilt per epoch, chosen in advance.", 20, MUTED).move_to(
             DOWN * 3.18
         )
-        composition = VGroup(head, rows, total, budget, foot)
+        composition = VGroup(head, rows, selected_epoch, total, budget, foot)
         assert_in_social_frame(composition, "social mechanism")
         assert_no_overlap(rows, total, "social mechanism rows and total")
         assert_no_overlap(total, budget, "social mechanism total and budget")
@@ -1323,6 +1350,12 @@ class StitchedLILResultSocial(Scene):
             AnimationGroup(*[FadeIn(row) for row in rows], lag_ratio=0.15),
             run_time=1.25,
         )
+        self.play(FadeIn(selected_epoch), run_time=0.30)
+        for row in rows[1:]:
+            self.play(
+                Transform(selected_epoch, selected_epoch.copy().move_to(row)),
+                run_time=0.30,
+            )
         self.play(FadeIn(total), run_time=0.50)
         self.play(FadeIn(budget), FadeIn(foot), run_time=0.50)
         self.hold_until("social_stitch")
@@ -1470,9 +1503,13 @@ class StitchedLILResultSocial(Scene):
             fill_color="#0B1625",
             fill_opacity=0.98,
         ).move_to(equations)
-        receipt = VGroup(
-            code(FACTS["result"]["theorem"], 14, MUTED),
+        receipt_header = VGroup(
+            formalslt_stamp(17),
             code(f"SOURCE {FACTS['short_commit']}", 15, CYAN),
+        ).arrange(RIGHT, buff=0.28)
+        receipt = VGroup(
+            receipt_header,
+            code(FACTS["result"]["theorem"], 14, MUTED),
         ).arrange(DOWN, buff=0.04).move_to(DOWN * 2.72)
         boundary = text_lines(
             ["Allocated fixed-tilt stitch.", "No sharp-constant claim. Not itself an e-process."],
@@ -1546,14 +1583,10 @@ class StitchedLILResultSocialPoster(Scene):
         )
         guarantee_copy.move_to(guarantee_box)
         result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.59)
-        subtitle = text_lines(
-            ["MACHINE-CHECKED IN LEAN", "FORMALSLT"],
-            23,
-            MUTED,
-            "BOLD",
-            DISPLAY_FONT,
-            buff=0.08,
-        ).move_to(DOWN * 2.83)
+        subtitle = VGroup(
+            label("MACHINE-CHECKED IN LEAN", 23, MUTED, "BOLD"),
+            formalslt_stamp(23),
+        ).arrange(DOWN, buff=0.08).move_to(DOWN * 2.83)
         stamp = source_stamp().scale(0.88).move_to(DOWN * 3.48)
         composition = VGroup(title, definitions, motif, result, subtitle, stamp)
         assert_in_social_frame(composition, "social poster")

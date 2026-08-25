@@ -44,6 +44,22 @@ def vtt_intervals(path: Path) -> list[tuple[float, float]]:
     ]
 
 
+def method_source(source: str, class_name: str, method_name: str) -> str:
+    tree = ast.parse(source)
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == class_name:
+            for child in node.body:
+                if (
+                    isinstance(child, ast.FunctionDef)
+                    and child.name == method_name
+                ):
+                    segment = ast.get_source_segment(source, child)
+                    if segment is None:
+                        raise AssertionError(f"could not recover {class_name}.{method_name}")
+                    return segment
+    raise AssertionError(f"missing {class_name}.{method_name}")
+
+
 class PackageTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -292,6 +308,32 @@ class PackageTests(unittest.TestCase):
             'assert_contains(theorem_box, theorem_card, "result theorem card", margin=0.12)',
         ):
             self.assertIn(guard, source)
+
+    def test_verified_editorial_p2_source_contracts(self) -> None:
+        source = (PACKAGE_DIR / "stitched_lil_result.py").read_text(encoding="utf-8")
+
+        hook = method_source(source, "StitchedLILResultFilm", "hook")
+        self.assertIn('label("ONE EVENT"', hook)
+        self.assertIn(r'math_display(r"\forall n\ge4"', hook)
+        self.assertIn('assert_no_overlap(content, promise, "hook plot and promise"', hook)
+        self.assertLess(hook.index("FadeOut(question"), hook.index("FadeIn(promise"))
+
+        mechanism = method_source(source, "StitchedLILResultSocial", "mechanism")
+        self.assertNotIn("CYAN if index % 2", mechanism)
+        self.assertEqual(mechanism.count("selected_epoch = RoundedRectangle"), 1)
+        self.assertIn("Transform(selected_epoch", mechanism)
+
+        for class_name, method_name in (
+            ("StitchedLILResultFilm", "result"),
+            ("StitchedLILResultPoster", "construct"),
+            ("StitchedLILResultSocial", "result"),
+            ("StitchedLILResultSocialPoster", "construct"),
+        ):
+            with self.subTest(class_name=class_name, method_name=method_name):
+                self.assertIn(
+                    "formalslt_stamp(",
+                    method_source(source, class_name, method_name),
+                )
 
     def test_render_caches_are_ignored_and_untracked(self) -> None:
         for relative in (
