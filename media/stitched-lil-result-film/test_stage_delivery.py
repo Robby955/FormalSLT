@@ -89,6 +89,40 @@ class DeliveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "same external master"):
             stage_delivery.validate_common_soundtrack_source(mismatched)
 
+    def test_silent_delivery_rejects_mixed_audio_modes(self) -> None:
+        silent = {
+            "soundtrack": {
+                "soundtrack_mode": "silent",
+                "third_party_audio": False,
+            }
+        }
+        built_in = {
+            "soundtrack": {
+                "soundtrack_mode": "built_in",
+                "third_party_audio": False,
+            }
+        }
+        matching = {"main": silent, "social": silent}
+        self.assertEqual(
+            stage_delivery.validate_common_soundtrack_source(matching),
+            "silent",
+        )
+        with self.assertRaisesRegex(ValueError, "different soundtrack modes"):
+            stage_delivery.validate_common_soundtrack_source(
+                {"main": silent, "social": built_in}
+            )
+
+    def test_silent_delivery_cut_omits_audio_measurement(self) -> None:
+        receipt = {
+            "video": {"audio_streams": 0},
+            "soundtrack": {
+                "soundtrack_mode": "silent",
+                "third_party_audio": False,
+            },
+        }
+        payload = stage_delivery.delivery_cut(receipt)
+        self.assertNotIn("muxed_audio_measurement", payload)
+
 
 if __name__ == "__main__":
     unittest.main()

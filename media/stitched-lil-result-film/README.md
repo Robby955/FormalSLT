@@ -90,6 +90,11 @@ Both modes produce source-bound receipts with loudness and true-peak
 measurements; external mode also binds the master, provenance, filters, and
 FFmpeg toolchain.
 
+An interim silent release is available only through the explicit `--silent`
+flag or `FORMALSLT_FILM_AUDIO_MODE=silent`. It produces H.264 files with no
+audio streams and receipts that disclose the silent mode. It is not the final
+scored film; see `SOUNDTRACK.md`.
+
 ## Validate without Lean or a render
 
 ```bash
@@ -120,6 +125,9 @@ then stage only the verified artifacts:
 ./media/stitched-lil-result-film/render.sh release
 ./media/stitched-lil-result-film/render.sh stage-delivery
 ```
+
+For the interim silent package, append `--silent` to `release`. Both native
+cuts must use the same audio mode before staging.
 
 Fresh render intermediates remain under the ignored `out/` and temporary media
 directories. Final delivery files are copied into `delivery/` only after visual,

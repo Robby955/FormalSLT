@@ -7,6 +7,7 @@ import hashlib
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import verify_media
 
@@ -79,6 +80,15 @@ class MediaReceiptTests(unittest.TestCase):
         probe["streams"] = probe["streams"][:1]
         with self.assertRaisesRegex(ValueError, "one audio stream"):
             verify_media.validate_probe(probe, "proof", "main")
+
+    def test_silent_probe_requires_zero_audio_streams(self) -> None:
+        probe = valid_probe()
+        probe["streams"] = probe["streams"][:1]
+        media = verify_media.validate_probe(probe, "final", "main", "silent")
+        self.assertEqual(media["audio_streams"], 0)
+        self.assertNotIn("audio_codec", media)
+        with self.assertRaisesRegex(ValueError, "zero audio streams"):
+            verify_media.validate_probe(valid_probe(), "final", "main", "silent")
 
     def test_probe_rejects_picture_lock_drift(self) -> None:
         probe = valid_probe()
@@ -206,6 +216,42 @@ class MediaReceiptTests(unittest.TestCase):
             receipt = verify_media.validate_soundtrack(metadata, soundtrack, "social")
             self.assertEqual(receipt["soundtrack_mode"], "external_master")
             self.assertEqual(receipt["raw_master"]["sha256"], master_hash)
+
+    def test_silent_cli_arguments_are_exclusive(self) -> None:
+        path = Path("score.wav")
+        verify_media.validate_audio_arguments("silent", None, None)
+        with self.assertRaisesRegex(ValueError, "cannot include"):
+            verify_media.validate_audio_arguments("silent", path, path)
+        with self.assertRaisesRegex(ValueError, "requires both"):
+            verify_media.validate_audio_arguments("built_in", None, None)
+
+    def test_silent_receipt_has_no_audio_measurement(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="stitched-lil-receipt-") as temp:
+            video = Path(temp) / "silent.mp4"
+            video.write_bytes(b"silent-video")
+            probe = valid_probe()
+            probe["streams"] = probe["streams"][:1]
+            with (
+                patch.object(verify_media, "git_head", return_value="1" * 40),
+                patch.object(verify_media, "source_asset_hashes", return_value={}),
+            ):
+                receipt = verify_media.build_receipt(
+                    video,
+                    None,
+                    None,
+                    probe,
+                    None,
+                    "final",
+                    "main",
+                    "silent",
+                )
+            self.assertEqual(
+                receipt["schema"],
+                "formalslt-stitched-lil-media-receipt-v2",
+            )
+            self.assertEqual(receipt["soundtrack"]["soundtrack_mode"], "silent")
+            self.assertFalse(receipt["soundtrack"]["third_party_audio"])
+            self.assertNotIn("muxed_audio_measurement", receipt)
 
 
 if __name__ == "__main__":

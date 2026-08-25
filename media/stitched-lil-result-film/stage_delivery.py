@@ -79,7 +79,7 @@ def validate_common_soundtrack_source(cut_receipts: dict[str, Any]) -> str:
         }
         if len(source_pairs) != 1:
             raise ValueError("the two films do not bind the same external master and provenance")
-    if mode not in ("built_in", "external_master"):
+    if mode not in ("built_in", "external_master", "silent"):
         raise ValueError("the two films have an invalid soundtrack mode")
     return mode
 
@@ -136,7 +136,7 @@ def validate_media_receipt(
         raise ValueError(f"media receipt size does not match {video.name}")
     soundtrack = receipt.get("soundtrack", {})
     mode = soundtrack_mode(soundtrack)
-    if mode not in ("built_in", "external_master"):
+    if mode not in ("built_in", "external_master", "silent"):
         raise ValueError(f"media receipt has an invalid soundtrack mode for {composition}")
     if mode == "external_master":
         if soundtrack.get("third_party_audio") is not True:
@@ -144,6 +144,13 @@ def validate_media_receipt(
         for section in ("raw_master", "provenance", "derivation"):
             if not isinstance(soundtrack.get(section), dict):
                 raise ValueError(f"external soundtrack {section} is missing for {composition}")
+    if mode == "silent":
+        if soundtrack.get("third_party_audio") is not False:
+            raise ValueError(f"silent soundtrack disclosure is invalid for {composition}")
+        if int(video_receipt.get("audio_streams", -1)) != 0:
+            raise ValueError(f"silent media receipt has an audio stream for {composition}")
+        if "muxed_audio_measurement" in receipt:
+            raise ValueError(f"silent media receipt has an audio measurement for {composition}")
     expected = CUTS[composition]["resolution"]
     observed = [video_receipt.get("width"), video_receipt.get("height")]
     if observed != expected:
@@ -156,6 +163,16 @@ def validate_media_receipt(
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
+def delivery_cut(receipt: dict[str, Any]) -> dict[str, Any]:
+    payload = {
+        "video": receipt["video"],
+        "soundtrack": receipt["soundtrack"],
+    }
+    if "muxed_audio_measurement" in receipt:
+        payload["muxed_audio_measurement"] = receipt["muxed_audio_measurement"]
+    return payload
 
 
 def stage(ffprobe: str) -> Path:
@@ -208,11 +225,7 @@ def stage(ffprobe: str) -> Path:
             "classification": CLAIMS["classification"],
             "posters": posters,
             "cuts": {
-                composition: {
-                    "video": receipt["video"],
-                    "soundtrack": receipt["soundtrack"],
-                    "muxed_audio_measurement": receipt["muxed_audio_measurement"],
-                }
+                composition: delivery_cut(receipt)
                 for composition, receipt in cut_receipts.items()
             },
             "files": {

@@ -306,6 +306,23 @@ class PackageTests(unittest.TestCase):
         )
         self.assertNotIn("-print -quit", script)
 
+    def test_silent_render_flag_is_explicit_and_exclusive(self) -> None:
+        script_path = PACKAGE_DIR / "render.sh"
+        script = script_path.read_text(encoding="utf-8")
+        self.assertIn('"${2:-}" == "--silent"', script)
+        self.assertIn('-i "$rendered" -map 0:v:0 -an', script)
+        self.assertIn('--soundtrack-mode silent', script)
+        completed = subprocess.run(
+            ["bash", str(script_path), "validate", "--silent", "--extra"],
+            cwd=ROOT,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        self.assertEqual(completed.returncode, 2)
+        self.assertIn("only one render audio option is allowed", completed.stderr)
+
     def test_release_runs_both_layout_preflights_before_rendering(self) -> None:
         script = (PACKAGE_DIR / "render.sh").read_text(encoding="utf-8")
         self.assertIn("layout-check)", script)

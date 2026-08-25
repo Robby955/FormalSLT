@@ -13,14 +13,63 @@ ACTIVE_TEMP_DIR=""
 ACTIVE_CANDIDATE_VIDEO=""
 ACTIVE_CANDIDATE_RECEIPT=""
 SOUNDTRACK_ARGS=()
+AUDIO_MODE="built_in"
+SILENT_FLAG=""
 
 cd "$ROOT"
+
+if [[ "$MODE" != "bind-source" ]]; then
+  if [[ -n "${2:-}" && "${2:-}" != "--silent" ]]; then
+    echo "unknown render option: ${2:-}" >&2
+    exit 2
+  fi
+  if [[ "${2:-}" == "--silent" ]]; then
+    SILENT_FLAG=1
+  fi
+  if [[ -n "${3:-}" ]]; then
+    echo "only one render audio option is allowed" >&2
+    exit 2
+  fi
+fi
 
 configure_soundtrack() {
   local master="${FORMALSLT_FILM_SOUNDTRACK_MASTER:-}"
   local provenance="${FORMALSLT_FILM_SOUNDTRACK_PROVENANCE:-}"
+  local requested_mode="${FORMALSLT_FILM_AUDIO_MODE:-}"
   if [[ -n "$master" && -z "$provenance" ]] || [[ -z "$master" && -n "$provenance" ]]; then
     echo "FORMALSLT_FILM_SOUNDTRACK_MASTER and FORMALSLT_FILM_SOUNDTRACK_PROVENANCE must be set together" >&2
+    exit 2
+  fi
+  if [[ -n "$SILENT_FLAG" && -n "$requested_mode" ]]; then
+    echo "select silent mode with either --silent or FORMALSLT_FILM_AUDIO_MODE, not both" >&2
+    exit 2
+  fi
+  if [[ -n "$SILENT_FLAG" ]]; then
+    requested_mode="silent"
+  elif [[ -z "$requested_mode" && -n "$master" ]]; then
+    requested_mode="external_master"
+  elif [[ -z "$requested_mode" ]]; then
+    requested_mode="built_in"
+  fi
+  case "$requested_mode" in
+    built_in|external_master|silent)
+      AUDIO_MODE="$requested_mode"
+      ;;
+    *)
+      echo "FORMALSLT_FILM_AUDIO_MODE must be built_in, external_master, or silent" >&2
+      exit 2
+      ;;
+  esac
+  if [[ "$AUDIO_MODE" == "silent" && -n "$master" ]]; then
+    echo "silent mode cannot be combined with an external soundtrack" >&2
+    exit 2
+  fi
+  if [[ "$AUDIO_MODE" == "built_in" && -n "$master" ]]; then
+    echo "built-in mode cannot be combined with an external soundtrack" >&2
+    exit 2
+  fi
+  if [[ "$AUDIO_MODE" == "external_master" && -z "$master" ]]; then
+    echo "external_master mode requires master and provenance paths" >&2
     exit 2
   fi
   if [[ -z "$master" ]]; then
@@ -170,29 +219,46 @@ if len(paths) != 1:
 print(paths[0])
 PY
 )"
-  duration="$(movie_duration "$rendered")"
-  python3 "$COMPOSER" --cut "$composition" --duration "$duration" \
-    --output "$soundtrack" \
-    --metadata-output "$soundtrack_metadata" \
-    --ffmpeg "$FFMPEG_BIN" \
-    --ffprobe "$FFPROBE_BIN" \
-    "${SOUNDTRACK_ARGS[@]}"
-  "$FFMPEG_BIN" -hide_banner -loglevel error -y \
-    -i "$rendered" -i "$soundtrack" \
-    -map 0:v:0 -map 1:a:0 \
-    -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p \
-    -c:a aac -b:a 192k -ar 48000 -ac 2 \
-    -af apad -shortest -movflags +faststart "$candidate_video"
-  python3 "$VERIFIER" \
-    --video "$candidate_video" \
-    --soundtrack "$soundtrack" \
-    --soundtrack-metadata "$soundtrack_metadata" \
-    --quality "$verification_quality" \
-    --composition "$composition" \
-    --artifact-name "$output" \
-    --ffprobe "$FFPROBE_BIN" \
-    --ffmpeg "$FFMPEG_BIN" \
-    --output "$candidate_receipt"
+  if [[ "$AUDIO_MODE" == "silent" ]]; then
+    "$FFMPEG_BIN" -hide_banner -loglevel error -y \
+      -i "$rendered" -map 0:v:0 -an \
+      -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p \
+      -movflags +faststart "$candidate_video"
+    python3 "$VERIFIER" \
+      --video "$candidate_video" \
+      --soundtrack-mode silent \
+      --quality "$verification_quality" \
+      --composition "$composition" \
+      --artifact-name "$output" \
+      --ffprobe "$FFPROBE_BIN" \
+      --ffmpeg "$FFMPEG_BIN" \
+      --output "$candidate_receipt"
+  else
+    duration="$(movie_duration "$rendered")"
+    python3 "$COMPOSER" --cut "$composition" --duration "$duration" \
+      --output "$soundtrack" \
+      --metadata-output "$soundtrack_metadata" \
+      --ffmpeg "$FFMPEG_BIN" \
+      --ffprobe "$FFPROBE_BIN" \
+      "${SOUNDTRACK_ARGS[@]}"
+    "$FFMPEG_BIN" -hide_banner -loglevel error -y \
+      -i "$rendered" -i "$soundtrack" \
+      -map 0:v:0 -map 1:a:0 \
+      -c:v libx264 -preset slow -crf 20 -pix_fmt yuv420p \
+      -c:a aac -b:a 192k -ar 48000 -ac 2 \
+      -af apad -shortest -movflags +faststart "$candidate_video"
+    python3 "$VERIFIER" \
+      --video "$candidate_video" \
+      --soundtrack "$soundtrack" \
+      --soundtrack-metadata "$soundtrack_metadata" \
+      --soundtrack-mode "$AUDIO_MODE" \
+      --quality "$verification_quality" \
+      --composition "$composition" \
+      --artifact-name "$output" \
+      --ffprobe "$FFPROBE_BIN" \
+      --ffmpeg "$FFMPEG_BIN" \
+      --output "$candidate_receipt"
+  fi
   mv -f -- "$candidate_video" "$OUT_DIR/$output"
   mv -f -- "$candidate_receipt" "$receipt"
   ACTIVE_CANDIDATE_VIDEO=""
@@ -352,7 +418,7 @@ case "$MODE" in
     python3 "$STAGER" --ffprobe "$FFPROBE_BIN"
     ;;
   *)
-    echo "usage: $0 [validate|bind-source <merged-main-sha>|facts|soundtrack-plan|layout-check|proof-main|proof-social|proofs|final-main|final-social|finals|poster-main|poster-social|posters|release|stage-delivery]" >&2
+    echo "usage: $0 [validate|bind-source <merged-main-sha>|facts|soundtrack-plan|layout-check|proof-main|proof-social|proofs|final-main|final-social|finals|poster-main|poster-social|posters|release|stage-delivery] [--silent]" >&2
     exit 2
     ;;
 esac

@@ -193,10 +193,21 @@ def validate_probe(
     probe: dict[str, Any],
     quality: str,
     composition: str,
+    soundtrack_mode: str = "built_in",
 ) -> dict[str, Any]:
     contract = composition_contract(composition)
     video = _one_stream(probe, "video")
-    audio = _one_stream(probe, "audio")
+    audio_streams = [
+        stream for stream in probe.get("streams", []) if stream.get("codec_type") == "audio"
+    ]
+    if soundtrack_mode == "silent":
+        if audio_streams:
+            raise ValueError(f"silent movie must have zero audio streams, found {len(audio_streams)}")
+        audio = None
+    else:
+        if soundtrack_mode not in ("built_in", "external_master"):
+            raise ValueError(f"unexpected soundtrack mode {soundtrack_mode!r}")
+        audio = _one_stream(probe, "audio")
     duration = _finite_float(probe.get("format", {}).get("duration"), "duration")
     expected_duration = contract["duration_seconds"]
     if abs(duration - expected_duration) > MAX_DURATION_DRIFT_SECONDS:
@@ -229,23 +240,29 @@ def validate_probe(
         raise ValueError(f"unexpected frame rate {frame_rate}")
     if video.get("codec_name") != "h264":
         raise ValueError(f"unexpected video codec {video.get('codec_name')!r}")
-    if audio.get("codec_name") != "aac":
-        raise ValueError(f"unexpected audio codec {audio.get('codec_name')!r}")
-    if int(audio.get("channels", 0)) != 2:
-        raise ValueError(f"unexpected audio channel count {audio.get('channels')!r}")
-    if int(audio.get("sample_rate", 0)) != 48_000:
-        raise ValueError(f"unexpected audio sample rate {audio.get('sample_rate')!r}")
+    if audio is not None:
+        if audio.get("codec_name") != "aac":
+            raise ValueError(f"unexpected audio codec {audio.get('codec_name')!r}")
+        if int(audio.get("channels", 0)) != 2:
+            raise ValueError(f"unexpected audio channel count {audio.get('channels')!r}")
+        if int(audio.get("sample_rate", 0)) != 48_000:
+            raise ValueError(f"unexpected audio sample rate {audio.get('sample_rate')!r}")
 
-    return {
+    result = {
         "duration_seconds": duration,
         "width": width,
         "height": height,
         "frame_rate": str(frame_rate),
         "video_codec": video["codec_name"],
-        "audio_codec": audio["codec_name"],
-        "audio_channels": int(audio["channels"]),
-        "audio_sample_rate": int(audio["sample_rate"]),
+        "audio_streams": len(audio_streams),
     }
+    if audio is not None:
+        result.update({
+            "audio_codec": audio["codec_name"],
+            "audio_channels": int(audio["channels"]),
+            "audio_sample_rate": int(audio["sample_rate"]),
+        })
+    return result
 
 
 def validate_loudness(measurement: dict[str, Any]) -> dict[str, float]:
@@ -484,12 +501,13 @@ def validate_soundtrack(
 
 def build_receipt(
     video_path: Path,
-    soundtrack_path: Path,
-    soundtrack_metadata_path: Path,
+    soundtrack_path: Path | None,
+    soundtrack_metadata_path: Path | None,
     probe: dict[str, Any],
-    loudness_measurement: dict[str, Any],
+    loudness_measurement: dict[str, Any] | None,
     quality: str,
     composition: str,
+    soundtrack_mode: str,
     artifact_name: str | None = None,
 ) -> dict[str, Any]:
     if not (
@@ -498,16 +516,33 @@ def build_receipt(
         == CONFIG["source_commit"]
     ):
         raise ValueError("fact, claim, and film receipts bind different theorem commits")
-    media = validate_probe(probe, quality, composition)
-    loudness = validate_loudness(loudness_measurement)
-    soundtrack_metadata = json.loads(soundtrack_metadata_path.read_text(encoding="utf-8"))
-    soundtrack = validate_soundtrack(soundtrack_metadata, soundtrack_path, composition)
-    if abs(media["duration_seconds"] - soundtrack["duration_seconds"]) > MAX_AUDIO_VIDEO_DRIFT_SECONDS:
-        raise ValueError("audio and muxed-video durations do not match")
+    media = validate_probe(probe, quality, composition, soundtrack_mode)
+    if soundtrack_mode == "silent":
+        if soundtrack_path is not None or soundtrack_metadata_path is not None:
+            raise ValueError("silent receipt cannot include soundtrack files")
+        if loudness_measurement is not None:
+            raise ValueError("silent receipt cannot include an audio measurement")
+        soundtrack = {
+            "soundtrack_mode": "silent",
+            "third_party_audio": False,
+        }
+        loudness = None
+    else:
+        if soundtrack_path is None or soundtrack_metadata_path is None:
+            raise ValueError("scored receipt requires soundtrack files")
+        if loudness_measurement is None:
+            raise ValueError("scored receipt requires an audio measurement")
+        loudness = validate_loudness(loudness_measurement)
+        soundtrack_metadata = json.loads(soundtrack_metadata_path.read_text(encoding="utf-8"))
+        soundtrack = validate_soundtrack(soundtrack_metadata, soundtrack_path, composition)
+        if soundtrack["soundtrack_mode"] != soundtrack_mode:
+            raise ValueError("selected soundtrack mode differs from soundtrack metadata")
+        if abs(media["duration_seconds"] - soundtrack["duration_seconds"]) > MAX_AUDIO_VIDEO_DRIFT_SECONDS:
+            raise ValueError("audio and muxed-video durations do not match")
 
     head = git_head()
     assets = source_asset_hashes(head)
-    return {
+    receipt = {
         "schema": "formalslt-stitched-lil-media-receipt-v2",
         "quality": quality,
         "composition": composition,
@@ -523,12 +558,28 @@ def build_receipt(
             "sha256": sha256(video_path),
             **media,
         },
-        "soundtrack": {
-            "file": soundtrack_path.name,
-            **soundtrack,
-        },
-        "muxed_audio_measurement": loudness,
+        "soundtrack": soundtrack,
     }
+    if soundtrack_path is not None:
+        receipt["soundtrack"] = {"file": soundtrack_path.name, **soundtrack}
+    if loudness is not None:
+        receipt["muxed_audio_measurement"] = loudness
+    return receipt
+
+
+def validate_audio_arguments(
+    soundtrack_mode: str,
+    soundtrack: Path | None,
+    soundtrack_metadata: Path | None,
+) -> None:
+    if soundtrack_mode == "silent":
+        if soundtrack is not None or soundtrack_metadata is not None:
+            raise ValueError("silent mode cannot include soundtrack arguments")
+        return
+    if soundtrack_mode not in ("built_in", "external_master"):
+        raise ValueError(f"unexpected soundtrack mode {soundtrack_mode!r}")
+    if soundtrack is None or soundtrack_metadata is None:
+        raise ValueError("scored mode requires both soundtrack arguments")
 
 
 def write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -541,8 +592,13 @@ def write_json(path: Path, payload: dict[str, Any]) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--video", type=Path, required=True)
-    parser.add_argument("--soundtrack", type=Path, required=True)
-    parser.add_argument("--soundtrack-metadata", type=Path, required=True)
+    parser.add_argument("--soundtrack", type=Path)
+    parser.add_argument("--soundtrack-metadata", type=Path)
+    parser.add_argument(
+        "--soundtrack-mode",
+        choices=("built_in", "external_master", "silent"),
+        required=True,
+    )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--quality", choices=("proof", "final"), required=True)
     parser.add_argument("--composition", choices=("main", "social"), required=True)
@@ -557,17 +613,33 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    for path in (args.video, args.soundtrack, args.soundtrack_metadata):
+    try:
+        validate_audio_arguments(
+            args.soundtrack_mode,
+            args.soundtrack,
+            args.soundtrack_metadata,
+        )
+    except ValueError as error:
+        raise SystemExit(str(error)) from error
+    required_paths = [args.video]
+    if args.soundtrack is not None:
+        required_paths.extend((args.soundtrack, args.soundtrack_metadata))
+    for path in required_paths:
         if not path.is_file():
             raise SystemExit(f"missing render artifact: {path}")
+    probe = ffprobe(args.video, args.ffprobe)
+    loudness = None
+    if args.soundtrack_mode != "silent":
+        loudness = ffmpeg_loudness(args.video, args.ffmpeg)
     receipt = build_receipt(
         args.video,
         args.soundtrack,
         args.soundtrack_metadata,
-        ffprobe(args.video, args.ffprobe),
-        ffmpeg_loudness(args.video, args.ffmpeg),
+        probe,
+        loudness,
         args.quality,
         args.composition,
+        args.soundtrack_mode,
         args.artifact_name,
     )
     write_json(args.output, receipt)

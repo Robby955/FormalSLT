@@ -74,6 +74,20 @@ and FFprobe binary identities, first-pass measurements, derived measurements,
 and each derived WAV hash. The delivery gate requires both cuts to bind the
 same master and provenance. Raw licensed audio is never copied into delivery.
 
+## Interim silent cut
+
+Silence is never inferred from a missing soundtrack. Select it explicitly with
+
+```bash
+./media/stitched-lil-result-film/render.sh release --silent
+```
+
+or `FORMALSLT_FILM_AUDIO_MODE=silent`, but not both. Silent mode cannot be
+combined with external-master variables. Its H.264 files contain zero audio
+streams, and their receipts state `soundtrack_mode: silent` with no loudness
+measurement. This is an unscored interim presentation, not the final scored
+film.
+
 Inspect without writing audio:
 
 ```bash
