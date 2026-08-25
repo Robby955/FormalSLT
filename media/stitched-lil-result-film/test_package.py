@@ -259,6 +259,21 @@ class PackageTests(unittest.TestCase):
         )
         self.assertNotIn("-print -quit", script)
 
+    def test_release_runs_both_layout_preflights_before_rendering(self) -> None:
+        script = (PACKAGE_DIR / "render.sh").read_text(encoding="utf-8")
+        self.assertIn("layout-check)", script)
+        self.assertIn('"$MANIM_BIN" --config_file "$config_file" --dry_run', script)
+        self.assertIn(
+            'layout_check_composition "$PACKAGE/manim.cfg" StitchedLILResultFilm',
+            script,
+        )
+        self.assertIn(
+            'layout_check_composition "$PACKAGE/manim-social.cfg" StitchedLILResultSocial',
+            script,
+        )
+        release = script.split("  release)", maxsplit=1)[1].split("    ;;", maxsplit=1)[0]
+        self.assertLess(release.index("layout_check_all"), release.index("render_movie"))
+
     def test_render_caches_are_ignored_and_untracked(self) -> None:
         for relative in (
             "media/stitched-lil-result-film/media/example",

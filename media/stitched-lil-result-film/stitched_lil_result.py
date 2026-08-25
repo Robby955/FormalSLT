@@ -241,6 +241,16 @@ def assert_no_overlap(first, second, name: str, gap: float = 0.08) -> None:
         raise ValueError(f"{name} overlap; revise the composition instead of shrinking text")
 
 
+def assert_contains(container, item, name: str, margin: float = 0.06) -> None:
+    if (
+        item.get_left()[0] < container.get_left()[0] + margin
+        or item.get_right()[0] > container.get_right()[0] - margin
+        or item.get_top()[1] > container.get_top()[1] - margin
+        or item.get_bottom()[1] < container.get_bottom()[1] + margin
+    ):
+        raise ValueError(f"{name} is not contained by its panel")
+
+
 def path_curve(points: list[np.ndarray], color: str, width: float = 4.0) -> VMobject:
     curve = VMobject(
         stroke_color=color,
@@ -434,7 +444,12 @@ def social_header(scene_id: str) -> VGroup:
         DISPLAY_FONT,
         buff=0.03,
     )
-    group = VGroup(heading, detail).arrange(DOWN, aligned_edge=LEFT, buff=0.18)
+    header_gap = 0.12 if scene_id == "social_result" else 0.18
+    group = VGroup(heading, detail).arrange(
+        DOWN,
+        aligned_edge=LEFT,
+        buff=header_gap,
+    )
     group.to_edge(LEFT, buff=0.35).to_edge(UP, buff=0.40)
     if group.get_bottom()[1] < 1.98:
         raise ValueError(f"{scene_id} social header leaves insufficient content clearance")
@@ -507,7 +522,7 @@ class StitchedLILResultFilm(Scene):
     def hook(self) -> None:
         self.on_cue("hook")
         head = caption("hook")
-        stamp = source_stamp().to_edge(DOWN, buff=0.38).to_edge(RIGHT, buff=0.72)
+        stamp = source_stamp().to_edge(DOWN, buff=0.42).to_edge(RIGHT, buff=0.72)
 
         x_left, x_right, axis_y = -5.75, 5.75, -0.45
         axis = Line(
@@ -588,17 +603,17 @@ class StitchedLILResultFilm(Scene):
         cards = VGroup(
             assumption_card(
                 r"X_k\text{ is }\mathcal F_{k+1}\text{-strongly measurable}",
-                "revealed one step after the past",
+                "one-step reveal",
                 22,
             ),
-            assumption_card(r"\lvert X_k\rvert \le b", "bounded almost everywhere"),
+            assumption_card(r"\lvert X_k\rvert \le b", "bounded a.e."),
             assumption_card(
                 r"\mathbb E[X_k\mid\mathcal F_k]=0",
-                "conditional centering, almost everywhere",
+                "conditionally centered a.e.",
             ),
             assumption_card(
                 r"\mathbb E[X_k^2\mid\mathcal F_k]\le\sigma^2",
-                "fixed proxy, almost everywhere",
+                "second moment bounded a.e.",
             ),
         ).arrange_in_grid(rows=2, cols=2, buff=(0.45, 0.34))
         cards.move_to(DOWN * 0.60)
@@ -704,29 +719,30 @@ class StitchedLILResultFilm(Scene):
             r"w_j=\frac{1}{(j+1)(j+2)}",
             39,
             AMBER,
-        ).move_to(UP * 1.16)
+        ).move_to(UP * 1.20)
         weights = VGroup(
             math_chip(r"\frac12", width=1.65, color=AMBER, size=32),
             math_chip(r"\frac16", width=1.65, color=AMBER, size=32),
             math_chip(r"\frac1{12}", width=1.65, color=AMBER, size=32),
             math_chip(r"\frac1{20}", width=1.65, color=AMBER, size=32),
             math_chip(r"\cdots", width=1.65, color=MUTED, size=32),
-        ).arrange(RIGHT, buff=0.22).move_to(UP * 0.22)
+        ).arrange(RIGHT, buff=0.22).move_to(UP * 0.15)
         telescope = math_display(
             r"w_j=\frac1{j+1}-\frac1{j+2}",
             38,
             SOFT_CYAN,
-        ).move_to(DOWN * 0.82)
+        ).move_to(DOWN * 0.90)
         total = math_chip(
             r"\sum_{j=0}^{\infty} w_j=1",
             width=4.15,
             color=CYAN,
-            size=36,
-        ).move_to(DOWN * 1.63)
+            size=30,
+        ).move_to(DOWN * 2.10)
 
         content = VGroup(weight_formula, weights, telescope, total)
-        assert_in_content(content, "allocation content")
         assert_in_frame(VGroup(head, content), "allocation")
+        assert_no_overlap(weight_formula, weights, "allocation formula and weights", gap=0.10)
+        assert_no_overlap(weights, telescope, "allocation weights and telescope", gap=0.10)
         assert_no_overlap(telescope, total, "allocation formulas", gap=0.16)
 
         self.play(FadeIn(head), FadeIn(weight_formula), run_time=0.65)
@@ -867,8 +883,9 @@ class StitchedLILResultFilm(Scene):
             active_segments,
             floor_dots,
         )
-        assert_in_content(VGroup(plot, budget, boundary_shape, precommit, receipt), "tilt content")
         assert_in_frame(VGroup(head, plot, budget, boundary_shape, precommit, receipt), "tilts")
+        assert_no_overlap(boundary_shape, plot, "tilt formula and plot", gap=0.10)
+        assert_no_overlap(budget, plot, "tilt budget and plot", gap=0.03)
         assert_no_overlap(precommit, receipt, "tilt footer", gap=0.18)
 
         self.play(FadeIn(head), FadeIn(budget), FadeIn(boundary_shape), run_time=0.70)
@@ -995,35 +1012,35 @@ class StitchedLILResultFilm(Scene):
         head = caption("result")
         budget = math_display(
             DISPLAY_MATH["budget"],
-            32,
+            27,
             AMBER,
         )
         width = math_display(
             DISPLAY_MATH["width"],
-            34,
+            29,
             SOFT_CYAN,
         )
         event_condition = math_display(
             DISPLAY_MATH["event_condition"],
-            29,
+            24,
             IVORY,
         )
-        failure = math_display(DISPLAY_MATH["failure_mass"], 32, RED)
+        failure = math_display(DISPLAY_MATH["failure_mass"], 27, RED)
         event_bound = math_display(
             DISPLAY_MATH["event_bound"],
-            30,
+            26,
             IVORY,
         )
         event_intro = VGroup(failure, event_condition).arrange(RIGHT, buff=0.55)
         epoch_index = math_display(
             DISPLAY_MATH["selector"],
-            28,
+            24,
             MUTED,
         )
         theorem_card = VGroup(epoch_index, budget, width, event_intro, event_bound).arrange(
             DOWN,
             aligned_edge=LEFT,
-            buff=0.16,
+            buff=0.10,
         )
         theorem_box = RoundedRectangle(
             width=11.80,
@@ -1045,16 +1062,16 @@ class StitchedLILResultFilm(Scene):
             DOWN,
             aligned_edge=LEFT,
             buff=0.06,
-        ).move_to(DOWN * 1.70 + LEFT * 2.72)
+        ).move_to(DOWN * 1.92 + LEFT * 2.72)
         commit = code(f"SOURCE {FACTS['short_commit']}", 20, CYAN).move_to(
-            DOWN * 1.70 + RIGHT * 4.85
+            DOWN * 1.92 + RIGHT * 4.85
         )
         boundary = label(
             "Not the LIL law. No sharp-constant claim. Not itself an e-process.",
             24,
             AMBER,
             "BOLD",
-        ).move_to(DOWN * 2.42)
+        ).move_to(DOWN * 2.55)
 
         assert_in_content(result_group, "result theorem card")
         assert_in_frame(VGroup(head, result_group, receipt, commit, boundary), "result")
@@ -1071,7 +1088,7 @@ class StitchedLILResultFilm(Scene):
 
 class StitchedLILResultPoster(Scene):
     def construct(self) -> None:
-        title = label(FILM["title"], 60, IVORY, "BOLD")
+        title = label(FILM["title"], 54, IVORY, "BOLD")
         title.move_to(UP * 2.55)
         subtitle = label(
             "A machine-checked log-log confidence sequence in Lean.",
@@ -1083,15 +1100,7 @@ class StitchedLILResultPoster(Scene):
             math_display(DISPLAY_MATH["selector"], 22, MUTED),
             math_display(DISPLAY_MATH["budget"], 25, AMBER),
             math_display(DISPLAY_MATH["width"], 27, SOFT_CYAN),
-        ).arrange(DOWN, buff=0.08).move_to(UP * 0.98)
-        upper, lower = stitched_envelope_segments(
-            -5.5,
-            5.5,
-            center_y=0.0,
-            scale=0.50,
-            width=4.5,
-        )
-        motif = VGroup(upper, lower).move_to(DOWN * 0.25)
+        ).arrange(DOWN, buff=0.08).move_to(UP * 0.52)
         failure = math_display(DISPLAY_MATH["failure_mass"], 34, RED)
         event = math_display(DISPLAY_MATH["event_conclusion"], 31, IVORY)
         guarantee_copy = VGroup(failure, event).arrange(DOWN, buff=0.15)
@@ -1105,14 +1114,13 @@ class StitchedLILResultPoster(Scene):
             fill_opacity=0.98,
         )
         guarantee_copy.move_to(guarantee_box)
-        result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.72)
+        result = VGroup(guarantee_box, guarantee_copy).move_to(DOWN * 1.22)
         stamp = source_stamp().move_to(DOWN * 2.82)
 
-        composition = VGroup(title, subtitle, definitions, motif, result, stamp)
+        composition = VGroup(title, subtitle, definitions, result, stamp)
         assert_in_frame(composition, "poster")
         assert_no_overlap(subtitle, definitions, "poster subtitle and definitions", gap=0.16)
-        assert_no_overlap(definitions, motif, "poster definitions and motif", gap=0.14)
-        assert_no_overlap(motif, result, "poster motif and result", gap=0.18)
+        assert_no_overlap(definitions, result, "poster definitions and result", gap=0.18)
         self.add(composition)
 
 
@@ -1207,7 +1215,7 @@ class StitchedLILResultSocial(Scene):
         cards = VGroup(
             social_assumption_card(
                 r"X_k\text{ is }\mathcal F_{k+1}\text{-strongly measurable}",
-                "revealed after the past",
+                "one-step reveal",
                 18,
             ),
             social_assumption_card(r"\lvert X_k\rvert\le b", "bounded a.e."),
@@ -1267,12 +1275,12 @@ class StitchedLILResultSocial(Scene):
             row_copy.move_to(box)
             rows.add(VGroup(box, row_copy))
         rows.arrange(DOWN, buff=0.10).move_to(UP * 0.30)
-        total = math_chip(
+        total = math_display(
             r"\sum_{j=0}^{\infty}w_j=1",
-            width=3.45,
-            color=CYAN,
-            size=34,
-        ).move_to(DOWN * 1.35)
+            28,
+            CYAN,
+            max_width=3.45,
+        ).move_to(DOWN * 1.55)
         epoch_index = math_display(
             DISPLAY_MATH["selector"],
             23,
@@ -1287,9 +1295,9 @@ class StitchedLILResultSocial(Scene):
         )
         budget = VGroup(epoch_index, budget_formula).arrange(
             DOWN, buff=0.08
-        ).move_to(DOWN * 2.20)
+        ).move_to(DOWN * 2.50)
         foot = label("One fixed tilt per epoch, chosen in advance.", 20, MUTED).move_to(
-            DOWN * 3.15
+            DOWN * 3.18
         )
         composition = VGroup(head, rows, total, budget, foot)
         assert_in_social_frame(composition, "social mechanism")
@@ -1439,10 +1447,10 @@ class StitchedLILResultSocial(Scene):
             failure,
             event_condition,
             event_bound,
-        ).arrange(DOWN, buff=0.14).move_to(UP * 0.03)
+        ).arrange(DOWN, buff=0.06).move_to(DOWN * 0.24)
         box = RoundedRectangle(
             width=5.55,
-            height=3.92,
+            height=4.24,
             corner_radius=0.14,
             color=CYAN,
             stroke_width=2.0,
@@ -1450,10 +1458,9 @@ class StitchedLILResultSocial(Scene):
             fill_opacity=0.98,
         ).move_to(equations)
         receipt = VGroup(
-            code("AnytimeValid.PolynomialStitchedLIL", 15, MUTED),
             code(FACTS["result"]["theorem"], 14, MUTED),
             code(f"SOURCE {FACTS['short_commit']}", 15, CYAN),
-        ).arrange(DOWN, buff=0.05).move_to(DOWN * 2.47)
+        ).arrange(DOWN, buff=0.04).move_to(DOWN * 2.72)
         boundary = text_lines(
             ["Allocated fixed-tilt stitch.", "No sharp-constant claim. Not itself an e-process."],
             18,
@@ -1461,9 +1468,11 @@ class StitchedLILResultSocial(Scene):
             "BOLD",
             DISPLAY_FONT,
             buff=0.05,
-        ).move_to(DOWN * 3.23)
+        ).move_to(DOWN * 3.34)
         composition = VGroup(head, box, equations, receipt, boundary)
         assert_in_social_frame(composition, "social result")
+        assert_contains(box, equations, "social result equations")
+        assert_no_overlap(head, box, "social result header and equations", gap=0.12)
         assert_no_overlap(box, receipt, "social result equations and receipt")
         assert_no_overlap(receipt, boundary, "social result receipt and boundary")
 

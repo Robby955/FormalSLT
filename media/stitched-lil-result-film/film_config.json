@@ -25,7 +25,7 @@
       {"id": "social_model", "start": 7.0, "end": 15.0, "title": "What the theorem assumes", "detail": "Bounded adapted increments, centered given the past."},
       {"id": "social_mechanism", "start": 15.0, "end": 26.0, "title": "Geometric time. One error budget.", "detail": "Factor-four epochs receive telescoping confidence weights."},
       {"id": "social_stitch", "start": 26.0, "end": 35.0, "title": "Stitch the epochs", "detail": "The allocated failures add to at most delta."},
-      {"id": "social_result", "start": 35.0, "end": 44.0, "title": "One checked event. Every sample size.", "detail": "Infrastructure for learning guarantees under repeated monitoring."}
+      {"id": "social_result", "start": 35.0, "end": 44.0, "title": "One checked event. Every sample size from four onward.", "detail": "Repeated-monitoring infrastructure."}
     ]
   },
   "palette": {

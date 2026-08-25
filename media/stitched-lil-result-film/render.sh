@@ -84,6 +84,24 @@ movie_duration() {
     -of default=noprint_wrappers=1:nokey=1 "$1"
 }
 
+layout_check_composition() {
+  local config_file="$1"
+  local scene="$2"
+
+  ACTIVE_TEMP_DIR="$(mktemp -d "$OUT_DIR/render.XXXXXX")"
+  "$MANIM_BIN" --config_file "$config_file" --dry_run \
+    --media_dir "$ACTIVE_TEMP_DIR/media" \
+    "$SOURCE" "$scene"
+  cleanup_temp_tree "$ACTIVE_TEMP_DIR"
+  ACTIVE_TEMP_DIR=""
+}
+
+layout_check_all() {
+  mkdir -p "$OUT_DIR"
+  layout_check_composition "$PACKAGE/manim.cfg" StitchedLILResultFilm
+  layout_check_composition "$PACKAGE/manim-social.cfg" StitchedLILResultSocial
+}
+
 render_movie() {
   local quality="$1"
   local resolution="$2"
@@ -197,6 +215,11 @@ case "$MODE" in
     python3 "$COMPOSER" --describe main
     python3 "$COMPOSER" --describe social
     ;;
+  layout-check)
+    validate_source
+    find_renderer
+    layout_check_all
+    ;;
   proof-main)
     validate_source
     find_renderer
@@ -267,6 +290,7 @@ case "$MODE" in
     validate_source
     find_renderer
     find_video_tools
+    layout_check_all
     render_movie -qh 1920,1080 final main "$PACKAGE/manim.cfg" \
       StitchedLILResultFilm stitched-lil-result-1920x1080.mp4
     render_movie -qh 1080,1350 final social "$PACKAGE/manim-social.cfg" \
@@ -282,7 +306,7 @@ case "$MODE" in
     python3 "$STAGER" --ffprobe "$FFPROBE_BIN"
     ;;
   *)
-    echo "usage: $0 [validate|facts|soundtrack-plan|proof-main|proof-social|proofs|final-main|final-social|finals|poster-main|poster-social|posters|release|stage-delivery]" >&2
+    echo "usage: $0 [validate|facts|soundtrack-plan|layout-check|proof-main|proof-social|proofs|final-main|final-social|finals|poster-main|poster-social|posters|release|stage-delivery]" >&2
     exit 2
     ;;
 esac
