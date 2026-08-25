@@ -42,7 +42,7 @@ current interfaces; it does not claim end-to-end verification of an ML system.
 [Manim source](./media/formalslt-overview/) ·
 [Pinned v0.2.0 film receipt](https://github.com/Robby955/FormalSLT/blob/v0.2.0/media/formalslt-overview/render-receipt.json)
 
-## Theorem film: one event across every sample size
+## Theorem film: one event from sample size four onward
 
 <p align="center">
   <a href="https://robby955.github.io/FormalSLT/#stitched-lil-film">
