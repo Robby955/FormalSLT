@@ -102,11 +102,11 @@
   },
   "schema": "FormalSLT.proof_frontier.v1",
   "source_counts": {
-    "example_lean_files": 241,
-    "library_and_example_lean_lines": 157004,
-    "library_lean_lines": 125895,
+    "example_lean_files": 242,
+    "library_and_example_lean_lines": 157540,
+    "library_lean_lines": 126381,
     "library_modules": 297,
-    "theorem_map_entries": 1116
+    "theorem_map_entries": 1121
   },
   "theorem_families": [
     {
@@ -1446,6 +1446,41 @@
         }
       ],
       "name": "Covering and finite chaining"
+    },
+    {
+      "entries": [
+        {
+          "kind": "definition",
+          "module": "Covering.MeasureDudley",
+          "name": "MeasureSubGaussianProcess",
+          "summary": "Arbitrary-measure sub-Gaussian process interface with explicit evaluation measurability and increment/exponential integrability"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.MeasureDudley",
+          "name": "integral_finiteSup_le_of_subGaussian_mgf_sqrt_nonempty",
+          "summary": "Optimized Bochner-integral finite-maximum bound, including singleton families"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.MeasureDudley",
+          "name": "MeasureSubGaussianProcess.integral_incrementFamilySup_le_radius_sqrt_nonempty",
+          "summary": "One-scale square-root entropy bound for an arbitrary finite increment family"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.MeasureDudley",
+          "name": "MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt",
+          "summary": "Arbitrary-measure projection-pair bound derived from two finite nets and their chosen cardinalities, without MeasureChainingBudget"
+        },
+        {
+          "kind": "theorem",
+          "module": "Covering.MeasureDudley",
+          "name": "integral_boolProjectionPairSup_eq_half",
+          "summary": "Nonzero Boolean witness: the one-point-to-full-net projection-pair maximum has exact mean 1/2"
+        }
+      ],
+      "name": "Arbitrary-measure one-scale entropy"
     },
     {
       "entries": [

@@ -1,8 +1,9 @@
 import FormalSLT.Covering.ContinuousDudley
 import FormalSLT.Covering.DudleySumToIntegral
+import FormalSLT.Rademacher.Massart
 
 /-!
-# Continuous Dudley entropy integral against an arbitrary probability measure
+# Arbitrary-measure finite-net and conditional Dudley bounds
 
 The finite Dudley lane (`FiniteSubGaussianChaining` → `TotalBoundedDudley` →
 `ContinuousDudley`) states every expected-supremum bound through
@@ -11,14 +12,16 @@ The finite Dudley lane (`FiniteSubGaussianChaining` → `TotalBoundedDudley` →
 genuine measure-theoretic expectation `∫ ω, X ω ∂μ` against an arbitrary
 probability measure on an arbitrary measurable space.
 
-This module closes that generality gap. It re-derives the sub-Gaussian
-chaining engine at the Bochner-integral level and lifts the continuous Dudley
-entropy integral to
+This module develops the arbitrary-measure side of that generality gap. It
+re-derives the sub-Gaussian finite-maximum engine at the Bochner-integral level,
+proves a one-scale finite-net entropy bound directly from process and net data,
+and records a conditional lift of the continuous Dudley entropy integral to
 
   `∫ ω, supFunctional ω ∂μ ≤ coarseBudget + 4 · √(2 · σ²) · ∫₀^{R/2} entropyAtRadius`,
 
 where `μ` is an arbitrary probability measure (`IsProbabilityMeasure μ`) on an
-arbitrary `[MeasurableSpace Ω]`, never a domain-collapsing Dirac instance.
+arbitrary `[MeasurableSpace Ω]`. The generic theorem permits Dirac measures;
+the concrete Boolean witness below uses the non-Dirac uniform measure.
 
 ## Why the lift is a re-derivation, not a re-statement
 
@@ -45,19 +48,21 @@ measurability/integrability side conditions promoted to explicit hypotheses
 * `integral_le_of_shifted_exp_mgf`: integral-level Chernoff step.
 * `integral_expectedSup_le_of_shifted_mgf`: integral-level finite-max
   entropy budget.
-* `MeasureSubGaussianProcess.integral_finiteSup_le_of_mgf_log`: integral-level
-  finite-max MGF-to-budget bridge.
+* `integral_finiteSup_le_of_mgf_log`: integral-level finite-max MGF-to-budget
+  bridge.
+* `MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt`:
+  one-scale finite-net entropy bound with the projection-pair geometry and
+  chosen-net cardinality comparison discharged internally.
 * `continuous_dudley_entropy_integral_of_measure`: the terminal continuous
   Dudley entropy integral against an arbitrary probability measure.
 * `continuous_dudley_entropy_integral_of_measure_coveringNumber`: the
   covering-number `√(log N)` specialization.
 
-The boundary/separability content (the dyadic chaining decomposition that turns
-the supremum functional into a finite-max budget plus a continuous integral) is
-supplied through an explicit `MeasureChainingBudget` hypothesis, exactly as the
-finite lane supplies its `SeparableTerminalSupremumBoundaryChoice`. This module
-proves the expectation-operator lift; it does not re-derive the net geometry,
-which is measure-independent and already verified in the finite lane.
+The one-scale theorem does not use `MeasureChainingBudget`: it constructs its
+finite projection-pair bound from the process MGF and the two supplied nets.
+The terminal continuous-integral theorems below still take
+`MeasureChainingBudget`; they do not yet construct the full multiscale chain or
+discharge the separability boundary.
 
 ## References (verbatim)
 
@@ -74,6 +79,7 @@ No `sorry`, no `admit`, no custom `axiom`.
 namespace FormalSLT.Covering.MeasureDudley
 
 open MeasureTheory
+open FormalSLT.Rademacher.FiniteSample
 open scoped BigOperators
 
 noncomputable section
@@ -83,6 +89,106 @@ universe u v
 variable {Ω : Type u} {T : Type v}
 
 /-! ## Integral-level Chernoff and finite-max sub-Gaussian engine -/
+
+/-- A real-valued process over an arbitrary measure space with sub-Gaussian
+increment control.
+
+Unlike `FiniteSubGaussianProcess`, the outcome type is not finite and
+expectations are Bochner integrals against `μ`. Evaluation measurability and
+the integrability of both increments and exponential increments are explicit
+fields: they are analytic obligations, not consequences of finiteness. -/
+structure MeasureSubGaussianProcess [MeasurableSpace Ω]
+    (μ : Measure Ω) (T : Type v) where
+  X : Ω → T → ℝ
+  dist : T → T → ℝ
+  dist_nonneg : ∀ s t : T, 0 ≤ dist s t
+  varianceProxy : ℝ
+  varianceProxy_nonneg : 0 ≤ varianceProxy
+  measurable_eval : ∀ t : T, Measurable (fun ω => X ω t)
+  integrable_increment : ∀ s t : T, Integrable (fun ω => X ω t - X ω s) μ
+  integrable_exp_increment : ∀ s t : T, ∀ lam : ℝ,
+    Integrable (fun ω => Real.exp (lam * (X ω t - X ω s))) μ
+  mgf_increment : ∀ s t : T, ∀ lam : ℝ,
+    (∫ ω, Real.exp (lam * (X ω t - X ω s)) ∂μ) ≤
+      Real.exp (lam ^ 2 * varianceProxy * dist s t ^ 2 / 2)
+
+namespace MeasureSubGaussianProcess
+
+/-- Radius-bounded form of the arbitrary-measure increment MGF bound. -/
+theorem increment_mgf_le_radius
+    [MeasurableSpace Ω] {μ : Measure Ω}
+    (P : MeasureSubGaussianProcess μ T)
+    (s t : T) (r : ℝ)
+    (hr : P.dist s t ≤ r) (hr_nonneg : 0 ≤ r) (lam : ℝ) :
+    (∫ ω, Real.exp (lam * (P.X ω t - P.X ω s)) ∂μ) ≤
+      Real.exp (lam ^ 2 * P.varianceProxy * r ^ 2 / 2) := by
+  refine (P.mgf_increment s t lam).trans ?_
+  apply Real.exp_le_exp.mpr
+  have hdist_sq : P.dist s t ^ 2 ≤ r ^ 2 := by
+    nlinarith [hr, P.dist_nonneg s t, hr_nonneg]
+  have hcoef_nonneg : 0 ≤ lam ^ 2 * P.varianceProxy / 2 := by
+    nlinarith [sq_nonneg lam, P.varianceProxy_nonneg]
+  have hmul := mul_le_mul_of_nonneg_left hdist_sq hcoef_nonneg
+  nlinarith [hmul]
+
+end MeasureSubGaussianProcess
+
+/-- A finite supremum of integrable real random variables is integrable. -/
+theorem integrable_finiteSup_of_integrable
+    [MeasurableSpace Ω] (μ : Measure Ω)
+    {I : Type*} [Fintype I] [Nonempty I]
+    (Y : Ω → I → ℝ)
+    (hY : ∀ i : I, Integrable (fun ω => Y ω i) μ) :
+    Integrable (fun ω => FiniteSubGaussianChaining.finiteSup (Y ω)) μ := by
+  classical
+  have hfun :
+      Integrable
+        ((Finset.univ : Finset I).sup' Finset.univ_nonempty
+          (fun i : I => fun ω : Ω => Y ω i)) μ :=
+    Finset.sup'_induction (p := fun f : Ω → ℝ => Integrable f μ)
+      Finset.univ_nonempty
+      (fun i : I => fun ω : Ω => Y ω i)
+      (fun _f hf _g hg => Integrable.sup hf hg)
+      (fun i _hi => hY i)
+  have heq :
+      ((Finset.univ : Finset I).sup' Finset.univ_nonempty
+          (fun i : I => fun ω : Ω => Y ω i)) =
+        (fun ω => FiniteSubGaussianChaining.finiteSup (Y ω)) := by
+    funext ω
+    rw [Finset.apply_sup'_eq_sup'_comp Finset.univ_nonempty
+      (fun f : Ω → ℝ => f ω) (fun _ _ => rfl)]
+    rfl
+  rw [← heq]
+  exact hfun
+
+/-- Integrability closure for the shifted exponential of a finite supremum.
+Positivity of `lam` makes the shifted exponential monotone, so it commutes with
+the finite maximum. -/
+theorem integrable_exp_finiteSup_sub_of_integrable
+    [MeasurableSpace Ω] (μ : Measure Ω)
+    {I : Type*} [Fintype I] [Nonempty I]
+    (Y : Ω → I → ℝ) (lam budget : ℝ) (hlam : 0 ≤ lam)
+    (hcoord : ∀ i : I,
+      Integrable (fun ω => Real.exp (lam * (Y ω i - budget))) μ) :
+    Integrable
+      (fun ω => Real.exp
+        (lam * (FiniteSubGaussianChaining.finiteSup (Y ω) - budget))) μ := by
+  let shiftedExp : ℝ → ℝ := fun x => Real.exp (lam * (x - budget))
+  have hmono : Monotone shiftedExp := by
+    intro x y hxy
+    apply Real.exp_monotone
+    exact mul_le_mul_of_nonneg_left (sub_le_sub_right hxy budget) hlam
+  have hfinite :
+      Integrable
+        (fun ω => FiniteSubGaussianChaining.finiteSup
+          (fun i : I => shiftedExp (Y ω i))) μ :=
+    integrable_finiteSup_of_integrable μ
+      (fun ω i => shiftedExp (Y ω i)) hcoord
+  refine hfinite.congr (Filter.Eventually.of_forall ?_)
+  intro ω
+  unfold FiniteSubGaussianChaining.finiteSup
+  exact (Finset.apply_sup'_eq_sup'_comp Finset.univ_nonempty shiftedExp
+    (fun x y => hmono.map_max)).symm
 
 /-- **Integral-level Chernoff bound.**
 
@@ -253,6 +359,211 @@ theorem integral_finiteSup_le_of_mgf_log
     _ = (Fintype.card T : ℝ)⁻¹ := by
           rw [mul_assoc, ← Real.exp_add]
           simp
+
+/-- Fixed-tilt finite-max bound with all measure-theoretic integrability
+obligations discharged from coordinate hypotheses. -/
+theorem integral_finiteSup_le_of_mgf_log_of_integrable
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    {I : Type*} [Fintype I] [Nonempty I]
+    (Y : Ω → I → ℝ) (lam q : ℝ) (hlam : 0 < lam)
+    (hcoord_int : ∀ i : I, Integrable (fun ω => Y ω i) μ)
+    (hexp_int : ∀ i : I, ∀ theta : ℝ,
+      Integrable (fun ω => Real.exp (theta * Y ω i)) μ)
+    (hcoord : ∀ i : I,
+      (∫ ω, Real.exp (lam * Y ω i) ∂μ) ≤ Real.exp q) :
+    (∫ ω, FiniteSubGaussianChaining.finiteSup (Y ω) ∂μ) ≤
+      (Real.log (Fintype.card I : ℝ) + q) / lam := by
+  let budget := (Real.log (Fintype.card I : ℝ) + q) / lam
+  have hmeanSup_int :
+      Integrable (fun ω => FiniteSubGaussianChaining.finiteSup (Y ω)) μ :=
+    integrable_finiteSup_of_integrable μ Y hcoord_int
+  have hcoord_shift_int : ∀ i : I,
+      Integrable (fun ω => Real.exp (lam * (Y ω i - budget))) μ := by
+    intro i
+    have hbase := (hexp_int i lam).const_mul (Real.exp (-(lam * budget)))
+    refine hbase.congr (Filter.Eventually.of_forall ?_)
+    intro ω
+    change Real.exp (-(lam * budget)) * Real.exp (lam * Y ω i) =
+      Real.exp (lam * (Y ω i - budget))
+    rw [← Real.exp_add]
+    congr 1
+    ring
+  have hsup_shift_int :
+      Integrable
+        (fun ω => Real.exp
+          (lam * (FiniteSubGaussianChaining.finiteSup (Y ω) - budget))) μ :=
+    integrable_exp_finiteSup_sub_of_integrable
+      μ Y lam budget hlam.le hcoord_shift_int
+  exact integral_finiteSup_le_of_mgf_log μ Y lam q hlam
+    hsup_shift_int hmeanSup_int hcoord_shift_int hcoord
+
+/-- Optimized arbitrary-measure finite sub-Gaussian maximum bound. -/
+theorem integral_finiteSup_le_of_subGaussian_mgf_sqrt
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    {I : Type*} [Fintype I] [Nonempty I]
+    (Y : Ω → I → ℝ) (variance : ℝ)
+    (hvariance : 0 < variance)
+    (hcoord_int : ∀ i : I, Integrable (fun ω => Y ω i) μ)
+    (hexp_int : ∀ i : I, ∀ lam : ℝ,
+      Integrable (fun ω => Real.exp (lam * Y ω i)) μ)
+    (hcoord : ∀ i : I, ∀ lam : ℝ,
+      (∫ ω, Real.exp (lam * Y ω i) ∂μ) ≤
+        Real.exp (lam ^ 2 * variance / 2))
+    (hcard : 1 < Fintype.card I) :
+    (∫ ω, FiniteSubGaussianChaining.finiteSup (Y ω) ∂μ) ≤
+      Real.sqrt (2 * variance * Real.log (Fintype.card I : ℝ)) := by
+  let L := Real.log (Fintype.card I : ℝ)
+  let lam := Real.sqrt (2 * L / variance)
+  have hL : 0 < L := by
+    have hcard_real : (1 : ℝ) < (Fintype.card I : ℝ) := by
+      exact_mod_cast hcard
+    simpa [L] using Real.log_pos hcard_real
+  have hlam : 0 < lam := by
+    dsimp [lam]
+    exact Real.sqrt_pos_of_pos (by positivity)
+  calc
+    (∫ ω, FiniteSubGaussianChaining.finiteSup (Y ω) ∂μ)
+        ≤ (Real.log (Fintype.card I : ℝ) + lam ^ 2 * variance / 2) / lam :=
+          integral_finiteSup_le_of_mgf_log_of_integrable μ Y lam
+            (lam ^ 2 * variance / 2) hlam hcoord_int hexp_int
+            (fun i => hcoord i lam)
+    _ = Real.sqrt (2 * variance * Real.log (Fintype.card I : ℝ)) := by
+          have hopt :=
+            FiniteSubGaussianChaining.sqrt_entropy_optimizer_identity hL hvariance
+          dsimp [lam]
+          simpa [L, mul_assoc, mul_left_comm, mul_comm] using hopt
+
+/-- Optimized arbitrary-measure finite sub-Gaussian maximum bound, including
+singleton index families. A singleton pays zero entropy. -/
+theorem integral_finiteSup_le_of_subGaussian_mgf_sqrt_nonempty
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    {I : Type*} [Fintype I] [Nonempty I]
+    (Y : Ω → I → ℝ) (variance : ℝ)
+    (hvariance : 0 < variance)
+    (hcoord_int : ∀ i : I, Integrable (fun ω => Y ω i) μ)
+    (hexp_int : ∀ i : I, ∀ lam : ℝ,
+      Integrable (fun ω => Real.exp (lam * Y ω i)) μ)
+    (hcoord : ∀ i : I, ∀ lam : ℝ,
+      (∫ ω, Real.exp (lam * Y ω i) ∂μ) ≤
+        Real.exp (lam ^ 2 * variance / 2)) :
+    (∫ ω, FiniteSubGaussianChaining.finiteSup (Y ω) ∂μ) ≤
+      Real.sqrt (2 * variance * Real.log (Fintype.card I : ℝ)) := by
+  by_cases hcard : 1 < Fintype.card I
+  · exact integral_finiteSup_le_of_subGaussian_mgf_sqrt
+      μ Y variance hvariance hcoord_int hexp_int hcoord hcard
+  · have hcard_eq : Fintype.card I = 1 := by
+      have hpos : 0 < Fintype.card I := Fintype.card_pos
+      omega
+    have hlog : Real.log (Fintype.card I : ℝ) = 0 := by simp [hcard_eq]
+    have hsqrt :
+        Real.sqrt (2 * variance * Real.log (Fintype.card I : ℝ)) = 0 := by
+      simp [hlog]
+    rw [hsqrt]
+    refine FiniteSubGaussianChaining.real_le_of_forall_pos_le_add ?_
+    intro eta heta
+    let lam := eta / variance
+    have hlam : 0 < lam := div_pos heta hvariance
+    have hbound :
+        (∫ ω, FiniteSubGaussianChaining.finiteSup (Y ω) ∂μ) ≤
+          (Real.log (Fintype.card I : ℝ) + lam ^ 2 * variance / 2) / lam :=
+      integral_finiteSup_le_of_mgf_log_of_integrable μ Y lam
+        (lam ^ 2 * variance / 2) hlam hcoord_int hexp_int
+        (fun i => hcoord i lam)
+    have hbudget_eq :
+        (Real.log (Fintype.card I : ℝ) + lam ^ 2 * variance / 2) / lam =
+          lam * variance / 2 := by
+      rw [hlog]
+      field_simp [ne_of_gt hlam]
+      ring
+    have hbudget_le : lam * variance / 2 ≤ eta := by
+      dsimp [lam]
+      field_simp [ne_of_gt hvariance]
+      linarith
+    exact hbound.trans (by linarith)
+
+namespace MeasureSubGaussianProcess
+
+/-- One-scale square-root entropy bound for a finite family of increments over
+an arbitrary probability space. -/
+theorem integral_incrementFamilySup_le_radius_sqrt_nonempty
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    {I : Type*} [Fintype I] [Nonempty I]
+    (P : MeasureSubGaussianProcess μ T)
+    (left right : I → T) (r : ℝ)
+    (hvariance : 0 < P.varianceProxy)
+    (hr : ∀ i : I, P.dist (left i) (right i) ≤ r)
+    (hr_pos : 0 < r) :
+    (∫ ω, FiniteSubGaussianChaining.finiteSup
+        (fun i : I => P.X ω (right i) - P.X ω (left i)) ∂μ) ≤
+      Real.sqrt
+        (2 * P.varianceProxy * r ^ 2 * Real.log (Fintype.card I : ℝ)) := by
+  have hvariance_radius : 0 < P.varianceProxy * r ^ 2 := by positivity
+  have hmain := integral_finiteSup_le_of_subGaussian_mgf_sqrt_nonempty
+    μ (fun ω i => P.X ω (right i) - P.X ω (left i))
+    (P.varianceProxy * r ^ 2) hvariance_radius
+    (fun i => P.integrable_increment (left i) (right i))
+    (fun i lam => P.integrable_exp_increment (left i) (right i) lam)
+    (fun i lam => by
+      simpa [mul_assoc, mul_left_comm, mul_comm] using
+        increment_mgf_le_radius P (left i) (right i) r (hr i) hr_pos.le lam)
+  simpa [mul_assoc, mul_left_comm, mul_comm] using hmain
+
+/-- **Arbitrary-measure one-scale finite-net entropy bound.**
+
+For two finite nets of the same sub-Gaussian process metric, the expected
+maximum over realized projection-pair increments is controlled by the square
+root of the log product of their chosen-net cardinalities (the two
+`FiniteNet.coveringNumber` fields). The projection-pair radius and cardinality
+estimates are derived internally. No `MeasureChainingBudget`, coarse budget,
+terminal boundary, or finite outcome-space assumption appears. -/
+theorem integral_projectionPairSup_le_coveringNumber_sqrt
+    [MeasurableSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ]
+    [Nonempty T] {A B : Type*} [Fintype A] [Fintype B]
+    (P : MeasureSubGaussianProcess μ T)
+    (N₀ : FiniteSubGaussianChaining.FiniteNet T A)
+    (N₁ : FiniteSubGaussianChaining.FiniteNet T B)
+    (hdist₀ : N₀.dist = P.dist) (hdist₁ : N₁.dist = P.dist)
+    (hsymm : ∀ s t, P.dist s t = P.dist t s)
+    (htri : ∀ x y z, P.dist x z ≤ P.dist x y + P.dist y z)
+    (hvariance : 0 < P.varianceProxy)
+    (hradius : 0 < N₀.radius + N₁.radius) :
+    (∫ ω, FiniteSubGaussianChaining.finiteSup
+      (fun pair : FiniteSubGaussianChaining.FiniteNet.ProjectionPair N₀ N₁ =>
+        P.X ω (N₁.center pair.1.2) - P.X ω (N₀.center pair.1.1)) ∂μ) ≤
+      Real.sqrt
+        (2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 *
+          Real.log (N₀.coveringNumber * N₁.coveringNumber : ℝ)) := by
+  let Pair := FiniteSubGaussianChaining.FiniteNet.ProjectionPair N₀ N₁
+  let left : Pair → T := fun pair => N₀.center pair.1.1
+  let right : Pair → T := fun pair => N₁.center pair.1.2
+  have hpair : ∀ pair : Pair,
+      P.dist (left pair) (right pair) ≤ N₀.radius + N₁.radius := by
+    intro pair
+    have h :=
+      FiniteSubGaussianChaining.FiniteNet.projectionPair_dist_le_radius_sum
+        N₀ N₁ (by rw [hdist₀, hdist₁])
+        (by
+          intro s t
+          rw [hdist₀]
+          exact hsymm s t)
+        (by
+          intro x y z
+          rw [hdist₀]
+          exact htri x y z)
+        pair
+    simpa [left, right, hdist₀] using h
+  refine (integral_incrementFamilySup_le_radius_sqrt_nonempty
+    μ P left right (N₀.radius + N₁.radius) hvariance hpair hradius).trans ?_
+  apply Real.sqrt_le_sqrt
+  have hcoef_nonneg :
+      0 ≤ 2 * P.varianceProxy * (N₀.radius + N₁.radius) ^ 2 := by
+    nlinarith [P.varianceProxy_nonneg, sq_nonneg (N₀.radius + N₁.radius)]
+  exact mul_le_mul_of_nonneg_left
+    (FiniteSubGaussianChaining.FiniteNet.projectionPair_log_card_le_log_coveringNumber_mul
+      N₀ N₁)
+    hcoef_nonneg
+
+end MeasureSubGaussianProcess
 
 /-! ## The continuous Dudley entropy integral against an arbitrary measure -/
 
@@ -438,6 +749,181 @@ theorem integral_uniformBool (f : Bool → ℝ) :
   rw [integral_add_measure Integrable.of_finite Integrable.of_finite,
     integral_smul_measure, integral_smul_measure, integral_dirac, integral_dirac]
   simp [smul_eq_mul]
+
+/-! ### Executable two-net witness for the one-scale theorem -/
+
+/-- Discrete distance on the Boolean index set. -/
+def boolProjectionDist (s t : Bool) : ℝ := if s = t then 0 else 1
+
+/-- The Boolean discrete distance is nonnegative. -/
+theorem boolProjectionDist_nonneg (s t : Bool) : 0 ≤ boolProjectionDist s t := by
+  by_cases h : s = t <;> simp [boolProjectionDist, h]
+
+/-- Symmetry of the Boolean discrete distance. -/
+theorem boolProjectionDist_symm (s t : Bool) :
+    boolProjectionDist s t = boolProjectionDist t s := by
+  cases s <;> cases t <;> norm_num [boolProjectionDist]
+
+/-- Triangle inequality for the Boolean discrete distance. -/
+theorem boolProjectionDist_triangle (x y z : Bool) :
+    boolProjectionDist x z ≤ boolProjectionDist x y + boolProjectionDist y z := by
+  cases x <;> cases y <;> cases z <;> norm_num [boolProjectionDist]
+
+/-- Rademacher process that is zero at `false` and a fair sign at `true`. -/
+def boolProjectionValue (ω t : Bool) : ℝ :=
+  if t then signOfBool ω else 0
+
+/-- The Boolean projection process has sub-Gaussian increments with unit
+variance proxy under `uniformBool`. -/
+theorem boolProjection_mgf_bound (s t : Bool) (lam : ℝ) :
+    (∫ ω, Real.exp
+        (lam * (boolProjectionValue ω t - boolProjectionValue ω s)) ∂uniformBool) ≤
+      Real.exp (lam ^ 2 * (1 : ℝ) * boolProjectionDist s t ^ 2 / 2) := by
+  cases s <;> cases t
+  · rw [integral_uniformBool]
+    norm_num [boolProjectionValue, boolProjectionDist]
+  · rw [integral_uniformBool]
+    calc
+      2⁻¹ * Real.exp
+          (lam * (boolProjectionValue true true - boolProjectionValue true false)) +
+          2⁻¹ * Real.exp
+          (lam * (boolProjectionValue false true - boolProjectionValue false false))
+          = (∑ b : Bool, Real.exp (lam * signOfBool b * (1 : ℝ))) / 2 := by
+              simp [boolProjectionValue]
+              ring
+      _ ≤ Real.exp (lam ^ 2 * (1 : ℝ) ^ 2 / 2) := by
+              rw [FormalSLT.Rademacher.Massart.avg_exp_sign]
+              exact FormalSLT.Rademacher.Massart.cosh_le_exp_sq_half lam 1
+      _ = Real.exp (lam ^ 2 * (1 : ℝ) * boolProjectionDist false true ^ 2 / 2) := by
+              norm_num [boolProjectionDist]
+  · rw [integral_uniformBool]
+    calc
+      2⁻¹ * Real.exp
+          (lam * (boolProjectionValue true false - boolProjectionValue true true)) +
+          2⁻¹ * Real.exp
+          (lam * (boolProjectionValue false false - boolProjectionValue false true))
+          = (∑ b : Bool, Real.exp (lam * signOfBool b * (-1 : ℝ))) / 2 := by
+              simp [boolProjectionValue]
+              ring
+      _ ≤ Real.exp (lam ^ 2 * (-1 : ℝ) ^ 2 / 2) := by
+              rw [FormalSLT.Rademacher.Massart.avg_exp_sign]
+              exact FormalSLT.Rademacher.Massart.cosh_le_exp_sq_half lam (-1)
+      _ = Real.exp (lam ^ 2 * (1 : ℝ) * boolProjectionDist true false ^ 2 / 2) := by
+              norm_num [boolProjectionDist]
+  · rw [integral_uniformBool]
+    norm_num [boolProjectionValue, boolProjectionDist]
+
+/-- The Boolean Rademacher process packaged in the arbitrary-measure API. -/
+def boolProjectionProcess : MeasureSubGaussianProcess uniformBool Bool where
+  X := boolProjectionValue
+  dist := boolProjectionDist
+  dist_nonneg := boolProjectionDist_nonneg
+  varianceProxy := 1
+  varianceProxy_nonneg := by norm_num
+  measurable_eval := by intro t; exact measurable_of_finite _
+  integrable_increment := by intro s t; exact Integrable.of_finite
+  integrable_exp_increment := by intro s t lam; exact Integrable.of_finite
+  mgf_increment := boolProjection_mgf_bound
+
+/-- One-point coarse net centered at `false`. -/
+def boolCoarseNet : FiniteSubGaussianChaining.FiniteNet Bool Unit where
+  dist := boolProjectionDist
+  dist_nonneg := boolProjectionDist_nonneg
+  center := fun _ => false
+  project := fun _ => ()
+  radius := 1
+  radius_nonneg := by norm_num
+  covers := by intro t; cases t <;> norm_num [boolProjectionDist]
+
+/-- Exact two-point net on `Bool`. -/
+def boolFullNet : FiniteSubGaussianChaining.FiniteNet Bool Bool where
+  dist := boolProjectionDist
+  dist_nonneg := boolProjectionDist_nonneg
+  center := id
+  project := id
+  radius := 0
+  radius_nonneg := by norm_num
+  covers := by intro t; cases t <;> norm_num [boolProjectionDist]
+
+/-- Realized projection-pair maximum between the coarse and full Boolean nets. -/
+def boolProjectionPairSup (ω : Bool) : ℝ :=
+  FiniteSubGaussianChaining.finiteSup
+    (fun pair : FiniteSubGaussianChaining.FiniteNet.ProjectionPair
+        boolCoarseNet boolFullNet =>
+      boolProjectionProcess.X ω (boolFullNet.center pair.1.2) -
+        boolProjectionProcess.X ω (boolCoarseNet.center pair.1.1))
+
+private theorem boolProjectionPairSup_true : boolProjectionPairSup true = 1 := by
+  unfold boolProjectionPairSup FiniteSubGaussianChaining.finiteSup
+  apply le_antisymm
+  · apply Finset.sup'_le
+    intro pair _hpair
+    rcases pair with ⟨⟨a, b⟩, t, ht⟩
+    cases ht
+    cases t <;> norm_num [boolProjectionProcess, boolProjectionValue,
+      boolCoarseNet, boolFullNet]
+  · have hsel := Finset.le_sup'
+      (s := (Finset.univ : Finset
+        (FiniteSubGaussianChaining.FiniteNet.ProjectionPair boolCoarseNet boolFullNet)))
+      (fun pair =>
+        boolProjectionProcess.X true (boolFullNet.center pair.1.2) -
+          boolProjectionProcess.X true (boolCoarseNet.center pair.1.1))
+      (Finset.mem_univ
+        (FiniteSubGaussianChaining.FiniteNet.projectionPairOf
+          boolCoarseNet boolFullNet true))
+    simpa [FiniteSubGaussianChaining.FiniteNet.projectionPairOf,
+      boolProjectionProcess, boolProjectionValue, boolCoarseNet, boolFullNet] using hsel
+
+private theorem boolProjectionPairSup_false : boolProjectionPairSup false = 0 := by
+  unfold boolProjectionPairSup FiniteSubGaussianChaining.finiteSup
+  apply le_antisymm
+  · apply Finset.sup'_le
+    intro pair _hpair
+    rcases pair with ⟨⟨a, b⟩, t, ht⟩
+    cases ht
+    cases t <;> norm_num [boolProjectionProcess, boolProjectionValue,
+      boolCoarseNet, boolFullNet]
+  · have hsel := Finset.le_sup'
+      (s := (Finset.univ : Finset
+        (FiniteSubGaussianChaining.FiniteNet.ProjectionPair boolCoarseNet boolFullNet)))
+      (fun pair =>
+        boolProjectionProcess.X false (boolFullNet.center pair.1.2) -
+          boolProjectionProcess.X false (boolCoarseNet.center pair.1.1))
+      (Finset.mem_univ
+        (FiniteSubGaussianChaining.FiniteNet.projectionPairOf
+          boolCoarseNet boolFullNet false))
+    simpa [FiniteSubGaussianChaining.FiniteNet.projectionPairOf,
+      boolProjectionProcess, boolProjectionValue, boolCoarseNet, boolFullNet] using hsel
+
+/-- The concrete one-scale maximum is nonzero: its exact expectation is `1/2`.
+This prevents a zero or singleton-only theorem from satisfying the checker. -/
+theorem integral_boolProjectionPairSup_eq_half :
+    (∫ ω, boolProjectionPairSup ω ∂uniformBool) = (2⁻¹ : ℝ) := by
+  rw [integral_uniformBool]
+  rw [boolProjectionPairSup_true, boolProjectionPairSup_false]
+  norm_num
+
+/-- The concrete Boolean projection-pair maximum has strictly positive mean. -/
+theorem integral_boolProjectionPairSup_pos :
+    0 < (∫ ω, boolProjectionPairSup ω ∂uniformBool) := by
+  rw [integral_boolProjectionPairSup_eq_half]
+  norm_num
+
+/-- The arbitrary-measure one-scale theorem instantiated on the one-point to
+full Boolean net transition. -/
+theorem integral_boolProjectionPairSup_le_coveringNumber_sqrt :
+    (∫ ω, boolProjectionPairSup ω ∂uniformBool) ≤
+      Real.sqrt
+        (2 * boolProjectionProcess.varianceProxy *
+          (boolCoarseNet.radius + boolFullNet.radius) ^ 2 *
+          Real.log
+            (boolCoarseNet.coveringNumber * boolFullNet.coveringNumber : ℝ)) := by
+  simpa [boolProjectionPairSup] using
+    MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt
+      uniformBool boolProjectionProcess boolCoarseNet boolFullNet rfl rfl
+      boolProjectionDist_symm boolProjectionDist_triangle
+      (by norm_num [boolProjectionProcess])
+      (by norm_num [boolCoarseNet, boolFullNet])
 
 /-- The witness supremum functional: distinct values on the two outcomes. Its
 mean under `uniformBool` is `½`, which equals neither outcome value, so the
