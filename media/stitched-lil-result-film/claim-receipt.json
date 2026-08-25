@@ -1,0 +1,81 @@
+{
+  "schema": "formalslt-stitched-lil-claim-receipt-v1",
+  "release_tag": "v0.2.0",
+  "theorem_source_commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
+  "theorem_blob_oid": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
+  "theorem_module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
+  "theorem": "exists_polynomialStitchedLIL_explicit_event",
+  "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
+  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one failure set of mass at most delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
+  "assumptions": [
+    "mu is a probability measure",
+    "X_k is measurable and integrable",
+    "X_k is revealed at time k+1 (strongly measurable with respect to F_(k+1))",
+    "|X_k| <= b almost everywhere",
+    "E[X_k | F_k] = 0 almost everywhere",
+    "E[X_k^2 | F_k] <= sigma^2 almost everywhere",
+    "0 < delta <= 1, b > 0, sigma^2 > 0"
+  ],
+  "display_math": {
+    "selector": "j=j(n),\\qquad 4^{j+1}\\le n<4^{j+2}",
+    "budget": "B_j=\\log\\frac{2}{\\delta}+\\log(j+1)+\\log(j+2)",
+    "width": "W_n=2\\sqrt{\\frac{2\\sigma^2B_j}{n}}+\\frac{4bB_j}{3n}",
+    "width_first_line": "W_n=2\\sqrt{\\frac{2\\sigma^2B_j}{n}}",
+    "width_second_line": "\\phantom{W_n={}}+\\frac{4bB_j}{3n}",
+    "failure_mass": "\\mu_{\\mathbb R}(G^{\\mathsf c})\\le\\delta",
+    "event_condition": "\\omega\\in G\\Longrightarrow\\forall n\\ge4:",
+    "event_bound": "\\left|\\frac1n\\sum_{k<n}X_k(\\omega)\\right|<W_n",
+    "event_conclusion": "\\omega\\in G\\Longrightarrow\\forall n\\ge4:\\ \\left|\\frac1n\\sum_{k<n}X_k(\\omega)\\right|<W_n"
+  },
+  "nonclaims": [
+    "not the law of the iterated logarithm",
+    "not a sharp-constant or optimality result",
+    "the countable confidence allocation is not itself an e-process",
+    "not an optional-stopping theorem",
+    "not a predictable or data-selected tilt construction",
+    "goodEvent is a Set; its measurability is not asserted by the theorem",
+    "no first-formalization or priority claim"
+  ],
+  "anchors": [
+    {
+      "file": "FormalSLT/AnytimeValid/MixtureCS.lean",
+      "line": 522,
+      "name": "IncrementAdapted"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 62,
+      "name": "polynomialGeometricEpochIndex_spec"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 83,
+      "name": "polynomialGeometricEpochBudget_eq"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 241,
+      "name": "polynomialStitchedLILFailure_mass_le"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 478,
+      "name": "exists_polynomialStitchedLIL_explicit_event"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/AllocationLogLog.lean",
+      "line": 252,
+      "name": "polynomialEpochWeight_hasSum"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLIL.lean",
+      "line": 27,
+      "name": "first_epoch_budget"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLIL.lean",
+      "line": 83,
+      "name": "axioms:exists_polynomialStitchedLIL_explicit_event"
+    }
+  ]
+}

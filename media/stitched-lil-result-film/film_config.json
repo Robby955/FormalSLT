@@ -1,61 +1,33 @@
 {
-  "schema": "formalslt-stitched-lil-film-v1",
-  "title": "One guarantee across every n >= 4.",
+  "schema": "formalslt-stitched-lil-film-v2",
+  "title": "One event across every sample size",
   "duration_seconds": 86.0,
   "frame_rate": 30,
   "resolution": [1920, 1080],
-  "source_commit": "285921b60231cb45e4aa9a4fc8068f3f7c98a2fa",
+  "frame": [14.2222222222, 8.0],
+  "source_commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
   "scenes": [
-    {
-      "id": "hook",
-      "start": 0.0,
-      "end": 8.0,
-      "title": "One guarantee across every n >= 4.",
-      "detail": "A fixed-time interval answers only one fixed-time question."
-    },
-    {
-      "id": "model",
-      "start": 8.0,
-      "end": 20.0,
-      "title": "The process model",
-      "detail": "X_k is revealed at time k+1 and centered given F_k."
-    },
-    {
-      "id": "epochs",
-      "start": 20.0,
-      "end": 33.0,
-      "title": "Divide time geometrically",
-      "detail": "Each sample size n >= 4 belongs to one factor-four epoch."
-    },
-    {
-      "id": "allocation",
-      "start": 33.0,
-      "end": 46.0,
-      "title": "Spend the error budget once",
-      "detail": "The polynomial weights telescope exactly to one."
-    },
-    {
-      "id": "tilts",
-      "start": 46.0,
-      "end": 60.0,
-      "title": "Precommit one tilt per epoch",
-      "detail": "The tilt is optimized at the epoch floor, before seeing the path."
-    },
-    {
-      "id": "stitch",
-      "start": 60.0,
-      "end": 74.0,
-      "title": "Stitch the epochs",
-      "detail": "Countable subadditivity yields one two-sided guarantee."
-    },
-    {
-      "id": "result",
-      "start": 74.0,
-      "end": 86.0,
-      "title": "A checked log-log confidence sequence",
-      "detail": "Every n >= 4. One failure set of mass at most delta."
-    }
+    {"id": "hook", "start": 0.0, "end": 8.0, "title": "A fixed-time guarantee assumes one fixed look.", "detail": "This theorem controls every sample size from four onward on one event."},
+    {"id": "model", "start": 8.0, "end": 20.0, "title": "The process Lean checks", "detail": "Each increment arrives after the past and is centered given that past."},
+    {"id": "epochs", "start": 20.0, "end": 33.0, "title": "Divide time geometrically", "detail": "Every eligible sample size belongs to one factor-four epoch."},
+    {"id": "allocation", "start": 33.0, "end": 46.0, "title": "Spend the error budget once", "detail": "The polynomial weights telescope exactly to one."},
+    {"id": "tilts", "start": 46.0, "end": 60.0, "title": "Precommit one tilt per epoch", "detail": "Each tilt is fixed before the data path is observed."},
+    {"id": "stitch", "start": 60.0, "end": 74.0, "title": "Stitch the epochs", "detail": "Countable subadditivity yields one two-sided event."},
+    {"id": "result", "start": 74.0, "end": 86.0, "title": "A checked log-log confidence sequence", "detail": "One event controls every sample size from four onward."}
   ],
+  "social": {
+    "title": "One checked event across every sample size",
+    "duration_seconds": 44.0,
+    "resolution": [1080, 1350],
+    "frame": [6.4, 8.0],
+    "scenes": [
+      {"id": "social_hook", "start": 0.0, "end": 7.0, "title": "A fixed-time guarantee assumes one fixed look.", "detail": "Real systems keep monitoring."},
+      {"id": "social_model", "start": 7.0, "end": 15.0, "title": "What the theorem assumes", "detail": "Bounded adapted increments, centered given the past."},
+      {"id": "social_mechanism", "start": 15.0, "end": 26.0, "title": "Geometric time. One error budget.", "detail": "Factor-four epochs receive telescoping confidence weights."},
+      {"id": "social_stitch", "start": 26.0, "end": 35.0, "title": "Stitch the epochs", "detail": "The allocated failures add to at most delta."},
+      {"id": "social_result", "start": 35.0, "end": 44.0, "title": "One checked event. Every sample size.", "detail": "Infrastructure for learning guarantees under repeated monitoring."}
+    ]
+  },
   "palette": {
     "background": "#08111E",
     "ivory": "#F4F1E8",

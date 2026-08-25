@@ -12,28 +12,30 @@ from pathlib import Path
 from typing import Any
 
 
-BOUND_SHA = "285921b60231cb45e4aa9a4fc8068f3f7c98a2fa"
+BOUND_SHA = "e01f857d1604788be35fdc2f3dc7108851471a88"
+BOUND_TAG = "v0.2.0"
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT = Path(__file__).with_name("facts.json")
+CLAIM_OUTPUT = Path(__file__).with_name("claim-receipt.json")
 
 POLYNOMIAL_FILE = "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean"
 ALLOCATION_FILE = "FormalSLT/AnytimeValid/AllocationLogLog.lean"
 MIXTURE_FILE = "FormalSLT/AnytimeValid/MixtureCS.lean"
+SUBGAUSSIAN_FILE = "FormalSLT/AnytimeValid/SubGaussianCS.lean"
 CHECKER_FILE = "examples/CheckPolynomialStitchedLIL.lean"
 FRONTIER_FILE = "docs/proof-frontier.md"
 NONCLAIMS_FILE = "docs/assumptions-and-nonclaims.md"
 RELATED_WORK_FILE = "docs/related-work.md"
-LITERATURE_FILE = "docs/LITERATURE.md"
 
 PINNED_FILES = (
     POLYNOMIAL_FILE,
     ALLOCATION_FILE,
     MIXTURE_FILE,
+    SUBGAUSSIAN_FILE,
     CHECKER_FILE,
     FRONTIER_FILE,
     NONCLAIMS_FILE,
     RELATED_WORK_FILE,
-    LITERATURE_FILE,
 )
 
 
@@ -100,19 +102,55 @@ def canonical_json(data: dict[str, Any]) -> str:
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
 
 
+def build_claim_receipt(facts: dict[str, Any]) -> dict[str, Any]:
+    """Return the exact public claim surface displayed by both compositions."""
+    return {
+        "schema": "formalslt-stitched-lil-claim-receipt-v1",
+        "release_tag": BOUND_TAG,
+        "theorem_source_commit": facts["commit"],
+        "theorem_blob_oid": facts["blob_oids"][POLYNOMIAL_FILE],
+        "theorem_module": facts["result"]["module"],
+        "theorem": facts["result"]["theorem"],
+        "classification": facts["classification"],
+        "public_claim": facts["public_claim"],
+        "assumptions": facts["process_model"],
+        "display_math": {
+            "selector": r"j=j(n),\qquad 4^{j+1}\le n<4^{j+2}",
+            "budget": r"B_j=\log\frac{2}{\delta}+\log(j+1)+\log(j+2)",
+            "width": r"W_n=2\sqrt{\frac{2\sigma^2B_j}{n}}+\frac{4bB_j}{3n}",
+            "width_first_line": r"W_n=2\sqrt{\frac{2\sigma^2B_j}{n}}",
+            "width_second_line": r"\phantom{W_n={}}+\frac{4bB_j}{3n}",
+            "failure_mass": r"\mu_{\mathbb R}(G^{\mathsf c})\le\delta",
+            "event_condition": r"\omega\in G\Longrightarrow\forall n\ge4:",
+            "event_bound": r"\left|\frac1n\sum_{k<n}X_k(\omega)\right|<W_n",
+            "event_conclusion": (
+                r"\omega\in G\Longrightarrow\forall n\ge4:\ "
+                r"\left|\frac1n\sum_{k<n}X_k(\omega)\right|<W_n"
+            ),
+        },
+        "nonclaims": facts["nonclaims"],
+        "anchors": facts["anchors"],
+    }
+
+
 def extract() -> dict[str, Any]:
     resolved = git("rev-parse", BOUND_SHA).strip()
     if resolved != BOUND_SHA:
         raise SystemExit(f"commit did not resolve exactly: {resolved}")
+    tagged = git("rev-parse", f"{BOUND_TAG}^{{commit}}").strip()
+    if tagged != BOUND_SHA:
+        raise SystemExit(
+            f"{BOUND_TAG} resolves to {tagged}, expected theorem commit {BOUND_SHA}"
+        )
 
     polynomial = source_at(POLYNOMIAL_FILE)
     allocation = source_at(ALLOCATION_FILE)
     mixture = source_at(MIXTURE_FILE)
+    subgaussian = source_at(SUBGAUSSIAN_FILE)
     checker = source_at(CHECKER_FILE)
     frontier = source_at(FRONTIER_FILE)
     nonclaims = source_at(NONCLAIMS_FILE)
     related = source_at(RELATED_WORK_FILE)
-    literature = source_at(LITERATURE_FILE)
 
     require(
         r"Epoch `j` receives confidence weight\s+"
@@ -141,6 +179,12 @@ def extract() -> dict[str, Any]:
         "increment X_k is revealed at filtration time k+1",
     )
 
+    require(
+        r"def\s+polynomialGeometricEpochIndex\s+\(n\s*:\s*ℕ\)\s*:\s*ℕ\s*:=\s*"
+        r"\(Nat\.log\s+4\s+n\)\.pred",
+        polynomial,
+        "exact selected epoch index",
+    )
     require(
         r"def\s+polynomialGeometricEpochFloor\s+\(j\s*:\s*ℕ\)\s*:\s*ℕ\s*:=\s*"
         r"4\s*\^\s*\(j\s*\+\s*1\)",
@@ -205,10 +249,25 @@ def extract() -> dict[str, Any]:
     )
     result_shapes = (
         (r"\[IsProbabilityMeasure\s+μ\]", "probability-measure model"),
+        (r"hδ\s*:\s*0\s*<\s*delta", "positive failure budget"),
+        (r"hδ_one\s*:\s*delta\s*<=\s*1", "failure budget at most one"),
+        (r"hb\s*:\s*0\s*<\s*b", "positive increment bound"),
+        (r"hσ\s*:\s*0\s*<\s*sigma2", "positive variance proxy"),
+        (r"hX_meas\s*:\s*∀\s+k,\s*Measurable\s*\(X\s+k\)", "measurable increments"),
+        (r"hX_int\s*:\s*∀\s+k,\s*Integrable\s*\(X\s+k\)\s+μ", "integrable increments"),
         (r"hX_adapted\s*:\s*IncrementAdapted\s+ℱ\s+X", "adapted increments"),
-        (r"\|X\s+k\s+omega\|\s*<=\s*b", "bounded increments"),
-        (r"μ\[X\s+k\s*\|\s*ℱ\s+k\]\s*=ᵐ\[μ\]\s*0", "conditional centering"),
-        (r"\(X\s+k\s+omega\)\s*\^\s*2\s*\|\s*ℱ\s+k", "conditional second moment"),
+        (
+            r"hbound\s*:\s*∀\s+k,\s*∀ᵐ\s+omega\s+∂μ,\s*\|X\s+k\s+omega\|\s*<=\s*b",
+            "almost-everywhere bounded increments",
+        ),
+        (
+            r"hcenter\s*:\s*∀\s+k,\s*μ\[X\s+k\s*\|\s*ℱ\s+k\]\s*=ᵐ\[μ\]\s*0",
+            "almost-everywhere conditional centering",
+        ),
+        (
+            r"hvar\s*:\s*∀\s+k,\s*μ\[fun\s+omega\s*=>\s*\(X\s+k\s+omega\)\s*\^\s*2\s*\|\s*ℱ\s+k\]\s*≤ᵐ\[μ\]\s*fun\s+_\s*=>\s*sigma2",
+            "full almost-everywhere conditional second-moment relation",
+        ),
         (r"∃\s+goodEvent\s*:\s*Set\s+Ω", "single good event"),
         (r"μ\.real\s+goodEventᶜ\s*<=\s*delta", "failure mass at most delta"),
         (r"∀\s+omega\s+∈\s+goodEvent,\s*∀\s+n\s*:\s*ℕ,\s*4\s*<=\s*n", "all n at least four"),
@@ -219,6 +278,26 @@ def extract() -> dict[str, Any]:
     )
     for shape, description in result_shapes:
         require(shape, result_statement, description)
+    exact_result_shape = (
+        r"∀\s+omega\s+∈\s+goodEvent,\s*∀\s+n\s*:\s*ℕ,\s*4\s*<=\s*n\s*->\s*"
+        r"\|runningMean\s+X\s+n\s+omega\|\s*<\s*"
+        r"2\s*\*\s*Real\.sqrt\s*\(\s*2\s*\*\s*sigma2\s*\*\s*"
+        r"polynomialGeometricEpochBudget\s+delta\s*"
+        r"\(polynomialGeometricEpochIndex\s+n\)\s*/\s*\(n\s*:\s*ℝ\)\s*\)\s*\+\s*"
+        r"4\s*\*\s*b\s*\*\s*polynomialGeometricEpochBudget\s+delta\s*"
+        r"\(polynomialGeometricEpochIndex\s+n\)\s*/\s*"
+        r"\(3\s*\*\s*\(n\s*:\s*ℝ\)\)"
+    )
+    require(
+        exact_result_shape,
+        result_statement,
+        "complete explicit width and all-sample-size quantifier order",
+    )
+    require(
+        r"def\s+runningMean[\s\S]*?\s*:=\s*\n\s*runningSum\s+X\s+n\s+ω\s*/\s*\(n\s*:\s*ℝ\)",
+        subgaussian,
+        "running mean is the first-n sum divided by n",
+    )
 
     require(
         r"def\s+polynomialEpochWeight\s+\(k\s*:\s*ℕ\)\s*:\s*ℝ\s*:=\s*"
@@ -288,18 +367,6 @@ def extract() -> dict[str, Any]:
         related,
         "no broad priority claim",
     )
-    require(
-        r"\*\*DERIVED VARIANT\*\*: the endpoint uses established ingredients",
-        literature,
-        "derived-variant classification",
-    )
-    require(
-        r"\*\*CANDIDATE NEW\*\*: reserved for a versioned prior-art search plus external\s+"
-        r"review\. No flagship currently uses this label",
-        literature,
-        "candidate-new classification gate",
-    )
-
     anchors = [
         anchor(
             mixture,
@@ -367,13 +434,14 @@ def extract() -> dict[str, Any]:
             "at most delta controls every n >= 4 with an exact "
             "iterated-logarithm-order budget."
         ),
-        "classification": "DERIVED VARIANT / FORMALIZED COMPOSITION",
+        "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
         "process_model": [
+            "mu is a probability measure",
             "X_k is measurable and integrable",
-            "X_k is revealed at time k+1 (measurable with respect to F_(k+1))",
+            "X_k is revealed at time k+1 (strongly measurable with respect to F_(k+1))",
             "|X_k| <= b almost everywhere",
-            "E[X_k | F_k] = 0",
-            "E[X_k^2 | F_k] <= sigma^2",
+            "E[X_k | F_k] = 0 almost everywhere",
+            "E[X_k^2 | F_k] <= sigma^2 almost everywhere",
             "0 < delta <= 1, b > 0, sigma^2 > 0",
         ],
         "epochs": {
@@ -416,6 +484,7 @@ def extract() -> dict[str, Any]:
             "the countable confidence allocation is not itself an e-process",
             "not an optional-stopping theorem",
             "not a predictable or data-selected tilt construction",
+            "goodEvent is a Set; its measurability is not asserted by the theorem",
             "no first-formalization or priority claim",
         ],
         "anchors": anchors,
@@ -441,23 +510,33 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    rendered = canonical_json(extract())
+    facts = extract()
+    rendered = canonical_json(facts)
+    claim_rendered = canonical_json(build_claim_receipt(facts))
     if args.print_only:
         sys.stdout.write(rendered)
         return
     if args.write:
         OUTPUT.write_text(rendered, encoding="utf-8")
-        print(f"wrote {OUTPUT.relative_to(ROOT)} from {BOUND_SHA}")
-        return
-    if not OUTPUT.is_file():
-        raise SystemExit(f"missing committed fact receipt: {OUTPUT.relative_to(ROOT)}")
-    committed = OUTPUT.read_text(encoding="utf-8")
-    if committed != rendered:
-        raise SystemExit(
-            "facts.json does not match the pinned sources; run extract_facts.py "
-            "--write and review the diff"
+        CLAIM_OUTPUT.write_text(claim_rendered, encoding="utf-8")
+        print(
+            f"wrote {OUTPUT.relative_to(ROOT)} and "
+            f"{CLAIM_OUTPUT.relative_to(ROOT)} from {BOUND_TAG} ({BOUND_SHA})"
         )
-    print(f"checked {OUTPUT.relative_to(ROOT)} against {BOUND_SHA}")
+        return
+    for path, expected in ((OUTPUT, rendered), (CLAIM_OUTPUT, claim_rendered)):
+        if not path.is_file():
+            raise SystemExit(f"missing committed receipt: {path.relative_to(ROOT)}")
+        committed = path.read_text(encoding="utf-8")
+        if committed != expected:
+            raise SystemExit(
+                f"{path.name} does not match the pinned sources; run "
+                "extract_facts.py --write and review the diff"
+            )
+    print(
+        f"checked {OUTPUT.relative_to(ROOT)} and {CLAIM_OUTPUT.relative_to(ROOT)} "
+        f"against {BOUND_TAG} ({BOUND_SHA})"
+    )
 
 
 if __name__ == "__main__":

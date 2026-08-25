@@ -1,49 +1,44 @@
-# Soundtrack plan
+# Original score
 
-The film uses an original, restrained dark-ambient score generated entirely by
-`compose_soundtrack.py`. The composer uses deterministic oscillators and a fixed
-linear-congruential noise texture from the Python standard library. It reads no
-samples, recordings, model output, or third-party audio.
+`compose_soundtrack.py` synthesizes a sparse, slightly tense score for both
+compositions. It uses deterministic oscillators and a fixed pseudorandom air
+texture from the Python standard library. It contains no recordings, sample
+packs, model output, or third-party audio.
 
-The score should feel precise and slightly tense, not cinematic or ominous for
-its own sake:
+The design avoids the muddy continuous drone used in an earlier overview cut:
 
-- a quiet low D/A bed keeps continuity across the 86 seconds;
-- a muted tonal accent marks each mathematical transition;
-- the geometric-epoch scene introduces a slow factor-four pulse;
-- the allocation scene uses a light descending pair that resolves when the
-  telescoping sum reaches one;
-- the stitch scene opens the stereo field without increasing loudness;
-- the result scene removes the tension tone and leaves a clean final fifth.
+- the lowest authored tone is 98 Hz, so the harmonic foundation survives phone
+  speakers without relying on sub-bass;
+- finite swells leave at least four seconds of deliberate negative space;
+- exactly three restrained accents mark the mathematical turns in each cut;
+- the final harmony resolves without a trailer-style impact.
 
-Cue ledger:
+## Main cues
 
-| Time | Cue |
+| Time | Event |
 |---:|---|
-| 00:00 | fixed-time hook |
-| 00:08 | process assumptions |
-| 00:20 | geometric epochs |
-| 00:33 | polynomial allocation |
-| 00:46 | predeclared tilts |
-| 01:00 | countable stitch |
-| 01:14 | checked result |
+| 00:00 | fixed-look hook |
+| 00:33 | telescoping allocation accent |
+| 01:00 | stitched-event accent |
+| 01:14 | theorem resolution |
 
-The master peak must remain below `-3 dBFS`. The composer fails and removes the
-WAV if the complete score violates that ceiling. It fades in and out, avoids
-hard transients, and enforces a half-second maximum drift from the reviewed
-86-second picture lock. The movie render retains the peak and soundtrack hash
-in its JSON receipt.
+## Mobile cues
 
-Inspect the cue plan without writing audio:
+| Time | Event |
+|---:|---|
+| 00:00 | fixed-look hook |
+| 00:15 | geometric allocation accent |
+| 00:26 | stitched-event accent |
+| 00:35 | theorem resolution |
+
+The composer is byte-deterministic and records its cut, duration, PCM format,
+peak, RMS, active-duty ratio, minimum authored frequency, license, event plan,
+and SHA-256 hash. Final verification additionally measures integrated loudness,
+loudness range, and true peak with FFmpeg.
+
+Inspect without writing audio:
 
 ```bash
-python3 media/stitched-lil-result-film/compose_soundtrack.py --describe
-```
-
-Generate audio only after the picture duration has been checked:
-
-```bash
-python3 media/stitched-lil-result-film/compose_soundtrack.py \
-  --duration 86.0 \
-  --output media/stitched-lil-result-film/out/stitched-lil-score.wav
+python3 media/stitched-lil-result-film/compose_soundtrack.py --describe main
+python3 media/stitched-lil-result-film/compose_soundtrack.py --describe social
 ```

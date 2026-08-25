@@ -1,153 +1,111 @@
-# Storyboard: one guarantee across every n >= 4
+# Storyboard: one event across every sample size
 
-Target: 86 seconds, 16:9, caption-led, no voiceover. The instrumental score
-supports the cuts but never carries mathematical information. The animated
-sample path is illustrative; no numerical performance claim is attached to it.
+Two caption-led films explain the checked endpoint at FormalSLT v0.2.0 commit
+`e01f857d1604788be35fdc2f3dc7108851471a88`. There is no voiceover. The score
+supports transitions but carries no mathematical information.
 
-## 00:00-00:08 — Fixed time is one question
+## Main composition: 86 seconds, 16:9
 
-An ivory running-mean trace moves across a dark coordinate plane. One vertical
-slice at `n = 16` receives a narrow cyan interval, then the trace continues
-beyond it. The isolated slice recedes.
+### 00:00-00:08 — The fixed look
 
-On screen:
+A discrete running-mean path continues past one fixed confidence interval.
 
-> One guarantee across every `n >= 4`.
+On screen: “A fixed-time guarantee assumes one fixed look.” Then a single event
+and the sample-size condition `n >= 4` replace the isolated slice.
 
-> A fixed-time interval answers only one fixed-time question.
+The contrast is fixed-sample versus simultaneous-over-sample-size validity. It
+does not assert that fixed-sample bounds are invalid.
 
-The contrast is fixed-time versus time-uniform inference, not a claim that a
-fixed-time interval is intrinsically invalid.
+### 00:08-00:20 — Exact process assumptions
 
-## 00:08-00:20 — The process model
+The process spine and four cards state:
 
-Four restrained cards enter around a central `X_0, X_1, ...` spine:
+- `X_k` is strongly measurable with respect to `F_(k+1)`;
+- `|X_k| <= b` almost everywhere;
+- `E[X_k | F_k] = 0` almost everywhere;
+- `E[X_k^2 | F_k] <= sigma^2` almost everywhere.
 
-- `X_k revealed at time k+1`
-- `|X_k| <= b`
-- `E[X_k | F_k] = 0`
-- `E[X_k^2 | F_k] <= sigma^2`
+Measurability, integrability, `0 < delta <= 1`, `b > 0`, and `sigma^2 > 0`
+remain visible. The scene makes no IID or empirical-variance claim.
 
-A compact footer records `0 < delta <= 1`, `b > 0`, and `sigma^2 > 0`.
+### 00:20-00:33 — Checked geometric selector
 
-On screen:
+The factor-four epochs `[4,16)`, `[16,64)`, `[64,256)`, and `[256,1024)`
+appear on a log-scaled sample-size axis. The selected epoch satisfies
+`4^(j+1) <= n < 4^(j+2)`.
 
-> Revealed at time `k+1`; centered given `F_k`.
+### 00:33-00:46 — Polynomial allocation
 
-This is the actual theorem model, not an IID or empirical-variance claim.
+The first weights `1/2`, `1/6`, `1/12`, and `1/20` telescope through
 
-## 00:20-00:33 — Geometric epochs
+`w_j = 1/(j+1) - 1/(j+2)`
 
-A log-scaled timeline divides into `[4,16)`, `[16,64)`, `[64,256)`, and
-`[256,1024)`. The left endpoints pulse once in amber. The formula
-`N_j = 4^(j+1)` sits above the axis; `j = selected epoch for n` sits below.
+to the checked identity `sum_j w_j = 1`.
 
-On screen:
+### 00:46-01:00 — Fixed-tilt boundaries
 
-> Each `n >= 4` belongs to one factor-four epoch.
+For declared illustrative parameters `sigma^2 = 0.08`, `b = 0.25`, and
+`delta = 0.05`, the film evaluates each checked epoch tilt and plots the actual
+fixed-tilt mean-boundary shape
 
-The interval convention comes directly from the checked floor/horizon and
-epoch-index specification.
+`subGammaCgf(sigma^2,b,lambda_j)/lambda_j + B_j/(n lambda_j)`
 
-## 00:33-00:46 — Polynomial allocation
+on a log-scaled `n` axis. Each curve's matching epoch is bright; its later
+all-sample-size tail remains faint. These are computed `a + c/n` curves, not
+arbitrary screen-space lines.
 
-The weights `1/2`, `1/6`, `1/12`, `1/20`, ... arrive as amber tiles. Each tile
-turns into `1/(j+1) - 1/(j+2)`. Adjacent terms cancel, leaving a single cyan
-`sum_j w_j = 1` lockup.
+### 01:00-01:14 — The stitch
 
-On screen:
+The upper and lower segments evaluate the displayed `W_n` at every integer
+sample size in the four plotted epochs under the same declared parameters.
+They split at each epoch jump. The path between them is explicitly labeled
+illustrative. Epoch cuts remain visible while the allocation ledger resolves
+to `sum_j delta w_j = delta` and `mu.real(G^c) <= delta`.
 
-> `w_j = 1 / ((j+1)(j+2))`
+The proof uses countable subadditivity. It does not construct a countable
+e-process.
 
-> The weights telescope exactly to one.
+### 01:14-01:26 — Checked endpoint
 
-This scene earns the later countable union visually; it is not decorative
-algebra.
+The final card binds the selected epoch, budget, width, event complement mass,
+and all-sample-size conclusion. It identifies
 
-## 00:46-01:00 — Predeclared tilts
+`FormalSLT.AnytimeValid.PolynomialStitchedLIL.exists_polynomialStitchedLIL_explicit_event`
 
-One thin sub-Gamma line appears for every epoch and extends faintly across the
-whole time axis. Its matched epoch segment brightens. A dot at the left endpoint
-marks where the epoch's tilt is optimized.
+at source `e01f857`. The boundary line says: allocated fixed-tilt stitch; no
+sharp-constant claim; not itself an e-process. `G` is a set; its measurability
+is not asserted by this theorem.
 
-The budget is introduced in two readable lines:
+## Mobile composition: 44 seconds, 4:5
 
-`B_j = log(2/delta)`
+This is a native `1080 x 1350` composition, not a center crop.
 
-`      + log(j+1) + log(j+2)`
+- **00:00-00:07:** fixed look versus one event for every sample size `n >= 4`.
+- **00:07-00:15:** the four exact process conditions, with a.e. scope visible.
+- **00:15-00:26:** factor-four epochs, telescoping weights, selected-epoch
+  bucket, and exact budget.
+- **00:26-00:35:** the exact numerical `W_n` envelope with the path labeled
+  illustrative, followed by complement mass at most `delta`.
+- **00:35-00:44:** the checked formula, source identifier, and scope boundary.
 
-On screen:
+## Render discipline
 
-> One fixed tilt per epoch, chosen before the path.
-
-Do not imply that the tilt changes predictably within an epoch or is selected
-from the observed data.
-
-## 01:00-01:14 — Stitch
-
-The faint all-time lines remain visible while their active epoch segments join
-into an upper envelope. A reflected lower envelope appears. A small failure
-ledger accumulates `delta w_0 + delta w_1 + ... = delta` and resolves to one red
-sliver labeled `failure mass <= delta`.
-
-On screen:
-
-> One two-sided event. Every `n >= 4`.
-
-> Countable subadditivity, not a countable e-process.
-
-Each epoch atom is itself an all-time fixed-tilt crossing event. The proof then
-selects the tilt matched to the current epoch; the film keeps the unused parts
-of every line faintly visible to preserve that distinction.
-
-## 01:14-01:26 — The theorem
-
-The final card gives named pieces rather than one oversized formula:
-
-`B_j = log(2/delta) + log(j+1) + log(j+2)`
-
-`W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n)`
-
-`|mean_n| < W_n   for every n >= 4`
-
-`failure mass <= delta`
-
-The composition contracts to the FormalSLT wordmark, source commit `285921b`,
-and a split identifier:
-
-`AnytimeValid.PolynomialStitchedLIL`
-
-`exists_polynomialStitchedLIL_explicit_event`
-
-Final scope line:
-
-> Checked log-log confidence sequence. Not the LIL law. Not itself an e-process.
-
-## Visual system
-
-- Background `#08111E`; ivory `#F4F1E8`; cyan `#64D8D2`; amber `#F0B35A`;
-  muted blue-gray `#A7B3C2`; red `#EF6A68` only for failure mass.
-- Avenir Next for prose and Menlo for mathematical identifiers.
-- Minimum 42 px body-equivalent size at 1080p. No paragraph exceeds two lines.
-- Essential content stays inside a centered 1536 by 864 safe area.
-- Movement is limited to the trace, epoch segmentation, telescoping
-  cancellation, active tilt segments, and final stitch. Text does not float or
-  continually rescale.
-- Scene cuts coincide with soundtrack cues at 0, 8, 20, 33, 46, 60, and 74
-  seconds.
+- Prose uses Avenir Next; mathematical content uses TeX through `MathTex`.
+- The 16:9 and 4:5 scenes have separate safe-frame assertions.
+- No essential text is placed near platform crop or overlay regions.
+- Runtime assertions reject overflow and selected group overlaps.
+- All scene starts are locked to `film_config.json` and caption sidecars.
+- Render caches and temporary TeX products remain ignored.
 
 ## Evidence anchors
 
-The extractor binds these claims to the exact merged source commit:
+The extractor checks at the exact release commit:
 
-- process and endpoint assumptions:
-  `FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean`, theorem
-  `exists_polynomialStitchedLIL_explicit_event`;
-- geometric floor, horizon, and selector specification: the same module;
-- exact polynomial weights and total mass:
-  `FormalSLT/AnytimeValid/AllocationLogLog.lean`;
-- first-epoch receipt, endpoint checks, and axiom-query surface:
-  `examples/CheckPolynomialStitchedLIL.lean`;
-- scope and novelty boundaries: the module docstring,
-  `docs/proof-frontier.md`, `docs/assumptions-and-nonclaims.md`, and
-  `docs/related-work.md`.
+- `FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean` for assumptions,
+  selector, failure-mass result, and explicit endpoint;
+- `FormalSLT/AnytimeValid/AllocationLogLog.lean` for polynomial weights;
+- `FormalSLT/AnytimeValid/SubGaussianCS.lean` for the running mean;
+- `FormalSLT/AnytimeValid/MixtureCS.lean` for increment adaptedness;
+- `examples/CheckPolynomialStitchedLIL.lean` for the public theorem and axiom
+  query;
+- public frontier/nonclaim documents for scope and priority boundaries.
