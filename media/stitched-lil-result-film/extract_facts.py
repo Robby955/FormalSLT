@@ -9,6 +9,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -164,6 +165,32 @@ def anchor(
 
 def canonical_json(data: dict[str, Any]) -> str:
     return json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+
+
+def replace_outputs_from_staging(outputs: dict[Path, str]) -> None:
+    """Write every payload before replacing any committed source-bound file."""
+    staged: dict[Path, Path] = {}
+    try:
+        for output, payload in outputs.items():
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                encoding="utf-8",
+                dir=output.parent,
+                prefix=f".{output.name}.",
+                suffix=".tmp",
+                delete=False,
+            ) as handle:
+                handle.write(payload)
+                handle.flush()
+                os.fsync(handle.fileno())
+                staged[output] = Path(handle.name)
+        # CONFIG is inserted last by main and acts as the binding commit marker.
+        # An interruption therefore remains fail-closed under normal validation.
+        for output in outputs:
+            os.replace(staged.pop(output), output)
+    finally:
+        for temporary in staged.values():
+            temporary.unlink(missing_ok=True)
 
 
 def rendered_transcripts(facts: dict[str, Any]) -> dict[Path, str]:
@@ -460,6 +487,22 @@ def extract(source_commit: str) -> dict[str, Any]:
             (r"3\s*\*\s*\(n\s*:\s*ℝ\)", "linear denominator"),
         ):
             require(shape, measurable_result, f"measurable endpoint {description}")
+        measurable_exact_result_shape = (
+            r"∀\s+omega\s+∈\s+polynomialStitchedLILGoodEvent\s+"
+            r"X\s+sigma2\s+b\s+delta,\s*∀\s+n\s*:\s*ℕ,\s*4\s*<=\s*n\s*->\s*"
+            r"\|runningMean\s+X\s+n\s+omega\|\s*<\s*"
+            r"2\s*\*\s*Real\.sqrt\s*\(\s*2\s*\*\s*sigma2\s*\*\s*"
+            r"polynomialGeometricEpochBudget\s+delta\s*"
+            r"\(polynomialGeometricEpochIndex\s+n\)\s*/\s*\(n\s*:\s*ℝ\)\s*\)\s*\+\s*"
+            r"4\s*\*\s*b\s*\*\s*polynomialGeometricEpochBudget\s+delta\s*"
+            r"\(polynomialGeometricEpochIndex\s+n\)\s*/\s*"
+            r"\(3\s*\*\s*\(n\s*:\s*ℝ\)\)"
+        )
+        require(
+            measurable_exact_result_shape,
+            measurable_result,
+            "complete measurable explicit width and all-sample-size quantifier order",
+        )
         require(
             rf"#check\s+{MEASURABLE_THEOREM}",
             measurable_checker,
@@ -710,7 +753,11 @@ def extract(source_commit: str) -> dict[str, Any]:
             "module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
             "theorem": result_theorem,
             "minimum_n": 4,
-            "failure_mass": "mu.real goodEvent^c <= delta",
+            "failure_mass": (
+                None
+                if measurable_profile
+                else "mu.real goodEvent^c <= delta"
+            ),
             "confidence_statement": confidence_statement,
             "confidence_tex": confidence_tex,
             "event_measurable": measurable_profile,
@@ -780,30 +827,31 @@ def main() -> None:
     rendered = canonical_json(facts)
     claim_rendered = canonical_json(build_claim_receipt(facts))
     transcript_outputs = rendered_transcripts(facts)
+    expected_outputs = {
+        OUTPUT: rendered,
+        CLAIM_OUTPUT: claim_rendered,
+        **transcript_outputs,
+    }
     if args.print_only:
         sys.stdout.write(rendered)
         return
     if args.write:
-        OUTPUT.write_text(rendered, encoding="utf-8")
-        CLAIM_OUTPUT.write_text(claim_rendered, encoding="utf-8")
-        for path, transcript in transcript_outputs.items():
-            path.write_text(transcript, encoding="utf-8")
+        staged_outputs = dict(expected_outputs)
         if source_override is not None:
             config = json.loads(CONFIG.read_text(encoding="utf-8"))
             config["source_commit"] = source_commit
             config["source_profile"] = facts["source_profile"]
-            CONFIG.write_text(canonical_json(config), encoding="utf-8")
+            staged_outputs[CONFIG] = canonical_json(config)
+        replace_outputs_from_staging(staged_outputs)
+        for path, expected in staged_outputs.items():
+            if path.read_text(encoding="utf-8") != expected:
+                raise SystemExit(f"post-write validation failed for {path.name}")
         print(
             f"wrote {OUTPUT.relative_to(ROOT)} and "
             f"{CLAIM_OUTPUT.relative_to(ROOT)} from {facts['source_ref']} "
             f"({source_commit})"
         )
         return
-    expected_outputs = {
-        OUTPUT: rendered,
-        CLAIM_OUTPUT: claim_rendered,
-        **transcript_outputs,
-    }
     for path, expected in expected_outputs.items():
         if not path.is_file():
             raise SystemExit(f"missing committed receipt: {path.relative_to(ROOT)}")

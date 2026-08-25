@@ -30,16 +30,15 @@ sum to at most `delta`.
 ## 00:35.000 — One checked event, every sample size from four onward
 
 For selected `j`,
-`W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n)`. The theorem produces a set
-`G` with `mu.real(G^c) <= delta`, and on `G` the running-mean bound holds for
-every `n >= 4`.
+`W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n)`. The theorem's measurable event `G` has
+`mu.real(G) >= 1 - delta`, and on `G` the running-mean bound holds for every
+`n >= 4`.
 
 Source:
-`FormalSLT.AnytimeValid.PolynomialStitchedLIL.exists_polynomialStitchedLIL_explicit_event`,
-FormalSLT v0.2.0 commit
-`e01f857d1604788be35fdc2f3dc7108851471a88`.
+`FormalSLT.AnytimeValid.PolynomialStitchedLIL.polynomialStitchedLIL_explicit_measurable_event`,
+FormalSLT main commit
+`44ebbff74aea1dcd5b25592aefb561aeede51696`.
 
 Allocated fixed-tilt stitch. No sharp-constant claim. Not itself an e-process.
-The theorem does not assert that `G` is measurable, so the
-mass statement is not paraphrased as a probability-at-least
-statement.
+The theorem proves that `G` is measurable, so the displayed
+mass bound is an ordinary probability-at-least statement.

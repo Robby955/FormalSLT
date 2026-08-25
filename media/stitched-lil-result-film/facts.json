@@ -1,21 +1,22 @@
 {
   "schema": "formalslt-stitched-lil-facts-v2",
-  "commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
-  "short_commit": "e01f857",
-  "source_ref": "v0.2.0",
-  "release_tag": "v0.2.0",
-  "source_profile": "v0.2-outer-mass-event-v1",
+  "commit": "44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "short_commit": "44ebbff",
+  "source_ref": "origin/main@44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "release_tag": null,
+  "source_profile": "measurable-probability-event-v1",
   "blob_oids": {
-    "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
+    "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean": "932aacd8f31d48223b4e95c23493ee1911c7486f",
     "FormalSLT/AnytimeValid/AllocationLogLog.lean": "14e4dee6b93e61f118043abbd35a34a8303d7ee0",
     "FormalSLT/AnytimeValid/MixtureCS.lean": "6ac332127962a99e3e48c4100b15307171c55cab",
-    "FormalSLT/AnytimeValid/SubGaussianCS.lean": "37c1b1a60eaef6e4ee35e701057e0bfa20d3b334",
+    "FormalSLT/AnytimeValid/SubGaussianCS.lean": "f1d4989f692e0f903943a018b96a30afcc5f451d",
     "examples/CheckPolynomialStitchedLIL.lean": "fddc9b7f5e912c32f79179a1e7f27ddf1265ec6c",
-    "docs/proof-frontier.md": "5fcf097020f29242af8fb1d108a10c7d968068d6",
-    "docs/assumptions-and-nonclaims.md": "ae540fe5605b2231d6ff918704121dd5e58016ea",
-    "docs/related-work.md": "be99cee162129b831827d020283cbfda02bd6b60"
+    "docs/proof-frontier.md": "5e4fd9a17235f475470771c5bd11d804d1fa9092",
+    "docs/assumptions-and-nonclaims.md": "a538c550e9fe81132757f8a091f93299f9f27ff3",
+    "docs/related-work.md": "be99cee162129b831827d020283cbfda02bd6b60",
+    "examples/CheckPolynomialStitchedLILMeasurableEvent.lean": "533f57addceff7bf550504df382aa80d8f814085"
   },
-  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one failure set of mass at most delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
+  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one measurable event of probability at least 1 - delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
   "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
   "process_model": [
     "mu is a probability measure",
@@ -45,12 +46,12 @@
   },
   "result": {
     "module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
-    "theorem": "exists_polynomialStitchedLIL_explicit_event",
+    "theorem": "polynomialStitchedLIL_explicit_measurable_event",
     "minimum_n": 4,
-    "failure_mass": "mu.real goodEvent^c <= delta",
-    "confidence_statement": "mu.real goodEvent^c <= delta",
-    "confidence_tex": "\\mu_{\\mathbb R}(G^{\\mathsf c})\\le\\delta",
-    "event_measurable": false,
+    "failure_mass": null,
+    "confidence_statement": "1 - delta <= mu.real goodEvent",
+    "confidence_tex": "\\mu_{\\mathbb R}(G)\\ge 1-\\delta",
+    "event_measurable": true,
     "budget_symbol": "B_j",
     "budget": "log(2/delta) + log(j+1) + log(j+2)",
     "width_symbol": "W_n",
@@ -58,7 +59,7 @@
     "conclusion": "|runningMean X n| < W_n for every n >= 4"
   },
   "checker": {
-    "file": "examples/CheckPolynomialStitchedLIL.lean",
+    "file": "examples/CheckPolynomialStitchedLILMeasurableEvent.lean",
     "first_epoch_index": "j(4) = 0",
     "first_epoch_floor": "N_0 = 4",
     "first_epoch_budget": "delta = 1/2, j = 0: B_0 = log 8",
@@ -70,7 +71,6 @@
     "the countable confidence allocation is not itself an e-process",
     "not an optional-stopping theorem",
     "not a predictable or data-selected tilt construction",
-    "goodEvent is a Set; its measurability is not asserted by the theorem",
     "no first-formalization or priority claim"
   ],
   "anchors": [
@@ -91,12 +91,12 @@
     },
     {
       "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
-      "line": 241,
+      "line": 290,
       "name": "polynomialStitchedLILFailure_mass_le"
     },
     {
       "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
-      "line": 478,
+      "line": 592,
       "name": "exists_polynomialStitchedLIL_explicit_event"
     },
     {
@@ -113,6 +113,16 @@
       "file": "examples/CheckPolynomialStitchedLIL.lean",
       "line": 83,
       "name": "axioms:exists_polynomialStitchedLIL_explicit_event"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 519,
+      "name": "polynomialStitchedLIL_explicit_measurable_event"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLILMeasurableEvent.lean",
+      "line": 26,
+      "name": "axioms:polynomialStitchedLIL_explicit_measurable_event"
     }
   ]
 }

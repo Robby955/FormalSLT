@@ -59,18 +59,17 @@ For selected `j`, define
 `B_j = log(2/delta) + log(j+1) + log(j+2)` and
 `W_n = 2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n)`.
 
-The theorem produces a set `G` satisfying `mu.real(G^c) <= delta`. For every
+The theorem's canonical measurable event `G` satisfies `mu.real(G) >= 1 - delta`. For every
 `omega` in `G` and every sample size `n >= 4`,
 `|(1/n) sum_(k<n) X_k(omega)| < W_n`.
 
 The theorem is
-`FormalSLT.AnytimeValid.PolynomialStitchedLIL.exists_polynomialStitchedLIL_explicit_event`
-at FormalSLT v0.2.0 commit
-`e01f857d1604788be35fdc2f3dc7108851471a88`.
+`FormalSLT.AnytimeValid.PolynomialStitchedLIL.polynomialStitchedLIL_explicit_measurable_event`
+at FormalSLT main commit
+`44ebbff74aea1dcd5b25592aefb561aeede51696`.
 
 This is a formalized allocated fixed-tilt composition with an
 iterated-logarithm-order price. It is not the law of the iterated logarithm,
 does not make a sharp-constant claim, is not an empirical-variance-adaptive or
-optional-stopping result, and is not itself an e-process. The theorem does not assert that `G` is measurable, so the
-mass statement is not paraphrased as a probability-at-least
-statement.
+optional-stopping result, and is not itself an e-process. The theorem proves that `G` is measurable, so the displayed
+mass bound is an ordinary probability-at-least statement.

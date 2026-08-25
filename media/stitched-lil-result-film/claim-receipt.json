@@ -1,14 +1,14 @@
 {
   "schema": "formalslt-stitched-lil-claim-receipt-v2",
-  "source_ref": "v0.2.0",
-  "release_tag": "v0.2.0",
-  "source_profile": "v0.2-outer-mass-event-v1",
-  "theorem_source_commit": "e01f857d1604788be35fdc2f3dc7108851471a88",
-  "theorem_blob_oid": "04c2a888b26854a4b6eefa1e9b9e623b1fc0a9bf",
+  "source_ref": "origin/main@44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "release_tag": null,
+  "source_profile": "measurable-probability-event-v1",
+  "theorem_source_commit": "44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "theorem_blob_oid": "932aacd8f31d48223b4e95c23493ee1911c7486f",
   "theorem_module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
-  "theorem": "exists_polynomialStitchedLIL_explicit_event",
+  "theorem": "polynomialStitchedLIL_explicit_measurable_event",
   "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
-  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one failure set of mass at most delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
+  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one measurable event of probability at least 1 - delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
   "assumptions": [
     "mu is a probability measure",
     "X_k is measurable and integrable",
@@ -24,7 +24,7 @@
     "width": "W_n=2\\sqrt{\\frac{2\\sigma^2B_j}{n}}+\\frac{4bB_j}{3n}",
     "width_first_line": "W_n=2\\sqrt{\\frac{2\\sigma^2B_j}{n}}",
     "width_second_line": "\\phantom{W_n={}}+\\frac{4bB_j}{3n}",
-    "confidence_mass": "\\mu_{\\mathbb R}(G^{\\mathsf c})\\le\\delta",
+    "confidence_mass": "\\mu_{\\mathbb R}(G)\\ge 1-\\delta",
     "event_condition": "\\omega\\in G\\Longrightarrow\\forall n\\ge4:",
     "event_bound": "\\left|\\frac1n\\sum_{k<n}X_k(\\omega)\\right|<W_n",
     "event_conclusion": "\\omega\\in G\\Longrightarrow\\forall n\\ge4:\\ \\left|\\frac1n\\sum_{k<n}X_k(\\omega)\\right|<W_n"
@@ -35,7 +35,6 @@
     "the countable confidence allocation is not itself an e-process",
     "not an optional-stopping theorem",
     "not a predictable or data-selected tilt construction",
-    "goodEvent is a Set; its measurability is not asserted by the theorem",
     "no first-formalization or priority claim"
   ],
   "anchors": [
@@ -56,12 +55,12 @@
     },
     {
       "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
-      "line": 241,
+      "line": 290,
       "name": "polynomialStitchedLILFailure_mass_le"
     },
     {
       "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
-      "line": 478,
+      "line": 592,
       "name": "exists_polynomialStitchedLIL_explicit_event"
     },
     {
@@ -78,6 +77,16 @@
       "file": "examples/CheckPolynomialStitchedLIL.lean",
       "line": 83,
       "name": "axioms:exists_polynomialStitchedLIL_explicit_event"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 519,
+      "name": "polynomialStitchedLIL_explicit_measurable_event"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLILMeasurableEvent.lean",
+      "line": 26,
+      "name": "axioms:polynomialStitchedLIL_explicit_measurable_event"
     }
   ]
 }

@@ -127,6 +127,12 @@ class PackageTests(unittest.TestCase):
         self.assertIn('"--is-ancestor",', extractor)
         self.assertIn('"origin/main",', extractor)
         self.assertIn('MEASURABLE_THEOREM = "polynomialStitchedLIL_explicit_measurable_event"', extractor)
+        self.assertIn(
+            "complete measurable explicit width and all-sample-size quantifier order",
+            extractor,
+        )
+        self.assertIn("replace_outputs_from_staging", extractor)
+        self.assertIn("os.fsync(handle.fileno())", extractor)
         self.assertIn("bind-source)", render_script)
         self.assertIn('--source-commit "$2" --write', render_script)
 
