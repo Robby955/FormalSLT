@@ -965,14 +965,14 @@ class StitchedLILResultFilm(Scene):
         ).arrange(RIGHT, buff=0.16).move_to(UP * 1.48 + LEFT * 1.10)
 
         ledger_box = RoundedRectangle(
-            width=3.25,
+            width=3.90,
             height=2.65,
             corner_radius=0.14,
             color=DEEP,
             stroke_width=2.0,
             fill_color="#0B1625",
             fill_opacity=0.98,
-        ).move_to(RIGHT * 4.65 + DOWN * 0.25)
+        ).move_to(RIGHT * 4.66 + DOWN * 0.25)
         ledger = math_display(
             r"\delta w_0+\delta w_1+\delta w_2+\cdots=\delta",
             29,
@@ -984,17 +984,21 @@ class StitchedLILResultFilm(Scene):
             color=RED,
             size=33,
         ).move_to(DOWN * 2.08 + RIGHT * 3.88)
-        scope = label(
-            "Countable subadditivity, not a countable e-process.",
-            26,
+        scope = text_lines(
+            ["Countable subadditivity.", "Not a countable e-process."],
+            24,
             IVORY,
             "BOLD",
-        ).move_to(DOWN * 2.35 + LEFT * 1.65)
+            DISPLAY_FONT,
+            buff=0.04,
+        ).move_to(DOWN * 2.10 + LEFT * 3.25)
 
         assert_in_content(VGroup(plot, plot_note, ledger_box, ledger), "stitch content")
         assert_in_frame(VGroup(head, plot, plot_note, ledger_box, ledger, failure, scope), "stitch")
+        assert_contains(ledger_box, ledger, "stitch ledger", margin=0.18)
         assert_no_overlap(plot, ledger_box, "stitch plot and ledger", gap=0.18)
         assert_no_overlap(ledger_box, failure, "stitch ledger and failure", gap=0.12)
+        assert_no_overlap(scope, failure, "stitch scope and failure", gap=0.18)
 
         self.play(FadeIn(head), FadeIn(epoch_cuts), FadeIn(plot_note), run_time=0.65)
         self.play(Create(trace), run_time=1.15)
@@ -1044,7 +1048,7 @@ class StitchedLILResultFilm(Scene):
         )
         theorem_box = RoundedRectangle(
             width=11.80,
-            height=3.05,
+            height=3.40,
             corner_radius=0.15,
             color=CYAN,
             stroke_width=2.2,
@@ -1054,7 +1058,7 @@ class StitchedLILResultFilm(Scene):
         if theorem_card.width > theorem_box.width - 0.55:
             raise ValueError("result formula card is too wide")
         theorem_card.move_to(theorem_box)
-        result_group = VGroup(theorem_box, theorem_card).move_to(UP * 0.12)
+        result_group = VGroup(theorem_box, theorem_card).move_to(DOWN * 0.05)
 
         module_name = code("AnytimeValid.PolynomialStitchedLIL", 20, MUTED)
         theorem_name = code(FACTS["result"]["theorem"], 20, MUTED)
@@ -1062,20 +1066,22 @@ class StitchedLILResultFilm(Scene):
             DOWN,
             aligned_edge=LEFT,
             buff=0.06,
-        ).move_to(DOWN * 1.92 + LEFT * 2.72)
+        ).move_to(DOWN * 2.25 + LEFT * 2.72)
         commit = code(f"SOURCE {FACTS['short_commit']}", 20, CYAN).move_to(
-            DOWN * 1.92 + RIGHT * 4.85
+            DOWN * 2.25 + RIGHT * 4.85
         )
         boundary = label(
             "Not the LIL law. No sharp-constant claim. Not itself an e-process.",
             24,
             AMBER,
             "BOLD",
-        ).move_to(DOWN * 2.55)
+        ).move_to(DOWN * 3.05)
 
         assert_in_content(result_group, "result theorem card")
         assert_in_frame(VGroup(head, result_group, receipt, commit, boundary), "result")
+        assert_contains(theorem_box, theorem_card, "result theorem card", margin=0.12)
         assert_no_overlap(result_group, receipt, "result formula and receipt", gap=0.18)
+        assert_no_overlap(result_group, commit, "result formula and source", gap=0.18)
         assert_no_overlap(receipt, boundary, "result receipt and boundary", gap=0.14)
 
         self.play(FadeIn(head), run_time=0.60)

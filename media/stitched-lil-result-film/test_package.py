@@ -284,6 +284,15 @@ class PackageTests(unittest.TestCase):
         release = script.split("  release)", maxsplit=1)[1].split("    ;;", maxsplit=1)[0]
         self.assertLess(release.index("layout_check_all"), release.index("render_movie"))
 
+    def test_dense_main_panels_have_runtime_geometry_guards(self) -> None:
+        source = (PACKAGE_DIR / "stitched_lil_result.py").read_text(encoding="utf-8")
+        for guard in (
+            'assert_contains(ledger_box, ledger, "stitch ledger", margin=0.18)',
+            'assert_no_overlap(scope, failure, "stitch scope and failure", gap=0.18)',
+            'assert_contains(theorem_box, theorem_card, "result theorem card", margin=0.12)',
+        ):
+            self.assertIn(guard, source)
+
     def test_render_caches_are_ignored_and_untracked(self) -> None:
         for relative in (
             "media/stitched-lil-result-film/media/example",
