@@ -75,6 +75,7 @@ import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.ForwardBesselPACBayes
 import FormalSLT.PACBayes.ForwardBesselPACBayesCountable
+import FormalSLT.PACBayes.ForwardBesselPACBayesOracle
 import FormalSLT.PACBayes.ForwardBesselPACBayesIID
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes
 import FormalSLT.PACBayes.TimeUniformIIDGrid
@@ -106,4 +107,7 @@ time-uniform PAC-Bayes surfaces. It also exports the finite-hypothesis
 predictable time-varying tilt compiler: one event controls every time and
 posterior while retaining the weighted linear and quadratic score terms, plus
 its countable predeclared-strategy master process and finite-prefix selector.
+For geometric empirical-Bernstein tilts, it additionally exports exact
+post-data minimization over a growing prefix and an explicit observable
+variance-adaptive, iterated-logarithm-order envelope.
 -/

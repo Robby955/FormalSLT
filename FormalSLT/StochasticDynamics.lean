@@ -18,6 +18,7 @@ import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPredictableTiltPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPredictableStrategyPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable
+import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
@@ -53,7 +54,11 @@ countable-tilt finite-state trajectory endpoints and arbitrary-measurable-
 hypothesis empirical-Bernstein trajectory endpoints.
 The finite-state layer additionally supports fixed-before-data tilt rules that
 read each complete available prefix, with one event uniform over time and
-finite posterior PMFs.
+finite posterior PMFs.  Its geometric empirical-Bernstein trajectory oracle
+allows path- and time-dependent posterior selection and exact post-data
+minimization over a growing tilt prefix, while controlling monitored
+conditional trajectory risk by empirical prequential risk plus an observable
+variance-adaptive envelope.
 For the finite homogeneous Markov tilt-catalog endpoint, it also re-exports
 the extension from a deterministic start to an arbitrary supplied finite-state
 initial PMF.
