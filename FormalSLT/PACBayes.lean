@@ -70,6 +70,7 @@ import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformScorePACBayes
 import FormalSLT.PACBayes.ForwardPredictableTiltPACBayes
 import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
+import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.ForwardBesselPACBayes
@@ -103,5 +104,6 @@ predictable-residual master e-process with a hybrid-Bessel lower-envelope
 boundary for `n >= 2`, its IID bounded-loss outer-mass wrapper, and
 time-uniform PAC-Bayes surfaces. It also exports the finite-hypothesis
 predictable time-varying tilt compiler: one event controls every time and
-posterior while retaining the weighted linear and quadratic score terms.
+posterior while retaining the weighted linear and quadratic score terms, plus
+its countable predeclared-strategy master process and finite-prefix selector.
 -/
