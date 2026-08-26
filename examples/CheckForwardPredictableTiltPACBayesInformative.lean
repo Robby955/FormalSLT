@@ -664,23 +664,70 @@ theorem selectedPopulationRisk_eq_one_thirtyTwo_of_mem
     selectedPosterior_of_mem_informativePrefixCylinder homega]
   simp [posteriorAverage, truePosterior, true_populationRisk_eq_one_thirtyTwo]
 
+theorem selected_totalWeight_eq_thirtyOne_halves_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorTotalWeight
+        (selectedPosterior omega 32) predictableTilt 32 omega =
+      (31 : ℝ) / 2 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega]
+  unfold forwardPredictableTiltPosteriorTotalWeight posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [truePosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul, add_zero]
+  exact totalSelectedTilt_eq_thirtyOne_halves_of_mem homega
+
+theorem selected_normalizedObservation_eq_zero_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorNormalizedObservation
+        (selectedPosterior omega 32) observedLoss predictableTilt 32 omega = 0 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega]
+  unfold forwardPredictableTiltPosteriorNormalizedObservation posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [truePosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul, add_zero]
+  rw [selected_weightedEmpiricalLoss_eq_zero_of_mem homega]
+  exact zero_div _
+
+theorem selected_normalizedMean_eq_populationRisk_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorNormalizedMean
+        (selectedPosterior omega 32) meanLoss predictableTilt 32 omega =
+      selectedPopulationRisk omega := by
+  have hidentity :=
+    forwardPredictableTiltPosteriorNormalizedMean_sub_observation
+      (selectedPosterior omega 32) observedLoss meanLoss predictableTilt 32 omega
+  have hposterior :=
+    selectedPosterior_of_mem_informativePrefixCylinder homega
+  have hgap :
+      forwardPredictableTiltPosteriorMeanGap
+          (selectedPosterior omega 32) observedLoss meanLoss predictableTilt 32 omega =
+        (31 : ℝ) / 64 := by
+    rw [hposterior]
+    exact selected_point_meanGap_eq_thirtyOne_sixtyFour_of_mem homega
+  rw [selected_normalizedObservation_eq_zero_of_mem homega,
+    hgap, selected_totalWeight_eq_thirtyOne_halves_of_mem homega] at hidentity
+  rw [selectedPopulationRisk_eq_one_thirtyTwo_of_mem homega]
+  norm_num at hidentity ⊢
+  exact hidentity
+
 theorem selectedPopulationRisk_lt_boundary_of_not_mem
     {omega : BiasedBoolStream} (hcylinder : omega ∈ informativePrefixCylinder)
     (hgood : omega ∉ informativeFailure) :
     selectedPopulationRisk omega < informativeBoundary omega := by
-  have hbound := forwardPredictableTiltPACBayes_selected_of_not_mem
+  have hweight : 0 < forwardPredictableTiltPosteriorTotalWeight
+      (selectedPosterior omega 32) predictableTilt 32 omega := by
+    rw [selected_totalWeight_eq_thirtyOne_halves_of_mem hcylinder]
+    norm_num
+  have hbound := forwardPredictableTiltPACBayes_normalized_selected_of_not_mem
     (prior := uniformBoolPrior) (X := observedLoss) (mean := meanLoss)
     (lambda := predictableTilt) (delta := (1 / 128 : ℝ))
     (by simpa [informativeFailure] using hgood)
-    selectedPosterior selectedPosterior_isPMF 32
-  have hgap := selected_point_meanGap_eq_thirtyOne_sixtyFour_of_mem hcylinder
-  have hposterior := selectedPosterior_of_mem_informativePrefixCylinder hcylinder
-  have hrisk := selectedPopulationRisk_eq_one_thirtyTwo_of_mem hcylinder
-  rw [hposterior, hgap] at hbound
-  rw [hrisk]
-  unfold informativeBoundary
-  rw [hposterior]
-  nlinarith
+    selectedPosterior selectedPosterior_isPMF 32 hweight
+  rw [selected_normalizedMean_eq_populationRisk_of_mem hcylinder,
+    selected_normalizedObservation_eq_zero_of_mem hcylinder,
+    selected_totalWeight_eq_thirtyOne_halves_of_mem hcylinder,
+    zero_add] at hbound
+  simpa [informativeBoundary] using hbound
 
 /-- Final theorem-produced nonvacuity receipt. -/
 theorem informative_nonvacuous_receipt :
@@ -722,8 +769,14 @@ theorem informative_nonvacuous_receipt :
 #check forwardPredictableTiltMeanEmpiricalBernsteinLower_typeI_control
 #check forwardPredictableTiltPACBayesAnyPosteriorFailure_mass_le_delta
 #check forwardPredictableTiltPACBayes_allPosteriors_of_not_mem
+#check forwardPredictableTiltPosteriorTotalWeight
+#check forwardPredictableTiltPosteriorNormalizedMean
+#check forwardPredictableTiltPosteriorNormalizedObservation
+#check forwardPredictableTiltPACBayes_normalized_of_not_mem
 #check forwardPredictableTiltPACBayes_selected_of_not_mem
+#check forwardPredictableTiltPACBayes_normalized_selected_of_not_mem
 #check exists_forwardPredictableTiltPACBayes_event
+#check exists_forwardPredictableTiltPACBayes_normalized_event
 #check predictableTilt_nonconstant_prefix_witness
 #check informative_exists_allTime_allPosterior_event
 #check informative_nonvacuous_receipt
@@ -732,8 +785,12 @@ theorem informative_nonvacuous_receipt :
 #print axioms forwardPredictableTiltMeanEmpiricalBernsteinLower_typeI_control
 #print axioms forwardPredictableTiltPACBayesAnyPosteriorFailure_mass_le_delta
 #print axioms forwardPredictableTiltPACBayes_allPosteriors_of_not_mem
+#print axioms forwardPredictableTiltPosteriorNormalizedMean_sub_observation
+#print axioms forwardPredictableTiltPACBayes_normalized_of_not_mem
 #print axioms forwardPredictableTiltPACBayes_selected_of_not_mem
+#print axioms forwardPredictableTiltPACBayes_normalized_selected_of_not_mem
 #print axioms exists_forwardPredictableTiltPACBayes_event
+#print axioms exists_forwardPredictableTiltPACBayes_normalized_event
 #print axioms predictableTilt_nonconstant_prefix_witness
 #print axioms informative_exists_allTime_allPosterior_event
 #print axioms informative_nonvacuous_receipt

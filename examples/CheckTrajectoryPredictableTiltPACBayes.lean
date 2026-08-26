@@ -116,20 +116,55 @@ theorem boolTrajectoryPredictableTiltPACBayes_certificate :
       uniformBoolPrior_isFullSupportPMF (delta := (1 / 20 : ℝ))
       (by norm_num) pathPosterior pathPosterior_isPMF
 
+/-- The same Boolean model exercises the normalized tilt-weighted risk API.
+The positivity premise is explicit because a zero total tilt carries no risk
+information. -/
+theorem boolTrajectoryPredictableTiltPACBayes_normalized_certificate :
+    ∃ goodEvent : Set (ℕ → Bool),
+      (trajectoryMeasure fairPrefixBoolKernel false).real goodEventᶜ ≤ 1 / 20 ∧
+        ∀ x ∈ goodEvent, ∀ n : ℕ,
+          0 < trajectoryPredictableTiltPosteriorTotalWeight
+              prefixMatchingTilt (pathPosterior x n) n x →
+            trajectoryPredictableTiltPosteriorNormalizedConditionalRisk
+                fairPrefixBoolKernel labelScore prefixMatchingTilt
+                  (pathPosterior x n) n x <
+              trajectoryPredictableTiltPosteriorNormalizedEmpiricalRisk
+                  labelScore prefixMatchingTilt (pathPosterior x n) n x +
+                (klDiv (pathPosterior x n) uniformBoolPrior +
+                    Real.log (1 / (1 / 20 : ℝ)) +
+                    trajectoryPredictableTiltPosteriorQuadraticPenalty
+                      labelScore prefixMatchingTilt (pathPosterior x n) n x) /
+                  trajectoryPredictableTiltPosteriorTotalWeight
+                    prefixMatchingTilt (pathPosterior x n) n x := by
+  exact exists_trajectoryPredictableTiltPACBayes_normalized_selected_event
+    (ι := Bool) fairPrefixBoolKernel false labelScore_mem_Icc
+      (L := (1 / 2 : ℝ)) (by norm_num) prefixMatchingTilt_range
+      uniformBoolPrior_isFullSupportPMF (delta := (1 / 20 : ℝ))
+      (by norm_num) pathPosterior pathPosterior_isPMF
+
 #check TrajectoryPredictableTilt
 #check observedTrajectoryPredictableTilt_stronglyAdapted
 #check trajectoryPredictableTiltPosteriorMeanGap
 #check trajectoryPredictableTiltPosteriorQuadraticPenalty
+#check trajectoryPredictableTiltPosteriorTotalWeight
+#check trajectoryPredictableTiltPosteriorNormalizedConditionalRisk
+#check trajectoryPredictableTiltPosteriorNormalizedEmpiricalRisk
 #check exists_trajectoryPredictableTiltPACBayes_event
 #check exists_trajectoryPredictableTiltPACBayes_selected_event
+#check exists_trajectoryPredictableTiltPACBayes_normalized_event
+#check exists_trajectoryPredictableTiltPACBayes_normalized_selected_event
 #check prefixMatchingTilt_nonconstant
 #check boolTrajectoryPredictableTiltPACBayes_certificate
+#check boolTrajectoryPredictableTiltPACBayes_normalized_certificate
 
 #print axioms observedTrajectoryPredictableTilt_stronglyAdapted
 #print axioms exists_trajectoryPredictableTiltPACBayes_event
 #print axioms exists_trajectoryPredictableTiltPACBayes_selected_event
+#print axioms exists_trajectoryPredictableTiltPACBayes_normalized_event
+#print axioms exists_trajectoryPredictableTiltPACBayes_normalized_selected_event
 #print axioms prefixMatchingTilt_nonconstant
 #print axioms boolTrajectoryPredictableTiltPACBayes_certificate
+#print axioms boolTrajectoryPredictableTiltPACBayes_normalized_certificate
 
 end
 
