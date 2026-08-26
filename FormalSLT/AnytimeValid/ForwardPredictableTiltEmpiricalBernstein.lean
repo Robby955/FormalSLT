@@ -323,6 +323,38 @@ theorem stronglyAdapted_forwardPredictableTiltMeanEmpiricalBernsteinProcess
             (X k omega - forwardPredictorProcess X k omega) ^ 2)))
   exact Real.continuous_exp.comp_stronglyMeasurable hscore
 
+/-- Pointwise exponential envelope for one predictable-tilt factor. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinFactor_le_exp
+    {Omega : Type*}
+    {X mean lambda : ℕ → Omega → ℝ} {L : ℝ} {k : ℕ} {omega : Omega}
+    (hL1 : L < 1)
+    (hX_unit : 0 ≤ X k omega ∧ X k omega ≤ 1)
+    (hmean_nonneg : 0 ≤ mean k omega)
+    (hlambda_range :
+      0 ≤ lambda k omega ∧ lambda k omega ≤ L) :
+    forwardPredictableTiltMeanEmpiricalBernsteinFactor
+        X mean lambda k omega ≤ Real.exp L := by
+  unfold forwardPredictableTiltMeanEmpiricalBernsteinFactor
+  apply Real.exp_le_exp.mpr
+  have hdiff : X k omega - mean k omega ≤ 1 := by
+    linarith [hX_unit.2]
+  have hlinear :
+      lambda k omega * (X k omega - mean k omega) ≤ L := by
+    have hmul :
+        lambda k omega * (X k omega - mean k omega) ≤
+          lambda k omega := by
+      simpa only [mul_one] using
+        mul_le_mul_of_nonneg_left hdiff hlambda_range.1
+    exact hmul.trans hlambda_range.2
+  have hpenalty :
+      0 ≤ forwardEmpiricalBernsteinPsi (lambda k omega) *
+        (X k omega - forwardPredictorProcess X k omega) ^ 2 :=
+    mul_nonneg
+      (forwardEmpiricalBernsteinPsi_nonneg hlambda_range.1
+        (hlambda_range.2.trans_lt hL1))
+      (sq_nonneg _)
+  linarith
+
 /-- A finite-time almost-sure bound for one predictable-tilt factor. -/
 theorem forwardPredictableTiltMeanEmpiricalBernsteinFactor_le_ae
     {Omega : Type*} [mOmega : MeasurableSpace Omega]
@@ -337,24 +369,42 @@ theorem forwardPredictableTiltMeanEmpiricalBernsteinFactor_le_ae
       forwardPredictableTiltMeanEmpiricalBernsteinFactor
           X mean lambda k omega ≤ Real.exp L := by
   filter_upwards [hmean_nonneg, hlambda_range] with omega hM hT
-  unfold forwardPredictableTiltMeanEmpiricalBernsteinFactor
-  apply Real.exp_le_exp.mpr
-  have hdiff : X k omega - mean k omega ≤ 1 := by
-    linarith [(hX_unit omega).2]
-  have hlinear :
-      lambda k omega * (X k omega - mean k omega) ≤ L := by
-    have hmul :
-        lambda k omega * (X k omega - mean k omega) ≤ lambda k omega := by
-      simpa only [mul_one] using
-        mul_le_mul_of_nonneg_left hdiff hT.1
-    exact hmul.trans hT.2
-  have hpenalty :
-      0 ≤ forwardEmpiricalBernsteinPsi (lambda k omega) *
-        (X k omega - forwardPredictorProcess X k omega) ^ 2 :=
-    mul_nonneg
-      (forwardEmpiricalBernsteinPsi_nonneg hT.1 (hT.2.trans_lt hL1))
-      (sq_nonneg _)
-  linarith
+  exact forwardPredictableTiltMeanEmpiricalBernsteinFactor_le_exp
+    hL1 (hX_unit omega) hM hT
+
+/-- Pointwise exponential envelope for a predictable-tilt process. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinProcess_le_exp
+    {Omega : Type*}
+    {X mean lambda : ℕ → Omega → ℝ} {L : ℝ}
+    (hL1 : L < 1)
+    (hX_unit : ∀ k omega, 0 ≤ X k omega ∧ X k omega ≤ 1)
+    (hmean_nonneg : ∀ k omega, 0 ≤ mean k omega)
+    (hlambda_range : ∀ k omega,
+      0 ≤ lambda k omega ∧ lambda k omega ≤ L)
+    (n : ℕ) (omega : Omega) :
+    forwardPredictableTiltMeanEmpiricalBernsteinProcess
+        X mean lambda n omega ≤ Real.exp ((n : ℝ) * L) := by
+  induction n with
+  | zero =>
+      simp [forwardPredictableTiltMeanEmpiricalBernsteinProcess]
+  | succ n ih =>
+      rw [forwardPredictableTiltMeanEmpiricalBernsteinProcess_succ]
+      have hfactor :=
+        forwardPredictableTiltMeanEmpiricalBernsteinFactor_le_exp
+          hL1 (hX_unit n omega) (hmean_nonneg n omega)
+            (hlambda_range n omega)
+      calc
+        forwardPredictableTiltMeanEmpiricalBernsteinProcess
+              X mean lambda n omega *
+            forwardPredictableTiltMeanEmpiricalBernsteinFactor
+              X mean lambda n omega ≤
+            Real.exp ((n : ℝ) * L) * Real.exp L :=
+          mul_le_mul ih hfactor (Real.exp_pos _).le (Real.exp_pos _).le
+        _ = Real.exp ((((n + 1 : ℕ) : ℝ) * L)) := by
+          rw [← Real.exp_add]
+          congr 1
+          push_cast
+          ring
 
 /-- A finite-time almost-sure bound for the predictable-tilt process. -/
 theorem forwardPredictableTiltMeanEmpiricalBernsteinProcess_le_ae
@@ -661,6 +711,30 @@ theorem forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_eq
   intro k _
   rw [forwardPredictorProcess_one_sub]
   ring
+
+/-- Pointwise exponential envelope for the lower-tail predictable-tilt
+process.  Only the upper bound on the conditional mean enters this envelope;
+the lower bound required by the e-process theorem is not needed here. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_le_exp
+    {Omega : Type*}
+    {X mean lambda : ℕ → Omega → ℝ} {L : ℝ}
+    (hL1 : L < 1)
+    (hX_unit : ∀ k omega, 0 ≤ X k omega ∧ X k omega ≤ 1)
+    (hmean_le_one : ∀ k omega, mean k omega ≤ 1)
+    (hlambda_range : ∀ k omega,
+      0 ≤ lambda k omega ∧ lambda k omega ≤ L)
+    (n : ℕ) (omega : Omega) :
+    forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess
+        X mean lambda n omega ≤ Real.exp ((n : ℝ) * L) := by
+  change forwardPredictableTiltMeanEmpiricalBernsteinProcess
+      (fun k omega => 1 - X k omega)
+      (fun k omega => 1 - mean k omega) lambda n omega ≤
+    Real.exp ((n : ℝ) * L)
+  exact forwardPredictableTiltMeanEmpiricalBernsteinProcess_le_exp hL1
+    (fun k omega => by
+      constructor <;> linarith [(hX_unit k omega).1, (hX_unit k omega).2])
+    (fun k omega => by linarith [hmean_le_one k omega])
+    hlambda_range n omega
 
 /-- Complementing `[0,1]` observations turns the upper predictable-tilt
 e-process into a lower-tail e-process with the same predictable tilt schedule. -/
