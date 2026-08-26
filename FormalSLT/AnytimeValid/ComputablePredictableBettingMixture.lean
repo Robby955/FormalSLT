@@ -15,12 +15,12 @@ wealth-weighted average of the catalog bets using wealth accumulated strictly
 before time `n`. It therefore does not inspect the current residual before
 choosing its current bet.
 
-The construction is algebraic over a field and contains no choice operator,
-infinite sum, integral, logarithm, or exponential. In particular, its
-specialization to `Rat` is an exact executable computation. A separate real
-bridge proves that the master wealth is exactly the finite mixture of the
-component betting wealth processes. Consequently it is an e-process whenever
-the component wealth processes are e-processes and positive prior weights and
+The executable definitions are algebraic over a field and contain no choice
+operator, infinite sum, integral, logarithm, or exponential. In particular,
+their specialization to `Rat` is an exact computation. A separate real bridge
+proves that the master wealth is exactly the finite mixture of the component
+betting wealth processes. Consequently it is an e-process whenever the
+component wealth processes are e-processes and positive prior weights and
 strictly positive factors keep the mixture denominator nonzero.
 
 This finite master competes simultaneously with every positive-prior strategy
@@ -476,11 +476,6 @@ theorem aggregate_logWealth_regret_le
       -Real.log (weight j) := by
   have hcomp := aggregateWealth_competes_with_every_strategy
     hweight_sum_one hweight_nonneg hwealth_nonneg hmix_pos j n omega
-  have hmaster_pos : 0 < algebraicBettingWealth residual
-      (wealthWeightedBet weight residual strategy) n omega := by
-    rw [aggregateWealth_eq_finiteExpertMixtureWealth weight residual strategy
-      hweight_sum_one (fun n omega => (hmix_pos n omega).ne') n omega]
-    exact hmix_pos n omega
   have hlog := Real.log_le_log (mul_pos hweight_pos hexpert_pos) hcomp
   rw [Real.log_mul hweight_pos.ne' hexpert_pos.ne'] at hlog
   linarith
