@@ -15,6 +15,7 @@ import FormalSLT.StochasticDynamics.TrajectoryPACBayes
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixture
 import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.TrajectoryPredictableTiltPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
@@ -49,6 +50,9 @@ bounded score contract. It also re-exports Markov anytime-valid and
 posterior-uniform PAC-Bayes certificates, including finite-catalog and
 countable-tilt finite-state trajectory endpoints and arbitrary-measurable-
 hypothesis empirical-Bernstein trajectory endpoints.
+The finite-state layer additionally supports fixed-before-data tilt rules that
+read each complete available prefix, with one event uniform over time and
+finite posterior PMFs.
 For the finite homogeneous Markov tilt-catalog endpoint, it also re-exports
 the extension from a deterministic start to an arbitrary supplied finite-state
 initial PMF.

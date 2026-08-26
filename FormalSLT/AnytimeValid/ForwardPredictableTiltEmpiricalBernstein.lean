@@ -609,6 +609,140 @@ theorem forwardPredictableTiltMeanEmpiricalBernsteinProcess_eProcess_of_bounded
     _ = forwardPredictableTiltMeanEmpiricalBernsteinProcess
         X mean lambda n omega := by simp [Z]
 
+/-! ## Lower-tail orientation -/
+
+/-- Predictable-tilt lower-tail factor, implemented by complementing bounded
+observations and their predictable conditional means. -/
+def forwardPredictableTiltMeanEmpiricalBernsteinLowerFactor {Omega : Type*}
+    (X mean lambda : ℕ → Omega → ℝ) (k : ℕ) (omega : Omega) : ℝ :=
+  forwardPredictableTiltMeanEmpiricalBernsteinFactor
+    (fun j omega => 1 - X j omega) (fun j omega => 1 - mean j omega)
+      lambda k omega
+
+/-- Predictable-tilt lower-tail process.  Its linear term is the weighted
+conditional-mean minus observation gap, while the predictable quadratic term
+is unchanged by complementation. -/
+def forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess {Omega : Type*}
+    (X mean lambda : ℕ → Omega → ℝ) : ℕ → Omega → ℝ :=
+  forwardPredictableTiltMeanEmpiricalBernsteinProcess
+    (fun j omega => 1 - X j omega) (fun j omega => 1 - mean j omega) lambda
+
+/-- Explicit lower-tail score for one predictable-tilt factor. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinLowerFactor_eq
+    {Omega : Type*} (X mean lambda : ℕ → Omega → ℝ)
+    (k : ℕ) (omega : Omega) :
+    forwardPredictableTiltMeanEmpiricalBernsteinLowerFactor
+        X mean lambda k omega =
+      Real.exp
+        (lambda k omega * (mean k omega - X k omega) -
+          forwardEmpiricalBernsteinPsi (lambda k omega) *
+            (X k omega - forwardPredictorProcess X k omega) ^ 2) := by
+  unfold forwardPredictableTiltMeanEmpiricalBernsteinLowerFactor
+    forwardPredictableTiltMeanEmpiricalBernsteinFactor
+  rw [forwardPredictorProcess_one_sub]
+  congr 1
+  ring
+
+/-- Explicit cumulative lower-tail score for the predictable-tilt process. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_eq
+    {Omega : Type*} (X mean lambda : ℕ → Omega → ℝ)
+    (n : ℕ) (omega : Omega) :
+    forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess
+        X mean lambda n omega =
+      Real.exp
+        (∑ k ∈ Finset.range n,
+          (lambda k omega * (mean k omega - X k omega) -
+            forwardEmpiricalBernsteinPsi (lambda k omega) *
+              (X k omega - forwardPredictorProcess X k omega) ^ 2)) := by
+  unfold forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess
+    forwardPredictableTiltMeanEmpiricalBernsteinProcess
+  congr 1
+  apply Finset.sum_congr rfl
+  intro k _
+  rw [forwardPredictorProcess_one_sub]
+  ring
+
+/-- Complementing `[0,1]` observations turns the upper predictable-tilt
+e-process into a lower-tail e-process with the same predictable tilt schedule. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+    {Omega : Type*} [mOmega : MeasurableSpace Omega]
+    {mu : Measure Omega} [IsProbabilityMeasure mu]
+    {F : Filtration ℕ mOmega}
+    {X mean lambda : ℕ → Omega → ℝ} {L : ℝ}
+    (hL1 : L < 1)
+    (hX_adapted : IncrementAdapted F X)
+    (hmean_adapted : StronglyAdapted F mean)
+    (hlambda_adapted : StronglyAdapted F lambda)
+    (hX_unit : ∀ k omega, 0 ≤ X k omega ∧ X k omega ≤ 1)
+    (hlambda_range : ∀ k omega,
+      0 ≤ lambda k omega ∧ lambda k omega ≤ L)
+    (hmean : ∀ k, mu[X k | F k] =ᵐ[mu] mean k) :
+    EProcess mu F
+      (forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess
+        X mean lambda) := by
+  let Y : ℕ → Omega → ℝ := fun k omega => 1 - X k omega
+  let M : ℕ → Omega → ℝ := fun k omega => 1 - mean k omega
+  have hY_adapted : IncrementAdapted F Y := incrementAdapted_one_sub hX_adapted
+  have hM_adapted : StronglyAdapted F M := by
+    intro k
+    exact stronglyMeasurable_const.sub (hmean_adapted k)
+  have hY_unit : ∀ k omega, 0 ≤ Y k omega ∧ Y k omega ≤ 1 := by
+    intro k omega
+    dsimp [Y]
+    constructor <;> linarith [(hX_unit k omega).1, (hX_unit k omega).2]
+  have hX_int : ∀ k, Integrable (X k) mu := by
+    intro k
+    have hX_meas : Measurable (X k) :=
+      ((hX_adapted k).mono (F.le (k + 1))).measurable
+    refine Integrable.of_bound hX_meas.aestronglyMeasurable 1 ?_
+    exact Filter.Eventually.of_forall fun omega => by
+      rw [Real.norm_eq_abs, abs_of_nonneg (hX_unit k omega).1]
+      exact (hX_unit k omega).2
+  have hY_mean : ∀ k, mu[Y k | F k] =ᵐ[mu] M k := by
+    intro k
+    have hsub := condExp_sub (integrable_const (1 : ℝ)) (hX_int k) (F k)
+    have hone : mu[(fun _ : Omega => (1 : ℝ)) | F k] = fun _ => (1 : ℝ) :=
+      condExp_const (F.le k) 1
+    filter_upwards [hsub, hmean k] with omega hsub_omega hmean_omega
+    change mu[(fun _ : Omega => (1 : ℝ)) - X k | F k] omega =
+      1 - mean k omega
+    rw [hsub_omega, hone]
+    simp only [Pi.sub_apply]
+    rw [hmean_omega]
+  change EProcess mu F
+    (forwardPredictableTiltMeanEmpiricalBernsteinProcess Y M lambda)
+  exact forwardPredictableTiltMeanEmpiricalBernsteinProcess_eProcess_of_bounded
+    hL1 hY_adapted hM_adapted hlambda_adapted hY_unit
+      hlambda_range hY_mean
+
+/-- Finite-horizon Type-I control for the lower-tail predictable-tilt process. -/
+theorem forwardPredictableTiltMeanEmpiricalBernsteinLower_typeI_control
+    {Omega : Type*} [mOmega : MeasurableSpace Omega]
+    {mu : Measure Omega} [IsProbabilityMeasure mu]
+    {F : Filtration ℕ mOmega}
+    {X mean lambda : ℕ → Omega → ℝ} {L alpha : ℝ}
+    (hL1 : L < 1) (halpha : 0 < alpha)
+    (hX_adapted : IncrementAdapted F X)
+    (hmean_adapted : StronglyAdapted F mean)
+    (hlambda_adapted : StronglyAdapted F lambda)
+    (hX_unit : ∀ k omega, 0 ≤ X k omega ∧ X k omega ≤ 1)
+    (hlambda_range : ∀ k omega,
+      0 ≤ lambda k omega ∧ lambda k omega ≤ L)
+    (hmean : ∀ k, mu[X k | F k] =ᵐ[mu] mean k)
+    (n : ℕ) :
+    mu.real
+        {omega |
+          (1 : ℝ) / alpha ≤
+            finiteRunningMax
+              (forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess
+                X mean lambda) n omega} ≤
+      alpha := by
+  exact eProcess_typeI_control
+    (forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_eProcess_of_bounded
+      hL1 hX_adapted hmean_adapted hlambda_adapted hX_unit
+      hlambda_range hmean)
+    halpha n
+
 /-- Safe-testing control for the predictable-tilt empirical-Bernstein process
 up to any declared finite horizon. -/
 theorem forwardPredictableTiltMeanEmpiricalBernstein_typeI_control
