@@ -63,24 +63,36 @@ keeping the required boundary, separability, and modulus assumptions explicit.
 For an infinite IID sequence, one event controls every sample size `n ≥ 2` and
 every admissible posterior. The bound uses Bessel sample variance and
 measure-theoretic KL divergence. A separate forward construction handles
-predictable residuals for sequential use. The all-sample result is uniform over
-sample size, but it is not an optional-stopping theorem.
+predictable residuals for sequential use. On current `main`, one countable
+master e-process can also cover a fixed catalog of history-dependent,
+predictable tilt strategies. A finite product-catalog theorem goes further:
+both the model and strategy posterior may be chosen after observing the path,
+with separate KL costs, and a shared-strategy corollary returns ordinary
+posterior conditional risk. The all-sample IID result is uniform over sample
+size, but it is not an optional-stopping theorem.
 
 [Lean source](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [checker](./examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
-[positive-KL example](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean)
+[positive-KL example](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean) ·
+[model--strategy posterior](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.lean) ·
+[predictable-strategy master](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.lean)
 
 ### Adaptive trajectories
 
 For a finite score family fixed in advance, one event allows the posterior and
-tilt to depend on the observed prefix and time. With the geometric time
-selector, the resulting width tends to zero. A separate theorem covers
+tilt to depend on the observed prefix and time. The current growing-prefix
+oracle minimizes the exact observable boundary over the declared geometric
+tilts available at the reporting time, bounds it by an explicit LIL-order
+envelope, and proves that its width tends to zero. A separate theorem covers
 measurable state and hypothesis spaces with a finite tilt family. These results
-start from a deterministic initial state and bound prefix-conditional risk.
+start from a deterministic initial state and bound monitored conditional risk,
+not stationary or future deployment risk.
 
 [finite-state source](./FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean) ·
+[observable oracle](./FormalSLT/StochasticDynamics/TrajectoryForwardBesselPACBayesOracle.lean) ·
 [measurable-space source](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean) ·
-[worked checker](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean)
+[trajectory oracle receipt](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean) ·
+[generic oracle checker](./examples/CheckForwardBesselPACBayesOracle.lean)
 
 ### Stationary and Markov risk
 

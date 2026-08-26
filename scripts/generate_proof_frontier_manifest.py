@@ -56,6 +56,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "scores. A separate finite-state adapter allocates confidence "
             "over a positive natural-number tilt catalog and supplies an "
             "explicit geometric selector whose exact boundary tends to zero. "
+            "A growing-prefix oracle then minimizes the exact observable "
+            "hybrid-Bessel boundary over the declared reporting-time prefix, "
+            "retains an ordinary unweighted conditional-mean bound that the "
+            "trajectory specialization identifies with monitored risk, bounds "
+            "the selected width by an explicit LIL-order envelope, and proves "
+            "that width tends to zero. "
             "The Markov squared-loss theorem is a specialization. "
             "A separate supplied-Poisson bridge converts the forward "
             "empirical-Bernstein trajectory event to finite-state stationary "
@@ -104,8 +110,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "measurable-state, and controlled layers. Add unvisited-row and "
             "quantitative mixing interfaces, an anytime-valid cumulative-"
             "weight or target-policy value theorem, countable control for the "
-            "continuous-prior and arbitrary-state layers, predictable or "
-            "all-real tilts, and stronger multistate and atomless evidence."
+            "continuous-prior and arbitrary-state layers. Lift the observable "
+            "oracle beyond finite hypotheses and states, then add automatic "
+            "mixture or coin-betting competition. Extend the already checked "
+            "finite joint model--strategy posterior and its separate KL costs "
+            "to the countable or measurable layers. Add stronger multistate "
+            "and atomless evidence."
         ),
         "boundary": (
             "TrajectoryRisk alone is a path-semantics and conditional-"
@@ -158,7 +168,11 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "finite-hypothesis forward layer has a normalized countable master "
             "e-process, while the finite-state trajectory layer obtains its "
             "countable result by confidence allocation rather than a countable "
-            "master-process claim. These results do not cover random starts for "
+            "master-process claim. The growing-prefix trajectory oracle makes "
+            "the selected boundary observable, supplies a LIL-order envelope, "
+            "and proves vanishing width, but it remains finite in hypotheses "
+            "and states and minimizes only a declared finite prefix. These "
+            "results do not cover random starts for "
             "the general prefix-dependent or measurable-state layers, "
             "atomless-dynamics evidence, arbitrary joint predictor--tilt "
             "posteriors, countable tilts for the continuous-prior or arbitrary-"
@@ -252,6 +266,14 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "lower envelope, a finite weighted PAC-Bayes tilt catalog, and a "
             "normalized positive natural-number tilt master whose explicit "
             "geometric selector has an exact boundary tending to zero; a "
+            "countable master over a fixed catalog of history-dependent legal "
+            "predictable strategies with exact post-data finite-prefix "
+            "selection; a finite product-catalog theorem with arbitrary joint "
+            "model--strategy posteriors and a factorized ordinary-risk "
+            "corollary charging separate model and strategy KL terms; an "
+            "observable growing-prefix geometric-tilt oracle "
+            "with an ordinary unweighted conditional-mean bound, an explicit LIL-order "
+            "envelope, and vanishing width; a "
             "bounded predictable time-varying empirical-Bernstein e-process "
             "with finite-horizon Ville control; a "
             "forward continuous-prior master over arbitrary measurable "
@@ -264,13 +286,15 @@ FRONTIER_LANES: list[dict[str, str]] = [
         "difficulty": "medium-hard",
         "source": "docs/open-formalization-problems.md#near-term",
         "next_step": (
-            "Extend the checked countable finite-hypothesis construction to "
-            "the continuous-prior and arbitrary-state layers, lift the checked "
-            "bounded predictable-tilt process into joint hypothesis--tilt "
-            "masters, then pursue honest all-real localization using continuous "
-            "score control or a supremum-to-integral argument. Keep that "
-            "forward-process target distinct from the checked offline reverse "
-            "continuous-posterior endpoint."
+            "Extend the finite joint-posterior theorem, countable strategy "
+            "master, and growing-prefix oracle to the continuous-prior and "
+            "arbitrary-state layers. Build a "
+            "computable mixture or coin-betting construction that competes "
+            "automatically with legal predictable strategies, then support "
+            "countably supported strategy posteriors. Pursue honest "
+            "all-real localization using continuous score control or a "
+            "supremum-to-integral argument, separately from the checked offline "
+            "reverse continuous-posterior endpoint."
         ),
         "boundary": (
             "The spherical-Gaussian i.i.d. process theorem fixes its posterior "
@@ -280,7 +304,19 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "is an actual predictable-residual e-process. For finite "
             "hypotheses it has both finite-catalog and normalized countable-"
             "catalog masters; the latter has an explicit selected boundary "
-            "tending to zero. The arbitrary measurable-hypothesis master "
+            "tending to zero. A separate countable master covers a fixed "
+            "catalog of predictable strategies and permits exact post-data "
+            "finite-prefix atom selection with its declared weight cost. The "
+            "finite product-catalog theorem already permits an arbitrary joint "
+            "model--strategy posterior, and its factorized ordinary-risk "
+            "corollary displays separate finite model and strategy KL costs. "
+            "The growing-prefix observable oracle gives ordinary unweighted "
+            "conditional-mean control, an explicit LIL-order envelope, and "
+            "vanishing width. "
+            "These finite results do not provide a countably supported "
+            "strategy posterior, a computable evaluator, or automatic "
+            "competition with all legal strategies. The arbitrary "
+            "measurable-hypothesis master "
             "retains a finite tilt catalog, and the hybrid expression is only "
             "a pointwise lower envelope. Its arbitrary-state adapter starts deterministically "
             "and does not construct a measurable selector or selected process. "
@@ -290,9 +326,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "Kraft or countable confidence weights. The finite-state trajectory "
             "countable theorem uses confidence allocation rather than asserting "
             "a countable master e-process. The checked predictable-tilt result "
-            "requires one past-measurable schedule with pointwise "
-            "0 <= lambda_k <= L < 1; it is not simultaneous over all real tilts "
-            "or a post-hoc selector. No allocation result is "
+            "requires past-measurable schedules with pointwise "
+            "0 <= lambda_k <= L < 1. Countable strategy selection remains "
+            "limited to the predeclared catalog and is not simultaneous over "
+            "all real tilts. No allocation result is "
             "a universal minimax or LIL lower bound."
         ),
     },
@@ -324,7 +361,10 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "empirical-Bernstein e-process, exact Welford/Abel identities, a "
             "hybrid Bessel lower envelope, a finite hypothesis--tilt PAC-Bayes "
             "master, its normalized natural-number tilt extension with an "
-            "explicit vanishing geometric selector, its finite-IID adapter, "
+            "explicit vanishing geometric selector, a countable master over "
+            "fixed predictable-strategy atoms, a finite joint model--strategy "
+            "posterior with separate factorized KL costs, an observable growing-prefix "
+            "oracle with a LIL-order envelope, its finite-IID adapter, "
             "and a continuous-prior master "
             "over arbitrary measurable hypotheses with an arbitrary-"
             "measurable-state full-prefix trajectory adapter under a supplied "
@@ -337,10 +377,12 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "docs/open-formalization-problems.md#pac-bayes-empirical-sample-variance"
         ),
         "next_step": (
-            "Extend the checked countable forward construction to continuous "
-            "priors and arbitrary states, develop predictable or all-real "
-            "tilt control, add broader random-start and atomless-dynamics receipts, "
-            "and continue matched-boundary evidence and external review."
+            "Extend the finite joint-posterior theorem, countable predictable-"
+            "strategy master, and observable oracle to continuous priors and "
+            "arbitrary states. Add computable automatic competition over legal "
+            "strategies, countably supported strategy posteriors, broader "
+            "random-start and atomless-"
+            "dynamics receipts, and matched-boundary evidence."
         ),
         "boundary": (
             "The stitched reverse-epoch endpoint gives one measurable "
@@ -367,7 +409,14 @@ FRONTIER_LANES: list[dict[str, str]] = [
             "per-hypothesis Bessel penalty. The hybrid expression is not "
             "itself an e-process. For finite hypotheses, a normalized positive "
             "natural-number tilt master and explicit geometric selector give "
-            "an exact selected boundary tending to zero. A separate finite-state "
+            "an exact selected boundary tending to zero. A separate countable "
+            "master covers fixed predictable-strategy atoms, and the observable "
+            "growing-prefix oracle bounds its exact selected hybrid-Bessel "
+            "width by a LIL-order envelope while preserving ordinary conditional-"
+            "risk semantics. A separate finite product-catalog theorem supports "
+            "post-data model and strategy posterior PMFs with separate KL costs. "
+            "These results do not automatically compete over all legal strategies "
+            "or support a countably infinite strategy posterior. A separate finite-state "
             "trajectory theorem obtains the same selected conclusion by "
             "countable confidence allocation, not a countable master-process "
             "claim. Its continuous-prior master permits arbitrary "
@@ -530,7 +579,10 @@ def parse_lean_declarations(text: str) -> list[dict[str, Any]]:
     for match in LEAN_DECLARATION_PATTERN.finditer(clean):
         keyword = match.group("keyword")
         raw_name = match.group("name")
-        line = clean.count("\n", 0, match.start("keyword")) + 1
+        # Link to the declaration name rather than the keyword.  Lean permits
+        # line breaks between `theorem`/`def` and the name, and GitHub anchors
+        # are useful only when the linked line contains the searchable name.
+        line = clean.count("\n", 0, match.start("name")) + 1
         namespace = namespace_at_line[line - 1] if line <= len(namespace_at_line) else ""
         qualified_name = f"{namespace}.{raw_name}" if namespace else raw_name
         declarations.append(
@@ -642,14 +694,18 @@ def same : Nat := 0
 def quoted : String := "lemma fake : True := by trivial"
 end Inner
 lemma unique : True := by trivial
+theorem
+  splitName : True := by trivial
 end Outer
 '''
     outer = resolve_declaration_from_text(sample, "Outer.same", "self-test")
     inner = resolve_declaration_from_text(sample, "Outer.Inner.same", "self-test")
     unique = resolve_declaration_from_text(sample, "unique", "self-test")
+    split = resolve_declaration_from_text(sample, "splitName", "self-test")
     assert (outer["kind"], outer["line"]) == ("theorem", 4)
     assert (inner["kind"], inner["line"]) == ("definition", 7)
     assert unique["kind"] == "theorem"
+    assert (split["kind"], split["line"]) == ("theorem", 12)
     try:
         resolve_declaration_from_text(sample, "same", "self-test")
     except ValueError as error:
@@ -769,6 +825,11 @@ def build_manifest() -> dict[str, Any]:
     audited_files = library_files + example_files + root_files
     theorem_families = parse_theorem_map()
     audit = audit_lean_files(audited_files)
+    theorem_declarations = sum(
+        declaration["kind"] == "theorem"
+        for path in audited_files
+        for declaration in _source_declarations(path)
+    )
 
     return {
         "schema": "FormalSLT.proof_frontier.v1",
@@ -785,6 +846,7 @@ def build_manifest() -> dict[str, Any]:
             "library_lean_lines": count_lines(library_files),
             "example_lean_files": len(example_files),
             "library_and_example_lean_lines": count_lines(library_files + example_files),
+            "theorem_or_lemma_declarations": theorem_declarations,
             "theorem_map_entries": sum(len(family["entries"]) for family in theorem_families),
         },
         "audit": {

@@ -54,7 +54,11 @@ DOCGEN_PATHS = (
     "FormalSLT/AnytimeValid/EProcess.html",
     "FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.html",
     "FormalSLT/PACBayes/ForwardBesselPACBayesCountable.html",
+    "FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.html",
+    "FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.html",
+    "FormalSLT/PACBayes/ForwardBesselPACBayesOracle.html",
     "FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.html",
+    "FormalSLT/StochasticDynamics/TrajectoryForwardBesselPACBayesOracle.html",
     "FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html",
     "FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html",
     "FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.html",
@@ -67,6 +71,8 @@ PUBLIC_ENDPOINTS = (
     "exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event",
     "exists_stationaryPoissonDepthSelection_allTime_vanishing_event",
     "exists_selectedCanonicalEmpiricalStationaryCatalog_event",
+    "exists_growingPrefixForwardBesselPACBayesOracle_event",
+    "exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event",
 )
 
 
