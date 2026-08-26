@@ -1,4 +1,5 @@
-import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
+import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable
+import FormalSLT.PACBayes.ForwardBesselPACBayesCountable
 import FormalSLT.PACBayes.ForwardBesselPACBayesIID
 import FormalSLT.PACBayes.IIDContinuousGaussian
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -36,6 +37,8 @@ open FormalSLT.PACBayes.TimeUniformIID
 open FormalSLT.PACBayes.ForwardBesselPACBayesIID
 open FormalSLT.PACBayes.ForwardPredictableTiltPACBayes
 open FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
+open FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable
+open FormalSLT.PACBayes.ForwardBesselPACBayesCountable
 open FormalSLT.PACBayes.StabilityBridge
 open scoped ENNReal
 
@@ -1269,6 +1272,323 @@ theorem informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt :
   · simp [sharedInformativeStrategyCatalog, informativeStrategyCatalog,
       conservativePredictableTilt]
 
+/-! ## Countable-uniform event with exact finite-prefix selection -/
+
+/-- A countable catalog whose first atom is the informative path-dependent
+strategy, whose second atom is the conservative strategy, and whose remaining
+atoms use a fixed legal fallback. -/
+def countableInformativeStrategyCatalog (j k : ℕ)
+    (omega : BiasedBoolStream) : ℝ :=
+  if j = 0 then sharedInformativeStrategyCatalog true k omega
+  else if j = 1 then sharedInformativeStrategyCatalog false k omega
+  else if k = 0 then 0 else 1 / 8
+
+theorem countableInformativeStrategyCatalog_stronglyAdapted (j : ℕ) :
+    StronglyAdapted streamFiltration
+      (countableInformativeStrategyCatalog j) := by
+  by_cases hj0 : j = 0
+  · subst j
+    have hcatalog : countableInformativeStrategyCatalog 0 =
+        sharedInformativeStrategyCatalog true := by
+      funext k omega
+      simp [countableInformativeStrategyCatalog]
+    rw [hcatalog]
+    exact sharedInformativeStrategyCatalog_stronglyAdapted true
+  by_cases hj1 : j = 1
+  · subst j
+    have hcatalog : countableInformativeStrategyCatalog 1 =
+        sharedInformativeStrategyCatalog false := by
+      funext k omega
+      simp [countableInformativeStrategyCatalog]
+    rw [hcatalog]
+    exact sharedInformativeStrategyCatalog_stronglyAdapted false
+  have hcatalog : countableInformativeStrategyCatalog j =
+      fun k (_omega : BiasedBoolStream) ↦
+        if k = 0 then (0 : ℝ) else 1 / 8 := by
+    funext k omega
+    simp [countableInformativeStrategyCatalog, hj0, hj1]
+  rw [hcatalog]
+  intro k
+  exact stronglyMeasurable_const
+
+theorem countableInformativeStrategyCatalog_range (j k : ℕ)
+    (omega : BiasedBoolStream) :
+    0 ≤ countableInformativeStrategyCatalog j k omega ∧
+      countableInformativeStrategyCatalog j k omega ≤ (1 / 2 : ℝ) := by
+  by_cases hj0 : j = 0
+  · subst j
+    simpa [countableInformativeStrategyCatalog] using
+      sharedInformativeStrategyCatalog_range true k omega
+  by_cases hj1 : j = 1
+  · subst j
+    simpa [countableInformativeStrategyCatalog] using
+      sharedInformativeStrategyCatalog_range false k omega
+  by_cases hk : k = 0
+  · simp [countableInformativeStrategyCatalog, hj0, hj1, hk]
+  · norm_num [countableInformativeStrategyCatalog, hj0, hj1, hk]
+
+theorem iidLossPopulationRisk_mem_unitInterval (h : Bool) :
+    0 ≤ iidLossPopulationRisk biasedBoolLaw disagreementLoss h ∧
+      iidLossPopulationRisk biasedBoolLaw disagreementLoss h ≤ 1 := by
+  cases h <;>
+    unfold iidLossPopulationRisk biasedBoolLaw <;>
+    rw [integral_bernoulliMeasure] <;>
+    norm_num [disagreementLoss]
+
+theorem polynomialForwardTiltWeight_zero :
+    polynomialForwardTiltWeight 0 = (1 : ℝ) / 2 := by
+  norm_num [polynomialForwardTiltWeight,
+    FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch.reverseDyadicEpochWeight]
+
+theorem geometricForwardTiltIndex_thirtyTwo :
+    geometricForwardTiltIndex 32 = 1 := by
+  norm_num [geometricForwardTiltIndex]
+
+def countableInformativeSelectedBoundary
+    (j : ℕ) (omega : BiasedBoolStream) : ℝ :=
+  countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+    uniformBoolPrior polynomialForwardTiltWeight observedLoss
+      countableInformativeStrategyCatalog (selectedPosterior omega 32)
+      ((1 : ℝ) / 128) j 32 omega
+
+def countableInformativeFinitePrefixArgmin
+    (omega : BiasedBoolStream) : ℕ :=
+  countableForwardPredictableStrategyPACBayesFinitePrefixArgmin
+    uniformBoolPrior polynomialForwardTiltWeight observedLoss
+      countableInformativeStrategyCatalog (selectedPosterior omega 32)
+      ((1 : ℝ) / 128) 1 32 omega
+
+theorem countableInformativeFinitePrefixArgmin_mem
+    (omega : BiasedBoolStream) :
+    countableInformativeFinitePrefixArgmin omega ∈ Finset.range 2 := by
+  simpa [countableInformativeFinitePrefixArgmin] using
+    (countableForwardPredictableStrategyPACBayesFinitePrefixArgmin_mem
+      uniformBoolPrior polynomialForwardTiltWeight observedLoss
+      countableInformativeStrategyCatalog (selectedPosterior omega 32)
+      ((1 : ℝ) / 128) 1 32 omega)
+
+theorem countableInformativeFinitePrefixArgmin_le
+    (omega : BiasedBoolStream) {j : ℕ} (hj : j ∈ Finset.range 2) :
+    countableInformativeSelectedBoundary
+        (countableInformativeFinitePrefixArgmin omega) omega ≤
+      countableInformativeSelectedBoundary j omega := by
+  simpa [countableInformativeSelectedBoundary,
+    countableInformativeFinitePrefixArgmin] using
+      (countableForwardPredictableStrategyPACBayesFinitePrefixArgmin_le
+        uniformBoolPrior polynomialForwardTiltWeight observedLoss
+        countableInformativeStrategyCatalog (selectedPosterior omega 32)
+        ((1 : ℝ) / 128) 1 32 omega hj)
+
+theorem countableInformative_atom_zero_totalWeight_eq_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorTotalWeight
+        (selectedPosterior omega 32)
+        (fun _h ↦ countableInformativeStrategyCatalog 0) 32 omega =
+      (31 : ℝ) / 2 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega]
+  unfold forwardPredictableTiltPosteriorTotalWeight posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [truePosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul, add_zero]
+  simpa [countableInformativeStrategyCatalog,
+    sharedInformativeStrategyCatalog, informativeStrategyCatalog,
+    totalSelectedTilt] using
+      totalSelectedTilt_eq_thirtyOne_halves_of_mem homega
+
+theorem countableInformative_atom_one_totalWeight_eq_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorTotalWeight
+        (selectedPosterior omega 32)
+        (fun _h ↦ countableInformativeStrategyCatalog 1) 32 omega =
+      (31 : ℝ) / 4 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega]
+  unfold forwardPredictableTiltPosteriorTotalWeight posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [truePosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul, add_zero]
+  simp [countableInformativeStrategyCatalog,
+    sharedInformativeStrategyCatalog, informativeStrategyCatalog,
+    conservativePredictableTilt, Finset.sum_range_succ]
+  norm_num
+
+theorem countableInformative_prefix_exposures_pos_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    ∀ j ∈ Finset.range 2,
+      0 < forwardPredictableTiltPosteriorTotalWeight
+        (selectedPosterior omega 32)
+        (fun _h ↦ countableInformativeStrategyCatalog j) 32 omega := by
+  intro j hj
+  have hj_cases : j = 0 ∨ j = 1 := by
+    have hj_lt := Finset.mem_range.mp hj
+    omega
+  rcases hj_cases with rfl | rfl
+  · rw [countableInformative_atom_zero_totalWeight_eq_of_mem homega]
+    norm_num
+  · rw [countableInformative_atom_one_totalWeight_eq_of_mem homega]
+    norm_num
+
+theorem countableInformative_atom_zero_normalizedObservation_eq_zero_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorNormalizedObservation
+        (selectedPosterior omega 32) observedLoss
+        (fun _h ↦ countableInformativeStrategyCatalog 0) 32 omega = 0 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega]
+  unfold forwardPredictableTiltPosteriorNormalizedObservation
+    forwardPredictableTiltPosteriorTotalWeight posteriorAverage
+  rw [Fintype.sum_bool, Fintype.sum_bool]
+  simp only [truePosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul, add_zero]
+  simp only [countableInformativeStrategyCatalog, ↓reduceIte,
+    sharedInformativeStrategyCatalog, informativeStrategyCatalog]
+  rw [selected_weightedEmpiricalLoss_eq_zero_of_mem homega]
+  exact zero_div _
+
+theorem countableInformative_atom_zero_quadraticPenalty_eq_shared_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableTiltPosteriorQuadraticPenalty
+        (selectedPosterior omega 32) observedLoss
+        (fun _h ↦ countableInformativeStrategyCatalog 0) 32 omega =
+      forwardPredictableStrategyPosteriorQuadraticPenalty
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega,
+    selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorQuadraticPenalty
+  unfold forwardPredictableTiltPosteriorQuadraticPenalty
+  rw [posteriorAverage_dirac_true_true]
+  unfold posteriorAverage
+  rw [Fintype.sum_bool]
+  simp [truePosterior, modelStrategyProcess, modelStrategyPredictableTilt,
+    countableInformativeStrategyCatalog, sharedInformativeStrategyCatalog,
+    informativeStrategyCatalog]
+
+theorem countableInformative_atom_zero_complexity_eq_nine_log_two_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    klDiv (selectedPosterior omega 32) uniformBoolPrior +
+        Real.log
+          (1 / (((1 : ℝ) / 128) * polynomialForwardTiltWeight 0)) =
+      9 * Real.log 2 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega,
+    truePosterior_kl_eq_log_two, polynomialForwardTiltWeight_zero]
+  norm_num
+  rw [show (256 : ℝ) = 2 ^ (8 : ℕ) by norm_num, Real.log_pow]
+  ring
+
+theorem countableInformative_atom_zero_boundary_eq_shared_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    countableInformativeSelectedBoundary 0 omega =
+      informativeSharedStrategyBoundary omega := by
+  unfold countableInformativeSelectedBoundary
+    countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+    countableForwardPredictableStrategyPACBayesSelectedAtomWidth
+    informativeSharedStrategyBoundary
+  rw [countableInformative_atom_zero_normalizedObservation_eq_zero_of_mem
+      homega,
+    countableInformative_atom_zero_totalWeight_eq_of_mem homega,
+    countableInformative_atom_zero_complexity_eq_nine_log_two_of_mem homega,
+    countableInformative_atom_zero_quadraticPenalty_eq_shared_of_mem homega,
+    selectedStrategy_complexity_eq_nine_log_two_of_mem homega]
+  ring
+
+theorem countableInformative_atom_zero_boundary_lt_seven_sixteenths_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    countableInformativeSelectedBoundary 0 omega < (7 : ℝ) / 16 := by
+  rw [countableInformative_atom_zero_boundary_eq_shared_of_mem homega]
+  exact informativeSharedStrategyBoundary_lt_seven_sixteenths_of_mem homega
+
+/-- Exact receipt for finite-prefix boundary selection on one event that is
+uniform over the whole countable strategy catalog.  The selected atom competes
+with atoms zero and one only; no global countable optimum is claimed. -/
+theorem informative_countableFinitePrefixOracle_nonvacuous_receipt :
+    ∃ goodEvent : Set BiasedBoolStream, ∃ omega : BiasedBoolStream,
+      biasedBoolStreamLaw.real goodEventᶜ ≤ (1 : ℝ) / 128 ∧
+      omega ∈ goodEvent ∧
+      omega ∈ informativePrefixCylinder ∧
+      geometricForwardTiltIndex 32 = 1 ∧
+      polynomialForwardTiltWeight 0 = (1 : ℝ) / 2 ∧
+      klDiv (selectedPosterior omega 32) uniformBoolPrior = Real.log 2 ∧
+      (klDiv (selectedPosterior omega 32) uniformBoolPrior +
+          Real.log
+            (1 / (((1 : ℝ) / 128) * polynomialForwardTiltWeight 0)) =
+        9 * Real.log 2) ∧
+      (∀ j ∈ Finset.range 2,
+        0 < forwardPredictableTiltPosteriorTotalWeight
+          (selectedPosterior omega 32)
+          (fun _h ↦ countableInformativeStrategyCatalog j) 32 omega) ∧
+      countableInformativeFinitePrefixArgmin omega ∈ Finset.range 2 ∧
+      selectedPopulationRisk omega = (1 : ℝ) / 32 ∧
+      selectedPopulationRisk omega <
+        countableInformativeSelectedBoundary
+          (countableInformativeFinitePrefixArgmin omega) omega ∧
+      countableInformativeSelectedBoundary
+          (countableInformativeFinitePrefixArgmin omega) omega ≤
+        countableInformativeSelectedBoundary 0 omega ∧
+      countableInformativeSelectedBoundary 0 omega =
+        informativeSharedStrategyBoundary omega ∧
+      countableInformativeSelectedBoundary 0 omega < (7 : ℝ) / 16 := by
+  letI := biasedBoolStreamLaw_isProbabilityMeasure
+  obtain ⟨goodEvent, hmass, hgood⟩ :=
+    exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event
+      (μ := biasedBoolStreamLaw) (ℱ := streamFiltration)
+      (prior := uniformBoolPrior) uniformBoolPrior_isFullSupportPMF
+      (weight := polynomialForwardTiltWeight)
+      polynomialForwardTiltWeight_pos polynomialForwardTiltWeight_hasSum
+      (X := observedLoss)
+      (risk := iidLossPopulationRisk biasedBoolLaw disagreementLoss)
+      (strategy := countableInformativeStrategyCatalog)
+      (L := (1 / 2 : ℝ)) (delta := (1 / 128 : ℝ))
+      (by norm_num) (by norm_num) iidLossPopulationRisk_mem_unitInterval
+      observedLoss_incrementAdapted
+      countableInformativeStrategyCatalog_stronglyAdapted observedLoss_unit
+      countableInformativeStrategyCatalog_range
+      (fun h k ↦ by
+        change biasedBoolStreamLaw[observedLoss h k | streamFiltration k]
+          =ᵐ[biasedBoolStreamLaw]
+            fun _ ↦ iidLossPopulationRisk biasedBoolLaw disagreementLoss h
+        exact observedLoss_condExp_eq_meanLoss h k)
+  have hintersection : ∃ omega : BiasedBoolStream,
+      omega ∈ informativePrefixCylinder ∧ omega ∈ goodEvent := by
+    by_contra hnone
+    have hsubset : informativePrefixCylinder ⊆ goodEventᶜ := by
+      intro omega hcylinder
+      by_contra hcomplement
+      exact hnone ⟨omega, hcylinder, by simpa using hcomplement⟩
+    have hmono :
+        biasedBoolStreamLaw.real informativePrefixCylinder ≤
+          biasedBoolStreamLaw.real goodEventᶜ :=
+      measureReal_mono hsubset
+    linarith [informativePrefixCylinder_mass_gt_delta]
+  obtain ⟨omega, hcylinder, hgoodOmega⟩ := hintersection
+  have hexposure := countableInformative_prefix_exposures_pos_of_mem hcylinder
+  have horacle := hgood omega hgoodOmega
+    (selectedPosterior omega 32) (selectedPosterior_isPMF omega 32)
+    32 1 hexposure
+  have horacle' :
+      countableInformativeFinitePrefixArgmin omega ∈ Finset.range 2 ∧
+        selectedPopulationRisk omega <
+          countableInformativeSelectedBoundary
+            (countableInformativeFinitePrefixArgmin omega) omega ∧
+        ∀ j ∈ Finset.range 2,
+          countableInformativeSelectedBoundary
+              (countableInformativeFinitePrefixArgmin omega) omega ≤
+            countableInformativeSelectedBoundary j omega := by
+    simpa [countableInformativeFinitePrefixArgmin,
+      countableInformativeSelectedBoundary, selectedPopulationRisk] using horacle
+  rcases horacle' with ⟨hselectedMem, hriskSelected, hminimal⟩
+  have hmodel := selectedPosterior_of_mem_informativePrefixCylinder hcylinder
+  refine ⟨goodEvent, omega, hmass, hgoodOmega, hcylinder,
+    geometricForwardTiltIndex_thirtyTwo, polynomialForwardTiltWeight_zero,
+    ?_, countableInformative_atom_zero_complexity_eq_nine_log_two_of_mem
+      hcylinder,
+    hexposure, hselectedMem,
+    selectedPopulationRisk_eq_one_thirtyTwo_of_mem hcylinder,
+    hriskSelected, hminimal 0 (by simp),
+    countableInformative_atom_zero_boundary_eq_shared_of_mem hcylinder,
+    countableInformative_atom_zero_boundary_lt_seven_sixteenths_of_mem
+      hcylinder⟩
+  rw [hmodel]
+  exact truePosterior_kl_eq_log_two
+
 /-! ## Public endpoint and axiom receipts -/
 
 #check forwardPredictableTiltMeanEmpiricalBernsteinLowerFactor
@@ -1297,6 +1617,10 @@ theorem informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt :
 #check informativeStrategyCatalog_distinct_witness
 #check informative_strategySelection_nonvacuous_receipt
 #check informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt
+#check countableForwardPredictableStrategyPACBayesMasterProcess_eProcess_of_bounded
+#check exists_countableForwardPredictableStrategyPACBayes_event
+#check exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event
+#check informative_countableFinitePrefixOracle_nonvacuous_receipt
 
 #print axioms forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_eProcess_of_bounded
 #print axioms forwardPredictableTiltMeanEmpiricalBernsteinLower_typeI_control
@@ -1320,6 +1644,10 @@ theorem informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt :
 #print axioms informativeStrategyCatalog_distinct_witness
 #print axioms informative_strategySelection_nonvacuous_receipt
 #print axioms informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt
+#print axioms countableForwardPredictableStrategyPACBayesMasterProcess_eProcess_of_bounded
+#print axioms exists_countableForwardPredictableStrategyPACBayes_event
+#print axioms exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event
+#print axioms informative_countableFinitePrefixOracle_nonvacuous_receipt
 
 end
 
