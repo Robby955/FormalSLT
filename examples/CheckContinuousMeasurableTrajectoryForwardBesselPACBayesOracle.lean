@@ -14,6 +14,7 @@ open FormalSLT.StochasticDynamics
 
 #check continuousMeasurableTrajectoryGrowingPrefixArgmin
 #check continuousMeasurableTrajectoryGrowingPrefixBoundary
+#check continuousMeasurableTrajectoryGrowingPrefixBoundary_le_atom
 #check continuousMeasurableTrajectoryGrowingPrefixLILEnvelope
 #check exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event
 
@@ -27,3 +28,4 @@ open FormalSLT.StochasticDynamics
   (Theta := Real) (Z := Real))
 
 #print axioms exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event
+#print axioms continuousMeasurableTrajectoryGrowingPrefixBoundary_le_atom

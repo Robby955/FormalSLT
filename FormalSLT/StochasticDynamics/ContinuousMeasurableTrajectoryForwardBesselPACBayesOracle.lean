@@ -62,6 +62,24 @@ def continuousMeasurableTrajectoryGrowingPrefixBoundary
     (continuousMeasurableTrajectoryGrowingPrefixArgmin
       prior score posterior delta n x) n x
 
+omit [MeasurableSpace Z] in
+/-- The selected trajectory boundary is no larger than any declared atom in
+the reporting-time geometric prefix. -/
+theorem continuousMeasurableTrajectoryGrowingPrefixBoundary_le_atom
+    (prior : Measure Theta) (score : Theta -> TrajectoryScore Z)
+    (posterior : Measure Theta) (delta : Real) (n : Nat)
+    (x : Nat -> Z) {j : Nat}
+    (hj : j ∈ Finset.range
+      (growingPrefixForwardBesselPACBayesMaxIndex n + 1)) :
+    continuousMeasurableTrajectoryGrowingPrefixBoundary
+        prior score posterior delta n x <=
+      countableContinuousForwardPredictableMeanBesselBoundary prior
+        polynomialForwardTiltWeight geometricForwardTilt
+        (fun theta => observedTrajectoryScore (score theta)) posterior delta
+        j n x := by
+  exact continuousGrowingPrefixForwardBesselPACBayesArgmin_le prior
+    (fun theta => observedTrajectoryScore (score theta)) posterior delta n x hj
+
 /-- Observable LIL-order envelope for the selected trajectory boundary. -/
 def continuousMeasurableTrajectoryGrowingPrefixLILEnvelope
     (prior : Measure Theta) (score : Theta -> TrajectoryScore Z)

@@ -17,9 +17,10 @@ because the underlying countable master event already controls every declared
 tilt atom and posterior.
 
 The selected exact boundary has an observable hybrid-Bessel LIL-order envelope.
-For a time-varying posterior sequence, vanishing width is stated only under an
-explicit sublinear-complexity condition; arbitrary measurable-space posteriors
-do not have the finite-prior KL ceiling used by the finite-hypothesis theorem.
+For a time-varying posterior sequence, vanishing width is stated only when
+`KL_n / 2^(geometricForwardTiltIndex n + 1)` tends to zero, asymptotically the
+condition `KL_n = o(sqrt n)`. Arbitrary measurable-space posteriors do not have
+the finite-prior KL ceiling used by the finite-hypothesis theorem.
 -/
 
 open MeasureTheory ProbabilityTheory
