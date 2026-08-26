@@ -48,7 +48,10 @@
         <ul class="route-list">
           <li><a href="../../FormalSLT/AnytimeValid/EProcess.html">E-process foundations</a><p>Nonnegative supermartingale constructions, Type-I control, and optional continuation at the process layer.</p></li>
           <li><a href="../../FormalSLT/Sequential.html">Sequential umbrella</a><p>Filtrations, conditional means, and reusable sequential concentration mechanisms.</p></li>
+          <li><a href="../../FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.html">Finite joint model--strategy posterior</a><p>A product prior and joint finite posterior place both selections inside one common PAC-Bayes event; the factorized corollary separates their KL costs.</p></li>
+          <li><a href="../../FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.html">Countable predictable-strategy e-process</a><p>A normalized countable mixture covers a fixed catalog of predictable strategies; the common event permits later selection of an atom with its explicit weight penalty.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.html">History-dependent trajectory measure</a><p>Kernels may depend on the entire finite prefix; the capstone shown here begins from a deterministic state.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/TrajectoryForwardBesselPACBayesOracle.html">Growing-prefix trajectory oracle</a><p>The observable finite-state specialization selects the exact boundary within the reporting-time tilt prefix, compares monitored conditional loss with empirical prequential loss, and supplies an LIL-order envelope.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html">Arbitrary-measurable trajectory event</a><p>A joint score-measurability contract supports continuous posterior measures and arbitrary measurable state and hypothesis spaces over a finite tilt catalog.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html">Poisson bridge to stationary risk</a><p>A logarithmic depth schedule balances finite-depth correction and trajectory uncertainty under explicit contraction and a supplied bound on centered row-risk oscillation.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/EmpiricalStationaryCatalog.html">Empirical transition layer</a><p>Coordinate-wise transition confidence transfers candidate contraction to the true kernel on the selected event.</p></li>
@@ -64,6 +67,7 @@
         <ul>
           <li><strong>One event, many choices:</strong> data-dependent substitution is valid only when the choice appears after membership in the shared good event.</li>
           <li><strong>Finite versus countable:</strong> hypothesis spaces, tilt catalogs, state spaces, and time indices have different finiteness assumptions.</li>
+          <li><strong>Selection versus mixing:</strong> the predictable-strategy catalog is mixed before observation; the reported strategy atom and posterior may then be selected on the common event. This does not create an e-process from the selected atom.</li>
           <li><strong>Known versus estimated dynamics:</strong> the Poisson endpoint takes a kernel and invariant PMF; the empirical catalog adds a separate transition-confidence budget.</li>
           <li><strong>Existence versus uniqueness:</strong> the canonical finite invariant PMF exists without strict contraction, while uniqueness is explicitly conditional on the selected contraction coefficient being below one.</li>
         </ul>

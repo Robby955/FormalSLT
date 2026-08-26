@@ -3,15 +3,15 @@
 This page lists the public theorem spine by family. Names are Lean
 declarations; modules are relative to `FormalSLT`.
 
-## Candidate v0.2 endpoint index
+## Stable v0.2 endpoint index
 
-This compact index mirrors the 19-declaration candidate allowlist in
+This compact index mirrors the 19-declaration stable allowlist in
 [`api-stability.md`](api-stability.md). Topic imports are the supported public
 entry points; implementation modules are relative to `FormalSLT`. The
 committed signature snapshot remains normative for declaration types and
-axiom sets. This index becomes a stable compatibility surface only when the
-`v0.2.0` tag and GitHub Release exist. The three VC names are public aliases;
-the table lists their canonical implementation modules.
+axiom sets. The `v0.2.0` tag and GitHub Release are the release boundary. The
+three VC names are public aliases; the table lists their canonical
+implementation modules.
 
 | Declaration | Topic import | Implementation module | Role |
 |---|---|---|---|
@@ -34,6 +34,20 @@ the table lists their canonical implementation modules.
 | `FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily` | `FormalSLT.VC` | `VC.Dimension` | Sauer-Shelah binomial-sum bound for finite set families |
 | `FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective` | `FormalSLT.VC` | `VC.Rademacher` | Effective-class Massart bound |
 | `FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail` | `FormalSLT.VC` | `VC.SampleComplexity` | Effective-growth ERM excess-risk tail with sharp concentration term; the binary zero-one bridge supplies the VC premise separately |
+
+## Current `main` endpoint index
+
+These declarations are imported by the topic umbrellas on `main` but were
+merged after `v0.2.0`. They are checked current endpoints, not retroactive
+members of the tagged v0.2 compatibility surface.
+
+| Declaration | Topic import | Implementation module | Role |
+|---|---|---|---|
+| `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes.exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayes` | Post-data model and predictable-strategy posterior PMFs with separate finite KL charges and ordinary conditional-risk semantics for shared strategies |
+| `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | One countable master e-process supports every predeclared predictable strategy atom, finite model posterior, and reporting time with positive exposure |
+| `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | Exact path-, time-, and posterior-dependent minimization over any declared finite prefix of the countable strategy catalog |
+| `FormalSLT.PACBayes.ForwardBesselPACBayesOracle.exists_growingPrefixForwardBesselPACBayesOracle_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardBesselPACBayesOracle` | Observable growing-prefix geometric-tilt oracle with an ordinary unweighted conditional-mean bound, explicit LIL-order envelope, and selected width tending to zero |
+| `FormalSLT.StochasticDynamics.exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Finite-state prefix-dependent trajectory specialization with path-selected posterior and exact reporting-time tilt minimizer on one event |
 
 ## Core definitions
 
@@ -842,6 +856,16 @@ the table lists their canonical implementation modules.
 | `countableForwardBesselPACBayesMasterProcess_eProcess_of_bounded` | `PACBayes.ForwardBesselPACBayesCountable` | Proves that the normalized positive `Nat`-indexed mixture of finite-hypothesis predictable-residual components is one e-process |
 | `exists_countableForwardBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayesCountable` | One outer-mass event controls every `n >= 2`, finite posterior PMF, and atom of a predeclared positive normalized countable tilt catalog |
 | `exists_geometricForwardBesselPACBayes_allTime_vanishing_event` | `PACBayes.ForwardBesselPACBayesCountable` | Uses the polynomial-weight geometric catalog and explicit sample-size selector to obtain simultaneous validity and an exact selected boundary tending to zero |
+| `klDiv_modelStrategyProductPrior` | `PACBayes.ForwardPredictableStrategyPACBayes` | Decomposes the KL of a factorized model--strategy posterior against the product prior into separate model and strategy KL terms |
+| `exists_forwardPredictableStrategyPACBayes_normalized_selected_event` | `PACBayes.ForwardPredictableStrategyPACBayes` | Allows an arbitrary joint finite model--strategy posterior to depend on the observed path and reporting time on one common event |
+| `exists_forwardPredictableStrategyPACBayes_factorized_normalized_selected_event` | `PACBayes.ForwardPredictableStrategyPACBayes` | Specializes to path-selected factorized posteriors and displays the model and strategy selection costs separately |
+| `exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event` | `PACBayes.ForwardPredictableStrategyPACBayes` | Returns an ordinary posterior-averaged conditional-risk bound for every finite model and shared predictable-strategy posterior, with separate KL charges |
+| `countableForwardPredictableStrategyPACBayesMasterProcess_eProcess_of_bounded` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | Forms one e-process from a fixed normalized countable catalog of legal predictable tilt strategies and a finite model prior |
+| `exists_countableForwardPredictableStrategyPACBayes_event` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | One event supports ordinary conditional-risk bounds for every declared predictable strategy atom, finite model posterior, and time with positive accumulated exposure |
+| `exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | Allows exact post-data minimization over any declared finite prefix while retaining the single countable master event and explicit atom-weight cost |
+| `growingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope` | `PACBayes.ForwardBesselPACBayesOracle` | Bounds the selected exact observable hybrid-Bessel boundary by an explicit square-root LIL-order envelope |
+| `growingPrefixForwardBesselPACBayesBoundary_tendsto_zero` | `PACBayes.ForwardBesselPACBayesOracle` | Proves the selected exact boundary tends to zero for arbitrary time-varying finite posterior PMFs |
+| `exists_growingPrefixForwardBesselPACBayesOracle_event` | `PACBayes.ForwardBesselPACBayesOracle` | One event combines path-selected finite posteriors, exact growing-prefix tilt minimization, an ordinary unweighted conditional-mean bound, the LIL-order envelope, and vanishing width |
 | `iidObservedLoss_condExp_eq_populationRisk` | `PACBayes.ForwardBesselPACBayesIID` | Derives the per-hypothesis conditional mean from the natural-filtration IID bounded-loss model |
 | `exists_forwardIIDBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayesIID` | IID risk-facing capstone with the same all-time, all-posterior, all-atom common event |
 | `exists_continuousForwardPredictableMeanBesselPACBayes_event` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayes` | One outer-mass event over an arbitrary measurable hypothesis space controls every `n >= 2`, eligible posterior measure, and atom of a finite predeclared tilt prior |
@@ -1284,6 +1308,15 @@ continuous-space result.
 | `JointlyStronglyMeasurableParameterizedTrajectoryScore` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Joint hypothesis/prefix/next-state measurability contract used to derive both filtered and ambient parameterized-process interfaces |
 | `stronglyMeasurable_continuousMeasurableTrajectoryLowerProcess_filtered` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Derives filtered product measurability of the parameterized forward lower process from one supplied joint hypothesis/prefix/next-state score contract |
 | `exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event` | `StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes` | Deterministic-start capstone for arbitrary measurable state and hypothesis spaces, simultaneous over all `n >= 2`, eligible posterior measures, and a finite positive normalized tilt prior with `0 < lambda_j < 1` |
+| `trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Transfers the observable square-root LIL-order envelope to the finite-state prefix-dependent trajectory boundary |
+| `trajectoryGrowingPrefixForwardBesselPACBayesBoundary_tendsto_zero` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Proves the exact selected trajectory width tends to zero along every path for arbitrary time-varying finite posterior PMFs |
+| `exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Controls posterior-averaged monitored conditional loss by empirical prequential loss plus the exact selected boundary on one path- and time-uniform event |
+
+The current growing-prefix oracle is finite in both hypotheses and states. Its
+ordinary risk is posterior-averaged conditional loss along the monitored
+trajectory, not stationary, population, future, or deployment risk. The
+selected atom minimizes only the declared reporting-time prefix and is not an
+all-real optimizer or a selected e-process.
 
 The arbitrary-state capstone requires a supplied jointly measurable bounded
 score and a deterministic start. Its event is posterior-uniform, but it does

@@ -58,6 +58,35 @@ transitive namespace is not frozen. Individual implementation modules and
 declarations outside the allowlist remain usable but are not covered by this
 compatibility promise.
 
+## Current `main` additions
+
+The following endpoints are imported by the supported topic umbrellas on
+`main`, but were merged after the `v0.2.0` tag. They are therefore not part of
+the 19-declaration v0.2 compatibility allowlist above. This separation keeps
+the tagged release record exact while making the current research surface
+discoverable.
+
+### PAC-Bayes
+
+- `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes.exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event`
+- `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayes_event`
+- `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event`
+- `FormalSLT.PACBayes.ForwardBesselPACBayesOracle.exists_growingPrefixForwardBesselPACBayesOracle_event`
+
+### Stochastic dynamics
+
+- `FormalSLT.StochasticDynamics.exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event`
+
+The finite product-catalog endpoint permits post-data model and strategy
+posteriors and charges separate finite KL terms while returning an ordinary
+posterior conditional-risk bound when strategies are shared across models. The
+countable strategy master instead selects one atom from a fixed catalog and
+charges its declared log-weight cost. The growing-prefix oracle specializes a
+geometric tilt catalog to an observable boundary with an explicit LIL-order
+envelope and a width tending to zero. The generic oracle remains finite in
+hypotheses; its trajectory specialization is finite in both hypotheses and
+states. The selected atom is not an all-real optimizer or a selected e-process.
+
 ## Deprecation
 
 A renamed or improved endpoint receives a new canonical declaration. The old

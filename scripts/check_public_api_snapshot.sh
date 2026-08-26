@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Check the candidate v0.2 declaration types and axiom reports against the
+# Check the stable v0.2 declaration types and axiom reports against the
 # committed snapshot. Use --update only for an intentional, reviewed API edit.
 set -euo pipefail
 
@@ -517,8 +517,8 @@ for documented_value in (
 theorem_map = Path("docs/theorem-map.md").read_text(encoding="utf-8")
 map_block = bounded_section(
     theorem_map,
-    "## Candidate v0.2 endpoint index",
-    "## Core definitions",
+    "## Stable v0.2 endpoint index",
+    "## Current `main` endpoint index",
 )
 map_names = re.findall(
     r"^\|\s*`(FormalSLT\.[A-Za-z0-9_.]+)`\s*\|", map_block, re.MULTILINE
@@ -526,6 +526,32 @@ map_names = re.findall(
 if map_names != api_names:
     raise SystemExit(
         "ERROR: docs/theorem-map.md stable endpoint index differs from the public allowlist"
+    )
+
+api_main_block = bounded_section(
+    api,
+    "## Current `main` additions",
+    "## Deprecation",
+)
+api_main_names = re.findall(
+    r"^- `(FormalSLT\.[A-Za-z0-9_.]+)`\s*$", api_main_block, re.MULTILINE
+)
+map_main_block = bounded_section(
+    theorem_map,
+    "## Current `main` endpoint index",
+    "## Core definitions",
+)
+map_main_names = re.findall(
+    r"^\|\s*`(FormalSLT\.[A-Za-z0-9_.]+)`\s*\|", map_main_block, re.MULTILINE
+)
+if not api_main_names or len(api_main_names) != len(set(api_main_names)):
+    raise SystemExit(
+        "ERROR: docs/api-stability.md current-main endpoint list is empty or duplicated"
+    )
+if map_main_names != api_main_names:
+    raise SystemExit(
+        "ERROR: docs/theorem-map.md current-main endpoint index differs from "
+        "docs/api-stability.md"
     )
 
 # The displayed Lake dependency must use the package name declared by

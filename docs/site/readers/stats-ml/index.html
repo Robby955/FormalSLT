@@ -47,7 +47,9 @@
       <div class="reading">
         <ul class="route-list">
           <li><a href="../../FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.html">Continuous-posterior empirical-Bernstein event</a><p>One IID event, every sample size from two onward, and every posterior measure satisfying the theorem’s absolute-continuity and integrability conditions.</p></li>
-          <li><a href="../../FormalSLT/PACBayes/ForwardBesselPACBayesCountable.html">Supporting forward e-process route</a><p>Finite hypotheses, adapted bounded observations, a predeclared countable tilt allocation, and path- and time-dependent posterior PMFs. This supports the program but is not one of the five landing-page endpoints.</p></li>
+          <li><a href="../../FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.html">Finite model--strategy posterior</a><p>Both posterior factors may depend on the observed path and reporting time. The shared-strategy ordinary-risk corollary displays separate model and strategy KL charges.</p></li>
+          <li><a href="../../FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.html">Countable predictable-strategy master</a><p>One e-process covers a fixed countable catalog of legal history-dependent strategies, every finite model posterior, and every reporting time with positive exposure. Post-data selection pays the declared strategy-atom weight.</p></li>
+          <li><a href="../../FormalSLT/StochasticDynamics/TrajectoryForwardBesselPACBayesOracle.html">Observable growing-prefix trajectory oracle</a><p>Finite hypotheses and states, path-selected posteriors, exact minimization over the reporting-time geometric prefix, ordinary monitored conditional-risk semantics, an explicit LIL-order envelope, and selected width tending to zero.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.html">Trajectory empirical-Bernstein PAC-Bayes</a><p>Finite-state prefix-dependent dynamics with observed prequential scores and a selected boundary that converges to zero.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html">Arbitrary-measurable trajectory PAC-Bayes</a><p>Arbitrary measurable state and hypothesis spaces, continuous posterior measures, a finite tilt catalog, and a jointly measurable bounded score family.</p></li>
           <li><a href="../../FormalSLT/StochasticDynamics/StationaryPoissonDepthSelection.html">Stationary Poisson depth selection</a><p>Known finite-state Markov kernels with an invariant PMF, explicit oscillation contraction, and a supplied nonnegative bound on centered row-risk oscillation.</p></li>
@@ -64,7 +66,8 @@
         <p>The formal statements do not turn every adaptive analysis into an anytime-valid one. In particular:</p>
         <ul>
           <li>The continuous-posterior IID result is simultaneous in sample size but is not presented as a forward e-process.</li>
-          <li>The forward and trajectory catalog atoms are predeclared; data cannot create a new atom after outcomes are seen.</li>
+          <li>The forward and trajectory strategy atoms are predeclared; data may select among them but cannot create a new strategy after its scored outcomes are seen.</li>
+          <li>The growing-prefix oracle is exact over its declared finite prefix, not over all real tilts, and its selected boundary is not itself an e-process.</li>
           <li>The arbitrary-measurable trajectory result has a finite tilt catalog and does not include the finite-state endpoint’s vanishing-width conclusion.</li>
           <li>The stationary layer is finite-state. Unknown-kernel claims use a finite candidate catalog and observed transition rows.</li>
           <li>Vanishing width is an asymptotic property of the selected boundary, not a finite-sample sharpness claim for every instance.</li>

@@ -3,9 +3,9 @@
 
 For each metric (theorems, modules, lines) this writes a small JSON blob to
 ``docs/badges/<metric>.json`` that the shields.io endpoint badge consumes.
-The README uses static shields.io badge URLs so pull-request previews do not
-depend on files that have not landed on ``main`` yet. This script checks those
-README badge values against the generated counts.
+The README intentionally keeps only build, release, toolchain, and license
+badges; repository-size counters remain available through these generated JSON
+endpoints without adding another row of volatile badges to the landing copy.
 
 Run modes:
 
@@ -19,27 +19,16 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
-from urllib.parse import quote
+
+try:
+    from .generate_proof_frontier_manifest import parse_lean_declarations
+except ImportError:
+    from generate_proof_frontier_manifest import parse_lean_declarations
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BADGE_DIR = REPO_ROOT / "docs" / "badges"
-README = REPO_ROOT / "README.md"
-
-THEOREM_RE = re.compile(r"^\s*(?:noncomputable\s+)?(?:theorem|lemma)\s+[A-Za-z_]")
-README_BADGE_PATTERNS = {
-    "theorems": re.compile(
-        r"https://img\.shields\.io/badge/theorems%2Flemmas-[^-)\]]+-brightgreen\.svg"
-    ),
-    "modules": re.compile(
-        r"https://img\.shields\.io/badge/FormalSLT%20modules-[^-)\]]+-blue\.svg"
-    ),
-    "lines": re.compile(
-        r"https://img\.shields\.io/badge/Lean%20lines-[^-)\]]+-brightgreen\.svg"
-    ),
-}
 
 
 def iter_lean_files(*roots: Path):
@@ -54,12 +43,13 @@ def iter_lean_files(*roots: Path):
 
 
 def count_theorems(paths) -> int:
-    count = 0
-    for path in paths:
-        for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
-            if THEOREM_RE.match(line):
-                count += 1
-    return count
+    return sum(
+        declaration["kind"] == "theorem"
+        for path in paths
+        for declaration in parse_lean_declarations(
+            path.read_text(encoding="utf-8", errors="replace")
+        )
+    )
 
 
 def count_lines(paths) -> int:
@@ -76,13 +66,6 @@ def badge_payload(label: str, value: int) -> dict:
         "message": f"{value:,}",
         "color": "brightgreen",
     }
-
-
-def static_badge_url(label: str, value: int, color: str = "brightgreen") -> str:
-    return (
-        "https://img.shields.io/badge/"
-        f"{quote(label, safe='')}-{quote(f'{value:,}', safe='')}-{color}.svg"
-    )
 
 
 def write_or_check(path: Path, payload: dict, check: bool) -> bool:
@@ -106,40 +89,6 @@ def write_or_check(path: Path, payload: dict, check: bool) -> bool:
     return True
 
 
-def write_or_check_readme_badges(targets: dict[str, str], check: bool) -> bool:
-    if not README.exists():
-        print("[badge-counts] missing: README.md", file=sys.stderr)
-        return False
-
-    text = README.read_text(encoding="utf-8")
-    updated = text
-    ok = True
-
-    for name, expected in targets.items():
-        pattern = README_BADGE_PATTERNS[name]
-        match = pattern.search(updated)
-        if not match:
-            print(f"[badge-counts] missing README badge: {name}", file=sys.stderr)
-            ok = False
-            continue
-        if match.group(0) == expected:
-            continue
-        if check:
-            print(
-                f"[badge-counts] README badge drift: {name}\n"
-                f"  expected: {expected}\n"
-                f"  actual:   {match.group(0)}",
-                file=sys.stderr,
-            )
-            ok = False
-        else:
-            updated = pattern.sub(expected, updated, count=1)
-
-    if not check and updated != text:
-        README.write_text(updated, encoding="utf-8")
-    return ok
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -159,22 +108,14 @@ def main() -> int:
     total_lines = count_lines(all_files)
 
     targets = [
-        (BADGE_DIR / "theorems.json", badge_payload("theorems checked", theorems)),
+        (BADGE_DIR / "theorems.json", badge_payload("theorems / lemmas", theorems)),
         (BADGE_DIR / "modules.json", badge_payload("Lean modules", modules)),
         (BADGE_DIR / "lines.json", badge_payload("Lean lines", total_lines)),
     ]
-    readme_badges = {
-        "theorems": static_badge_url("theorems/lemmas", theorems),
-        "modules": static_badge_url("FormalSLT modules", modules, "blue"),
-        "lines": static_badge_url("Lean lines", total_lines),
-    }
-
     ok = True
     for path, payload in targets:
         if not write_or_check(path, payload, args.check):
             ok = False
-    if not write_or_check_readme_badges(readme_badges, args.check):
-        ok = False
 
     if args.check and not ok:
         print(

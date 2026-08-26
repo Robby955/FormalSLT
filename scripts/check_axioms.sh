@@ -168,6 +168,11 @@ THEOREMS=(
   "FormalSLT.PACBayes.ForwardBesselPACBayesCountable.countableForwardBesselPACBayesMasterProcess_eProcess_of_bounded"
   "FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_countableForwardBesselPACBayes_event"
   "FormalSLT.PACBayes.ForwardBesselPACBayesCountable.exists_geometricForwardBesselPACBayes_allTime_vanishing_event"
+  "FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes.exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event"
+  "FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayes_event"
+  "FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event"
+  "FormalSLT.PACBayes.ForwardBesselPACBayesOracle.exists_growingPrefixForwardBesselPACBayesOracle_event"
+  "FormalSLT.StochasticDynamics.exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event"
   "FormalSLT.PACBayes.ForwardBesselPACBayesIID.forwardPrefixMean_iidObservedLoss"
   "FormalSLT.PACBayes.ForwardBesselPACBayesIID.posteriorAverage_forwardPrefixMean_iidObservedLoss"
   "FormalSLT.PACBayes.ForwardBesselPACBayesIID.iidObservedLoss_incrementAdapted"
@@ -979,6 +984,9 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.TimeUniformTiltMixture"
   echo "import FormalSLT.PACBayes.TimeUniformIIDTiltMixture"
   echo "import FormalSLT.PACBayes.ForwardBesselPACBayesCountable"
+  echo "import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes"
+  echo "import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable"
+  echo "import FormalSLT.PACBayes.ForwardBesselPACBayesOracle"
   echo "import FormalSLT.StochasticDynamics.TrajectoryRisk"
   echo "import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound"
   echo "import FormalSLT.StochasticDynamics.MeasurableTrajectoryRisk"
@@ -990,6 +998,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.StochasticDynamics.TrajectoryPACBayes"
   echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes"
   echo "import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable"
+  echo "import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonContraction"
   echo "import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin"
@@ -1076,6 +1085,9 @@ echo "== building flagship modules =="
   FormalSLT.AnytimeValid.AllocationLogLog \
   FormalSLT.PACBayes.ForwardBesselPACBayes \
   FormalSLT.PACBayes.ForwardBesselPACBayesCountable \
+  FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes \
+  FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable \
+  FormalSLT.PACBayes.ForwardBesselPACBayesOracle \
   FormalSLT.PACBayes.ForwardBesselPACBayesIID \
   FormalSLT.PACBayes.ContinuousInfiniteEmpiricalBernsteinStitch \
   FormalSLT.PACBayes.CountableJointMeanVariancePACBayes \
@@ -1093,6 +1105,7 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.TrajectoryPACBayes \
   FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes \
   FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable \
+  FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle \
   FormalSLT.StochasticDynamics.StationaryPoissonPACBayes \
   FormalSLT.StochasticDynamics.StationaryPoissonContraction \
   FormalSLT.StochasticDynamics.StationaryPoissonDobrushin \
