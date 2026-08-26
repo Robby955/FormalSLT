@@ -73,12 +73,19 @@ catalog of scalar tilts over arbitrary measurable hypothesis spaces and
 eligible continuous posterior measures. The all-sample IID result is uniform
 over sample size, but it is not an optional-stopping theorem.
 
+The sequential layer also has exact executable wealth-weighted masters. A
+finite master adapts among supplied predictable betting strategies, while a
+countable sleeping-expert construction evaluates only the active prefix and a
+closed-form tail. Both compete with every active declared expert; neither is a
+parameter-free continuum coin-betting result.
+
 [Lean source](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [checker](./examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [positive-KL example](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean) ·
 [model--strategy posterior](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.lean) ·
 [predictable-strategy master](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.lean) ·
-[measurable countable master](./FormalSLT/PACBayes/ContinuousForwardPredictableMeanBesselPACBayesCountable.lean)
+[measurable countable master](./FormalSLT/PACBayes/ContinuousForwardPredictableMeanBesselPACBayesCountable.lean) ·
+[computable betting master](./FormalSLT/AnytimeValid/CountableSleepingPredictableBettingMixture.lean)
 
 ### Adaptive trajectories
 

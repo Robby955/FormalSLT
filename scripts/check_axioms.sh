@@ -24,6 +24,10 @@ THEOREMS=(
   "FormalSLT.AlgorithmicStability.bousquet_elisseeff_expectedGap_variant_of_boundedLoss"
   "FormalSLT.AlgorithmicStability.bousquet_elisseeff_azuma_expectedGap_variant_of_boundedLoss"
   "FormalSLT.AnytimeValid.eProcess_typeI_control"
+  "FormalSLT.AnytimeValid.wealthWeightedBet_eProcess_of_positive_factors"
+  "FormalSLT.AnytimeValid.aggregate_logWealth_regret_le"
+  "FormalSLT.AnytimeValid.countableSleepingMasterBet_eProcess"
+  "FormalSLT.AnytimeValid.countableSleepingMaster_logWealth_regret_le"
   "FormalSLT.VC.VCDimension.sauerShelahFiniteSetFamily"
   "FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective"
   "FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail"
@@ -974,6 +978,8 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt"
   echo "import FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch"
   echo "import FormalSLT.AnytimeValid.ForwardBesselProcess"
+  echo "import FormalSLT.AnytimeValid.ComputablePredictableBettingMixture"
+  echo "import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture"
   echo "import FormalSLT.AnytimeValid.ForwardPredictableTiltEmpiricalBernstein"
   echo "import FormalSLT.AnytimeValid.PredictableVarianceProxy"
   echo "import FormalSLT.AnytimeValid.SelectionCost"
@@ -1085,6 +1091,8 @@ echo "== building flagship modules =="
   FormalSLT.PACBayes.FiniteEmpiricalBernsteinSqrt \
   FormalSLT.PACBayes.InfiniteEmpiricalBernsteinStitch \
   FormalSLT.AnytimeValid.ForwardBesselProcess \
+  FormalSLT.AnytimeValid.ComputablePredictableBettingMixture \
+  FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture \
   FormalSLT.AnytimeValid.ForwardPredictableTiltEmpiricalBernstein \
   FormalSLT.AnytimeValid.PredictableVarianceProxy \
   FormalSLT.AnytimeValid.SelectionCost \
