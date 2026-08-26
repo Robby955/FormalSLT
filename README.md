@@ -68,31 +68,34 @@ master e-process can also cover a fixed catalog of history-dependent,
 predictable tilt strategies. A finite product-catalog theorem goes further:
 both the model and strategy posterior may be chosen after observing the path,
 with separate KL costs, and a shared-strategy corollary returns ordinary
-posterior conditional risk. The all-sample IID result is uniform over sample
-size, but it is not an optional-stopping theorem.
+posterior conditional risk. A second countable master mixes a fixed positive
+catalog of scalar tilts over arbitrary measurable hypothesis spaces and
+eligible continuous posterior measures. The all-sample IID result is uniform
+over sample size, but it is not an optional-stopping theorem.
 
 [Lean source](./FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [checker](./examples/CheckContinuousInfiniteEmpiricalBernsteinStitch.lean) ·
 [positive-KL example](./examples/CheckContinuousInfiniteEmpiricalBernsteinGaussianWitness.lean) ·
 [model--strategy posterior](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.lean) ·
-[predictable-strategy master](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.lean)
+[predictable-strategy master](./FormalSLT/PACBayes/ForwardPredictableStrategyPACBayesCountable.lean) ·
+[measurable countable master](./FormalSLT/PACBayes/ContinuousForwardPredictableMeanBesselPACBayesCountable.lean)
 
 ### Adaptive trajectories
 
-For a finite score family fixed in advance, one event allows the posterior and
-tilt to depend on the observed prefix and time. The current growing-prefix
-oracle minimizes the exact observable boundary over the declared geometric
-tilts available at the reporting time, bounds it by an explicit LIL-order
-envelope, and proves that its width tends to zero. A separate theorem covers
-measurable state and hypothesis spaces with a finite tilt family. These results
-start from a deterministic initial state and bound monitored conditional risk,
-not stationary or future deployment risk.
+One event can allow the posterior and tilt to depend on the observed prefix
+and time. The growing-prefix oracle now supports arbitrary measurable state
+and hypothesis spaces: it minimizes the exact observable boundary over the
+declared geometric tilts available at the reporting time and bounds it by an
+explicit LIL-order envelope. Its width tends to zero under the displayed
+pathwise posterior-KL rate. The trajectory result starts from a deterministic
+initial state and bounds monitored conditional risk, not stationary or future
+deployment risk.
 
 [finite-state source](./FormalSLT/StochasticDynamics/TrajectoryEmpiricalBernsteinPACBayesCountable.lean) ·
 [observable oracle](./FormalSLT/StochasticDynamics/TrajectoryForwardBesselPACBayesOracle.lean) ·
-[measurable-space source](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.lean) ·
+[measurable-space oracle](./FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle.lean) ·
 [trajectory oracle receipt](./examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean) ·
-[generic oracle checker](./examples/CheckForwardBesselPACBayesOracle.lean)
+[measurable oracle checker](./examples/CheckContinuousMeasurableTrajectoryForwardBesselPACBayesOracle.lean)
 
 ### Stationary and Markov risk
 

@@ -177,7 +177,7 @@
         <div>
           <p class="status">Proved composition · IID endpoint</p>
           <h3>All-sample-size empirical-Bernstein PAC-Bayes</h3>
-          <p>The IID endpoint gives one all-sample-size event for continuous posterior measures. The forward route also supports post-data finite model and predictable-strategy posteriors with separate KL costs, plus countable selection from a fixed strategy catalog.</p>
+          <p>The IID endpoint gives one all-sample-size event for continuous posterior measures. The forward route supports post-data finite model and predictable-strategy posteriors with separate KL costs, and a countable fixed scalar-tilt master over arbitrary measurable hypotheses and eligible continuous posteriors.</p>
         </div>
         <a class="text-link" href="readers/stats-ml/">Read for statistics and ML <span aria-hidden="true">→</span></a>
       </article>
@@ -187,7 +187,7 @@
         <div>
           <p class="status">Proved compositions · two state-space regimes</p>
           <h3>Adaptive trajectory inference</h3>
-          <p>The finite-state oracle selects the exact observable boundary over a growing geometric tilt prefix, retains ordinary monitored conditional-risk semantics, and proves vanishing width. A separate endpoint supports continuous posterior measures on arbitrary measurable state and hypothesis spaces under a joint score-measurability contract.</p>
+          <p>The growing-prefix oracle supports continuous posterior measures on arbitrary measurable state and hypothesis spaces. It selects the exact observable boundary over the reporting-time geometric prefix, retains ordinary monitored conditional-risk semantics, and proves vanishing width under an explicit pathwise posterior-KL rate.</p>
         </div>
         <a class="text-link" href="readers/probability/">Read for probability <span aria-hidden="true">→</span></a>
       </article>
@@ -233,9 +233,9 @@
           <div class="endpoint-index">C</div>
           <div class="endpoint-body">
             <p class="status">Proved composition · arbitrary measurable spaces</p>
-            <h3><a href="FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes.html#FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event"><code>exists_continuousMeasurableTrajectoryEmpiricalBernsteinPACBayes_event</code></a></h3>
-            <p>One outer event supports every sample size, declared finite tilt, and eligible post-data posterior measure for prefix-dependent kernels on arbitrary measurable state and hypothesis spaces.</p>
-            <p class="boundary"><strong>Boundary.</strong> The endpoint starts from a fixed state, uses a finite predeclared tilt catalog, and requires a jointly strongly measurable bounded score family. It does not prove a selected width tends to zero.</p>
+            <h3><a href="FormalSLT/StochasticDynamics/ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle.html#FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event"><code>exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event</code></a></h3>
+            <p>One outer event supports every reporting time, an eligible continuous posterior selected from the path, and exact minimization over the growing geometric tilt prefix for prefix-dependent kernels on arbitrary measurable state and hypothesis spaces.</p>
+            <p class="boundary"><strong>Boundary.</strong> The endpoint starts from a fixed state and requires a jointly strongly measurable bounded score family. The exact argmin is noncomputable, and vanishing width requires the displayed pathwise posterior-KL rate.</p>
           </div>
         </li>
         <li>

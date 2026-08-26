@@ -72,10 +72,13 @@ discoverable.
 - `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayes_event`
 - `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event`
 - `FormalSLT.PACBayes.ForwardBesselPACBayesOracle.exists_growingPrefixForwardBesselPACBayesOracle_event`
+- `FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable.exists_countableContinuousForwardPredictableMeanBesselPACBayes_event`
+- `FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle.exists_continuousGrowingPrefixForwardBesselPACBayesOracle_event`
 
 ### Stochastic dynamics
 
 - `FormalSLT.StochasticDynamics.exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event`
+- `FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event`
 
 The finite product-catalog endpoint permits post-data model and strategy
 posteriors and charges separate finite KL terms while returning an ordinary
@@ -83,9 +86,11 @@ posterior conditional-risk bound when strategies are shared across models. The
 countable strategy master instead selects one atom from a fixed catalog and
 charges its declared log-weight cost. The growing-prefix oracle specializes a
 geometric tilt catalog to an observable boundary with an explicit LIL-order
-envelope and a width tending to zero. The generic oracle remains finite in
-hypotheses; its trajectory specialization is finite in both hypotheses and
-states. The selected atom is not an all-real optimizer or a selected e-process.
+envelope. The measurable lift supports arbitrary measurable hypothesis and
+trajectory-state spaces and eligible continuous posterior measures. Its width
+tends to zero only under the stated pathwise posterior-KL rate. The selected
+atom is not an all-real optimizer or a selected e-process, and its exact
+real-valued argmin is noncomputable.
 
 ## Deprecation
 
