@@ -78,6 +78,8 @@ import FormalSLT.PACBayes.ForwardBesselPACBayesCountable
 import FormalSLT.PACBayes.ForwardBesselPACBayesOracle
 import FormalSLT.PACBayes.ForwardBesselPACBayesIID
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes
+import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable
+import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
@@ -102,7 +104,9 @@ countable master-mixture foundation and finite-posterior catalog-selector
 layer, score e-process, finite weighted tilt e-process and its finite-IID
 bounded-loss adapter, the finite-hypothesis/finite-declared-tilt
 predictable-residual master e-process with a hybrid-Bessel lower-envelope
-boundary for `n >= 2`, its IID bounded-loss outer-mass wrapper, and
+boundary for `n >= 2`, its countable-tilt arbitrary-measurable-hypothesis
+extension and observable growing-prefix oracle, its IID bounded-loss
+outer-mass wrapper, and
 time-uniform PAC-Bayes surfaces. It also exports the finite-hypothesis
 predictable time-varying tilt compiler: one event controls every time and
 posterior while retaining the weighted linear and quadratic score terms, plus
