@@ -751,6 +751,132 @@ theorem exists_countableForwardPredictableStrategyPACBayes_event
         hstrategy_range
     simpa [badEvent] using hω
 
+/-! ## Exact finite-prefix selection -/
+
+omit [DecidableEq ι] [Nonempty ι] in
+private theorem
+    countableForwardPredictableStrategyPACBayesFinitePrefix_exists_argmin
+    (prior : ι → ℝ) (weight : ℕ → ℝ)
+    (X : ι → ℕ → Ω → ℝ) (strategy : ℕ → ℕ → Ω → ℝ)
+    (posterior : ι → ℝ) (delta : ℝ)
+    (maxIndex n : ℕ) (ω : Ω) :
+    ∃ j ∈ Finset.range (maxIndex + 1),
+      ∀ j' ∈ Finset.range (maxIndex + 1),
+        countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+            prior weight X strategy posterior delta j n ω ≤
+          countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+            prior weight X strategy posterior delta j' n ω := by
+  exact (Finset.range (maxIndex + 1)).exists_min_image
+    (fun j ↦
+      countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+        prior weight X strategy posterior delta j n ω)
+    (by simp)
+
+/-- A concrete exact argmin over strategy atoms `0, ..., maxIndex`.  It may
+depend on the observed path, time, model posterior, and declared prefix. -/
+def countableForwardPredictableStrategyPACBayesFinitePrefixArgmin
+    (prior : ι → ℝ) (weight : ℕ → ℝ)
+    (X : ι → ℕ → Ω → ℝ) (strategy : ℕ → ℕ → Ω → ℝ)
+    (posterior : ι → ℝ) (delta : ℝ)
+    (maxIndex n : ℕ) (ω : Ω) : ℕ :=
+  Classical.choose
+    (countableForwardPredictableStrategyPACBayesFinitePrefix_exists_argmin
+      prior weight X strategy posterior delta maxIndex n ω)
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- The finite-prefix selector belongs to its declared candidate range. -/
+theorem countableForwardPredictableStrategyPACBayesFinitePrefixArgmin_mem
+    (prior : ι → ℝ) (weight : ℕ → ℝ)
+    (X : ι → ℕ → Ω → ℝ) (strategy : ℕ → ℕ → Ω → ℝ)
+    (posterior : ι → ℝ) (delta : ℝ)
+    (maxIndex n : ℕ) (ω : Ω) :
+    countableForwardPredictableStrategyPACBayesFinitePrefixArgmin
+        prior weight X strategy posterior delta maxIndex n ω ∈
+      Finset.range (maxIndex + 1) := by
+  exact
+    (Classical.choose_spec
+      (countableForwardPredictableStrategyPACBayesFinitePrefix_exists_argmin
+        prior weight X strategy posterior delta maxIndex n ω)).1
+
+omit [DecidableEq ι] [Nonempty ι] in
+/-- The selected finite-prefix boundary is no larger than every candidate
+boundary in the declared prefix. -/
+theorem countableForwardPredictableStrategyPACBayesFinitePrefixArgmin_le
+    (prior : ι → ℝ) (weight : ℕ → ℝ)
+    (X : ι → ℕ → Ω → ℝ) (strategy : ℕ → ℕ → Ω → ℝ)
+    (posterior : ι → ℝ) (delta : ℝ)
+    (maxIndex n : ℕ) (ω : Ω)
+    {j : ℕ} (hj : j ∈ Finset.range (maxIndex + 1)) :
+    countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+        prior weight X strategy posterior delta
+          (countableForwardPredictableStrategyPACBayesFinitePrefixArgmin
+            prior weight X strategy posterior delta maxIndex n ω)
+          n ω ≤
+      countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+        prior weight X strategy posterior delta j n ω := by
+  exact
+    (Classical.choose_spec
+      (countableForwardPredictableStrategyPACBayesFinitePrefix_exists_argmin
+        prior weight X strategy posterior delta maxIndex n ω)).2 j hj
+
+omit [DecidableEq ι] in
+/-- One countable-uniform event supports exact post-data minimization over any
+declared finite prefix.  The selector competes only with that prefix, while
+the underlying event remains simultaneous over the whole countable catalog. -/
+theorem
+    exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event
+    [IsProbabilityMeasure μ]
+    {prior : ι → ℝ} (hprior : IsFullSupportPMF prior)
+    {weight : ℕ → ℝ} (hweight_pos : ∀ j, 0 < weight j)
+    (hweight_sum_one : HasSum weight 1)
+    {X : ι → ℕ → Ω → ℝ} {risk : ι → ℝ}
+    {strategy : ℕ → ℕ → Ω → ℝ} {L delta : ℝ}
+    (hL1 : L < 1) (hdelta : 0 < delta)
+    (hrisk : ∀ i, 0 ≤ risk i ∧ risk i ≤ 1)
+    (hX_adapted : ∀ i, IncrementAdapted ℱ (X i))
+    (hstrategy_adapted : ∀ j, StronglyAdapted ℱ (strategy j))
+    (hX_unit : ∀ i k ω, 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+    (hstrategy_range : ∀ j k ω,
+      0 ≤ strategy j k ω ∧ strategy j k ω ≤ L)
+    (hmean : ∀ i k, μ[X i k | ℱ k] =ᵐ[μ] fun _ ↦ risk i) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent, ∀ posterior : ι → ℝ, IsPMF posterior →
+          ∀ n maxIndex : ℕ,
+            (∀ j ∈ Finset.range (maxIndex + 1),
+              0 < forwardPredictableTiltPosteriorTotalWeight posterior
+                (fun _i ↦ strategy j) n ω) →
+              let selected :=
+                countableForwardPredictableStrategyPACBayesFinitePrefixArgmin
+                  prior weight X strategy posterior delta maxIndex n ω
+              selected ∈ Finset.range (maxIndex + 1) ∧
+                posteriorAverage posterior risk <
+                  countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+                    prior weight X strategy posterior delta selected n ω ∧
+                ∀ j ∈ Finset.range (maxIndex + 1),
+                  countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+                      prior weight X strategy posterior delta selected n ω ≤
+                    countableForwardPredictableStrategyPACBayesSelectedAtomBoundary
+                      prior weight X strategy posterior delta j n ω := by
+  obtain ⟨goodEvent, hmass, hgood⟩ :=
+    exists_countableForwardPredictableStrategyPACBayes_event
+      hprior hweight_pos hweight_sum_one hL1 hdelta hrisk hX_adapted
+      hstrategy_adapted hX_unit hstrategy_range hmean
+  refine ⟨goodEvent, hmass, ?_⟩
+  intro ω hω posterior hposterior n maxIndex hexposure
+  let selected :=
+    countableForwardPredictableStrategyPACBayesFinitePrefixArgmin
+      prior weight X strategy posterior delta maxIndex n ω
+  have hselected_mem : selected ∈ Finset.range (maxIndex + 1) := by
+    exact countableForwardPredictableStrategyPACBayesFinitePrefixArgmin_mem
+      prior weight X strategy posterior delta maxIndex n ω
+  have hrisk_bound := hgood ω hω selected posterior hposterior n
+    (hexposure selected hselected_mem)
+  refine ⟨hselected_mem, hrisk_bound, ?_⟩
+  intro j hj
+  exact countableForwardPredictableStrategyPACBayesFinitePrefixArgmin_le
+    prior weight X strategy posterior delta maxIndex n ω hj
+
 end
 
 end FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable
