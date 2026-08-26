@@ -43,6 +43,9 @@ members of the tagged v0.2 compatibility surface.
 
 | Declaration | Topic import | Implementation module | Role |
 |---|---|---|---|
+| `FormalSLT.AnytimeValid.wealthWeightedBet_eProcess_of_positive_factors` | `FormalSLT.Sequential` | `AnytimeValid.ComputablePredictableBettingMixture` | Exact executable finite wealth-weighted predictable strategy whose wealth equals the fixed expert mixture and is an e-process under positive-factor premises |
+| `FormalSLT.AnytimeValid.countableSleepingMasterBet_eProcess` | `FormalSLT.Sequential` | `AnytimeValid.CountableSleepingPredictableBettingMixture` | Exact countable sleeping-expert master with a finite active-prefix computation, closed-form tail, and e-process guarantee |
+| `FormalSLT.AnytimeValid.countableSleepingMaster_logWealth_regret_le` | `FormalSLT.Sequential` | `AnytimeValid.CountableSleepingPredictableBettingMixture` | Log-wealth competition against every active declared expert with its explicit dyadic prior cost |
 | `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes.exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayes` | Post-data model and predictable-strategy posterior PMFs with separate finite KL charges and ordinary conditional-risk semantics for shared strategies |
 | `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | One countable master e-process supports every predeclared predictable strategy atom, finite model posterior, and reporting time with positive exposure |
 | `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | Exact path-, time-, and posterior-dependent minimization over any declared finite prefix of the countable strategy catalog |
@@ -829,6 +832,12 @@ members of the tagged v0.2 compatibility surface.
 | `bettingWealth_supermartingale` | `AnytimeValid.BettingCS` | Betting wealth from predictable bets under the conditional-mean null is a nonnegative supermartingale |
 | `betting_time_uniform_confidence_sequence` | `AnytimeValid.BettingCS` | Countable-time Ville confidence sequence for the betting wealth e-process |
 | `betting_confidence_sequence_of_condMean` | `AnytimeValid.BettingCS` | End-to-end betting confidence sequence for a bounded mean from predictable bets and the conditional-mean null |
+| `aggregateWealth_eq_finiteExpertMixtureWealth` | `AnytimeValid.ComputablePredictableBettingMixture` | The wealth of the executable finite wealth-weighted master equals the fixed-prior mixture of supplied expert wealths at every time and path |
+| `wealthWeightedBet_eProcess_of_positive_factors` | `AnytimeValid.ComputablePredictableBettingMixture` | Positive prior weights, legal predictable expert bets, and positive factors make the executable master wealth an e-process |
+| `aggregate_logWealth_regret_le` | `AnytimeValid.ComputablePredictableBettingMixture` | The finite master competes in log wealth with every positive-prior supplied strategy, paying its explicit log prior-weight cost |
+| `countableSleepingMixtureWealth_eq_tsum` | `AnytimeValid.CountableSleepingPredictableBettingMixture` | The finite active-prefix plus closed-form sleeping tail equals the literal real infinite mixture at every time and path |
+| `countableSleepingMasterBet_eProcess` | `AnytimeValid.CountableSleepingPredictableBettingMixture` | The exact countable sleeping-expert master is an e-process under legal predictable bets and nonnegative factors |
+| `countableSleepingMaster_logWealth_regret_le` | `AnytimeValid.CountableSleepingPredictableBettingMixture` | The master competes with every expert after activation, with the explicit dyadic atom cost |
 | `literalDyadicEpochWeight_not_summable` | `AnytimeValid.DyadicEpochCS` | Obstruction: the literal harmonic dyadic-epoch weights are not summable, ruling out the naive all-`n` epoch mixture |
 | `pSeriesDyadicEpochWeight_summable` | `AnytimeValid.DyadicEpochCS` | The redirected p-series dyadic-epoch weights are summable, recovering a finite epoch-capital budget |
 | `pSeriesDyadicEpochWeight_zero_unitPenalty` | `AnytimeValid.DyadicEpochCS` | The concrete unit-capital stitching penalty for the first p-series epoch is `log 2` |
