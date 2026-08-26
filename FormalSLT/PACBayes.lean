@@ -69,6 +69,7 @@ import FormalSLT.PACBayes.MaurerKL
 import FormalSLT.PACBayes.TimeUniformPACBayes
 import FormalSLT.PACBayes.TimeUniformScorePACBayes
 import FormalSLT.PACBayes.ForwardPredictableTiltPACBayes
+import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
 import FormalSLT.PACBayes.TimeUniformTiltMixture
 import FormalSLT.PACBayes.TimeUniformIID
 import FormalSLT.PACBayes.ForwardBesselPACBayes

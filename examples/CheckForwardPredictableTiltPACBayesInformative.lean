@@ -1,4 +1,4 @@
-import FormalSLT.PACBayes.ForwardPredictableTiltPACBayes
+import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
 import FormalSLT.PACBayes.ForwardBesselPACBayesIID
 import FormalSLT.PACBayes.IIDContinuousGaussian
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -19,6 +19,12 @@ total tilt `31 / 2`, and has zero tilt-weighted empirical loss.  At confidence
 `1 - 1 / 128`, its checked normalized boundary is strictly below `2 / 5`.
 The prefix cylinder has probability greater than `1 / 128`, so at least one
 path with these statistics lies outside the common exceptional event.
+
+The second receipt selects between two distinct predeclared predictable
+strategies after observing the path.  It charges a separate `log 2` strategy
+cost in addition to the `log 2` model cost and proves the checked boundary below
+`7 / 16`, while retaining conditional risk `1 / 32`, zero normalized observed
+loss, and positive-mass support outside the exceptional event.
 -/
 
 namespace FormalSLT.Examples.CheckForwardPredictableTiltPACBayesInformative
@@ -29,6 +35,8 @@ open FormalSLT.PACBayesKL
 open FormalSLT.PACBayes.TimeUniformIID
 open FormalSLT.PACBayes.ForwardBesselPACBayesIID
 open FormalSLT.PACBayes.ForwardPredictableTiltPACBayes
+open FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
+open FormalSLT.PACBayes.StabilityBridge
 open scoped ENNReal
 
 noncomputable section
@@ -761,6 +769,506 @@ theorem informative_nonvacuous_receipt :
   · rw [hposterior]
     exact selected_point_quadraticPenalty_le_125_256_of_mem hcylinder
 
+/-! ## Exact post-data model--strategy selection receipt -/
+
+/-- A second predeclared strategy.  It skips the first loss and then uses the
+fixed conservative tilt `1 / 4`. -/
+def conservativePredictableTilt (_h : Bool) (k : ℕ)
+    (_omega : BiasedBoolStream) : ℝ :=
+  if k = 0 then 0 else 1 / 4
+
+theorem conservativePredictableTilt_stronglyAdapted (h : Bool) :
+    StronglyAdapted streamFiltration (conservativePredictableTilt h) := by
+  intro k
+  change StronglyMeasurable[streamFiltration k]
+    (fun _ : BiasedBoolStream ↦ if k = 0 then (0 : ℝ) else 1 / 4)
+  exact stronglyMeasurable_const
+
+theorem conservativePredictableTilt_range (h : Bool) (k : ℕ)
+    (omega : BiasedBoolStream) :
+    0 ≤ conservativePredictableTilt h k omega ∧
+      conservativePredictableTilt h k omega ≤ (1 / 2 : ℝ) := by
+  by_cases hk : k = 0
+  · simp [conservativePredictableTilt, hk]
+  · norm_num [conservativePredictableTilt, hk]
+
+/-- Two strategies declared before observation: the genuinely path-dependent
+rule from the first receipt and a conservative constant-after-first rule. -/
+def informativeStrategyCatalog (j h : Bool) (k : ℕ)
+    (omega : BiasedBoolStream) : ℝ :=
+  if j then predictableTilt h k omega else conservativePredictableTilt h k omega
+
+theorem informativeStrategyCatalog_stronglyAdapted (j h : Bool) :
+    StronglyAdapted streamFiltration (informativeStrategyCatalog j h) := by
+  cases j
+  · intro k
+    change StronglyMeasurable[streamFiltration k]
+      (conservativePredictableTilt h k)
+    exact conservativePredictableTilt_stronglyAdapted h k
+  · intro k
+    change StronglyMeasurable[streamFiltration k] (predictableTilt h k)
+    exact predictableTilt_stronglyAdapted h k
+
+theorem informativeStrategyCatalog_range (j h : Bool) (k : ℕ)
+    (omega : BiasedBoolStream) :
+    0 ≤ informativeStrategyCatalog j h k omega ∧
+      informativeStrategyCatalog j h k omega ≤ (1 / 2 : ℝ) := by
+  cases j
+  · simpa [informativeStrategyCatalog] using
+      conservativePredictableTilt_range h k omega
+  · simpa [informativeStrategyCatalog] using predictableTilt_range h k omega
+
+/-- The strategy posterior is selected after observing the path.  Reusing the
+same Boolean selector keeps the receipt small; the strategy catalog above is
+separate from the model catalog. -/
+def selectedStrategyPosterior (omega : BiasedBoolStream) (n : ℕ) : Bool → ℝ :=
+  selectedPosterior omega n
+
+theorem selectedStrategyPosterior_isPMF (omega : BiasedBoolStream) (n : ℕ) :
+    IsPMF (selectedStrategyPosterior omega n) := by
+  exact selectedPosterior_isPMF omega n
+
+/-- The post-data strategy selector is not a fixed posterior. -/
+theorem selectedStrategyPosterior_pathDependent_witness :
+    selectedStrategyPosterior oneFalseThirtyOneTrueStream 32 = truePosterior ∧
+      selectedStrategyPosterior allTrueStream 32 = falsePosterior := by
+  constructor <;>
+    simp [selectedStrategyPosterior, selectedPosterior,
+      biasedBoolCoordinateSample, oneFalseThirtyOneTrueStream, allTrueStream]
+
+/-- The two predeclared strategies make different bets on the receipt path. -/
+theorem informativeStrategyCatalog_distinct_witness :
+    informativeStrategyCatalog true true 1 oneFalseThirtyOneTrueStream =
+        (1 : ℝ) / 2 ∧
+      informativeStrategyCatalog false true 1 oneFalseThirtyOneTrueStream =
+        (1 : ℝ) / 4 := by
+  norm_num [informativeStrategyCatalog, predictableTilt,
+    conservativePredictableTilt, afterFirstTilt, biasedBoolCoordinateSample,
+    oneFalseThirtyOneTrueStream]
+
+theorem selectedStrategyPosterior_of_mem_informativePrefixCylinder
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    selectedStrategyPosterior omega 32 = truePosterior := by
+  simpa [selectedStrategyPosterior] using
+    selectedPosterior_of_mem_informativePrefixCylinder homega
+
+theorem selectedStrategy_kl_eq_log_two_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    klDiv (selectedStrategyPosterior omega 32) uniformBoolPrior = Real.log 2 := by
+  rw [selectedStrategyPosterior_of_mem_informativePrefixCylinder homega]
+  exact truePosterior_kl_eq_log_two
+
+/-- Factorized selected posterior on model--strategy pairs. -/
+def selectedModelStrategyPosterior (omega : BiasedBoolStream) (n : ℕ) :
+    Bool × Bool → ℝ :=
+  modelStrategyProductPrior
+    (selectedPosterior omega n) (selectedStrategyPosterior omega n)
+
+theorem selectedModelStrategyPosterior_isPMF
+    (omega : BiasedBoolStream) (n : ℕ) :
+    IsPMF (selectedModelStrategyPosterior omega n) := by
+  exact modelStrategyProductPrior_isPMF
+    (selectedPosterior_isPMF omega n)
+    (selectedStrategyPosterior_isPMF omega n)
+
+theorem selectedModelStrategyPosterior_eq_dirac_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    selectedModelStrategyPosterior omega 32 = diracPosterior (true, true) := by
+  unfold selectedModelStrategyPosterior
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega,
+    selectedStrategyPosterior_of_mem_informativePrefixCylinder homega]
+  funext p
+  rcases p with ⟨i, j⟩
+  cases i <;> cases j <;>
+    simp [modelStrategyProductPrior, truePosterior, diracPosterior]
+
+theorem posteriorAverage_dirac_true_true (g : Bool × Bool → ℝ) :
+    posteriorAverage (diracPosterior (true, true)) g = g (true, true) := by
+  unfold posteriorAverage diracPosterior
+  rw [Fintype.sum_prod_type]
+  simp
+
+theorem selectedStrategy_totalWeight_eq_thirtyOne_halves_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorTotalWeight
+        (selectedModelStrategyPosterior omega 32)
+        informativeStrategyCatalog 32 omega = (31 : ℝ) / 2 := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorTotalWeight
+    forwardPredictableTiltPosteriorTotalWeight
+  rw [posteriorAverage_dirac_true_true]
+  simpa [modelStrategyPredictableTilt, informativeStrategyCatalog,
+    totalSelectedTilt] using totalSelectedTilt_eq_thirtyOne_halves_of_mem homega
+
+theorem selectedStrategy_normalizedObservation_eq_zero_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorNormalizedObservation
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        informativeStrategyCatalog 32 omega = 0 := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorNormalizedObservation
+    forwardPredictableTiltPosteriorNormalizedObservation
+    forwardPredictableTiltPosteriorTotalWeight
+  rw [posteriorAverage_dirac_true_true, posteriorAverage_dirac_true_true]
+  simp only [modelStrategyProcess, modelStrategyPredictableTilt,
+    informativeStrategyCatalog, if_true]
+  rw [selected_weightedEmpiricalLoss_eq_zero_of_mem homega]
+  exact zero_div _
+
+theorem selectedStrategy_normalizedMean_eq_populationRisk_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorNormalizedMean
+        (selectedModelStrategyPosterior omega 32) meanLoss
+        informativeStrategyCatalog 32 omega = selectedPopulationRisk omega := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorNormalizedMean
+    forwardPredictableTiltPosteriorNormalizedMean
+    forwardPredictableTiltPosteriorTotalWeight
+  rw [posteriorAverage_dirac_true_true, posteriorAverage_dirac_true_true]
+  simp only [modelStrategyProcess, modelStrategyPredictableTilt,
+    informativeStrategyCatalog, if_true]
+  have hmean : ∀ k, meanLoss true k omega = (1 : ℝ) / 32 := by
+    intro k
+    simp [meanLoss, true_populationRisk_eq_one_thirtyTwo]
+  simp_rw [hmean]
+  have hsum :
+      (∑ k ∈ Finset.range 32,
+        predictableTilt true k omega * ((1 : ℝ) / 32)) =
+        (1 : ℝ) / 32 * totalSelectedTilt omega := by
+    unfold totalSelectedTilt
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro k _hk
+    ring
+  have hdenom :
+      (∑ k ∈ Finset.range 32, predictableTilt true k omega) =
+        totalSelectedTilt omega := rfl
+  rw [hsum, hdenom, totalSelectedTilt_eq_thirtyOne_halves_of_mem homega]
+  rw [selectedPopulationRisk_eq_one_thirtyTwo_of_mem homega]
+  norm_num
+
+theorem selectedStrategy_quadraticPenalty_le_125_256_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorQuadraticPenalty
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        informativeStrategyCatalog 32 omega ≤ (125 : ℝ) / 256 := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorQuadraticPenalty
+    forwardPredictableTiltPosteriorQuadraticPenalty
+  rw [posteriorAverage_dirac_true_true]
+  simp only [modelStrategyProcess, modelStrategyPredictableTilt,
+    informativeStrategyCatalog, if_true]
+  have hpenalty := selected_point_quadraticPenalty_le_125_256_of_mem homega
+  unfold forwardPredictableTiltPosteriorQuadraticPenalty posteriorAverage at hpenalty
+  rw [Fintype.sum_bool] at hpenalty
+  simpa [truePosterior] using hpenalty
+
+/-- Exact factorized selected boundary.  The first `KL` is model selection and
+the second, separately visible `KL`, is post-data strategy selection. -/
+def informativeStrategyBoundary (omega : BiasedBoolStream) : ℝ :=
+  (((klDiv (selectedPosterior omega 32) uniformBoolPrior +
+        klDiv (selectedStrategyPosterior omega 32) uniformBoolPrior) +
+      Real.log (1 / ((1 : ℝ) / 128)) +
+      forwardPredictableStrategyPosteriorQuadraticPenalty
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        informativeStrategyCatalog 32 omega) /
+    ((31 : ℝ) / 2))
+
+theorem selectedStrategy_complexity_eq_nine_log_two_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    (klDiv (selectedPosterior omega 32) uniformBoolPrior +
+          klDiv (selectedStrategyPosterior omega 32) uniformBoolPrior) +
+        Real.log (1 / ((1 : ℝ) / 128)) = 9 * Real.log 2 := by
+  rw [selectedPosterior_of_mem_informativePrefixCylinder homega,
+    selectedStrategyPosterior_of_mem_informativePrefixCylinder homega,
+    truePosterior_kl_eq_log_two]
+  norm_num
+  rw [show (128 : ℝ) = 2 ^ (7 : ℕ) by norm_num, Real.log_pow]
+  ring
+
+theorem informativeStrategyBoundary_lt_seven_sixteenths_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    informativeStrategyBoundary omega < (7 : ℝ) / 16 := by
+  have hcomplexity := selectedStrategy_complexity_eq_nine_log_two_of_mem homega
+  have hpenalty := selectedStrategy_quadraticPenalty_le_125_256_of_mem homega
+  have hlog : Real.log 2 < (6932 : ℝ) / 10000 :=
+    Real.log_two_lt_d9.trans (by norm_num)
+  unfold informativeStrategyBoundary
+  rw [hcomplexity]
+  nlinarith
+
+/-- The theorem-produced model--strategy certificate remains nonvacuous after
+charging a separate positive `log 2` cost for post-data strategy selection. -/
+theorem informative_strategySelection_nonvacuous_receipt :
+    ∃ goodEvent : Set BiasedBoolStream, ∃ omega : BiasedBoolStream,
+      biasedBoolStreamLaw.real goodEventᶜ ≤ (1 : ℝ) / 128 ∧
+      omega ∈ goodEvent ∧
+      omega ∈ informativePrefixCylinder ∧
+      selectedPosterior omega 32 = truePosterior ∧
+      selectedStrategyPosterior omega 32 = truePosterior ∧
+      klDiv (selectedPosterior omega 32) uniformBoolPrior = Real.log 2 ∧
+      klDiv (selectedStrategyPosterior omega 32) uniformBoolPrior = Real.log 2 ∧
+      informativeStrategyCatalog true true 1 omega = (1 : ℝ) / 2 ∧
+      informativeStrategyCatalog false true 1 omega = (1 : ℝ) / 4 ∧
+      forwardPredictableStrategyPosteriorTotalWeight
+          (selectedModelStrategyPosterior omega 32)
+          informativeStrategyCatalog 32 omega = (31 : ℝ) / 2 ∧
+      forwardPredictableStrategyPosteriorNormalizedObservation
+          (selectedModelStrategyPosterior omega 32) observedLoss
+          informativeStrategyCatalog 32 omega = 0 ∧
+      selectedPopulationRisk omega = (1 : ℝ) / 32 ∧
+      forwardPredictableStrategyPosteriorQuadraticPenalty
+          (selectedModelStrategyPosterior omega 32) observedLoss
+          informativeStrategyCatalog 32 omega ≤ (125 : ℝ) / 256 ∧
+      selectedPopulationRisk omega < informativeStrategyBoundary omega ∧
+      informativeStrategyBoundary omega < (7 : ℝ) / 16 := by
+  letI := biasedBoolStreamLaw_isProbabilityMeasure
+  obtain ⟨goodEvent, hmass, hgood⟩ :=
+    exists_forwardPredictableStrategyPACBayes_factorized_normalized_selected_event
+      (μ := biasedBoolStreamLaw) (ℱ := streamFiltration)
+      (modelPrior := uniformBoolPrior) uniformBoolPrior_isFullSupportPMF
+      (strategyPrior := uniformBoolPrior) uniformBoolPrior_isFullSupportPMF
+      (X := observedLoss) (mean := meanLoss)
+      (lambda := informativeStrategyCatalog)
+      (L := (1 / 2 : ℝ)) (delta := (1 / 128 : ℝ))
+      (by norm_num) (by norm_num)
+      observedLoss_incrementAdapted meanLoss_stronglyAdapted
+      informativeStrategyCatalog_stronglyAdapted observedLoss_unit
+      informativeStrategyCatalog_range observedLoss_condExp_eq_meanLoss
+      selectedPosterior selectedPosterior_isPMF
+      selectedStrategyPosterior selectedStrategyPosterior_isPMF
+  have hintersection : ∃ omega : BiasedBoolStream,
+      omega ∈ informativePrefixCylinder ∧ omega ∈ goodEvent := by
+    by_contra hnone
+    have hsubset : informativePrefixCylinder ⊆ goodEventᶜ := by
+      intro omega hcylinder
+      by_contra hcomplement
+      exact hnone ⟨omega, hcylinder, by simpa using hcomplement⟩
+    have hmono :
+        biasedBoolStreamLaw.real informativePrefixCylinder ≤
+          biasedBoolStreamLaw.real goodEventᶜ :=
+      measureReal_mono hsubset
+    linarith [informativePrefixCylinder_mass_gt_delta]
+  obtain ⟨omega, hcylinder, hgoodOmega⟩ := hintersection
+  have hmodel := selectedPosterior_of_mem_informativePrefixCylinder hcylinder
+  have hstrategy :=
+    selectedStrategyPosterior_of_mem_informativePrefixCylinder hcylinder
+  have hweight := selectedStrategy_totalWeight_eq_thirtyOne_halves_of_mem hcylinder
+  have hweightPos : 0 <
+      forwardPredictableStrategyPosteriorTotalWeight
+        (selectedModelStrategyPosterior omega 32)
+        informativeStrategyCatalog 32 omega := by
+    rw [hweight]
+    norm_num
+  have hbound := hgood omega hgoodOmega 32 hweightPos
+  have hriskBound :
+      selectedPopulationRisk omega < informativeStrategyBoundary omega := by
+    have hposteriorDef :
+        modelStrategyProductPrior
+            (selectedPosterior omega 32) (selectedStrategyPosterior omega 32) =
+          selectedModelStrategyPosterior omega 32 := rfl
+    rw [hposteriorDef] at hbound
+    rw [selectedStrategy_normalizedMean_eq_populationRisk_of_mem hcylinder,
+      selectedStrategy_normalizedObservation_eq_zero_of_mem hcylinder,
+      hweight, zero_add] at hbound
+    simpa [selectedModelStrategyPosterior, informativeStrategyBoundary] using hbound
+  have hselectedTilt := true_predictableTilt_of_mem hcylinder
+  refine ⟨goodEvent, omega, hmass, hgoodOmega, hcylinder, hmodel, hstrategy,
+    ?_, ?_, ?_, ?_, hweight,
+    selectedStrategy_normalizedObservation_eq_zero_of_mem hcylinder,
+    selectedPopulationRisk_eq_one_thirtyTwo_of_mem hcylinder,
+    selectedStrategy_quadraticPenalty_le_125_256_of_mem hcylinder,
+    hriskBound, informativeStrategyBoundary_lt_seven_sixteenths_of_mem hcylinder⟩
+  · rw [hmodel]
+    exact truePosterior_kl_eq_log_two
+  · exact selectedStrategy_kl_eq_log_two_of_mem hcylinder
+  · simpa [informativeStrategyCatalog] using hselectedTilt 1
+  · simp [informativeStrategyCatalog, conservativePredictableTilt]
+
+/-! ## Shared history-dependent strategies and ordinary risk -/
+
+/-- The same two strategies, now shared across models.  The first strategy is
+still genuinely path dependent: it uses the Boolean-`true` hypothesis's first
+revealed loss to choose every later tilt. -/
+def sharedInformativeStrategyCatalog (j : Bool) (k : ℕ)
+    (omega : BiasedBoolStream) : ℝ :=
+  informativeStrategyCatalog j true k omega
+
+theorem sharedInformativeStrategyCatalog_stronglyAdapted (j : Bool) :
+    StronglyAdapted streamFiltration (sharedInformativeStrategyCatalog j) := by
+  exact informativeStrategyCatalog_stronglyAdapted j true
+
+theorem sharedInformativeStrategyCatalog_range (j : Bool) (k : ℕ)
+    (omega : BiasedBoolStream) :
+    0 ≤ sharedInformativeStrategyCatalog j k omega ∧
+      sharedInformativeStrategyCatalog j k omega ≤ (1 / 2 : ℝ) := by
+  exact informativeStrategyCatalog_range j true k omega
+
+theorem selectedSharedStrategy_totalWeight_eq_thirtyOne_halves_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorTotalWeight
+        (selectedModelStrategyPosterior omega 32)
+        (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega =
+      (31 : ℝ) / 2 := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorTotalWeight
+    forwardPredictableTiltPosteriorTotalWeight
+  rw [posteriorAverage_dirac_true_true]
+  simpa [modelStrategyPredictableTilt, sharedInformativeStrategyCatalog,
+    informativeStrategyCatalog, totalSelectedTilt] using
+      totalSelectedTilt_eq_thirtyOne_halves_of_mem homega
+
+theorem selectedSharedStrategy_normalizedObservation_eq_zero_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorNormalizedObservation
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega = 0 := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorNormalizedObservation
+    forwardPredictableTiltPosteriorNormalizedObservation
+    forwardPredictableTiltPosteriorTotalWeight
+  rw [posteriorAverage_dirac_true_true, posteriorAverage_dirac_true_true]
+  simp only [modelStrategyProcess, modelStrategyPredictableTilt,
+    sharedInformativeStrategyCatalog, informativeStrategyCatalog, if_true]
+  rw [selected_weightedEmpiricalLoss_eq_zero_of_mem homega]
+  exact zero_div _
+
+theorem selectedSharedStrategy_quadraticPenalty_le_125_256_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    forwardPredictableStrategyPosteriorQuadraticPenalty
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega ≤
+      (125 : ℝ) / 256 := by
+  rw [selectedModelStrategyPosterior_eq_dirac_of_mem homega]
+  unfold forwardPredictableStrategyPosteriorQuadraticPenalty
+    forwardPredictableTiltPosteriorQuadraticPenalty
+  rw [posteriorAverage_dirac_true_true]
+  simp only [modelStrategyProcess, modelStrategyPredictableTilt,
+    sharedInformativeStrategyCatalog, informativeStrategyCatalog, if_true]
+  have hpenalty := selected_point_quadraticPenalty_le_125_256_of_mem homega
+  unfold forwardPredictableTiltPosteriorQuadraticPenalty posteriorAverage at hpenalty
+  rw [Fintype.sum_bool] at hpenalty
+  simpa [truePosterior] using hpenalty
+
+def informativeSharedStrategyBoundary (omega : BiasedBoolStream) : ℝ :=
+  (((klDiv (selectedPosterior omega 32) uniformBoolPrior +
+        klDiv (selectedStrategyPosterior omega 32) uniformBoolPrior) +
+      Real.log (1 / ((1 : ℝ) / 128)) +
+      forwardPredictableStrategyPosteriorQuadraticPenalty
+        (selectedModelStrategyPosterior omega 32) observedLoss
+        (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega) /
+    ((31 : ℝ) / 2))
+
+theorem informativeSharedStrategyBoundary_lt_seven_sixteenths_of_mem
+    {omega : BiasedBoolStream} (homega : omega ∈ informativePrefixCylinder) :
+    informativeSharedStrategyBoundary omega < (7 : ℝ) / 16 := by
+  have hcomplexity := selectedStrategy_complexity_eq_nine_log_two_of_mem homega
+  have hpenalty :=
+    selectedSharedStrategy_quadraticPenalty_le_125_256_of_mem homega
+  have hlog : Real.log 2 < (6932 : ℝ) / 10000 :=
+    Real.log_two_lt_d9.trans (by norm_num)
+  unfold informativeSharedStrategyBoundary
+  rw [hcomplexity]
+  nlinarith
+
+/-- Direct exact receipt for the ordinary-risk theorem with a finite catalog
+of shared, history-dependent predictable strategies.  Model and strategy
+posteriors are both selected from the observed path and each pays `log 2`.
+The target `1 / 32` is the posterior average of the supplied constant
+conditional model risks. -/
+theorem informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt :
+    ∃ goodEvent : Set BiasedBoolStream, ∃ omega : BiasedBoolStream,
+      biasedBoolStreamLaw.real goodEventᶜ ≤ (1 : ℝ) / 128 ∧
+      omega ∈ goodEvent ∧
+      omega ∈ informativePrefixCylinder ∧
+      selectedPosterior omega 32 = truePosterior ∧
+      selectedStrategyPosterior omega 32 = truePosterior ∧
+      klDiv (selectedPosterior omega 32) uniformBoolPrior = Real.log 2 ∧
+      klDiv (selectedStrategyPosterior omega 32) uniformBoolPrior = Real.log 2 ∧
+      sharedInformativeStrategyCatalog true 1 omega = (1 : ℝ) / 2 ∧
+      sharedInformativeStrategyCatalog false 1 omega = (1 : ℝ) / 4 ∧
+      forwardPredictableStrategyPosteriorTotalWeight
+          (selectedModelStrategyPosterior omega 32)
+          (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega =
+        (31 : ℝ) / 2 ∧
+      forwardPredictableStrategyPosteriorNormalizedObservation
+          (selectedModelStrategyPosterior omega 32) observedLoss
+          (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega = 0 ∧
+      selectedPopulationRisk omega = (1 : ℝ) / 32 ∧
+      forwardPredictableStrategyPosteriorQuadraticPenalty
+          (selectedModelStrategyPosterior omega 32) observedLoss
+          (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega ≤
+        (125 : ℝ) / 256 ∧
+      selectedPopulationRisk omega < informativeSharedStrategyBoundary omega ∧
+      informativeSharedStrategyBoundary omega < (7 : ℝ) / 16 := by
+  letI := biasedBoolStreamLaw_isProbabilityMeasure
+  obtain ⟨goodEvent, hmass, hgood⟩ :=
+    exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event
+      (μ := biasedBoolStreamLaw) (ℱ := streamFiltration)
+      (modelPrior := uniformBoolPrior) uniformBoolPrior_isFullSupportPMF
+      (strategyPrior := uniformBoolPrior) uniformBoolPrior_isFullSupportPMF
+      (risk := iidLossPopulationRisk biasedBoolLaw disagreementLoss)
+      (X := observedLoss) (lambda := sharedInformativeStrategyCatalog)
+      (L := (1 / 2 : ℝ)) (delta := (1 / 128 : ℝ))
+      (by norm_num) (by norm_num) observedLoss_incrementAdapted
+      sharedInformativeStrategyCatalog_stronglyAdapted observedLoss_unit
+      sharedInformativeStrategyCatalog_range
+      (fun h k ↦ by
+        change biasedBoolStreamLaw[observedLoss h k | streamFiltration k]
+          =ᵐ[biasedBoolStreamLaw] meanLoss h k
+        exact observedLoss_condExp_eq_meanLoss h k)
+  have hintersection : ∃ omega : BiasedBoolStream,
+      omega ∈ informativePrefixCylinder ∧ omega ∈ goodEvent := by
+    by_contra hnone
+    have hsubset : informativePrefixCylinder ⊆ goodEventᶜ := by
+      intro omega hcylinder
+      by_contra hcomplement
+      exact hnone ⟨omega, hcylinder, by simpa using hcomplement⟩
+    have hmono :
+        biasedBoolStreamLaw.real informativePrefixCylinder ≤
+          biasedBoolStreamLaw.real goodEventᶜ :=
+      measureReal_mono hsubset
+    linarith [informativePrefixCylinder_mass_gt_delta]
+  obtain ⟨omega, hcylinder, hgoodOmega⟩ := hintersection
+  have hmodel := selectedPosterior_of_mem_informativePrefixCylinder hcylinder
+  have hstrategy :=
+    selectedStrategyPosterior_of_mem_informativePrefixCylinder hcylinder
+  have hweight :=
+    selectedSharedStrategy_totalWeight_eq_thirtyOne_halves_of_mem hcylinder
+  have hweightPos : 0 <
+      forwardPredictableStrategyPosteriorTotalWeight
+        (selectedModelStrategyPosterior omega 32)
+        (fun j _h ↦ sharedInformativeStrategyCatalog j) 32 omega := by
+    rw [hweight]
+    norm_num
+  have hbound := hgood omega hgoodOmega
+    (selectedPosterior omega 32) (selectedPosterior_isPMF omega 32)
+    (selectedStrategyPosterior omega 32)
+    (selectedStrategyPosterior_isPMF omega 32) 32 hweightPos
+  have hriskBound :
+      selectedPopulationRisk omega < informativeSharedStrategyBoundary omega := by
+    rw [show modelStrategyProductPrior
+        (selectedPosterior omega 32) (selectedStrategyPosterior omega 32) =
+          selectedModelStrategyPosterior omega 32 by rfl] at hbound
+    rw [selectedSharedStrategy_normalizedObservation_eq_zero_of_mem hcylinder,
+      hweight, zero_add] at hbound
+    simpa [selectedPopulationRisk, selectedModelStrategyPosterior,
+      informativeSharedStrategyBoundary] using hbound
+  refine ⟨goodEvent, omega, hmass, hgoodOmega, hcylinder, hmodel, hstrategy,
+    ?_, ?_, ?_, ?_, hweight,
+    selectedSharedStrategy_normalizedObservation_eq_zero_of_mem hcylinder,
+    selectedPopulationRisk_eq_one_thirtyTwo_of_mem hcylinder,
+    selectedSharedStrategy_quadraticPenalty_le_125_256_of_mem hcylinder,
+    hriskBound,
+    informativeSharedStrategyBoundary_lt_seven_sixteenths_of_mem hcylinder⟩
+  · rw [hmodel]
+    exact truePosterior_kl_eq_log_two
+  · exact selectedStrategy_kl_eq_log_two_of_mem hcylinder
+  · simpa [sharedInformativeStrategyCatalog, informativeStrategyCatalog] using
+      (true_predictableTilt_of_mem hcylinder 1)
+  · simp [sharedInformativeStrategyCatalog, informativeStrategyCatalog,
+      conservativePredictableTilt]
+
 /-! ## Public endpoint and axiom receipts -/
 
 #check forwardPredictableTiltMeanEmpiricalBernsteinLowerFactor
@@ -780,6 +1288,15 @@ theorem informative_nonvacuous_receipt :
 #check predictableTilt_nonconstant_prefix_witness
 #check informative_exists_allTime_allPosterior_event
 #check informative_nonvacuous_receipt
+#check exists_forwardPredictableStrategyPACBayes_factorized_normalized_selected_event
+#check posteriorAverage_modelStrategyProductPrior_separable
+#check forwardPredictableStrategyPosteriorTotalWeight_shared_factorized
+#check forwardPredictableStrategyPosteriorNormalizedMean_shared_constant_factorized
+#check exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event
+#check selectedStrategyPosterior_pathDependent_witness
+#check informativeStrategyCatalog_distinct_witness
+#check informative_strategySelection_nonvacuous_receipt
+#check informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt
 
 #print axioms forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_eProcess_of_bounded
 #print axioms forwardPredictableTiltMeanEmpiricalBernsteinLower_typeI_control
@@ -794,6 +1311,15 @@ theorem informative_nonvacuous_receipt :
 #print axioms predictableTilt_nonconstant_prefix_witness
 #print axioms informative_exists_allTime_allPosterior_event
 #print axioms informative_nonvacuous_receipt
+#print axioms exists_forwardPredictableStrategyPACBayes_factorized_normalized_selected_event
+#print axioms posteriorAverage_modelStrategyProductPrior_separable
+#print axioms forwardPredictableStrategyPosteriorTotalWeight_shared_factorized
+#print axioms forwardPredictableStrategyPosteriorNormalizedMean_shared_constant_factorized
+#print axioms exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event
+#print axioms selectedStrategyPosterior_pathDependent_witness
+#print axioms informativeStrategyCatalog_distinct_witness
+#print axioms informative_strategySelection_nonvacuous_receipt
+#print axioms informative_sharedStrategy_ordinaryRisk_nonvacuous_receipt
 
 end
 
