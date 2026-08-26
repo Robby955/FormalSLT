@@ -8,7 +8,9 @@ The public endpoint permits a path- and time-dependent joint posterior over a
 finite model catalog and a finite catalog of predeclared predictable
 strategies.  Its complexity term is KL against the product prior.  The
 strategies remain predictable: post-data selection does not authorize a tilt
-to inspect the current observation.
+to inspect the current observation.  A constant-tilt catalog with a factorized
+selected posterior also yields an ordinary monitored conditional-risk bound,
+with model and strategy selection charged by separate KL terms.
 -/
 
 open FormalSLT.PACBayesKL
@@ -46,6 +48,11 @@ example :
 #check exists_forwardPredictableStrategyPACBayes_factorized_normalized_selected_event
 #check exists_trajectoryPredictableStrategyPACBayes_selected_event
 #check exists_trajectoryPredictableStrategyPACBayes_normalized_selected_event
+#check constantTrajectoryTiltCatalog
+#check trajectoryPredictableStrategyPosteriorTotalWeight_constant_factorized
+#check trajectoryPredictableStrategyPosteriorNormalizedConditionalRisk_constant_factorized
+#check trajectoryPredictableStrategyPosteriorNormalizedEmpiricalRisk_constant_factorized
+#check exists_trajectoryPredictableStrategyPACBayes_constant_factorized_ordinaryRisk_selected_event
 
 #print axioms modelStrategyProductPrior_isFullSupportPMF
 #print axioms dirac_modelStrategyProductPrior_klDiv_eq
@@ -56,6 +63,10 @@ example :
 #print axioms exists_forwardPredictableStrategyPACBayes_factorized_normalized_selected_event
 #print axioms exists_trajectoryPredictableStrategyPACBayes_selected_event
 #print axioms exists_trajectoryPredictableStrategyPACBayes_normalized_selected_event
+#print axioms trajectoryPredictableStrategyPosteriorTotalWeight_constant_factorized
+#print axioms trajectoryPredictableStrategyPosteriorNormalizedConditionalRisk_constant_factorized
+#print axioms trajectoryPredictableStrategyPosteriorNormalizedEmpiricalRisk_constant_factorized
+#print axioms exists_trajectoryPredictableStrategyPACBayes_constant_factorized_ordinaryRisk_selected_event
 
 end
 
