@@ -1,4 +1,4 @@
-import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable
+import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 
 /-!
 # Informative countable-tilt trajectory empirical-Bernstein receipt
@@ -23,6 +23,7 @@ e-process.
 open Finset MeasureTheory ProbabilityTheory
 open FormalSLT.AnytimeValid FormalSLT.PACBayesKL
 open FormalSLT.PACBayes.ForwardBesselPACBayesCountable
+open FormalSLT.PACBayes.ForwardBesselPACBayesOracle
 open scoped ENNReal NNReal
 
 namespace FormalSLT.Examples.CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative
@@ -825,6 +826,120 @@ theorem informative_nonvacuous_receipt :
     simpa [informativeCylinder, firstTrueEvent] using hx.2
   rw [hx1]
 
+/-! ## Observable growing-prefix oracle receipt -/
+
+/-- Exact trajectory boundary after minimizing over the geometric prefix
+available at reporting time `n`. -/
+def observableOracleBoundary (n : ℕ) (x : ℕ → Bool) : ℝ :=
+  trajectoryGrowingPrefixForwardBesselPACBayesBoundary
+    uniformPrior informativeScore (selectedPosterior x n) (1 / 160) n x
+
+/-- The observable oracle retains the previously audited all-time atom as a
+candidate, so its exact boundary can only improve on that boundary. -/
+theorem observableOracleBoundary_le_highConfidenceBoundary
+    (n : ℕ) (x : ℕ → Bool) :
+    observableOracleBoundary n x ≤ highConfidenceBoundary n x := by
+  apply trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_atom
+  simp [growingPrefixForwardBesselPACBayesMaxIndex]
+
+/-- On every path outside the allocated exceptional event, the ordinary
+posterior-averaged conditional trajectory risk is controlled by empirical
+prequential risk plus the exact post-data oracle boundary. -/
+theorem observableOracle_risk_bound_of_not_mem
+    {x : ℕ → Bool} (hx : x ∉ informativeExceptionalEvent) :
+    trajectoryPosteriorAverageConditionalRisk
+        informativeDynamicKernel informativeScore (selectedPosterior x 512) 512 x <
+      trajectoryPosteriorEmpiricalPrequentialRisk
+          informativeScore (selectedPosterior x 512) 512 x +
+        observableOracleBoundary 512 x := by
+  have hbound :=
+    trajectoryCountableEmpiricalBernsteinPACBayes_allPosteriors_of_not_mem
+      informativeDynamicKernel
+      (score := informativeScore)
+      informativeScore_mem_Icc
+      uniformPrior_isFullSupportPMF
+      (delta := (1 / 160 : ℝ)) (by norm_num)
+      (by simpa [informativeExceptionalEvent] using hx)
+      (trajectoryGrowingPrefixForwardBesselPACBayesArgmin
+        uniformPrior informativeScore (selectedPosterior x 512)
+          (1 / 160) 512 x)
+      (selectedPosterior x 512) (selectedPosterior_isPMF x 512)
+      512 (by norm_num)
+  simpa [observableOracleBoundary,
+    trajectoryGrowingPrefixForwardBesselPACBayesBoundary] using hbound
+
+/-- The exact selected boundary is controlled by the explicit observable
+variance-adaptive envelope on the same path. -/
+theorem observableOracleBoundary_512_le_LILEnvelope (x : ℕ → Bool) :
+    observableOracleBoundary 512 x ≤
+      trajectoryGrowingPrefixForwardBesselPACBayesLILEnvelope
+        uniformPrior informativeScore (selectedPosterior x 512)
+          (1 / 160) 512 x := by
+  exact trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope
+    uniformPrior_isFullSupportPMF (selectedPosterior_isPMF x 512)
+    informativeScore_mem_Icc (by norm_num) (by norm_num) (by norm_num) x
+
+/-- At the two audited reporting times, exact post-data minimization preserves
+the previous strict numerical upper bounds without evaluating the classical
+argmin witness. -/
+theorem observableOracleBoundary_numeric_receipt
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    observableOracleBoundary 512 x < (2744 : ℝ) / 10000 ∧
+      observableOracleBoundary 2048 x < (1434 : ℝ) / 10000 := by
+  constructor
+  · exact (observableOracleBoundary_le_highConfidenceBoundary 512 x).trans_lt
+      (highConfidenceBoundary_512_enclosure hx).2
+  · exact (observableOracleBoundary_le_highConfidenceBoundary 2048 x).trans_lt
+      (highConfidenceBoundary_2048_enclosure hx).2
+
+/-- The complete empirical-plus-oracle right-hand side remains strictly below
+`7/25` on the audited positive-mass cylinder. -/
+theorem observableOracle_rhs_512_lt_seven_twenty_fifths_of_mem
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    trajectoryPosteriorEmpiricalPrequentialRisk
+          informativeScore (selectedPosterior x 512) 512 x +
+        observableOracleBoundary 512 x < (7 : ℝ) / 25 := by
+  have horacle := observableOracleBoundary_le_highConfidenceBoundary 512 x
+  have hold := highConfidence_rhs_512_lt_seven_twenty_fifths_of_mem hx
+  linarith
+
+/-- Replayable end-to-end receipt: a positive-mass supported trajectory lies
+outside the allocated exceptional event, its path-selected posterior has the
+ordinary conditional-risk guarantee, and the exact post-data tilt oracle is
+both nonvacuous and bounded by the observable LIL-order envelope. -/
+theorem informative_observableOracle_receipt :
+    ∃ x : ℕ → Bool,
+      x ∈ informativeCylinder ∧
+      x ∉ informativeExceptionalEvent ∧
+      selectedPosterior x 512 = pointPosterior true ∧
+      trajectoryPosteriorAverageConditionalRisk
+          informativeDynamicKernel informativeScore
+            (selectedPosterior x 512) 512 x <
+        trajectoryPosteriorEmpiricalPrequentialRisk
+            informativeScore (selectedPosterior x 512) 512 x +
+          observableOracleBoundary 512 x ∧
+      observableOracleBoundary 512 x < (2744 : ℝ) / 10000 ∧
+      observableOracleBoundary 2048 x < (1434 : ℝ) / 10000 ∧
+      trajectoryPosteriorEmpiricalPrequentialRisk
+            informativeScore (selectedPosterior x 512) 512 x +
+          observableOracleBoundary 512 x < (7 : ℝ) / 25 ∧
+      observableOracleBoundary 512 x ≤
+        trajectoryGrowingPrefixForwardBesselPACBayesLILEnvelope
+          uniformPrior informativeScore (selectedPosterior x 512)
+            (1 / 160) 512 x := by
+  obtain ⟨x, hx, hgood⟩ := informative_goodCylinderPath_exists
+  have hposterior : selectedPosterior x 512 = pointPosterior true := by
+    unfold selectedPosterior
+    have hx1 : x 1 = true := by
+      simpa [informativeCylinder, firstTrueEvent] using hx.2
+    rw [hx1]
+  exact ⟨x, hx, hgood, hposterior,
+    observableOracle_risk_bound_of_not_mem hgood,
+    (observableOracleBoundary_numeric_receipt hx).1,
+    (observableOracleBoundary_numeric_receipt hx).2,
+    observableOracle_rhs_512_lt_seven_twenty_fifths_of_mem hx,
+    observableOracleBoundary_512_le_LILEnvelope x⟩
+
 /-! Public endpoint and complete local axiom receipt. -/
 
 #check trajectoryCountableEmpiricalBernsteinPACBayes_allPosteriors_of_not_mem
@@ -835,6 +950,16 @@ theorem informative_nonvacuous_receipt :
 #check selector_branches_on_positive_mass_good_cylinders
 #check informative_allTime_vanishing_capstone
 #check informative_nonvacuous_receipt
+#check trajectoryGrowingPrefixForwardBesselPACBayesArgmin
+#check trajectoryGrowingPrefixForwardBesselPACBayesBoundary
+#check trajectoryGrowingPrefixForwardBesselPACBayesLILEnvelope
+#check trajectoryGrowingPrefixForwardBesselPACBayesArgmin_mem
+#check trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_atom
+#check trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope
+#check trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_allTimeRate
+#check trajectoryGrowingPrefixForwardBesselPACBayesBoundary_tendsto_zero
+#check exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event
+#check informative_observableOracle_receipt
 
 #print axioms informativeDynamicKernel_history_witness
 #print axioms informativeScore_mem_Icc
@@ -886,6 +1011,18 @@ theorem informative_nonvacuous_receipt :
 #print axioms informative_allTime_vanishing_capstone
 #print axioms selected_risk_bound_of_not_mem
 #print axioms informative_nonvacuous_receipt
+#print axioms trajectoryGrowingPrefixForwardBesselPACBayesArgmin_mem
+#print axioms trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_atom
+#print axioms trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope
+#print axioms trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_allTimeRate
+#print axioms trajectoryGrowingPrefixForwardBesselPACBayesBoundary_tendsto_zero
+#print axioms exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event
+#print axioms observableOracleBoundary_le_highConfidenceBoundary
+#print axioms observableOracle_risk_bound_of_not_mem
+#print axioms observableOracleBoundary_512_le_LILEnvelope
+#print axioms observableOracleBoundary_numeric_receipt
+#print axioms observableOracle_rhs_512_lt_seven_twenty_fifths_of_mem
+#print axioms informative_observableOracle_receipt
 
 end
 end FormalSLT.Examples.CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative
