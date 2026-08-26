@@ -17,6 +17,7 @@ import FormalSLT.AnytimeValid.ForwardPredictableTiltEmpiricalBernstein
 import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
 import FormalSLT.AnytimeValid.ComputablePredictableBettingMixture
+import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture
 import FormalSLT.AnytimeValid.SelectionCost
 import FormalSLT.AnytimeValid.AllocationLogLog
 import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
@@ -33,8 +34,8 @@ import FormalSLT.PACBayes.IIDContinuousGaussian
 # Stable sequential-inference imports
 
 This declaration-free umbrella re-exports Ville bounds, e-processes, betting
-processes, exact rational wealth-weighted predictable-strategy mixtures,
-confidence sequences, mixtures, the predictable-residual forward
+processes, exact rational wealth-weighted finite and countable sleeping-expert
+predictable-strategy mixtures, confidence sequences, mixtures, the predictable-residual forward
 process, predictable-tilt empirical-Bernstein e-processes, the hybrid-Bessel
 lower envelope, adaptive-selection and countable allocation cost guardrails,
 and time-uniform PAC-Bayes results.
