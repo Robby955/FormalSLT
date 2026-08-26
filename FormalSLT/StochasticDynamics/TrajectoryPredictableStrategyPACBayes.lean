@@ -20,12 +20,15 @@ from that joint posterior to an independent model--strategy product prior.
 The general theorem does not permit a strategy to inspect the next state before
 its tilt is chosen.  Its risk quantities are normalized tilt-weighted
 prequential averages under the trajectory law with deterministic initial state
-`x0`.  A separate factorized corollary for constant-tilt strategies recovers
-the ordinary posterior-averaged monitored risk and charges model and strategy
-selection by separate KL terms.  Neither endpoint is a stationary, future, or
-population-risk statement.  Only the predeclared catalog members are
-predictable; the post-hoc reporting posterior is not a composite predictable
-e-process.
+`x0`.  A factorized corollary recovers ordinary posterior-averaged risk when
+each model has a constant one-step conditional risk and the predeclared
+predictable strategies are shared across models.  A second, more concrete
+corollary handles scalar constant-tilt catalogs and ordinary monitored-prefix
+risk.  Both charge model and strategy selection by separate KL terms.  Neither
+endpoint is a stationary, future, or population-risk statement without a
+separate theorem connecting the stated trajectory conditional risk to that
+interpretation.  Only the predeclared catalog members are predictable; the
+post-hoc reporting posterior is not a composite predictable e-process.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -88,7 +91,7 @@ def trajectoryPredictableStrategyPosteriorNormalizedEmpiricalRisk
     (fun p : ι × κ ↦ score p.1)
     (fun p : ι × κ ↦ strategy p.2 p.1) jointPosterior n x
 
-/-! ## Constant-tilt catalogs and ordinary monitored risk -/
+/-! ## Shared and constant-tilt catalogs for ordinary risk -/
 
 /-- Turn a finite catalog of scalar tilts into trajectory strategies that are
 fixed across models, times, and paths.  Different catalog entries may use
@@ -97,30 +100,12 @@ def constantTrajectoryTiltCatalog
     (eta : κ → ℝ) : κ → ι → TrajectoryPredictableTilt Z :=
   fun j _i _n _u ↦ eta j
 
-omit [DecidableEq ι] [Nonempty ι] [DecidableEq κ] [Nonempty κ] in
-private theorem posteriorAverage_modelStrategyProductPrior_separable
-    (modelPosterior : ι → ℝ) (strategyPosterior : κ → ℝ)
-    (f : ι → ℝ) (g : κ → ℝ) :
-    posteriorAverage
-        (modelStrategyProductPrior modelPosterior strategyPosterior)
-        (fun p : ι × κ ↦ f p.1 * g p.2) =
-      posteriorAverage modelPosterior f *
-        posteriorAverage strategyPosterior g := by
-  classical
-  unfold posteriorAverage modelStrategyProductPrior
-  rw [Fintype.sum_prod_type]
-  calc
-    (∑ i : ι, ∑ j : κ,
-        modelPosterior i * strategyPosterior j * (f i * g j)) =
-        ∑ i : ι, (modelPosterior i * f i) *
-          (∑ j : κ, strategyPosterior j * g j) := by
-      apply Finset.sum_congr rfl
-      intro i _hi
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _hj
-      ring
-    _ = _ := by rw [Finset.sum_mul]
+/-- Lift a catalog of trajectory strategies shared across models into the
+joint model--strategy interface. -/
+def sharedTrajectoryStrategyCatalog
+    (strategy : κ → TrajectoryPredictableTilt Z) :
+    κ → ι → TrajectoryPredictableTilt Z :=
+  fun j _i ↦ strategy j
 
 omit [DecidableEq κ] [Nonempty κ] in
 private theorem posteriorAverage_pos_of_isPMF_of_pos
@@ -447,6 +432,84 @@ theorem exists_trajectoryPredictableStrategyPACBayes_normalized_selected_event
     trajectoryPredictableStrategyPosteriorNormalizedEmpiricalRisk,
     trajectoryPredictableStrategyPosteriorQuadraticPenalty] using
       hgood x hx n hweight
+
+omit [DecidableEq ι] [DecidableEq κ] in
+/-- One trajectory event controls ordinary posterior-averaged risk for every
+time, model posterior, and strategy posterior when each model's one-step
+conditional trajectory risk is the constant `risk i`.  The finite catalog of
+prefix-predictable strategies is shared across models, so its weights cancel
+from the normalized conditional mean under a factorized reporting posterior.
+Model and strategy selection pay separate KL terms.
+
+The conclusion concerns exactly the supplied constant conditional trajectory
+risk.  It is not a stationary, future, population, or deployment-risk theorem
+without a separate bridge proving that interpretation. -/
+theorem
+    exists_trajectoryPredictableStrategyPACBayes_shared_constantConditionalRisk_factorized_ordinaryRisk_event
+    (K : (n : ℕ) → Kernel ((i : Finset.Iic n) → Z) Z)
+    [∀ n, IsMarkovKernel (K n)] (x0 : Z)
+    {score : ι → TrajectoryScore Z}
+    (hscore : ∀ i n u y, score i n u y ∈ Set.Icc (0 : ℝ) 1)
+    {strategy : κ → TrajectoryPredictableTilt Z} {L : ℝ}
+    (hL1 : L < 1)
+    (hstrategy : ∀ j n u,
+      0 ≤ strategy j n u ∧ strategy j n u ≤ L)
+    {risk : ι → ℝ}
+    (hconstantRisk : ∀ i n x,
+      conditionalTrajectoryRisk K (score i) n x = risk i)
+    {modelPrior : ι → ℝ} (hmodelPrior : IsFullSupportPMF modelPrior)
+    {strategyPrior : κ → ℝ}
+    (hstrategyPrior : IsFullSupportPMF strategyPrior)
+    {delta : ℝ} (hdelta : 0 < delta) :
+    ∃ goodEvent : Set (ℕ → Z),
+      (trajectoryMeasure K x0).real goodEventᶜ ≤ delta ∧
+        ∀ x ∈ goodEvent,
+          ∀ modelPosterior : ι → ℝ, IsPMF modelPosterior →
+            ∀ strategyPosterior : κ → ℝ, IsPMF strategyPosterior →
+              ∀ n : ℕ,
+                0 < trajectoryPredictableStrategyPosteriorTotalWeight
+                      (sharedTrajectoryStrategyCatalog strategy)
+                      (modelStrategyProductPrior
+                        modelPosterior strategyPosterior) n x →
+                  posteriorAverage modelPosterior risk <
+                    trajectoryPredictableStrategyPosteriorNormalizedEmpiricalRisk
+                        score (sharedTrajectoryStrategyCatalog strategy)
+                        (modelStrategyProductPrior
+                          modelPosterior strategyPosterior) n x +
+                      ((klDiv modelPosterior modelPrior +
+                            klDiv strategyPosterior strategyPrior) +
+                          Real.log (1 / delta) +
+                          trajectoryPredictableStrategyPosteriorQuadraticPenalty
+                            score (sharedTrajectoryStrategyCatalog strategy)
+                            (modelStrategyProductPrior
+                              modelPosterior strategyPosterior) n x) /
+                        trajectoryPredictableStrategyPosteriorTotalWeight
+                          (sharedTrajectoryStrategyCatalog strategy)
+                          (modelStrategyProductPrior
+                            modelPosterior strategyPosterior) n x := by
+  rcases
+      exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event
+        (μ := trajectoryMeasure K x0)
+        (ℱ := Filtration.piLE (X := fun _ : ℕ ↦ Z))
+        hmodelPrior hstrategyPrior hL1 hdelta
+        (X := fun i ↦ observedTrajectoryScore (score i))
+        (lambda := fun j ↦ observedTrajectoryPredictableTilt (strategy j))
+        (risk := risk)
+        (fun i ↦ observedTrajectoryScore_incrementAdapted (score i))
+        (fun j ↦ observedTrajectoryPredictableTilt_stronglyAdapted
+          (strategy j))
+        (fun i k x ↦ observedTrajectoryScore_mem_Icc (hscore i) k x)
+        (fun j k x ↦ hstrategy j k (Preorder.frestrictLe k x))
+        (fun i k ↦ by
+          filter_upwards [observedTrajectoryScore_condExp
+            K x0 (score i) (hscore i) k] with x hx
+          simpa only [hconstantRisk i k x] using hx) with
+    ⟨goodEvent, hmass, hgood⟩
+  refine ⟨goodEvent, hmass, ?_⟩
+  intro x hx modelPosterior hmodelPosterior
+    strategyPosterior hstrategyPosterior n hweight
+  exact hgood x hx modelPosterior hmodelPosterior
+    strategyPosterior hstrategyPosterior n hweight
 
 omit [DecidableEq ι] [DecidableEq κ] in
 /-- One trajectory event supports ordinary monitored-risk reporting after

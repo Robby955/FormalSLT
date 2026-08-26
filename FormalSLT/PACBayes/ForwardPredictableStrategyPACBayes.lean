@@ -25,9 +25,11 @@ Only the individual catalog members are predictable processes.  A joint
 posterior selected after the path is observed is a valid reporting rule on the
 common event; it is not itself a newly constructed predictable e-process.
 
-The normalized endpoint remains a tilt-weighted monitored mean.  When tilts
-depend on the model or strategy, it is not an ordinary unweighted posterior
-risk.
+The general normalized endpoint remains a tilt-weighted monitored mean.  A
+separate corollary recovers ordinary posterior-averaged conditional risk when
+the strategies are shared across models and each model has a constant
+conditional mean.  The strategies in that corollary may still vary
+predictably with time and observed history.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -238,6 +240,145 @@ def forwardPredictableStrategyPosteriorNormalizedObservation
     (n : ℕ) (ω : Ω) : ℝ :=
   forwardPredictableTiltPosteriorNormalizedObservation jointPosterior
     (modelStrategyProcess X) (modelStrategyPredictableTilt lambda) n ω
+
+/-! ## Factorized posteriors with strategies shared across models -/
+
+omit [DecidableEq ι] [Nonempty ι] [DecidableEq κ] [Nonempty κ] in
+/-- Posterior averaging under an independent model--strategy posterior
+factorizes for a product integrand. -/
+theorem posteriorAverage_modelStrategyProductPrior_separable
+    (modelPosterior : ι → ℝ) (strategyPosterior : κ → ℝ)
+    (f : ι → ℝ) (g : κ → ℝ) :
+    posteriorAverage
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun p : ι × κ ↦ f p.1 * g p.2) =
+      posteriorAverage modelPosterior f *
+        posteriorAverage strategyPosterior g := by
+  classical
+  unfold posteriorAverage modelStrategyProductPrior
+  rw [Fintype.sum_prod_type]
+  calc
+    (∑ i : ι, ∑ j : κ,
+        modelPosterior i * strategyPosterior j * (f i * g j)) =
+        ∑ i : ι, (modelPosterior i * f i) *
+          (∑ j : κ, strategyPosterior j * g j) := by
+      apply Finset.sum_congr rfl
+      intro i _hi
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j _hj
+      ring
+    _ = _ := by rw [Finset.sum_mul]
+
+omit [DecidableEq ι] [Nonempty ι] [DecidableEq κ] [Nonempty κ] in
+/-- When every catalog strategy is shared across models, a factorized
+posterior's accumulated tilt is just its strategy-posterior average. -/
+theorem forwardPredictableStrategyPosteriorTotalWeight_shared_factorized
+    (modelPosterior : ι → ℝ) (strategyPosterior : κ → ℝ)
+    (hmodelPosterior : IsPMF modelPosterior)
+    (lambda : κ → ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) :
+    forwardPredictableStrategyPosteriorTotalWeight
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun j _i ↦ lambda j) n ω =
+      posteriorAverage strategyPosterior
+        (fun j ↦ ∑ k ∈ Finset.range n, lambda j k ω) := by
+  unfold forwardPredictableStrategyPosteriorTotalWeight
+    forwardPredictableTiltPosteriorTotalWeight
+    modelStrategyPredictableTilt
+  calc
+    posteriorAverage
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun p : ι × κ ↦ ∑ k ∈ Finset.range n, lambda p.2 k ω) =
+      posteriorAverage
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun p : ι × κ ↦
+          (1 : ℝ) * (∑ k ∈ Finset.range n, lambda p.2 k ω)) := by
+        congr 1
+        funext p
+        rw [one_mul]
+    _ = posteriorAverage modelPosterior (fun _i ↦ (1 : ℝ)) *
+        posteriorAverage strategyPosterior
+          (fun j ↦ ∑ k ∈ Finset.range n, lambda j k ω) :=
+      posteriorAverage_modelStrategyProductPrior_separable
+        modelPosterior strategyPosterior (fun _i ↦ (1 : ℝ))
+          (fun j ↦ ∑ k ∈ Finset.range n, lambda j k ω)
+    _ = _ := by
+      unfold posteriorAverage
+      rw [show (∑ i : ι, modelPosterior i * (1 : ℝ)) = 1 by
+        simpa using hmodelPosterior.sum_one]
+      exact one_mul _
+
+omit [DecidableEq ι] [Nonempty ι] [DecidableEq κ] [Nonempty κ] in
+/-- If each model has a constant conditional mean and each strategy is shared
+across models, strategy weights cancel from the normalized conditional mean
+under a factorized posterior.  The strategies may still depend predictably on
+time and the observed history. -/
+theorem
+    forwardPredictableStrategyPosteriorNormalizedMean_shared_constant_factorized
+    (modelPosterior : ι → ℝ) (strategyPosterior : κ → ℝ)
+    (hmodelPosterior : IsPMF modelPosterior)
+    (risk : ι → ℝ) (lambda : κ → ℕ → Ω → ℝ)
+    (n : ℕ) (ω : Ω)
+    (hweight : 0 <
+      forwardPredictableStrategyPosteriorTotalWeight
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun j _i ↦ lambda j) n ω) :
+    forwardPredictableStrategyPosteriorNormalizedMean
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun i _k _ω ↦ risk i) (fun j _i ↦ lambda j) n ω =
+      posteriorAverage modelPosterior risk := by
+  have hden :=
+    forwardPredictableStrategyPosteriorTotalWeight_shared_factorized
+      modelPosterior strategyPosterior hmodelPosterior lambda n ω
+  have hdenPos : 0 < posteriorAverage strategyPosterior
+      (fun j ↦ ∑ k ∈ Finset.range n, lambda j k ω) := by
+    rwa [hden] at hweight
+  change
+    (posteriorAverage
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun p : ι × κ ↦
+          ∑ k ∈ Finset.range n, lambda p.2 k ω * risk p.1)) /
+      forwardPredictableStrategyPosteriorTotalWeight
+        (modelStrategyProductPrior modelPosterior strategyPosterior)
+        (fun j _i ↦ lambda j) n ω =
+      posteriorAverage modelPosterior risk
+  rw [hden]
+  have hnum :
+      posteriorAverage
+          (modelStrategyProductPrior modelPosterior strategyPosterior)
+          (fun p : ι × κ ↦
+            ∑ k ∈ Finset.range n, lambda p.2 k ω * risk p.1) =
+        posteriorAverage modelPosterior risk *
+          posteriorAverage strategyPosterior
+            (fun j ↦ ∑ k ∈ Finset.range n, lambda j k ω) := by
+    calc
+      posteriorAverage
+          (modelStrategyProductPrior modelPosterior strategyPosterior)
+          (fun p : ι × κ ↦
+            ∑ k ∈ Finset.range n, lambda p.2 k ω * risk p.1) =
+        posteriorAverage
+          (modelStrategyProductPrior modelPosterior strategyPosterior)
+          (fun p : ι × κ ↦
+            risk p.1 *
+              (∑ k ∈ Finset.range n, lambda p.2 k ω)) := by
+          apply Finset.sum_congr rfl
+          intro p _hp
+          apply congrArg
+            (fun z : ℝ ↦
+              modelStrategyProductPrior modelPosterior strategyPosterior p * z)
+          change
+            (∑ k ∈ Finset.range n, lambda p.2 k ω * risk p.1) =
+              risk p.1 * (∑ k ∈ Finset.range n, lambda p.2 k ω)
+          rw [Finset.mul_sum]
+          apply Finset.sum_congr rfl
+          intro k _hk
+          ring
+      _ = _ := posteriorAverage_modelStrategyProductPrior_separable
+        modelPosterior strategyPosterior risk
+          (fun j ↦ ∑ k ∈ Finset.range n, lambda j k ω)
+  rw [hnum]
+  exact (mul_div_cancel_right₀
+    (posteriorAverage modelPosterior risk) hdenPos.ne')
 
 /-! ## Common-event strategy selection -/
 
@@ -465,6 +606,79 @@ theorem
   rw [klDiv_modelStrategyProductPrior
     (hmodelPosterior ω n) hmodelPrior
     (hstrategyPosterior ω n) hstrategyPrior] at hbound
+  exact hbound
+
+omit [DecidableEq ι] [DecidableEq κ] in
+/-- One common event gives an ordinary posterior-averaged conditional-risk
+bound for every model posterior, every strategy posterior, and every time.
+Each model's conditional mean is the fixed value `risk i`.  Catalog strategies
+may vary predictably with time and history, but they are shared across models;
+under a factorized reporting posterior their weights therefore cancel from the
+normalized conditional mean.  Model and strategy selection are charged by
+separate finite KL terms.
+
+The risk target is the posterior average of the stated constant conditional
+means.  Any interpretation as population, future, or deployment risk requires
+the supplied conditional-expectation premise to justify that meaning. -/
+theorem
+    exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event
+    [IsProbabilityMeasure μ]
+    {modelPrior : ι → ℝ} (hmodelPrior : IsFullSupportPMF modelPrior)
+    {strategyPrior : κ → ℝ}
+    (hstrategyPrior : IsFullSupportPMF strategyPrior)
+    {risk : ι → ℝ} {X : ι → ℕ → Ω → ℝ}
+    {lambda : κ → ℕ → Ω → ℝ} {L delta : ℝ}
+    (hL1 : L < 1) (hdelta : 0 < delta)
+    (hX_adapted : ∀ i, IncrementAdapted ℱ (X i))
+    (hlambda_adapted : ∀ j, StronglyAdapted ℱ (lambda j))
+    (hX_unit : ∀ i k ω, 0 ≤ X i k ω ∧ X i k ω ≤ 1)
+    (hlambda_range : ∀ j k ω,
+      0 ≤ lambda j k ω ∧ lambda j k ω ≤ L)
+    (hmean : ∀ i k, μ[X i k | ℱ k] =ᵐ[μ] fun _ω ↦ risk i) :
+    ∃ goodEvent : Set Ω,
+      μ.real goodEventᶜ ≤ delta ∧
+        ∀ ω ∈ goodEvent,
+          ∀ modelPosterior : ι → ℝ, IsPMF modelPosterior →
+            ∀ strategyPosterior : κ → ℝ, IsPMF strategyPosterior →
+              ∀ n : ℕ,
+                0 < forwardPredictableStrategyPosteriorTotalWeight
+                      (modelStrategyProductPrior
+                        modelPosterior strategyPosterior)
+                      (fun j _i ↦ lambda j) n ω →
+                  posteriorAverage modelPosterior risk <
+                    forwardPredictableStrategyPosteriorNormalizedObservation
+                        (modelStrategyProductPrior
+                          modelPosterior strategyPosterior)
+                        X (fun j _i ↦ lambda j) n ω +
+                      ((klDiv modelPosterior modelPrior +
+                            klDiv strategyPosterior strategyPrior) +
+                          Real.log (1 / delta) +
+                          forwardPredictableStrategyPosteriorQuadraticPenalty
+                            (modelStrategyProductPrior
+                              modelPosterior strategyPosterior)
+                            X (fun j _i ↦ lambda j) n ω) /
+                        forwardPredictableStrategyPosteriorTotalWeight
+                          (modelStrategyProductPrior
+                            modelPosterior strategyPosterior)
+                          (fun j _i ↦ lambda j) n ω := by
+  rcases exists_forwardPredictableStrategyPACBayes_normalized_event
+      hmodelPrior hstrategyPrior hL1 hdelta hX_adapted
+      (fun i ↦ stronglyAdapted_const ℱ (risk i))
+      (fun j _i ↦ hlambda_adapted j) hX_unit
+      (fun j _i k ω ↦ hlambda_range j k ω) hmean with
+    ⟨goodEvent, hmass, hgood⟩
+  refine ⟨goodEvent, hmass, ?_⟩
+  intro ω hω modelPosterior hmodelPosterior
+    strategyPosterior hstrategyPosterior n hweight
+  have hbound := hgood ω hω
+    (modelStrategyProductPrior modelPosterior strategyPosterior)
+    (modelStrategyProductPrior_isPMF
+      hmodelPosterior hstrategyPosterior) n hweight
+  rw [
+    forwardPredictableStrategyPosteriorNormalizedMean_shared_constant_factorized
+      modelPosterior strategyPosterior hmodelPosterior risk lambda n ω hweight,
+    klDiv_modelStrategyProductPrior
+      hmodelPosterior hmodelPrior hstrategyPosterior hstrategyPrior] at hbound
   exact hbound
 
 end
