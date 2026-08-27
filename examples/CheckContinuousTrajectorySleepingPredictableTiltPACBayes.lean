@@ -1,0 +1,31 @@
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltPACBayes
+
+/-!
+# Nonstationary trajectory sleeping-master checks
+
+The endpoint controls a normalized strategy-weighted average of the one-step
+kernel risks encountered along a prefix-dependent trajectory. It does not
+assert stationary, future, population, or unweighted prefix risk.
+-/
+
+open FormalSLT.StochasticDynamics
+
+#check observedTrajectoryPredictableStrategyCatalog
+#check continuousTrajectorySleepingPredictableTiltMasterProcess
+#check continuousTrajectorySleepingPosteriorNormalizedConditionalRisk
+#check continuousTrajectorySleepingPosteriorNormalizedEmpiricalRisk
+#check continuousTrajectorySleepingPredictableTiltBoundary
+#check stronglyMeasurable_continuousTrajectorySleepingPredictableTiltMasterProcess_filtered
+#check stronglyMeasurable_continuousTrajectorySleepingPredictableTiltMasterProcess_ambient
+#check continuousTrajectorySleepingPredictableTiltMasterProcess_tail_le
+#check continuousTrajectorySleepingPredictableTiltMasterProcess_le
+#check exists_continuousTrajectorySleepingPredictableTiltPACBayes_normalized_event
+#check exists_continuousTrajectorySleepingPredictableTiltPACBayes_normalized_event_of_parameterMeasurable
+
+#check (exists_continuousTrajectorySleepingPredictableTiltPACBayes_normalized_event
+  (Theta := Real))
+#check (exists_continuousTrajectorySleepingPredictableTiltPACBayes_normalized_event_of_parameterMeasurable
+  (Theta := Real))
+
+#print axioms exists_continuousTrajectorySleepingPredictableTiltPACBayes_normalized_event
+#print axioms exists_continuousTrajectorySleepingPredictableTiltPACBayes_normalized_event_of_parameterMeasurable

@@ -20,6 +20,7 @@ import FormalSLT.StochasticDynamics.TrajectoryPredictableStrategyPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable
 import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
@@ -57,6 +58,12 @@ state-and-hypothesis layer also exposes a countable geometric-tilt oracle with
 path-selected posteriors, ordinary monitored conditional-risk semantics, an
 observable LIL-order envelope, and conditional vanishing width under the
 stated posterior KL-rate assumption.
+The finite-state, arbitrary-measurable-hypothesis layer additionally exposes an
+exact finite-prefix polynomial sleeping mixture over a countable catalog of
+prefix-predictable strategies. Its normalized endpoint retains time-varying
+encountered conditional-risk semantics and the observable forward-predictor
+quadratic penalty, with logarithmic rather than linear wake-time selection
+cost.
 The finite-state layer additionally supports fixed-before-data tilt rules that
 read each complete available prefix, with one event uniform over time and
 finite posterior PMFs.  Its geometric empirical-Bernstein trajectory oracle
