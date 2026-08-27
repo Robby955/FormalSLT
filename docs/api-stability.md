@@ -66,6 +66,12 @@ the 19-declaration v0.2 compatibility allowlist above. This separation keeps
 the tagged release record exact while making the current research surface
 discoverable.
 
+### Sequential inference
+
+- `FormalSLT.AnytimeValid.wealthWeightedBet_eProcess_of_positive_factors`
+- `FormalSLT.AnytimeValid.countableSleepingMasterBet_eProcess`
+- `FormalSLT.AnytimeValid.countableSleepingMaster_logWealth_regret_le`
+
 ### PAC-Bayes
 
 - `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes.exists_forwardPredictableStrategyPACBayes_shared_constantMean_factorized_ordinaryRisk_event`
@@ -90,7 +96,11 @@ envelope. The measurable lift supports arbitrary measurable hypothesis and
 trajectory-state spaces and eligible continuous posterior measures. Its width
 tends to zero only under the stated pathwise posterior-KL rate. The selected
 atom is not an all-real optimizer or a selected e-process, and its exact
-real-valued argmin is noncomputable.
+real-valued argmin is noncomputable. Separately, the exact wealth-weighted
+masters compute over a supplied finite catalog or a dyadically weighted
+countable sleeping-expert catalog and compete with every active declared
+expert. They do not optimize over a continuum or provide parameter-free
+coin-betting.
 
 ## Deprecation
 

@@ -52,6 +52,8 @@ DOCGEN_PATHS = (
     "FormalSLT/StochasticDynamics.html",
     "FormalSLT/VC.html",
     "FormalSLT/AnytimeValid/EProcess.html",
+    "FormalSLT/AnytimeValid/ComputablePredictableBettingMixture.html",
+    "FormalSLT/AnytimeValid/CountableSleepingPredictableBettingMixture.html",
     "FormalSLT/PACBayes/ContinuousInfiniteEmpiricalBernsteinStitch.html",
     "FormalSLT/PACBayes/ForwardBesselPACBayesCountable.html",
     "FormalSLT/PACBayes/ForwardPredictableStrategyPACBayes.html",
