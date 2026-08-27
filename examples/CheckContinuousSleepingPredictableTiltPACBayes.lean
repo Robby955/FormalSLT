@@ -1,0 +1,41 @@
+import FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
+
+/-!
+# Finite-prefix sleeping predictable-tilt PAC-Bayes checks
+
+The checked endpoint is a normalized tilt-weighted conditional-mean bound.
+It is simultaneous over reporting times, eligible continuous posteriors, and
+active atoms of the predeclared countable sleeping strategy catalog.  It is
+not an ordinary unweighted prefix-risk statement for a varying strategy.
+-/
+
+open FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
+
+#check continuousSleepingForwardPredictableMeanMasterProcess
+#check continuousSleepingPredictableTiltExceptionalEvent
+#check continuousSleepingForwardPredictableMeanMasterProcess_eProcess
+#check continuousSleepingForwardPredictableMeanMasterProcess_pos
+#check continuousSleepingPredictableTiltScore
+#check continuousSleepingPredictableTiltScore_le_logMaster_sub_logWeight
+#check continuousSleepingPredictableTiltExceptionalEvent_mass_le_delta
+#check continuousSleepingPredictableTilt_allPosteriorsLogMaster_of_not_mem
+#check continuousSleepingPredictableTilt_selectedAtomScore_of_not_mem
+#check continuousSleepingPredictableTiltScore_eq
+#check integral_continuousSleepingPredictableTiltScore
+#check continuousSleepingPredictableTilt_weighted_of_not_mem
+#check continuousSleepingPredictableTilt_normalized_of_not_mem
+#check exists_continuousSleepingPredictableTiltPACBayes_normalized_event
+
+#check (exists_continuousSleepingPredictableTiltPACBayes_normalized_event
+  (Theta := Real))
+
+#print axioms continuousSleepingForwardPredictableMeanMasterProcess_eProcess
+#print axioms continuousSleepingPredictableTiltScore_le_logMaster_sub_logWeight
+#print axioms continuousSleepingPredictableTiltExceptionalEvent_mass_le_delta
+#print axioms continuousSleepingPredictableTilt_allPosteriorsLogMaster_of_not_mem
+#print axioms continuousSleepingPredictableTilt_selectedAtomScore_of_not_mem
+#print axioms continuousSleepingPredictableTiltScore_eq
+#print axioms integral_continuousSleepingPredictableTiltScore
+#print axioms continuousSleepingPredictableTilt_weighted_of_not_mem
+#print axioms continuousSleepingPredictableTilt_normalized_of_not_mem
+#print axioms exists_continuousSleepingPredictableTiltPACBayes_normalized_event

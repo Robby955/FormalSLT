@@ -1,0 +1,31 @@
+import FormalSLT.AnytimeValid.CountableSleepingEProcessMixture
+
+/-!
+# Exact sleeping e-process mixture checks
+
+These checks cover the generic finite-prefix-plus-tail construction and its
+observable predictable-mean empirical-Bernstein instantiation.
+-/
+
+open FormalSLT.AnytimeValid
+
+#check polynomialSleepingTail
+#check polynomialSleepingTail_pos
+#check countableSleepingProcessMixture
+#check countableSleepingProcessMixture_eq_tsum
+#check countableSleepingProcessMixture_competes_of_lt
+#check countableSleepingProcessMixture_logWealth_regret_le
+#check polynomialSleepingSelectionCost
+#check countableSleepingProcessMixture_eProcess
+#check forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_sleeping_of_time_le
+#check countableSleepingForwardPredictableMeanMasterProcess
+#check countableSleepingForwardPredictableMeanMasterProcess_eProcess_of_bounded
+#check forwardPredictableMeanScore_le_log_countableSleepingMaster_sub_logWeight
+
+#print axioms countableSleepingProcessMixture_eq_tsum
+#print axioms countableSleepingProcessMixture_logWealth_regret_le
+#print axioms polynomialSleepingSelectionCost
+#print axioms countableSleepingProcessMixture_eProcess
+#print axioms forwardPredictableTiltMeanEmpiricalBernsteinLowerProcess_sleeping_of_time_le
+#print axioms countableSleepingForwardPredictableMeanMasterProcess_eProcess_of_bounded
+#print axioms forwardPredictableMeanScore_le_log_countableSleepingMaster_sub_logWeight
