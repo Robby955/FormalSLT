@@ -21,6 +21,7 @@ import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountabl
 import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
@@ -51,7 +52,11 @@ prefix/next-state scores; the measurable-state layer uses a jointly measurable
 bounded score contract. It also re-exports Markov anytime-valid and
 posterior-uniform PAC-Bayes certificates, including finite-catalog and
 countable-tilt finite-state trajectory endpoints and arbitrary-measurable-
-hypothesis empirical-Bernstein trajectory endpoints.
+hypothesis empirical-Bernstein trajectory endpoints. The arbitrary measurable
+state-and-hypothesis layer also exposes a countable geometric-tilt oracle with
+path-selected posteriors, ordinary monitored conditional-risk semantics, an
+observable LIL-order envelope, and conditional vanishing width under the
+stated posterior KL-rate assumption.
 The finite-state layer additionally supports fixed-before-data tilt rules that
 read each complete available prefix, with one event uniform over time and
 finite posterior PMFs.  Its geometric empirical-Bernstein trajectory oracle

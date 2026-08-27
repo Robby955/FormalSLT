@@ -47,7 +47,10 @@ members of the tagged v0.2 compatibility surface.
 | `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | One countable master e-process supports every predeclared predictable strategy atom, finite model posterior, and reporting time with positive exposure |
 | `FormalSLT.PACBayes.ForwardPredictableStrategyPACBayesCountable.exists_countableForwardPredictableStrategyPACBayesFinitePrefixOracle_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardPredictableStrategyPACBayesCountable` | Exact path-, time-, and posterior-dependent minimization over any declared finite prefix of the countable strategy catalog |
 | `FormalSLT.PACBayes.ForwardBesselPACBayesOracle.exists_growingPrefixForwardBesselPACBayesOracle_event` | `FormalSLT.PACBayes` | `PACBayes.ForwardBesselPACBayesOracle` | Observable growing-prefix geometric-tilt oracle with an ordinary unweighted conditional-mean bound, explicit LIL-order envelope, and selected width tending to zero |
+| `FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable.exists_countableContinuousForwardPredictableMeanBesselPACBayes_event` | `FormalSLT.PACBayes` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable` | One countable-master event over arbitrary measurable hypotheses, all eligible continuous posterior measures, reporting times, and declared tilt atoms |
+| `FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle.exists_continuousGrowingPrefixForwardBesselPACBayesOracle_event` | `FormalSLT.PACBayes` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle` | Path- and time-selected continuous posteriors with exact growing-prefix tilt minimization, an observable LIL-order envelope, and conditional vanishing width |
 | `FormalSLT.StochasticDynamics.exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Finite-state prefix-dependent trajectory specialization with path-selected posterior and exact reporting-time tilt minimizer on one event |
+| `FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event` | `FormalSLT.StochasticDynamics` | `StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle` | Arbitrary measurable state and hypothesis spaces with monitored conditional-risk semantics, continuous path-selected posteriors, and a growing-prefix oracle |
 
 ## Core definitions
 
@@ -866,6 +869,11 @@ members of the tagged v0.2 compatibility surface.
 | `growingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope` | `PACBayes.ForwardBesselPACBayesOracle` | Bounds the selected exact observable hybrid-Bessel boundary by an explicit square-root LIL-order envelope |
 | `growingPrefixForwardBesselPACBayesBoundary_tendsto_zero` | `PACBayes.ForwardBesselPACBayesOracle` | Proves the selected exact boundary tends to zero for arbitrary time-varying finite posterior PMFs |
 | `exists_growingPrefixForwardBesselPACBayesOracle_event` | `PACBayes.ForwardBesselPACBayesOracle` | One event combines path-selected finite posteriors, exact growing-prefix tilt minimization, an ordinary unweighted conditional-mean bound, the LIL-order envelope, and vanishing width |
+| `countableContinuousForwardPredictableMeanBesselMasterProcess_eProcess` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable` | Forms one real-`tsum` e-process from a positive normalized countable tilt catalog and a probability prior on an arbitrary measurable hypothesis space |
+| `exists_countableContinuousForwardPredictableMeanBesselPACBayes_event` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable` | One outer-mass event controls every `n >= 2`, declared countable tilt atom, and eligible continuous posterior measure |
+| `continuousGrowingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle` | Bounds the exact selected continuous-posterior boundary by an observable LIL-order envelope |
+| `continuousGrowingPrefixForwardBesselPACBayesBoundary_tendsto_zero` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle` | Proves vanishing selected width under absolute continuity, log-density integrability, and the displayed posterior-KL growth condition |
+| `exists_continuousGrowingPrefixForwardBesselPACBayesOracle_event` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle` | One event supports path- and time-selected continuous posteriors, exact growing-prefix tilt minimization, ordinary conditional-mean control, and the conditional vanishing conclusion |
 | `iidObservedLoss_condExp_eq_populationRisk` | `PACBayes.ForwardBesselPACBayesIID` | Derives the per-hypothesis conditional mean from the natural-filtration IID bounded-loss model |
 | `exists_forwardIIDBesselPACBayes_event` | `PACBayes.ForwardBesselPACBayesIID` | IID risk-facing capstone with the same all-time, all-posterior, all-atom common event |
 | `exists_continuousForwardPredictableMeanBesselPACBayes_event` | `PACBayes.ContinuousForwardPredictableMeanBesselPACBayes` | One outer-mass event over an arbitrary measurable hypothesis space controls every `n >= 2`, eligible posterior measure, and atom of a finite predeclared tilt prior |
@@ -1311,17 +1319,21 @@ continuous-space result.
 | `trajectoryGrowingPrefixForwardBesselPACBayesBoundary_le_LILEnvelope` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Transfers the observable square-root LIL-order envelope to the finite-state prefix-dependent trajectory boundary |
 | `trajectoryGrowingPrefixForwardBesselPACBayesBoundary_tendsto_zero` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Proves the exact selected trajectory width tends to zero along every path for arbitrary time-varying finite posterior PMFs |
 | `exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event` | `StochasticDynamics.TrajectoryForwardBesselPACBayesOracle` | Controls posterior-averaged monitored conditional loss by empirical prequential loss plus the exact selected boundary on one path- and time-uniform event |
+| `continuousMeasurableTrajectoryGrowingPrefixBoundary_le_atom` | `StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle` | The exact continuous-posterior trajectory boundary is no larger than any declared atom in the reporting-time geometric prefix |
+| `exists_continuousMeasurableTrajectoryGrowingPrefixForwardBesselPACBayesOracle_event` | `StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle` | Arbitrary measurable-state trajectory capstone with continuous path-selected posteriors, ordinary monitored conditional-risk semantics, an observable LIL-order envelope, and vanishing width under the stated pathwise KL rate |
 
-The current growing-prefix oracle is finite in both hypotheses and states. Its
-ordinary risk is posterior-averaged conditional loss along the monitored
-trajectory, not stationary, population, future, or deployment risk. The
-selected atom minimizes only the declared reporting-time prefix and is not an
-all-real optimizer or a selected e-process.
+The measurable growing-prefix oracle is not finite in either hypotheses or
+states. Its ordinary risk is posterior-averaged conditional loss along the
+monitored trajectory, not stationary, population, future, or deployment risk.
+The selected atom minimizes only the declared reporting-time prefix, is not an
+all-real optimizer or a selected e-process, and the exact real-valued argmin is
+noncomputable. Vanishing width requires the displayed pathwise posterior-KL
+rate rather than following automatically for arbitrary continuous posteriors.
 
 The arbitrary-state capstone requires a supplied jointly measurable bounded
 score and a deterministic start. Its event is posterior-uniform, but it does
 not construct a measurable selector or selected process, provide a random
-initial law, or replace the finite tilt catalog. The basic `Real` checker uses
+initial law. The basic `Real` checker uses
 a two-atom transition law and proves positive conditional variance without
 evaluating the boundary. The separate Gaussian/fair-Boolean receipt proves
 posterior finite-set mass zero, `KL = 1/32`, and boundary

@@ -267,7 +267,7 @@ def growingPrefixForwardBesselPACBayesLILEnvelope
 
 /-- A finite dyadic prefix competes, up to an explicit factor, with the
 continuous optimizer of `A * s + 2 * Q / s`. -/
-private theorem exists_dyadic_quadratic_oracle
+theorem exists_dyadic_quadratic_oracle
     {A Q : ℝ} {maxIndex : ℕ} (hA : 1 / 2 ≤ A) (hQ : 0 ≤ Q)
     (hcover :
       2 * Q < A * geometricForwardEffectiveScale maxIndex ^ 2) :
