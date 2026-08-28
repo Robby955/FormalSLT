@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import inspect
 import json
 import subprocess
 import sys
@@ -58,11 +59,6 @@ POSTERIOR_DECIMAL_PRECISION = 80
 LOG_TERMS = 32
 ABLATION_DAYS = (1, 3, 7, 14)
 SHUFFLE_NAMESPACE = b"formalslt-gjp-shuffled-time-control-v1\0"
-SAFE_PREDICTION_SOURCES = {
-    "forecast rows emitted before the observation outcome",
-    "train-split outcomes frozen before calibration and monitoring",
-}
-
 IFP_FIELDS = [
     "ifp_id",
     "q_type",
@@ -976,31 +972,54 @@ def interval_record(
     }
 
 
+def expected_model_prediction_vectors(
+    observations: list[dict[str, Any]],
+    crowd: dict[str, dict[str, Any]],
+    train_base_rate: Fraction,
+) -> dict[str, list[Fraction]]:
+    """Independently rebuild vectors from the raw forecast reduction."""
+
+    identifiers = [str(row["ifp_id"]) for row in observations]
+    missing = [ifp_id for ifp_id in identifiers if ifp_id not in crowd]
+    if missing:
+        raise VerificationError(
+            f"outcome-inaccessible forecast reduction is missing {missing[0]!r}"
+        )
+    return {
+        "constant-train-baserate": [train_base_rate] * len(observations),
+        "first-week-mean": [
+            Fraction(crowd[ifp_id]["first-week-mean"]) for ifp_id in identifiers
+        ],
+        "final-consensus-median": [
+            Fraction(crowd[ifp_id]["final-consensus-median"])
+            for ifp_id in identifiers
+        ],
+        "extremized-final-consensus": [
+            Fraction(crowd[ifp_id]["extremized-final-consensus"])
+            for ifp_id in identifiers
+        ],
+    }
+
+
 def loss_matrix(
-    observations: list[dict[str, Any]], predictions: list[list[Fraction]]
+    observations: list[dict[str, Any]],
+    predictions: list[list[Fraction]],
+    expected_predictions: dict[str, list[Fraction]],
 ) -> list[list[Fraction]]:
     if len(observations) != len(predictions):
         raise VerificationError("observation and prediction row counts disagree")
     if any(len(row) != len(MODEL_IDS) for row in predictions):
         raise VerificationError("prediction row does not match model catalog")
-    sources = [
-        "train-split outcomes frozen before calibration and monitoring",
-        "forecast rows emitted before the observation outcome",
-        "forecast rows emitted before the observation outcome",
-        "forecast rows emitted before the observation outcome",
-    ]
     matrix: list[list[Fraction]] = []
-    for model_index, (model_id, source) in enumerate(
-        zip(MODEL_IDS, sources, strict=True)
-    ):
+    for model_index, model_id in enumerate(MODEL_IDS):
         vector = ingest_prediction_vector(
-            model_id, [row[model_index] for row in predictions], source
+            model_id,
+            [row[model_index] for row in predictions],
+            expected_predictions.get(model_id),
         )
         matrix.append(
             [
-                score_safe_prediction(
-                    prediction, Fraction(observation["outcome"]), source
-                )
+                score_safe_prediction(prediction, Fraction(observation["outcome"]))
                 for observation, prediction in zip(observations, vector, strict=True)
             ]
         )
@@ -1008,27 +1027,35 @@ def loss_matrix(
 
 
 def ingest_prediction_vector(
-    model_id: str, predictions: list[Fraction], prediction_source: str
+    model_id: str,
+    predictions: list[Fraction],
+    expected_predictions: list[Fraction] | None,
 ) -> list[Fraction]:
-    if prediction_source not in SAFE_PREDICTION_SOURCES:
-        raise VerificationError(
-            "model refused at ingestion: predictions may depend on the same observation outcome"
-        )
     if model_id not in MODEL_IDS:
         raise VerificationError(f"undeclared model id at ingestion: {model_id!r}")
     values = [Fraction(value) for value in predictions]
+    if expected_predictions is None:
+        raise VerificationError(
+            f"model {model_id!r} has no independently rebuilt prediction vector"
+        )
+    expected = [Fraction(value) for value in expected_predictions]
+    if len(values) != len(expected):
+        raise VerificationError(
+            f"model {model_id!r} prediction length disagrees with its rebuild"
+        )
     if any(not 0 <= value <= 1 for value in values):
         raise VerificationError(f"model {model_id!r} emitted a prediction outside [0,1]")
+    if values != expected:
+        raise VerificationError(
+            f"model {model_id!r} predictions differ from the independently rebuilt "
+            "outcome-inaccessible construction"
+        )
     return values
 
 
 def score_safe_prediction(
-    prediction: Fraction, outcome: Fraction, prediction_source: str
+    prediction: Fraction, outcome: Fraction
 ) -> Fraction:
-    if prediction_source not in SAFE_PREDICTION_SOURCES:
-        raise VerificationError(
-            "prediction refused before scoring: source may depend on the same observation outcome"
-        )
     if not 0 <= prediction <= 1 or outcome not in {0, 1}:
         raise VerificationError("Brier scorer received an invalid prediction or outcome")
     return (prediction - outcome) ** 2
@@ -1036,36 +1063,75 @@ def score_safe_prediction(
 
 def leaked_model_tripwire(
     observations: list[dict[str, Any]],
+    expected_predictions: dict[str, list[Fraction]],
+    reducer: Any = scan_forecasts,
     ingestor: Any = ingest_prediction_vector,
 ) -> dict[str, Any]:
     outcomes = [int(row["outcome"]) for row in observations]
+    reducer_signature = inspect.signature(reducer)
+    reducer_parameters = list(reducer_signature.parameters)
+    if "outcomes" in reducer_parameters or any(
+        parameter.kind is inspect.Parameter.VAR_KEYWORD
+        for parameter in reducer_signature.parameters.values()
+    ):
+        raise VerificationError("forecast reducer exposes an outcome argument")
+    try:
+        reducer({}, [], set(), outcomes=outcomes)
+    except TypeError:
+        pass
+    else:
+        raise VerificationError("forecast reducer accepted an attempted outcome injection")
+
     oracle = [
         Fraction(99, 100) if outcome == 1 else Fraction(1, 100)
         for outcome in outcomes
     ]
+    safe_reference = expected_predictions.get("first-week-mean")
+    if safe_reference is None:
+        raise VerificationError("tripwire lacks the rebuilt first-week reference vector")
+    if oracle == [Fraction(value) for value in safe_reference]:
+        raise VerificationError("tripwire is nondiscriminating on this observation sequence")
+
     try:
-        ingestor(
-            "oracle-leak",
-            oracle,
-            "same-observation outcome column",
+        ingestor("oracle-leak", oracle, safe_reference)
+    except VerificationError:
+        pass
+    else:
+        raise VerificationError("outcome-derived oracle passed the shared ingestion gate")
+
+    try:
+        ingestor("first-week-mean", oracle, safe_reference)
+    except VerificationError:
+        pass
+    else:
+        raise VerificationError(
+            "relabeled outcome-derived oracle passed the shared ingestion gate"
         )
-    except VerificationError as error:
-        return {
-            "attempted_dependency": "outcomes",
-            "attempted_model_id": "oracle-leak",
-            "definition": "p=99/100 if outcome=a else 1/100",
-            "ingestion_callable": "shared model prediction ingestion gate",
-            "oracle_prediction_count": len(oracle),
-            "oracle_predictions_sha256": sha256_bytes(
-                canonical_json_bytes([rational_text(value) for value in oracle])
-            ),
-            "refusal_message": str(error),
-            "refusal_reason_code": "same_observation_outcome_dependency",
-            "refused_before_scoring": True,
-            "scored": False,
-            "status": "PASS",
-        }
-    raise VerificationError("outcome-derived oracle passed the shared ingestion gate")
+
+    return {
+        "attempted_dependency": "outcomes",
+        "attempted_model_id": "oracle-leak",
+        "caller_source_labels_accepted_as_provenance": False,
+        "declared_model_relabel_attempt": "first-week-mean",
+        "definition": "p=99/100 if outcome=a else 1/100",
+        "ingestion_callable": "shared exact-vector model ingestion gate",
+        "oracle_prediction_count": len(oracle),
+        "oracle_predictions_sha256": sha256_bytes(
+            canonical_json_bytes([rational_text(value) for value in oracle])
+        ),
+        "outcome_keyword_injection_reason_code": "reducer_signature_excludes_outcomes",
+        "outcome_keyword_injection_refused": True,
+        "reducer_accepts_outcomes": False,
+        "relabeled_vector_refusal_reason_code": (
+            "candidate_differs_from_outcome_inaccessible_rebuild"
+        ),
+        "relabeled_vector_refused": True,
+        "undeclared_model_refusal_reason_code": "undeclared_model_id",
+        "undeclared_model_refused": True,
+        "refused_before_scoring": True,
+        "scored": False,
+        "status": "PASS",
+    }
 
 
 def audit_timestamps(observations: list[dict[str, Any]]) -> dict[str, Any]:
@@ -1652,12 +1718,15 @@ def overall_preregistered_verdict(
         if str(result["status"]).startswith("UNDERSPECIFIED")
     )
     win_passed = bool(null_replay["win_condition_passed"])
+    overall_passed = win_passed and not incomplete
+    status = "PASS" if overall_passed else ("INCOMPLETE" if win_passed else "FAIL")
     return {
         "control_completion": "INCOMPLETE" if incomplete else "COMPLETE",
         "failed_win_condition_checks": failed,
         "incomplete_controls": incomplete,
-        "status": "PASS" if win_passed else "FAIL",
-        "win_condition_passed": win_passed,
+        "null_win_condition_passed": win_passed,
+        "overall_preregistered_passed": overall_passed,
+        "status": status,
     }
 
 
@@ -1670,7 +1739,11 @@ def build_receipt(
     crowd: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
     observations = stream["observations"]
-    losses = loss_matrix(observations, predictions)
+    base_rate = parse_fraction(stream["train_base_rate"]["quantized"], "train base rate")
+    expected_predictions = expected_model_prediction_vectors(
+        observations, crowd, base_rate
+    )
+    losses = loss_matrix(observations, predictions, expected_predictions)
     indices = {
         name: [index for index, row in enumerate(observations) if row["split"] == name]
         for name in ("train", "calibration", "monitor")
@@ -1756,7 +1829,6 @@ def build_receipt(
         b3_atom_rows.extend(candidate[3] for candidate in anytime_candidates)
         b3_selected_by_time.append(select_candidate(anytime_candidates))
 
-    base_rate = parse_fraction(stream["train_base_rate"]["quantized"], "train base rate")
     declaration_threshold = base_rate * (1 - base_rate)
     b2_crossing = first_crossing(b2_selected_by_time, declaration_threshold)
     b3_crossing = first_crossing(b3_selected_by_time, declaration_threshold)
@@ -1784,7 +1856,7 @@ def build_receipt(
         width_ratio,
     )
     timestamp_control = audit_timestamps(observations)
-    tripwire = leaked_model_tripwire(observations)
+    tripwire = leaked_model_tripwire(observations, expected_predictions)
     ablation = reconstruct_feature_ablation(
         protocol, questions, accumulators, crowd
     )

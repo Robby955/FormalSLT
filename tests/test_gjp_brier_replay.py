@@ -4,14 +4,17 @@ import csv
 import copy
 import inspect
 import json
-from types import SimpleNamespace
+from collections.abc import Callable
 from datetime import datetime
 from fractions import Fraction
 from pathlib import Path
+from types import SimpleNamespace
+from typing import Any
 
 import pytest
 
 from scripts import build_gjp_brier_replay as builder
+from scripts import verify_gjp_brier_replay as verifier
 
 
 def _forecast_row(**changes: str) -> dict[str, str]:
@@ -76,31 +79,74 @@ def test_forecast_reducer_has_no_outcome_parameter() -> None:
 
 
 def test_deliberately_leaked_tripwire_refuses_outcome_dependency() -> None:
+    expected = {
+        "first-week-mean": [Fraction(1, 5), Fraction(2, 5), Fraction(3, 5)]
+    }
     result = builder._deliberately_leaked_tripwire(
-        [{"outcome": 0}, {"outcome": 1}, {"outcome": 1}]
+        [{"outcome": 0}, {"outcome": 1}, {"outcome": 1}], expected
     )
     assert result["status"] == "PASS"
     assert result["oracle_prediction_count"] == 3
     assert len(result["oracle_predictions_sha256"]) == 64
+    assert result["outcome_keyword_injection_refused"] is True
+    assert result["undeclared_model_refused"] is True
+    assert result["relabeled_vector_refused"] is True
+    assert result["caller_source_labels_accepted_as_provenance"] is False
     assert result["scored"] is False
+
+    independent = verifier.leaked_model_tripwire(
+        [{"outcome": 0}, {"outcome": 1}, {"outcome": 1}], expected
+    )
+    assert builder.canonical_json_bytes(result) == verifier.canonical_json_bytes(
+        independent
+    )
+    assert independent["status"] == "PASS"
+    assert independent["outcome_keyword_injection_refused"] is True
+    assert independent["relabeled_vector_refused"] is True
 
 
 def test_deliberately_leaked_tripwire_fails_if_ingestor_accepts_oracle() -> None:
     def permissive_ingestor(
-        _model_id: str, predictions: list[Fraction], _source: str
+        _model_id: str,
+        predictions: list[Fraction],
+        _expected: list[Fraction] | None,
     ) -> list[Fraction]:
         return predictions
 
     with pytest.raises(builder.ReplayError, match="oracle model passed"):
         builder._deliberately_leaked_tripwire(
-            [{"outcome": 0}, {"outcome": 1}], permissive_ingestor
+            [{"outcome": 0}, {"outcome": 1}],
+            {"first-week-mean": [Fraction(1, 5), Fraction(2, 5)]},
+            ingestor=permissive_ingestor,
         )
 
 
-def test_brier_scorer_refuses_same_observation_outcome_source() -> None:
-    with pytest.raises(builder.ReplayError, match="same observation outcome"):
-        builder._score_brier_prediction(
-            Fraction(1), Fraction(1), "same-observation outcome column (oracle-leak)"
+def test_mislabeled_outcome_vector_cannot_pass_shared_ingestion() -> None:
+    oracle = [Fraction(1, 100), Fraction(99, 100)]
+    safe_rebuild = [Fraction(1, 5), Fraction(2, 5)]
+    with pytest.raises(builder.ReplayError, match="outcome-inaccessible construction"):
+        builder._ingest_model_predictions(
+            "first-week-mean", oracle, safe_rebuild
+        )
+    with pytest.raises(verifier.VerificationError, match="outcome-inaccessible construction"):
+        verifier.ingest_prediction_vector("first-week-mean", oracle, safe_rebuild)
+
+
+def test_tripwire_fails_if_ingestor_trusts_declared_model_label() -> None:
+    def label_trusting_ingestor(
+        model_id: str,
+        predictions: list[Fraction],
+        _expected: list[Fraction] | None,
+    ) -> list[Fraction]:
+        if model_id == "oracle-leak":
+            raise builder.ReplayError("undeclared model")
+        return predictions
+
+    with pytest.raises(builder.ReplayError, match="relabeled outcome-derived oracle"):
+        builder._deliberately_leaked_tripwire(
+            [{"outcome": 0}, {"outcome": 1}],
+            {"first-week-mean": [Fraction(1, 5), Fraction(2, 5)]},
+            ingestor=label_trusting_ingestor,
         )
 
 
@@ -288,7 +334,13 @@ def test_posthoc_shuffle_sensitivity_is_exact_and_deterministic() -> None:
     assert first["statistical_status"].startswith("POSTHOC")
 
 
-def test_failed_b2_win_condition_forces_overall_fail_and_incomplete() -> None:
+@pytest.mark.parametrize(
+    "verdict_fn",
+    [builder._overall_preregistered_verdict, verifier.overall_preregistered_verdict],
+)
+def test_failed_b2_win_condition_forces_overall_fail_and_incomplete(
+    verdict_fn: Callable[[dict[str, Any], dict[str, Any]], dict[str, Any]],
+) -> None:
     null_replay = {
         "win_condition_checks": {
             "B1_count_at_most_nominal_ceiling": True,
@@ -303,13 +355,46 @@ def test_failed_b2_win_condition_forces_overall_fail_and_incomplete() -> None:
             "status": "UNDERSPECIFIED_NOT_UNIQUELY_REPLAYABLE"
         }
     }
-    verdict = builder._overall_preregistered_verdict(null_replay, leakage_tests)
+    verdict = verdict_fn(null_replay, leakage_tests)
     assert verdict == {
         "control_completion": "INCOMPLETE",
         "failed_win_condition_checks": ["B2_count_at_least_25"],
         "incomplete_controls": ["shuffled_time_control"],
+        "null_win_condition_passed": False,
+        "overall_preregistered_passed": False,
         "status": "FAIL",
-        "win_condition_passed": False,
+    }
+
+
+@pytest.mark.parametrize(
+    "verdict_fn",
+    [builder._overall_preregistered_verdict, verifier.overall_preregistered_verdict],
+)
+def test_null_win_cannot_override_incomplete_preregistered_control(
+    verdict_fn: Callable[[dict[str, Any], dict[str, Any]], dict[str, Any]],
+) -> None:
+    null_replay = {
+        "win_condition_checks": {
+            "B1_count_at_most_nominal_ceiling": True,
+            "B2_count_at_least_25": True,
+            "B3_count_at_most_nominal_ceiling": True,
+            "B3_final_width_at_most_twice_B1": True,
+        },
+        "win_condition_passed": True,
+    }
+    leakage_tests = {
+        "shuffled_time_control": {
+            "status": "UNDERSPECIFIED_NOT_UNIQUELY_REPLAYABLE"
+        }
+    }
+    verdict = verdict_fn(null_replay, leakage_tests)
+    assert verdict == {
+        "control_completion": "INCOMPLETE",
+        "failed_win_condition_checks": [],
+        "incomplete_controls": ["shuffled_time_control"],
+        "null_win_condition_passed": True,
+        "overall_preregistered_passed": False,
+        "status": "INCOMPLETE",
     }
 
 
