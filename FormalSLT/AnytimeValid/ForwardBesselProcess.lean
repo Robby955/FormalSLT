@@ -649,6 +649,32 @@ theorem forwardEmpiricalBernsteinPsi_le_quadratic
   unfold forwardEmpiricalBernsteinPsi
   linarith
 
+/-- On the fraction range reached by the unit-interval singular
+reparameterization, the empirical-Bernstein cumulant is at most the squared
+fraction. -/
+theorem forwardEmpiricalBernsteinPsi_le_sq_of_le_exp_neg_one
+    {lam : ℝ} (hlam0 : 0 ≤ lam) (hlam : lam ≤ Real.exp (-1)) :
+    forwardEmpiricalBernsteinPsi lam ≤ lam ^ 2 := by
+  have hexp_neg_one_lt_half : Real.exp (-1) < 1 / 2 := by
+    have hexp_one := Real.add_one_lt_exp (by norm_num : (1 : ℝ) ≠ 0)
+    norm_num at hexp_one
+    rw [Real.exp_neg]
+    simpa only [one_div] using
+      one_div_lt_one_div_of_lt (by norm_num : (0 : ℝ) < 2) hexp_one
+  have hlam_half : lam < 1 / 2 :=
+    lt_of_le_of_lt hlam hexp_neg_one_lt_half
+  have hlam1 : lam < 1 := hlam_half.trans (by norm_num)
+  have hquadratic := forwardEmpiricalBernsteinPsi_le_quadratic hlam0 hlam1
+  have hden_pos : 0 < 2 * (1 - lam) := by linarith
+  have hden_one : 1 ≤ 2 * (1 - lam) := by linarith
+  calc
+    forwardEmpiricalBernsteinPsi lam ≤
+        lam ^ 2 / (2 * (1 - lam)) := hquadratic
+    _ ≤ lam ^ 2 := by
+      apply (div_le_iff₀ hden_pos).2
+      simpa using
+        mul_le_mul_of_nonneg_left hden_one (sq_nonneg lam)
+
 /-- Random predictable prefix-mean predictor induced by an observation process. -/
 def forwardPredictorProcess {Ω : Type*}
     (X : ℕ → Ω → ℝ) (k : ℕ) (ω : Ω) : ℝ :=
