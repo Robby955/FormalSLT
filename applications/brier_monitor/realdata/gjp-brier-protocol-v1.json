@@ -1,13 +1,27 @@
 {
   "artifact_status": "PROSPECTIVE PROTOCOL ONLY - NO STREAM, RECEIPT, OR RESULT",
   "baselines": {
+    "B1_evaluation": "evaluate once at t = 175 with wake 0, effective confidence delta, and the minimum over the admissible geometric tilt atoms",
     "B1_fixed_time": "the same endpoint evaluated once at a single predeclared n, no wake weight",
+    "B2_evaluation": "for every t from 4 through 175, recompute B1 with that t's admissible atoms and report the first threshold crossing",
     "B2_naive_repeated_look": "B1 recomputed at every t and reported at the first clearing t; invalid, included to be shown failing",
     "B3_anytime_valid": "the wake-and-atom construction in this contract",
+    "B3_evaluation": "for every t from 4 through 175, scan only declared wakes w with w <= t - 4 and every atom in that suffix's admissible range, using effective confidence delta * polynomialEpochWeight w",
+    "declaration_threshold": "train_base_rate * (1 - train_base_rate)",
+    "diagnostic_nonclaim": "the null replay is a deterministic implementation diagnostic; the Lean theorem, not Monte Carlo, carries the validity claim",
+    "null_generator": {
+      "algorithm": "SplitMix64",
+      "bernoulli_rule": "for reduced q = numerator/denominator, set limit = floor(2^64 / denominator) * denominator; reject words >= limit; otherwise y = 1 iff word mod denominator < numerator",
+      "draw_order": "replicate index ascending, then monitor index ascending; rejected words consume stream positions",
+      "mixing_rule": "state += 0x9e3779b97f4a7c15 mod 2^64; z = state; z = (z xor (z >> 30)) * 0xbf58476d1ce4e5b9 mod 2^64; z = (z xor (z >> 27)) * 0x94d049bb133111eb mod 2^64; output z xor (z >> 31)",
+      "seed_u64_hex": "0x46534c54474a5031",
+      "word_bits": 64
+    },
     "null_replicates": 2000,
-    "primary_metric": "fraction of null replicates in which the procedure ever declares; target at most delta for B1 and B3",
+    "primary_metric": "exact count and fraction of null replicates in which each procedure ever declares; nominal count ceiling floor(2000 * delta) = 12 for B1 and B3",
     "secondary_metric": "first index at which the reported endpoint falls below the train-split base-rate Brier score, and endpoint width at final n",
-    "win_condition": "B3 null exceedance at most delta while B2 exceeds it, and B3 endpoint at final n within a factor stated in the receipt of the B1 single-look endpoint"
+    "train_base_rate_definition": "the exact quantized probability emitted by constant-train-baserate, an integer multiple of 1/1000000",
+    "win_condition": "B1 and B3 null exceedance counts are each at most 12, B2 count is at least 25, and B3 final excess width is at most twice B1 final excess width"
   },
   "chronological_split": {
     "calibration": {
@@ -152,8 +166,8 @@
       "permutations": 200
     },
     {
-      "fails_when": "the B3 exceedance rate over the null replicates is above delta",
-      "id": "outcome_shuffle_null"
+      "fails_when": "the B3 exceedance count over 2000 pinned null replicates is above 12",
+      "id": "parametric_null_replay"
     }
   ],
   "lean_binding": {
@@ -309,9 +323,17 @@
       "reason": "the original protocol specified no deterministic map from the ideal Gibbs weights to an exact probability mass function",
       "replacement_rule": "compute ideal weights with Decimal precision 80 and ROUND_HALF_EVEN, then quantize to the 10^15 simplex by the largest-remainder rule with model-id ties",
       "result_existed_before_amendment": false
+    },
+    {
+      "data_access_before_amendment": "protocol implementation audit only; no monitor score, null replicate, boundary, or result was computed",
+      "discovery": "the original null diagnostic did not pin a random-bit generator, seed, exact Bernoulli sampler, draw order, prefix grid, or numerical win thresholds",
+      "id": "gjp-null-replay-amendment-2026-08-28",
+      "reason": "an unspecified Monte Carlo routine is not independently replayable and qualitative success language permits post-result interpretation",
+      "replacement_rule": "use the pinned SplitMix64 stream and exact rational Bernoulli rejection sampler; evaluate B1, B2, and B3 on the pinned grids and apply the exact count and width thresholds",
+      "result_existed_before_amendment": false
     }
   ],
-  "protocol_version": "gjp-brier-monitor-protocol-v1.1",
+  "protocol_version": "gjp-brier-monitor-protocol-v1.2",
   "quantization": {
     "denominator": 1000000,
     "loss_denominator": 1000000000000,

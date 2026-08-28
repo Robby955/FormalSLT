@@ -154,6 +154,27 @@ def test_rational_posterior_grid_is_pinned(tmp_path: Path) -> None:
     assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
 
 
+def test_null_replay_seed_is_pinned(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["baselines"]["null_generator"]["seed_u64_hex"] = "0x1"
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_repeated_look_grid_is_pinned(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["baselines"]["B2_evaluation"] = "evaluate selected prefixes"
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_null_win_thresholds_are_pinned(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["baselines"]["win_condition"] = "looks favorable"
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
 def test_eligible_count_must_partition_candidates(tmp_path: Path) -> None:
     def mutate(protocol: dict) -> None:
         protocol["eligibility_after_temporal_amendment"]["included_count"] = 382

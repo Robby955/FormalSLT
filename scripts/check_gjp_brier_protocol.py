@@ -24,12 +24,13 @@ DEFAULT_PROTOCOL = (
 )
 
 ARTIFACT_STATUS = "PROSPECTIVE PROTOCOL ONLY - NO STREAM, RECEIPT, OR RESULT"
-PROTOCOL_VERSION = "gjp-brier-monitor-protocol-v1.1"
+PROTOCOL_VERSION = "gjp-brier-monitor-protocol-v1.2"
 SCHEMA_VERSION = "formalslt.brier-monitor.realdata-preregistration.v1"
 PERSISTENT_ID = "doi:10.7910/DVN/BPCDH5"
 SAFETY_AMENDMENT_IDS = [
     "gjp-temporal-window-amendment-2026-08-28",
     "gjp-rational-posterior-amendment-2026-08-28",
+    "gjp-null-replay-amendment-2026-08-28",
 ]
 MD5_PATTERN = re.compile(r"\A[0-9a-f]{32}\Z")
 
@@ -45,7 +46,7 @@ EXPECTED_ROUNDING = {
 EXPECTED_LEAKAGE_TESTS = {
     "deliberately_leaked_tripwire",
     "future_feature_ablation",
-    "outcome_shuffle_null",
+    "parametric_null_replay",
     "shuffled_time_control",
     "timestamp_assertion",
 }
@@ -296,6 +297,47 @@ def check_confidence(protocol: dict[str, Any], monitor_count: int) -> list[tuple
     return grid
 
 
+def check_null_replay(protocol: dict[str, Any], monitor_count: int) -> None:
+    baselines = _object(protocol["baselines"], "baselines")
+    _exact(baselines["null_replicates"], 2000, "baselines.null_replicates")
+    if f"t = {monitor_count}" not in baselines["B1_evaluation"]:
+        raise ProtocolError("B1 must be evaluated once at the final monitor horizon")
+    if f"through {monitor_count}" not in baselines["B2_evaluation"]:
+        raise ProtocolError("B2 must pin every repeated-look prefix")
+    if f"through {monitor_count}" not in baselines["B3_evaluation"]:
+        raise ProtocolError("B3 must pin every anytime-valid prefix")
+    _exact(
+        baselines["declaration_threshold"],
+        "train_base_rate * (1 - train_base_rate)",
+        "baselines.declaration_threshold",
+    )
+    _exact(
+        baselines["train_base_rate_definition"],
+        "the exact quantized probability emitted by constant-train-baserate, an integer multiple of 1/1000000",
+        "baselines.train_base_rate_definition",
+    )
+    generator = _object(baselines["null_generator"], "baselines.null_generator")
+    _exact(generator["algorithm"], "SplitMix64", "null_generator.algorithm")
+    _exact(generator["seed_u64_hex"], "0x46534c54474a5031", "null_generator.seed")
+    _exact(generator["word_bits"], 64, "null_generator.word_bits")
+    if "reject words >= limit" not in generator["bernoulli_rule"]:
+        raise ProtocolError("the null replay must use unbiased rational Bernoulli rejection")
+    if "rejected words consume stream positions" not in generator["draw_order"]:
+        raise ProtocolError("the null replay must pin rejected-word stream consumption")
+    for constant in (
+        "0x9e3779b97f4a7c15",
+        "0xbf58476d1ce4e5b9",
+        "0x94d049bb133111eb",
+    ):
+        if constant not in generator["mixing_rule"]:
+            raise ProtocolError(f"the SplitMix64 rule is missing {constant}")
+    _exact(
+        baselines["win_condition"],
+        "B1 and B3 null exceedance counts are each at most 12, B2 count is at least 25, and B3 final excess width is at most twice B1 final excess width",
+        "baselines.win_condition",
+    )
+
+
 def check_lean_binding(protocol: dict[str, Any]) -> None:
     binding = _object(protocol["lean_binding"], "lean_binding")
     example = ROOT / str(binding["required_example_path"])
@@ -421,6 +463,7 @@ def validate(path: Path) -> list[tuple[int, int]]:
     check_catalog(protocol)
     check_quantization(protocol)
     grid = check_confidence(protocol, monitor_count)
+    check_null_replay(protocol, monitor_count)
     check_lean_binding(protocol)
     check_fresh_outputs(protocol)
     check_leakage_tests(protocol)

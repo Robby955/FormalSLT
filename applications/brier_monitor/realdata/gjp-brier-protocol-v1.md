@@ -1,4 +1,4 @@
-# Prospective real-data Brier monitor protocol v1.1
+# Prospective real-data Brier monitor protocol v1.2
 
 Status: **PROSPECTIVE PROTOCOL ONLY. NO STREAM, RECEIPT, OR RESULT.**
 
@@ -113,6 +113,16 @@ weights are evaluated with decimal precision 80 and `ROUND_HALF_EVEN`; scaled
 weights are floored and the remaining integer units go to descending
 fractional remainders, with model identifiers breaking ties. The resulting
 rational posterior, not the ideal decimal diagnostic, is the theorem input.
+
+Finally, the original null diagnostic did not pin its random-bit stream or
+evaluation grid. Version 1.2 uses SplitMix64 with seed
+`0x46534c54474a5031`, the standard three mixing constants recorded in the JSON,
+and replicate-major then monitor-index-major draw order. A reduced rational
+Bernoulli draw uses rejection below the largest multiple of its denominator
+that fits in `2^64`, so modulo reduction is unbiased; rejected words still
+consume stream positions. This amendment also fixes every B1/B2/B3 evaluation
+time and the numerical success thresholds below. No null replicate or real
+monitor result existed before these rules were recorded.
 
 ## Monitored unit and chronological split
 
@@ -240,24 +250,34 @@ the allocation. The grid is in the JSON and the checker enforces it.
 ## Baselines and the comparison
 
 - **B1 fixed-time.** The same PAC-Bayes empirical-Bernstein endpoint evaluated
-  once, at a single predeclared `n`, with no wake weight.
-- **B2 naive repeated look.** B1's fixed-time endpoint recomputed at every `t`
-  and reported at the first `t` that clears the operating threshold. This
+  once at `t = 175`, wake zero, confidence `delta`, and the minimum admissible
+  geometric atom. There is no wake penalty.
+- **B2 naive repeated look.** B1's endpoint recomputed at every `t = 4,...,175`
+  with that prefix's atom range and reported at its first crossing. This
   procedure is invalid and is included to be shown failing.
-- **B3 anytime-valid monitor.** The wake-and-atom construction above.
+- **B3 anytime-valid monitor.** At every `t = 4,...,175`, scan only declared
+  wakes with `w <= t - 4` and the admissible atoms for suffix `t - w`, using
+  effective confidence `delta * polynomialEpochWeight w`.
 
-Primary metric, type-I control: over `R = 2000` null replicates in which each
-`y_t` is redrawn independently from the train-split base rate while `p_t` is
-held fixed, the fraction of replicates in which the procedure ever declares.
-Target for B1 and B3 is at most `delta = 1/160`. B2 is expected to exceed it.
+Here `q` is the exact quantized probability emitted by the
+`constant-train-baserate` model, an integer multiple of `10^-6`. The declaration
+threshold is its exact Brier risk `q * (1 - q)`. The null generator redraws
+every monitor outcome independently as an exact rational Bernoulli with
+parameter `q`, holding forecasts and the calibration-frozen posterior fixed.
+
+Primary metric: over `R = 2000` pinned null replicates, report the exact count
+and fraction in which each procedure ever declares. The nominal count ceiling
+for B1 and B3 is `floor(2000 / 160) = 12`; material B2 inflation means at least
+25 crossings. This simulation is an implementation diagnostic, not the proof
+of coverage.
 
 Secondary metric, on the real monitor stream: the first index `t` at which the
 reported endpoint falls below the train-split base-rate Brier score, and the
 endpoint width at the final `n` for each of B1 and B3.
 
-A win is: B3's null exceedance is at most `delta` while B2's is materially
-above it, **and** B3's endpoint at final `n` is within a factor stated in the
-receipt of B1's single-look endpoint. Anything else is published unchanged.
+A win requires B1 and B3 counts at most 12, B2 count at least 25, and B3's
+final excess width at most twice B1's final excess width. Anything else is
+published unchanged.
 
 ## Receipt fields and their Lean bindings
 
@@ -334,9 +354,9 @@ considered broken unless every one of them behaves as written.
    digit; the quadratic variation is not, and its permutation distribution is
    reported. A shifted empirical risk means the pipeline is order sensitive
    somewhere it should not be.
-5. **Outcome-shuffle null.** The `R = 2000` replicate null above. A B3
-   exceedance rate above `delta` means the construction, the allocation, or
-   the implementation is wrong, and the result is reported as such.
+5. **Parametric null replay.** Run the `R = 2000` pinned replicates above. A B3
+   count above 12 fails the predeclared diagnostic target and is reported as
+   such; it does not override or replace the theorem-level guarantee.
 
 ## When this protocol produces a misleading result
 
