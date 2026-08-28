@@ -28,6 +28,7 @@ It is not a continuum strategy mixture or a parameter-free coin-betting
 theorem.
 -/
 
+open MeasureTheory ProbabilityTheory
 open scoped BigOperators
 
 namespace FormalSLT.AnytimeValid
@@ -352,5 +353,148 @@ theorem countableSleepingStrategyPosterior_logWealth_le_explicit
     hfactor_pos n rho hrho omega
 
 end StrategySelection
+
+section TimeUniformEvent
+
+variable {Omega : Type*}
+
+/-- The single path event on which the executable countable master never
+crosses its Ville threshold. This event is fixed before choosing either the
+reporting time or the posterior over the currently active strategies. -/
+def countableSleepingStrategyPosteriorGoodEvent
+    (X : Nat -> Omega -> Real) (m : Real)
+    (strategy : Nat -> Nat -> Omega -> Real) (delta : Real) : Set Omega :=
+  (atTopCrossingEvent
+    (bettingWealthProcess X
+      (countableSleepingMasterBet
+        (fun k omega => X k omega - m) strategy) m)
+    (1 / delta))ᶜ
+
+/-- One Ville event controls every time and every posterior on the active
+strategy prefix. The strategy catalog itself is fixed in advance and
+countable; this theorem does not permit newly invented post-data strategies
+and does not assert a continuum or parameter-free coin-betting result. -/
+theorem countableSleepingStrategyPosteriorGoodEvent_spec
+    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
+    {F : Filtration Nat mOmega} [IsProbabilityMeasure mu]
+    (X : Nat -> Omega -> Real) (m : Real)
+    (strategy : Nat -> Nat -> Omega -> Real)
+    (hX_adapted : IncrementAdapted F X)
+    (hstrategy_adapted : forall j, StronglyAdapted F (strategy j))
+    (hcomponent : forall j,
+      EProcess mu F
+        (bettingWealthProcess X (sleepingStrategy strategy j) m))
+    (hfactor_pos : forall j k omega,
+      0 < 1 + sleepingStrategy strategy j k omega * (X k omega - m))
+    {delta : Real} (hdelta : 0 < delta) :
+    mu.real
+        (countableSleepingStrategyPosteriorGoodEvent
+          X m strategy delta)ᶜ <= delta ∧
+      ∀ omega ∈
+          countableSleepingStrategyPosteriorGoodEvent X m strategy delta,
+        ∀ n : Nat, ∀ rho : Fin (n + 1) -> Real,
+          IsPMF rho ->
+            posteriorAverage rho (fun j =>
+                Real.log (algebraicBettingWealth
+                  (fun k xi => X k xi - m)
+                  (sleepingStrategy strategy j.1) n omega)) <=
+              klDiv (liftSleepingActivePosterior rho)
+                  (sleepingActiveDyadicPrior n) +
+                Real.log (1 / delta) := by
+  let masterBet := countableSleepingMasterBet
+    (fun k omega => X k omega - m) strategy
+  let masterWealth := bettingWealthProcess X masterBet m
+  have hE : EProcess mu F masterWealth := by
+    dsimp only [masterWealth, masterBet]
+    exact countableSleepingMasterBet_eProcess X m strategy
+      hX_adapted hstrategy_adapted hcomponent
+  have hthreshold : 0 < (1 : Real) / delta := one_div_pos.mpr hdelta
+  have hville := ville_atTop_maximal_ineq
+    hE.supermartingale hE.nonneg hthreshold
+  rw [hE.integral_start_eq_one] at hville
+  have hcrossing :
+      mu.real (atTopCrossingEvent masterWealth (1 / delta)) <= delta := by
+    calc
+      mu.real (atTopCrossingEvent masterWealth (1 / delta)) =
+          delta * ((1 / delta) *
+            mu.real (atTopCrossingEvent masterWealth (1 / delta))) := by
+              field_simp [hdelta.ne']
+      _ <= delta * 1 := mul_le_mul_of_nonneg_left hville hdelta.le
+      _ = delta := by ring
+  constructor
+  · simpa [countableSleepingStrategyPosteriorGoodEvent,
+      masterWealth, masterBet] using hcrossing
+  · intro omega homega n rho hrho
+    have hnot_crossing :
+        omega ∉ atTopCrossingEvent masterWealth (1 / delta) := by
+      simpa [countableSleepingStrategyPosteriorGoodEvent,
+        masterWealth, masterBet] using homega
+    have hmaster_lt : masterWealth n omega < 1 / delta := by
+      exact lt_of_not_ge fun hcross => hnot_crossing ⟨n, hcross⟩
+    have hwealth_nonneg : forall j k xi,
+        0 <= algebraicBettingWealth (fun t eta => X t eta - m)
+          (sleepingStrategy strategy j) k xi := fun j k xi =>
+      (algebraicBettingWealth_pos
+        (fun t eta => hfactor_pos j t eta) k xi).le
+    have hmaster_pos :
+        0 < algebraicBettingWealth (fun k xi => X k xi - m)
+          (countableSleepingMasterBet
+            (fun k xi => X k xi - m) strategy) n omega := by
+      rw [countableSleepingMasterWealth_eq_mixture
+        (fun k xi => X k xi - m) strategy
+        (fun k xi =>
+          (countableSleepingMixtureWealth_pos
+            hwealth_nonneg k xi).ne') n omega]
+      exact countableSleepingMixtureWealth_pos hwealth_nonneg n omega
+    have hmaster_lt' :
+        algebraicBettingWealth (fun k xi => X k xi - m)
+            (countableSleepingMasterBet
+              (fun k xi => X k xi - m) strategy) n omega <
+          1 / delta := by
+      simpa only [algebraicBettingWealth_eq_bettingWealthProcess,
+        masterWealth, masterBet] using hmaster_lt
+    have hlog :
+        Real.log (algebraicBettingWealth (fun k xi => X k xi - m)
+            (countableSleepingMasterBet
+              (fun k xi => X k xi - m) strategy) n omega) <=
+          Real.log (1 / delta) :=
+      (Real.log_lt_log hmaster_pos hmaster_lt').le
+    have horacle := countableSleepingStrategyPosterior_logWealth_le
+      hfactor_pos n rho hrho omega
+    exact horacle.trans (add_le_add_right hlog _)
+
+/-- Existential packaging of the named common good event. The quantifiers over
+time and posterior remain inside the event guarantee. -/
+theorem exists_countableSleepingStrategyPosteriorGoodEvent
+    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
+    {F : Filtration Nat mOmega} [IsProbabilityMeasure mu]
+    (X : Nat -> Omega -> Real) (m : Real)
+    (strategy : Nat -> Nat -> Omega -> Real)
+    (hX_adapted : IncrementAdapted F X)
+    (hstrategy_adapted : forall j, StronglyAdapted F (strategy j))
+    (hcomponent : forall j,
+      EProcess mu F
+        (bettingWealthProcess X (sleepingStrategy strategy j) m))
+    (hfactor_pos : forall j k omega,
+      0 < 1 + sleepingStrategy strategy j k omega * (X k omega - m))
+    {delta : Real} (hdelta : 0 < delta) :
+    ∃ goodEvent : Set Omega,
+      mu.real goodEventᶜ <= delta ∧
+        ∀ omega ∈ goodEvent, ∀ n : Nat,
+          ∀ rho : Fin (n + 1) -> Real, IsPMF rho ->
+            posteriorAverage rho (fun j =>
+                Real.log (algebraicBettingWealth
+                  (fun k xi => X k xi - m)
+                  (sleepingStrategy strategy j.1) n omega)) <=
+              klDiv (liftSleepingActivePosterior rho)
+                  (sleepingActiveDyadicPrior n) +
+                Real.log (1 / delta) := by
+  refine ⟨countableSleepingStrategyPosteriorGoodEvent
+    X m strategy delta, ?_⟩
+  exact countableSleepingStrategyPosteriorGoodEvent_spec
+    X m strategy hX_adapted hstrategy_adapted hcomponent
+      hfactor_pos hdelta
+
+end TimeUniformEvent
 
 end FormalSLT.AnytimeValid

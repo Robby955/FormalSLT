@@ -23,6 +23,8 @@ example : IsFullSupportPMF (sleepingActiveDyadicPrior 0) :=
 #check countableSleepingMasterBet_eq_posteriorAverage
 #check countableSleepingStrategyPosterior_logWealth_le
 #check countableSleepingStrategyPosterior_logWealth_le_explicit
+#check countableSleepingStrategyPosteriorGoodEvent_spec
+#check exists_countableSleepingStrategyPosteriorGoodEvent
 
 #print axioms sleepingActiveDyadicPrior_isFullSupportPMF
 #print axioms liftSleepingActivePosterior_isPMF
@@ -32,3 +34,5 @@ example : IsFullSupportPMF (sleepingActiveDyadicPrior 0) :=
 #print axioms countableSleepingMasterBet_eq_posteriorAverage
 #print axioms countableSleepingStrategyPosterior_logWealth_le
 #print axioms countableSleepingStrategyPosterior_logWealth_le_explicit
+#print axioms countableSleepingStrategyPosteriorGoodEvent_spec
+#print axioms exists_countableSleepingStrategyPosteriorGoodEvent
