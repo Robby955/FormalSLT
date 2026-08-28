@@ -56,7 +56,7 @@ def continuousSingularFractionBesselExceptionalEvent
       continuousSingularFractionBesselMasterProcess
         prior X mean n omega}
 
-/-- Exact posterior deviation boundary at one target fraction.  The
+/-- Explicit posterior deviation boundary at one target fraction.  The
 hypothesis KL cost and the log price of the positive-mass singular window are
 both paid inside the continuous mixture. -/
 def continuousSingularFractionBesselBoundary
@@ -660,7 +660,7 @@ theorem continuousSingularFractionBessel_boundaryFailure_mem_exceptionalEvent
   exact ⟨n, hnpos, hcross⟩
 
 /-- Outside the one joint crossing event, every eligible posterior satisfies
-the exact singular-fraction boundary at every time and every admissible
+the explicit singular-fraction boundary at every time and every admissible
 target fraction.  The posterior is quantified after the path is observed. -/
 theorem continuousSingularFractionBessel_allPosteriors_allFractions_of_not_mem
     (prior : Measure Theta) [IsProbabilityMeasure prior]
