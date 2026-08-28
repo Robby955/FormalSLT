@@ -143,3 +143,26 @@ also does not turn monitored conditional suffix risk into future, stationary,
 population, or deployment risk. The real-data monitor still requires a frozen
 dataset, chronological prediction protocol, and a Lean theorem/checker that
 consumes the generated data.
+
+## Frozen UCI-357 data protocol
+
+`uci357-protocol-v1.json` defines the first real-data input contract. It pins
+the UCI Occupancy Detection landing page, DOI, CC BY 4.0 metadata, archive and
+member hashes, strict parser, chronological 40/20/40 split, feature leakage
+guards, 16-bit probability quantization, exact Brier arithmetic, and the
+deterministic soft-winner posterior rule.
+
+The source archive and derived stream are deliberately untracked. Prepare and
+check them with:
+
+```bash
+python3 scripts/prepare_brier_monitor_uci357.py --download
+python3 scripts/prepare_brier_monitor_uci357.py --check
+python3 -m pytest -q tests/test_brier_monitor_uci357_protocol.py
+```
+
+The tracked `generated/uci357-protocol-v1-manifest.json` binds the observed
+source and canonical stream hashes. If scikit-learn is available, the preparer
+also writes an ignored local result containing only a training-prevalence
+constant and one deterministic all-sensor logistic baseline. That result is
+descriptive and non-public; it is not a FormalSLT certificate.

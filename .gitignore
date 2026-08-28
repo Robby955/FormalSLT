@@ -38,3 +38,6 @@ paper/missfont.log
 # Generated FormalSLT overview video artifacts
 media/formalslt-overview/media/
 media/formalslt-overview/out/
+
+# Downloaded or locally derived Brier-monitor data and model outputs.
+applications/brier_monitor/local/

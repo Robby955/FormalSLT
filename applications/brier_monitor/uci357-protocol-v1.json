@@ -1,0 +1,156 @@
+{
+  "artifact_status": "FROZEN REAL-DATA PROTOCOL; NO STATISTICAL CERTIFICATE",
+  "dataset": {
+    "archive": {
+      "bytes": 335713,
+      "sha256": "4ae3f46aa98eedff564a9f6924d1635173e2fd2c816004342a9be93076d3a81a",
+      "url": "https://archive.ics.uci.edu/static/public/357/occupancy+detection.zip"
+    },
+    "doi": "10.24432/C5X01N",
+    "landing_page": "https://archive.ics.uci.edu/dataset/357/occupancy+detection",
+    "license": {
+      "name": "Creative Commons Attribution 4.0 International",
+      "spdx": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "members": [
+      {
+        "bytes": 200766,
+        "name": "datatest.txt",
+        "rows": 2665,
+        "sha256": "1b92c7c1b2838963464fa891a610cf3c5db4becb7189189b29b330107a584c7f"
+      },
+      {
+        "bytes": 596674,
+        "name": "datatraining.txt",
+        "rows": 8143,
+        "sha256": "b2c4d0ce2b9e4e453c476f7125ef31aeec2d1f5c7f5572d0e80de3df6521ab56"
+      },
+      {
+        "bytes": 699664,
+        "name": "datatest2.txt",
+        "rows": 9752,
+        "sha256": "d026d1bd5aeccd4aff4f3b3710d48e40613bd5fc370db7e61bbdcaa50d985095"
+      }
+    ],
+    "name": "Occupancy Detection",
+    "observed_at_utc": "2026-08-28T03:47:41Z",
+    "source_header": [
+      "date",
+      "Temperature",
+      "Humidity",
+      "Light",
+      "CO2",
+      "HumidityRatio",
+      "Occupancy"
+    ],
+    "source_row_fields": [
+      "record_id",
+      "date",
+      "Temperature",
+      "Humidity",
+      "Light",
+      "CO2",
+      "HumidityRatio",
+      "Occupancy"
+    ],
+    "uci_dataset_id": 357
+  },
+  "feature_contract": {
+    "allowlists": {
+      "all_sensor": [
+        "Temperature",
+        "Humidity",
+        "Light",
+        "CO2"
+      ],
+      "calendar": [
+        "minute_of_day_sin",
+        "minute_of_day_cos",
+        "weekday_one_hot"
+      ],
+      "environment_without_light": [
+        "Temperature",
+        "Humidity",
+        "CO2"
+      ]
+    },
+    "baseline_logistic_allowlist": "all_sensor",
+    "forbidden_model_inputs": [
+      "Occupancy",
+      "HumidityRatio",
+      "record_id",
+      "source_line",
+      "source_member",
+      "timestamp"
+    ],
+    "target": "Occupancy"
+  },
+  "nonclaims": [
+    "this protocol is not a FormalSLT statistical certificate",
+    "the task detects contemporaneous occupancy and does not certify future occupancy or deployment risk",
+    "the replay order does not prove how labels were delayed in the original data collection",
+    "chronological data do not by themselves establish concept drift",
+    "local baseline performance is descriptive and is not a population or generalization guarantee"
+  ],
+  "posterior": {
+    "loser_mass_rule": "divide the residual mass equally among all nonwinners",
+    "selection": "smallest exact cumulative Brier numerator, then declared model order",
+    "winner_mass": "3/5"
+  },
+  "preprocessing": {
+    "canonical_columns": [
+      "source_member",
+      "source_line",
+      "record_id",
+      "timestamp",
+      "Temperature",
+      "Humidity",
+      "Light",
+      "CO2",
+      "HumidityRatio",
+      "Occupancy"
+    ],
+    "duplicate_timestamp_policy": "reject",
+    "expected_rows": 20560,
+    "member_order": [
+      "datatest.txt",
+      "datatraining.txt",
+      "datatest2.txt"
+    ],
+    "missing_value_policy": "reject",
+    "sort_key": [
+      "timestamp",
+      "member_order",
+      "source_line"
+    ],
+    "timestamp_format": "%Y-%m-%d %H:%M:%S"
+  },
+  "probability": {
+    "denominator": 65535,
+    "loss": "(q - denominator * y)^2 / denominator^2",
+    "out_of_range_policy": "reject",
+    "quantization": "q = floor(denominator * p + 1/2)"
+  },
+  "schema": "formalslt.brier-monitor.uci357-protocol.v1",
+  "splits": [
+    {
+      "count": 8224,
+      "name": "train",
+      "start": 0,
+      "stop": 8224
+    },
+    {
+      "count": 4112,
+      "name": "validation",
+      "start": 8224,
+      "stop": 12336
+    },
+    {
+      "count": 8224,
+      "name": "monitor",
+      "start": 12336,
+      "stop": 20560
+    }
+  ]
+}
