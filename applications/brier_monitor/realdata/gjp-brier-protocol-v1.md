@@ -143,9 +143,9 @@ Every model reads only rows of `survey_fcasts.*` satisfying
 `date_start <= timestamp < effective_cutoff`, where `effective_cutoff` is the
 earlier of `date_suspend` and conservative closure midnight. Two enforcements:
 
-1. The stream builder records, per observation, the maximum forecast
-   `timestamp` it consumed together with `date_start`, `date_suspend`, and
-   `date_closed`. Any observation with a consumed row outside the amended
+1. The stream builder records, per observation, the minimum and maximum
+   forecast `timestamp` it consumed together with `date_start`, `date_suspend`,
+   and `date_closed`. Any observation with a consumed row outside the amended
    interval aborts the run.
 2. The builder is given the outcome column only after the forecast table has
    been reduced to one probability per model per question. The reduction

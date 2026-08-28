@@ -356,6 +356,8 @@ def check_prediction_cutoff(protocol: dict[str, Any]) -> None:
         raise ProtocolError("the reduction function must not accept an outcome argument")
     if before["receipt_records_per_observation_max_consumed_timestamp"] is not True:
         raise ProtocolError("the receipt must record the maximum consumed timestamp per observation")
+    if before["receipt_records_per_observation_min_consumed_timestamp"] is not True:
+        raise ProtocolError("the receipt must record the minimum consumed timestamp per observation")
     _exact(
         before["rule"],
         "every consumed forecast timestamp satisfies date_start <= timestamp < effective_cutoff",

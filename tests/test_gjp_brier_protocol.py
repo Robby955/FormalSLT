@@ -117,6 +117,15 @@ def test_pre_start_forecasts_cannot_be_admitted(tmp_path: Path) -> None:
     assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
 
 
+def test_receipt_must_expose_the_minimum_consumed_timestamp(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["prediction_before_outcome"][
+            "receipt_records_per_observation_min_consumed_timestamp"
+        ] = False
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
 def test_unknown_forecast_event_policy_is_pinned(tmp_path: Path) -> None:
     def mutate(protocol: dict) -> None:
         protocol["prediction_before_outcome"]["survey_forecast_event_types"]["allowed"] = [0, 1]
