@@ -13,7 +13,6 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
-import inspect
 import json
 import os
 import subprocess
@@ -863,20 +862,55 @@ def max_geometric_atom(suffix_length: int) -> int:
 def _loss_matrix(
     observations: list[dict[str, Any]], numeric_predictions: list[list[Fraction]]
 ) -> list[list[Fraction]]:
-    matrix = [[] for _ in MODEL_IDS]
+    if len(observations) != len(numeric_predictions):
+        raise ReplayError("observation and prediction row counts disagree")
+    if any(len(row) != len(MODEL_IDS) for row in numeric_predictions):
+        raise ReplayError("prediction row does not match the declared model catalog")
     sources = [
         "train-split outcomes frozen before calibration and monitoring",
         "forecast rows emitted before the observation outcome",
         "forecast rows emitted before the observation outcome",
         "forecast rows emitted before the observation outcome",
     ]
-    for observation, predictions in zip(observations, numeric_predictions, strict=True):
-        outcome = Fraction(observation["outcome"])
-        for index, (prediction, source) in enumerate(
-            zip(predictions, sources, strict=True)
-        ):
-            matrix[index].append(_score_brier_prediction(prediction, outcome, source))
+    matrix: list[list[Fraction]] = []
+    for model_index, (model_id, source) in enumerate(
+        zip(MODEL_IDS, sources, strict=True)
+    ):
+        predictions = _ingest_model_predictions(
+            model_id,
+            [row[model_index] for row in numeric_predictions],
+            source,
+        )
+        matrix.append(
+            [
+                _score_brier_prediction(
+                    prediction, Fraction(observation["outcome"]), source
+                )
+                for observation, prediction in zip(
+                    observations, predictions, strict=True
+                )
+            ]
+        )
     return matrix
+
+
+def _ingest_model_predictions(
+    model_id: str,
+    predictions: list[Fraction],
+    prediction_source: str,
+) -> list[Fraction]:
+    """The single ingestion gate used by every scored prediction vector."""
+
+    if prediction_source not in SAFE_PREDICTION_SOURCES:
+        raise ReplayError(
+            "model refused at ingestion: predictions may depend on the same observation outcome"
+        )
+    if model_id not in MODEL_IDS:
+        raise ReplayError(f"model refused at ingestion: undeclared model id {model_id!r}")
+    normalized = [Fraction(value) for value in predictions]
+    if any(not 0 <= value <= 1 for value in normalized):
+        raise ReplayError(f"model {model_id!r} emitted a prediction outside [0,1]")
+    return normalized
 
 
 def _score_brier_prediction(
@@ -894,28 +928,39 @@ def _score_brier_prediction(
 
 
 def _deliberately_leaked_tripwire(
-    reducer: Any = reduce_forecasts,
+    observations: list[dict[str, Any]],
+    ingestor: Any = _ingest_model_predictions,
 ) -> dict[str, Any]:
+    outcomes = [int(row["outcome"]) for row in observations]
+    oracle_predictions = [
+        Fraction(99, 100) if outcome == 1 else Fraction(1, 100)
+        for outcome in outcomes
+    ]
     try:
-        inspect.signature(reducer).bind(
-            {},
-            [],
-            set(),
-            outcomes={"oracle-question": 1},
+        ingestor(
+            "oracle-leak",
+            oracle_predictions,
+            "same-observation outcome column",
         )
-    except TypeError:
+    except ReplayError as error:
         return {
             "attempted_dependency": "outcomes",
             "attempted_model_id": "oracle-leak",
             "definition": "p=99/100 if outcome=a else 1/100",
-            "ingestion_callable": getattr(reducer, "__name__", type(reducer).__name__),
-            "outcome_keyword_accepted": False,
-            "refusal_reason_code": "outcome_input_not_in_reducer_contract",
+            "ingestion_callable": "shared model prediction ingestion gate",
+            "oracle_prediction_count": len(oracle_predictions),
+            "oracle_predictions_sha256": sha256_bytes(
+                canonical_json_bytes(
+                    [rational_text(value) for value in oracle_predictions]
+                )
+            ),
+            "refusal_message": str(error),
+            "refusal_reason_code": "same_observation_outcome_dependency",
             "refused_before_scoring": True,
             "scored": False,
             "status": "PASS",
         }
-    raise ReplayError("the forecast reducer accepted the deliberately leaked outcome input")
+    raise ReplayError("the outcome-derived oracle model passed the shared ingestion gate")
 
 
 def _timestamp_assertion(observations: list[dict[str, Any]]) -> dict[str, Any]:
@@ -1090,9 +1135,16 @@ def _posthoc_shuffled_time_sensitivity(
         )
         for time_index in range(horizon)
     ]
-    reference = sum(weighted_losses, Fraction(0)) / horizon
+    reference_loss_prefix, reference_quadratic_prefix = _posterior_prefix_statistics(
+        monitor_losses, posterior
+    )
+    reference = reference_loss_prefix[-1] / horizon
+    if reference != sum(weighted_losses, Fraction(0)) / horizon:
+        raise ReplayError("shuffled-time reference risk reconstruction disagrees")
+    reference_quadratic = reference_quadratic_prefix[-1]
     order_digest = hashlib.sha256()
     seen_orders: set[tuple[int, ...]] = set()
+    quadratic_values: list[Fraction] = []
     for replicate in range(permutations):
         prefix = SHUFFLE_NAMESPACE + replicate.to_bytes(4, "big") + b"\0"
         order = tuple(
@@ -1109,9 +1161,18 @@ def _posthoc_shuffled_time_sensitivity(
         seen_orders.add(order)
         for index in order:
             order_digest.update(index.to_bytes(4, "big"))
-        permuted = sum((weighted_losses[index] for index in order), Fraction(0)) / horizon
-        if permuted != reference:
+        permuted_losses = [
+            [model_losses[index] for index in order]
+            for model_losses in monitor_losses
+        ]
+        permuted_prefix, permuted_quadratic = _posterior_prefix_statistics(
+            permuted_losses, posterior
+        )
+        if permuted_prefix[-1] / horizon != reference:
             raise ReplayError("exact empirical risk changed under a time permutation")
+        quadratic_values.append(permuted_quadratic[-1])
+    ordered_quadratics = sorted(quadratic_values)
+    quadratic_text = [rational_text(value) for value in ordered_quadratics]
     return {
         "algorithm": (
             "for replicate r, sort monitor indices by "
@@ -1120,9 +1181,25 @@ def _posthoc_shuffled_time_sensitivity(
         ),
         "all_exact_empirical_risks_equal": True,
         "distinct_permutations": len(seen_orders),
+        "every_order_is_bijection": True,
         "order_matrix_sha256": order_digest.hexdigest(),
         "permutations": permutations,
+        "quadratic_variation_changed_in_observed_sample": (
+            len(set(quadratic_values + [reference_quadratic])) > 1
+        ),
+        "quadratic_variation_distribution": {
+            "maximum": rational_text(ordered_quadratics[-1]),
+            "median": rational_text(_median(ordered_quadratics)),
+            "minimum": rational_text(ordered_quadratics[0]),
+            "sorted_exact_values": quadratic_text,
+            "sorted_exact_values_sha256": sha256_bytes(
+                canonical_json_bytes(quadratic_text)
+            ),
+        },
         "reference_posterior_empirical_brier": rational_text(reference),
+        "reference_posterior_predictor_quadratic_variation": rational_text(
+            reference_quadratic
+        ),
         "status": "PASS",
         "statistical_status": "POSTHOC SENSITIVITY; NOT A PREREGISTERED REPLAY",
     }
@@ -1447,6 +1524,26 @@ def _null_replay(
     }
 
 
+def _overall_preregistered_verdict(
+    null_replay: dict[str, Any], leakage_tests: dict[str, Any]
+) -> dict[str, Any]:
+    checks = null_replay["win_condition_checks"]
+    failed_checks = sorted(name for name, passed in checks.items() if not passed)
+    incomplete_controls = sorted(
+        name
+        for name, result in leakage_tests.items()
+        if str(result["status"]).startswith("UNDERSPECIFIED")
+    )
+    win_passed = bool(null_replay["win_condition_passed"])
+    return {
+        "control_completion": "INCOMPLETE" if incomplete_controls else "COMPLETE",
+        "failed_win_condition_checks": failed_checks,
+        "incomplete_controls": incomplete_controls,
+        "status": "PASS" if win_passed else "FAIL",
+        "win_condition_passed": win_passed,
+    }
+
+
 def compute_receipt(
     protocol: dict[str, Any],
     stream: dict[str, Any],
@@ -1562,7 +1659,7 @@ def compute_receipt(
         width_ratio,
     )
     timestamp_control = _timestamp_assertion(observations)
-    tripwire = _deliberately_leaked_tripwire()
+    tripwire = _deliberately_leaked_tripwire(observations)
     ablation = _future_feature_ablation(
         protocol, windows, accumulators, crowd
     )
@@ -1592,6 +1689,7 @@ def compute_receipt(
         },
         "timestamp_assertion": timestamp_control,
     }
+    overall_verdict = _overall_preregistered_verdict(null_replay, leakage_tests)
     constant_monitor_mean = sum(monitor_losses[0], Fraction(0)) / horizon
     model_monitor_means = [sum(values, Fraction(0)) / horizon for values in monitor_losses]
     return {
@@ -1660,6 +1758,7 @@ def compute_receipt(
             "the deterministic null replay is an implementation diagnostic, not a proof of statistical validity",
             "B2 repeatedly reuses a fixed-time bound and is statistically invalid",
         ],
+        "overall_preregistered_verdict": overall_verdict,
         "prior": {
             model: rational_text(weight) for model, weight in zip(MODEL_IDS, prior, strict=True)
         },

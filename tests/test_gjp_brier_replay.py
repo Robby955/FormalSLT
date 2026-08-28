@@ -4,6 +4,7 @@ import csv
 import copy
 import inspect
 import json
+from types import SimpleNamespace
 from datetime import datetime
 from fractions import Fraction
 from pathlib import Path
@@ -52,6 +53,20 @@ def _window() -> builder.QuestionWindow:
     )
 
 
+def _long_window() -> builder.QuestionWindow:
+    return builder.QuestionWindow(
+        ifp_id="q1",
+        date_start=datetime(2020, 1, 2),
+        date_suspend=datetime(2020, 2, 10),
+        date_closed=datetime(2020, 2, 1),
+        effective_cutoff=datetime(2020, 2, 1),
+        source_date_start="1/2/20",
+        source_date_suspend="2/10/20",
+        source_date_closed="2/1/20",
+        split="monitor",
+    )
+
+
 def test_forecast_reducer_has_no_outcome_parameter() -> None:
     assert list(inspect.signature(builder.reduce_forecasts).parameters) == [
         "windows",
@@ -61,24 +76,25 @@ def test_forecast_reducer_has_no_outcome_parameter() -> None:
 
 
 def test_deliberately_leaked_tripwire_refuses_outcome_dependency() -> None:
-    result = builder._deliberately_leaked_tripwire()
+    result = builder._deliberately_leaked_tripwire(
+        [{"outcome": 0}, {"outcome": 1}, {"outcome": 1}]
+    )
     assert result["status"] == "PASS"
-    assert result["outcome_keyword_accepted"] is False
+    assert result["oracle_prediction_count"] == 3
+    assert len(result["oracle_predictions_sha256"]) == 64
     assert result["scored"] is False
 
 
-@pytest.mark.parametrize(
-    "reducer",
-    [
-        lambda windows, paths, allowed_types, outcomes: None,
-        lambda windows, paths, allowed_types, **kwargs: None,
-    ],
-)
-def test_deliberately_leaked_tripwire_fails_if_reducer_accepts_outcomes(
-    reducer: object,
-) -> None:
-    with pytest.raises(builder.ReplayError, match="accepted"):
-        builder._deliberately_leaked_tripwire(reducer)
+def test_deliberately_leaked_tripwire_fails_if_ingestor_accepts_oracle() -> None:
+    def permissive_ingestor(
+        _model_id: str, predictions: list[Fraction], _source: str
+    ) -> list[Fraction]:
+        return predictions
+
+    with pytest.raises(builder.ReplayError, match="oracle model passed"):
+        builder._deliberately_leaked_tripwire(
+            [{"outcome": 0}, {"outcome": 1}], permissive_ingestor
+        )
 
 
 def test_brier_scorer_refuses_same_observation_outcome_source() -> None:
@@ -155,6 +171,27 @@ def test_unknown_forecast_event_type_fails_closed(tmp_path: Path) -> None:
     _write_forecasts(source, [_forecast_row(fcast_type="9")])
     with pytest.raises(builder.ReplayError, match="unrecognized fcast_type"):
         builder.reduce_forecasts({"q1": _window()}, [source], {0, 1, 2, 4})
+
+
+def test_ablation_windows_exercise_exact_day_boundaries(tmp_path: Path) -> None:
+    source = tmp_path / "survey_fcasts.yr1.tab"
+    _write_forecasts(
+        source,
+        [
+            _forecast_row(timestamp="2020-01-02 12:00:00", forecast_id="1"),
+            _forecast_row(timestamp="2020-01-03 00:00:00", forecast_id="2"),
+            _forecast_row(timestamp="2020-01-05 00:00:00", forecast_id="3"),
+            _forecast_row(timestamp="2020-01-09 00:00:00", forecast_id="4"),
+            _forecast_row(timestamp="2020-01-16 00:00:00", forecast_id="5"),
+        ],
+    )
+    accumulators, _audit = builder.reduce_forecasts(
+        {"q1": _long_window()}, [source], {0, 1, 2, 4}
+    )
+    assert [
+        accumulators["q1"].window_accumulators[days].count
+        for days in builder.ABLATION_DAYS
+    ] == [1, 2, 3, 4]
 
 
 @pytest.mark.parametrize(
@@ -245,7 +282,67 @@ def test_posthoc_shuffle_sensitivity_is_exact_and_deterministic() -> None:
     assert first["permutations"] == 200
     assert first["distinct_permutations"] == 200
     assert first["all_exact_empirical_risks_equal"] is True
+    assert first["every_order_is_bijection"] is True
+    assert first["quadratic_variation_changed_in_observed_sample"] is True
+    assert len(first["quadratic_variation_distribution"]["sorted_exact_values"]) == 200
     assert first["statistical_status"].startswith("POSTHOC")
+
+
+def test_failed_b2_win_condition_forces_overall_fail_and_incomplete() -> None:
+    null_replay = {
+        "win_condition_checks": {
+            "B1_count_at_most_nominal_ceiling": True,
+            "B2_count_at_least_25": False,
+            "B3_count_at_most_nominal_ceiling": True,
+            "B3_final_width_at_most_twice_B1": True,
+        },
+        "win_condition_passed": False,
+    }
+    leakage_tests = {
+        "shuffled_time_control": {
+            "status": "UNDERSPECIFIED_NOT_UNIQUELY_REPLAYABLE"
+        }
+    }
+    verdict = builder._overall_preregistered_verdict(null_replay, leakage_tests)
+    assert verdict == {
+        "control_completion": "INCOMPLETE",
+        "failed_win_condition_checks": ["B2_count_at_least_25"],
+        "incomplete_controls": ["shuffled_time_control"],
+        "status": "FAIL",
+        "win_condition_passed": False,
+    }
+
+
+def test_implementation_pin_refuses_dirty_checkout(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_run(args: list[str], **_kwargs: object) -> SimpleNamespace:
+        if args[1] == "rev-parse":
+            return SimpleNamespace(stdout="a" * 40 + "\n")
+        if args[1] == "status":
+            return SimpleNamespace(stdout="?? stray-file\n")
+        raise AssertionError(args)
+
+    monkeypatch.setattr(builder.subprocess, "run", fake_run)
+    with pytest.raises(builder.ReplayError, match="clean"):
+        builder._implementation_commit([builder.DEFAULT_PROTOCOL], "b" * 40)
+
+
+def test_implementation_pin_refuses_modified_source(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def fake_run(args: list[str], **_kwargs: object) -> SimpleNamespace:
+        if args[1] == "rev-parse":
+            return SimpleNamespace(stdout="a" * 40 + "\n")
+        if args[1] == "status":
+            return SimpleNamespace(stdout="")
+        if args[1] == "merge-base":
+            return SimpleNamespace(stdout=b"")
+        if args[1] == "show":
+            return SimpleNamespace(stdout=b"different committed bytes")
+        raise AssertionError(args)
+
+    monkeypatch.setattr(builder.subprocess, "run", fake_run)
+    with pytest.raises(builder.ReplayError, match="working implementation bytes differ"):
+        builder._implementation_commit([builder.DEFAULT_PROTOCOL], "b" * 40)
 
 
 def test_output_directory_inside_repository_is_refused() -> None:
