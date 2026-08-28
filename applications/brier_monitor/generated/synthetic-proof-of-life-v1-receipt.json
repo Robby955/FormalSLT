@@ -602,7 +602,7 @@
       "wake": 16
     }
   ],
-  "input_sha256": "7d2340608d575ac2ff4b1614758433b445c88f7537c57cfeb26fbe8e61d8f1f0",
+  "input_sha256": "130eea0a2eec8ddab25d075f2ef62794c5fdce5b6761be4f16feb12651574e5e",
   "log_enclosure": {
     "method": "range-reduced atanh series with exact rational remainder bound",
     "output_denominator": 1000000000000000,
@@ -657,7 +657,7 @@
     "wake": 0
   },
   "source": {
-    "formal_slt_commit": "62d8fc08b00bd41b7f6927f566e622573affacd7",
+    "formal_slt_commit": "c0b3a5691c3ea3ed6493e914bbccc447f66cbaed",
     "oracle_module_path": "FormalSLT/StochasticDynamics/FiniteTrajectorySleepingSuffixVarianceOracle.lean",
     "oracle_module_sha256": "5cacf706bd0d34658b29d04ca40ae77af62599462fd2ce2fd8b162d5070838c5",
     "oracle_theorem": "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le",

@@ -5,7 +5,7 @@
       "bytes": 1931,
       "path": "applications/brier_monitor/synthetic-proof-of-life-v1.json",
       "role": "input",
-      "sha256": "7d2340608d575ac2ff4b1614758433b445c88f7537c57cfeb26fbe8e61d8f1f0"
+      "sha256": "130eea0a2eec8ddab25d075f2ef62794c5fdce5b6761be4f16feb12651574e5e"
     },
     {
       "bytes": 26748,
@@ -35,13 +35,13 @@
       "bytes": 22395,
       "path": "applications/brier_monitor/generated/synthetic-proof-of-life-v1-receipt.json",
       "role": "receipt",
-      "sha256": "7073d4c14a2ab694e49f0838da2df7020c57b25ad1018b4f1be68f79d9014a44"
+      "sha256": "a8d178efe0dd1c11b5433b68224b589e9962152ef648419ad176f1e869da24ff"
     },
     {
       "bytes": 1402,
       "path": "FormalSLT/Applications/BrierMonitorSyntheticProofOfLifeData.lean",
       "role": "lean_data",
-      "sha256": "073dbc7a4ec626aaa54501de3374fb0ec853c58029ca10cfd88090a1ea1ddfe3"
+      "sha256": "50ca4830ab3ead368b2ef0a4d38667f476a7d37b6e2120e7faf3ff46be05221f"
     },
     {
       "bytes": 15313,
@@ -56,7 +56,7 @@
       "sha256": "9a7fb609391672bd9190d560db2114a68d9434ff99764fc0d792b7fcd03e3f94"
     }
   ],
-  "formal_slt_commit": "62d8fc08b00bd41b7f6927f566e622573affacd7",
+  "formal_slt_commit": "c0b3a5691c3ea3ed6493e914bbccc447f66cbaed",
   "manifest_schema": "formalslt.brier-monitor.synthetic-manifest.v1",
   "nonclaims": [
     "synthetic proof-of-life, not real-data evidence",

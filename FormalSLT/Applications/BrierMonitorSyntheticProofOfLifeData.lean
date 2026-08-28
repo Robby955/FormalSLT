@@ -16,9 +16,9 @@ path belongs to a theorem-produced good event, and no real-data claim.
 
 namespace FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeData
 
-abbrev inputSha256 : String := "7d2340608d575ac2ff4b1614758433b445c88f7537c57cfeb26fbe8e61d8f1f0"
-abbrev receiptSha256 : String := "7073d4c14a2ab694e49f0838da2df7020c57b25ad1018b4f1be68f79d9014a44"
-abbrev formalSLTCommit : String := "62d8fc08b00bd41b7f6927f566e622573affacd7"
+abbrev inputSha256 : String := "130eea0a2eec8ddab25d075f2ef62794c5fdce5b6761be4f16feb12651574e5e"
+abbrev receiptSha256 : String := "a8d178efe0dd1c11b5433b68224b589e9962152ef648419ad176f1e869da24ff"
+abbrev formalSLTCommit : String := "c0b3a5691c3ea3ed6493e914bbccc447f66cbaed"
 abbrev horizon : Nat := 512
 abbrev selectedWake : Nat := 0
 abbrev selectedTiltAtom : Nat := 0
