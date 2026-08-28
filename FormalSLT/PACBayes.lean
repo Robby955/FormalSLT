@@ -80,6 +80,7 @@ import FormalSLT.PACBayes.ForwardBesselPACBayesIID
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle
+import FormalSLT.PACBayes.ContinuousSingularFractionBesselPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingBettingPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
 import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
@@ -119,5 +120,8 @@ strategy posterior and a countable sleeping-wake prior, with separate model
 and strategy KL costs on a common time-uniform event.
 For geometric empirical-Bernstein tilts, it additionally exports exact
 post-data minimization over a growing prefix and an explicit observable
-variance-adaptive, iterated-logarithm-order envelope.
+variance-adaptive, iterated-logarithm-order envelope.  The continuous-model
+surface also exports a singular-fraction mixture whose one event controls
+every eligible path-selected posterior and time with an observable one-sided
+LIL-order conditional-prefix-mean bound.
 -/
