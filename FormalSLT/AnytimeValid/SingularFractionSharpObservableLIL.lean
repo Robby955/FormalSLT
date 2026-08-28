@@ -110,7 +110,7 @@ theorem singularFractionObservableSharpLambda_le_exp_neg_one
 surrogate optimizer.  Consequently the sharper tilt stays inside the same
 certified log-window region. -/
 theorem singularFractionObservableTunedLambda_le_sharpLambda
-    {Q : Real} (hQ : 0 <= Q) (delta : Real) :
+    {Q : Real} (_hQ : 0 <= Q) (delta : Real) :
     singularFractionObservableTunedLambda Q delta <=
       singularFractionObservableSharpLambda Q delta := by
   let C := singularFractionObservableCost Q delta
@@ -265,7 +265,7 @@ theorem singularFractionObservableSharpLambda_argmin
     have hdiff : 0 <=
         singularFractionObservableSurrogate Q delta lam -
           singularFractionObservableSurrogate Q delta s :=
-      nonneg_of_mul_nonneg_right hmul (mul_pos hlam hs)
+      nonneg_of_mul_nonneg_left hmul (mul_pos hlam hs)
     unfold singularFractionObservableSharpLILBoundary
     rw [hsharp]
     exact sub_nonneg.mp hdiff
@@ -303,7 +303,7 @@ theorem singularFractionObservableSharpLambda_argmin
     have hdiff : 0 <=
         singularFractionObservableSurrogate Q delta lam -
           singularFractionObservableSurrogate Q delta s :=
-      nonneg_of_mul_nonneg_right hmul hlam
+      nonneg_of_mul_nonneg_left hmul hlam
     unfold singularFractionObservableSharpLILBoundary
     rw [hsharp]
     exact sub_nonneg.mp hdiff
@@ -419,7 +419,7 @@ theorem singularFraction_sharpTunedBoundary_le_sharpObservableLIL
         (singularFractionLogScale lam *
             (singularFractionLogScale lam + 1) / delta) <=
     lam * Q + Real.exp 1 * C / lam
-  exact add_le_add_left hprice _
+  exact add_le_add_right hprice _
 
 /-- Outside the singular-mixture event, the sharper observable numerator
 controls every reporting time. -/
