@@ -22,11 +22,11 @@ the one-step mixture recursion, the aggregation identity (the master's own
 betting wealth equals the prior mixture of the component wealths), and the
 interval legality of the master bet.
 
-The reason the generalization is not cosmetic is the *price*.  For an
-uncountable class every single strategy has prior mass zero, so
+The reason the generalization is not cosmetic is the *price*.  Under a
+nonatomic prior, every singleton strategy has mass zero, so
 `aggregate_logWealth_regret_le`, which charges `- log (weight j)` for one
-atom, has no non-vacuous instance.  The replacement charged here is the log
-prior mass of a measurable *set* of strategies,
+atom, has no non-vacuous singleton instance.  The replacement charged here is
+the log prior mass of a measurable *set* of strategies,
 `- log (strategyPrior.real B)`, against the worst component wealth on that
 set.  Specializing `B` to a single atom of a finite uniform catalog recovers
 `log (card)`; specializing it to a prior ball is what a covering or
@@ -157,10 +157,9 @@ theorem continuumAggregateWealth_eq_continuumExpertMixtureWealth
       field_simp [hne]
 
 /-- The prior mixture dominates the prior mass of any measurable set of
-strategies times the worst component wealth on that set.  For an uncountable
-class this is the only non-vacuous form of the competition statement: every
-single strategy carries prior mass zero, so the atom-level
-`finiteExpertMixtureWealth_competes` has no useful instance. -/
+strategies times the worst component wealth on that set.  This remains useful
+for nonatomic priors, where singleton strategies have zero mass and the
+atom-level `finiteExpertMixtureWealth_competes` has no useful instance. -/
 theorem continuumExpertMixtureWealth_competes_of_priorMass
     (strategyPrior : Measure Kappa) [IsFiniteMeasure strategyPrior]
     {residual : Nat -> Omega -> Real}
@@ -461,4 +460,3 @@ end RealBridge
 end
 
 end FormalSLT.AnytimeValid
-

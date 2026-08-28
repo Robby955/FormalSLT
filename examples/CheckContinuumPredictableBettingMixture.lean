@@ -3,10 +3,10 @@ import FormalSLT.AnytimeValid.ContinuumPredictableBettingMixture
 /-!
 # Prior-mixture betting master checks
 
-The checked surface is the uncountable-class analogue of the finite
+The checked surface is the arbitrary-measurable-class analogue of the finite
 wealth-weighted master.  The competition statement charges the log prior mass
-of a measurable set of strategies, not the log weight of a single atom, since
-an atom of an uncountable class carries prior mass zero.  Nothing here is
+of a measurable set of strategies, which remains informative for nonatomic
+priors even though singleton strategies then have zero mass.  Nothing here is
 executable and nothing here is a risk statement.
 -/
 
