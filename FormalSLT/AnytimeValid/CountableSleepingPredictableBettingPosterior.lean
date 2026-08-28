@@ -461,7 +461,7 @@ theorem countableSleepingStrategyPosteriorGoodEvent_spec
       (Real.log_lt_log hmaster_pos hmaster_lt').le
     have horacle := countableSleepingStrategyPosterior_logWealth_le
       hfactor_pos n rho hrho omega
-    exact horacle.trans (add_le_add_right hlog _)
+    exact horacle.trans (add_le_add (le_refl _) hlog)
 
 /-- Existential packaging of the named common good event. The quantifiers over
 time and posterior remain inside the event guarantee. -/
