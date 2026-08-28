@@ -118,65 +118,6 @@ theorem continuousSingularFractionBessel_log_effectiveConfidence
     Real.log_div hA.ne' hdelta.ne']
   ring
 
-private theorem continuousSingularFractionBessel_component_le_exp_card
-    (prior : Measure Theta) [IsProbabilityMeasure prior]
-    {X mean : Theta -> Nat -> Omega -> Real}
-    (hX_unit : forall theta k omega,
-      X theta k omega ∈ Set.Icc (0 : Real) 1)
-    (hmean_unit : forall theta k omega,
-      mean theta k omega ∈ Set.Icc (0 : Real) 1)
-    (hjoint_ambient : forall n, StronglyMeasurable
-      (fun q : Omega × (Real × Theta) =>
-        forwardPredictableMeanEmpiricalBernsteinLowerProcess
-          (X q.2.2) (mean q.2.2) (singularFraction q.2.1) n q.1))
-    {u : Real} (hu : u ∈ Set.Icc (0 : Real) 1)
-    (n : Nat) (omega : Omega) :
-    continuousForwardPredictableMeanBesselPriorProcess
-        prior X mean (singularFraction u) n omega <=
-      Real.exp (n : Real) := by
-  have hsection : StronglyMeasurable (fun theta =>
-      forwardPredictableMeanEmpiricalBernsteinLowerProcess
-        (X theta) (mean theta) (singularFraction u) n omega) := by
-    exact (hjoint_ambient n).comp_measurable
-      ((measurable_const.prodMk (measurable_const.prodMk measurable_id)))
-  have htheta0 : 0 <= singularFraction u := singularFraction_nonneg u
-  have htheta1 : singularFraction u < 1 :=
-    singularFraction_lt_one_of_mem_unit hu
-  have hpoint : forall theta,
-      forwardPredictableMeanEmpiricalBernsteinLowerProcess
-          (X theta) (mean theta) (singularFraction u) n omega <=
-        Real.exp (n : Real) := by
-    intro theta
-    calc
-      forwardPredictableMeanEmpiricalBernsteinLowerProcess
-          (X theta) (mean theta) (singularFraction u) n omega <=
-          Real.exp (singularFraction u * (n : Real)) :=
-        forwardPredictableMeanEmpiricalBernsteinLowerProcess_le_exp_card
-          htheta0 htheta1 (hX_unit theta) (hmean_unit theta) n omega
-      _ <= Real.exp (n : Real) := by
-        apply Real.exp_le_exp.mpr
-        have htheta_le : singularFraction u <= 1 := htheta1.le
-        have hn : 0 <= (n : Real) := Nat.cast_nonneg n
-        nlinarith [mul_le_mul_of_nonneg_right htheta_le hn]
-  have hint : Integrable (fun theta =>
-      forwardPredictableMeanEmpiricalBernsteinLowerProcess
-        (X theta) (mean theta) (singularFraction u) n omega) prior := by
-    refine Integrable.of_bound hsection.aestronglyMeasurable
-      (Real.exp (n : Real)) ?_
-    exact Filter.Eventually.of_forall fun theta => by
-      rw [Real.norm_eq_abs, abs_of_pos (by
-        rw [forwardPredictableMeanEmpiricalBernsteinLowerProcess_eq]
-        positivity)]
-      exact hpoint theta
-  unfold continuousForwardPredictableMeanBesselPriorProcess
-    continuousPriorMixtureProcess
-  calc
-    (∫ theta, forwardPredictableMeanEmpiricalBernsteinLowerProcess
-        (X theta) (mean theta) (singularFraction u) n omega ∂prior) <=
-        ∫ _theta, Real.exp (n : Real) ∂prior :=
-      integral_mono hint (integrable_const _) hpoint
-    _ = Real.exp (n : Real) := by simp [integral_const]
-
 private theorem integrable_continuousSingularFractionBessel_parameter
     (prior : Measure Theta) [IsProbabilityMeasure prior]
     {X mean : Theta -> Nat -> Omega -> Real}
