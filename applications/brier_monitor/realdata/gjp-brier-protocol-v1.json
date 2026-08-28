@@ -1,0 +1,279 @@
+{
+  "artifact_status": "PROSPECTIVE PROTOCOL ONLY - NO STREAM, RECEIPT, OR RESULT",
+  "baselines": {
+    "B1_fixed_time": "the same endpoint evaluated once at a single predeclared n, no wake weight",
+    "B2_naive_repeated_look": "B1 recomputed at every t and reported at the first clearing t; invalid, included to be shown failing",
+    "B3_anytime_valid": "the wake-and-atom construction in this contract",
+    "null_replicates": 2000,
+    "primary_metric": "fraction of null replicates in which the procedure ever declares; target at most delta for B1 and B3",
+    "secondary_metric": "first index at which the reported endpoint falls below the train-split base-rate Brier score, and endpoint width at final n",
+    "win_condition": "B3 null exceedance at most delta while B2 exceeds it, and B3 endpoint at final n within a factor stated in the receipt of the B1 single-look endpoint"
+  },
+  "chronological_split": {
+    "calibration": {
+      "date_closed_from": "2013-01-01",
+      "date_closed_through": "2013-12-31",
+      "expected_count": 83,
+      "use": "freeze the posterior rho; never monitored"
+    },
+    "monitor": {
+      "date_closed_from": "2014-01-01",
+      "date_closed_through": null,
+      "expected_count": 177,
+      "use": "the anytime-valid monitored stream"
+    },
+    "train": {
+      "date_closed_from": null,
+      "date_closed_through": "2012-12-31",
+      "expected_count": 122,
+      "use": "constant baseline probability and the null-replicate base rate"
+    }
+  },
+  "confidence_contract": {
+    "atom_range": "Finset.range (finiteTrajectorySleepingSuffixVarianceMaxIndex w n + 1)",
+    "delta": "1/160",
+    "max_index_formula": "(Nat.log 4 (n - w)).pred + 2",
+    "tilt_formula": "geometricForwardTilt a = 1 / 2^(a+1)",
+    "wake_grid": [
+      0,
+      8,
+      32,
+      128
+    ],
+    "wake_shopping_outside_grid_voids_the_allocation": true,
+    "wake_weight_formula": "polynomialEpochWeight w = 1 / ((w+1)*(w+2))"
+  },
+  "dataset": {
+    "access_route": "https://dataverse.harvard.edu/api/access/datafile/{id}?format=original",
+    "files": [
+      {
+        "dataverse_id": 2917330,
+        "filename": "ifps.csv",
+        "md5": "5c703d02284f8b563399967c554f1417",
+        "original_bytes_confirmed": 1072153,
+        "role": "questions_and_outcomes"
+      },
+      {
+        "dataverse_id": 2917351,
+        "filename": "survey_fcasts.yr1.tab",
+        "md5": "091ae92c90ec426772ea784a906d7ddb",
+        "original_bytes_confirmed": 30495631,
+        "role": "individual_forecasts"
+      },
+      {
+        "dataverse_id": 2917352,
+        "filename": "survey_fcasts.yr2.tab",
+        "md5": "528d1bfbff2ab8da6ba2b599b3b80e26",
+        "original_bytes_confirmed": null,
+        "role": "individual_forecasts"
+      },
+      {
+        "dataverse_id": 2917353,
+        "filename": "survey_fcasts.yr3.tab",
+        "md5": "e5837d12b2a17d3ffd0f0bf1f46e61b0",
+        "original_bytes_confirmed": null,
+        "role": "individual_forecasts"
+      },
+      {
+        "dataverse_id": 2917354,
+        "filename": "survey_fcasts.yr4.tab",
+        "md5": "47041be832baed547963c0ffd0d71a9d",
+        "original_bytes_confirmed": null,
+        "role": "individual_forecasts"
+      }
+    ],
+    "ingested_tab_hazard": "plain /api/access/datafile/{id} returns a Dataverse-regenerated TSV whose bytes do not match the published MD5; the metadata filesize field reports that regenerated size. Only ?format=original reproduces the pinned digest.",
+    "license": "CC0-1.0",
+    "persistent_id": "doi:10.7910/DVN/BPCDH5",
+    "release_time": "2016-11-11T18:47:06Z",
+    "title": "GJP Data",
+    "version": "1.0",
+    "version_state": "RELEASED"
+  },
+  "failure_cases": [
+    "vacuity at n = 177: the confidence log term may put the endpoint above the base-rate Brier score; predeclared, and no re-tuning of delta, wake grid, catalog, or split is permitted in response",
+    "the bounded quantity is posterior-averaged empirical Brier risk on the encountered suffix, not future, stationary, population, or deployment risk",
+    "the 382 resolved binaries are a selected subset of GJP questions; the receipt records inclusion and exclusion counts",
+    "the consensus models read a crowd shaped by the tournament's own feedback; the bound stays valid for the encountered suffix but licenses no favorable reading of catalog skill",
+    "reporting a wake outside the declared grid spends confidence that was never allocated"
+  ],
+  "fresh_output_paths": [
+    "applications/brier_monitor/realdata/generated/gjp-brier-monitor-v1-stream.json",
+    "applications/brier_monitor/realdata/generated/gjp-brier-monitor-v1-receipt.json",
+    "applications/brier_monitor/realdata/generated/gjp-brier-monitor-v1-manifest.json",
+    "FormalSLT/Applications/BrierMonitorGJPRealDataData.lean",
+    "examples/CheckGJPBrierMonitorReceipt.lean"
+  ],
+  "leakage_tests": [
+    {
+      "fails_when": "any observation's recorded maximum consumed timestamp is not strictly less than date_suspend",
+      "id": "timestamp_assertion"
+    },
+    {
+      "fails_when": "the oracle-leak model, defined from the outcome column, is scored instead of refused at ingestion",
+      "id": "deliberately_leaked_tripwire"
+    },
+    {
+      "fails_when": "a longer first-week window sharply decreases risk, indicating the pre-suspend clamp is not applied",
+      "id": "future_feature_ablation",
+      "windows_days": [
+        1,
+        3,
+        7,
+        14
+      ]
+    },
+    {
+      "fails_when": "empirical suffix risk differs across permutations in any rational digit",
+      "id": "shuffled_time_control",
+      "permutations": 200
+    },
+    {
+      "fails_when": "the B3 exceedance rate over the null replicates is above delta",
+      "id": "outcome_shuffle_null"
+    }
+  ],
+  "lean_binding": {
+    "certified": false,
+    "open_obligation": "no Lean score : iota -> TrajectoryScore Z and path x : Nat -> Z realizing the monitored stream exists, and no lemma proves the two exact rationals equal the corresponding Lean expressions at that score and x",
+    "receipt_field_to_lean_object": {
+      "boundary_interval.upper": "upper bound on finiteTrajectorySleepingSuffixVarianceGeometricTiltBoundary prior posterior score delta a w n x",
+      "confidence_delta": "delta",
+      "effective_delta": "continuousTrajectorySleepingSuffixEffectiveConfidence delta w",
+      "horizon": "n",
+      "kl_interval.upper": "upper bound on klDiv posterior prior",
+      "posterior_empirical_brier_risk": "finiteTrajectoryPosteriorEmpiricalPrequentialSuffixRisk score posterior w n x",
+      "prior_and_posterior": "prior posterior : iota -> Real with IsFullSupportPMF and IsPMF",
+      "suffix_predictor_quadratic_variation": "finiteTrajectoryPosteriorSuffixPredictorQuadraticVariation score posterior w n x",
+      "tilt": "geometricForwardTilt a",
+      "tilt_atom": "a with hypothesis a in Finset.range (finiteTrajectorySleepingSuffixVarianceMaxIndex w n + 1)",
+      "wake": "w with w <= n and 4 <= n - w"
+    },
+    "required_example_path": "examples/CheckGJPBrierMonitorReceipt.lean",
+    "selector_theorem": "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le"
+  },
+  "model_catalog": {
+    "extremization_exponent": 2,
+    "extremization_exponent_is_tuned": false,
+    "models": [
+      {
+        "definition": "train-split outcome frequency, quantized; read at run time",
+        "id": "constant-train-baserate"
+      },
+      {
+        "definition": "unweighted mean forecast on [date_start, date_start + 7 days]",
+        "id": "first-week-mean"
+      },
+      {
+        "definition": "median over forecasters of each forecaster's last pre-suspend forecast",
+        "id": "final-consensus-median"
+      },
+      {
+        "definition": "logit extremization of final-consensus-median, exponent 2, clipped to [1/100, 99/100]",
+        "id": "extremized-final-consensus"
+      }
+    ],
+    "prior": [
+      "1/4",
+      "1/4",
+      "1/4",
+      "1/4"
+    ]
+  },
+  "nonclaims": [
+    "prospective protocol only; no stream, receipt, or result exists at this commit",
+    "the monitored quantity is encountered conditional suffix risk, not future, stationary, population, or deployment risk",
+    "no Lean theorem currently consumes any quantity named here; the instantiation obligation is open",
+    "a catalog posterior over four declared models is not coin betting and is not a parameter-free master",
+    "the vacuity risk at this sample size is real and is predeclared, not a result to be tuned away"
+  ],
+  "observation_unit": {
+    "order_by": [
+      "date_closed",
+      "ifp_id"
+    ],
+    "outcome_encoding": {
+      "a": 1,
+      "b": 0
+    },
+    "rejected_alternative": "question-day pairs reuse one outcome across many predictions and destroy the one-step-ahead structure the monitor assumes",
+    "selection": "n_opts == 2 and outcome in {a, b} and q_status == closed",
+    "unit": "one resolved binary question"
+  },
+  "posterior_rule": {
+    "computed_on": "calibration split only",
+    "formula": "rho(m) proportional to pi(m) * exp(-n_cal * empiricalBrier_cal(m))",
+    "frozen_before_monitor_split": true,
+    "learning_rate_eta": "1"
+  },
+  "prediction_before_outcome": {
+    "auditable_from_receipt_alone": true,
+    "forecast_cutoff_field": "date_suspend",
+    "receipt_records_per_observation_max_consumed_timestamp": true,
+    "reduction_function_accepts_outcome_argument": false,
+    "rule": "every consumed forecast timestamp is strictly less than date_suspend"
+  },
+  "preregistration_disclosure": {
+    "forecast_file_inspection": "header line and first three data rows of survey_fcasts.yr1.tab",
+    "ifps_aggregates_inspected": {
+      "binary_resolved_count": 382,
+      "date_closed_by_year": {
+        "2011": 22,
+        "2012": 100,
+        "2013": 83,
+        "2014": 110,
+        "2015": 67
+      },
+      "date_closed_range": [
+        "2011-09-29",
+        "2015-06-10"
+      ],
+      "date_start_range": [
+        "2011-09-01",
+        "2015-04-29"
+      ],
+      "outcome_marginal": {
+        "a": 96,
+        "b": 286
+      }
+    },
+    "no_forecast_value_joined_to_any_outcome": true,
+    "no_per_question_outcome_read": true
+  },
+  "protocol_version": "gjp-brier-monitor-protocol-v1",
+  "quantization": {
+    "denominator": 1000000,
+    "loss_denominator": 1000000000000,
+    "monitored_forecaster_is_the_quantized_forecaster": true,
+    "output_grid_denominator": 1000000000000000,
+    "rounding_directions": {
+      "confidence_log": "up",
+      "denominator_suffix_length_times_tilt": "exact",
+      "empirical_suffix_risk": "exact",
+      "kl_divergence": "up",
+      "psi": "up",
+      "suffix_quadratic_variation": "exact"
+    },
+    "tie_rule": "ties to even",
+    "validity_argument": "reported endpoint = Rhat + (KLup + LOGup + PSIup * V) / ((n - w) * lambda); every numerator summand is at least its real counterpart, using V >= 0 from finiteTrajectoryPosteriorSuffixPredictorQuadraticVariation_mem_Icc for the PSIup * V term; the denominator is exact and strictly positive and Rhat is exact, so the reported endpoint is at least the real geometric-tilt boundary at that atom"
+  },
+  "rejected_datasets": [
+    {
+      "name": "Metaculus public API",
+      "reason": "live endpoint, no versioned release and no DOI; a replay cannot be pinned"
+    },
+    {
+      "name": "fivethirtyeight/data nfl-elo",
+      "reason": "at commit 4c1ff5e3aef1816ae04af63218015066e186c147 the nfl-elo directory holds only README.md; the CSVs were served from a project endpoint. The historical Elo path is also a retrospective backfill with globally fitted hyperparameters."
+    },
+    {
+      "name": "NOAA/NWS probability-of-precipitation verification archives",
+      "reason": "rolling operational archives with no release tag or DOI"
+    },
+    {
+      "name": "Rain in Australia",
+      "reason": "covariates and outcomes only; contains no emitted probabilistic forecasts"
+    }
+  ],
+  "schema_version": "formalslt.brier-monitor.realdata-preregistration.v1"
+}
