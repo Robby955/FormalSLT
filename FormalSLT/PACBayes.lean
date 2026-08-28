@@ -82,6 +82,7 @@ import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountabl
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle
 import FormalSLT.PACBayes.ContinuousSleepingBettingPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
+import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
@@ -113,6 +114,9 @@ time-uniform PAC-Bayes surfaces. It also exports the finite-hypothesis
 predictable time-varying tilt compiler: one event controls every time and
 posterior while retaining the weighted linear and quadratic score terms, plus
 its countable predeclared-strategy master process and finite-prefix selector.
+The continuous-model surface also exports one two-axis master for a finite
+strategy posterior and a countable sleeping-wake prior, with separate model
+and strategy KL costs on a common time-uniform event.
 For geometric empirical-Bernstein tilts, it additionally exports exact
 post-data minimization over a growing prefix and an explicit observable
 variance-adaptive, iterated-logarithm-order envelope.

@@ -245,6 +245,11 @@ classify_witness() {
 #      kernel RHS below 1607/10000 and empirical-kernel RHS below 6407/10000;
 #      transferred Dobrushin coefficient below one.  The concrete receipt does
 #      not claim that the named path belongs to the theorem-produced event.)
+#   supportedAtomBoundary_lt_trackedUpper /
+#     conditionalRisk_lt_ninetyOneThousandths_of_goodEventInequality
+#     (synthetic Brier arithmetic reconstructed from declared forecasts and
+#      outcomes; the final risk endpoint remains conditional on the theorem's
+#      good-event inequality and does not assert named-path membership)
 HEADLINE_WITNESSES=(
   "examples/WitnessAtTopCS.lean"
   "examples/CheckAnytimeValidNonVacuityWitness.lean"
@@ -309,6 +314,7 @@ HEADLINE_WITNESSES=(
   "examples/CheckContinuousMeasurableTrajectoryGaussianWitness.lean"
   "examples/CheckEmpiricalBernsteinBoundaryWitnessBattery.lean"
   "examples/CheckRandomRefreshLoadReceipt.lean"
+  "FormalSLT/Applications/BrierMonitorSyntheticProofOfLifeReceipt.lean"
 )
 
 fail=0

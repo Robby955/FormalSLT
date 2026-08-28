@@ -131,6 +131,17 @@ verify-controlled-queue-known-kernel-receipt: check-controlled-queue-known-kerne
 	lake build FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 	lake env lean examples/CheckControlledQueueSharpStructuredRetrospectiveReceipt.lean
 
+# Replay the synthetic Brier-monitor arithmetic and its independent verifier.
+generate-brier-monitor-synthetic-receipt:
+	python3 scripts/generate_brier_monitor_synthetic_receipt.py
+
+check-brier-monitor-synthetic-receipt:
+	python3 scripts/generate_brier_monitor_synthetic_receipt.py --check
+	python3 scripts/verify_brier_monitor_synthetic_receipt.py --check
+
+verify-brier-monitor-synthetic-receipt: check-brier-monitor-synthetic-receipt
+	python3 -m pytest -q tests/test_brier_monitor_synthetic_receipt.py
+
 # Validate the prospective structured-OPE preregistration and fail if any
 # declared fresh trace, receipt, manifest, or generated Lean output exists.
 check-controlled-queue-structured-ope-protocol:
@@ -192,6 +203,9 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	generate-controlled-queue-known-kernel-receipt \
 	check-controlled-queue-known-kernel-receipt \
 	verify-controlled-queue-known-kernel-receipt \
+	generate-brier-monitor-synthetic-receipt \
+	check-brier-monitor-synthetic-receipt \
+	verify-brier-monitor-synthetic-receipt \
 	check-controlled-queue-structured-ope-protocol \
 	check-controlled-queue-structured-ope-registration-binding \
 	verify-controlled-queue-structured-ope-protocol \

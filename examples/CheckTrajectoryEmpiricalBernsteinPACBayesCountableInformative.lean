@@ -1,4 +1,5 @@
 import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
+import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingOrdinaryRiskPACBayes
 
 /-!
 # Informative countable-tilt trajectory empirical-Bernstein receipt
@@ -22,6 +23,7 @@ e-process.
 
 open Finset MeasureTheory ProbabilityTheory
 open FormalSLT.AnytimeValid FormalSLT.PACBayesKL
+open FormalSLT.AnytimeValid.AllocationLogLog
 open FormalSLT.PACBayes.ForwardBesselPACBayesCountable
 open FormalSLT.PACBayes.ForwardBesselPACBayesOracle
 open scoped ENNReal NNReal
@@ -940,6 +942,520 @@ theorem informative_observableOracle_receipt :
     observableOracle_rhs_512_lt_seven_twenty_fifths_of_mem hx,
     observableOracleBoundary_512_le_LILEnvelope x⟩
 
+/-! ## Same-event wake-selected soft-Brier receipt -/
+
+/-- Numeric encoding of a Boolean outcome. -/
+def softBrierOutcome : Bool → ℝ
+  | false => 0
+  | true => 1
+
+/-- A genuinely probabilistic forecast.  The `true` hypothesis always predicts
+`3/4`.  The `false` hypothesis predicts `1/4` at time zero and thereafter puts
+probability `3/4` on the prefix-determined next state. -/
+def softInformativeForecast (h : Bool) (n : ℕ)
+    (u : (i : Finset.Iic n) → Bool) : ℝ :=
+  if h then 3 / 4
+  else if n = 0 then 1 / 4
+  else if informativeNextState n u then 3 / 4 else 1 / 4
+
+/-- Squared probabilistic loss for the soft informative forecast. -/
+def softInformativeBrierScore (h : Bool) : TrajectoryScore Bool :=
+  fun n u y ↦
+    (softInformativeForecast h n u - softBrierOutcome y) ^ 2
+
+theorem softInformativeBrierScore_mem_Icc :
+    ∀ h n u y,
+      softInformativeBrierScore h n u y ∈ Set.Icc (0 : ℝ) 1 := by
+  intro h n u y
+  constructor
+  · exact sq_nonneg _
+  · fin_cases h <;> fin_cases y <;>
+      norm_num [softInformativeBrierScore, softInformativeForecast,
+        softBrierOutcome] <;>
+      split_ifs <;> norm_num
+
+/-- The wake is selected from the observed first transition. -/
+def selectedSoftBrierWake (x : ℕ → Bool) : ℕ :=
+  if x 1 then 0 else 1
+
+def eighthTilt (_j : ℕ) : ℝ := 1 / 8
+
+theorem eighthTilt_pos (j : ℕ) : 0 < eighthTilt j := by
+  norm_num [eighthTilt]
+
+theorem eighthTilt_le (j : ℕ) : eighthTilt j ≤ (1 / 8 : ℝ) := by
+  norm_num [eighthTilt]
+
+theorem selectedSoftBrierWake_eq_zero_of_mem
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    selectedSoftBrierWake x = 0 := by
+  have hx1 : x 1 = true := by
+    simpa [informativeCylinder, firstTrueEvent] using hx.2
+  simp [selectedSoftBrierWake, hx1]
+
+theorem selectedSoftBrierWake_eq_one_of_mem
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) :
+    selectedSoftBrierWake x = 1 := by
+  have hx1 : x 1 = false := by
+    simpa [alternateCylinder, firstFalseEvent] using hx.2
+  simp [selectedSoftBrierWake, hx1]
+
+theorem selectedPosterior_eq_true_of_mem_informativeCylinder
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) (n : ℕ) :
+    selectedPosterior x n = pointPosterior true := by
+  unfold selectedPosterior
+  have hx1 : x 1 = true := by
+    simpa [informativeCylinder, firstTrueEvent] using hx.2
+  rw [hx1]
+
+theorem selectedPosterior_eq_false_of_mem_alternateCylinder
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) (n : ℕ) :
+    selectedPosterior x n = pointPosterior false := by
+  unfold selectedPosterior
+  have hx1 : x 1 = false := by
+    simpa [alternateCylinder, firstFalseEvent] using hx.2
+  rw [hx1]
+
+theorem observed_softBrier_true_eq
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) (k : ℕ) :
+    observedTrajectoryScore (softInformativeBrierScore true) k x =
+      (1 : ℝ) / 16 := by
+  have hxnext := path_eq_true_of_mem_informativeCylinder hx
+    (show 1 ≤ k + 1 by omega)
+  norm_num [observedTrajectoryScore, softInformativeBrierScore,
+    softInformativeForecast, softBrierOutcome, hxnext]
+
+theorem observed_softBrier_false_eq
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) (k : ℕ) :
+    observedTrajectoryScore (softInformativeBrierScore false) k x =
+      (1 : ℝ) / 16 := by
+  by_cases hk : k = 0
+  · subst k
+    have hx1 : x 1 = false := by
+      simpa [alternateCylinder, firstFalseEvent] using hx.2
+    norm_num [observedTrajectoryScore, softInformativeBrierScore,
+      softInformativeForecast, softBrierOutcome, hx1]
+  · have hk1 : 1 ≤ k := Nat.one_le_iff_ne_zero.mpr hk
+    have hrec := hx.1 k hk1
+    unfold observedTrajectoryScore
+    rw [hrec]
+    cases hnext : informativeNextState k (Preorder.frestrictLe k x) <;>
+      norm_num [softInformativeBrierScore,
+        softInformativeForecast, softBrierOutcome, hk, hnext]
+
+theorem softBrier_true_conditionalRisk_timeZero (x : ℕ → Bool) :
+    conditionalTrajectoryRisk informativeDynamicKernel
+        (softInformativeBrierScore true) 0 x =
+      (3 : ℝ) / 16 := by
+  unfold conditionalTrajectoryRisk informativeDynamicKernel
+  change ∫ y, softInformativeBrierScore true 0
+      (Preorder.frestrictLe 0 x) y
+    ∂(informativeDynamicPMF 0
+      (Preorder.frestrictLe 0 x)).toMeasure = _
+  rw [PMF.integral_eq_sum, Fintype.sum_bool]
+  norm_num [informativeDynamicPMF, PMF.ofFintype_apply,
+    softInformativeBrierScore, softInformativeForecast, softBrierOutcome]
+
+theorem softBrier_true_conditionalRisk_succ
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder)
+    {k : ℕ} (hk : 1 ≤ k) :
+    conditionalTrajectoryRisk informativeDynamicKernel
+        (softInformativeBrierScore true) k x = (1 : ℝ) / 16 := by
+  unfold conditionalTrajectoryRisk informativeDynamicKernel
+  change ∫ y, softInformativeBrierScore true k
+      (Preorder.frestrictLe k x) y
+    ∂(informativeDynamicPMF k (Preorder.frestrictLe k x)).toMeasure = _
+  rw [PMF.integral_eq_sum, Fintype.sum_bool]
+  have hk0 : k ≠ 0 := Nat.ne_of_gt hk
+  have hxnext := path_eq_true_of_mem_informativeCylinder hx
+    (show 1 ≤ k + 1 by omega)
+  have hrec := hx.1 k hk
+  have hnext : informativeNextState k (Preorder.frestrictLe k x) = true := by
+    rw [← hrec]
+    exact hxnext
+  norm_num [informativeDynamicPMF, PMF.ofFintype_apply,
+    softInformativeBrierScore, softInformativeForecast, softBrierOutcome,
+    hk0, hnext]
+
+theorem softBrier_false_conditionalRisk_succ
+    {x : ℕ → Bool}
+    {k : ℕ} (hk : 1 ≤ k) :
+    conditionalTrajectoryRisk informativeDynamicKernel
+        (softInformativeBrierScore false) k x = (1 : ℝ) / 16 := by
+  unfold conditionalTrajectoryRisk informativeDynamicKernel
+  change ∫ y, softInformativeBrierScore false k
+      (Preorder.frestrictLe k x) y
+    ∂(informativeDynamicPMF k (Preorder.frestrictLe k x)).toMeasure = _
+  rw [PMF.integral_eq_sum, Fintype.sum_bool]
+  have hk0 : k ≠ 0 := Nat.ne_of_gt hk
+  cases hnext : informativeNextState k (Preorder.frestrictLe k x) <;>
+    norm_num [informativeDynamicPMF, PMF.ofFintype_apply,
+      softInformativeBrierScore, softInformativeForecast, softBrierOutcome,
+      hk0, hnext]
+
+theorem softBrier_true_conditionalSuffixRisk_eq
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+        informativeDynamicKernel softInformativeBrierScore
+        (selectedPosterior x 512) 0 512 x = (257 : ℝ) / 4096 := by
+  have hposterior :=
+    selectedPosterior_eq_true_of_mem_informativeCylinder hx 512
+  rw [hposterior]
+  unfold finiteTrajectoryPosteriorAverageConditionalSuffixRisk posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [pointPosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul]
+  have hsum :
+      ∑ k ∈ Finset.Ico 0 512,
+          conditionalTrajectoryRisk informativeDynamicKernel
+            (softInformativeBrierScore true) k x = (257 : ℝ) / 8 := by
+    rw [Nat.Ico_zero_eq_range]
+    calc
+      _ = ∑ k ∈ Finset.range 512,
+          if k = 0 then (3 : ℝ) / 16 else 1 / 16 := by
+        apply Finset.sum_congr rfl
+        intro k hk
+        by_cases hk0 : k = 0
+        · subst k
+          simp [softBrier_true_conditionalRisk_timeZero]
+        · rw [if_neg hk0]
+          exact softBrier_true_conditionalRisk_succ hx
+            (Nat.one_le_iff_ne_zero.mpr hk0)
+      _ = (257 : ℝ) / 8 := by
+        norm_num [Finset.sum_range_succ]
+  rw [hsum]
+  norm_num
+
+theorem softBrier_false_conditionalSuffixRisk_eq
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) :
+    finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+        informativeDynamicKernel softInformativeBrierScore
+        (selectedPosterior x 512) 1 512 x = (1 : ℝ) / 16 := by
+  have hposterior :=
+    selectedPosterior_eq_false_of_mem_alternateCylinder hx 512
+  rw [hposterior]
+  unfold finiteTrajectoryPosteriorAverageConditionalSuffixRisk posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [pointPosterior, if_true, one_mul, Bool.true_eq_false,
+    if_false, zero_mul]
+  have hsum :
+      ∑ k ∈ Finset.Ico 1 512,
+          conditionalTrajectoryRisk informativeDynamicKernel
+            (softInformativeBrierScore false) k x = (511 : ℝ) / 16 := by
+    calc
+      _ = ∑ _k ∈ Finset.Ico 1 512, (1 : ℝ) / 16 := by
+        apply Finset.sum_congr rfl
+        intro k hk
+        exact softBrier_false_conditionalRisk_succ
+          (Finset.mem_Ico.mp hk).1
+      _ = (511 : ℝ) / 16 := by norm_num
+  rw [hsum]
+  norm_num
+
+theorem softBrier_true_empiricalSuffixRisk_eq
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    finiteTrajectoryPosteriorEmpiricalPrequentialSuffixRisk
+        softInformativeBrierScore (selectedPosterior x 512) 0 512 x =
+      (1 : ℝ) / 16 := by
+  have hposterior :=
+    selectedPosterior_eq_true_of_mem_informativeCylinder hx 512
+  rw [hposterior]
+  unfold finiteTrajectoryPosteriorEmpiricalPrequentialSuffixRisk posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [pointPosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul]
+  simp_rw [observed_softBrier_true_eq hx]
+  norm_num
+
+theorem softBrier_false_empiricalSuffixRisk_eq
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) :
+    finiteTrajectoryPosteriorEmpiricalPrequentialSuffixRisk
+        softInformativeBrierScore (selectedPosterior x 512) 1 512 x =
+      (1 : ℝ) / 16 := by
+  have hposterior :=
+    selectedPosterior_eq_false_of_mem_alternateCylinder hx 512
+  rw [hposterior]
+  unfold finiteTrajectoryPosteriorEmpiricalPrequentialSuffixRisk posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [pointPosterior, if_true, one_mul, Bool.true_eq_false,
+    if_false, zero_mul]
+  simp_rw [observed_softBrier_false_eq hx]
+  norm_num
+
+theorem softBrier_true_forwardPredictor_eq
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder)
+    {k : ℕ} (hk : 0 < k) :
+    forwardPredictorProcess
+        (observedTrajectoryScore (softInformativeBrierScore true)) k x =
+      (1 : ℝ) / 16 := by
+  unfold forwardPredictorProcess forwardPredictor forwardPrefixMean
+  rw [if_neg hk.ne']
+  simp_rw [observed_softBrier_true_eq hx]
+  simp [hk.ne']
+
+theorem softBrier_false_forwardPredictor_eq
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder)
+    {k : ℕ} (hk : 0 < k) :
+    forwardPredictorProcess
+        (observedTrajectoryScore (softInformativeBrierScore false)) k x =
+      (1 : ℝ) / 16 := by
+  unfold forwardPredictorProcess forwardPredictor forwardPrefixMean
+  rw [if_neg hk.ne']
+  simp_rw [observed_softBrier_false_eq hx]
+  simp [hk.ne']
+
+theorem softBrier_true_predictorPenalty_eq
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    finiteTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty
+        softInformativeBrierScore (selectedPosterior x 512)
+        eighthTilt 0 512 x =
+      forwardEmpiricalBernsteinPsi (1 / 8) * (49 / 256) := by
+  have hposterior :=
+    selectedPosterior_eq_true_of_mem_informativeCylinder hx 512
+  rw [hposterior]
+  unfold finiteTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty
+    posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [pointPosterior, Bool.false_eq_true, if_false, zero_mul,
+    if_true, one_mul]
+  simp only [add_zero]
+  rw [Nat.Ico_zero_eq_range]
+  calc
+    _ = ∑ k ∈ Finset.range 512,
+        if k = 0 then
+          forwardEmpiricalBernsteinPsi (1 / 8) * (49 / 256)
+        else 0 := by
+      apply Finset.sum_congr rfl
+      intro k hk
+      by_cases hk0 : k = 0
+      · subst k
+        norm_num [eighthTilt, observed_softBrier_true_eq hx,
+          forwardPredictorProcess, forwardPredictor]
+      · rw [if_neg hk0, observed_softBrier_true_eq hx,
+          softBrier_true_forwardPredictor_eq hx
+            (Nat.pos_of_ne_zero hk0)]
+        ring
+    _ = forwardEmpiricalBernsteinPsi (1 / 8) * (49 / 256) := by
+      norm_num [Finset.sum_range_succ]
+
+theorem softBrier_false_predictorPenalty_eq
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) :
+    finiteTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty
+        softInformativeBrierScore (selectedPosterior x 512)
+        eighthTilt 1 512 x = 0 := by
+  have hposterior :=
+    selectedPosterior_eq_false_of_mem_alternateCylinder hx 512
+  rw [hposterior]
+  unfold finiteTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty
+    posteriorAverage
+  rw [Fintype.sum_bool]
+  simp only [pointPosterior, if_true, one_mul, Bool.true_eq_false,
+    if_false, zero_mul]
+  simp only [zero_add]
+  apply Finset.sum_eq_zero
+  intro k hk
+  have hkpos : 0 < k := (Finset.mem_Ico.mp hk).1
+  rw [observed_softBrier_false_eq hx,
+    softBrier_false_forwardPredictor_eq hx hkpos]
+  ring
+
+def selectedSoftBrierBoundary (x : ℕ → Bool) : ℝ :=
+  finiteTrajectorySleepingConstantTiltSuffixBoundary
+    uniformPrior (selectedPosterior x 512) softInformativeBrierScore
+    eighthTilt (1 / 160) (selectedSoftBrierWake x) 512 x
+
+theorem softBrier_log_budget :
+    Real.log (1 / ((1 : ℝ) / 160)) =
+      5 * Real.log 2 + Real.log 5 := by
+  norm_num
+  calc
+    Real.log (160 : ℝ) = Real.log ((2 : ℝ) ^ 5 * 5) := by norm_num
+    _ = Real.log ((2 : ℝ) ^ 5) + Real.log 5 := by
+      rw [Real.log_mul (by positivity) (by norm_num)]
+    _ = 5 * Real.log 2 + Real.log 5 := by
+      rw [Real.log_pow]
+      ring
+
+theorem softBrier_wake_zero_cost :
+    -Real.log (polynomialEpochWeight 0) = Real.log 2 := by
+  rw [polynomialSleepingSelectionCost]
+  norm_num
+
+theorem softBrier_wake_one_cost :
+    -Real.log (polynomialEpochWeight 1) = Real.log 2 + Real.log 3 := by
+  rw [polynomialSleepingSelectionCost]
+  norm_num
+
+theorem selectedSoftBrierBoundary_true_eq
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    selectedSoftBrierBoundary x =
+      (1 : ℝ) / 16 +
+        (7 * Real.log 2 + Real.log 5 +
+          forwardEmpiricalBernsteinPsi (1 / 8) * (49 / 256)) / 64 := by
+  unfold selectedSoftBrierBoundary
+  unfold finiteTrajectorySleepingConstantTiltSuffixBoundary
+  rw [selectedSoftBrierWake_eq_zero_of_mem hx,
+    softBrier_true_empiricalSuffixRisk_eq hx,
+    selectedPosterior_kl_eq_log_two,
+    softBrier_log_budget,
+    softBrier_true_predictorPenalty_eq hx]
+  rw [sub_eq_add_neg, softBrier_wake_zero_cost]
+  norm_num [eighthTilt]
+  ring
+
+theorem selectedSoftBrierBoundary_false_eq
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) :
+    selectedSoftBrierBoundary x =
+      (1 : ℝ) / 16 +
+        8 * (7 * Real.log 2 + Real.log 3 + Real.log 5) / 511 := by
+  unfold selectedSoftBrierBoundary
+  unfold finiteTrajectorySleepingConstantTiltSuffixBoundary
+  rw [selectedSoftBrierWake_eq_one_of_mem hx,
+    softBrier_false_empiricalSuffixRisk_eq hx,
+    selectedPosterior_kl_eq_log_two,
+    softBrier_log_budget,
+    softBrier_false_predictorPenalty_eq hx]
+  rw [sub_eq_add_neg, softBrier_wake_one_cost]
+  norm_num [eighthTilt]
+  ring
+
+theorem selectedSoftBrierBoundary_true_lt_quarter
+    {x : ℕ → Bool} (hx : x ∈ informativeCylinder) :
+    selectedSoftBrierBoundary x < (1 : ℝ) / 4 := by
+  rw [selectedSoftBrierBoundary_true_eq hx]
+  have hpsi := forwardEmpiricalBernsteinPsi_le_two_mul_sq
+    (show (1 : ℝ) / 8 ≤ 1 / 2 by norm_num)
+  nlinarith [Real.log_two_lt_d9, Real.log_five_lt_d9]
+
+theorem selectedSoftBrierBoundary_false_lt_quarter
+    {x : ℕ → Bool} (hx : x ∈ alternateCylinder) :
+    selectedSoftBrierBoundary x < (1 : ℝ) / 4 := by
+  rw [selectedSoftBrierBoundary_false_eq hx]
+  nlinarith [Real.log_two_lt_d9, Real.log_three_lt_d9,
+    Real.log_five_lt_d9]
+
+/-- One theorem-generated event contains witnesses from both supported
+positive-mass cylinders.  On that same event, the observed first transition
+selects both the posterior and the wake time.  Each explicitly evaluated
+encountered conditional suffix risk is below a checked boundary smaller than
+`1/4`.
+
+The target is conditional risk encountered on the monitored suffix.  This
+receipt does not reinterpret it as future, stationary, population, or
+deployment risk.  The kernel, prior, score family, and tilt schedule are
+predeclared; only the posterior and wake time are selected from the path. -/
+theorem informative_twoWake_softBrier_sameEvent_receipt :
+    ∃ goodEvent : Set (ℕ → Bool),
+      informativePathMeasure.real goodEventᶜ ≤ (1 : ℝ) / 160 ∧
+      informativePathMeasure.real informativeCylinder = (3 : ℝ) / 4 ∧
+      informativePathMeasure.real alternateCylinder = (1 : ℝ) / 4 ∧
+      (∃ x : ℕ → Bool,
+        x ∈ informativeCylinder ∧ x ∈ goodEvent ∧
+        selectedPosterior x 512 = pointPosterior true ∧
+        selectedSoftBrierWake x = 0 ∧
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x =
+          (257 : ℝ) / 4096 ∧
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x <
+          selectedSoftBrierBoundary x ∧
+        selectedSoftBrierBoundary x < (1 : ℝ) / 4) ∧
+      (∃ x : ℕ → Bool,
+        x ∈ alternateCylinder ∧ x ∈ goodEvent ∧
+        selectedPosterior x 512 = pointPosterior false ∧
+        selectedSoftBrierWake x = 1 ∧
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x =
+          (1 : ℝ) / 16 ∧
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x <
+          selectedSoftBrierBoundary x ∧
+        selectedSoftBrierBoundary x < (1 : ℝ) / 4) := by
+  rcases
+      exists_finiteTrajectorySleepingConstantTiltPACBayes_suffixRisk_event
+        informativeDynamicKernel false softInformativeBrierScore
+        softInformativeBrierScore_mem_Icc eighthTilt
+        (L := (1 / 8 : ℝ)) eighthTilt_pos eighthTilt_le (by norm_num)
+        uniformPrior_isFullSupportPMF
+        (delta := (1 / 160 : ℝ)) (by norm_num) with
+    ⟨goodEvent, hmassRaw, hgood⟩
+  have hmass : informativePathMeasure.real goodEventᶜ ≤ (1 : ℝ) / 160 := by
+    simpa [informativePathMeasure] using hmassRaw
+  have htrueExists :
+      ∃ x : ℕ → Bool, x ∈ informativeCylinder ∧ x ∈ goodEvent := by
+    by_contra hnone
+    have hsubset : informativeCylinder ⊆ goodEventᶜ := by
+      intro x hx
+      show x ∉ goodEvent
+      intro hxgood
+      exact hnone ⟨x, hx, hxgood⟩
+    have hmono : informativePathMeasure.real informativeCylinder ≤
+        informativePathMeasure.real goodEventᶜ :=
+      measureReal_mono hsubset
+    rw [informativeCylinder_real_mass] at hmono
+    linarith
+  have hfalseExists :
+      ∃ x : ℕ → Bool, x ∈ alternateCylinder ∧ x ∈ goodEvent := by
+    by_contra hnone
+    have hsubset : alternateCylinder ⊆ goodEventᶜ := by
+      intro x hx
+      show x ∉ goodEvent
+      intro hxgood
+      exact hnone ⟨x, hx, hxgood⟩
+    have hmono : informativePathMeasure.real alternateCylinder ≤
+        informativePathMeasure.real goodEventᶜ :=
+      measureReal_mono hsubset
+    rw [alternateCylinder_real_mass] at hmono
+    linarith
+  refine ⟨goodEvent, hmass, informativeCylinder_real_mass,
+    alternateCylinder_real_mass, ?_, ?_⟩
+  · obtain ⟨x, hxcyl, hxgood⟩ := htrueExists
+    have hwake := selectedSoftBrierWake_eq_zero_of_mem hxcyl
+    have hposterior :=
+      selectedPosterior_eq_true_of_mem_informativeCylinder hxcyl 512
+    have hboundRaw := hgood x hxgood (selectedPosterior x 512)
+      (selectedPosterior_isPMF x 512) 0 512 (by norm_num)
+    have htarget :
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x =
+          (257 : ℝ) / 4096 := by
+      rw [hwake]
+      exact softBrier_true_conditionalSuffixRisk_eq hxcyl
+    have hbound :
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x <
+          selectedSoftBrierBoundary x := by
+      simpa [selectedSoftBrierBoundary, hwake] using hboundRaw
+    exact ⟨x, hxcyl, hxgood, hposterior, hwake, htarget, hbound,
+      selectedSoftBrierBoundary_true_lt_quarter hxcyl⟩
+  · obtain ⟨x, hxcyl, hxgood⟩ := hfalseExists
+    have hwake := selectedSoftBrierWake_eq_one_of_mem hxcyl
+    have hposterior :=
+      selectedPosterior_eq_false_of_mem_alternateCylinder hxcyl 512
+    have hboundRaw := hgood x hxgood (selectedPosterior x 512)
+      (selectedPosterior_isPMF x 512) 1 512 (by norm_num)
+    have htarget :
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x =
+          (1 : ℝ) / 16 := by
+      rw [hwake]
+      exact softBrier_false_conditionalSuffixRisk_eq hxcyl
+    have hbound :
+        finiteTrajectoryPosteriorAverageConditionalSuffixRisk
+            informativeDynamicKernel softInformativeBrierScore
+            (selectedPosterior x 512) (selectedSoftBrierWake x) 512 x <
+          selectedSoftBrierBoundary x := by
+      simpa [selectedSoftBrierBoundary, hwake] using hboundRaw
+    exact ⟨x, hxcyl, hxgood, hposterior, hwake, htarget, hbound,
+      selectedSoftBrierBoundary_false_lt_quarter hxcyl⟩
+
 /-! Public endpoint and complete local axiom receipt. -/
 
 #check trajectoryCountableEmpiricalBernsteinPACBayes_allPosteriors_of_not_mem
@@ -960,6 +1476,12 @@ theorem informative_observableOracle_receipt :
 #check trajectoryGrowingPrefixForwardBesselPACBayesBoundary_tendsto_zero
 #check exists_trajectoryGrowingPrefixForwardBesselPACBayesOracle_event
 #check informative_observableOracle_receipt
+#check softInformativeBrierScore_mem_Icc
+#check softBrier_true_conditionalSuffixRisk_eq
+#check softBrier_false_conditionalSuffixRisk_eq
+#check selectedSoftBrierBoundary_true_lt_quarter
+#check selectedSoftBrierBoundary_false_lt_quarter
+#check informative_twoWake_softBrier_sameEvent_receipt
 
 #print axioms informativeDynamicKernel_history_witness
 #print axioms informativeScore_mem_Icc
@@ -1023,6 +1545,12 @@ theorem informative_observableOracle_receipt :
 #print axioms observableOracleBoundary_numeric_receipt
 #print axioms observableOracle_rhs_512_lt_seven_twenty_fifths_of_mem
 #print axioms informative_observableOracle_receipt
+#print axioms softInformativeBrierScore_mem_Icc
+#print axioms softBrier_true_conditionalSuffixRisk_eq
+#print axioms softBrier_false_conditionalSuffixRisk_eq
+#print axioms selectedSoftBrierBoundary_true_lt_quarter
+#print axioms selectedSoftBrierBoundary_false_lt_quarter
+#print axioms informative_twoWake_softBrier_sameEvent_receipt
 
 end
 end FormalSLT.Examples.CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative

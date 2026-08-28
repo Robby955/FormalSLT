@@ -1,0 +1,676 @@
+{
+  "artifact_status": "SYNTHETIC PROOF-OF-LIFE ARITHMETIC WITH CONDITIONAL LEAN CLOSURE",
+  "boundary_rows": [
+    {
+      "boundary_interval": {
+        "lower": "45296064325083/500000000000000",
+        "upper": "90592128650167/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "6461468176353717/1000000000000000",
+        "upper": "3230734088176859/500000000000000"
+      },
+      "effective_delta": "1/320",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "38629436111989/200000000000000",
+        "upper": "96573590279973/500000000000000"
+      },
+      "suffix_length": 512,
+      "suffix_predictor_quadratic_variation": "49/256",
+      "tilt": "1/2",
+      "tilt_atom": 0,
+      "wake": 0
+    },
+    {
+      "boundary_interval": {
+        "lower": "25406937859003/200000000000000",
+        "upper": "15879336161877/125000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "7560080465021827/1000000000000000",
+        "upper": "1890020116255457/250000000000000"
+      },
+      "effective_delta": "1/320",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "1884103622589/50000000000000",
+        "upper": "37682072451781/1000000000000000"
+      },
+      "suffix_length": 512,
+      "suffix_predictor_quadratic_variation": "49/256",
+      "tilt": "1/4",
+      "tilt_atom": 1,
+      "wake": 0
+    },
+    {
+      "boundary_interval": {
+        "lower": "8092504867507/40000000000000",
+        "upper": "50578155421919/250000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "2063306911395443/250000000000000",
+        "upper": "8253227645581773/1000000000000000"
+      },
+      "effective_delta": "1/320",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "4265696312261/500000000000000",
+        "upper": "8531392624523/1000000000000000"
+      },
+      "suffix_length": 512,
+      "suffix_predictor_quadratic_variation": "49/256",
+      "tilt": "1/8",
+      "tilt_atom": 2,
+      "wake": 0
+    },
+    {
+      "boundary_interval": {
+        "lower": "179024853681159/500000000000000",
+        "upper": "358049707362319/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "8764053269347763/1000000000000000",
+        "upper": "2191013317336941/250000000000000"
+      },
+      "effective_delta": "1/320",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "2038521137571/1000000000000000",
+        "upper": "509630284393/250000000000000"
+      },
+      "suffix_length": 512,
+      "suffix_predictor_quadratic_variation": "49/256",
+      "tilt": "1/16",
+      "tilt_atom": 3,
+      "wake": 0
+    },
+    {
+      "boundary_interval": {
+        "lower": "84865320406173/125000000000000",
+        "upper": "135784512649877/200000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "9169518377455927/1000000000000000",
+        "upper": "1146189797181991/125000000000000"
+      },
+      "effective_delta": "1/320",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "24934915729/50000000000000",
+        "upper": "498698314581/1000000000000000"
+      },
+      "suffix_length": 512,
+      "suffix_predictor_quadratic_variation": "49/256",
+      "tilt": "1/32",
+      "tilt_atom": 4,
+      "wake": 0
+    },
+    {
+      "boundary_interval": {
+        "lower": "1337395175741471/1000000000000000",
+        "upper": "41793599241921/31250000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "475299530703857/50000000000000",
+        "upper": "9505990614077141/1000000000000000"
+      },
+      "effective_delta": "1/320",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "123356968139/1000000000000000",
+        "upper": "6167848407/50000000000000"
+      },
+      "suffix_length": 512,
+      "suffix_predictor_quadratic_variation": "49/256",
+      "tilt": "1/64",
+      "tilt_atom": 5,
+      "wake": 0
+    },
+    {
+      "boundary_interval": {
+        "lower": "23700565210941/250000000000000",
+        "upper": "18960452168753/200000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "7560080465021827/1000000000000000",
+        "upper": "1890020116255457/250000000000000"
+      },
+      "effective_delta": "1/960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "38629436111989/200000000000000",
+        "upper": "96573590279973/500000000000000"
+      },
+      "suffix_length": 511,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/2",
+      "tilt_atom": 0,
+      "wake": 1
+    },
+    {
+      "boundary_interval": {
+        "lower": "16963028311399/125000000000000",
+        "upper": "135704226491193/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "541168297105621/62500000000000",
+        "upper": "8658692753689937/1000000000000000"
+      },
+      "effective_delta": "1/960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "1884103622589/50000000000000",
+        "upper": "37682072451781/1000000000000000"
+      },
+      "suffix_length": 511,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/4",
+      "tilt_atom": 1,
+      "wake": 1
+    },
+    {
+      "boundary_interval": {
+        "lower": "219760072247511/1000000000000000",
+        "upper": "27470009030939/125000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "4675919967124941/500000000000000",
+        "upper": "9351839934249883/1000000000000000"
+      },
+      "effective_delta": "1/960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "4265696312261/500000000000000",
+        "upper": "8531392624523/1000000000000000"
+      },
+      "suffix_length": 511,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/8",
+      "tilt_atom": 2,
+      "wake": 1
+    },
+    {
+      "boundary_interval": {
+        "lower": "196507342286901/500000000000000",
+        "upper": "393014684573803/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "77052074671999/7812500000000",
+        "upper": "9862665558015873/1000000000000000"
+      },
+      "effective_delta": "1/960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "2038521137571/1000000000000000",
+        "upper": "509630284393/250000000000000"
+      },
+      "suffix_length": 511,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/16",
+      "tilt_atom": 3,
+      "wake": 1
+    },
+    {
+      "boundary_interval": {
+        "lower": "748920530516413/1000000000000000",
+        "upper": "374460265258207/500000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "10268130666124037/1000000000000000",
+        "upper": "5134065333062019/500000000000000"
+      },
+      "effective_delta": "1/960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "24934915729/50000000000000",
+        "upper": "498698314581/1000000000000000"
+      },
+      "suffix_length": 511,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/32",
+      "tilt_atom": 4,
+      "wake": 1
+    },
+    {
+      "boundary_interval": {
+        "lower": "295496479581813/200000000000000",
+        "upper": "738741198954533/500000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "42418411610981/4000000000000",
+        "upper": "10604602902745251/1000000000000000"
+      },
+      "effective_delta": "1/960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "123356968139/1000000000000000",
+        "upper": "6167848407/50000000000000"
+      },
+      "suffix_length": 511,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/64",
+      "tilt_atom": 5,
+      "wake": 1
+    },
+    {
+      "boundary_interval": {
+        "lower": "25332347990173/250000000000000",
+        "upper": "101329391960693/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "9169518377455927/1000000000000000",
+        "upper": "1146189797181991/125000000000000"
+      },
+      "effective_delta": "1/4800",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "38629436111989/200000000000000",
+        "upper": "96573590279973/500000000000000"
+      },
+      "suffix_length": 508,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/2",
+      "tilt_atom": 0,
+      "wake": 4
+    },
+    {
+      "boundary_interval": {
+        "lower": "74404637191669/500000000000000",
+        "upper": "148809274383339/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "10268130666124037/1000000000000000",
+        "upper": "5134065333062019/500000000000000"
+      },
+      "effective_delta": "1/4800",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "1884103622589/50000000000000",
+        "upper": "37682072451781/1000000000000000"
+      },
+      "suffix_length": 508,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/4",
+      "tilt_atom": 1,
+      "wake": 4
+    },
+    {
+      "boundary_interval": {
+        "lower": "123017126198771/500000000000000",
+        "upper": "246034252397543/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "5480638923341991/500000000000000",
+        "upper": "10961277846683983/1000000000000000"
+      },
+      "effective_delta": "1/4800",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "4265696312261/500000000000000",
+        "upper": "8531392624523/1000000000000000"
+      },
+      "suffix_length": 508,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/8",
+      "tilt_atom": 2,
+      "wake": 4
+    },
+    {
+      "boundary_interval": {
+        "lower": "44565750081921/100000000000000",
+        "upper": "445657500819211/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "11472103470449973/1000000000000000",
+        "upper": "5736051735224987/500000000000000"
+      },
+      "effective_delta": "1/4800",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "2038521137571/1000000000000000",
+        "upper": "509630284393/250000000000000"
+      },
+      "suffix_length": 508,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/16",
+      "tilt_atom": 3,
+      "wake": 4
+    },
+    {
+      "boundary_interval": {
+        "lower": "854356110810587/1000000000000000",
+        "upper": "213589027702647/250000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "11877568578558137/1000000000000000",
+        "upper": "5938784289279069/500000000000000"
+      },
+      "effective_delta": "1/4800",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "24934915729/50000000000000",
+        "upper": "498698314581/1000000000000000"
+      },
+      "suffix_length": 508,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/32",
+      "tilt_atom": 4,
+      "wake": 4
+    },
+    {
+      "boundary_interval": {
+        "lower": "422150606165017/250000000000000",
+        "upper": "1688602424660069/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "244280816303587/20000000000000",
+        "upper": "12214040815179351/1000000000000000"
+      },
+      "effective_delta": "1/4800",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "123356968139/1000000000000000",
+        "upper": "6167848407/50000000000000"
+      },
+      "suffix_length": 508,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/64",
+      "tilt_atom": 5,
+      "wake": 4
+    },
+    {
+      "boundary_interval": {
+        "lower": "13954159918501/125000000000000",
+        "upper": "111633279348009/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "11491906097746153/1000000000000000",
+        "upper": "5745953048873077/500000000000000"
+      },
+      "effective_delta": "1/48960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "38629436111989/200000000000000",
+        "upper": "96573590279973/500000000000000"
+      },
+      "suffix_length": 496,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/2",
+      "tilt_atom": 0,
+      "wake": 16
+    },
+    {
+      "boundary_interval": {
+        "lower": "169626335217533/1000000000000000",
+        "upper": "84813167608767/500000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "6295259193207131/500000000000000",
+        "upper": "12590518386414263/1000000000000000"
+      },
+      "effective_delta": "1/48960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "1884103622589/50000000000000",
+        "upper": "37682072451781/1000000000000000"
+      },
+      "suffix_length": 496,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/4",
+      "tilt_atom": 1,
+      "wake": 16
+    },
+    {
+      "boundary_interval": {
+        "lower": "57586492733981/200000000000000",
+        "upper": "143966231834953/500000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "51889318620993/3906250000000",
+        "upper": "13283665566974209/1000000000000000"
+      },
+      "effective_delta": "1/48960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "4265696312261/500000000000000",
+        "upper": "8531392624523/1000000000000000"
+      },
+      "suffix_length": 496,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/8",
+      "tilt_atom": 2,
+      "wake": 16
+    },
+    {
+      "boundary_interval": {
+        "lower": "264921586633873/500000000000000",
+        "upper": "529843173267747/1000000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "6897245595370099/500000000000000",
+        "upper": "13794491190740199/1000000000000000"
+      },
+      "effective_delta": "1/48960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "2038521137571/1000000000000000",
+        "upper": "509630284393/250000000000000"
+      },
+      "suffix_length": 496,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/16",
+      "tilt_atom": 3,
+      "wake": 16
+    },
+    {
+      "boundary_interval": {
+        "lower": "1023345385768277/1000000000000000",
+        "upper": "511672692884139/500000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "14199956298848363/1000000000000000",
+        "upper": "3549989074712091/250000000000000"
+      },
+      "effective_delta": "1/48960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "24934915729/50000000000000",
+        "upper": "498698314581/1000000000000000"
+      },
+      "suffix_length": 496,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/32",
+      "tilt_atom": 4,
+      "wake": 16
+    },
+    {
+      "boundary_interval": {
+        "lower": "2027606544003809/1000000000000000",
+        "upper": "202760654400381/100000000000000"
+      },
+      "confidence_log_interval": {
+        "lower": "1817053566933697/125000000000000",
+        "upper": "14536428535469577/1000000000000000"
+      },
+      "effective_delta": "1/48960",
+      "kl_interval": {
+        "lower": "138629436111989/200000000000000",
+        "upper": "346573590279973/500000000000000"
+      },
+      "posterior_empirical_brier_risk": "1/16",
+      "psi_interval": {
+        "lower": "123356968139/1000000000000000",
+        "upper": "6167848407/50000000000000"
+      },
+      "suffix_length": 496,
+      "suffix_predictor_quadratic_variation": "0",
+      "tilt": "1/64",
+      "tilt_atom": 5,
+      "wake": 16
+    }
+  ],
+  "input_sha256": "7d2340608d575ac2ff4b1614758433b445c88f7537c57cfeb26fbe8e61d8f1f0",
+  "log_enclosure": {
+    "method": "range-reduced atanh series with exact rational remainder bound",
+    "output_denominator": 1000000000000000,
+    "terms": 32
+  },
+  "models": [
+    "always-three-quarters",
+    "prefix-informed"
+  ],
+  "nonclaims": [
+    "synthetic proof-of-life, not real-data evidence",
+    "deterministic witness arithmetic, not proof that this path belongs to a theorem-produced good event",
+    "the Lean receipt closes exact arithmetic and conditional composition, not realized-path good-event membership",
+    "the target semantics are monitored conditional suffix risk, not future, stationary, population, or deployment risk",
+    "the supported tilt witness upper-bounds the exact finite-prefix selected boundary; it is not coin betting or a parameter-free master",
+    "the input declares predictions as prequential; this local artifact does not establish an external timestamp or production provenance"
+  ],
+  "posterior": [
+    "1",
+    "0"
+  ],
+  "prior": [
+    "1/2",
+    "1/2"
+  ],
+  "receipt_schema": "formalslt.brier-monitor.synthetic-receipt.v1",
+  "selected_witness": {
+    "boundary_interval": {
+      "lower": "45296064325083/500000000000000",
+      "upper": "90592128650167/1000000000000000"
+    },
+    "confidence_log_interval": {
+      "lower": "6461468176353717/1000000000000000",
+      "upper": "3230734088176859/500000000000000"
+    },
+    "effective_delta": "1/320",
+    "exact_selection_margin_lower": "4210132193597/1000000000000000",
+    "kl_interval": {
+      "lower": "138629436111989/200000000000000",
+      "upper": "346573590279973/500000000000000"
+    },
+    "oracle_relation": "for the selected wake, finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le makes the exact finite-prefix selected boundary no larger than this supported atom",
+    "posterior_empirical_brier_risk": "1/16",
+    "psi_interval": {
+      "lower": "38629436111989/200000000000000",
+      "upper": "96573590279973/500000000000000"
+    },
+    "suffix_length": 512,
+    "suffix_predictor_quadratic_variation": "49/256",
+    "tilt": "1/2",
+    "tilt_atom": 0,
+    "wake": 0
+  },
+  "source": {
+    "formal_slt_commit": "62d8fc08b00bd41b7f6927f566e622573affacd7",
+    "oracle_module_path": "FormalSLT/StochasticDynamics/FiniteTrajectorySleepingSuffixVarianceOracle.lean",
+    "oracle_module_sha256": "5cacf706bd0d34658b29d04ca40ae77af62599462fd2ce2fd8b162d5070838c5",
+    "oracle_theorem": "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le",
+    "proof_of_life_checker_path": "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean",
+    "proof_of_life_checker_sha256": "a9c1c97163ef0b4ccacef53a6e1fa735de3ef9f5ddf7ea3fca56672ae789a1a5"
+  },
+  "stream": {
+    "expanded_stream_sha256": "67ecd7727860b428c9870ae101cb07725ab1650cf926cd0f47101dd41ab5f6a0",
+    "horizon": 512,
+    "loss_sequence_sha256": {
+      "always-three-quarters": "116145d911c54832a9eb9b66a242a4e08c6826457fc66cdc69fff867de4ce490",
+      "prefix-informed": "d674cea9e87e59cd7c81725dfce7bf64fbff7bb971f319ec8bbd2c06152391ae"
+    },
+    "losses_recomputed_from_predictions_and_outcomes": "true"
+  }
+}

@@ -19,6 +19,7 @@ import FormalSLT.AnytimeValid.BettingCS
 import FormalSLT.AnytimeValid.ComputablePredictableBettingMixture
 import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture
 import FormalSLT.AnytimeValid.CountableSleepingEProcessMixture
+import FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture
 import FormalSLT.AnytimeValid.SelectionCost
 import FormalSLT.AnytimeValid.AllocationLogLog
 import FormalSLT.AnytimeValid.UniversalBoundaryLowerBound
@@ -37,7 +38,8 @@ import FormalSLT.PACBayes.IIDContinuousGaussian
 This declaration-free umbrella re-exports Ville bounds, e-processes, betting
 processes, exact rational wealth-weighted finite and countable sleeping-expert
 predictable-strategy mixtures, exact polynomial-tail mixtures of arbitrary
-sleeping e-processes, confidence sequences, mixtures, the predictable-residual
+sleeping e-processes, finite-strategy/countable-wake masters, confidence
+sequences, mixtures, the predictable-residual
 forward process, predictable-tilt empirical-Bernstein e-processes, the hybrid-Bessel
 lower envelope, adaptive-selection and countable allocation cost guardrails,
 and time-uniform PAC-Bayes results.

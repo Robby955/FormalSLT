@@ -1,0 +1,40 @@
+import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
+
+/-!
+# Continuous finite-strategy sleeping PAC-Bayes checks
+
+The checked surface separates the continuous model posterior, finite strategy
+posterior, and countable wake prior.  It does not use a product-measure KL.
+-/
+
+open FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
+
+#check parameterizedTwoAxisSleepingMaster
+#check continuousTwoAxisSleepingMaster
+#check finiteStrategyPriorMoment
+#check finiteStrategyPosteriorScore
+#check parameterizedTwoAxisSleepingMaster_eq
+#check parameterizedTwoAxisSleepingMaster_eProcess
+#check parameterizedTwoAxisSleepingMaster_nonneg
+#check parameterizedTwoAxisSleepingMaster_pos
+#check parameterizedTwoAxisSleepingMaster_zero
+#check finiteStrategyPriorMoment_mul_wakeWeight_le_master
+#check finiteStrategyPriorMoment_pos
+#check finiteStrategyPosteriorScore_le_logMaster
+#check continuousTwoAxisSleepingExceptionalEvent
+#check continuousTwoAxisSleepingExceptionalEvent_mass_le_delta
+#check continuousTwoAxisSleeping_allPosteriorsLogMaster_of_not_mem
+#check continuousTwoAxisSleeping_selectedWakeSoftPosteriorScore_of_not_mem
+#check exists_continuousTwoAxisSleepingPACBayes_factorized_event
+
+#check (exists_continuousTwoAxisSleepingPACBayes_factorized_event
+  (A := Fin 2) (Theta := Real))
+
+#print axioms parameterizedTwoAxisSleepingMaster_eProcess
+#print axioms parameterizedTwoAxisSleepingMaster_eq
+#print axioms finiteStrategyPriorMoment_mul_wakeWeight_le_master
+#print axioms finiteStrategyPosteriorScore_le_logMaster
+#print axioms continuousTwoAxisSleepingExceptionalEvent_mass_le_delta
+#print axioms continuousTwoAxisSleeping_allPosteriorsLogMaster_of_not_mem
+#print axioms continuousTwoAxisSleeping_selectedWakeSoftPosteriorScore_of_not_mem
+#print axioms exists_continuousTwoAxisSleepingPACBayes_factorized_event
