@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [release-candidate, main]
 
+concurrency:
+  group: ci-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.ref }}
+  # A newer commit on the same PR or branch subsumes the older run.
+  cancel-in-progress: true
+
 jobs:
   scope:
     name: classify changes
