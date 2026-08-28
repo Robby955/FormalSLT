@@ -18,6 +18,7 @@ import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
 import FormalSLT.AnytimeValid.ComputablePredictableBettingMixture
 import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture
+import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingPosterior
 import FormalSLT.AnytimeValid.CountableSleepingEProcessMixture
 import FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture
 import FormalSLT.AnytimeValid.SelectionCost
