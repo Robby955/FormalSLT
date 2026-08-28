@@ -135,7 +135,7 @@ def test_manifest_binds_scripts_sources_and_generated_outputs() -> None:
         "lean_receipt_source",
         "lean_receipt_checker",
     }
-    assert manifest["formal_slt_commit"] == "62d8fc08b00bd41b7f6927f566e622573affacd7"
+    assert manifest["formal_slt_commit"] == "c0b3a5691c3ea3ed6493e914bbccc447f66cbaed"
     assert rows["receipt"]["sha256"] == generator.sha256_bytes(
         generator.DEFAULT_RECEIPT.read_bytes()
     )
