@@ -1,0 +1,30 @@
+import FormalSLT.AnytimeValid.SingularFractionSharpObservableLIL
+
+/-!
+# Exact singular-fraction surrogate optimizer checks
+
+The optimizer is exact for the declared post-window-price surrogate.  The
+checker also records the pointwise comparison with the earlier observable
+envelope and the one-event monitored-mean endpoint.
+-/
+
+open FormalSLT.AnytimeValid
+
+#check singularFractionObservableSurrogate
+#check singularFractionObservableSharpLambda
+#check singularFractionObservableSharpLILBoundary
+#check singularFractionObservableSharpLambda_pos
+#check singularFractionObservableSharpLambda_le_exp_neg_one
+#check singularFractionObservableTunedLambda_le_sharpLambda
+#check singularFraction_sharpLambda_logWindowCost_le
+#check singularFractionObservableSharpLambda_argmin
+#check singularFractionObservableSharpLILBoundary_le_observableLILBoundary
+#check singularFraction_sharpTunedBoundary_le_sharpObservableLIL
+#check singularFractionLowerMixture_sharpObservableLIL_boundary
+#check singularFractionLowerMixture_sharpObservableLIL_mean
+#check singularFractionLowerMixture_timeUniform_sharpObservableLIL_mean
+
+#print axioms singularFractionObservableSharpLambda_argmin
+#print axioms singularFractionObservableSharpLILBoundary_le_observableLILBoundary
+#print axioms singularFraction_sharpTunedBoundary_le_sharpObservableLIL
+#print axioms singularFractionLowerMixture_timeUniform_sharpObservableLIL_mean
