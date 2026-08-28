@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Prepare the frozen UCI-357 Brier-monitor stream and local baselines.
+"""Prepare the frozen UCI-357 Brier-monitor stream and optional local baselines.
 
 This is a data and arithmetic protocol, not a statistical certificate.  The
 downloaded archive, canonical stream, and local model result stay under the
@@ -23,11 +23,12 @@ import tempfile
 import urllib.error
 import urllib.parse
 import urllib.request
+import warnings
 import zipfile
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime
-from decimal import Decimal, InvalidOperation, ROUND_FLOOR
+from decimal import Decimal, InvalidOperation
 from fractions import Fraction
 from pathlib import Path
 from typing import Any, Iterable, Sequence
@@ -84,6 +85,13 @@ EXPECTED_CANONICAL_COLUMNS = [
     "CO2",
     "HumidityRatio",
     "Occupancy",
+]
+EXPECTED_NONCLAIMS = [
+    "this protocol is not a FormalSLT statistical certificate",
+    "the task detects contemporaneous occupancy and does not certify future occupancy or deployment risk",
+    "the replay order does not prove how labels were delayed in the original data collection",
+    "chronological data do not by themselves establish concept drift",
+    "local baseline performance is descriptive and is not a population or generalization guarantee",
 ]
 FROZEN_ARCHIVE = {
     "bytes": 335_713,
@@ -474,9 +482,7 @@ def validate_protocol(
     if enforce_frozen_identity and splits != FROZEN_SPLITS:
         raise ProtocolError("splits differ from the frozen 8224/4112/8224 protocol")
 
-    nonclaims = _array(protocol["nonclaims"], "nonclaims")
-    if len(nonclaims) < 5 or not all(isinstance(value, str) and value for value in nonclaims):
-        raise ProtocolError("protocol must preserve the complete nonclaim boundary")
+    _exact(protocol["nonclaims"], EXPECTED_NONCLAIMS, "nonclaim boundary")
 
 
 def _atomic_write(path: Path, raw: bytes) -> None:
@@ -857,49 +863,59 @@ def build_manifest(
     }
 
 
-def _as_decimal_probability(value: Decimal | Fraction | int | float | str) -> Decimal:
+def _as_fraction_probability(value: Decimal | Fraction | int | float | str) -> Fraction:
     if isinstance(value, bool):
         raise ProtocolError("boolean is not a probability")
-    if isinstance(value, Decimal):
+    if isinstance(value, Fraction):
         result = value
-    elif isinstance(value, Fraction):
-        result = Decimal(value.numerator) / Decimal(value.denominator)
     elif isinstance(value, int):
-        result = Decimal(value)
+        result = Fraction(value)
     elif isinstance(value, float):
         if not math.isfinite(value):
             raise ProtocolError("probability must be finite")
-        result = Decimal.from_float(value)
+        result = Fraction(*value.as_integer_ratio())
+    elif isinstance(value, Decimal):
+        if not value.is_finite():
+            raise ProtocolError("probability must be finite")
+        result = Fraction(*value.as_integer_ratio())
     elif isinstance(value, str):
         try:
-            result = Decimal(value)
+            decimal_value = Decimal(value)
         except InvalidOperation as error:
             raise ProtocolError(f"invalid probability: {value!r}") from error
+        if not decimal_value.is_finite():
+            raise ProtocolError("probability must be finite")
+        result = Fraction(*decimal_value.as_integer_ratio())
     else:
         raise ProtocolError(f"unsupported probability type: {type(value).__name__}")
-    if not result.is_finite() or not (Decimal(0) <= result <= Decimal(1)):
+    if not 0 <= result <= 1:
         raise ProtocolError(f"probability is outside [0,1]: {result}")
     return result
 
 
 def quantize_probability(value: Decimal | Fraction | int | float | str) -> int:
-    if isinstance(value, Fraction):
-        if not 0 <= value <= 1:
-            raise ProtocolError(f"probability is outside [0,1]: {value}")
-        scaled = value * PROBABILITY_DENOMINATOR + Fraction(1, 2)
-        quantized = scaled.numerator // scaled.denominator
-        if not 0 <= quantized <= PROBABILITY_DENOMINATOR:
-            raise ProtocolError("quantized probability escaped its integer range")
-        return quantized
-    probability = _as_decimal_probability(value)
-    quantized = int(
-        (Decimal(PROBABILITY_DENOMINATOR) * probability + Decimal("0.5")).to_integral_value(
-            rounding=ROUND_FLOOR
-        )
-    )
-    if not (0 <= quantized <= PROBABILITY_DENOMINATOR):
+    probability = _as_fraction_probability(value)
+    quantized = (
+        2 * PROBABILITY_DENOMINATOR * probability.numerator
+        + probability.denominator
+    ) // (2 * probability.denominator)
+    if not 0 <= quantized <= PROBABILITY_DENOMINATOR:
         raise ProtocolError("quantized probability escaped its integer range")
     return quantized
+
+
+def _fit_rejecting_warning(
+    estimator: Any,
+    features: Any,
+    outcomes: Any,
+    warning_category: type[Warning],
+) -> None:
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", warning_category)
+            estimator.fit(features, outcomes)
+    except warning_category as error:
+        raise ProtocolError("baseline model emitted a convergence warning") from error
 
 
 def brier_loss_numerator(quantized_probability: int, outcome: int) -> int:
@@ -977,6 +993,7 @@ def build_local_baseline_result(
     try:
         import numpy as np
         import sklearn  # type: ignore[import-untyped]
+        from sklearn.exceptions import ConvergenceWarning  # type: ignore[import-untyped]
         from sklearn.linear_model import LogisticRegression  # type: ignore[import-untyped]
         from sklearn.pipeline import Pipeline  # type: ignore[import-untyped]
         from sklearn.preprocessing import StandardScaler  # type: ignore[import-untyped]
@@ -1031,7 +1048,12 @@ def build_local_baseline_result(
             ),
         ]
     )
-    logistic.fit(matrix(train_rows), train_outcomes)
+    _fit_rejecting_warning(
+        logistic,
+        matrix(train_rows),
+        train_outcomes,
+        ConvergenceWarning,
+    )
     prevalence = Fraction(int(train_outcomes.sum()), len(train_outcomes))
     constant_q = quantize_probability(prevalence)
 
@@ -1149,9 +1171,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--local-result", type=Path, default=DEFAULT_LOCAL_RESULT)
     parser.add_argument("--download", action="store_true")
     parser.add_argument("--check", action="store_true")
-    parser.add_argument("--skip-baselines", action="store_true")
+    parser.add_argument(
+        "--baselines",
+        action="store_true",
+        help="also compute the optional local scikit-learn baselines",
+    )
     arguments = parser.parse_args(argv)
     try:
+        if arguments.protocol.resolve() != DEFAULT_PROTOCOL.resolve():
+            raise ProtocolError(
+                "--protocol must resolve to the frozen tracked UCI-357 protocol"
+            )
         protocol, protocol_raw = _load_protocol(arguments.protocol)
         archive_raw = _load_or_download_archive(protocol, arguments.archive, arguments.download)
         prepared = prepare_archive(archive_raw, protocol)
@@ -1166,7 +1196,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             _atomic_write(arguments.canonical_stream, stream_raw)
             _atomic_write(arguments.manifest, manifest_raw)
-        if not arguments.skip_baselines:
+        if arguments.baselines:
             result = build_local_baseline_result(
                 prepared, protocol, protocol_raw, manifest
             )

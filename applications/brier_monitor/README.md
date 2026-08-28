@@ -162,7 +162,16 @@ python3 -m pytest -q tests/test_brier_monitor_uci357_protocol.py
 ```
 
 The tracked `generated/uci357-protocol-v1-manifest.json` binds the observed
-source and canonical stream hashes. If scikit-learn is available, the preparer
-also writes an ignored local result containing only a training-prevalence
-constant and one deterministic all-sensor logistic baseline. That result is
-descriptive and non-public; it is not a FormalSLT certificate.
+source and canonical stream hashes. These default preparation and check paths
+use only the Python standard library. To explicitly compute the optional local
+baselines when NumPy and scikit-learn are already installed, run:
+
+```bash
+python3 scripts/prepare_brier_monitor_uci357.py --baselines
+python3 scripts/prepare_brier_monitor_uci357.py --check --baselines
+```
+
+The ignored local result contains only a training-prevalence constant and one
+deterministic all-sensor logistic baseline. A scikit-learn convergence warning
+fails the run. The result is descriptive and non-public; it is not a FormalSLT
+certificate.

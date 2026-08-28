@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import io
 import json
+import math
+import warnings
 import zipfile
 from datetime import datetime
-from decimal import Decimal
+from decimal import Decimal, localcontext
 from fractions import Fraction
 from pathlib import Path
 
@@ -168,6 +170,51 @@ def test_quantization_and_exact_brier_helpers() -> None:
         protocol_tool.brier_loss_numerator(0, 2)
 
 
+def test_quantization_is_exact_around_half_step_under_low_decimal_precision() -> None:
+    boundary = Fraction(1, 10)
+    tiny_fraction = Fraction(1, 10**80)
+    below_text = "0.0" + "9" * 79
+    above_text = "0.1" + "0" * 78 + "1"
+    below_decimal = Decimal(below_text)
+    at_decimal = Decimal("0.1")
+    above_decimal = Decimal(above_text)
+    assert Fraction(*below_decimal.as_integer_ratio()) == boundary - tiny_fraction
+    assert Fraction(*above_decimal.as_integer_ratio()) == boundary + tiny_fraction
+
+    with localcontext() as context:
+        context.prec = 6
+        assert protocol_tool.quantize_probability(boundary - tiny_fraction) == 6_553
+        assert protocol_tool.quantize_probability(boundary) == 6_554
+        assert protocol_tool.quantize_probability(boundary + tiny_fraction) == 6_554
+        assert protocol_tool.quantize_probability(below_decimal) == 6_553
+        assert protocol_tool.quantize_probability(at_decimal) == 6_554
+        assert protocol_tool.quantize_probability(above_decimal) == 6_554
+        assert protocol_tool.quantize_probability(below_text) == 6_553
+        assert protocol_tool.quantize_probability("0.1") == 6_554
+        assert protocol_tool.quantize_probability(above_text) == 6_554
+        assert protocol_tool.quantize_probability(math.nextafter(0.1, 0.0)) == 6_553
+        assert protocol_tool.quantize_probability(0.1) == 6_554
+        assert protocol_tool.quantize_probability(math.nextafter(0.1, 1.0)) == 6_554
+
+
+def test_fit_rejects_declared_convergence_warning() -> None:
+    class WarningEstimator:
+        def fit(self, _features: object, _outcomes: object) -> None:
+            warnings.warn("did not converge", UserWarning, stacklevel=2)
+
+    with pytest.raises(
+        protocol_tool.ProtocolError,
+        match="baseline model emitted a convergence warning",
+    ) as raised:
+        protocol_tool._fit_rejecting_warning(
+            WarningEstimator(),
+            object(),
+            object(),
+            UserWarning,
+        )
+    assert isinstance(raised.value.__cause__, UserWarning)
+
+
 def test_deterministic_five_model_posterior_and_tie_break() -> None:
     model_order = ["m0", "m1", "m2", "m3", "m4"]
     posterior = protocol_tool.deterministic_soft_winner_posterior(
@@ -193,6 +240,54 @@ def test_manifest_is_canonical_and_deterministic_for_fixture() -> None:
     assert protocol_tool.canonical_json_bytes(first) == protocol_tool.canonical_json_bytes(second)
     assert first["canonical_stream"]["rows"] == 6
     assert [row["count"] for row in first["splits"]] == [2, 2, 2]
+
+
+def test_tracked_manifest_self_binds_protocol_and_preparer_without_data() -> None:
+    manifest_raw = protocol_tool.DEFAULT_MANIFEST.read_bytes()
+    manifest = protocol_tool.parse_json_bytes(manifest_raw, "tracked manifest")
+    assert manifest_raw == protocol_tool.canonical_json_bytes(manifest)
+    assert isinstance(manifest, dict)
+    bindings = manifest["files"]
+    assert bindings == [
+        {
+            "path": "applications/brier_monitor/uci357-protocol-v1.json",
+            "role": "protocol",
+            "sha256": bindings[0]["sha256"],
+        },
+        {
+            "path": "scripts/prepare_brier_monitor_uci357.py",
+            "role": "preparer",
+            "sha256": bindings[1]["sha256"],
+        },
+    ]
+    for binding in bindings:
+        path = protocol_tool.ROOT / binding["path"]
+        assert path.is_file()
+        assert protocol_tool.sha256_bytes(path.read_bytes()) == binding["sha256"]
+
+
+def test_nonclaim_boundary_is_frozen_exactly() -> None:
+    protocol = json.loads(protocol_tool.DEFAULT_PROTOCOL.read_bytes())
+    protocol["nonclaims"][0] = "a weaker substitute"
+    with pytest.raises(protocol_tool.ProtocolError, match="nonclaim boundary"):
+        protocol_tool.validate_protocol(protocol)
+
+
+def test_cli_rejects_alternate_protocol_path_before_archive_access(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    alternate_protocol = tmp_path / "protocol.json"
+    alternate_protocol.write_bytes(protocol_tool.DEFAULT_PROTOCOL.read_bytes())
+    result = protocol_tool.main(
+        [
+            "--protocol",
+            str(alternate_protocol),
+            "--archive",
+            str(tmp_path / "absent.zip"),
+        ]
+    )
+    assert result == 1
+    assert "must resolve to the frozen tracked UCI-357 protocol" in capsys.readouterr().err
 
 
 def test_tracked_manifest_binds_authoritative_source_and_fixed_splits() -> None:
