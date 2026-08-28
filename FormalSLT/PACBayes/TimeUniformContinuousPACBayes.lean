@@ -40,6 +40,31 @@ def continuousPriorMixtureProcess
     (prior : Measure Θ) (M : Θ → ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) : ℝ :=
   ∫ θ, M θ n ω ∂prior
 
+/-- A continuous prior mixture dominates the prior mass of any measurable
+parameter set times a uniform lower bound for the component processes on that
+set.  This is the generic integral form of the positive-mass comparison used
+by nonatomic betting mixtures. -/
+theorem continuousPriorMixtureProcess_competes_of_priorMass
+    (prior : Measure Θ) [IsFiniteMeasure prior]
+    {M : Θ → ℕ → Ω → ℝ} {B : Set Θ} (hB : MeasurableSet B)
+    {c : ℝ} {n : ℕ} {ω : Ω}
+    (hM_nonneg : ∀ θ, 0 ≤ M θ n ω)
+    (hM_int : Integrable (fun θ ↦ M θ n ω) prior)
+    (hlower : ∀ θ, θ ∈ B → c ≤ M θ n ω) :
+    prior.real B * c ≤ continuousPriorMixtureProcess prior M n ω := by
+  have hpoint : ∀ θ,
+      B.indicator (fun _ ↦ c) θ ≤ M θ n ω := by
+    intro θ
+    by_cases hθ : θ ∈ B
+    · rw [Set.indicator_of_mem hθ]
+      exact hlower θ hθ
+    · rw [Set.indicator_of_notMem hθ]
+      exact hM_nonneg θ
+  have hind_int : Integrable (B.indicator (fun _ : Θ ↦ c)) prior :=
+    (integrable_const c).indicator hB
+  have hmono := integral_mono hind_int hM_int hpoint
+  rwa [integral_indicator_const c hB, smul_eq_mul] at hmono
+
 /--
 One conditional-expectation step for an arbitrary continuous prior mixture.
 

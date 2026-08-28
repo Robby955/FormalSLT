@@ -93,6 +93,22 @@ theorem singularFraction_monotone : Monotone singularFraction := by
   · rw [singularFraction_of_nonpos (not_lt.mp hu)]
     exact singularFraction_nonneg v
 
+/-- On the unit parameter interval, every singular fraction is at most
+`exp (-1)`, hence strictly below one. -/
+theorem singularFraction_le_exp_neg_one_of_mem_unit
+    {u : Real} (hu : u ∈ Set.Icc (0 : Real) 1) :
+    singularFraction u ≤ Real.exp (-1) := by
+  have hmono := singularFraction_monotone hu.2
+  simpa [singularFraction] using hmono
+
+/-- Every singular fraction generated from the unit interval is strictly
+below one. -/
+theorem singularFraction_lt_one_of_mem_unit
+    {u : Real} (hu : u ∈ Set.Icc (0 : Real) 1) :
+    singularFraction u < 1 := by
+  exact (singularFraction_le_exp_neg_one_of_mem_unit hu).trans_lt
+    (Real.exp_lt_one_iff.mpr (by norm_num))
+
 /-- Fractions at most `exp (-1)` have logarithmic scale at least one. -/
 theorem one_le_singularFractionLogScale
     {lam : Real} (hlam_pos : 0 < lam) (hlam : lam <= Real.exp (-1)) :
