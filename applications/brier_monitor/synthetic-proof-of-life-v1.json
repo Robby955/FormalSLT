@@ -1,0 +1,57 @@
+{
+  "artifact_status": "SYNTHETIC PROOF-OF-LIFE INPUT",
+  "candidate_wakes": [
+    0,
+    1,
+    4,
+    16
+  ],
+  "confidence_delta": "1/160",
+  "models": [
+    "always-three-quarters",
+    "prefix-informed"
+  ],
+  "nonclaims": [
+    "synthetic proof-of-life, not real-data evidence",
+    "deterministic witness arithmetic, not proof that this path belongs to a theorem-produced good event",
+    "the Lean receipt closes exact arithmetic and conditional composition, not realized-path good-event membership",
+    "the target semantics are monitored conditional suffix risk, not future, stationary, population, or deployment risk",
+    "the supported tilt witness upper-bounds the exact finite-prefix selected boundary; it is not coin betting or a parameter-free master",
+    "the input declares predictions as prequential; this local artifact does not establish an external timestamp or production provenance"
+  ],
+  "posterior": [
+    "1",
+    "0"
+  ],
+  "prior": [
+    "1/2",
+    "1/2"
+  ],
+  "schema_version": "formalslt.brier-monitor.synthetic-input.v1",
+  "source": {
+    "formal_slt_commit": "c0b3a5691c3ea3ed6493e914bbccc447f66cbaed",
+    "oracle_module_path": "FormalSLT/StochasticDynamics/FiniteTrajectorySleepingSuffixVarianceOracle.lean",
+    "oracle_module_sha256": "5cacf706bd0d34658b29d04ca40ae77af62599462fd2ce2fd8b162d5070838c5",
+    "oracle_theorem": "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le",
+    "proof_of_life_checker_path": "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean",
+    "proof_of_life_checker_sha256": "a9c1c97163ef0b4ccacef53a6e1fa735de3ef9f5ddf7ea3fca56672ae789a1a5"
+  },
+  "stream_segments": [
+    {
+      "count": 1,
+      "outcome": 1,
+      "predictions": [
+        "3/4",
+        "1/4"
+      ]
+    },
+    {
+      "count": 511,
+      "outcome": 1,
+      "predictions": [
+        "3/4",
+        "3/4"
+      ]
+    }
+  ]
+}

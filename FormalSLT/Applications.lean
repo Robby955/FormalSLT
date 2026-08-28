@@ -28,6 +28,7 @@ import FormalSLT.Applications.ControlledQueueFixedRangePersistenceConfidence
 import FormalSLT.Applications.ControlledQueueFixedRangeComparator
 import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
 import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
+import FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt
 
 /-!
 # FormalSLT applications
@@ -88,4 +89,10 @@ stationary risk in the numerical reduction. For each fixed admissible true
 parameter under the path law started at `(action = 1, state = 1)`, the
 frozen-histogram/risk-failure set has outer mass at most `1 / 20`; this is not
 histogram-conditioned or simultaneous-in-parameter coverage.
+
+`BrierMonitorSyntheticProofOfLifeReceipt` reconstructs a synthetic two-segment
+forecast stream, checks its Brier arithmetic and observable suffix variation,
+and bounds the exact finite-prefix selector conditionally on the theorem's
+good-event inequality. It does not prove named-path good-event membership or
+make a real-data claim.
 -/

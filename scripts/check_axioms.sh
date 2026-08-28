@@ -935,7 +935,162 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event"
   "FormalSLT.Covering.MeasureDudley.MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt"
   "FormalSLT.Covering.MeasureDudley.integral_boolProjectionPairSup_eq_half"
+  # examples/CheckBrierMonitorSyntheticProofOfLifeReceipt.lean
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.declaredEmpiricalBrierRiskQ_eq"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.declaredSuffixPredictorQuadraticVariationQ_eq"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.selected_empiricalSuffixRisk_eq"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.selected_suffixPredictorQuadraticVariation_eq"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.trackedBoundaryUpper_lt_ninetyOneThousandths"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.trackedSelectionMargin_pos"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.supportedAtomBoundary_lt_trackedUpper"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.selectedBoundary_lt_trackedUpper"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.selectedBoundary_lt_ninetyOneThousandths"
+  "FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt.conditionalRisk_lt_ninetyOneThousandths_of_goodEventInequality"
+  # examples/CheckContinuousFiniteStrategySleepingPACBayes.lean
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.parameterizedTwoAxisSleepingMaster_eProcess"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.parameterizedTwoAxisSleepingMaster_eq"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.finiteStrategyPriorMoment_mul_wakeWeight_le_master"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.finiteStrategyPosteriorScore_le_logMaster"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.continuousTwoAxisSleepingExceptionalEvent_mass_le_delta"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.continuousTwoAxisSleeping_allPosteriorsLogMaster_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.continuousTwoAxisSleeping_selectedWakeSoftPosteriorScore_of_not_mem"
+  "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.exists_continuousTwoAxisSleepingPACBayes_factorized_event"
+  # examples/CheckContinuousMeasurableTrajectorySleepingCountableTiltPACBayes.lean
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousMeasurableTrajectorySleepingConstantTiltMaster_filtered"
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousMeasurableTrajectorySleepingConstantTiltMaster_ambient"
+  "FormalSLT.StochasticDynamics.continuousMeasurableTrajectorySleepingConstantTiltMaster_le"
+  "FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectorySleepingConstantTiltPACBayes_suffixRisk_event"
+  "FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectorySleepingCountableTiltPACBayes_suffixRisk_event"
+  "FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectorySleepingGeometricTiltPACBayes_suffixRisk_event"
+  # examples/CheckContinuousMeasurableTrajectorySleepingSuffixVarianceOracle.lean
+  "FormalSLT.StochasticDynamics.stronglyMeasurable_parameterizedTrajectoryScore_parameter_of_joint"
+  "FormalSLT.StochasticDynamics.exists_continuousMeasurableTrajectorySleepingSuffixVarianceOracle_event"
+  # examples/CheckContinuousTrajectorySleepingCountableTiltPACBayes.lean
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingCountableTiltSuffixBoundary_eq_constant"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectorySleepingCountableTiltPACBayes_suffixRisk_event_of_parameterMeasurable"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectorySleepingGeometricTiltPACBayes_suffixRisk_event_of_parameterMeasurable"
+  # examples/CheckContinuousTrajectorySleepingCountableTiltPACBayesOracle.lean
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty_mem_Icc"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixGeometricTiltExcess_le_allTimeRate"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectorySleepingSuffixGeometricTiltPACBayes_event"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixGeometricTiltExcess_tendsto_zero_fixedWake"
+  # examples/CheckContinuousTrajectorySleepingPredictableTiltOrdinaryRisk.lean
+  "FormalSLT.StochasticDynamics.abs_weightedSum_sub_weightedSum_le_half_l1"
+  "FormalSLT.StochasticDynamics.abs_uniformAverage_sub_normalizedWeightedAverage_le_discrepancy"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingPredictableTiltExposure_eq_sum_Ico"
+  "FormalSLT.StochasticDynamics.abs_trajectoryConditionalSuffixAverage_sub_sleepingNormalizedConditionalMeanAt_le"
+  "FormalSLT.StochasticDynamics.abs_trajectoryEmpiricalSuffixAverage_sub_sleepingNormalizedObservationAt_le"
+  "FormalSLT.StochasticDynamics.abs_continuousTrajectoryPosteriorAverageConditionalSuffixRisk_sub_normalized_le"
+  "FormalSLT.StochasticDynamics.abs_continuousTrajectoryPosteriorEmpiricalSuffixRisk_sub_normalized_le"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingPredictableTilt_ordinaryRisk_of_weighted"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectorySleepingPredictableTiltPACBayes_ordinarySuffixRisk_event_of_parameterMeasurable"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingPredictableTiltUniformDiscrepancy_countableConstant"
+  # examples/CheckContinuousTrajectorySleepingSuffixVarianceOracle.lean
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty_eq"
+  "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorSuffixPredictorQuadraticVariation_mem_Icc"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingGeometricTiltSuffixBoundary_eq_suffixVariance"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceFinitePrefixArgmin_mem"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceFinitePrefixArgmin_le"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceSelectedBoundary_eq"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceSelectedBoundary_le"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceGeometricTiltExcess_le_observableRate"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceSelectedExcess_le_LILEnvelope"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceSelectedBoundary_le_LILEnvelope"
+  "FormalSLT.StochasticDynamics.exists_continuousTrajectorySleepingSuffixVarianceOracle_event"
+  # examples/CheckFiniteStrategySleepingEProcessMixture.lean
+  "FormalSLT.AnytimeValid.finiteStrategySleepingProcessMixture_eq"
+  "FormalSLT.AnytimeValid.finiteStrategySleepingProcessMixture_eq_tail_add_sum"
+  "FormalSLT.AnytimeValid.finiteStrategySleepingProcessMixture_nonneg"
+  "FormalSLT.AnytimeValid.finiteStrategySleepingProcessMixture_eProcess"
+  "FormalSLT.AnytimeValid.finiteStrategySleepingProcessMixture_competes"
+  "FormalSLT.AnytimeValid.finiteStrategySleepingProcessMixture_logWealth_regret_le"
+  # examples/CheckFiniteTrajectorySleepingSuffixVarianceOracle.lean
+  "FormalSLT.StochasticDynamics.finiteTrajectoryPosteriorConstantTiltSuffixPredictorQuadraticPenalty_eq"
+  "FormalSLT.StochasticDynamics.finiteTrajectoryPosteriorSuffixPredictorQuadraticVariation_mem_Icc"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceGeometricTiltExcess_toPMF"
+  "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceFinitePrefixArgmin_mem"
+  "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceFinitePrefixArgmin_le"
+  "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le"
+  "FormalSLT.StochasticDynamics.continuousTrajectorySleepingSuffixVarianceSelectedExcess_toPMF"
+  "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedExcess_le_LILEnvelope"
+  "FormalSLT.StochasticDynamics.finiteTrajectorySleepingSuffixVarianceSelectedBoundary_le_LILEnvelope"
+  "FormalSLT.StochasticDynamics.exists_finiteTrajectorySleepingSuffixVarianceOracle_event"
+  "FormalSLT.StochasticDynamics.exists_finitePMFTrajectorySleepingSuffixVarianceOracle_event"
+  # examples/CheckTrajectorySleepingStrategyPACBayes.lean
+  "FormalSLT.StochasticDynamics.sleepingTrajectoryStrategyCatalog_apply_of_lt"
+  "FormalSLT.StochasticDynamics.sleepingTrajectoryStrategyCatalog_apply_of_le"
+  "FormalSLT.StochasticDynamics.sleepingTrajectoryStrategyCatalog_mem_Icc"
+  "FormalSLT.StochasticDynamics.exists_trajectorySleepingStrategyPACBayes_factorized_normalized_selected_event"
 )
+
+# These checker files define the exact new axiom-audit surface.  Keep their
+# `#print axioms` targets synchronized with `THEOREMS`; the static preflight
+# below fails before any Lean work if a checker target is omitted.
+AXIOM_CHECK_FILES=(
+  "examples/CheckBrierMonitorSyntheticProofOfLifeReceipt.lean"
+  "examples/CheckContinuousFiniteStrategySleepingPACBayes.lean"
+  "examples/CheckContinuousMeasurableTrajectorySleepingCountableTiltPACBayes.lean"
+  "examples/CheckContinuousMeasurableTrajectorySleepingSuffixVarianceOracle.lean"
+  "examples/CheckContinuousTrajectorySleepingCountableTiltPACBayes.lean"
+  "examples/CheckContinuousTrajectorySleepingCountableTiltPACBayesOracle.lean"
+  "examples/CheckContinuousTrajectorySleepingPredictableTiltOrdinaryRisk.lean"
+  "examples/CheckContinuousTrajectorySleepingSuffixVarianceOracle.lean"
+  "examples/CheckFiniteStrategySleepingEProcessMixture.lean"
+  "examples/CheckFiniteTrajectorySleepingSuffixVarianceOracle.lean"
+  "examples/CheckTrajectorySleepingStrategyPACBayes.lean"
+)
+
+AUDITED_SHORT_NAMES="$(
+  printf '%s\n' "${THEOREMS[@]}" |
+    sed 's/.*\.//' |
+    sort -u
+)"
+DUPLICATE_SHORT_NAMES="$(
+  printf '%s\n' "${THEOREMS[@]}" |
+    sed 's/.*\.//' |
+    sort |
+    uniq -d
+)"
+if [ -n "$DUPLICATE_SHORT_NAMES" ]; then
+  echo "ERROR: ambiguous short theorem names in axiom manifest:" >&2
+  printf '%s\n' "$DUPLICATE_SHORT_NAMES" >&2
+  exit 1
+fi
+
+for f in "${AXIOM_CHECK_FILES[@]}"; do
+  if [ ! -f "$f" ]; then
+    echo "ERROR: axiom checker not found: $f" >&2
+    exit 1
+  fi
+  CHECK_TARGETS="$(
+    sed -nE 's/^[[:space:]]*#print[[:space:]]+axioms[[:space:]]+@?([^[:space:]]+).*/\1/p' "$f" |
+      sed 's/.*\.//' |
+      sort -u
+  )"
+  if [ -z "$CHECK_TARGETS" ]; then
+    echo "ERROR: axiom checker has no #print axioms targets: $f" >&2
+    exit 1
+  fi
+  MISSING_TARGETS="$(
+    comm -23 \
+      <(printf '%s\n' "$CHECK_TARGETS") \
+      <(printf '%s\n' "$AUDITED_SHORT_NAMES")
+  )"
+  if [ -n "$MISSING_TARGETS" ]; then
+    echo "ERROR: axiom checker targets missing from THEOREMS: $f" >&2
+    printf '%s\n' "$MISSING_TARGETS" >&2
+    exit 1
+  fi
+done
+
+if [ "${1:-}" = "--static-only" ]; then
+  echo "axiom manifest preflight passed: every registered checker target is audited"
+  exit 0
+fi
+if [ "$#" -ne 0 ]; then
+  echo "usage: $0 [--static-only]" >&2
+  exit 2
+fi
 
 # Axioms permitted in a clean proof.
 ALLOWED=("propext" "Classical.choice" "Quot.sound")
@@ -1037,6 +1192,16 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore"
   echo "import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
+  echo "import FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture"
+  echo "import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes"
+  echo "import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes"
+  echo "import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle"
+  echo "import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayes"
+  echo "import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayesOracle"
+  echo "import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltOrdinaryRisk"
+  echo "import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingSuffixVarianceOracle"
+  echo "import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingSuffixVarianceOracle"
+  echo "import FormalSLT.StochasticDynamics.TrajectorySleepingStrategyPACBayes"
   echo "import FormalSLT.StochasticDynamics.FiniteInvariantUniqueness"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE"
   echo "import FormalSLT.StochasticDynamics.StationaryTargetPolicyRobustCandidate"
@@ -1148,6 +1313,16 @@ echo "== building flagship modules =="
   FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore \
   FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt \
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
+  FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture \
+  FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes \
+  FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes \
+  FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle \
+  FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayes \
+  FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayesOracle \
+  FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltOrdinaryRisk \
+  FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingSuffixVarianceOracle \
+  FormalSLT.StochasticDynamics.FiniteTrajectorySleepingSuffixVarianceOracle \
+  FormalSLT.StochasticDynamics.TrajectorySleepingStrategyPACBayes \
   FormalSLT.StochasticDynamics.FiniteInvariantExistence \
   FormalSLT.StochasticDynamics.FiniteInvariantUniqueness \
   FormalSLT.StochasticDynamics.StationaryTargetPolicyOPE \

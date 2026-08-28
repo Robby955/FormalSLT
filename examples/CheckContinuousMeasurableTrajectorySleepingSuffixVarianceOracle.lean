@@ -1,0 +1,11 @@
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle
+
+open FormalSLT.StochasticDynamics
+
+#check stronglyMeasurable_parameterizedTrajectoryScore_parameter_of_joint
+#check exists_continuousMeasurableTrajectorySleepingSuffixVarianceOracle_event
+#check exists_continuousMeasurableTrajectorySleepingSuffixVarianceOracle_event
+  (Theta := Real) (Z := Real)
+
+#print axioms stronglyMeasurable_parameterizedTrajectoryScore_parameter_of_joint
+#print axioms exists_continuousMeasurableTrajectorySleepingSuffixVarianceOracle_event

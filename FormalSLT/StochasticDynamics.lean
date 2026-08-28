@@ -17,14 +17,22 @@ import FormalSLT.StochasticDynamics.MarkovPACBayesTiltMixtureInitialLaw
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPredictableTiltPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryPredictableStrategyPACBayes
+import FormalSLT.StochasticDynamics.TrajectorySleepingStrategyPACBayes
 import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountable
 import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltPACBayes
 import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingOrdinaryRiskPACBayes
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltOrdinaryRisk
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayes
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayesOracle
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingOrdinaryRiskPACBayes
+import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDobrushin
@@ -56,10 +64,14 @@ bounded score contract. It also re-exports Markov anytime-valid and
 posterior-uniform PAC-Bayes certificates, including finite-catalog and
 countable-tilt finite-state trajectory endpoints and arbitrary-measurable-
 hypothesis empirical-Bernstein trajectory endpoints. The arbitrary measurable
-state-and-hypothesis layer also exposes a countable geometric-tilt oracle with
-path-selected posteriors, ordinary monitored conditional-risk semantics, an
-observable LIL-order envelope, and conditional vanishing width under the
-stated posterior KL-rate assumption.
+state-and-hypothesis layer also exposes a countable geometric-tilt full-prefix
+oracle with path-selected posteriors, ordinary monitored conditional-risk
+semantics, an observable LIL-order envelope, and conditional vanishing width
+under the stated posterior KL-rate assumption. Under the same jointly
+measurable score contract, it now also supports wake-selected suffixes and the
+exact finite-prefix observable suffix-variance selector. The suffix theorem
+has a finite-time dyadic square-root envelope but does not assert unconditional
+vanishing width.
 The finite-state, arbitrary-measurable-hypothesis layer additionally exposes an
 exact finite-prefix polynomial sleeping mixture over a countable catalog of
 prefix-predictable strategies. Its normalized endpoint retains time-varying
@@ -70,8 +82,17 @@ certificates on wake-selected trajectory suffixes. The reporting time,
 suffix start, and eligible hypothesis posterior may be selected from the
 observed path; the fixed catalog pays the polynomial wake-selection cost. The
 suffix average restarts, but the forward predictor may retain earlier history.
+General time-varying nonnegative predictable tilts also yield ordinary suffix
+risk after paying twice the realized total-variation discrepancy between their
+normalized time weights and uniform suffix weights. Constant post-wake tilts
+make this discrepancy exactly zero.
+An exact finite-prefix geometric selector minimizes the observable suffix
+excess width and is bounded by a finite-time variance-sensitive dyadic
+square-root envelope. The envelope has iterated-logarithm order only under
+the stated posterior-complexity conditions.
 An explicit finite-PMF specialization rewrites posterior integrals, relative
-entropy, and prefix-kernel conditional risks as finite sums.
+entropy, prefix-kernel conditional risks, observable suffix variation, and the
+exact selected suffix-variance boundary as finite sums.
 The finite-state layer additionally supports fixed-before-data tilt rules that
 read each complete available prefix, with one event uniform over time and
 finite posterior PMFs.  Its geometric empirical-Bernstein trajectory oracle

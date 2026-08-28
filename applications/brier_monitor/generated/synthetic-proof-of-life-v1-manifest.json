@@ -1,0 +1,69 @@
+{
+  "artifact_status": "SYNTHETIC PROOF-OF-LIFE ARITHMETIC WITH CONDITIONAL LEAN CLOSURE",
+  "files": [
+    {
+      "bytes": 1931,
+      "path": "applications/brier_monitor/synthetic-proof-of-life-v1.json",
+      "role": "input",
+      "sha256": "130eea0a2eec8ddab25d075f2ef62794c5fdce5b6761be4f16feb12651574e5e"
+    },
+    {
+      "bytes": 26748,
+      "path": "scripts/generate_brier_monitor_synthetic_receipt.py",
+      "role": "generator",
+      "sha256": "4b7fbdd0845dac1fa6348b4eb295ee92e71634f5dee01b9d74d61dd3f5922677"
+    },
+    {
+      "bytes": 25147,
+      "path": "scripts/verify_brier_monitor_synthetic_receipt.py",
+      "role": "independent_verifier",
+      "sha256": "38e6ca6f2525664c9ab68817c23c35ac6b5cd845634f23f1b5a7df5022cbd9cf"
+    },
+    {
+      "bytes": 32151,
+      "path": "FormalSLT/StochasticDynamics/FiniteTrajectorySleepingSuffixVarianceOracle.lean",
+      "role": "oracle_source",
+      "sha256": "5cacf706bd0d34658b29d04ca40ae77af62599462fd2ce2fd8b162d5070838c5"
+    },
+    {
+      "bytes": 69613,
+      "path": "examples/CheckTrajectoryEmpiricalBernsteinPACBayesCountableInformative.lean",
+      "role": "proof_of_life_checker",
+      "sha256": "a9c1c97163ef0b4ccacef53a6e1fa735de3ef9f5ddf7ea3fca56672ae789a1a5"
+    },
+    {
+      "bytes": 22395,
+      "path": "applications/brier_monitor/generated/synthetic-proof-of-life-v1-receipt.json",
+      "role": "receipt",
+      "sha256": "a8d178efe0dd1c11b5433b68224b589e9962152ef648419ad176f1e869da24ff"
+    },
+    {
+      "bytes": 1402,
+      "path": "FormalSLT/Applications/BrierMonitorSyntheticProofOfLifeData.lean",
+      "role": "lean_data",
+      "sha256": "50ca4830ab3ead368b2ef0a4d38667f476a7d37b6e2120e7faf3ff46be05221f"
+    },
+    {
+      "bytes": 15313,
+      "path": "FormalSLT/Applications/BrierMonitorSyntheticProofOfLifeReceipt.lean",
+      "role": "lean_receipt_source",
+      "sha256": "c0ca2c8983034e79a222a19dbf78b1f569e7ce512e42d199e459a9a0214467d3"
+    },
+    {
+      "bytes": 1609,
+      "path": "examples/CheckBrierMonitorSyntheticProofOfLifeReceipt.lean",
+      "role": "lean_receipt_checker",
+      "sha256": "9a7fb609391672bd9190d560db2114a68d9434ff99764fc0d792b7fcd03e3f94"
+    }
+  ],
+  "formal_slt_commit": "c0b3a5691c3ea3ed6493e914bbccc447f66cbaed",
+  "manifest_schema": "formalslt.brier-monitor.synthetic-manifest.v1",
+  "nonclaims": [
+    "synthetic proof-of-life, not real-data evidence",
+    "deterministic witness arithmetic, not proof that this path belongs to a theorem-produced good event",
+    "the Lean receipt closes exact arithmetic and conditional composition, not realized-path good-event membership",
+    "the target semantics are monitored conditional suffix risk, not future, stationary, population, or deployment risk",
+    "the supported tilt witness upper-bounds the exact finite-prefix selected boundary; it is not coin betting or a parameter-free master",
+    "the input declares predictions as prequential; this local artifact does not establish an external timestamp or production provenance"
+  ]
+}
