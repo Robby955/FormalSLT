@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+import hashlib
+import io
 import json
 from pathlib import Path
+import urllib.request
 
 import pytest
 
@@ -120,6 +123,39 @@ def test_fetcher_refuses_an_output_directory_inside_the_repository(tmp_path: Pat
 
 def test_fetcher_verify_only_reports_absent_inputs(tmp_path: Path) -> None:
     assert fetcher.main(["--out", str(tmp_path / "inputs"), "--verify-only"]) == 1
+
+
+def test_fetcher_identifies_itself_for_dataverse_redirects(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    payload = b"pinned original bytes"
+    captured: dict[str, object] = {}
+
+    def fake_urlopen(request: urllib.request.Request, timeout: int) -> io.BytesIO:
+        captured["request"] = request
+        captured["timeout"] = timeout
+        return io.BytesIO(payload)
+
+    monkeypatch.setattr(fetcher.urllib.request, "urlopen", fake_urlopen)
+    entry = {
+        "dataverse_id": 7,
+        "filename": "input.csv",
+        "md5": hashlib.md5(payload).hexdigest(),
+        "original_bytes_confirmed": len(payload),
+    }
+    target = fetcher.fetch_one(
+        "https://example.test/api/access/datafile/{id}?format=original",
+        entry,
+        tmp_path,
+        30,
+    )
+
+    request = captured["request"]
+    assert isinstance(request, urllib.request.Request)
+    assert request.get_header("User-agent") == fetcher.USER_AGENT
+    assert request.get_header("Accept-encoding") == "identity"
+    assert captured["timeout"] == 30
+    assert target.read_bytes() == payload
 
 
 @pytest.mark.parametrize(

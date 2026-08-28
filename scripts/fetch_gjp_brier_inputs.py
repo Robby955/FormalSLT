@@ -28,6 +28,7 @@ DEFAULT_PROTOCOL = (
     ROOT / "applications" / "brier_monitor" / "realdata" / "gjp-brier-protocol-v1.json"
 )
 CHUNK = 1 << 20
+USER_AGENT = "FormalSLT-GJP-Receipt/1.0"
 
 
 class FetchError(RuntimeError):
@@ -59,7 +60,14 @@ def fetch_one(route: str, entry: dict[str, Any], out_dir: Path, timeout: int) ->
         raise FetchError(f"refusing a non-HTTPS access route: {url}")
     if not target.exists():
         temporary = target.with_suffix(target.suffix + ".partial")
-        with urllib.request.urlopen(url, timeout=timeout) as response:
+        request = urllib.request.Request(
+            url,
+            headers={
+                "Accept-Encoding": "identity",
+                "User-Agent": USER_AGENT,
+            },
+        )
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             with temporary.open("wb") as handle:
                 while True:
                     block = response.read(CHUNK)
