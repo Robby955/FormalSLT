@@ -64,7 +64,7 @@
     {
       "path": "scripts/prepare_brier_monitor_uci357.py",
       "role": "preparer",
-      "sha256": "7ad95aab738082fddb0e42c89960976cf86b6d306acd8db0c2687ed34bb5cb16"
+      "sha256": "71d81ade9c8eb2ac7dad3f01cad47cebc81f9d341b5a7d171d3eb1786998b337"
     }
   ],
   "gap_diagnostics": {

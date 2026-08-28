@@ -976,10 +976,10 @@ def build_local_baseline_result(
 ) -> dict[str, Any]:
     try:
         import numpy as np
-        import sklearn
-        from sklearn.linear_model import LogisticRegression
-        from sklearn.pipeline import Pipeline
-        from sklearn.preprocessing import StandardScaler
+        import sklearn  # type: ignore[import-untyped]
+        from sklearn.linear_model import LogisticRegression  # type: ignore[import-untyped]
+        from sklearn.pipeline import Pipeline  # type: ignore[import-untyped]
+        from sklearn.preprocessing import StandardScaler  # type: ignore[import-untyped]
     except ImportError as error:
         raise ProtocolError("scikit-learn and NumPy are unavailable for local baselines") from error
 
