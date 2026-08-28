@@ -22,6 +22,7 @@ import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltPACBayes
 import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingOrdinaryRiskPACBayes
+import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingOrdinaryRiskPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
@@ -69,6 +70,8 @@ certificates on wake-selected trajectory suffixes. The reporting time,
 suffix start, and eligible hypothesis posterior may be selected from the
 observed path; the fixed catalog pays the polynomial wake-selection cost. The
 suffix average restarts, but the forward predictor may retain earlier history.
+An explicit finite-PMF specialization rewrites posterior integrals, relative
+entropy, and prefix-kernel conditional risks as finite sums.
 The finite-state layer additionally supports fixed-before-data tilt rules that
 read each complete available prefix, with one event uniform over time and
 finite posterior PMFs.  Its geometric empirical-Bernstein trajectory oracle
