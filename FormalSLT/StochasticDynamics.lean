@@ -21,6 +21,7 @@ import FormalSLT.StochasticDynamics.TrajectoryEmpiricalBernsteinPACBayesCountabl
 import FormalSLT.StochasticDynamics.TrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingPredictableTiltPACBayes
+import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingOrdinaryRiskPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
@@ -63,7 +64,11 @@ exact finite-prefix polynomial sleeping mixture over a countable catalog of
 prefix-predictable strategies. Its normalized endpoint retains time-varying
 encountered conditional-risk semantics and the observable forward-predictor
 quadratic penalty, with logarithmic rather than linear wake-time selection
-cost.
+cost. Constant post-wake tilts additionally give ordinary conditional-risk
+certificates on wake-selected trajectory suffixes. The reporting time,
+suffix start, and eligible hypothesis posterior may be selected from the
+observed path; the fixed catalog pays the polynomial wake-selection cost. The
+suffix average restarts, but the forward predictor may retain earlier history.
 The finite-state layer additionally supports fixed-before-data tilt rules that
 read each complete available prefix, with one event uniform over time and
 finite posterior PMFs.  Its geometric empirical-Bernstein trajectory oracle
