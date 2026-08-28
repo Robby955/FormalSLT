@@ -5,8 +5,7 @@ Authors: Robby Sneiderman
 -/
 
 import FormalSLT.AnytimeValid.CountableSleepingEProcessMixture
-import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingPosterior
-import FormalSLT.PACBayes.ForwardPredictableStrategyPACBayes
+import FormalSLT.PACBayesKL
 
 /-!
 # Finite-model PAC-Bayes for countable sleeping e-process strategies
