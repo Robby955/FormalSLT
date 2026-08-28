@@ -19,7 +19,7 @@
     "monitor": {
       "date_closed_from": "2014-01-01",
       "date_closed_through": null,
-      "expected_count": 177,
+      "expected_count": 175,
       "use": "the anytime-valid monitored stream"
     },
     "train": {
@@ -52,6 +52,13 @@
         "md5": "5c703d02284f8b563399967c554f1417",
         "original_bytes_confirmed": 1072153,
         "role": "questions_and_outcomes"
+      },
+      {
+        "dataverse_id": 2917350,
+        "filename": "readme.txt",
+        "md5": "304832fa3e6b06861897f31eda69ba1f",
+        "original_bytes_confirmed": 4382,
+        "role": "survey_forecast_codebook"
       },
       {
         "dataverse_id": 2917351,
@@ -90,10 +97,26 @@
     "version": "1.0",
     "version_state": "RELEASED"
   },
+  "eligibility_after_temporal_amendment": {
+    "candidate_count": 382,
+    "complete_case_rule": "both first-week-mean and final-consensus-median are defined from at least one eligible option-a forecast row",
+    "excluded_ifp_ids": [
+      "5008-0",
+      "5009-0"
+    ],
+    "excluded_no_eligible_forecast_count": 2,
+    "included_count": 380,
+    "split_counts": {
+      "calibration": 83,
+      "monitor": 175,
+      "train": 122
+    }
+  },
   "failure_cases": [
-    "vacuity at n = 177: the confidence log term may put the endpoint above the base-rate Brier score; predeclared, and no re-tuning of delta, wake grid, catalog, or split is permitted in response",
+    "vacuity at n = 175: the confidence log term may put the endpoint above the base-rate Brier score; predeclared, and no re-tuning of delta, wake grid, catalog, or split is permitted in response",
     "the bounded quantity is posterior-averaged empirical Brier risk on the encountered suffix, not future, stationary, population, or deployment risk",
     "the 382 resolved binaries are a selected subset of GJP questions; the receipt records inclusion and exclusion counts",
+    "the source date_suspend can follow date_closed and forecast rows can predate date_start; amendment 2026-08-28 therefore enforces the conservative question window from date_start through the earlier of suspension and closure",
     "the consensus models read a crowd shaped by the tournament's own feedback; the bound stays valid for the encountered suffix but licenses no favorable reading of catalog skill",
     "reporting a wake outside the declared grid spends confidence that was never allocated"
   ],
@@ -106,7 +129,7 @@
   ],
   "leakage_tests": [
     {
-      "fails_when": "any observation's recorded maximum consumed timestamp is not strictly less than date_suspend",
+      "fails_when": "any consumed timestamp lies outside date_start <= timestamp < effective_cutoff = min(date_suspend, start-of-date_closed)",
       "id": "timestamp_assertion"
     },
     {
@@ -114,7 +137,7 @@
       "id": "deliberately_leaked_tripwire"
     },
     {
-      "fails_when": "a longer first-week window sharply decreases risk, indicating the pre-suspend clamp is not applied",
+      "fails_when": "a first-week reducer consumes any row at or after effective_cutoff, indicating the suspension-or-closure clamp is not applied",
       "id": "future_feature_ablation",
       "windows_days": [
         1,
@@ -161,11 +184,11 @@
         "id": "constant-train-baserate"
       },
       {
-        "definition": "unweighted mean forecast on [date_start, date_start + 7 days]",
+        "definition": "row-level unweighted mean of all recognized option-a forecast event types on [date_start, min(date_start + 7 days, effective_cutoff))",
         "id": "first-week-mean"
       },
       {
-        "definition": "median over forecasters of each forecaster's last pre-suspend forecast",
+        "definition": "median over users of each user's last emitted option-a value satisfying date_start <= timestamp < effective_cutoff; fcast_type 4 is retained as its emitted last-standing probability",
         "id": "final-consensus-median"
       },
       {
@@ -201,17 +224,46 @@
     "unit": "one resolved binary question"
   },
   "posterior_rule": {
+    "certified_object": "the deterministic rational simplex quantization of the ideal Gibbs posterior",
     "computed_on": "calibration split only",
-    "formula": "rho(m) proportional to pi(m) * exp(-n_cal * empiricalBrier_cal(m))",
+    "decimal_precision": 80,
+    "decimal_rounding": "ROUND_HALF_EVEN",
+    "formula": "rho = rationalize_1e15(normalize(pi(m) * exp(-n_cal * empiricalBrier_cal(m))))",
     "frozen_before_monitor_split": true,
-    "learning_rate_eta": "1"
+    "ideal_formula": "rho_ideal(m) proportional to pi(m) * exp(-n_cal * empiricalBrier_cal(m))",
+    "learning_rate_eta": "1",
+    "quantization_denominator": 1000000000000000,
+    "quantization_rule": "largest-remainder method: floor each ideal weight times the denominator, then allocate remaining units by descending fractional remainder with model-id ascending ties"
   },
   "prediction_before_outcome": {
     "auditable_from_receipt_alone": true,
-    "forecast_cutoff_field": "date_suspend",
+    "date_closed_interpretation": "midnight at the start of the recorded date in the same naive source-clock representation; no timezone conversion",
+    "effective_cutoff_formula": "min(date_suspend, start-of-date_closed)",
+    "forecast_window_fields": [
+      "date_start",
+      "date_suspend",
+      "date_closed"
+    ],
     "receipt_records_per_observation_max_consumed_timestamp": true,
+    "receipt_records_source_window": true,
     "reduction_function_accepts_outcome_argument": false,
-    "rule": "every consumed forecast timestamp is strictly less than date_suspend"
+    "rule": "every consumed forecast timestamp satisfies date_start <= timestamp < effective_cutoff",
+    "same_user_last_event_tie_break": [
+      "timestamp",
+      "numeric forecast_id",
+      "source year",
+      "source line"
+    ],
+    "survey_forecast_event_types": {
+      "allowed": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "policy": "include every recognized event type and fail closed on any other code",
+      "source": "pinned survey readme.txt"
+    }
   },
   "preregistration_disclosure": {
     "forecast_file_inspection": "header line and first three data rows of survey_fcasts.yr1.tab",
@@ -240,7 +292,25 @@
     "no_forecast_value_joined_to_any_outcome": true,
     "no_per_question_outcome_read": true
   },
-  "protocol_version": "gjp-brier-monitor-protocol-v1",
+  "protocol_amendments": [
+    {
+      "data_access_before_amendment": "structural timestamp audit only; no forecast-to-outcome score, posterior, boundary, or result was computed",
+      "discovery": "200 of 382 selected questions have date_closed earlier than date_suspend; 3987 option-a forecast rows fall at or after date_closed but before date_suspend; 5442 selected option-a rows predate date_start; IFPs 5008-0 and 5009-0 have no legal forecast after applying the amended window",
+      "id": "gjp-temporal-window-amendment-2026-08-28",
+      "reason": "the original date_suspend-only rule did not establish that every input was emitted while the question was open",
+      "replacement_rule": "date_start <= forecast timestamp < min(date_suspend, start-of-date_closed)",
+      "result_existed_before_amendment": false
+    },
+    {
+      "data_access_before_amendment": "structural and implementation audit only; no monitor score, boundary, or result was computed",
+      "discovery": "the ideal exponential-weights posterior is transcendental while the replay contract requires an exact rational theorem input",
+      "id": "gjp-rational-posterior-amendment-2026-08-28",
+      "reason": "the original protocol specified no deterministic map from the ideal Gibbs weights to an exact probability mass function",
+      "replacement_rule": "compute ideal weights with Decimal precision 80 and ROUND_HALF_EVEN, then quantize to the 10^15 simplex by the largest-remainder rule with model-id ties",
+      "result_existed_before_amendment": false
+    }
+  ],
+  "protocol_version": "gjp-brier-monitor-protocol-v1.1",
   "quantization": {
     "denominator": 1000000,
     "loss_denominator": 1000000000000,

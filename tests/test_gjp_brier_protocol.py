@@ -101,6 +101,57 @@ def test_a_dropped_leakage_test_is_refused(tmp_path: Path) -> None:
     assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
 
 
+def test_date_suspend_only_cutoff_is_refused(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["prediction_before_outcome"]["effective_cutoff_formula"] = "date_suspend"
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_pre_start_forecasts_cannot_be_admitted(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["prediction_before_outcome"]["rule"] = (
+            "every consumed forecast timestamp is strictly less than effective_cutoff"
+        )
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_unknown_forecast_event_policy_is_pinned(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["prediction_before_outcome"]["survey_forecast_event_types"]["allowed"] = [0, 1]
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_missing_cutoff_amendment_is_refused(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["protocol_amendments"] = []
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_amendment_must_precede_numerical_results(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["protocol_amendments"][0]["result_existed_before_amendment"] = True
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_rational_posterior_grid_is_pinned(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["posterior_rule"]["quantization_denominator"] = 10**12
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
+def test_eligible_count_must_partition_candidates(tmp_path: Path) -> None:
+    def mutate(protocol: dict) -> None:
+        protocol["eligibility_after_temporal_amendment"]["included_count"] = 382
+
+    assert checker.main(["--protocol", str(_mutated(tmp_path, mutate))]) == 1
+
+
 def test_a_non_original_access_route_is_refused(tmp_path: Path) -> None:
     def mutate(protocol: dict) -> None:
         protocol["dataset"]["access_route"] = (

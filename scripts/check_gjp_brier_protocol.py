@@ -24,9 +24,13 @@ DEFAULT_PROTOCOL = (
 )
 
 ARTIFACT_STATUS = "PROSPECTIVE PROTOCOL ONLY - NO STREAM, RECEIPT, OR RESULT"
-PROTOCOL_VERSION = "gjp-brier-monitor-protocol-v1"
+PROTOCOL_VERSION = "gjp-brier-monitor-protocol-v1.1"
 SCHEMA_VERSION = "formalslt.brier-monitor.realdata-preregistration.v1"
 PERSISTENT_ID = "doi:10.7910/DVN/BPCDH5"
+SAFETY_AMENDMENT_IDS = [
+    "gjp-temporal-window-amendment-2026-08-28",
+    "gjp-rational-posterior-amendment-2026-08-28",
+]
 MD5_PATTERN = re.compile(r"\A[0-9a-f]{32}\Z")
 
 EXPECTED_ROUNDING = {
@@ -142,8 +146,8 @@ def check_dataset(protocol: dict[str, Any]) -> None:
     if "format=original" not in dataset["access_route"]:
         raise ProtocolError("dataset.access_route must request the original file bytes")
     files = _array(dataset["files"], "dataset.files")
-    if len(files) != 5:
-        raise ProtocolError("dataset.files must pin exactly five files")
+    if len(files) != 6:
+        raise ProtocolError("dataset.files must pin exactly six files")
     seen_ids: set[int] = set()
     seen_names: set[str] = set()
     for index, entry in enumerate(files):
@@ -164,6 +168,8 @@ def check_dataset(protocol: dict[str, Any]) -> None:
         raise ProtocolError("dataset.files must pin the questions and outcomes file")
     if sum(1 for row in files if row["role"] == "individual_forecasts") != 4:
         raise ProtocolError("dataset.files must pin four individual-forecast files")
+    if sum(1 for row in files if row["role"] == "survey_forecast_codebook") != 1:
+        raise ProtocolError("dataset.files must pin the survey forecast codebook")
 
 
 def check_split(protocol: dict[str, Any]) -> int:
@@ -183,11 +189,27 @@ def check_split(protocol: dict[str, Any]) -> int:
     split = _object(protocol["chronological_split"], "chronological_split")
     if set(split) != {"train", "calibration", "monitor"}:
         raise ProtocolError("chronological_split must declare train, calibration, and monitor")
+    eligibility = _object(
+        protocol["eligibility_after_temporal_amendment"],
+        "eligibility_after_temporal_amendment",
+    )
+    if eligibility["candidate_count"] != total:
+        raise ProtocolError("eligibility candidate count must match the disclosed question count")
+    excluded = _array(eligibility["excluded_ifp_ids"], "excluded_ifp_ids")
+    if len(excluded) != eligibility["excluded_no_eligible_forecast_count"]:
+        raise ProtocolError("excluded IFP ids must match the no-eligible-forecast count")
+    if eligibility["included_count"] + len(excluded) != total:
+        raise ProtocolError("included and excluded question counts must partition the candidates")
     counted = sum(_object(split[name], name)["expected_count"] for name in split)
-    if counted != total:
+    if counted != eligibility["included_count"]:
         raise ProtocolError(
-            f"split expected counts sum to {counted}, not the disclosed {total} questions"
+            f"split expected counts sum to {counted}, not the eligible "
+            f"{eligibility['included_count']} questions"
         )
+    if eligibility["split_counts"] != {
+        name: split[name]["expected_count"] for name in ("calibration", "monitor", "train")
+    }:
+        raise ProtocolError("eligibility split counts must match the chronological split")
     if split["train"]["date_closed_through"] >= split["calibration"]["date_closed_from"]:
         raise ProtocolError("train and calibration windows overlap")
     if split["calibration"]["date_closed_through"] >= split["monitor"]["date_closed_from"]:
@@ -216,6 +238,19 @@ def check_catalog(protocol: dict[str, Any]) -> None:
         raise ProtocolError("the posterior must be frozen before the monitor split")
     _exact(posterior["computed_on"], "calibration split only", "posterior_rule.computed_on")
     _fraction(posterior["learning_rate_eta"], "posterior_rule.learning_rate_eta")
+    _exact(posterior["decimal_precision"], 80, "posterior_rule.decimal_precision")
+    _exact(
+        posterior["decimal_rounding"],
+        "ROUND_HALF_EVEN",
+        "posterior_rule.decimal_rounding",
+    )
+    _exact(
+        posterior["quantization_denominator"],
+        10**15,
+        "posterior_rule.quantization_denominator",
+    )
+    if "largest-remainder" not in posterior["quantization_rule"]:
+        raise ProtocolError("the posterior must use the pinned largest-remainder quantization")
 
 
 def check_quantization(protocol: dict[str, Any]) -> None:
@@ -298,6 +333,62 @@ def check_leakage_tests(protocol: dict[str, Any]) -> None:
     for test in tests:
         if not str(test["fails_when"]).strip():
             raise ProtocolError(f"leakage test {test['id']} must state its failure condition")
+    timestamp_test = next(test for test in tests if test["id"] == "timestamp_assertion")
+    if "effective_cutoff" not in timestamp_test["fails_when"]:
+        raise ProtocolError("the timestamp assertion must enforce the amended effective cutoff")
+
+
+def check_prediction_cutoff(protocol: dict[str, Any]) -> None:
+    before = _object(protocol["prediction_before_outcome"], "prediction_before_outcome")
+    _exact(
+        before["effective_cutoff_formula"],
+        "min(date_suspend, start-of-date_closed)",
+        "prediction_before_outcome.effective_cutoff_formula",
+    )
+    _exact(
+        before["forecast_window_fields"],
+        ["date_start", "date_suspend", "date_closed"],
+        "prediction_before_outcome.forecast_window_fields",
+    )
+    if before["receipt_records_source_window"] is not True:
+        raise ProtocolError("the receipt must record date_start, date_suspend, and date_closed")
+    if before["reduction_function_accepts_outcome_argument"] is not False:
+        raise ProtocolError("the reduction function must not accept an outcome argument")
+    if before["receipt_records_per_observation_max_consumed_timestamp"] is not True:
+        raise ProtocolError("the receipt must record the maximum consumed timestamp per observation")
+    _exact(
+        before["rule"],
+        "every consumed forecast timestamp satisfies date_start <= timestamp < effective_cutoff",
+        "prediction_before_outcome.rule",
+    )
+    event_types = _object(
+        before["survey_forecast_event_types"],
+        "prediction_before_outcome.survey_forecast_event_types",
+    )
+    _exact(event_types["allowed"], [0, 1, 2, 4], "survey_forecast_event_types.allowed")
+    if "fail closed" not in event_types["policy"]:
+        raise ProtocolError("unknown survey forecast event types must fail closed")
+    _exact(
+        before["same_user_last_event_tie_break"],
+        ["timestamp", "numeric forecast_id", "source year", "source line"],
+        "prediction_before_outcome.same_user_last_event_tie_break",
+    )
+
+    amendments = _array(protocol["protocol_amendments"], "protocol_amendments")
+    if len(amendments) != len(SAFETY_AMENDMENT_IDS):
+        raise ProtocolError("the protocol must carry both prospective safety amendments")
+    for index, expected_id in enumerate(SAFETY_AMENDMENT_IDS):
+        amendment = _object(amendments[index], f"protocol_amendments[{index}]")
+        _exact(amendment["id"], expected_id, f"protocol_amendments[{index}].id")
+        if amendment["result_existed_before_amendment"] is not False:
+            raise ProtocolError("every safety amendment must precede every numerical result")
+    _exact(
+        amendments[0]["replacement_rule"],
+        "date_start <= forecast timestamp < min(date_suspend, start-of-date_closed)",
+        "protocol_amendments[0].replacement_rule",
+    )
+    if "10^15 simplex" not in amendments[1]["replacement_rule"]:
+        raise ProtocolError("the posterior amendment must pin the rational simplex rule")
 
 
 def validate(path: Path) -> list[tuple[int, int]]:
@@ -331,12 +422,7 @@ def validate(path: Path) -> list[tuple[int, int]]:
     check_lean_binding(protocol)
     check_fresh_outputs(protocol)
     check_leakage_tests(protocol)
-
-    before = _object(protocol["prediction_before_outcome"], "prediction_before_outcome")
-    if before["reduction_function_accepts_outcome_argument"] is not False:
-        raise ProtocolError("the reduction function must not accept an outcome argument")
-    if before["receipt_records_per_observation_max_consumed_timestamp"] is not True:
-        raise ProtocolError("the receipt must record the maximum consumed timestamp per observation")
+    check_prediction_cutoff(protocol)
     return grid
 
 

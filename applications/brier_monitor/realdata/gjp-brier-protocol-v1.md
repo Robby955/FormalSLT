@@ -1,4 +1,4 @@
-# Prospective real-data Brier monitor protocol v1
+# Prospective real-data Brier monitor protocol v1.1
 
 Status: **PROSPECTIVE PROTOCOL ONLY. NO STREAM, RECEIPT, OR RESULT.**
 
@@ -27,11 +27,12 @@ Estimation program.
 - Persistent identifier: `doi:10.7910/DVN/BPCDH5`
 - Version: `1.0`, `versionState` `RELEASED`, released `2016-11-11T18:47:06Z`
 - Terms: CC0 1.0 (`rightsIdentifier` `CC0-1.0` in the Dataverse record)
-- Two files are used, pinned by the repository's own published MD5:
+- Six files are used, pinned by the repository's own published MD5:
 
   | file | Dataverse id | MD5 |
   | --- | --- | --- |
   | `ifps.csv` | 2917330 | `5c703d02284f8b563399967c554f1417` |
+  | `readme.txt` | 2917350 | `304832fa3e6b06861897f31eda69ba1f` |
   | `survey_fcasts.yr1.tab` | 2917351 | `091ae92c90ec426772ea784a906d7ddb` |
   | `survey_fcasts.yr2.tab` | 2917352 | `528d1bfbff2ab8da6ba2b599b3b80e26` |
   | `survey_fcasts.yr3.tab` | 2917353 | `e5837d12b2a17d3ffd0f0bf1f46e61b0` |
@@ -80,6 +81,39 @@ The global marginal is therefore not blind. The constant baseline below is
 consequently defined to read its probability from the train split at run time
 rather than from any number appearing in this document.
 
+## Prospective safety amendments
+
+No score, posterior, boundary, or monitor result existed when these amendments
+were made. A structural pass over the pinned timestamps found that the original
+date-suspension rule was insufficient:
+
+- 200 of the 382 candidate questions have `date_closed < date_suspend`;
+- 3,987 option-`a` rows occur at or after closure but before suspension;
+- 5,442 option-`a` rows predate the recorded question start;
+- `5008-0` and `5009-0` have no forecast inside the corrected window.
+
+The admissible window is therefore fixed to
+
+```text
+date_start <= timestamp < min(date_suspend, start-of-date_closed).
+```
+
+`date_closed` is day-only in these rows, so `start-of-date_closed` means
+midnight at the start of that recorded date in the same naive source clock.
+This deliberately excludes all forecasts from the closure date when no closure
+time is available. The two questions with no admissible forecast are excluded
+by identifier, leaving 380 complete cases. This is a safety correction based
+only on timestamp structure, not model performance.
+
+The original Gibbs-posterior formula was also incomplete as an exact replay
+contract: exponential weights are transcendental, but the Lean input must be a
+rational probability mass function. The certified posterior is now the
+deterministic `10^15`-simplex quantization of the ideal Gibbs weights. The ideal
+weights are evaluated with decimal precision 80 and `ROUND_HALF_EVEN`; scaled
+weights are floored and the remaining integer units go to descending
+fractional remainders, with model identifiers breaking ties. The resulting
+rational posterior, not the ideal decimal diagnostic, is the theorem input.
+
 ## Monitored unit and chronological split
 
 One observation per binary question with a resolved outcome, ordered by
@@ -94,53 +128,60 @@ predictions and destroy the one-step-ahead structure the monitor assumes.
 | --- | --- | --- |
 | train | through 2012-12-31 | 122 |
 | calibration | 2013-01-01 through 2013-12-31 | 83 |
-| monitor | 2014-01-01 onward | 177 |
+| monitor | 2014-01-01 onward | 175 |
 
 Boundaries are calendar-year cuts on the resolution date, chosen before any
-forecast file was joined. The monitor split is the tournament's final stretch,
-where the forecaster pool is largest and most experienced, so a failure there
-is a failure of the method rather than of a thin early panel.
+forecast file was joined. The two timestamp-ineligible monitor questions are
+excluded by the prospective amendment above; train and calibration remain 122
+and 83. The monitor split is the tournament's final stretch, where the
+forecaster pool is largest and most experienced, so a failure there is a
+failure of the method rather than of a thin early panel.
 
 ## Prediction before outcome
 
-Every model reads only rows of `survey_fcasts.*` whose `timestamp` is strictly
-earlier than the question's `date_suspend`, and every outcome is dated
-`date_closed >= date_suspend`. Two enforcements:
+Every model reads only rows of `survey_fcasts.*` satisfying
+`date_start <= timestamp < effective_cutoff`, where `effective_cutoff` is the
+earlier of `date_suspend` and conservative closure midnight. Two enforcements:
 
 1. The stream builder records, per observation, the maximum forecast
-   `timestamp` it consumed. The receipt carries that value. Any observation
-   whose recorded maximum is not strictly less than `date_suspend` aborts the
-   run.
+   `timestamp` it consumed together with `date_start`, `date_suspend`, and
+   `date_closed`. Any observation with a consumed row outside the amended
+   interval aborts the run.
 2. The builder is given the outcome column only after the forecast table has
    been reduced to one probability per model per question. The reduction
    function's signature admits no outcome argument.
 
-Both are auditable after the fact from the receipt alone, because the receipt
-carries the per-observation maximum consumed timestamp beside `date_suspend`.
+Both are auditable after the fact from the receipt alone. Forecast event types
+`0` (new), `1` (update), `2` (affirm), and `4` (withdraw) are all retained as
+emitted values, following the pinned survey `readme.txt`; any unknown type
+aborts the replay. Same-user events are ordered by timestamp, numeric
+`forecast_id`, source year, and source line.
 
 ## Predeclared model catalog and posterior
 
-Four models, all reading only pre-`date_suspend` forecasts of option `a`:
+Four models, all reading only amended-window forecasts of option `a`:
 
 | id | definition |
 | --- | --- |
 | `constant-train-baserate` | the train-split outcome frequency, quantized |
-| `first-week-mean` | mean forecast over `[date_start, date_start + 7 days]` |
-| `final-consensus-median` | median over forecasters of each forecaster's last forecast |
+| `first-week-mean` | row-level mean of recognized events in `[date_start, min(date_start + 7 days, effective_cutoff))` |
+| `final-consensus-median` | median over users of each user's last emitted value before `effective_cutoff`; withdrawals retain their emitted last-standing probability |
 | `extremized-final-consensus` | logit extremization of the previous with exponent 2, clipped to `[1/100, 99/100]` |
 
 The extremization exponent is fixed at 2 and is not tuned. Prior `pi` is
 uniform, `1/4` on each model.
 
-Posterior `rho` is computed on the calibration split only, by exponential
+An ideal posterior is computed on the calibration split only, by exponential
 weights with learning rate `eta = 1`:
 
 ```text
-rho(m)  proportional to  pi(m) * exp( - n_cal * empiricalBrier_cal(m) )
+rho_ideal(m)  proportional to  pi(m) * exp( - n_cal * empiricalBrier_cal(m) )
 ```
 
-`rho` is then frozen and used unchanged across the entire monitor split, so
-`klDiv rho pi` is a constant fixed before any monitored observation.
+The largest-remainder rule above converts `rho_ideal` to the exact rational
+posterior `rho`. `rho` is then frozen and used unchanged across the entire
+monitor split, so `klDiv rho pi` is a constant fixed before any monitored
+observation.
 
 ## Rational quantization
 
@@ -259,7 +300,7 @@ python3 scripts/fetch_gjp_brier_inputs.py --out <dir>
 
 What must match bit for bit:
 
-- the five downloaded files, by the MD5 values tabled above, fetched with
+- the six downloaded files, by the MD5 values tabled above, fetched with
   `?format=original`;
 - the canonical JSON bytes of the built stream file, and its SHA-256;
 - the canonical JSON bytes of the receipt, and its SHA-256;
@@ -274,9 +315,9 @@ rational string.
 Each test states the condition under which it fails, and the pipeline is
 considered broken unless every one of them behaves as written.
 
-1. **Timestamp assertion.** For every observation, the recorded maximum
-   consumed forecast `timestamp` is strictly less than `date_suspend`. Fails
-   closed on the first violation.
+1. **Timestamp assertion.** For every observation, every consumed forecast
+   satisfies `date_start <= timestamp < effective_cutoff`. Fails closed on the
+   first violation.
 2. **Deliberately leaked tripwire.** A model `oracle-leak` defined as `99/100`
    when the outcome is `a` and `1/100` otherwise is submitted to the same
    ingestion path. The ingestion must **refuse** it, because building it
@@ -284,9 +325,9 @@ considered broken unless every one of them behaves as written.
    accept. The test asserts the refusal fires. If the tripwire is instead
    scored and merely reports a small risk, the ingestion boundary is not real.
 3. **Future-feature ablation.** Rebuild `first-week-mean` with windows of 1, 3,
-   7, and 14 days. The reported risk must be non-increasing in the window
-   length only up to sampling noise; a window that *decreases* risk sharply
-   past `date_suspend` indicates the window clamp is not applied.
+   7, and 14 days. Every ablation remains clamped by the same start,
+   suspension, and closure window; consuming a row outside it is a hard
+   failure.
 4. **Shuffled-time control.** Permute the monitor stream order, holding
    `(p_t, y_t)` pairs together, over 200 permutations. The empirical suffix
    risk is permutation invariant and must be identical to the last rational
@@ -299,8 +340,8 @@ considered broken unless every one of them behaves as written.
 
 ## When this protocol produces a misleading result
 
-- **Vacuity.** At `n = 177` the confidence log term dominates. A back of the
-  envelope with `n = 177`, `w = 0`, `KL <= log 4`, `a = 0` puts the excess near
+- **Vacuity.** At `n = 175` the confidence log term dominates. A back of the
+  envelope with `n = 175`, `w = 0`, `KL <= log 4`, `a = 0` puts the excess near
   `0.1`, against a base-rate Brier score near `0.19`. The endpoint may well
   land above the base rate. That is a real negative result about sample size,
   it is predeclared here, and no re-tuning of `delta`, the wake grid, the
@@ -311,8 +352,10 @@ considered broken unless every one of them behaves as written.
   population risk, and not deployment risk. GJP question difficulty drifts
   across the tournament, so the gap is not a formality.
 - **Question selection.** GJP voided and retired questions. The 382 resolved
-  binaries are a selected subset, and a monitor run on them inherits that
-  selection. The receipt records the full inclusion and exclusion counts.
+  binaries are already a selected subset, and the temporal amendment excludes
+  two more questions with no legal forecast. The 380-question result does not
+  generalize to every question the tournament posed. The receipt records both
+  selection stages.
 - **Catalog contamination.** `final-consensus-median` and its extremization
   use the same crowd whose behavior the tournament's own feedback shaped. The
   bound stays valid for the encountered suffix regardless, but a favorable
