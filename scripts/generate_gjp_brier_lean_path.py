@@ -127,12 +127,14 @@ def render_base() -> str:
     return "\n".join(lines)
 
 
-def render_model(data: dict[str, object], model: str) -> str:
+def render_model(
+    data: dict[str, object], model: str, import_name: str
+) -> str:
     model_name, _pattern = MODEL_DECLARATIONS[model]
     losses = data["losses"][model]
     prefixes = data["prefixes"][model]
     quadratic_prefixes = data["quadratic_prefixes"][model]
-    lines = _header(BASE_MODULE, f"Generated GJP path calculation: {model}")
+    lines = _header(import_name, f"Generated GJP path calculation: {model}")
 
     for index, loss in enumerate(losses):
         lines.extend(
@@ -263,11 +265,14 @@ def outputs(stream_raw: bytes, receipt_raw: bytes, out_dir: Path) -> dict[Path, 
         out_dir / f"{BASE_MODULE}.lean": render_base(),
         out_dir / f"{ROOT_MODULE}.lean": render_root(),
     }
+    previous_module = BASE_MODULE
     for model in MODEL_IDS:
         name = MODEL_DECLARATIONS[model][0]
-        result[out_dir / f"{ROOT_MODULE}{_camel(name)}.lean"] = render_model(
-            data, model
+        module_name = f"{ROOT_MODULE}{_camel(name)}"
+        result[out_dir / f"{module_name}.lean"] = render_model(
+            data, model, previous_module
         )
+        previous_module = module_name
     return result
 
 

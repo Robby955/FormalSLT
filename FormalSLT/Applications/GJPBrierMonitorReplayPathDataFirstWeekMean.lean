@@ -4,7 +4,7 @@ Released under MIT license as described in the file LICENSE.
 Authors: Robby Sneiderman
 -/
 
-import FormalSLT.Applications.GJPBrierMonitorReplayPathDataBase
+import FormalSLT.Applications.GJPBrierMonitorReplayPathDataConstantTrainBaseRate
 import Mathlib.Tactic
 
 /-!
