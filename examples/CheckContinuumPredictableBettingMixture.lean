@@ -1,0 +1,45 @@
+import FormalSLT.AnytimeValid.ContinuumPredictableBettingMixture
+
+/-!
+# Prior-mixture betting master checks
+
+The checked surface is the arbitrary-measurable-class analogue of the finite
+wealth-weighted master.  The competition statement charges the log prior mass
+of a measurable set of strategies, which remains informative for nonatomic
+priors even though singleton strategies then have zero mass.  Nothing here is
+executable and nothing here is a risk statement.
+-/
+
+open FormalSLT.AnytimeValid
+
+#check continuumExpertMixtureWealth
+#check continuumWealthWeightedBetNumerator
+#check continuumWealthWeightedBet
+#check continuumExpertMixtureWealth_zero
+#check continuumExpertMixtureWealth_succ
+#check continuumAggregateWealth_eq_continuumExpertMixtureWealth
+#check continuumExpertMixtureWealth_competes_of_priorMass
+#check continuumExpertMixtureWealth_pos_of_priorMass
+#check continuumExpertMixtureWealth_logWealth_regret_le_neg_log_priorMass
+#check continuumMaster_logWealth_regret_le_neg_log_priorMass
+#check continuumWealthWeightedBet_mem_Icc
+#check continuumMasterWealth_eq_bettingWealthProcess
+#check stronglyMeasurable_filtration_prod_algebraicBettingWealth
+#check continuumWealthWeightedBet_stronglyAdapted
+#check continuumWealthWeightedBet_stronglyAdapted_of_incrementAdapted
+
+#check (continuumMaster_logWealth_regret_le_neg_log_priorMass
+  (Kappa := Real) (Omega := Nat -> Real))
+
+#print axioms continuumExpertMixtureWealth_zero
+#print axioms continuumAggregateWealth_eq_continuumExpertMixtureWealth
+#print axioms continuumExpertMixtureWealth_succ
+#print axioms continuumExpertMixtureWealth_competes_of_priorMass
+#print axioms continuumExpertMixtureWealth_pos_of_priorMass
+#print axioms continuumExpertMixtureWealth_logWealth_regret_le_neg_log_priorMass
+#print axioms continuumMaster_logWealth_regret_le_neg_log_priorMass
+#print axioms continuumWealthWeightedBet_mem_Icc
+#print axioms continuumMasterWealth_eq_bettingWealthProcess
+#print axioms stronglyMeasurable_filtration_prod_algebraicBettingWealth
+#print axioms continuumWealthWeightedBet_stronglyAdapted
+#print axioms continuumWealthWeightedBet_stronglyAdapted_of_incrementAdapted

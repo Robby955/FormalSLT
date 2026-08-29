@@ -17,7 +17,12 @@ import FormalSLT.AnytimeValid.ForwardPredictableTiltEmpiricalBernstein
 import FormalSLT.AnytimeValid.EProcess
 import FormalSLT.AnytimeValid.BettingCS
 import FormalSLT.AnytimeValid.ComputablePredictableBettingMixture
+import FormalSLT.AnytimeValid.ContinuumPredictableBettingMixture
+import FormalSLT.AnytimeValid.SingularFractionGeometry
+import FormalSLT.AnytimeValid.SingularFractionBesselMixture
+import FormalSLT.AnytimeValid.SingularFractionObservableLIL
 import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture
+import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingPosterior
 import FormalSLT.AnytimeValid.CountableSleepingEProcessMixture
 import FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture
 import FormalSLT.AnytimeValid.SelectionCost
@@ -36,9 +41,9 @@ import FormalSLT.PACBayes.IIDContinuousGaussian
 # Stable sequential-inference imports
 
 This declaration-free umbrella re-exports Ville bounds, e-processes, betting
-processes, exact rational wealth-weighted finite and countable sleeping-expert
-predictable-strategy mixtures, exact polynomial-tail mixtures of arbitrary
-sleeping e-processes, finite-strategy/countable-wake masters, confidence
+processes, wealth-weighted finite and continuum predictable-strategy masters,
+exact rational countable sleeping-expert mixtures, exact polynomial-tail
+mixtures of arbitrary sleeping e-processes, finite-strategy/countable-wake masters, confidence
 sequences, mixtures, the predictable-residual
 forward process, predictable-tilt empirical-Bernstein e-processes, the hybrid-Bessel
 lower envelope, adaptive-selection and countable allocation cost guardrails,

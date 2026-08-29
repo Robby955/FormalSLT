@@ -1,0 +1,30 @@
+import FormalSLT.AnytimeValid.SingularFractionGeometry
+
+open FormalSLT.AnytimeValid
+
+#check singularFraction
+#check singularFractionLogScale
+#check singularFractionWindow
+#check measurableSet_singularFractionWindow
+#check singularFraction_of_pos
+#check singularFraction_of_nonpos
+#check measurable_singularFraction
+#check singularFraction_nonneg
+#check singularFraction_monotone
+#check singularFraction_le_exp_neg_one_of_mem_unit
+#check singularFraction_lt_one_of_mem_unit
+#check one_le_singularFractionLogScale
+#check singularFractionWindow_subset_unit
+#check singularFractionWindow_nonempty
+#check singularFractionWindow_maps
+#check singularFractionWindow_uniformTiltPrior_real
+#check singularFractionWindow_uniformTiltPrior_real_pos
+#check forwardEmpiricalBernsteinPsi_le_sq_of_le_exp_neg_one
+
+#print axioms singularFractionWindow_maps
+#print axioms singularFractionWindow_uniformTiltPrior_real
+#print axioms singularFraction_of_pos
+#print axioms singularFraction_of_nonpos
+#print axioms singularFraction_nonneg
+#print axioms singularFraction_lt_one_of_mem_unit
+#print axioms forwardEmpiricalBernsteinPsi_le_sq_of_le_exp_neg_one

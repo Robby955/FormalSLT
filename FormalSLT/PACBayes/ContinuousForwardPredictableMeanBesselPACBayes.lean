@@ -227,19 +227,7 @@ theorem forwardHybridBesselPenalty_nonneg_of_unit
     (x : Nat -> Real) {n : Nat} (hn : 2 <= n)
     (_hx : ∀ k < n, x k ∈ Set.Icc (0 : Real) 1) :
     0 <= forwardHybridBesselPenalty x n := by
-  have hq : 0 <= forwardBesselQ x n := forwardBesselQ_nonneg x n
-  unfold forwardHybridBesselPenalty
-  apply le_min
-  · nlinarith
-  · have hden : 0 < (n : Real) - 1 := by
-      have : (1 : Real) < (n : Real) := by exact_mod_cast (show 1 < n by omega)
-      linarith
-    have hratio : 0 <= (n : Real) / ((n : Real) - 1) :=
-      div_nonneg (Nat.cast_nonneg n) hden.le
-    have hharm : 0 <= ((harmonic (n - 2) : Rat) : Real) := by
-      unfold harmonic
-      positivity
-    positivity
+  exact FormalSLT.AnytimeValid.forwardHybridBesselPenalty_nonneg_of_two x hn
 
 omit [MeasurableSpace Theta] [Fintype Tau] [DecidableEq Tau]
   [Nonempty Tau] in

@@ -1,0 +1,33 @@
+import FormalSLT.PACBayes.ContinuousSingularFractionBesselPACBayes
+
+/-!
+# Continuous-posterior singular-fraction LIL checks
+
+The endpoint fixes no finite hypothesis-space structure.  Its event is chosen
+before the path; the posterior may then be selected from that path, and the
+same event controls every reporting time `n >= 2`.
+-/
+
+open FormalSLT.PACBayes.ContinuousSingularFractionBesselPACBayes
+
+#check continuousSingularFractionBesselMasterProcess
+#check continuousSingularFractionBesselExceptionalEvent
+#check continuousSingularFractionBesselBoundary
+#check continuousSingularFractionBesselEffectiveConfidence
+#check continuousSingularFractionBesselEffectiveConfidence_pos
+#check continuousSingularFractionBesselEffectiveConfidence_le_one
+#check continuousSingularFractionBessel_log_effectiveConfidence
+#check continuousSingularFractionBesselMasterProcess_eProcess
+#check continuousSingularFractionBesselExceptionalEvent_mass_le_delta
+#check continuousSingularFractionBessel_boundaryFailure_mem_exceptionalEvent
+#check continuousSingularFractionBessel_allPosteriors_allFractions_of_not_mem
+#check continuousSingularFractionBessel_allPosteriors_observableLIL_of_not_mem
+#check exists_continuousSingularFractionBesselPACBayesLIL_event
+
+#check (exists_continuousSingularFractionBesselPACBayesLIL_event
+  (Theta := Real))
+
+#print axioms continuousSingularFractionBesselMasterProcess_eProcess
+#print axioms continuousSingularFractionBessel_boundaryFailure_mem_exceptionalEvent
+#print axioms continuousSingularFractionBessel_allPosteriors_observableLIL_of_not_mem
+#print axioms exists_continuousSingularFractionBesselPACBayesLIL_event

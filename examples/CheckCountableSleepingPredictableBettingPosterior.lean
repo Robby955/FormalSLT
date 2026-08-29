@@ -1,0 +1,42 @@
+import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingPosterior
+
+/-!
+# Countable sleeping-strategy posterior receipt
+
+This checker records the finite full-support compression, its exact wealth
+moment, the operational posterior identity, and the KL strategy-selection
+inequality. The concrete zero-time case also checks that the compressed prior
+is usable without supplying any data or strategy witness.
+-/
+
+open FormalSLT.AnytimeValid
+open FormalSLT.PACBayesKL
+
+example : IsFullSupportPMF (sleepingActiveDyadicPrior 0) :=
+  sleepingActiveDyadicPrior_isFullSupportPMF 0
+
+#check sleepingActiveDyadicPrior_isFullSupportPMF
+#check sum_range_dyadicExpertWeight_add_tail
+#check liftSleepingActivePosterior_isPMF
+#check posteriorAverage_liftSleepingActivePosterior
+#check klDiv_liftSleepingActivePosterior
+#check sleepingActivePriorMoment_eq_countableSleepingMixtureWealth
+#check countableSleepingMasterPosterior_isPMF
+#check countableSleepingMasterBet_eq_posteriorAverage
+#check countableSleepingStrategyPosterior_logWealth_le
+#check countableSleepingStrategyPosterior_logWealth_le_explicit
+#check countableSleepingStrategyPosteriorGoodEvent_spec
+#check exists_countableSleepingStrategyPosteriorGoodEvent
+
+#print axioms sleepingActiveDyadicPrior_isFullSupportPMF
+#print axioms sum_range_dyadicExpertWeight_add_tail
+#print axioms liftSleepingActivePosterior_isPMF
+#print axioms posteriorAverage_liftSleepingActivePosterior
+#print axioms klDiv_liftSleepingActivePosterior
+#print axioms sleepingActivePriorMoment_eq_countableSleepingMixtureWealth
+#print axioms countableSleepingMasterPosterior_isPMF
+#print axioms countableSleepingMasterBet_eq_posteriorAverage
+#print axioms countableSleepingStrategyPosterior_logWealth_le
+#print axioms countableSleepingStrategyPosterior_logWealth_le_explicit
+#print axioms countableSleepingStrategyPosteriorGoodEvent_spec
+#print axioms exists_countableSleepingStrategyPosteriorGoodEvent
