@@ -30,6 +30,7 @@ import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
 import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 import FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt
 import FormalSLT.Applications.GJPBrierMonitorReplayReceipt
+import FormalSLT.Applications.GJPBrierMonitorReplayPath
 
 /-!
 # FormalSLT applications
@@ -97,10 +98,12 @@ and bounds the exact finite-prefix selector conditionally on the theorem's
 good-event inequality. It does not prove named-path good-event membership or
 make a real-data claim.
 
-`GJPBrierMonitorReplayReceipt` checks the posterior and exact endpoint
-arithmetic for a hash-bound 175-observation replay. A reproducible generator
-extracts and recomputes the rational summaries; Lean begins at those generated
-inputs and does not parse the source JSON. The preregistered replay status
-remains `FAIL`, and the conditional endpoint is monitored-prefix risk rather
-than future, population, stationary, or deployment risk.
+`GJPBrierMonitorReplayReceipt` checks the posterior and endpoint arithmetic for
+a hash-bound 175-observation replay. `GJPBrierMonitorReplayPath` additionally
+reconstructs every Brier loss and forward-predictor residual, instantiates the
+finite trajectory theorem, and names an event with outer failure mass at most
+`1 / 160` for every supplied history-dependent binary kernel. It does not
+assert that the realized path belongs to that event. The preregistered replay
+status remains `FAIL`, and the target is monitored-prefix conditional risk,
+not future, population, stationary, or deployment risk.
 -/
