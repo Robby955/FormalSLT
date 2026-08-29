@@ -9,6 +9,7 @@ import pytest
 
 from scripts import build_gjp_brier_replay as replay
 from scripts import generate_gjp_brier_lean_data as generator
+from scripts import generate_gjp_brier_lean_path as path_generator
 
 
 def _rational(value: Fraction) -> str:
@@ -87,8 +88,25 @@ def test_compact_generator_recomputes_all_monitor_summaries() -> None:
         "abbrev suffixPredictorQuadraticVariation : Rat :=\n"
         "  ((193 : Rat) / 1024)"
     ) in rendered
-    assert "abbrev outcomeQ" not in rendered
-    assert len(rendered.splitlines()) < 100
+    assert "abbrev monitorOutcomes : Array Bool" in rendered
+    assert "abbrev monitorPredictionArrayQ : Model → Array Rat" in rendered
+    assert "abbrev monitorBrierLossArrayQ : Model → Array Rat" in rendered
+    assert len(rendered.splitlines()) < 1800
+
+
+def test_path_generator_splits_kernel_calculations_by_model(tmp_path) -> None:
+    stream_raw, receipt_raw = _fixture()
+    rendered = path_generator.outputs(stream_raw, receipt_raw, tmp_path)
+
+    assert len(rendered) == 6
+    root = rendered[tmp_path / "GJPBrierMonitorReplayPathData.lean"]
+    constant = rendered[
+        tmp_path / "GJPBrierMonitorReplayPathDataConstantTrainBaseRate.lean"
+    ]
+    assert "GJPBrierMonitorReplayPathDataConstantTrainBaseRate" in root
+    assert "observedConstantTrainBaseRateLossPrefix175" in constant
+    assert "observedConstantTrainBaseRateQuadraticPrefix175" in constant
+    assert "native_decide" not in constant
 
 
 def test_generator_refuses_unbound_receipt() -> None:
