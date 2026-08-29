@@ -1,0 +1,18 @@
+import FormalSLT.Applications.GJPBrierMonitorReplayPath
+
+open FormalSLT.Applications.GJPBrierMonitorReplayPath
+
+#check replay_empiricalPrequentialRisk_eq
+#check replay_suffixPredictorQuadraticVariation_eq
+#check replay_geometricAtomBoundary_eq_summary
+#check replay_selectedBoundary_le_summary
+#check replayRiskEvent
+#check replayRiskEvent_failureMass_le
+#check replayPath_conditionalRisk_lt_oneHundredFortyEight_thousandths
+
+#print axioms replay_empiricalPrequentialRisk_eq
+#print axioms replay_suffixPredictorQuadraticVariation_eq
+#print axioms replay_geometricAtomBoundary_eq_summary
+#print axioms replay_selectedBoundary_le_summary
+#print axioms replayRiskEvent_failureMass_le
+#print axioms replayPath_conditionalRisk_lt_oneHundredFortyEight_thousandths

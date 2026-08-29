@@ -58,6 +58,10 @@ def _rat(value: Fraction) -> str:
     return f"(({value.numerator} : Rat) / {value.denominator})"
 
 
+def _bool(value: bool) -> str:
+    return "true" if value else "false"
+
+
 def _require_mapping(value: Any, where: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise LeanDataError(f"{where} must be an object")
@@ -231,8 +235,75 @@ def render(stream_raw: bytes, receipt_raw: bytes) -> str:
         "",
         "abbrev priorQ (_model : Model) : Rat := 1 / 4",
         "",
-        "abbrev posteriorQ : Model → Rat",
+        "/-- Monitor outcome at zero-based replay index. Values outside the",
+        "hash-bound 175-observation prefix default to `false`. -/",
+        "abbrev monitorOutcomes : Array Bool := #[",
     ]
+    for outcome in data["outcomes"]:
+        lines.append(f"  {_bool(outcome)},")
+    lines.extend(
+        [
+            "]",
+            "",
+            "abbrev monitorOutcome (n : Nat) : Bool :=",
+            "  monitorOutcomes.getD n false",
+            "",
+            "/-- Quantized forecast at zero-based replay index. Values outside",
+            "the hash-bound monitor prefix default to zero. -/",
+        ]
+    )
+    for model in MODEL_IDS:
+        lean_name, _pattern = MODEL_DECLARATIONS[model]
+        lines.append(f"abbrev {lean_name}PredictionsQ : Array Rat := #[")
+        for prediction in data["predictions"][model]:
+            lines.append(f"  {_rat(prediction)},")
+        lines.extend(["]", ""])
+    lines.extend(
+        [
+            "abbrev monitorPredictionArrayQ : Model → Array Rat",
+        ]
+    )
+    for model in MODEL_IDS:
+        lean_name, pattern = MODEL_DECLARATIONS[model]
+        lines.append(f"  | ({pattern}) => {lean_name}PredictionsQ")
+    lines.extend(
+        [
+            "",
+            "abbrev monitorPredictionQ (model : Model) (n : Nat) : Rat :=",
+            "  (monitorPredictionArrayQ model).getD n 0",
+            "",
+            "/-- Exact Brier loss at zero-based replay index. -/",
+        ]
+    )
+    for model in MODEL_IDS:
+        lean_name, _pattern = MODEL_DECLARATIONS[model]
+        lines.append(f"abbrev {lean_name}BrierLossesQ : Array Rat := #[")
+        for loss in data["losses"][model]:
+            lines.append(f"  {_rat(loss)},")
+        lines.extend(["]", ""])
+    lines.extend(
+        [
+            "abbrev monitorBrierLossArrayQ : Model → Array Rat",
+        ]
+    )
+    for model in MODEL_IDS:
+        lean_name, pattern = MODEL_DECLARATIONS[model]
+        lines.append(f"  | ({pattern}) => {lean_name}BrierLossesQ")
+    lines.extend(
+        [
+            "",
+            "abbrev monitorBrierLossQ (model : Model) (n : Nat) : Rat :=",
+            "  (monitorBrierLossArrayQ model).getD n 0",
+            "",
+            "/-- Trajectory encoding used by the theorem instance: coordinate",
+            "zero is the initial state and coordinate `k + 1` is monitor outcome `k`. -/",
+            "abbrev replayPath : Nat → Bool",
+            "  | 0 => false",
+            "  | k + 1 => monitorOutcome k",
+            "",
+            "abbrev posteriorQ : Model → Rat",
+        ]
+    )
     for model in MODEL_IDS:
         _lean_name, pattern = MODEL_DECLARATIONS[model]
         lines.append(f"  | ({pattern}) => {_rat(data['posterior'][model])}")
