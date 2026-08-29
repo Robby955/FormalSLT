@@ -374,6 +374,28 @@ def forwardHybridBesselPenalty (x : ℕ → ℝ) (n : ℕ) : ℝ :=
     ((n : ℝ) / ((n : ℝ) - 1) * forwardBesselQ x n +
       (1 : ℝ) / 4 * (1 + ((harmonic (n - 2) : ℚ) : ℝ)))
 
+/-- The hybrid Bessel penalty is nonnegative from time two onward.  This is
+the canonical nonnegativity lemma: it requires no boundedness hypothesis on
+the observations because both branches depend on the nonnegative centered
+sum of squares. -/
+theorem forwardHybridBesselPenalty_nonneg_of_two
+    (x : ℕ → ℝ) {n : ℕ} (hn : 2 ≤ n) :
+    0 ≤ forwardHybridBesselPenalty x n := by
+  have hq : 0 ≤ forwardBesselQ x n := forwardBesselQ_nonneg x n
+  unfold forwardHybridBesselPenalty
+  apply le_min
+  · nlinarith
+  · have hden : 0 < (n : ℝ) - 1 := by
+      have : (1 : ℝ) < (n : ℝ) := by
+        exact_mod_cast (show 1 < n by omega)
+      linarith
+    have hratio : 0 ≤ (n : ℝ) / ((n : ℝ) - 1) :=
+      div_nonneg (Nat.cast_nonneg n) hden.le
+    have hharm : 0 ≤ ((harmonic (n - 2) : ℚ) : ℝ) := by
+      unfold harmonic
+      positivity
+    positivity
+
 /-- The predictable squared-residual penalty is bounded by the hybrid minimum
 of the two valid Bessel envelopes. -/
 theorem forwardPredictableQuadratic_le_hybrid_bessel

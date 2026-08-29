@@ -31,6 +31,7 @@ open FormalSLT.AnytimeValid
 #check (continuumMaster_logWealth_regret_le_neg_log_priorMass
   (Kappa := Real) (Omega := Nat -> Real))
 
+#print axioms continuumExpertMixtureWealth_zero
 #print axioms continuumAggregateWealth_eq_continuumExpertMixtureWealth
 #print axioms continuumExpertMixtureWealth_succ
 #print axioms continuumExpertMixtureWealth_competes_of_priorMass

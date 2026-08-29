@@ -21,6 +21,16 @@ posterior-averaged conditional prefix mean encountered along the monitored
 stream.  It is not a population, future, deployment, or stationary-risk
 statement.  The scalar fraction mixture is not a posterior over arbitrary
 predictable betting strategies, and no such strategy-uniform claim is made.
+
+The two joint-measurability arguments are a deliberate caller interface.
+`hjoint_ambient n` must establish strong measurability of the actual process
+on the ambient product sigma algebra of paths, fractions, and hypotheses;
+`hjoint_filtered n` must establish the corresponding fact using `F n` on the
+path coordinate.  Per-hypothesis adaptedness does not imply either joint fact
+for an arbitrary measurable hypothesis space.  Concrete callers are
+responsible for deriving them from their jointly measurable observation and
+conditional-mean families.  The measurable singular-fraction map is already
+composed into the exact function displayed in both hypotheses.
 -/
 
 open MeasureTheory ProbabilityTheory
@@ -169,7 +179,12 @@ private theorem integrable_continuousSingularFractionBessel_parameter
       nlinarith [mul_le_mul_of_nonneg_right htheta_le hn]
 
 /-- Bounded adapted observations and explicit joint measurability make the
-joint hypothesis--fraction prior mixture an actual e-process. -/
+joint hypothesis--fraction prior mixture an actual e-process.
+
+The caller supplies both product-space obligations: `hjoint_ambient` for the
+ambient path sigma algebra and `hjoint_filtered` for `F n`.  These assumptions
+refer to the actual process after composition with `singularFraction`; they
+are not inferred from separate per-hypothesis measurability claims. -/
 theorem continuousSingularFractionBesselMasterProcess_eProcess
     [IsProbabilityMeasure mu]
     (prior : Measure Theta) [IsProbabilityMeasure prior]
@@ -303,7 +318,9 @@ theorem continuousSingularFractionBesselMasterProcess_eProcess
       forwardPredictableQuadratic]
 
 /-- The joint hypothesis--fraction mixture has one exceptional event of outer
-mass at most `delta`. -/
+mass at most `delta`.  Its joint-measurability arguments are exactly the two
+caller-supplied obligations consumed by
+`continuousSingularFractionBesselMasterProcess_eProcess`. -/
 theorem continuousSingularFractionBesselExceptionalEvent_mass_le_delta
     [IsProbabilityMeasure mu]
     (prior : Measure Theta) [IsProbabilityMeasure prior]
@@ -756,7 +773,12 @@ theorem continuousSingularFractionBessel_allPosteriors_observableLIL_of_not_mem
 conditional prefix mean for every observed path in the event, every eligible
 path-selected posterior, and every reporting time `n >= 2`.  The radius is
 one-sided and LIL-order; the claim does not identify the conditional prefix
-mean with population, future, deployment, or stationary risk. -/
+mean with population, future, deployment, or stationary risk.
+
+The final two hypotheses remain explicit because arbitrary measurable
+hypothesis spaces need not turn separate section measurability into joint
+measurability.  They are propagated unchanged to the master e-process and its
+exceptional-event bound. -/
 theorem exists_continuousSingularFractionBesselPACBayesLIL_event
     [IsProbabilityMeasure mu]
     (prior : Measure Theta) [IsProbabilityMeasure prior]

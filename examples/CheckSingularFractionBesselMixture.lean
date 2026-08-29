@@ -13,6 +13,7 @@ open FormalSLT.PACBayes.TimeUniformContinuous
 #check singularFractionLowerMixture_timeUniform_all_fraction
 #check continuousPriorMixtureProcess_competes_of_priorMass
 
+#print axioms forwardHybridBesselPenalty_nonneg_of_two
 #print axioms singularFractionLowerMixtureProcess_eProcess
 #print axioms singularFractionLowerMixtureExceptionalEvent_mass_le_delta
 #print axioms singularFractionLowerMixture_all_fraction_boundary

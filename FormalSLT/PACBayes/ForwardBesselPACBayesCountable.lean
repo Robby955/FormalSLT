@@ -746,13 +746,9 @@ omit [DecidableEq ι] [Nonempty ι] in
 /-- The hybrid Bessel penalty is nonnegative on a unit-valued prefix. -/
 theorem forwardHybridBesselPenalty_nonneg_of_unit
     (x : ℕ → ℝ) {n : ℕ} (hn : 2 ≤ n)
-    (hx : ∀ i < n, 0 ≤ x i ∧ x i ≤ 1) :
+    (_hx : ∀ i < n, 0 ≤ x i ∧ x i ≤ 1) :
     0 ≤ forwardHybridBesselPenalty x n := by
-  have hpredict : 0 ≤ forwardPredictableQuadratic x n := by
-    unfold forwardPredictableQuadratic
-    exact Finset.sum_nonneg fun _ _ ↦ sq_nonneg _
-  exact hpredict.trans
-    (forwardPredictableQuadratic_le_hybrid_bessel x hn hx)
+  exact FormalSLT.AnytimeValid.forwardHybridBesselPenalty_nonneg_of_two x hn
 
 omit [DecidableEq ι] [Nonempty ι] in
 /-- A PMF average of unit-valued hybrid penalties lies in `[0,n]`. -/
