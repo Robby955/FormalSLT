@@ -114,26 +114,16 @@ omit [Fintype Iota] [DecidableEq Iota] [Nonempty Iota] in
 /-- The recursive master wealth equals the exact finite active-prefix plus
 closed-form sleeping-tail mixture. -/
 theorem modelCountableSleepingMasterProcess_eq_mixture
-    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
-    {F : Filtration Nat mOmega}
     (X : Iota -> Nat -> Omega -> Real) (mean : Iota -> Real)
     (strategy : Iota -> Nat -> Nat -> Omega -> Real)
-    (hcomponent : forall i j,
-      EProcess mu F
-        (bettingWealthProcess (X i)
-          (sleepingStrategy (strategy i) j) (mean i)))
+    (hwealth_nonneg : forall i j k xi,
+      0 <= algebraicBettingWealth
+        (fun t eta => X i t eta - mean i)
+        (sleepingStrategy (strategy i) j) k xi)
     (i : Iota) (n : Nat) (omega : Omega) :
     modelCountableSleepingMasterProcess X mean strategy i n omega =
       countableSleepingMixtureWealth
         (fun k xi => X i k xi - mean i) (strategy i) n omega := by
-  have hwealth_nonneg : forall j k xi,
-      0 <= algebraicBettingWealth
-        (fun t eta => X i t eta - mean i)
-        (sleepingStrategy (strategy i) j) k xi := by
-    intro j k xi
-    simpa only [algebraicBettingWealth_eq_bettingWealthProcess,
-      Pi.zero_apply] using
-      (hcomponent i j).nonneg k xi
   rw [show modelCountableSleepingMasterProcess X mean strategy i n omega =
       algebraicBettingWealth
         (fun k xi => X i k xi - mean i)
@@ -144,7 +134,8 @@ theorem modelCountableSleepingMasterProcess_eq_mixture
   exact countableSleepingMasterWealth_eq_mixture
     (fun k xi => X i k xi - mean i) (strategy i)
       (fun k xi =>
-        (countableSleepingMixtureWealth_pos hwealth_nonneg k xi).ne')
+        (countableSleepingMixtureWealth_pos
+          (hwealth_nonneg i) k xi).ne')
       n omega
 
 omit [Fintype Iota] [DecidableEq Iota] [Nonempty Iota] in
@@ -152,41 +143,29 @@ omit [Fintype Iota] [DecidableEq Iota] [Nonempty Iota] in
 of the still-sleeping tail supplies strict positivity even when all active
 component wealths are zero. -/
 theorem modelCountableSleepingMasterProcess_pos
-    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
-    {F : Filtration Nat mOmega}
     (X : Iota -> Nat -> Omega -> Real) (mean : Iota -> Real)
     (strategy : Iota -> Nat -> Nat -> Omega -> Real)
-    (hcomponent : forall i j,
-      EProcess mu F
-        (bettingWealthProcess (X i)
-          (sleepingStrategy (strategy i) j) (mean i)))
-    (i : Iota) (n : Nat) (omega : Omega) :
-    0 < modelCountableSleepingMasterProcess X mean strategy i n omega := by
-  have hwealth_nonneg : forall j k xi,
+    (hwealth_nonneg : forall i j k xi,
       0 <= algebraicBettingWealth
         (fun t eta => X i t eta - mean i)
-        (sleepingStrategy (strategy i) j) k xi := by
-    intro j k xi
-    simpa only [algebraicBettingWealth_eq_bettingWealthProcess,
-      Pi.zero_apply] using
-      (hcomponent i j).nonneg k xi
+        (sleepingStrategy (strategy i) j) k xi)
+    (i : Iota) (n : Nat) (omega : Omega) :
+    0 < modelCountableSleepingMasterProcess X mean strategy i n omega := by
   rw [modelCountableSleepingMasterProcess_eq_mixture
-    X mean strategy hcomponent i n omega]
-  exact countableSleepingMixtureWealth_pos hwealth_nonneg n omega
+    X mean strategy hwealth_nonneg i n omega]
+  exact countableSleepingMixtureWealth_pos (hwealth_nonneg i) n omega
 
 omit [DecidableEq Iota] in
 /-- The finite model master is strictly positive under a full-support model
 prior. -/
 theorem finiteModelCountableSleepingMasterProcess_pos
-    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
-    {F : Filtration Nat mOmega}
     {modelPrior : Iota -> Real} (hmodelPrior : IsFullSupportPMF modelPrior)
     (X : Iota -> Nat -> Omega -> Real) (mean : Iota -> Real)
     (strategy : Iota -> Nat -> Nat -> Omega -> Real)
-    (hcomponent : forall i j,
-      EProcess mu F
-        (bettingWealthProcess (X i)
-          (sleepingStrategy (strategy i) j) (mean i)))
+    (hwealth_nonneg : forall i j k xi,
+      0 <= algebraicBettingWealth
+        (fun t eta => X i t eta - mean i)
+        (sleepingStrategy (strategy i) j) k xi)
     (n : Nat) (omega : Omega) :
     0 < finiteModelCountableSleepingMasterProcess
       modelPrior X mean strategy n omega := by
@@ -194,7 +173,7 @@ theorem finiteModelCountableSleepingMasterProcess_pos
   exact Finset.sum_pos
     (fun i _hi => mul_pos (hmodelPrior.pos i)
       (modelCountableSleepingMasterProcess_pos
-        X mean strategy hcomponent i n omega))
+        X mean strategy hwealth_nonneg i n omega))
     Finset.univ_nonempty
 
 /-- Product prior on a finite model and the active-prefix compression of the
@@ -247,15 +226,13 @@ omit [DecidableEq Iota] [Nonempty Iota] in
 /-- The product-prior average of the active-or-tail compressed wealth is
 exactly the single finite-model countable-strategy master. -/
 theorem finiteModelActiveStrategyPriorMoment_eq_master
-    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
-    {F : Filtration Nat mOmega}
     {modelPrior : Iota -> Real}
     (X : Iota -> Nat -> Omega -> Real) (mean : Iota -> Real)
     (strategy : Iota -> Nat -> Nat -> Omega -> Real)
-    (hcomponent : forall i j,
-      EProcess mu F
-        (bettingWealthProcess (X i)
-          (sleepingStrategy (strategy i) j) (mean i)))
+    (hwealth_nonneg : forall i j k xi,
+      0 <= algebraicBettingWealth
+        (fun t eta => X i t eta - mean i)
+        (sleepingStrategy (strategy i) j) k xi)
     (n : Nat) (omega : Omega) :
     (∑ p : Iota × Option (Fin (n + 1)),
         finiteModelActiveStrategyPrior modelPrior n p *
@@ -287,7 +264,7 @@ theorem finiteModelActiveStrategyPriorMoment_eq_master
       sleepingActivePriorMoment_eq_countableSleepingMixtureWealth
         (fun k xi => X i k xi - mean i) (strategy i) n omega]
   exact (modelCountableSleepingMasterProcess_eq_mixture
-    X mean strategy hcomponent i n omega).symm
+    X mean strategy hwealth_nonneg i n omega).symm
 
 omit [DecidableEq Iota] in
 /-- The stronger correlated-posterior oracle.  A reporting posterior may
@@ -295,15 +272,9 @@ couple models with active-or-tail compressed cells arbitrarily; it pays the
 full KL to the product prior.  The `none` cell aggregates the unit-wealth
 sleeping tail rather than naming one selectable strategy. -/
 theorem finiteModelCountableSleepingJointPosterior_logWealth_le
-    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
-    {F : Filtration Nat mOmega}
     {modelPrior : Iota -> Real} (hmodelPrior : IsFullSupportPMF modelPrior)
     (X : Iota -> Nat -> Omega -> Real) (mean : Iota -> Real)
     (strategy : Iota -> Nat -> Nat -> Omega -> Real)
-    (hcomponent : forall i j,
-      EProcess mu F
-        (bettingWealthProcess (X i)
-          (sleepingStrategy (strategy i) j) (mean i)))
     (hfactor_pos : forall i j k xi,
       0 < 1 + sleepingStrategy (strategy i) j k xi *
         (X i k xi - mean i))
@@ -338,8 +309,15 @@ theorem finiteModelCountableSleepingJointPosterior_logWealth_le
       intro p _hp
       rw [Real.exp_log (finiteModelActiveStrategyWealth_pos
         X mean strategy hfactor_pos n omega p)]]
+    have hwealth_nonneg : forall i j k xi,
+        0 <= algebraicBettingWealth
+          (fun t eta => X i t eta - mean i)
+          (sleepingStrategy (strategy i) j) k xi := by
+      intro i j k xi
+      exact (algebraicBettingWealth_pos
+        (fun t eta => hfactor_pos i j t eta) k xi).le
     exact finiteModelActiveStrategyPriorMoment_eq_master
-      X mean strategy hcomponent n omega
+      X mean strategy hwealth_nonneg n omega
   simpa [hmoment] using hchange
 
 omit [DecidableEq Iota] in
@@ -347,15 +325,9 @@ omit [DecidableEq Iota] in
 prefix pays separate model and strategy KL costs against the single master.
 Both posteriors may be chosen from the observed path. -/
 theorem finiteModelCountableSleepingStrategyPosterior_logWealth_le
-    {mOmega : MeasurableSpace Omega} {mu : Measure Omega}
-    {F : Filtration Nat mOmega}
     {modelPrior : Iota -> Real} (hmodelPrior : IsFullSupportPMF modelPrior)
     (X : Iota -> Nat -> Omega -> Real) (mean : Iota -> Real)
     (strategy : Iota -> Nat -> Nat -> Omega -> Real)
-    (hcomponent : forall i j,
-      EProcess mu F
-        (bettingWealthProcess (X i)
-          (sleepingStrategy (strategy i) j) (mean i)))
     (hfactor_pos : forall i j k xi,
       0 < 1 + sleepingStrategy (strategy i) j k xi *
         (X i k xi - mean i))
@@ -415,8 +387,15 @@ theorem finiteModelCountableSleepingStrategyPosterior_logWealth_le
     unfold finiteModelCountableSleepingMasterProcess finiteWeightedProcess
     apply Finset.sum_congr rfl
     intro i _hi
+    have hwealth_nonneg : forall i j k xi,
+        0 <= algebraicBettingWealth
+          (fun t eta => X i t eta - mean i)
+          (sleepingStrategy (strategy i) j) k xi := by
+      intro i j k xi
+      exact (algebraicBettingWealth_pos
+        (fun t eta => hfactor_pos i j t eta) k xi).le
     rw [Real.exp_log (modelCountableSleepingMasterProcess_pos
-      X mean strategy hcomponent i n omega)]
+      X mean strategy hwealth_nonneg i n omega)]
   rw [hmoment] at houter
   have hsplit :
       posteriorAverage modelPosterior (fun i =>
@@ -487,6 +466,13 @@ theorem finiteModelCountableSleepingStrategyGoodEvent_spec
   have hE := finiteModelCountableSleepingMasterProcess_eProcess
     hmodelPrior.toIsPMF X mean strategy hX_adapted
       hstrategy_adapted hcomponent
+  have hwealth_nonneg : forall i j k xi,
+      0 <= algebraicBettingWealth
+        (fun t eta => X i t eta - mean i)
+        (sleepingStrategy (strategy i) j) k xi := by
+    intro i j k xi
+    exact (algebraicBettingWealth_pos
+      (fun t eta => hfactor_pos i j t eta) k xi).le
   have hthreshold : 0 < (1 : Real) / delta := one_div_pos.mpr hdelta
   have hville := ville_atTop_maximal_ineq
     hE.supermartingale hE.nonneg hthreshold
@@ -521,14 +507,14 @@ theorem finiteModelCountableSleepingStrategyGoodEvent_spec
       exact lt_of_not_ge fun hcross => hnot_crossing ⟨n, hcross⟩
     have hmaster_pos :=
       finiteModelCountableSleepingMasterProcess_pos
-        hmodelPrior X mean strategy hcomponent n omega
+        hmodelPrior X mean strategy hwealth_nonneg n omega
     have hlog :
         Real.log (finiteModelCountableSleepingMasterProcess
             modelPrior X mean strategy n omega) <= Real.log (1 / delta) :=
       (Real.log_lt_log hmaster_pos hmaster_lt).le
     have horacle :=
       finiteModelCountableSleepingStrategyPosterior_logWealth_le
-        hmodelPrior X mean strategy hcomponent hfactor_pos n
+        hmodelPrior X mean strategy hfactor_pos n
           modelPosterior hmodelPosterior strategyPosterior
             hstrategyPosterior omega
     exact horacle.trans (add_le_add (le_refl _) hlog)
@@ -573,6 +559,13 @@ theorem finiteModelCountableSleepingStrategyJointGoodEvent_spec
       hmodelPrior X mean strategy hX_adapted hstrategy_adapted
         hcomponent hfactor_pos hdelta
   refine ⟨hfactorized.1, ?_⟩
+  have hwealth_nonneg : forall i j k xi,
+      0 <= algebraicBettingWealth
+        (fun t eta => X i t eta - mean i)
+        (sleepingStrategy (strategy i) j) k xi := by
+    intro i j k xi
+    exact (algebraicBettingWealth_pos
+      (fun t eta => hfactor_pos i j t eta) k xi).le
   intro omega homega n jointPosterior hjointPosterior
   have hnot_crossing :
       omega ∉ atTopCrossingEvent
@@ -584,13 +577,13 @@ theorem finiteModelCountableSleepingStrategyJointGoodEvent_spec
           modelPrior X mean strategy n omega < 1 / delta := by
     exact lt_of_not_ge fun hcross => hnot_crossing ⟨n, hcross⟩
   have hmaster_pos := finiteModelCountableSleepingMasterProcess_pos
-    hmodelPrior X mean strategy hcomponent n omega
+    hmodelPrior X mean strategy hwealth_nonneg n omega
   have hlog :
       Real.log (finiteModelCountableSleepingMasterProcess
           modelPrior X mean strategy n omega) <= Real.log (1 / delta) :=
     (Real.log_lt_log hmaster_pos hmaster_lt).le
   have horacle := finiteModelCountableSleepingJointPosterior_logWealth_le
-    hmodelPrior X mean strategy hcomponent hfactor_pos n
+    hmodelPrior X mean strategy hfactor_pos n
       jointPosterior hjointPosterior omega
   exact horacle.trans (add_le_add (le_refl _) hlog)
 
