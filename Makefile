@@ -142,6 +142,20 @@ check-brier-monitor-synthetic-receipt:
 verify-brier-monitor-synthetic-receipt: check-brier-monitor-synthetic-receipt
 	python3 -m pytest -q tests/test_brier_monitor_synthetic_receipt.py
 
+# Validate the prospective real-data Brier monitor preregistration and fail if
+# any declared fresh stream, receipt, manifest, or generated Lean output
+# exists. This target downloads nothing.
+check-gjp-brier-protocol:
+	python3 scripts/check_gjp_brier_protocol.py
+
+verify-gjp-brier-protocol: check-gjp-brier-protocol
+	python3 -m pytest -q tests/test_gjp_brier_protocol.py
+
+# Digest-verify the pinned Good Judgment Project inputs into a directory
+# outside the repository. Requires network access and GJP_INPUT_DIR.
+fetch-gjp-brier-inputs:
+	python3 scripts/fetch_gjp_brier_inputs.py --out "$(GJP_INPUT_DIR)"
+
 # Validate the prospective structured-OPE preregistration and fail if any
 # declared fresh trace, receipt, manifest, or generated Lean output exists.
 check-controlled-queue-structured-ope-protocol:
@@ -206,6 +220,9 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	generate-brier-monitor-synthetic-receipt \
 	check-brier-monitor-synthetic-receipt \
 	verify-brier-monitor-synthetic-receipt \
+	check-gjp-brier-protocol \
+	verify-gjp-brier-protocol \
+	fetch-gjp-brier-inputs \
 	check-controlled-queue-structured-ope-protocol \
 	check-controlled-queue-structured-ope-registration-binding \
 	verify-controlled-queue-structured-ope-protocol \
