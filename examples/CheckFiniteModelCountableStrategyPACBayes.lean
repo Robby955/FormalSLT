@@ -1,0 +1,45 @@
+import FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes
+
+/-!
+# Finite-model, countable-strategy PAC-Bayes checker
+
+This checker records the exact finite-model master, its e-process closure,
+the factorized model--strategy posterior oracle, and the common time-uniform
+event.  The strategy posterior ranges over the growing active prefix of one
+predeclared countable sleeping catalog.
+-/
+
+open FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes
+
+#check modelCountableSleepingMasterProcess
+#check finiteModelCountableSleepingMasterProcess
+#check modelCountableSleepingMasterProcess_eProcess
+#check finiteModelCountableSleepingMasterProcess_eProcess
+#check modelCountableSleepingMasterProcess_pos
+#check finiteModelCountableSleepingMasterProcess_pos
+#check finiteModelActiveStrategyPrior
+#check finiteModelActiveStrategyWealth
+#check finiteModelActiveStrategyPrior_isFullSupportPMF
+#check finiteModelActiveStrategyPriorMoment_eq_master
+#check finiteModelCountableSleepingJointPosterior_logWealth_le
+#check finiteModelCountableSleepingStrategyPosterior_logWealth_le
+#check finiteModelCountableSleepingStrategyGoodEvent
+#check finiteModelCountableSleepingStrategyGoodEvent_spec
+#check finiteModelCountableSleepingStrategyJointGoodEvent_spec
+#check exists_finiteModelCountableSleepingJointPACBayes_event
+#check exists_finiteModelCountableSleepingStrategyPACBayes_event
+
+#print axioms modelCountableSleepingMasterProcess_eProcess
+#print axioms finiteModelCountableSleepingMasterProcess_eProcess
+#print axioms modelCountableSleepingMasterProcess_eq_mixture
+#print axioms modelCountableSleepingMasterProcess_pos
+#print axioms finiteModelCountableSleepingMasterProcess_pos
+#print axioms finiteModelActiveStrategyPrior_isFullSupportPMF
+#print axioms finiteModelActiveStrategyWealth_pos
+#print axioms finiteModelActiveStrategyPriorMoment_eq_master
+#print axioms finiteModelCountableSleepingJointPosterior_logWealth_le
+#print axioms finiteModelCountableSleepingStrategyPosterior_logWealth_le
+#print axioms finiteModelCountableSleepingStrategyGoodEvent_spec
+#print axioms finiteModelCountableSleepingStrategyJointGoodEvent_spec
+#print axioms exists_finiteModelCountableSleepingJointPACBayes_event
+#print axioms exists_finiteModelCountableSleepingStrategyPACBayes_event

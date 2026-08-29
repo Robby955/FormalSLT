@@ -955,6 +955,21 @@ THEOREMS=(
   "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.continuousTwoAxisSleeping_allPosteriorsLogMaster_of_not_mem"
   "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.continuousTwoAxisSleeping_selectedWakeSoftPosteriorScore_of_not_mem"
   "FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes.exists_continuousTwoAxisSleepingPACBayes_factorized_event"
+  # examples/CheckFiniteModelCountableStrategyPACBayes.lean
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.modelCountableSleepingMasterProcess_eProcess"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelCountableSleepingMasterProcess_eProcess"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.modelCountableSleepingMasterProcess_eq_mixture"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.modelCountableSleepingMasterProcess_pos"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelCountableSleepingMasterProcess_pos"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelActiveStrategyPrior_isFullSupportPMF"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelActiveStrategyWealth_pos"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelActiveStrategyPriorMoment_eq_master"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelCountableSleepingJointPosterior_logWealth_le"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelCountableSleepingStrategyPosterior_logWealth_le"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelCountableSleepingStrategyGoodEvent_spec"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.finiteModelCountableSleepingStrategyJointGoodEvent_spec"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.exists_finiteModelCountableSleepingJointPACBayes_event"
+  "FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes.exists_finiteModelCountableSleepingStrategyPACBayes_event"
   # examples/CheckContinuousMeasurableTrajectorySleepingCountableTiltPACBayes.lean
   "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousMeasurableTrajectorySleepingConstantTiltMaster_filtered"
   "FormalSLT.StochasticDynamics.stronglyMeasurable_continuousMeasurableTrajectorySleepingConstantTiltMaster_ambient"
@@ -1029,6 +1044,7 @@ THEOREMS=(
 AXIOM_CHECK_FILES=(
   "examples/CheckBrierMonitorSyntheticProofOfLifeReceipt.lean"
   "examples/CheckContinuousFiniteStrategySleepingPACBayes.lean"
+  "examples/CheckFiniteModelCountableStrategyPACBayes.lean"
   "examples/CheckContinuousMeasurableTrajectorySleepingCountableTiltPACBayes.lean"
   "examples/CheckContinuousMeasurableTrajectorySleepingSuffixVarianceOracle.lean"
   "examples/CheckContinuousTrajectorySleepingCountableTiltPACBayes.lean"
@@ -1194,6 +1210,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
   echo "import FormalSLT.Applications.RandomRefreshLoadOracleCertificate"
   echo "import FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture"
   echo "import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes"
+  echo "import FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes"
   echo "import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes"
   echo "import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle"
   echo "import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayes"
@@ -1315,6 +1332,7 @@ echo "== building flagship modules =="
   FormalSLT.Applications.RandomRefreshLoadOracleCertificate \
   FormalSLT.AnytimeValid.FiniteStrategySleepingEProcessMixture \
   FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes \
+  FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes \
   FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes \
   FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle \
   FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingCountableTiltPACBayes \
@@ -1342,7 +1360,11 @@ echo "== building flagship modules =="
   FormalSLT.StochasticDynamics.ContinuousTrajectoryEmpiricalBernsteinPACBayes >/dev/null
 
 echo "== axiom audit =="
-RAW="$("$LAKE" env lean "$CHECK" 2>&1)"
+if ! RAW="$("$LAKE" env lean "$CHECK" 2>&1)"; then
+  echo "$RAW"
+  echo "ERROR: Lean failed while producing the axiom report." >&2
+  exit 1
+fi
 echo "$RAW"
 
 # `#print axioms` wraps long axiom lists over several lines, so flatten them.
