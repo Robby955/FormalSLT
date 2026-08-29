@@ -264,6 +264,7 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	fetch-gjp-brier-inputs \
 	generate-gjp-brier-lean-data \
 	verify-gjp-brier-lean-arithmetic \
+	verify-gjp-brier-lean-path \
 	check-controlled-queue-structured-ope-protocol \
 	check-controlled-queue-structured-ope-registration-binding \
 	verify-controlled-queue-structured-ope-protocol \
