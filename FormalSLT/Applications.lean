@@ -29,6 +29,7 @@ import FormalSLT.Applications.ControlledQueueFixedRangeComparator
 import FormalSLT.Applications.ControlledQueueSharpStructuredReceiptCore
 import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 import FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt
+import FormalSLT.Applications.GJPBrierMonitorReplayReceipt
 
 /-!
 # FormalSLT applications
@@ -95,4 +96,11 @@ forecast stream, checks its Brier arithmetic and observable suffix variation,
 and bounds the exact finite-prefix selector conditionally on the theorem's
 good-event inequality. It does not prove named-path good-event membership or
 make a real-data claim.
+
+`GJPBrierMonitorReplayReceipt` checks the posterior and exact endpoint
+arithmetic for a hash-bound 175-observation replay. A reproducible generator
+extracts and recomputes the rational summaries; Lean begins at those generated
+inputs and does not parse the source JSON. The preregistered replay status
+remains `FAIL`, and the conditional endpoint is monitored-prefix risk rather
+than future, population, stationary, or deployment risk.
 -/
