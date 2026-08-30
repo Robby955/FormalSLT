@@ -85,6 +85,7 @@ import FormalSLT.PACBayes.ContinuousSleepingBettingPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
 import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
 import FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes
+import FormalSLT.PACBayes.FiniteModelCountableSleepingEProcessPACBayes
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
