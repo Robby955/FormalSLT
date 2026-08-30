@@ -84,6 +84,7 @@ import FormalSLT.PACBayes.ContinuousSingularFractionBesselPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingBettingPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
 import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
+import FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes
 import FormalSLT.PACBayes.TimeUniformIIDGrid
 import FormalSLT.PACBayes.TimeUniformIIDTiltMixture
 import FormalSLT.PACBayes.TimeUniformContinuousPACBayes
@@ -118,6 +119,10 @@ its countable predeclared-strategy master process and finite-prefix selector.
 The continuous-model surface also exports one two-axis master for a finite
 strategy posterior and a countable sleeping-wake prior, with separate model
 and strategy KL costs on a common time-uniform event.
+The finite-model surface additionally exports one exact master for a
+countable sleeping strategy catalog; on its common event, both the model
+posterior and a posterior over the active strategy prefix may be selected
+after observing the path, with separate KL charges.
 For geometric empirical-Bernstein tilts, it additionally exports exact
 post-data minimization over a growing prefix and an explicit observable
 variance-adaptive, iterated-logarithm-order envelope.  The continuous-model
