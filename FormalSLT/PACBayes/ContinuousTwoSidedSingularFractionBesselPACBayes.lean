@@ -105,6 +105,187 @@ private theorem condExp_one_sub_of_bounded
   rw [hmean_omega]
 
 /-- One outer-probability event controls the absolute posterior-averaged
+conditional-minus-observed prefix gap at every reporting time, for every
+eligible posterior selected from the observed path, and for every admissible
+singular fraction selected after the path, posterior, and time.
+
+The two orientations each receive confidence budget `delta / 2`.  The event
+is constructed before the fraction is selected, so no process or event
+depends on the later choice.  This is simultaneous scalar-fraction control,
+not competition with an arbitrary predictable strategy class. -/
+theorem exists_continuousTwoSidedSingularFractionBesselPACBayes_allFractions_event
+    [IsProbabilityMeasure mu]
+    (prior : Measure Theta) [IsProbabilityMeasure prior]
+    {X mean : Theta → Nat → Omega → Real} {delta : Real}
+    (hdelta : 0 < delta) (hdelta_one : delta ≤ 1)
+    (hX_adapted : ∀ theta, IncrementAdapted F (X theta))
+    (hmean_adapted : ∀ theta, StronglyAdapted F (mean theta))
+    (hX_unit : ∀ theta k omega,
+      X theta k omega ∈ Set.Icc (0 : Real) 1)
+    (hmean_unit : ∀ theta k omega,
+      mean theta k omega ∈ Set.Icc (0 : Real) 1)
+    (hmean : ∀ theta k,
+      mu[X theta k | F k] =ᵐ[mu] mean theta k)
+    (hX_parameter : ∀ k omega,
+      StronglyMeasurable (fun theta => X theta k omega))
+    (hmean_parameter : ∀ k omega,
+      StronglyMeasurable (fun theta => mean theta k omega))
+    (hjoint_lower_ambient : ∀ n, StronglyMeasurable
+      (fun q : Omega × (Real × Theta) =>
+        forwardPredictableMeanEmpiricalBernsteinLowerProcess
+          (X q.2.2) (mean q.2.2) (singularFraction q.2.1) n q.1))
+    (hjoint_lower_filtered : ∀ n,
+      StronglyMeasurable[MeasurableSpace.prod (F n) inferInstance]
+        (fun q : Omega × (Real × Theta) =>
+          forwardPredictableMeanEmpiricalBernsteinLowerProcess
+            (X q.2.2) (mean q.2.2)
+              (singularFraction q.2.1) n q.1))
+    (hjoint_upper_ambient : ∀ n, StronglyMeasurable
+      (fun q : Omega × (Real × Theta) =>
+        forwardPredictableMeanEmpiricalBernsteinLowerProcess
+          (fun k omega => 1 - X q.2.2 k omega)
+          (fun k omega => 1 - mean q.2.2 k omega)
+          (singularFraction q.2.1) n q.1))
+    (hjoint_upper_filtered : ∀ n,
+      StronglyMeasurable[MeasurableSpace.prod (F n) inferInstance]
+        (fun q : Omega × (Real × Theta) =>
+          forwardPredictableMeanEmpiricalBernsteinLowerProcess
+            (fun k omega => 1 - X q.2.2 k omega)
+            (fun k omega => 1 - mean q.2.2 k omega)
+            (singularFraction q.2.1) n q.1)) :
+    ∃ goodEvent : Set Omega,
+      mu.real goodEventᶜ ≤ delta ∧
+        ∀ omega ∈ goodEvent,
+          ∀ posterior : Measure Theta,
+            IsProbabilityMeasure posterior → posterior ≪ prior →
+            Integrable (llr posterior prior) posterior →
+            ∀ n : Nat, 2 ≤ n → ∀ lam : Real,
+              0 < lam → lam ≤ Real.exp (-1) →
+              |(∫ theta, forwardPrefixMean
+                    (fun k => mean theta k omega) n ∂posterior) -
+                (∫ theta, forwardPrefixMean
+                    (fun k => X theta k omega) n ∂posterior)| <
+                continuousSingularFractionBesselBoundary
+                  prior X posterior (delta / 2) lam n omega := by
+  have hdelta_half : 0 < delta / 2 := by linarith
+  have hdelta_half_one : delta / 2 ≤ 1 := by linarith
+  let Xc : Theta → Nat → Omega → Real :=
+    fun theta k omega => 1 - X theta k omega
+  let meanc : Theta → Nat → Omega → Real :=
+    fun theta k omega => 1 - mean theta k omega
+  have hXc_adapted : ∀ theta, IncrementAdapted F (Xc theta) := by
+    intro theta
+    exact incrementAdapted_one_sub (hX_adapted theta)
+  have hmeanc_adapted : ∀ theta, StronglyAdapted F (meanc theta) := by
+    intro theta k
+    exact stronglyMeasurable_const.sub (hmean_adapted theta k)
+  have hXc_unit : ∀ theta k omega,
+      Xc theta k omega ∈ Set.Icc (0 : Real) 1 := by
+    intro theta k omega
+    dsimp [Xc]
+    constructor <;> linarith [(hX_unit theta k omega).1,
+      (hX_unit theta k omega).2]
+  have hmeanc_unit : ∀ theta k omega,
+      meanc theta k omega ∈ Set.Icc (0 : Real) 1 := by
+    intro theta k omega
+    dsimp [meanc]
+    constructor <;> linarith [(hmean_unit theta k omega).1,
+      (hmean_unit theta k omega).2]
+  have hmeanc : ∀ theta k,
+      mu[Xc theta k | F k] =ᵐ[mu] meanc theta k := by
+    intro theta
+    simpa [Xc, meanc] using
+      condExp_one_sub_of_bounded (hX_adapted theta)
+        (hX_unit theta) (hmean theta)
+  have hXc_parameter : ∀ k omega,
+      StronglyMeasurable (fun theta => Xc theta k omega) := by
+    intro k omega
+    exact stronglyMeasurable_const.sub (hX_parameter k omega)
+  have hmeanc_parameter : ∀ k omega,
+      StronglyMeasurable (fun theta => meanc theta k omega) := by
+    intro k omega
+    exact stronglyMeasurable_const.sub (hmean_parameter k omega)
+  let lowerBad := continuousSingularFractionBesselExceptionalEvent
+    prior X mean (delta / 2)
+  let upperBad := continuousSingularFractionBesselExceptionalEvent
+    prior Xc meanc (delta / 2)
+  have hlowerMass : mu.real lowerBad ≤ delta / 2 := by
+    dsimp [lowerBad]
+    exact continuousSingularFractionBesselExceptionalEvent_mass_le_delta
+      prior hdelta_half hX_adapted hmean_adapted hX_unit hmean_unit
+        hmean hjoint_lower_ambient hjoint_lower_filtered
+  have hupperMass : mu.real upperBad ≤ delta / 2 := by
+    dsimp [upperBad]
+    exact continuousSingularFractionBesselExceptionalEvent_mass_le_delta
+      prior hdelta_half hXc_adapted hmeanc_adapted hXc_unit hmeanc_unit
+        hmeanc
+        (by simpa [Xc, meanc] using hjoint_upper_ambient)
+        (by simpa [Xc, meanc] using hjoint_upper_filtered)
+  refine ⟨lowerBadᶜ ∩ upperBadᶜ, ?_, ?_⟩
+  · rw [Set.compl_inter]
+    simp only [compl_compl]
+    calc
+      mu.real (lowerBad ∪ upperBad) ≤
+          mu.real lowerBad + mu.real upperBad :=
+        measureReal_union_le _ _
+      _ ≤ delta / 2 + delta / 2 := add_le_add hlowerMass hupperMass
+      _ = delta := by ring
+  · intro omega homega posterior hposterior hposterior_prior hllr
+      n hn lam hlam hlam_exp
+    letI : IsProbabilityMeasure posterior := hposterior
+    have hlowerOutside : omega ∉
+        continuousSingularFractionBesselExceptionalEvent
+          prior X mean (delta / 2) := by
+      simpa [lowerBad] using homega.1
+    have hupperOutside : omega ∉
+        continuousSingularFractionBesselExceptionalEvent
+          prior Xc meanc (delta / 2) := by
+      simpa [upperBad] using homega.2
+    have hlowerBound :=
+      continuousSingularFractionBessel_allPosteriors_allFractions_of_not_mem
+        prior hdelta_half hdelta_half_one hX_unit hmean_unit
+        hX_parameter hmean_parameter hjoint_lower_ambient hlowerOutside
+        posterior inferInstance hposterior_prior hllr n hn lam hlam hlam_exp
+    have hupperBound :=
+      continuousSingularFractionBessel_allPosteriors_allFractions_of_not_mem
+        prior hdelta_half hdelta_half_one hXc_unit hmeanc_unit
+        hXc_parameter hmeanc_parameter
+        (by simpa [Xc, meanc] using hjoint_upper_ambient)
+        hupperOutside posterior inferInstance hposterior_prior hllr
+        n hn lam hlam hlam_exp
+    have hnpos : 0 < n := by omega
+    have hmeanComp := integral_forwardPrefixMean_one_sub posterior
+      (fun theta k => mean theta k omega) hnpos
+      (fun k => hmean_parameter k omega)
+      (fun theta k => hmean_unit theta k omega)
+    have hXComp := integral_forwardPrefixMean_one_sub posterior
+      (fun theta k => X theta k omega) hnpos
+      (fun k => hX_parameter k omega)
+      (fun theta k => hX_unit theta k omega)
+    have hpenalty := continuousForwardPosteriorHybridBesselPenalty_one_sub
+      posterior X n omega
+    have hboundary :
+        continuousSingularFractionBesselBoundary
+            prior Xc posterior (delta / 2) lam n omega =
+          continuousSingularFractionBesselBoundary
+            prior X posterior (delta / 2) lam n omega := by
+      unfold continuousSingularFractionBesselBoundary
+      rw [show continuousForwardPosteriorHybridBesselPenalty posterior
+          Xc n omega =
+          continuousForwardPosteriorHybridBesselPenalty posterior X n omega by
+        simpa [Xc] using hpenalty]
+    change
+      (∫ theta, forwardPrefixMean
+          (fun k => 1 - mean theta k omega) n ∂posterior) <
+        (∫ theta, forwardPrefixMean
+          (fun k => 1 - X theta k omega) n ∂posterior) +
+        continuousSingularFractionBesselBoundary
+          prior Xc posterior (delta / 2) lam n omega at hupperBound
+    rw [hmeanComp, hXComp, hboundary] at hupperBound
+    rw [abs_lt]
+    constructor <;> linarith
+
+/-- One outer-probability event controls the absolute posterior-averaged
 conditional-minus-observed prefix gap for every path-selected posterior and
 every reporting time `n >= 2`.  Each orientation receives budget `delta / 2`.
 
