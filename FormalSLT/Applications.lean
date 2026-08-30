@@ -31,6 +31,7 @@ import FormalSLT.Applications.ControlledQueueSharpStructuredRetrospectiveReceipt
 import FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt
 import FormalSLT.Applications.GJPBrierMonitorReplayReceipt
 import FormalSLT.Applications.GJPBrierMonitorReplayPath
+import FormalSLT.Applications.GJPBrierMonitorCountableStrategyCertificate
 
 /-!
 # FormalSLT applications
@@ -106,4 +107,12 @@ finite trajectory theorem, and names an event with outer failure mass at most
 assert that the realized path belongs to that event. The preregistered replay
 status remains `FAIL`, and the target is monitored-prefix conditional risk,
 not future, population, stationary, or deployment risk.
+
+`GJPBrierMonitorCountableStrategyCertificate` is a retrospective application
+of the countable sleeping-strategy theorem to a different now-fixed catalog:
+one half-tilt strategy at every integer wake, with the reporting posterior at
+wake zero. It proves a `< 0.131` summary endpoint and an outer failure-mass
+bound of `1 / 160` for that fixed catalog, while leaving the two raw-data
+summary equalities as explicit premises. It is not the preregistered GJP
+endpoint and does not account for retrospective selection among catalogs.
 -/
