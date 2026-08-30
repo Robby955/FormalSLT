@@ -36,6 +36,7 @@ import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingul
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionExactOptimalPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingPredictableTiltMasterProcess
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
@@ -85,6 +86,11 @@ supports wake-selected suffixes and the exact finite-prefix observable
 suffix-variance selector. The suffix theorem
 has a finite-time dyadic square-root envelope but does not assert unconditional
 vanishing width.
+For arbitrary measurable state spaces, it also exposes the filtered and ambient
+joint measurability and deterministic finite-time envelope of the exact
+sleeping master process for a predeclared countable catalog of measurable
+prefix-predictable tilts. This process foundation alone does not assert a
+PAC-Bayes event or ordinary-risk endpoint.
 The finite-state, arbitrary-measurable-hypothesis layer additionally exposes an
 exact finite-prefix polynomial sleeping mixture over a countable catalog of
 prefix-predictable strategies. Its normalized endpoint retains time-varying
