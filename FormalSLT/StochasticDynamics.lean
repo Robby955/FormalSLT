@@ -33,6 +33,7 @@ import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingOrdinaryRiskPACBayes
 import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionExactOptimalPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle
@@ -75,6 +76,10 @@ singular-fraction theorem: for every `n >= 2`, one event controls the absolute
 gap between posterior-averaged encountered conditional risk and posterior-
 averaged observed prequential risk, uniformly over eligible path-selected
 posteriors, with an observable LIL-order radius. Under the same jointly
+measurable trajectory contract, the corresponding all-admissible-fractions
+event supports explicit rational scalar fractions, while a separate corollary
+attains the exact scalar-fraction minimum noncomputably. Neither endpoint is a
+coin-betting or universal predictable-strategy result. Under the same jointly
 measurable score contract, the layer
 supports wake-selected suffixes and the exact finite-prefix observable
 suffix-variance selector. The suffix theorem
