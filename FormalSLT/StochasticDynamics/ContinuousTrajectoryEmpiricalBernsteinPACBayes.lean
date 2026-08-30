@@ -435,6 +435,18 @@ theorem continuousTrajectoryPosteriorEmpiricalPrequentialRisk_eq_generic
         ∂posterior := by
   rfl
 
+omit [Fintype Tau] [DecidableEq Tau] [Nonempty Tau]
+  [Fintype Z] [MeasurableSpace Z] [MeasurableSingletonClass Z] in
+/-- The posterior-integrated trajectory penalty is the generic continuous
+hybrid-Bessel penalty specialized to observed trajectory scores. -/
+theorem continuousTrajectoryPosteriorHybridBesselPenalty_eq_generic
+    (score : Theta -> TrajectoryScore Z) (posterior : Measure Theta)
+    (n : Nat) (x : Nat -> Z) :
+    continuousTrajectoryPosteriorHybridBesselPenalty score posterior n x =
+      continuousForwardPosteriorHybridBesselPenalty posterior
+        (fun theta => observedTrajectoryScore (score theta)) n x := by
+  rfl
+
 omit [Nonempty Tau] in
 /-- One outer-mass event controls continuous-posterior trajectory
 empirical-Bernstein PAC-Bayes at every `n >= 2` and every declared finite

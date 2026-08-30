@@ -32,6 +32,7 @@ import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingSuffixVarianceOr
 import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingOrdinaryRiskPACBayes
 import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle
@@ -69,9 +70,14 @@ hypothesis empirical-Bernstein trajectory endpoints. The arbitrary measurable
 state-and-hypothesis layer also exposes a countable geometric-tilt full-prefix
 oracle with path-selected posteriors, ordinary monitored conditional-risk
 semantics, an observable LIL-order envelope, and conditional vanishing width
-under the stated posterior KL-rate assumption. Under the same jointly
-measurable score contract, it now also supports wake-selected suffixes and the
-exact finite-prefix observable suffix-variance selector. The suffix theorem
+under the stated posterior KL-rate assumption. It also exposes a two-sided
+singular-fraction theorem: for every `n >= 2`, one event controls the absolute
+gap between posterior-averaged encountered conditional risk and posterior-
+averaged observed prequential risk, uniformly over eligible path-selected
+posteriors, with an observable LIL-order radius. Under the same jointly
+measurable score contract, the layer
+supports wake-selected suffixes and the exact finite-prefix observable
+suffix-variance selector. The suffix theorem
 has a finite-time dyadic square-root envelope but does not assert unconditional
 vanishing width.
 The finite-state, arbitrary-measurable-hypothesis layer additionally exposes an

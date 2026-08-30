@@ -1,0 +1,28 @@
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayes
+
+/-!
+# Two-sided singular-fraction PAC-Bayes trajectory checks
+
+The endpoint uses arbitrary measurable state and hypothesis spaces.  Its one
+event controls every reporting time and every eligible posterior chosen after
+observing the path.
+-/
+
+open FormalSLT.StochasticDynamics
+
+#synth Infinite Real
+
+#check stronglyMeasurable_continuousMeasurableTrajectorySingularFractionLowerProcess_filtered
+#check stronglyMeasurable_continuousMeasurableTrajectoryComplementSingularFractionLowerProcess_filtered
+#check stronglyMeasurable_continuousMeasurableTrajectorySingularFractionLowerProcess_ambient
+#check stronglyMeasurable_continuousMeasurableTrajectoryComplementSingularFractionLowerProcess_ambient
+#check exists_continuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayesLIL_event
+
+#check (exists_continuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayesLIL_event
+  (Theta := Real) (Z := Real))
+
+#print axioms stronglyMeasurable_continuousMeasurableTrajectorySingularFractionLowerProcess_filtered
+#print axioms stronglyMeasurable_continuousMeasurableTrajectoryComplementSingularFractionLowerProcess_filtered
+#print axioms stronglyMeasurable_continuousMeasurableTrajectorySingularFractionLowerProcess_ambient
+#print axioms stronglyMeasurable_continuousMeasurableTrajectoryComplementSingularFractionLowerProcess_ambient
+#print axioms exists_continuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayesLIL_event
