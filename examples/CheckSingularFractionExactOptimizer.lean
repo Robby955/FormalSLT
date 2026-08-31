@@ -1,0 +1,57 @@
+import FormalSLT.AnytimeValid.SingularFractionExactOptimizer
+
+/-!
+# Exact singular-fraction optimizer checks
+
+The minimized scalar function is the repository's original all-fraction
+boundary numerator, not a surrogate.  The theorem proves existence and exact
+minimization over `0 < lam <= exp (-1)`.  It proves neither uniqueness nor
+computability; the named optimizer is a classical choice.
+-/
+
+open FormalSLT.AnytimeValid
+
+#check singularFractionExactNumerator
+#check singularFractionExactCapValue
+#check singularFractionExactCutoff
+#check singularFractionForwardBesselBoundary_eq_exactNumerator
+#check two_le_singularFractionLogWindow
+#check log_two_le_singularFractionWindowPrice
+#check singularFractionExactNumerator_lower_bound
+#check singularFractionExactNumerator_at_cap
+#check singularFractionExactCapValue_lower
+#check singularFractionExactCapValue_pos
+#check singularFractionExactCutoff_pos
+#check singularFractionExactCutoff_le_exp_neg_one
+#check singularFractionExactCapValue_lt_of_lt_cutoff
+#check continuousOn_singularFractionExactNumerator
+#check exists_isMinOn_singularFractionExactNumerator_Icc
+#check exists_admissible_isMinOn_singularFractionExactNumerator
+#check singularFractionExactOptimalLambda
+#check singularFractionExactOptimalLambda_pos
+#check singularFractionExactOptimalLambda_le_exp_neg_one
+#check singularFractionExactOptimalLambda_isMinOn
+#check singularFractionExactBoundary
+#check singularFractionExactBoundary_le
+#check singularFractionExactBoundary_eq_numerator
+#check singularFractionExactBoundary_le_forwardBesselBoundary
+
+#print axioms singularFractionForwardBesselBoundary_eq_exactNumerator
+#print axioms two_le_singularFractionLogWindow
+#print axioms log_two_le_singularFractionWindowPrice
+#print axioms singularFractionExactNumerator_lower_bound
+#print axioms singularFractionExactNumerator_at_cap
+#print axioms singularFractionExactCapValue_lower
+#print axioms singularFractionExactCapValue_pos
+#print axioms singularFractionExactCutoff_pos
+#print axioms singularFractionExactCutoff_le_exp_neg_one
+#print axioms singularFractionExactCapValue_lt_of_lt_cutoff
+#print axioms continuousOn_singularFractionExactNumerator
+#print axioms exists_isMinOn_singularFractionExactNumerator_Icc
+#print axioms exists_admissible_isMinOn_singularFractionExactNumerator
+#print axioms singularFractionExactOptimalLambda_pos
+#print axioms singularFractionExactOptimalLambda_le_exp_neg_one
+#print axioms singularFractionExactOptimalLambda_isMinOn
+#print axioms singularFractionExactBoundary_le
+#print axioms singularFractionExactBoundary_eq_numerator
+#print axioms singularFractionExactBoundary_le_forwardBesselBoundary

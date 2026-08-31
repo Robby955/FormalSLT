@@ -32,8 +32,12 @@ import FormalSLT.StochasticDynamics.ContinuousTrajectorySleepingSuffixVarianceOr
 import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingOrdinaryRiskPACBayes
 import FormalSLT.StochasticDynamics.FiniteTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryEmpiricalBernsteinPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionBesselPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryTwoSidedSingularFractionExactOptimalPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryForwardBesselPACBayesOracle
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingCountableTiltPACBayes
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingPredictableTiltMasterProcess
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryCountableSleepingStrategyOrdinaryRiskPACBayes
 import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectorySleepingSuffixVarianceOracle
 import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
@@ -69,11 +73,29 @@ hypothesis empirical-Bernstein trajectory endpoints. The arbitrary measurable
 state-and-hypothesis layer also exposes a countable geometric-tilt full-prefix
 oracle with path-selected posteriors, ordinary monitored conditional-risk
 semantics, an observable LIL-order envelope, and conditional vanishing width
-under the stated posterior KL-rate assumption. Under the same jointly
-measurable score contract, it now also supports wake-selected suffixes and the
-exact finite-prefix observable suffix-variance selector. The suffix theorem
+under the stated posterior KL-rate assumption. It also exposes a two-sided
+singular-fraction theorem: for every `n >= 2`, one event controls the absolute
+gap between posterior-averaged encountered conditional risk and posterior-
+averaged observed prequential risk, uniformly over eligible path-selected
+posteriors, with an observable LIL-order radius. Under the same jointly
+measurable trajectory contract, the corresponding all-admissible-fractions
+event supports explicit rational scalar fractions, while a separate corollary
+attains the exact scalar-fraction minimum noncomputably. Neither endpoint is a
+coin-betting or universal predictable-strategy result. Under the same jointly
+measurable score contract, the layer
+supports wake-selected suffixes and the exact finite-prefix observable
+suffix-variance selector. The suffix theorem
 has a finite-time dyadic square-root envelope but does not assert unconditional
 vanishing width.
+For arbitrary measurable state spaces, it also exposes the filtered and ambient
+joint measurability and deterministic finite-time envelope of the exact
+sleeping master process for a predeclared countable catalog of measurable
+prefix-predictable tilts. One common event then supports path-selected
+posteriors over both an arbitrary measurable hypothesis space and the active
+strategy prefix, with separate model and strategy KL costs. Its ordinary
+encountered-prefix endpoint additionally pays twice the realized
+total-variation discrepancy of the selected time weights from uniform ones.
+This is confidence allocation over a fixed catalog, not coin betting.
 The finite-state, arbitrary-measurable-hypothesis layer additionally exposes an
 exact finite-prefix polynomial sleeping mixture over a countable catalog of
 prefix-predictable strategies. Its normalized endpoint retains time-varying

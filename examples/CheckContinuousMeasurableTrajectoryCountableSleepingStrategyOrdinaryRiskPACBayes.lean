@@ -1,0 +1,33 @@
+import FormalSLT.StochasticDynamics.ContinuousMeasurableTrajectoryCountableSleepingStrategyOrdinaryRiskPACBayes
+
+/-!
+# Measurable model--strategy posterior ordinary-risk checks
+
+One event is uniform over reporting time, eligible path-selected posteriors on
+an arbitrary measurable hypothesis space, and path-selected posteriors on the
+active prefix of a fixed countable predictable-strategy catalog. The ordinary
+encountered-prefix endpoint pays separate model and strategy KL terms plus
+twice the finite-TV discrepancy of the selected time weights from uniform
+ones.
+
+This remains confidence allocation over a catalog fixed before observation.
+It is not coin betting, future risk, stationary risk, population risk, or
+deployment risk.
+-/
+
+open FormalSLT.StochasticDynamics
+
+#check continuousTrajectoryCountableSleepingStrategyExposure
+#check continuousTrajectoryCountableSleepingStrategyUniformDiscrepancy
+#check abs_continuousTrajectoryPosteriorConditionalPrefixRisk_sub_countableSleepingNormalized_le
+#check abs_continuousTrajectoryPosteriorEmpiricalPrefixRisk_sub_countableSleepingNormalized_le
+#check exists_continuousMeasurableTrajectoryCountableSleepingStrategyPACBayes_raw_event
+#check exists_continuousMeasurableTrajectoryCountableSleepingStrategyPACBayes_ordinaryPrefixRisk_event
+
+#check (exists_continuousMeasurableTrajectoryCountableSleepingStrategyPACBayes_ordinaryPrefixRisk_event
+  (Theta := Real) (Z := Real))
+
+#print axioms abs_continuousTrajectoryPosteriorConditionalPrefixRisk_sub_countableSleepingNormalized_le
+#print axioms abs_continuousTrajectoryPosteriorEmpiricalPrefixRisk_sub_countableSleepingNormalized_le
+#print axioms exists_continuousMeasurableTrajectoryCountableSleepingStrategyPACBayes_raw_event
+#print axioms exists_continuousMeasurableTrajectoryCountableSleepingStrategyPACBayes_ordinaryPrefixRisk_event
