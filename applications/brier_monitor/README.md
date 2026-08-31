@@ -28,6 +28,19 @@ badge without registering a theorem-backed profile.
   --data /tmp/formalslt-gjp-replay-v1
 ```
 
+For a new prediction stream, `prepare` accepts CSV with no extra dependency or
+Parquet after installing `requirements-cli.txt`. Predictions are scaled
+integers, so the exact quantity being analyzed is unambiguous. The output
+contains exact empirical Brier risk, observable quadratic variation, KL and
+logarithm enclosures, data and protocol hashes, and a candidate bound. It is
+marked `PREPARED_NOT_CERTIFIED`; `certify` will continue to refuse it until a
+registered Lean profile and independent replay checker cover that protocol.
+
+```bash
+./bin/formalslt prepare protocol.yaml predictions.parquet \
+  --out preparation.json
+```
+
 The worked real-data result is deliberately disclosed as it happened. The
 certificate verification passes; the preregistered GJP study verdict is
 `FAIL`. The newer `< 0.131` countable-strategy endpoint is retrospective and

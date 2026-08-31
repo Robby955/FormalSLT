@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import formalslt_certificate as certificate_engine
+import formalslt_brier_tabular as tabular_brier
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -184,6 +185,24 @@ def profiles(args: argparse.Namespace) -> int:
     return 0
 
 
+def prepare(args: argparse.Namespace) -> int:
+    if args.out.exists():
+        raise ToolError(f"refusing to overwrite existing output: {args.out}")
+    try:
+        preparation = tabular_brier.prepare(args.protocol, args.data)
+        tabular_brier.atomic_write(args.out, tabular_brier.canonical_json_bytes(preparation))
+    except tabular_brier.PreparationError as error:
+        raise ToolError(str(error)) from error
+    statistics = preparation["statistics"]
+    print("FormalSLT tabular preparation")
+    print(f"Observations:                {preparation['data']['observations']}")
+    print(f"Observed Brier loss:         {statistics['posterior_empirical_brier_risk']}")
+    print(f"Candidate boundary upper:   {preparation['candidate']['boundary_upper']}")
+    print("Certificate verification:   NOT ISSUED")
+    print(f"Wrote:                       {args.out}")
+    return 0
+
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(
         prog="formalslt",
@@ -194,6 +213,15 @@ def parser() -> argparse.ArgumentParser:
     profiles_parser = commands.add_parser("profiles", help="list theorem-backed profiles")
     profiles_parser.add_argument("--json", action="store_true")
     profiles_parser.set_defaults(handler=profiles)
+
+    prepare_parser = commands.add_parser(
+        "prepare",
+        help="prepare exact CSV or Parquet Brier summaries without claiming certification",
+    )
+    prepare_parser.add_argument("protocol", type=Path)
+    prepare_parser.add_argument("data", type=Path)
+    prepare_parser.add_argument("--out", type=Path, required=True)
+    prepare_parser.set_defaults(handler=prepare)
 
     certify_parser = commands.add_parser("certify", help="issue a registered certificate")
     certify_parser.add_argument("protocol", type=Path, nargs="?", default=DEFAULT_PROTOCOL)

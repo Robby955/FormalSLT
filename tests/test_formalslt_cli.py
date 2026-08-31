@@ -24,6 +24,31 @@ def canonical(value: object) -> bytes:
     return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
 
 
+def tabular_protocol(input_format: str) -> dict[str, object]:
+    return {
+        "analysis": "brier_monitor",
+        "claim": {"quantity": CLI.tabular_brier.CLAIM_QUANTITY},
+        "data": {
+            "input_format": input_format,
+            "outcome_column": "outcome",
+            "prediction_encoding": "scaled_integer",
+            "prediction_scale": 1_000_000,
+            "require_strict_time_order": True,
+            "time_column": "time",
+        },
+        "models": [{"column": "model_a_ppm", "id": "model-a"}],
+        "protocol_id": "unit-test-brier-stream",
+        "schema_version": CLI.tabular_brier.PROTOCOL_SCHEMA,
+        "statistics": {
+            "delta": "1/20",
+            "posterior": {"model-a": "1"},
+            "prior": {"model-a": "1"},
+            "tilt": "1/2",
+            "wake": 0,
+        },
+    }
+
+
 def test_registered_protocol_loads() -> None:
     protocol, raw = CLI.load_protocol(PROTOCOL)
     assert protocol["certificate_profile"] in CLI.PROFILE_REGISTRY
@@ -71,3 +96,63 @@ def test_published_certificate_verifies_without_lean(
 ) -> None:
     assert CLI.main(["verify", str(CERTIFICATE), "--skip-lean"]) == 0
     assert "FormalSLT compact certificate: PASS" in capsys.readouterr().out
+
+
+def test_prepare_csv_computes_exact_statistics(tmp_path: Path) -> None:
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(tabular_protocol("csv")))
+    data_path = tmp_path / "predictions.csv"
+    data_path.write_text(
+        "time,outcome,model_a_ppm\n"
+        "1,1,750000\n"
+        "2,1,750000\n"
+        "3,1,750000\n"
+        "4,1,750000\n",
+        encoding="utf-8",
+    )
+    preparation = CLI.tabular_brier.prepare(protocol_path, data_path)
+    assert preparation["artifact_status"] == "PREPARED_NOT_CERTIFIED"
+    assert preparation["statistics"]["posterior_empirical_brier_risk"] == "1/16"
+    assert (
+        preparation["statistics"]["posterior_suffix_predictor_quadratic_variation"]
+        == "49/256"
+    )
+    assert preparation["verification"]["lean_kernel"] == "NOT_RUN"
+
+
+def test_prepare_rejects_nonchronological_rows(tmp_path: Path) -> None:
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(tabular_protocol("csv")))
+    data_path = tmp_path / "predictions.csv"
+    data_path.write_text(
+        "time,outcome,model_a_ppm\n"
+        "1,1,750000\n"
+        "3,1,750000\n"
+        "2,1,750000\n"
+        "4,1,750000\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(CLI.tabular_brier.PreparationError, match="not strictly increasing"):
+        CLI.tabular_brier.prepare(protocol_path, data_path)
+
+
+def test_prepare_parquet_matches_csv_statistics(tmp_path: Path) -> None:
+    pyarrow = pytest.importorskip("pyarrow")
+    parquet = pytest.importorskip("pyarrow.parquet")
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(tabular_protocol("parquet")))
+    data_path = tmp_path / "predictions.parquet"
+    table = pyarrow.table(
+        {
+            "time": [1, 2, 3, 4],
+            "outcome": [1, 1, 1, 1],
+            "model_a_ppm": [750000, 750000, 750000, 750000],
+        }
+    )
+    parquet.write_table(table, data_path)
+    preparation = CLI.tabular_brier.prepare(protocol_path, data_path)
+    assert preparation["statistics"]["posterior_empirical_brier_risk"] == "1/16"
+    assert (
+        preparation["statistics"]["posterior_suffix_predictor_quadratic_variation"]
+        == "49/256"
+    )
