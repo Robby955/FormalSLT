@@ -39,7 +39,17 @@ registered Lean profile and independent replay checker cover that protocol.
 ```bash
 ./bin/formalslt prepare protocol.yaml predictions.parquet \
   --out preparation.json
+./bin/formalslt verify-preparation \
+  preparation.json protocol.yaml predictions.parquet
 ```
+
+`verify-preparation` uses a separate implementation. It does not import the
+preparation engine; it reparses the protocol and table, streams the rows again,
+recomputes the normalized-data digest, empirical loss, observable variation,
+KL term, logarithm enclosures, and candidate expression, then compares the
+entire canonical preparation. Passing this replay still does not turn the
+preparation into a certificate. The next registered profile supplies that
+Lean boundary.
 
 The worked real-data result is deliberately disclosed as it happened. The
 certificate verification passes; the preregistered GJP study verdict is

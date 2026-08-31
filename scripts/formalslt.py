@@ -18,6 +18,7 @@ from typing import Any, Iterable
 
 import formalslt_certificate as certificate_engine
 import formalslt_brier_tabular as tabular_brier
+import verify_formalslt_brier_tabular as tabular_replay
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -203,6 +204,21 @@ def prepare(args: argparse.Namespace) -> int:
     return 0
 
 
+def verify_preparation(args: argparse.Namespace) -> int:
+    try:
+        preparation = tabular_replay.verify(args.preparation, args.protocol, args.data)
+    except tabular_replay.ReplayError as error:
+        raise ToolError(str(error)) from error
+    print("FormalSLT tabular replay:     PASS")
+    print(f"Observations:                 {preparation['data']['observations']}")
+    print(
+        "Observed Brier loss:        "
+        + preparation["statistics"]["posterior_empirical_brier_risk"]
+    )
+    print("Certificate verification:    NOT ISSUED")
+    return 0
+
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(
         prog="formalslt",
@@ -222,6 +238,15 @@ def parser() -> argparse.ArgumentParser:
     prepare_parser.add_argument("data", type=Path)
     prepare_parser.add_argument("--out", type=Path, required=True)
     prepare_parser.set_defaults(handler=prepare)
+
+    replay_parser = commands.add_parser(
+        "verify-preparation",
+        help="independently replay a tabular preparation",
+    )
+    replay_parser.add_argument("preparation", type=Path)
+    replay_parser.add_argument("protocol", type=Path)
+    replay_parser.add_argument("data", type=Path)
+    replay_parser.set_defaults(handler=verify_preparation)
 
     certify_parser = commands.add_parser("certify", help="issue a registered certificate")
     certify_parser.add_argument("protocol", type=Path, nargs="?", default=DEFAULT_PROTOCOL)
