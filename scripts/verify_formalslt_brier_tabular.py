@@ -2,9 +2,10 @@
 """Independently replay a FormalSLT tabular Brier preparation.
 
 This verifier intentionally does not import ``formalslt_brier_tabular``.  It
-parses the protocol and prediction file again, recomputes exact statistics and
-transcendental enclosures with a separate implementation, reconstructs the
-canonical preparation, and rejects the first mismatch it finds.
+parses the protocol and prediction file again, recomputes exact losses, the
+fixed-grid conservative variation bound, and transcendental enclosures with a
+separate implementation, reconstructs the canonical preparation, and rejects
+the first mismatch it finds.
 """
 
 from __future__ import annotations
@@ -26,6 +27,7 @@ PREPARATION_SCHEMA = "formalslt.brier-tabular-preparation.v1"
 STATUS = "PREPARED_NOT_CERTIFIED"
 CLAIM_QUANTITY = "posterior-averaged encountered conditional prefix Brier risk"
 SERIES_TERMS = 32
+VARIATION_GRID_DENOMINATOR = 1_099_511_627_776
 PROVENANCE_TIERS = {"DECLARED", "AUDITED", "SIGNED_LOG"}
 NONCLAIMS = [
     "data ingestion and exact arithmetic only; this preparation is not a certificate",
@@ -65,6 +67,22 @@ def rat_text(value: Fraction) -> str:
         str(reduced.numerator)
         if reduced.denominator == 1
         else f"{reduced.numerator}/{reduced.denominator}"
+    )
+
+
+def upward_grid(value: Fraction) -> Fraction:
+    """Independent fixed-grid ceiling used for the observable variation."""
+
+    value = Fraction(value)
+    if value < 0:
+        raise ReplayError("quadratic variation contribution must be nonnegative")
+    quotient, remainder = divmod(
+        value.numerator * VARIATION_GRID_DENOMINATOR,
+        value.denominator,
+    )
+    return Fraction(
+        quotient + int(remainder != 0),
+        VARIATION_GRID_DENOMINATOR,
     )
 
 
@@ -333,7 +351,7 @@ def expected_preparation(
     scale = data["prediction_scale"]
     prefix_totals = [Fraction(0) for _ in model_ids]
     risk_total = Fraction(0)
-    variation_total = Fraction(0)
+    variation_upper = Fraction(0)
     stream_digest = hashlib.sha256()
     last_time: int | None = None
     observation_count = 0
@@ -348,6 +366,7 @@ def expected_preparation(
             raise ReplayError(f"row {observation_count} outcome must be 0 or 1")
         scaled_values: list[int] = []
         row_losses: list[Fraction] = []
+        row_variation = Fraction(0)
         for index, column in enumerate(model_columns):
             scaled = integer(row.get(column), f"row {observation_count} prediction {model_ids[index]}")
             if scaled < 0 or scaled > scale:
@@ -359,9 +378,10 @@ def expected_preparation(
                 if observation_count == 1
                 else prefix_totals[index] / (observation_count - 1)
             )
-            variation_total += posterior[index] * (loss - history_mean) ** 2
+            row_variation += posterior[index] * (loss - history_mean) ** 2
             prefix_totals[index] += loss
             row_losses.append(loss)
+        variation_upper += upward_grid(row_variation)
         risk_total += sum(
             (posterior[index] * loss for index, loss in enumerate(row_losses)),
             Fraction(0),
@@ -384,7 +404,7 @@ def expected_preparation(
     log_lower, log_upper = atanh_log_bounds(1 - tilt)
     psi_bounds = (-log_upper - tilt, -log_lower - tilt)
     candidate_upper = empirical + (
-        kl_upper + confidence_bounds[1] + psi_bounds[1] * variation_total
+        kl_upper + confidence_bounds[1] + psi_bounds[1] * variation_upper
     ) / (tilt * observation_count)
     return {
         "artifact_status": STATUS,
@@ -412,7 +432,13 @@ def expected_preparation(
         "statistics": {
             "delta": rat_text(delta),
             "posterior_empirical_brier_risk": rat_text(empirical),
-            "posterior_suffix_predictor_quadratic_variation": rat_text(variation_total),
+            "posterior_suffix_predictor_quadratic_variation_upper": rat_text(
+                variation_upper
+            ),
+            "quadratic_variation_grid_denominator": VARIATION_GRID_DENOMINATOR,
+            "quadratic_variation_maximum_rounding_slack": rat_text(
+                Fraction(observation_count, VARIATION_GRID_DENOMINATOR)
+            ),
             "tilt": rat_text(tilt),
             "wake": 0,
         },

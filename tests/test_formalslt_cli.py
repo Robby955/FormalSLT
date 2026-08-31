@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import sys
+from fractions import Fraction
 from pathlib import Path
 
 import pytest
@@ -119,9 +120,51 @@ def test_prepare_csv_computes_exact_statistics(tmp_path: Path) -> None:
     assert preparation["artifact_status"] == "PREPARED_NOT_CERTIFIED"
     assert preparation["statistics"]["posterior_empirical_brier_risk"] == "1/16"
     assert (
-        preparation["statistics"]["posterior_suffix_predictor_quadratic_variation"]
+        preparation["statistics"][
+            "posterior_suffix_predictor_quadratic_variation_upper"
+        ]
         == "49/256"
     )
+
+
+def test_variation_grid_is_compact_and_conservative(tmp_path: Path) -> None:
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(tabular_protocol("csv")))
+    data_path = tmp_path / "predictions.csv"
+    predictions = [123_457, 876_543, 222_223, 777_779, 345_679, 654_323]
+    outcomes = [0, 1, 1, 0, 1, 0]
+    rows = ["time,outcome,model_a_ppm"]
+    rows.extend(
+        f"{index},{outcome},{prediction}"
+        for index, (outcome, prediction) in enumerate(
+            zip(outcomes, predictions, strict=True),
+            start=1,
+        )
+    )
+    data_path.write_text("\n".join(rows) + "\n", encoding="utf-8")
+
+    preparation = CLI.tabular_brier.prepare(protocol_path, data_path)
+    statistics = preparation["statistics"]
+    variation_upper = Fraction(
+        statistics["posterior_suffix_predictor_quadratic_variation_upper"]
+    )
+    grid = statistics["quadratic_variation_grid_denominator"]
+    exact_variation = Fraction(0)
+    prefix = Fraction(0)
+    for index, (outcome, prediction) in enumerate(
+        zip(outcomes, predictions, strict=True),
+        start=1,
+    ):
+        loss = (Fraction(prediction, 1_000_000) - outcome) ** 2
+        predictor = Fraction(1, 2) if index == 1 else prefix / (index - 1)
+        exact_variation += (loss - predictor) ** 2
+        prefix += loss
+
+    assert grid == 1 << 40
+    assert exact_variation <= variation_upper
+    assert variation_upper - exact_variation <= Fraction(len(predictions), grid)
+    assert statistics["quadratic_variation_maximum_rounding_slack"] == "3/549755813888"
+    assert len(str(variation_upper.numerator)) < 20
     assert preparation["verification"]["lean_kernel"] == "NOT_RUN"
 
 
@@ -307,6 +350,8 @@ def test_prepare_parquet_matches_csv_statistics(tmp_path: Path) -> None:
     CLI.tabular_replay.verify(preparation_path, protocol_path, data_path)
     assert preparation["statistics"]["posterior_empirical_brier_risk"] == "1/16"
     assert (
-        preparation["statistics"]["posterior_suffix_predictor_quadratic_variation"]
+        preparation["statistics"][
+            "posterior_suffix_predictor_quadratic_variation_upper"
+        ]
         == "49/256"
     )

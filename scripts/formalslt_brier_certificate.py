@@ -168,9 +168,11 @@ def checker_source(
         preparation["statistics"]["posterior_empirical_brier_risk"],
         "preparation empirical risk",
     )
-    quadratic = parse_fraction(
-        preparation["statistics"]["posterior_suffix_predictor_quadratic_variation"],
-        "preparation quadratic variation",
+    quadratic_upper = parse_fraction(
+        preparation["statistics"][
+            "posterior_suffix_predictor_quadratic_variation_upper"
+        ],
+        "preparation quadratic variation upper bound",
     )
     horizon = preparation["data"]["observations"]
     if isinstance(horizon, bool) or not isinstance(horizon, int) or horizon <= 0:
@@ -198,7 +200,7 @@ def checker_source(
     confidence_exponent, confidence_remainder = dyadic_factor(1 / delta)
     confidence_log_upper = dyadic_log_upper(confidence_exponent, confidence_remainder)
     arithmetic_upper = empirical + (
-        kl_upper + confidence_log_upper + Fraction(1, 5) * quadratic
+        kl_upper + confidence_log_upper + Fraction(1, 5) * quadratic_upper
     ) / (Fraction(1, 2) * horizon)
     certified_bound = strict_decimal_ceiling(arithmetic_upper)
 
@@ -230,7 +232,7 @@ noncomputable section
 {_piecewise_definition("logRemainder", "Real", remainder_rows)}
 
 def empiricalRisk : Real := {lean_rational(empirical)}
-def quadraticVariation : Real := {lean_rational(quadratic)}
+def quadraticVariationUpper : Real := {lean_rational(quadratic_upper)}
 def confidenceDelta : Real := {lean_rational(delta)}
 def horizon : Nat := {horizon}
 def klUpper : Real := {lean_rational(kl_upper)}
@@ -298,15 +300,15 @@ theorem confidence_log_le :
       norm_num [dyadicLogUpper, confidenceLogUpper]
 
 theorem certificateBoundary_lt :
-    summaryEndpoint empiricalRisk quadraticVariation posterior prior
+    summaryEndpoint empiricalRisk quadraticVariationUpper posterior prior
         confidenceDelta horizon < certifiedUpperRisk := by
   apply summaryEndpoint_lt_of_bounds (klUpper := klUpper)
     (logUpper := confidenceLogUpper)
   · norm_num [horizon]
-  · norm_num [quadraticVariation]
+  · norm_num [quadraticVariationUpper]
   · exact posterior_kl_le
   · exact confidence_log_le
-  · norm_num [empiricalRisk, quadraticVariation, klUpper,
+  · norm_num [empiricalRisk, quadraticVariationUpper, klUpper,
       confidenceLogUpper, certifiedUpperRisk, horizon]
 
 #print axioms certificateBoundary_lt

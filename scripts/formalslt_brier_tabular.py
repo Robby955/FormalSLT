@@ -24,6 +24,7 @@ PREPARATION_SCHEMA = "formalslt.brier-tabular-preparation.v1"
 STATUS = "PREPARED_NOT_CERTIFIED"
 CLAIM_QUANTITY = "posterior-averaged encountered conditional prefix Brier risk"
 LOG_TERMS = 32
+QUADRATIC_VARIATION_GRID = 1 << 40
 SUPPORTED_FORMATS = {"csv", "parquet"}
 PROVENANCE_TIERS = {"DECLARED", "AUDITED", "SIGNED_LOG"}
 NONCLAIMS = [
@@ -73,6 +74,17 @@ def parse_fraction(value: Any, label: str) -> Fraction:
     if rational_text(result) != value:
         raise PreparationError(f"noncanonical rational at {label}: {value!r}")
     return result
+
+
+def ceil_to_grid(value: Fraction, denominator: int) -> Fraction:
+    """Round a nonnegative rational upward to a fixed denominator."""
+
+    value = Fraction(value)
+    if value < 0 or denominator <= 0:
+        raise PreparationError("grid rounding requires a nonnegative value and positive denominator")
+    scaled_numerator = value.numerator * denominator
+    ceiling = (scaled_numerator + value.denominator - 1) // value.denominator
+    return Fraction(ceiling, denominator)
 
 
 def _keys(value: dict[str, Any], expected: set[str], label: str) -> None:
@@ -429,7 +441,7 @@ def prepare(protocol_path: Path, data_path: Path) -> dict[str, Any]:
     tilt = parse_fraction(statistics["tilt"], "tilt")
     prefix_sums = [Fraction(0) for _ in model_ids]
     posterior_loss_sum = Fraction(0)
-    posterior_quadratic_variation = Fraction(0)
+    posterior_quadratic_variation_upper = Fraction(0)
     normalized_stream = hashlib.sha256()
     previous_time: int | None = None
     count = 0
@@ -444,6 +456,7 @@ def prepare(protocol_path: Path, data_path: Path) -> dict[str, Any]:
             raise PreparationError(f"row {count} outcome must be 0 or 1")
         scaled_predictions: list[int] = []
         losses: list[Fraction] = []
+        row_quadratic_variation = Fraction(0)
         for index, model_id in enumerate(model_ids):
             scaled = _int_cell(row.get(columns[model_id]), f"row {count} prediction {model_id}")
             if not 0 <= scaled <= scale:
@@ -454,9 +467,13 @@ def prepare(protocol_path: Path, data_path: Path) -> dict[str, Any]:
             prediction = Fraction(scaled, scale)
             loss = (prediction - outcome) ** 2
             predictor = Fraction(1, 2) if count == 1 else prefix_sums[index] / (count - 1)
-            posterior_quadratic_variation += posterior[index] * (loss - predictor) ** 2
+            row_quadratic_variation += posterior[index] * (loss - predictor) ** 2
             prefix_sums[index] += loss
             losses.append(loss)
+        posterior_quadratic_variation_upper += ceil_to_grid(
+            row_quadratic_variation,
+            QUADRATIC_VARIATION_GRID,
+        )
         posterior_loss_sum += sum(
             (posterior[index] * loss for index, loss in enumerate(losses)),
             Fraction(0),
@@ -474,7 +491,9 @@ def prepare(protocol_path: Path, data_path: Path) -> dict[str, Any]:
     confidence_bounds = log_interval(1 / delta)
     psi_bounds = _psi_interval(tilt)
     candidate_upper = empirical + (
-        kl_bounds[1] + confidence_bounds[1] + psi_bounds[1] * posterior_quadratic_variation
+        kl_bounds[1]
+        + confidence_bounds[1]
+        + psi_bounds[1] * posterior_quadratic_variation_upper
     ) / (tilt * count)
     source_path = Path(__file__).resolve()
     return {
@@ -503,8 +522,12 @@ def prepare(protocol_path: Path, data_path: Path) -> dict[str, Any]:
         "statistics": {
             "delta": rational_text(delta),
             "posterior_empirical_brier_risk": rational_text(empirical),
-            "posterior_suffix_predictor_quadratic_variation": rational_text(
-                posterior_quadratic_variation
+            "posterior_suffix_predictor_quadratic_variation_upper": rational_text(
+                posterior_quadratic_variation_upper
+            ),
+            "quadratic_variation_grid_denominator": QUADRATIC_VARIATION_GRID,
+            "quadratic_variation_maximum_rounding_slack": rational_text(
+                Fraction(count, QUADRATIC_VARIATION_GRID)
             ),
             "tilt": rational_text(tilt),
             "wake": 0,

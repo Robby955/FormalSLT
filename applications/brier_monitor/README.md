@@ -2,7 +2,8 @@
 
 This directory separates three jobs that should not be conflated:
 
-1. raw-data replay computes exact summaries and binds them to source hashes;
+1. raw-data replay computes exact losses and a conservative observable-variation
+   bound, then binds them to source hashes;
 2. Lean checks the statistical theorem specialization and endpoint arithmetic
    from those summaries;
 3. the monitor renders the result without becoming a source of truth.
@@ -43,11 +44,15 @@ its provenance `DECLARED`, `AUDITED`, or `SIGNED_LOG`.
 ./bin/formalslt show certificate/certificate.json
 ```
 
-Issuance streams the table twice through independent implementations. It then
-generates a Lean checker whose size grows with the model catalog, not the row
-count. The receipt reports independent data replay and Lean verification on
-separate lines. The checked endpoint uses one predeclared half tilt and permits
-the reporting posterior over models to be chosen after observing the prefix.
+Issuance streams the table twice through independent implementations. Each
+replay rounds every nonnegative row contribution to the same `2^-40` grid, so
+the accumulated quadratic-variation input is a compact conservative upper
+bound rather than a fraction whose denominator grows with the row count. The
+maximum rounding slack is recorded in the receipt. The generated Lean checker
+therefore grows with the model catalog, not the row count. Independent data
+replay and Lean verification remain separate receipt lines. The checked
+endpoint uses one predeclared half tilt and permits the reporting posterior over
+models to be chosen after observing the prefix.
 
 The lower-level preparation commands remain available for debugging:
 
