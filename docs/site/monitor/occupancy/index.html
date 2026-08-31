@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-formalslt-site="monitor-occupancy">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A real-data Brier-risk certificate with independent replay and a compact Lean-checked endpoint.">
+  <meta name="theme-color" content="#07100f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FormalSLT">
+  <meta property="og:title" content="FormalSLT | Occupancy risk monitor">
+  <meta property="og:description" content="Post-data model selection with a replayable 95% risk certificate.">
+  <meta property="og:url" content="https://robby955.github.io/FormalSLT/monitor/occupancy/">
+  <meta name="twitter:card" content="summary">
+  <title>FormalSLT | Occupancy risk monitor</title>
+  <link rel="canonical" href="https://robby955.github.io/FormalSLT/monitor/occupancy/">
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="monitor.css">
+  <script defer src="monitor.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">Skip to monitor</a>
+  <header class="site-header">
+    <a class="wordmark" href="../../">FormalSLT</a>
+    <nav aria-label="Monitor navigation">
+      <a href="#selection">Selection</a>
+      <a href="#verification">Verification</a>
+      <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__/applications/brier_monitor">Source</a>
+    </nav>
+  </header>
+
+  <main id="workspace">
+    <section class="monitor" aria-labelledby="monitor-title">
+      <div class="monitor-heading">
+        <div>
+          <p class="eyebrow">UCI Occupancy Detection · 8,224 chronological observations</p>
+          <h1 id="monitor-title">Model selected after data. Bound still valid.</h1>
+          <p class="lede">An all-sensor logistic classifier was selected from two predeclared candidates after the monitored prefix. The selection cost is included in the certificate.</p>
+        </div>
+        <div class="checked-status" aria-live="polite">
+          <span class="status-dot"></span>
+          <div><strong data-certificate-status>Checking</strong><small>final endpoint</small></div>
+        </div>
+      </div>
+
+      <dl class="result-values" aria-label="Final checked result">
+        <div>
+          <dt>Observed Brier loss</dt>
+          <dd data-observed-risk>—</dd>
+        </div>
+        <div class="primary-result">
+          <dt>95% checked upper bound</dt>
+          <dd data-upper-bound>—</dd>
+        </div>
+        <div>
+          <dt>Constant baseline</dt>
+          <dd data-baseline-risk>—</dd>
+        </div>
+      </dl>
+
+      <div class="monitor-grid">
+        <section class="trace" aria-labelledby="trace-title">
+          <div class="trace-heading">
+            <div>
+              <p class="section-label">Risk over the monitored prefix</p>
+              <h2 id="trace-title">The bound narrows as observations accumulate.</h2>
+            </div>
+            <dl class="cursor-values" aria-live="polite">
+              <div><dt>Observation</dt><dd data-cursor-time>—</dd></div>
+              <div><dt>Observed</dt><dd data-cursor-risk>—</dd></div>
+              <div><dt>Boundary</dt><dd data-cursor-bound>—</dd></div>
+            </dl>
+          </div>
+
+          <div class="chart-shell">
+            <svg class="chart" data-chart viewBox="0 0 1200 500" role="img" aria-labelledby="chart-title chart-description">
+              <title id="chart-title">Brier risk and upper boundary over time</title>
+              <desc id="chart-description">Replayed selected-model Brier loss, its certificate boundary preview, and the constant-model Brier baseline over 8,224 chronological observations. The final boundary point is checked by Lean.</desc>
+            </svg>
+            <div class="final-marker" data-final-marker>Final point checked</div>
+            <p class="chart-error" data-chart-error hidden>The monitor assets could not be verified.</p>
+          </div>
+
+          <input class="scrubber" data-scrubber type="range" min="0" max="1" value="1" step="1" aria-label="Choose reporting time">
+          <div class="legend" aria-label="Chart legend">
+            <button type="button" class="legend-item selected" data-series="selected" aria-pressed="true"><span class="legend-line selected-line"></span>Selected model</button>
+            <button type="button" class="legend-item" data-series="constant" aria-pressed="false"><span class="legend-line baseline-line"></span>Constant baseline</button>
+            <span class="legend-item static"><span class="legend-line boundary-line"></span>Boundary preview</span>
+            <small>Log scale · final boundary is kernel checked</small>
+          </div>
+        </section>
+
+        <aside class="selection" id="selection" aria-labelledby="selection-title">
+          <p class="section-label">Selection receipt</p>
+          <h2 id="selection-title">The better model was chosen after inspection.</h2>
+          <dl>
+            <div><dt>Selected</dt><dd data-selected-model>—</dd></div>
+            <div><dt>Candidate models</dt><dd>2</dd></div>
+            <div><dt>KL charge</dt><dd>≤ 0.7</dd></div>
+            <div><dt>Selection timing</dt><dd>Post-data</dd></div>
+          </dl>
+          <p>The theorem controls every supported posterior on one event. Selecting the lower-loss model does not get a free pass; its complexity appears in the bound.</p>
+          <a href="evidence.json">Open selection evidence</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="verification" id="verification" aria-labelledby="verification-title">
+      <div>
+        <p class="section-label">Trust boundary</p>
+        <h2 id="verification-title">Fast computation. Independent replay. Final verification.</h2>
+      </div>
+      <ol class="verification-flow">
+        <li><span>01</span><div><strong>Model computation</strong><p>Python trains the frozen classifier and emits quantized predictions.</p></div></li>
+        <li><span>02</span><div><strong>Independent replay</strong><p>Two implementations recompute losses, variation, hashes, and the selected posterior.</p><b data-replay-status>Checking</b></div></li>
+        <li><span>03</span><div><strong>Lean kernel</strong><p>The compact checker verifies the KL charge, confidence term, variance ceiling, and final endpoint.</p><b data-kernel-status>Checking</b></div></li>
+      </ol>
+      <p class="scope"><strong>Scope:</strong> posterior-averaged conditional Brier risk encountered on this monitored prefix. This retrospective application does not establish future occupancy, population risk, real-time label delay, or deployment performance.</p>
+    </section>
+
+    <footer>
+      <div><span>Certificate</span><code data-certificate-id>formalslt.certificate.v1</code></div>
+      <nav aria-label="Certificate files">
+        <a href="certificate.json">Receipt</a>
+        <a href="trace.json">Display trace</a>
+        <a href="manifest.json">Site manifest</a>
+        <a href="https://doi.org/10.24432/C5X01N">Dataset</a>
+      </nav>
+    </footer>
+  </main>
+
+  <noscript><p class="noscript">JavaScript is required for the interactive trace. The compact receipt remains available above.</p></noscript>
+</body>
+</html>
