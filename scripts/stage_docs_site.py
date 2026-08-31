@@ -38,6 +38,8 @@ SITE_FILES = (
     "assets/site.css",
     "assets/theorem-chain.svg",
     "monitor/index.html",
+    "monitor/gjp-certificate-v1.json",
+    "monitor/gjp-monitor-trace-v1.json",
     "monitor/monitor.css",
     "monitor/monitor.js",
     "readers/stats-ml/index.html",

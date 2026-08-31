@@ -1,0 +1,1558 @@
+{
+  "certificate_id": "gjp-brier-monitor-2026-08-30",
+  "display_only": true,
+  "points": [
+    {
+      "boundary_lower": "90739283477561/25000000000000",
+      "boundary_lower_decimal": "3.62957134",
+      "boundary_upper": "3629571339102441/1000000000000000",
+      "boundary_upper_decimal": "3.62957134",
+      "empirical_risk": "1050336852674009367146707/31250000000000000000000000",
+      "empirical_risk_decimal": "0.03361078",
+      "n": 4
+    },
+    {
+      "boundary_lower": "1452022517848179/500000000000000",
+      "boundary_lower_decimal": "2.90404504",
+      "boundary_upper": "2904045035696359/1000000000000000",
+      "boundary_upper_decimal": "2.90404504",
+      "empirical_risk": "13587690187138720137500139/500000000000000000000000000",
+      "empirical_risk_decimal": "0.02717538",
+      "n": 5
+    },
+    {
+      "boundary_lower": "1210106100044111/500000000000000",
+      "boundary_lower_decimal": "2.42021220",
+      "boundary_upper": "2420212200088223/1000000000000000",
+      "boundary_upper_decimal": "2.42021220",
+      "empirical_risk": "136578664237300177683272699/6000000000000000000000000000",
+      "empirical_risk_decimal": "0.02276311",
+      "n": 6
+    },
+    {
+      "boundary_lower": "12965969514507/6250000000000",
+      "boundary_lower_decimal": "2.07455512",
+      "boundary_upper": "2074555122321121/1000000000000000",
+      "boundary_upper_decimal": "2.07455512",
+      "empirical_risk": "17117591327464068558284103/875000000000000000000000000",
+      "empirical_risk_decimal": "0.01956296",
+      "n": 7
+    },
+    {
+      "boundary_lower": "1815910334395173/1000000000000000",
+      "boundary_lower_decimal": "1.81591033",
+      "boundary_upper": "907955167197587/500000000000000",
+      "boundary_upper_decimal": "1.81591033",
+      "empirical_risk": "142246169415660725930877949/8000000000000000000000000000",
+      "empirical_risk_decimal": "0.01778077",
+      "n": 8
+    },
+    {
+      "boundary_lower": "341980623373231/200000000000000",
+      "boundary_lower_decimal": "1.70990312",
+      "boundary_upper": "427475779216539/250000000000000",
+      "boundary_upper_decimal": "1.70990312",
+      "empirical_risk": "11010624600975862357287977/120000000000000000000000000",
+      "empirical_risk_decimal": "0.09175521",
+      "n": 9
+    },
+    {
+      "boundary_lower": "76986853622827/50000000000000",
+      "boundary_lower_decimal": "1.53973707",
+      "boundary_upper": "1539737072456541/1000000000000000",
+      "boundary_upper_decimal": "1.53973707",
+      "empirical_risk": "25972145449016746689228287/312500000000000000000000000",
+      "empirical_risk_decimal": "0.08311087",
+      "n": 10
+    },
+    {
+      "boundary_lower": "1401921964278359/1000000000000000",
+      "boundary_lower_decimal": "1.40192196",
+      "boundary_upper": "35048049106959/25000000000000",
+      "boundary_upper_decimal": "1.40192196",
+      "empirical_risk": "426622976871872420117923399/5500000000000000000000000000",
+      "empirical_risk_decimal": "0.07756781",
+      "n": 11
+    },
+    {
+      "boundary_lower": "672135300639983/500000000000000",
+      "boundary_lower_decimal": "1.34427060",
+      "boundary_upper": "1344270601279967/1000000000000000",
+      "boundary_upper_decimal": "1.34427060",
+      "empirical_risk": "363314816675807555349225217/3000000000000000000000000000",
+      "empirical_risk_decimal": "0.12110494",
+      "n": 12
+    },
+    {
+      "boundary_lower": "1241424769616737/1000000000000000",
+      "boundary_lower_decimal": "1.24142477",
+      "boundary_upper": "620712384808369/500000000000000",
+      "boundary_upper_decimal": "1.24142477",
+      "empirical_risk": "1454959314001848464666657793/13000000000000000000000000000",
+      "empirical_risk_decimal": "0.11191995",
+      "n": 13
+    },
+    {
+      "boundary_lower": "1153194587018331/1000000000000000",
+      "boundary_lower_decimal": "1.15319459",
+      "boundary_upper": "288298646754583/250000000000000",
+      "boundary_upper_decimal": "1.15319459",
+      "empirical_risk": "1456391019597866177373396647/14000000000000000000000000000",
+      "empirical_risk_decimal": "0.10402793",
+      "n": 14
+    },
+    {
+      "boundary_lower": "13503495397621/12500000000000",
+      "boundary_lower_decimal": "1.08027963",
+      "boundary_upper": "1080279631809681/1000000000000000",
+      "boundary_upper_decimal": "1.08027963",
+      "empirical_risk": "1514319457220363366652364453/15000000000000000000000000000",
+      "empirical_risk_decimal": "0.10095463",
+      "n": 15
+    },
+    {
+      "boundary_lower": "506660082595031/500000000000000",
+      "boundary_lower_decimal": "1.01332017",
+      "boundary_upper": "1013320165190063/1000000000000000",
+      "boundary_upper_decimal": "1.01332017",
+      "empirical_risk": "759828900140017919626819677/8000000000000000000000000000",
+      "empirical_risk_decimal": "0.09497861",
+      "n": 16
+    },
+    {
+      "boundary_lower": "953971653527813/1000000000000000",
+      "boundary_lower_decimal": "0.95397165",
+      "boundary_upper": "476985826763907/500000000000000",
+      "boundary_upper_decimal": "0.95397165",
+      "empirical_risk": "1520619636514798239084749063/17000000000000000000000000000",
+      "empirical_risk_decimal": "0.08944821",
+      "n": 17
+    },
+    {
+      "boundary_lower": "112678525801667/125000000000000",
+      "boundary_lower_decimal": "0.90142821",
+      "boundary_upper": "901428206413337/1000000000000000",
+      "boundary_upper_decimal": "0.90142821",
+      "empirical_risk": "508675977651662616016123021/6000000000000000000000000000",
+      "empirical_risk_decimal": "0.08477933",
+      "n": 18
+    },
+    {
+      "boundary_lower": "213597768172033/250000000000000",
+      "boundary_lower_decimal": "0.85439107",
+      "boundary_upper": "854391072688133/1000000000000000",
+      "boundary_upper_decimal": "0.85439107",
+      "empirical_risk": "1531267607431664323320449959/19000000000000000000000000000",
+      "empirical_risk_decimal": "0.08059303",
+      "n": 19
+    },
+    {
+      "boundary_lower": "162366515652081/200000000000000",
+      "boundary_lower_decimal": "0.81183258",
+      "boundary_upper": "405916289130203/500000000000000",
+      "boundary_upper_decimal": "0.81183258",
+      "empirical_risk": "191497343260400195636968801/2500000000000000000000000000",
+      "empirical_risk_decimal": "0.07659894",
+      "n": 20
+    },
+    {
+      "boundary_lower": "773300917573537/1000000000000000",
+      "boundary_lower_decimal": "0.77330092",
+      "boundary_upper": "386650458786769/500000000000000",
+      "boundary_upper_decimal": "0.77330092",
+      "empirical_risk": "109455705119010144934424993/1500000000000000000000000000",
+      "empirical_risk_decimal": "0.07297047",
+      "n": 21
+    },
+    {
+      "boundary_lower": "747256828473711/1000000000000000",
+      "boundary_lower_decimal": "0.74725683",
+      "boundary_upper": "46703551779607/62500000000000",
+      "boundary_upper_decimal": "0.74725683",
+      "empirical_risk": "156984196001189280097372593/2000000000000000000000000000",
+      "empirical_risk_decimal": "0.07849210",
+      "n": 22
+    },
+    {
+      "boundary_lower": "714928839151439/1000000000000000",
+      "boundary_lower_decimal": "0.71492884",
+      "boundary_upper": "8936610489393/12500000000000",
+      "boundary_upper_decimal": "0.71492884",
+      "empirical_risk": "1728231589661603866998494377/23000000000000000000000000000",
+      "empirical_risk_decimal": "0.07514050",
+      "n": 23
+    },
+    {
+      "boundary_lower": "688803351191087/1000000000000000",
+      "boundary_lower_decimal": "0.68880335",
+      "boundary_upper": "43050209449443/62500000000000",
+      "boundary_upper_decimal": "0.68880335",
+      "empirical_risk": "907753192113033958901472799/12000000000000000000000000000",
+      "empirical_risk_decimal": "0.07564610",
+      "n": 24
+    },
+    {
+      "boundary_lower": "661384732933453/1000000000000000",
+      "boundary_lower_decimal": "0.66138473",
+      "boundary_upper": "330692366466727/500000000000000",
+      "boundary_upper_decimal": "0.66138473",
+      "empirical_risk": "1816699845843318173247218123/25000000000000000000000000000",
+      "empirical_risk_decimal": "0.07266799",
+      "n": 25
+    },
+    {
+      "boundary_lower": "636078037422011/1000000000000000",
+      "boundary_lower_decimal": "0.63607804",
+      "boundary_upper": "159019509355503/250000000000000",
+      "boundary_upper_decimal": "0.63607804",
+      "empirical_risk": "454536912987431192095953291/6500000000000000000000000000",
+      "empirical_risk_decimal": "0.06992876",
+      "n": 26
+    },
+    {
+      "boundary_lower": "306324396386469/500000000000000",
+      "boundary_lower_decimal": "0.61264879",
+      "boundary_upper": "612648792772939/1000000000000000",
+      "boundary_upper_decimal": "0.61264879",
+      "empirical_risk": "1819817937103227629164740589/27000000000000000000000000000",
+      "empirical_risk_decimal": "0.06740066",
+      "n": 27
+    },
+    {
+      "boundary_lower": "590856714822037/1000000000000000",
+      "boundary_lower_decimal": "0.59085671",
+      "boundary_upper": "295428357411019/500000000000000",
+      "boundary_upper_decimal": "0.59085671",
+      "empirical_risk": "182057056084526694383434923/2800000000000000000000000000",
+      "empirical_risk_decimal": "0.06502038",
+      "n": 28
+    },
+    {
+      "boundary_lower": "570714906121391/1000000000000000",
+      "boundary_lower_decimal": "0.57071491",
+      "boundary_upper": "35669681632587/62500000000000",
+      "boundary_upper_decimal": "0.57071491",
+      "empirical_risk": "1825923234022686932589546019/29000000000000000000000000000",
+      "empirical_risk_decimal": "0.06296287",
+      "n": 29
+    },
+    {
+      "boundary_lower": "275887714665489/500000000000000",
+      "boundary_lower_decimal": "0.55177543",
+      "boundary_upper": "551775429330979/1000000000000000",
+      "boundary_upper_decimal": "0.55177543",
+      "empirical_risk": "1826970037331350060243898153/30000000000000000000000000000",
+      "empirical_risk_decimal": "0.06089900",
+      "n": 30
+    },
+    {
+      "boundary_lower": "267096433260709/500000000000000",
+      "boundary_lower_decimal": "0.53419287",
+      "boundary_upper": "534192866521419/1000000000000000",
+      "boundary_upper_decimal": "0.53419287",
+      "empirical_risk": "1832473678320771947594435337/31000000000000000000000000000",
+      "empirical_risk_decimal": "0.05911205",
+      "n": 31
+    },
+    {
+      "boundary_lower": "64698376242809/125000000000000",
+      "boundary_lower_decimal": "0.51758701",
+      "boundary_upper": "517587009942473/1000000000000000",
+      "boundary_upper_decimal": "0.51758701",
+      "empirical_risk": "916997276998885748610837539/16000000000000000000000000000",
+      "empirical_risk_decimal": "0.05731233",
+      "n": 32
+    },
+    {
+      "boundary_lower": "62762443237397/125000000000000",
+      "boundary_lower_decimal": "0.50209955",
+      "boundary_upper": "502099545899177/1000000000000000",
+      "boundary_upper_decimal": "0.50209955",
+      "empirical_risk": "613145733007838740388609489/11000000000000000000000000000",
+      "empirical_risk_decimal": "0.05574052",
+      "n": 33
+    },
+    {
+      "boundary_lower": "487424547355951/1000000000000000",
+      "boundary_lower_decimal": "0.48742455",
+      "boundary_upper": "30464034209747/62500000000000",
+      "boundary_upper_decimal": "0.48742455",
+      "empirical_risk": "14386315657154877786454381/265625000000000000000000000",
+      "empirical_risk_decimal": "0.05416025",
+      "n": 34
+    },
+    {
+      "boundary_lower": "236784390964037/500000000000000",
+      "boundary_lower_decimal": "0.47356878",
+      "boundary_upper": "18942751277123/40000000000000",
+      "boundary_upper_decimal": "0.47356878",
+      "empirical_risk": "921421634444552235923421327/17500000000000000000000000000",
+      "empirical_risk_decimal": "0.05265266",
+      "n": 35
+    },
+    {
+      "boundary_lower": "460586501524271/1000000000000000",
+      "boundary_lower_decimal": "0.46058650",
+      "boundary_upper": "28786656345267/62500000000000",
+      "boundary_upper_decimal": "0.46058650",
+      "empirical_risk": "924086869204562353353385477/18000000000000000000000000000",
+      "empirical_risk_decimal": "0.05133816",
+      "n": 36
+    },
+    {
+      "boundary_lower": "224151081096221/500000000000000",
+      "boundary_lower_decimal": "0.44830216",
+      "boundary_upper": "448302162192443/1000000000000000",
+      "boundary_upper_decimal": "0.44830216",
+      "empirical_risk": "185340774521487404179265343/3700000000000000000000000000",
+      "empirical_risk_decimal": "0.05009210",
+      "n": 37
+    },
+    {
+      "boundary_lower": "87447494953823/200000000000000",
+      "boundary_lower_decimal": "0.43723747",
+      "boundary_upper": "109309368692279/250000000000000",
+      "boundary_upper_decimal": "0.43723747",
+      "empirical_risk": "1880872810504088097349271059/38000000000000000000000000000",
+      "empirical_risk_decimal": "0.04949665",
+      "n": 38
+    },
+    {
+      "boundary_lower": "11266952317579/25000000000000",
+      "boundary_lower_decimal": "0.45067809",
+      "boundary_upper": "450678092703161/1000000000000000",
+      "boundary_upper_decimal": "0.45067809",
+      "empirical_risk": "880355457983670815579388763/13000000000000000000000000000",
+      "empirical_risk_decimal": "0.06771965",
+      "n": 39
+    },
+    {
+      "boundary_lower": "8789823480787/20000000000000",
+      "boundary_lower_decimal": "0.43949117",
+      "boundary_upper": "439491174039351/1000000000000000",
+      "boundary_upper_decimal": "0.43949117",
+      "empirical_risk": "528513383344394212814910851/8000000000000000000000000000",
+      "empirical_risk_decimal": "0.06606417",
+      "n": 40
+    },
+    {
+      "boundary_lower": "428816488646271/1000000000000000",
+      "boundary_lower_decimal": "0.42881649",
+      "boundary_upper": "3350128817549/7812500000000",
+      "boundary_upper_decimal": "0.42881649",
+      "empirical_risk": "33033919819895645455471261/512500000000000000000000000",
+      "empirical_risk_decimal": "0.06445643",
+      "n": 41
+    },
+    {
+      "boundary_lower": "209323864139047/500000000000000",
+      "boundary_lower_decimal": "0.41864773",
+      "boundary_upper": "83729545655619/200000000000000",
+      "boundary_upper_decimal": "0.41864773",
+      "empirical_risk": "2642838909951567115827308881/42000000000000000000000000000",
+      "empirical_risk_decimal": "0.06292474",
+      "n": 42
+    },
+    {
+      "boundary_lower": "408978339524917/1000000000000000",
+      "boundary_lower_decimal": "0.40897834",
+      "boundary_upper": "204489169762459/500000000000000",
+      "boundary_upper_decimal": "0.40897834",
+      "empirical_risk": "1322117524462971795648796111/21500000000000000000000000000",
+      "empirical_risk_decimal": "0.06149384",
+      "n": 43
+    },
+    {
+      "boundary_lower": "199887608450501/500000000000000",
+      "boundary_lower_decimal": "0.39977522",
+      "boundary_upper": "399775216901003/1000000000000000",
+      "boundary_upper_decimal": "0.39977522",
+      "empirical_risk": "661732822748089338511354149/11000000000000000000000000000",
+      "empirical_risk_decimal": "0.06015753",
+      "n": 44
+    },
+    {
+      "boundary_lower": "39103663460021/100000000000000",
+      "boundary_lower_decimal": "0.39103663",
+      "boundary_upper": "391036634600211/1000000000000000",
+      "boundary_upper_decimal": "0.39103663",
+      "empirical_risk": "2652288428785941577152060721/45000000000000000000000000000",
+      "empirical_risk_decimal": "0.05893974",
+      "n": 45
+    },
+    {
+      "boundary_lower": "4782449206751/12500000000000",
+      "boundary_lower_decimal": "0.38259594",
+      "boundary_upper": "382595936540081/1000000000000000",
+      "boundary_upper_decimal": "0.38259594",
+      "empirical_risk": "1326886448012597320898935423/23000000000000000000000000000",
+      "empirical_risk_decimal": "0.05769072",
+      "n": 46
+    },
+    {
+      "boundary_lower": "74898997965563/200000000000000",
+      "boundary_lower_decimal": "0.37449499",
+      "boundary_upper": "46811873728477/125000000000000",
+      "boundary_upper_decimal": "0.37449499",
+      "empirical_risk": "663590540248660648520966183/11750000000000000000000000000",
+      "empirical_risk_decimal": "0.05647579",
+      "n": 47
+    },
+    {
+      "boundary_lower": "366747850248407/1000000000000000",
+      "boundary_lower_decimal": "0.36674785",
+      "boundary_upper": "45843481281051/125000000000000",
+      "boundary_upper_decimal": "0.36674785",
+      "empirical_risk": "2655821136021857752134771613/48000000000000000000000000000",
+      "empirical_risk_decimal": "0.05532961",
+      "n": 48
+    },
+    {
+      "boundary_lower": "359324006770931/1000000000000000",
+      "boundary_lower_decimal": "0.35932401",
+      "boundary_upper": "89831001692733/250000000000000",
+      "boundary_upper_decimal": "0.35932401",
+      "empirical_risk": "2657652490850770189781214507/49000000000000000000000000000",
+      "empirical_risk_decimal": "0.05423781",
+      "n": 49
+    },
+    {
+      "boundary_lower": "352219631345763/1000000000000000",
+      "boundary_lower_decimal": "0.35221963",
+      "boundary_upper": "88054907836441/250000000000000",
+      "boundary_upper_decimal": "0.35221963",
+      "empirical_risk": "2660738094313614435634648073/50000000000000000000000000000",
+      "empirical_risk_decimal": "0.05321476",
+      "n": 50
+    },
+    {
+      "boundary_lower": "86335091588627/250000000000000",
+      "boundary_lower_decimal": "0.34534037",
+      "boundary_upper": "345340366354509/1000000000000000",
+      "boundary_upper_decimal": "0.34534037",
+      "empirical_risk": "1330514971831385546415474101/25500000000000000000000000000",
+      "empirical_risk_decimal": "0.05217706",
+      "n": 51
+    },
+    {
+      "boundary_lower": "338750397488047/1000000000000000",
+      "boundary_lower_decimal": "0.33875040",
+      "boundary_upper": "21171899843003/62500000000000",
+      "boundary_upper_decimal": "0.33875040",
+      "empirical_risk": "2662691031766543921329201131/52000000000000000000000000000",
+      "empirical_risk_decimal": "0.05120560",
+      "n": 52
+    },
+    {
+      "boundary_lower": "332381835154377/1000000000000000",
+      "boundary_lower_decimal": "0.33238184",
+      "boundary_upper": "166190917577189/500000000000000",
+      "boundary_upper_decimal": "0.33238184",
+      "empirical_risk": "66572545816994571081357321/1325000000000000000000000000",
+      "empirical_risk_decimal": "0.05024343",
+      "n": 53
+    },
+    {
+      "boundary_lower": "326273035001543/1000000000000000",
+      "boundary_lower_decimal": "0.32627304",
+      "boundary_upper": "40784129375193/125000000000000",
+      "boundary_upper_decimal": "0.32627304",
+      "empirical_risk": "1332243003801123625636320823/27000000000000000000000000000",
+      "empirical_risk_decimal": "0.04934233",
+      "n": 54
+    },
+    {
+      "boundary_lower": "10011957432077/31250000000000",
+      "boundary_lower_decimal": "0.32038264",
+      "boundary_upper": "64076527565293/200000000000000",
+      "boundary_upper_decimal": "0.32038264",
+      "empirical_risk": "666474089142324021534766203/13750000000000000000000000000",
+      "empirical_risk_decimal": "0.04847084",
+      "n": 55
+    },
+    {
+      "boundary_lower": "39335075398379/125000000000000",
+      "boundary_lower_decimal": "0.31468060",
+      "boundary_upper": "314680603187033/1000000000000000",
+      "boundary_upper_decimal": "0.31468060",
+      "empirical_risk": "2666061646570176041817370681/56000000000000000000000000000",
+      "empirical_risk_decimal": "0.04760824",
+      "n": 56
+    },
+    {
+      "boundary_lower": "77296228967029/250000000000000",
+      "boundary_lower_decimal": "0.30918492",
+      "boundary_upper": "309184915868117/1000000000000000",
+      "boundary_upper_decimal": "0.30918492",
+      "empirical_risk": "21333046559887161997582067/456000000000000000000000000",
+      "empirical_risk_decimal": "0.04678300",
+      "n": 57
+    },
+    {
+      "boundary_lower": "303896917500471/1000000000000000",
+      "boundary_lower_decimal": "0.30389692",
+      "boundary_upper": "37987114687559/125000000000000",
+      "boundary_upper_decimal": "0.30389692",
+      "empirical_risk": "2668309777003366737754437581/58000000000000000000000000000",
+      "empirical_risk_decimal": "0.04600534",
+      "n": 58
+    },
+    {
+      "boundary_lower": "298762608479343/1000000000000000",
+      "boundary_lower_decimal": "0.29876261",
+      "boundary_upper": "18672663029959/62500000000000",
+      "boundary_upper_decimal": "0.29876261",
+      "empirical_risk": "266846832354975636125701377/5900000000000000000000000000",
+      "empirical_risk_decimal": "0.04522828",
+      "n": 59
+    },
+    {
+      "boundary_lower": "293818709728181/1000000000000000",
+      "boundary_lower_decimal": "0.29381871",
+      "boundary_upper": "146909354864091/500000000000000",
+      "boundary_upper_decimal": "0.29381871",
+      "empirical_risk": "2669850701052491189566865419/60000000000000000000000000000",
+      "empirical_risk_decimal": "0.04449751",
+      "n": 60
+    },
+    {
+      "boundary_lower": "5780730971319/20000000000000",
+      "boundary_lower_decimal": "0.28903655",
+      "boundary_upper": "289036548565951/1000000000000000",
+      "boundary_upper_decimal": "0.28903655",
+      "empirical_risk": "21369889126621812129793333/488000000000000000000000000",
+      "empirical_risk_decimal": "0.04379076",
+      "n": 61
+    },
+    {
+      "boundary_lower": "35572622143119/125000000000000",
+      "boundary_lower_decimal": "0.28458098",
+      "boundary_upper": "284580977144953/1000000000000000",
+      "boundary_upper_decimal": "0.28458098",
+      "empirical_risk": "1341781104224517644487161483/31000000000000000000000000000",
+      "empirical_risk_decimal": "0.04328326",
+      "n": 62
+    },
+    {
+      "boundary_lower": "14004849292607/50000000000000",
+      "boundary_lower_decimal": "0.28009699",
+      "boundary_upper": "280096985852141/1000000000000000",
+      "boundary_upper_decimal": "0.28009699",
+      "empirical_risk": "671242974222568137069853133/15750000000000000000000000000",
+      "empirical_risk_decimal": "0.04261860",
+      "n": 63
+    },
+    {
+      "boundary_lower": "275752159751033/1000000000000000",
+      "boundary_lower_decimal": "0.27575216",
+      "boundary_upper": "137876079875517/500000000000000",
+      "boundary_upper_decimal": "0.27575216",
+      "empirical_risk": "1343169457851091036963590453/32000000000000000000000000000",
+      "empirical_risk_decimal": "0.04197405",
+      "n": 64
+    },
+    {
+      "boundary_lower": "271599609486383/1000000000000000",
+      "boundary_lower_decimal": "0.27159961",
+      "boundary_upper": "16974975592899/62500000000000",
+      "boundary_upper_decimal": "0.27159961",
+      "empirical_risk": "538328439571565974603981147/13000000000000000000000000000",
+      "empirical_risk_decimal": "0.04140988",
+      "n": 65
+    },
+    {
+      "boundary_lower": "66900536402183/250000000000000",
+      "boundary_lower_decimal": "0.26760215",
+      "boundary_upper": "267602145608733/1000000000000000",
+      "boundary_upper_decimal": "0.26760215",
+      "empirical_risk": "899638899308672687009537873/22000000000000000000000000000",
+      "empirical_risk_decimal": "0.04089268",
+      "n": 66
+    },
+    {
+      "boundary_lower": "263944115799319/1000000000000000",
+      "boundary_lower_decimal": "0.26394412",
+      "boundary_upper": "6598602894983/25000000000000",
+      "boundary_upper_decimal": "0.26394412",
+      "empirical_risk": "10629509167560141196603963/261718750000000000000000000",
+      "empirical_risk_decimal": "0.04061424",
+      "n": 67
+    },
+    {
+      "boundary_lower": "13003961614737/50000000000000",
+      "boundary_lower_decimal": "0.26007923",
+      "boundary_upper": "260079232294741/1000000000000000",
+      "boundary_upper_decimal": "0.26007923",
+      "empirical_risk": "2721664737985508849867093517/68000000000000000000000000000",
+      "empirical_risk_decimal": "0.04002448",
+      "n": 68
+    },
+    {
+      "boundary_lower": "25633944162877/100000000000000",
+      "boundary_lower_decimal": "0.25633944",
+      "boundary_upper": "256339441628771/1000000000000000",
+      "boundary_upper_decimal": "0.25633944",
+      "empirical_risk": "2723122642122575274793918123/69000000000000000000000000000",
+      "empirical_risk_decimal": "0.03946555",
+      "n": 69
+    },
+    {
+      "boundary_lower": "126499531102677/500000000000000",
+      "boundary_lower_decimal": "0.25299906",
+      "boundary_upper": "50599812441071/200000000000000",
+      "boundary_upper_decimal": "0.25299906",
+      "empirical_risk": "686345665080200121506869091/17500000000000000000000000000",
+      "empirical_risk_decimal": "0.03921975",
+      "n": 70
+    },
+    {
+      "boundary_lower": "15591548167903/62500000000000",
+      "boundary_lower_decimal": "0.24946477",
+      "boundary_upper": "249464770686449/1000000000000000",
+      "boundary_upper_decimal": "0.24946477",
+      "empirical_risk": "1373448088950199070146908057/35500000000000000000000000000",
+      "empirical_risk_decimal": "0.03868868",
+      "n": 71
+    },
+    {
+      "boundary_lower": "246029610870531/1000000000000000",
+      "boundary_lower_decimal": "0.24602961",
+      "boundary_upper": "61507402717633/250000000000000",
+      "boundary_upper_decimal": "0.24602961",
+      "empirical_risk": "68712310954241716416546553/1800000000000000000000000000",
+      "empirical_risk_decimal": "0.03817351",
+      "n": 72
+    },
+    {
+      "boundary_lower": "970742991667/4000000000000",
+      "boundary_lower_decimal": "0.24268575",
+      "boundary_upper": "242685747916751/1000000000000000",
+      "boundary_upper_decimal": "0.24268575",
+      "empirical_risk": "2749896184106038257442903241/73000000000000000000000000000",
+      "empirical_risk_decimal": "0.03766981",
+      "n": 73
+    },
+    {
+      "boundary_lower": "11970802403449/50000000000000",
+      "boundary_lower_decimal": "0.23941605",
+      "boundary_upper": "239416048068981/1000000000000000",
+      "boundary_upper_decimal": "0.23941605",
+      "empirical_risk": "275008040450285713989135873/7400000000000000000000000000",
+      "empirical_risk_decimal": "0.03716325",
+      "n": 74
+    },
+    {
+      "boundary_lower": "236265613155961/1000000000000000",
+      "boundary_lower_decimal": "0.23626561",
+      "boundary_upper": "118132806577981/500000000000000",
+      "boundary_upper_decimal": "0.23626561",
+      "empirical_risk": "2752751702750147346312192331/75000000000000000000000000000",
+      "empirical_risk_decimal": "0.03670336",
+      "n": 75
+    },
+    {
+      "boundary_lower": "233208420882889/1000000000000000",
+      "boundary_lower_decimal": "0.23320842",
+      "boundary_upper": "23320842088289/100000000000000",
+      "boundary_upper_decimal": "0.23320842",
+      "empirical_risk": "2756239767738025621742521977/76000000000000000000000000000",
+      "empirical_risk_decimal": "0.03626631",
+      "n": 76
+    },
+    {
+      "boundary_lower": "230203362579109/1000000000000000",
+      "boundary_lower_decimal": "0.23020336",
+      "boundary_upper": "23020336257911/100000000000000",
+      "boundary_upper_decimal": "0.23020336",
+      "empirical_risk": "1378791800597614112157631451/38500000000000000000000000000",
+      "empirical_risk_decimal": "0.03581277",
+      "n": 77
+    },
+    {
+      "boundary_lower": "9092975148733/40000000000000",
+      "boundary_lower_decimal": "0.22732438",
+      "boundary_upper": "113662189359163/500000000000000",
+      "boundary_upper_decimal": "0.22732438",
+      "empirical_risk": "2762856326866739639250215771/78000000000000000000000000000",
+      "empirical_risk_decimal": "0.03542123",
+      "n": 78
+    },
+    {
+      "boundary_lower": "28064908569611/125000000000000",
+      "boundary_lower_decimal": "0.22451927",
+      "boundary_upper": "224519268556889/1000000000000000",
+      "boundary_upper_decimal": "0.22451927",
+      "empirical_risk": "69205433200718571338853087/1975000000000000000000000000",
+      "empirical_risk_decimal": "0.03504073",
+      "n": 79
+    },
+    {
+      "boundary_lower": "55446186785427/250000000000000",
+      "boundary_lower_decimal": "0.22178475",
+      "boundary_upper": "221784747141709/1000000000000000",
+      "boundary_upper_decimal": "0.22178475",
+      "empirical_risk": "2773623195353980408159743229/80000000000000000000000000000",
+      "empirical_risk_decimal": "0.03467029",
+      "n": 80
+    },
+    {
+      "boundary_lower": "109661095543553/500000000000000",
+      "boundary_lower_decimal": "0.21932219",
+      "boundary_upper": "219322191087107/1000000000000000",
+      "boundary_upper_decimal": "0.21932219",
+      "empirical_risk": "34515384162954883942313963/1000000000000000000000000000",
+      "empirical_risk_decimal": "0.03451538",
+      "n": 81
+    },
+    {
+      "boundary_lower": "219915745711061/1000000000000000",
+      "boundary_lower_decimal": "0.21991575",
+      "boundary_upper": "109957872855531/500000000000000",
+      "boundary_upper_decimal": "0.21991575",
+      "empirical_risk": "761447751101197366385160407/20500000000000000000000000000",
+      "empirical_risk_decimal": "0.03714379",
+      "n": 82
+    },
+    {
+      "boundary_lower": "1709793338933/7812500000000",
+      "boundary_lower_decimal": "0.21885355",
+      "boundary_upper": "8754141895337/40000000000000",
+      "boundary_upper_decimal": "0.21885355",
+      "empirical_risk": "1586966894756508634373285181/41500000000000000000000000000",
+      "empirical_risk_decimal": "0.03824017",
+      "n": 83
+    },
+    {
+      "boundary_lower": "216689621571791/1000000000000000",
+      "boundary_lower_decimal": "0.21668962",
+      "boundary_upper": "13543101348237/62500000000000",
+      "boundary_upper_decimal": "0.21668962",
+      "empirical_risk": "200672564173402744884400973/5250000000000000000000000000",
+      "empirical_risk_decimal": "0.03822335",
+      "n": 84
+    },
+    {
+      "boundary_lower": "2148238702651/10000000000000",
+      "boundary_lower_decimal": "0.21482387",
+      "boundary_upper": "214823870265101/1000000000000000",
+      "boundary_upper_decimal": "0.21482387",
+      "empirical_risk": "3268321751103627207840405697/85000000000000000000000000000",
+      "empirical_risk_decimal": "0.03845084",
+      "n": 85
+    },
+    {
+      "boundary_lower": "2125867262059/10000000000000",
+      "boundary_lower_decimal": "0.21258673",
+      "boundary_upper": "212586726205901/1000000000000000",
+      "boundary_upper_decimal": "0.21258673",
+      "empirical_risk": "3290534348970422919505423871/86000000000000000000000000000",
+      "empirical_risk_decimal": "0.03826203",
+      "n": 86
+    },
+    {
+      "boundary_lower": "42168879868409/200000000000000",
+      "boundary_lower_decimal": "0.21084440",
+      "boundary_upper": "105422199671023/500000000000000",
+      "boundary_upper_decimal": "0.21084440",
+      "empirical_risk": "279245600548347679947245793/7250000000000000000000000000",
+      "empirical_risk_decimal": "0.03851663",
+      "n": 87
+    },
+    {
+      "boundary_lower": "208570693220799/1000000000000000",
+      "boundary_lower_decimal": "0.20857069",
+      "boundary_upper": "130356683263/625000000000",
+      "boundary_upper_decimal": "0.20857069",
+      "empirical_risk": "26260723435091987697131399/687500000000000000000000000",
+      "empirical_risk_decimal": "0.03819742",
+      "n": 88
+    },
+    {
+      "boundary_lower": "41295864843361/200000000000000",
+      "boundary_lower_decimal": "0.20647932",
+      "boundary_upper": "103239662108403/500000000000000",
+      "boundary_upper_decimal": "0.20647932",
+      "empirical_risk": "1691803178011791223970818123/44500000000000000000000000000",
+      "empirical_risk_decimal": "0.03801805",
+      "n": 89
+    },
+    {
+      "boundary_lower": "204833764348217/1000000000000000",
+      "boundary_lower_decimal": "0.20483376",
+      "boundary_upper": "102416882174109/500000000000000",
+      "boundary_upper_decimal": "0.20483376",
+      "empirical_risk": "860365512235678700456021329/22500000000000000000000000000",
+      "empirical_risk_decimal": "0.03823847",
+      "n": 90
+    },
+    {
+      "boundary_lower": "20355716648249/100000000000000",
+      "boundary_lower_decimal": "0.20355717",
+      "boundary_upper": "203557166482491/1000000000000000",
+      "boundary_upper_decimal": "0.20355717",
+      "empirical_risk": "882190534380775839808524449/22750000000000000000000000000",
+      "empirical_risk_decimal": "0.03877761",
+      "n": 91
+    },
+    {
+      "boundary_lower": "51964518283297/250000000000000",
+      "boundary_lower_decimal": "0.20785807",
+      "boundary_upper": "207858073133189/1000000000000000",
+      "boundary_upper_decimal": "0.20785807",
+      "empirical_risk": "807772969041633802538459109/18400000000000000000000000000",
+      "empirical_risk_decimal": "0.04390070",
+      "n": 92
+    },
+    {
+      "boundary_lower": "51757968491137/250000000000000",
+      "boundary_lower_decimal": "0.20703187",
+      "boundary_upper": "207031873964549/1000000000000000",
+      "boundary_upper_decimal": "0.20703187",
+      "empirical_risk": "833358412088775816431005163/18600000000000000000000000000",
+      "empirical_risk_decimal": "0.04480422",
+      "n": 93
+    },
+    {
+      "boundary_lower": "26234010077179/125000000000000",
+      "boundary_lower_decimal": "0.20987208",
+      "boundary_upper": "209872080617433/1000000000000000",
+      "boundary_upper_decimal": "0.20987208",
+      "empirical_risk": "1146334213828195531323873489/23500000000000000000000000000",
+      "empirical_risk_decimal": "0.04878018",
+      "n": 94
+    },
+    {
+      "boundary_lower": "52330916320097/250000000000000",
+      "boundary_lower_decimal": "0.20932367",
+      "boundary_upper": "209323665280389/1000000000000000",
+      "boundary_upper_decimal": "0.20932367",
+      "empirical_risk": "2313780513125335717960519/46386718750000000000000000",
+      "empirical_risk_decimal": "0.04988024",
+      "n": 95
+    },
+    {
+      "boundary_lower": "207530046735449/1000000000000000",
+      "boundary_lower_decimal": "0.20753005",
+      "boundary_upper": "4150600934709/20000000000000",
+      "boundary_upper_decimal": "0.20753005",
+      "empirical_risk": "795910041454159940167145077/16000000000000000000000000000",
+      "empirical_risk_decimal": "0.04974438",
+      "n": 96
+    },
+    {
+      "boundary_lower": "206228944396119/1000000000000000",
+      "boundary_lower_decimal": "0.20622894",
+      "boundary_upper": "5155723609903/25000000000000",
+      "boundary_upper_decimal": "0.20622894",
+      "empirical_risk": "4855978235236210662001312591/97000000000000000000000000000",
+      "empirical_risk_decimal": "0.05006163",
+      "n": 97
+    },
+    {
+      "boundary_lower": "106376164781051/500000000000000",
+      "boundary_lower_decimal": "0.21275233",
+      "boundary_upper": "212752329562103/1000000000000000",
+      "boundary_upper_decimal": "0.21275233",
+      "empirical_risk": "49464568710352334008416921/875000000000000000000000000",
+      "empirical_risk_decimal": "0.05653094",
+      "n": 98
+    },
+    {
+      "boundary_lower": "102945739287/488281250000",
+      "boundary_lower_decimal": "0.21083287",
+      "boundary_upper": "210832874059777/1000000000000000",
+      "boundary_upper_decimal": "0.21083287",
+      "empirical_risk": "5562189230629211543370573553/99000000000000000000000000000",
+      "empirical_risk_decimal": "0.05618373",
+      "n": 99
+    },
+    {
+      "boundary_lower": "208788599318949/1000000000000000",
+      "boundary_lower_decimal": "0.20878860",
+      "boundary_upper": "4175771986379/20000000000000",
+      "boundary_upper_decimal": "0.20878860",
+      "empirical_risk": "2783794894328219244541931167/50000000000000000000000000000",
+      "empirical_risk_decimal": "0.05567590",
+      "n": 100
+    },
+    {
+      "boundary_lower": "51686624154591/250000000000000",
+      "boundary_lower_decimal": "0.20674650",
+      "boundary_upper": "41349299323673/200000000000000",
+      "boundary_upper_decimal": "0.20674650",
+      "empirical_risk": "5568986926116328365486342283/101000000000000000000000000000",
+      "empirical_risk_decimal": "0.05513848",
+      "n": 101
+    },
+    {
+      "boundary_lower": "2559787432899/12500000000000",
+      "boundary_lower_decimal": "0.20478299",
+      "boundary_upper": "204782994631921/1000000000000000",
+      "boundary_upper_decimal": "0.20478299",
+      "empirical_risk": "14516894710352079083349733/265625000000000000000000000",
+      "empirical_risk_decimal": "0.05465184",
+      "n": 102
+    },
+    {
+      "boundary_lower": "202810927138353/1000000000000000",
+      "boundary_lower_decimal": "0.20281093",
+      "boundary_upper": "101405463569177/500000000000000",
+      "boundary_upper_decimal": "0.20281093",
+      "empirical_risk": "5575011828965648190007453901/103000000000000000000000000000",
+      "empirical_risk_decimal": "0.05412633",
+      "n": 103
+    },
+    {
+      "boundary_lower": "50230235293553/250000000000000",
+      "boundary_lower_decimal": "0.20092094",
+      "boundary_upper": "200920941174213/1000000000000000",
+      "boundary_upper_decimal": "0.20092094",
+      "empirical_risk": "558033893703165070142574169/10400000000000000000000000000",
+      "empirical_risk_decimal": "0.05365711",
+      "n": 104
+    },
+    {
+      "boundary_lower": "199066313210519/1000000000000000",
+      "boundary_lower_decimal": "0.19906631",
+      "boundary_upper": "4976657830263/25000000000000",
+      "boundary_upper_decimal": "0.19906631",
+      "empirical_risk": "558561495132136548307873199/10500000000000000000000000000",
+      "empirical_risk_decimal": "0.05319633",
+      "n": 105
+    },
+    {
+      "boundary_lower": "98623820487203/500000000000000",
+      "boundary_lower_decimal": "0.19724764",
+      "boundary_upper": "197247640974407/1000000000000000",
+      "boundary_upper_decimal": "0.19724764",
+      "empirical_risk": "5591011487692193197835830539/106000000000000000000000000000",
+      "empirical_risk_decimal": "0.05274539",
+      "n": 106
+    },
+    {
+      "boundary_lower": "19546270365117/100000000000000",
+      "boundary_lower_decimal": "0.19546270",
+      "boundary_upper": "195462703651171/1000000000000000",
+      "boundary_upper_decimal": "0.19546270",
+      "empirical_risk": "8954235548289941781865111/171200000000000000000000000",
+      "empirical_risk_decimal": "0.05230278",
+      "n": 107
+    },
+    {
+      "boundary_lower": "19368798676697/100000000000000",
+      "boundary_lower_decimal": "0.19368799",
+      "boundary_upper": "193687986766971/1000000000000000",
+      "boundary_upper_decimal": "0.19368799",
+      "empirical_risk": "74656505584906642659615079/1440000000000000000000000000",
+      "empirical_risk_decimal": "0.05184480",
+      "n": 108
+    },
+    {
+      "boundary_lower": "96006898504879/500000000000000",
+      "boundary_lower_decimal": "0.19201380",
+      "boundary_upper": "192013797009759/1000000000000000",
+      "boundary_upper_decimal": "0.19201380",
+      "empirical_risk": "2804874539962333164822602837/54500000000000000000000000000",
+      "empirical_risk_decimal": "0.05146559",
+      "n": 109
+    },
+    {
+      "boundary_lower": "190474007288213/1000000000000000",
+      "boundary_lower_decimal": "0.19047401",
+      "boundary_upper": "95237003644107/500000000000000",
+      "boundary_upper_decimal": "0.19047401",
+      "empirical_risk": "351996473424428551495892553/6875000000000000000000000000",
+      "empirical_risk_decimal": "0.05119949",
+      "n": 110
+    },
+    {
+      "boundary_lower": "188921692908731/1000000000000000",
+      "boundary_lower_decimal": "0.18892169",
+      "boundary_upper": "47230423227183/250000000000000",
+      "boundary_upper_decimal": "0.18892169",
+      "empirical_risk": "941600385776385141394428339/18500000000000000000000000000",
+      "empirical_risk_decimal": "0.05089732",
+      "n": 111
+    },
+    {
+      "boundary_lower": "187249771798571/1000000000000000",
+      "boundary_lower_decimal": "0.18724977",
+      "boundary_upper": "46812442949643/250000000000000",
+      "boundary_upper_decimal": "0.18724977",
+      "empirical_risk": "5650293351173411574338493459/112000000000000000000000000000",
+      "empirical_risk_decimal": "0.05044905",
+      "n": 112
+    },
+    {
+      "boundary_lower": "186748563568011/1000000000000000",
+      "boundary_lower_decimal": "0.18674856",
+      "boundary_upper": "46687140892003/250000000000000",
+      "boundary_upper_decimal": "0.18674856",
+      "empirical_risk": "1444554951243652912544608097/28250000000000000000000000000",
+      "empirical_risk_decimal": "0.05113469",
+      "n": 113
+    },
+    {
+      "boundary_lower": "93718974109667/500000000000000",
+      "boundary_lower_decimal": "0.18743795",
+      "boundary_upper": "37487589643867/200000000000000",
+      "boundary_upper_decimal": "0.18743795",
+      "empirical_risk": "1004711405743830252543126767/19000000000000000000000000000",
+      "empirical_risk_decimal": "0.05287955",
+      "n": 114
+    },
+    {
+      "boundary_lower": "185829033263729/1000000000000000",
+      "boundary_lower_decimal": "0.18582903",
+      "boundary_upper": "18582903326373/100000000000000",
+      "boundary_upper_decimal": "0.18582903",
+      "empirical_risk": "753706885873863992521476071/14375000000000000000000000000",
+      "empirical_risk_decimal": "0.05243178",
+      "n": 115
+    },
+    {
+      "boundary_lower": "184281870933573/1000000000000000",
+      "boundary_lower_decimal": "0.18428187",
+      "boundary_upper": "92140935466787/500000000000000",
+      "boundary_upper_decimal": "0.18428187",
+      "empirical_risk": "6035148202645105527269508093/116000000000000000000000000000",
+      "empirical_risk_decimal": "0.05202714",
+      "n": 116
+    },
+    {
+      "boundary_lower": "36545654674009/200000000000000",
+      "boundary_lower_decimal": "0.18272827",
+      "boundary_upper": "91364136685023/500000000000000",
+      "boundary_upper_decimal": "0.18272827",
+      "empirical_risk": "6036672045022731103844704139/117000000000000000000000000000",
+      "empirical_risk_decimal": "0.05159549",
+      "n": 117
+    },
+    {
+      "boundary_lower": "181231973672853/1000000000000000",
+      "boundary_lower_decimal": "0.18123197",
+      "boundary_upper": "90615986836427/500000000000000",
+      "boundary_upper_decimal": "0.18123197",
+      "empirical_risk": "6042001438513320984267784183/118000000000000000000000000000",
+      "empirical_risk_decimal": "0.05120340",
+      "n": 118
+    },
+    {
+      "boundary_lower": "179898737985507/1000000000000000",
+      "boundary_lower_decimal": "0.17989874",
+      "boundary_upper": "44974684496377/250000000000000",
+      "boundary_upper_decimal": "0.17989874",
+      "empirical_risk": "108288342657206149378449349/2125000000000000000000000000",
+      "empirical_risk_decimal": "0.05095922",
+      "n": 119
+    },
+    {
+      "boundary_lower": "187300160403563/1000000000000000",
+      "boundary_lower_decimal": "0.18730016",
+      "boundary_upper": "46825040100891/250000000000000",
+      "boundary_upper_decimal": "0.18730016",
+      "empirical_risk": "1723332805717795919495181907/30000000000000000000000000000",
+      "empirical_risk_decimal": "0.05744443",
+      "n": 120
+    },
+    {
+      "boundary_lower": "18580542594759/100000000000000",
+      "boundary_lower_decimal": "0.18580543",
+      "boundary_upper": "185805425947591/1000000000000000",
+      "boundary_upper_decimal": "0.18580543",
+      "empirical_risk": "862338803239333094156595879/15125000000000000000000000000",
+      "empirical_risk_decimal": "0.05701414",
+      "n": 121
+    },
+    {
+      "boundary_lower": "184473159839961/1000000000000000",
+      "boundary_lower_decimal": "0.18447316",
+      "boundary_upper": "92236579919981/500000000000000",
+      "boundary_upper_decimal": "0.18447316",
+      "empirical_risk": "3460675443187688849241532439/61000000000000000000000000000",
+      "empirical_risk_decimal": "0.05673238",
+      "n": 122
+    },
+    {
+      "boundary_lower": "182995148268003/1000000000000000",
+      "boundary_lower_decimal": "0.18299515",
+      "boundary_upper": "45748787067001/250000000000000",
+      "boundary_upper_decimal": "0.18299515",
+      "empirical_risk": "14070831809671833807743431/250000000000000000000000000",
+      "empirical_risk_decimal": "0.05628333",
+      "n": 123
+    },
+    {
+      "boundary_lower": "93658332200841/500000000000000",
+      "boundary_lower_decimal": "0.18731666",
+      "boundary_upper": "187316664401683/1000000000000000",
+      "boundary_upper_decimal": "0.18731666",
+      "empirical_risk": "7522579395260449258134084901/124000000000000000000000000000",
+      "empirical_risk_decimal": "0.06066596",
+      "n": 124
+    },
+    {
+      "boundary_lower": "185840216805467/1000000000000000",
+      "boundary_lower_decimal": "0.18584022",
+      "boundary_upper": "46460054201367/250000000000000",
+      "boundary_upper_decimal": "0.18584022",
+      "empirical_risk": "7523982491233588290137979627/125000000000000000000000000000",
+      "empirical_risk_decimal": "0.06019186",
+      "n": 125
+    },
+    {
+      "boundary_lower": "92189730770829/500000000000000",
+      "boundary_lower_decimal": "0.18437946",
+      "boundary_upper": "184379461541659/1000000000000000",
+      "boundary_upper_decimal": "0.18437946",
+      "empirical_risk": "7524386225058227942226596273/126000000000000000000000000000",
+      "empirical_risk_decimal": "0.05971735",
+      "n": 126
+    },
+    {
+      "boundary_lower": "183111039282419/1000000000000000",
+      "boundary_lower_decimal": "0.18311104",
+      "boundary_upper": "9155551964121/50000000000000",
+      "boundary_upper_decimal": "0.18311104",
+      "empirical_risk": "3773486840117467235587472889/63500000000000000000000000000",
+      "empirical_risk_decimal": "0.05942499",
+      "n": 127
+    },
+    {
+      "boundary_lower": "91157657519357/500000000000000",
+      "boundary_lower_decimal": "0.18231532",
+      "boundary_upper": "36463063007743/200000000000000",
+      "boundary_upper_decimal": "0.18231532",
+      "empirical_risk": "953447607971997996877580351/16000000000000000000000000000",
+      "empirical_risk_decimal": "0.05959048",
+      "n": 128
+    },
+    {
+      "boundary_lower": "91131261980599/500000000000000",
+      "boundary_lower_decimal": "0.18226252",
+      "boundary_upper": "182262523961199/1000000000000000",
+      "boundary_upper_decimal": "0.18226252",
+      "empirical_risk": "2599367019749453895998226583/43000000000000000000000000000",
+      "empirical_risk_decimal": "0.06045040",
+      "n": 129
+    },
+    {
+      "boundary_lower": "3637239778571/20000000000000",
+      "boundary_lower_decimal": "0.18186199",
+      "boundary_upper": "181861988928551/1000000000000000",
+      "boundary_upper_decimal": "0.18186199",
+      "empirical_risk": "1585229027745026797140483959/26000000000000000000000000000",
+      "empirical_risk_decimal": "0.06097035",
+      "n": 130
+    },
+    {
+      "boundary_lower": "90315463619767/500000000000000",
+      "boundary_lower_decimal": "0.18063093",
+      "boundary_upper": "36126185447907/200000000000000",
+      "boundary_upper_decimal": "0.18063093",
+      "empirical_risk": "993249371888060242725166603/16375000000000000000000000000",
+      "empirical_risk_decimal": "0.06065645",
+      "n": 131
+    },
+    {
+      "boundary_lower": "180249194698863/1000000000000000",
+      "boundary_lower_decimal": "0.18024919",
+      "boundary_upper": "11265574668679/62500000000000",
+      "boundary_upper_decimal": "0.18024919",
+      "empirical_risk": "269136697703826909946848369/4400000000000000000000000000",
+      "empirical_risk_decimal": "0.06116743",
+      "n": 132
+    },
+    {
+      "boundary_lower": "44933324020039/250000000000000",
+      "boundary_lower_decimal": "0.17973330",
+      "boundary_upper": "179733296080157/1000000000000000",
+      "boundary_upper_decimal": "0.17973330",
+      "empirical_risk": "8184376654677226004249320139/133000000000000000000000000000",
+      "empirical_risk_decimal": "0.06153667",
+      "n": 133
+    },
+    {
+      "boundary_lower": "178489046217329/1000000000000000",
+      "boundary_lower_decimal": "0.17848905",
+      "boundary_upper": "17848904621733/100000000000000",
+      "boundary_upper_decimal": "0.17848905",
+      "empirical_risk": "1639280822979475893327561319/26800000000000000000000000000",
+      "empirical_risk_decimal": "0.06116719",
+      "n": 134
+    },
+    {
+      "boundary_lower": "17723214345931/100000000000000",
+      "boundary_lower_decimal": "0.17723214",
+      "boundary_upper": "177232143459311/1000000000000000",
+      "boundary_upper_decimal": "0.17723214",
+      "empirical_risk": "2051023942491961364052104209/33750000000000000000000000000",
+      "empirical_risk_decimal": "0.06077108",
+      "n": 135
+    },
+    {
+      "boundary_lower": "5499277008581/31250000000000",
+      "boundary_lower_decimal": "0.17597686",
+      "boundary_upper": "175976864274593/1000000000000000",
+      "boundary_upper_decimal": "0.17597686",
+      "empirical_risk": "513088683152437955822241771/8500000000000000000000000000",
+      "empirical_risk_decimal": "0.06036337",
+      "n": 136
+    },
+    {
+      "boundary_lower": "87369924486723/500000000000000",
+      "boundary_lower_decimal": "0.17473985",
+      "boundary_upper": "174739848973447/1000000000000000",
+      "boundary_upper_decimal": "0.17473985",
+      "empirical_risk": "8214751362923837614183437461/137000000000000000000000000000",
+      "empirical_risk_decimal": "0.05996169",
+      "n": 137
+    },
+    {
+      "boundary_lower": "542626028823/3125000000000",
+      "boundary_lower_decimal": "0.17364033",
+      "boundary_upper": "173640329223361/1000000000000000",
+      "boundary_upper_decimal": "0.17364033",
+      "empirical_risk": "549140106037847197253911157/9200000000000000000000000000",
+      "empirical_risk_decimal": "0.05968914",
+      "n": 138
+    },
+    {
+      "boundary_lower": "10777337621797/62500000000000",
+      "boundary_lower_decimal": "0.17243740",
+      "boundary_upper": "172437401948753/1000000000000000",
+      "boundary_upper_decimal": "0.17243740",
+      "empirical_risk": "8242388982057956905909049671/139000000000000000000000000000",
+      "empirical_risk_decimal": "0.05929776",
+      "n": 139
+    },
+    {
+      "boundary_lower": "171225247151867/1000000000000000",
+      "boundary_lower_decimal": "0.17122525",
+      "boundary_upper": "42806311787967/250000000000000",
+      "boundary_upper_decimal": "0.17122525",
+      "empirical_risk": "58884505690286527164264823/1000000000000000000000000000",
+      "empirical_risk_decimal": "0.05888451",
+      "n": 140
+    },
+    {
+      "boundary_lower": "85011459950757/500000000000000",
+      "boundary_lower_decimal": "0.17002292",
+      "boundary_upper": "34004583980303/200000000000000",
+      "boundary_upper_decimal": "0.17002292",
+      "empirical_risk": "8244203086963134059983545169/141000000000000000000000000000",
+      "empirical_risk_decimal": "0.05846953",
+      "n": 141
+    },
+    {
+      "boundary_lower": "42209727669683/250000000000000",
+      "boundary_lower_decimal": "0.16883891",
+      "boundary_upper": "168838910678733/1000000000000000",
+      "boundary_upper_decimal": "0.16883891",
+      "empirical_risk": "824480055292896663778897461/14200000000000000000000000000",
+      "empirical_risk_decimal": "0.05806198",
+      "n": 142
+    },
+    {
+      "boundary_lower": "33535521476761/200000000000000",
+      "boundary_lower_decimal": "0.16767761",
+      "boundary_upper": "83838803691903/500000000000000",
+      "boundary_upper_decimal": "0.16767761",
+      "empirical_risk": "8246336742153046124956918159/143000000000000000000000000000",
+      "empirical_risk_decimal": "0.05766669",
+      "n": 143
+    },
+    {
+      "boundary_lower": "33304805492341/200000000000000",
+      "boundary_lower_decimal": "0.16652403",
+      "boundary_upper": "83262013730853/500000000000000",
+      "boundary_upper_decimal": "0.16652403",
+      "empirical_risk": "515413862024361755347116413/9000000000000000000000000000",
+      "empirical_risk_decimal": "0.05726821",
+      "n": 144
+    },
+    {
+      "boundary_lower": "2067320507937/12500000000000",
+      "boundary_lower_decimal": "0.16538564",
+      "boundary_upper": "165385640634961/1000000000000000",
+      "boundary_upper_decimal": "0.16538564",
+      "empirical_risk": "8246818702687607929216819357/145000000000000000000000000000",
+      "empirical_risk_decimal": "0.05687461",
+      "n": 145
+    },
+    {
+      "boundary_lower": "164296948625093/1000000000000000",
+      "boundary_lower_decimal": "0.16429695",
+      "boundary_upper": "82148474312547/500000000000000",
+      "boundary_upper_decimal": "0.16429695",
+      "empirical_risk": "4126112950811717104843751941/73000000000000000000000000000",
+      "empirical_risk_decimal": "0.05652210",
+      "n": 146
+    },
+    {
+      "boundary_lower": "163196681133157/1000000000000000",
+      "boundary_lower_decimal": "0.16319668",
+      "boundary_upper": "81598340566579/500000000000000",
+      "boundary_upper_decimal": "0.16319668",
+      "empirical_risk": "343900277262151234455688707/6125000000000000000000000000",
+      "empirical_risk_decimal": "0.05614698",
+      "n": 147
+    },
+    {
+      "boundary_lower": "162115092151983/1000000000000000",
+      "boundary_lower_decimal": "0.16211509",
+      "boundary_upper": "10132193259499/62500000000000",
+      "boundary_upper_decimal": "0.16211509",
+      "empirical_risk": "4127797252276348590691318147/74000000000000000000000000000",
+      "empirical_risk_decimal": "0.05578104",
+      "n": 148
+    },
+    {
+      "boundary_lower": "161057245008227/1000000000000000",
+      "boundary_lower_decimal": "0.16105725",
+      "boundary_upper": "40264311252057/250000000000000",
+      "boundary_upper_decimal": "0.16105725",
+      "empirical_risk": "412951574061584969399757417/7450000000000000000000000000",
+      "empirical_risk_decimal": "0.05542974",
+      "n": 149
+    },
+    {
+      "boundary_lower": "160069437427631/1000000000000000",
+      "boundary_lower_decimal": "0.16006944",
+      "boundary_upper": "10004339839227/62500000000000",
+      "boundary_upper_decimal": "0.16006944",
+      "empirical_risk": "2067790480054208609165997131/37500000000000000000000000000",
+      "empirical_risk_decimal": "0.05514108",
+      "n": 150
+    },
+    {
+      "boundary_lower": "159160835607439/1000000000000000",
+      "boundary_lower_decimal": "0.15916084",
+      "boundary_upper": "1989510445093/12500000000000",
+      "boundary_upper_decimal": "0.15916084",
+      "empirical_risk": "4146754785926126801376372569/75500000000000000000000000000",
+      "empirical_risk_decimal": "0.05492390",
+      "n": 151
+    },
+    {
+      "boundary_lower": "158408229011913/1000000000000000",
+      "boundary_lower_decimal": "0.15840823",
+      "boundary_upper": "79204114505957/500000000000000",
+      "boundary_upper_decimal": "0.15840823",
+      "empirical_risk": "8337948986692546974779173287/152000000000000000000000000000",
+      "empirical_risk_decimal": "0.05485493",
+      "n": 152
+    },
+    {
+      "boundary_lower": "6295577217569/40000000000000",
+      "boundary_lower_decimal": "0.15738943",
+      "boundary_upper": "78694715219613/500000000000000",
+      "boundary_upper_decimal": "0.15738943",
+      "empirical_risk": "2084844264182920782778673737/38250000000000000000000000000",
+      "empirical_risk_decimal": "0.05450573",
+      "n": 153
+    },
+    {
+      "boundary_lower": "156407880786653/1000000000000000",
+      "boundary_lower_decimal": "0.15640788",
+      "boundary_upper": "78203940393327/500000000000000",
+      "boundary_upper_decimal": "0.15640788",
+      "empirical_risk": "2086167517270350958314613833/38500000000000000000000000000",
+      "empirical_risk_decimal": "0.05418617",
+      "n": 154
+    },
+    {
+      "boundary_lower": "19429869040863/125000000000000",
+      "boundary_lower_decimal": "0.15543895",
+      "boundary_upper": "31087790465381/200000000000000",
+      "boundary_upper_decimal": "0.15543895",
+      "empirical_risk": "8349968612457098289736230433/155000000000000000000000000000",
+      "empirical_risk_decimal": "0.05387077",
+      "n": 155
+    },
+    {
+      "boundary_lower": "154483301712577/1000000000000000",
+      "boundary_lower_decimal": "0.15448330",
+      "boundary_upper": "77241650856289/500000000000000",
+      "boundary_upper_decimal": "0.15448330",
+      "empirical_risk": "8355412517723423764878537377/156000000000000000000000000000",
+      "empirical_risk_decimal": "0.05356034",
+      "n": 156
+    },
+    {
+      "boundary_lower": "30707842900131/200000000000000",
+      "boundary_lower_decimal": "0.15353921",
+      "boundary_upper": "9596200906291/62500000000000",
+      "boundary_upper_decimal": "0.15353921",
+      "empirical_risk": "8360773524623606159081208381/157000000000000000000000000000",
+      "empirical_risk_decimal": "0.05325333",
+      "n": 157
+    },
+    {
+      "boundary_lower": "152588147812721/1000000000000000",
+      "boundary_lower_decimal": "0.15258815",
+      "boundary_upper": "76294073906361/500000000000000",
+      "boundary_upper_decimal": "0.15258815",
+      "empirical_risk": "4181519057169986601812740453/79000000000000000000000000000",
+      "empirical_risk_decimal": "0.05293062",
+      "n": 158
+    },
+    {
+      "boundary_lower": "75822082476539/500000000000000",
+      "boundary_lower_decimal": "0.15164416",
+      "boundary_upper": "151644164953079/1000000000000000",
+      "boundary_upper_decimal": "0.15164416",
+      "empirical_risk": "87130302037032150564307911/1656250000000000000000000000",
+      "empirical_risk_decimal": "0.05260697",
+      "n": 159
+    },
+    {
+      "boundary_lower": "30142379762689/200000000000000",
+      "boundary_lower_decimal": "0.15071190",
+      "boundary_upper": "75355949406723/500000000000000",
+      "boundary_upper_decimal": "0.15071190",
+      "empirical_risk": "836597940890846617343008267/16000000000000000000000000000",
+      "empirical_risk_decimal": "0.05228737",
+      "n": 160
+    },
+    {
+      "boundary_lower": "1872685336333/12500000000000",
+      "boundary_lower_decimal": "0.14981483",
+      "boundary_upper": "149814826906641/1000000000000000",
+      "boundary_upper_decimal": "0.14981483",
+      "empirical_risk": "4185704024210192509018331847/80500000000000000000000000000",
+      "empirical_risk_decimal": "0.05199632",
+      "n": 161
+    },
+    {
+      "boundary_lower": "37225724012647/250000000000000",
+      "boundary_lower_decimal": "0.14890290",
+      "boundary_upper": "148902896050589/1000000000000000",
+      "boundary_upper_decimal": "0.14890290",
+      "empirical_risk": "2093121439815724656001024927/40500000000000000000000000000",
+      "empirical_risk_decimal": "0.05168201",
+      "n": 162
+    },
+    {
+      "boundary_lower": "14802904470479/100000000000000",
+      "boundary_lower_decimal": "0.14802904",
+      "boundary_upper": "148029044704791/1000000000000000",
+      "boundary_upper_decimal": "0.14802904",
+      "empirical_risk": "1047262963901077857784239901/20375000000000000000000000000",
+      "empirical_risk_decimal": "0.05139941",
+      "n": 163
+    },
+    {
+      "boundary_lower": "147134132813409/1000000000000000",
+      "boundary_lower_decimal": "0.14713413",
+      "boundary_upper": "14713413281341/100000000000000",
+      "boundary_upper_decimal": "0.14713413",
+      "empirical_risk": "4189176799106301205989002271/82000000000000000000000000000",
+      "empirical_risk_decimal": "0.05108752",
+      "n": 164
+    },
+    {
+      "boundary_lower": "146249563465779/1000000000000000",
+      "boundary_lower_decimal": "0.14624956",
+      "boundary_upper": "7312478173289/50000000000000",
+      "boundary_upper_decimal": "0.14624956",
+      "empirical_risk": "2094632030794861906233584669/41250000000000000000000000000",
+      "empirical_risk_decimal": "0.05077896",
+      "n": 165
+    },
+    {
+      "boundary_lower": "36351352109283/250000000000000",
+      "boundary_lower_decimal": "0.14540541",
+      "boundary_upper": "145405408437133/1000000000000000",
+      "boundary_upper_decimal": "0.14540541",
+      "empirical_risk": "2095961846980593309485439669/41500000000000000000000000000",
+      "empirical_risk_decimal": "0.05050510",
+      "n": 166
+    },
+    {
+      "boundary_lower": "2890829032589/20000000000000",
+      "boundary_lower_decimal": "0.14454145",
+      "boundary_upper": "144541451629451/1000000000000000",
+      "boundary_upper_decimal": "0.14454145",
+      "empirical_risk": "1676797220346633936164812189/33400000000000000000000000000",
+      "empirical_risk_decimal": "0.05020351",
+      "n": 167
+    },
+    {
+      "boundary_lower": "143687755926289/1000000000000000",
+      "boundary_lower_decimal": "0.14368776",
+      "boundary_upper": "14368775592629/100000000000000",
+      "boundary_upper_decimal": "0.14368776",
+      "empirical_risk": "2794711104611415350440612277/56000000000000000000000000000",
+      "empirical_risk_decimal": "0.04990556",
+      "n": 168
+    },
+    {
+      "boundary_lower": "142852466136459/1000000000000000",
+      "boundary_lower_decimal": "0.14285247",
+      "boundary_upper": "7142623306823/50000000000000",
+      "boundary_upper_decimal": "0.14285247",
+      "empirical_risk": "2096437462874244237099225239/42250000000000000000000000000",
+      "empirical_risk_decimal": "0.04961982",
+      "n": 169
+    },
+    {
+      "boundary_lower": "142026809368263/1000000000000000",
+      "boundary_lower_decimal": "0.14202681",
+      "boundary_upper": "17753351171033/125000000000000",
+      "boundary_upper_decimal": "0.14202681",
+      "empirical_risk": "4193672397388486617537470853/85000000000000000000000000000",
+      "empirical_risk_decimal": "0.04933732",
+      "n": 170
+    },
+    {
+      "boundary_lower": "141202266889409/1000000000000000",
+      "boundary_lower_decimal": "0.14120227",
+      "boundary_upper": "14120226688941/100000000000000",
+      "boundary_upper_decimal": "0.14120227",
+      "empirical_risk": "8387431814211305203479197867/171000000000000000000000000000",
+      "empirical_risk_decimal": "0.04904931",
+      "n": 171
+    },
+    {
+      "boundary_lower": "140390778219909/1000000000000000",
+      "boundary_lower_decimal": "0.14039078",
+      "boundary_upper": "14039077821991/100000000000000",
+      "boundary_upper_decimal": "0.14039078",
+      "empirical_risk": "2097038178949900667593193827/43000000000000000000000000000",
+      "empirical_risk_decimal": "0.04876833",
+      "n": 172
+    },
+    {
+      "boundary_lower": "697964765861/5000000000000",
+      "boundary_lower_decimal": "0.13959295",
+      "boundary_upper": "139592953172201/1000000000000000",
+      "boundary_upper_decimal": "0.13959295",
+      "empirical_risk": "8389655576192052795392158733/173000000000000000000000000000",
+      "empirical_risk_decimal": "0.04849512",
+      "n": 173
+    },
+    {
+      "boundary_lower": "138804548641821/1000000000000000",
+      "boundary_lower_decimal": "0.13880455",
+      "boundary_upper": "69402274320911/500000000000000",
+      "boundary_upper_decimal": "0.13880455",
+      "empirical_risk": "2797070748364941822039218329/58000000000000000000000000000",
+      "empirical_risk_decimal": "0.04822536",
+      "n": 174
+    },
+    {
+      "boundary_lower": "138025603562783/1000000000000000",
+      "boundary_lower_decimal": "0.13802560",
+      "boundary_upper": "4313300111337/31250000000000",
+      "boundary_upper_decimal": "0.13802560",
+      "empirical_risk": "8392854858107881548807002521/175000000000000000000000000000",
+      "empirical_risk_decimal": "0.04795917",
+      "n": 175
+    }
+  ],
+  "replayed_threshold": "8183279871/40000000000",
+  "replayed_threshold_decimal": "0.20458200",
+  "schema_version": "formalslt.monitor-trace.v1",
+  "source_receipt_sha256": "9bb608bc559d261d62e05153f58a836121b791d712707b828280b44eaf2a4b11"
+}
