@@ -1,0 +1,60 @@
+{
+  "artifact_status": "PREPARED_NOT_CERTIFIED",
+  "candidate": {
+    "boundary_upper": "1631765417761821299028640082585931591270712110976353611822159240506510853131757973762001577652642818977/22392684045805907805391488418846105669789871503374110616533522168117740604515613143043600055014648709120",
+    "confidence_log_interval": {
+      "lower": "1271867260426784876451109811325002561868934579602202658041234102767503369021946679808/424559721726368908547435014737265306384454706904421593258580810565100804206998767425",
+      "upper": "2034987616682855802321775698120013229738543666328571682204341554506177452240545525161/679295554762190253675896023579624490215127531047074549213729296904161286731198027880"
+    },
+    "kl_interval": {
+      "lower": "4885160137407771253400601118182930934216597868939146496/7047796304186638645984520552020312648059671845278255225",
+      "upper": "19540640549631085013602404472731818469789797150617764779/28191185216746554583938082208081250592238687381113020900"
+    },
+    "psi_interval": {
+      "lower": "2722523970628903860816681684345549220373523892600037767/14095592608373277291969041104040625296119343690556510450",
+      "upper": "5445047941257807721633363368691193173670453460061254329/28191185216746554583938082208081250592238687381113020900"
+    }
+  },
+  "claim": {
+    "quantity": "posterior-averaged encountered conditional prefix Brier risk",
+    "status": "NOT_CERTIFIED"
+  },
+  "data": {
+    "input_format": "csv",
+    "input_sha256": "3e6639661d43db343ffdc4d004b459505cc9f6dd91006729385f723c9a84d670",
+    "normalized_stream_sha256": "f171dfffb3c796d0259c6e8ce226144527b1c34b469791fc112bca57825ce8e4",
+    "observations": 8224,
+    "prediction_encoding": "scaled_integer",
+    "prediction_scale": 65535
+  },
+  "nonclaims": [
+    "data ingestion and exact arithmetic only; this preparation is not a certificate",
+    "no Lean kernel check or statistical coverage theorem is attached",
+    "input ordering and provenance are declared by the caller, not externally established",
+    "the candidate expression is not future, stationary, population, or deployment risk",
+    "the fixed half-tilt preparation is not coin betting or post-hoc strategy selection"
+  ],
+  "protocol": {
+    "protocol_id": "uci357-occupancy-hard-selection-v1",
+    "sha256": "eb01873c40cf286fed55381dae98e2767fc83d4dd4f69fb4ad7003422e10b4c3"
+  },
+  "schema_version": "formalslt.brier-tabular-preparation.v1",
+  "statistics": {
+    "delta": "1/20",
+    "posterior_empirical_brier_risk": "2161547227007/35320733114400",
+    "posterior_suffix_predictor_quadratic_variation_upper": "252237278248593/1099511627776",
+    "quadratic_variation_grid_denominator": 1099511627776,
+    "quadratic_variation_maximum_rounding_slack": "257/34359738368",
+    "tilt": "1/2",
+    "wake": 0
+  },
+  "verification": {
+    "data_parser": "PASS",
+    "independent_replay": "NOT_RUN",
+    "lean_kernel": "NOT_RUN",
+    "source": {
+      "path": "scripts/formalslt_brier_tabular.py",
+      "sha256": "cdfd1bfad32843983d0f2f99f2894aa3f03f30741cb37280d55ea35d804a8d08"
+    }
+  }
+}

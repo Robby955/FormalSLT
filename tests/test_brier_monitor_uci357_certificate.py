@@ -4,6 +4,7 @@ import csv
 import hashlib
 import json
 import sys
+from fractions import Fraction
 from pathlib import Path
 
 
@@ -88,3 +89,40 @@ def test_source_bindings_are_current() -> None:
         path = ROOT / binding["path"]
         assert path.is_file()
         assert hashlib.sha256(path.read_bytes()).hexdigest() == binding["sha256"]
+
+
+def test_tracked_compact_certificate_is_bound_and_informative() -> None:
+    certificate = json.loads(builder.CERTIFICATE.read_bytes())
+    directory = builder.CERTIFICATE.parent
+
+    assert certificate["formal_slt"]["commit"] == (
+        "6c6101012f38b902d30582a963a911a20518bfc3"
+    )
+    assert certificate["data"]["observations"] == 8_224
+    assert certificate["data"]["provenance"]["tier"] == "AUDITED"
+    assert certificate["replay"]["independent_replay"] == "PASS"
+    assert certificate["kernel"]["result"] == "PASS"
+    assert certificate["statistics"]["posterior_empirical_brier_risk"] == (
+        "2161547227007/35320733114400"
+    )
+    assert certificate["claim"] == {
+        "confidence": "19/20",
+        "quantity": "posterior-averaged encountered conditional prefix Brier risk",
+        "upper_bound": "18317/250000",
+    }
+    assert Fraction(certificate["claim"]["upper_bound"]) < Fraction(3, 40)
+    assert len(
+        certificate["statistics"][
+            "posterior_suffix_predictor_quadratic_variation_upper"
+        ]
+    ) < 40
+
+    assert hashlib.sha256(
+        (directory / certificate["kernel"]["checker"]).read_bytes()
+    ).hexdigest() == certificate["kernel"]["checker_sha256"]
+    assert hashlib.sha256(
+        (directory / certificate["replay"]["preparation"]).read_bytes()
+    ).hexdigest() == certificate["replay"]["preparation_sha256"]
+    assert (directory / certificate["protocol"]["file"]).read_bytes() == (
+        builder.PROTOCOL.read_bytes()
+    )
