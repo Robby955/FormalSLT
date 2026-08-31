@@ -1,0 +1,137 @@
+{
+  "certificate_id": "gjp-brier-monitor-2026-08-30",
+  "certificate_verification": "PASS",
+  "claim": {
+    "coverage_use": "RETROSPECTIVE_FIXED_CATALOG_ONLY",
+    "failure_mass": "1/160",
+    "kernel_checked_upper_bound": "131/1000",
+    "kernel_checked_upper_bound_decimal": "0.131",
+    "quantity": "posterior-averaged encountered conditional prefix Brier risk",
+    "relation": "<",
+    "theorem_support": "one event for every reporting time and eligible model and active-strategy posterior in the fixed catalog"
+  },
+  "confidence": {
+    "level": "159/160",
+    "level_decimal": "0.99375",
+    "monitoring": "continuous reporting is covered by the theorem event"
+  },
+  "data": {
+    "dataset_license": "CC0-1.0",
+    "dataset_persistent_id": "doi:10.7910/DVN/BPCDH5",
+    "dataset_version": "1.0",
+    "manifest_bytes": 4523,
+    "manifest_sha256": "cc5789f33f9465c10a8fd1e3d25600ad1dd6d44f0cea3b91db21ab61533ab64c",
+    "observations": 175,
+    "protocol_sha256": "6c4e19429e3b43c2fd8676092b85b85a48283830865289fe0f44608379b9b14a",
+    "receipt_bytes": 5404924,
+    "receipt_sha256": "9bb608bc559d261d62e05153f58a836121b791d712707b828280b44eaf2a4b11",
+    "stream_bytes": 653239,
+    "stream_sha256": "3e3f1985a5db7fd56faa77d395aa9b72568a19d21d963037816fdc78b503ec07"
+  },
+  "observed": {
+    "posterior_empirical_brier_risk": "8392854858107881548807002521/175000000000000000000000000000",
+    "posterior_empirical_brier_risk_decimal": "0.04795917",
+    "replayed_anytime_boundary_upper": "4313300111337/31250000000000",
+    "replayed_anytime_boundary_upper_decimal": "0.13802560",
+    "train_base_rate_brier_threshold": "8183279871/40000000000",
+    "train_base_rate_brier_threshold_decimal": "0.20458200"
+  },
+  "profile": "gjp-brier-countable-strategy-retrospective-v1",
+  "provenance": {
+    "certificate_implementation_commit": "601257da87365e6da87db06566549daa4ef09e13",
+    "replay_implementation_commit": "da9ce352dc5df08ad94ddeff1a6d443b4606e3c3",
+    "replay_implementation_tree": "e2ca76a65437b12cbad522006298958bcca9f5da",
+    "tier": "AUDITED_PUBLIC_DATA"
+  },
+  "schema_version": "formalslt.certificate.v1",
+  "selection": {
+    "model_posterior": {
+      "constant-train-baserate": "124844808069/1000000000000000",
+      "extremized-final-consensus": "98315151306171/200000000000000",
+      "final-consensus-median": "101346719745919/200000000000000",
+      "first-week-mean": "1565799931481/1000000000000000"
+    },
+    "model_posterior_timing": "calibration split only, frozen before monitoring",
+    "strategy": {
+      "tilt": "1/2",
+      "wake": 0
+    },
+    "strategy_catalog_timing": "fixed after this replay; this 0.131 endpoint is retrospective and is not the preregistered GJP endpoint"
+  },
+  "study": {
+    "failed_win_condition_checks": [
+      "B2_count_at_least_25"
+    ],
+    "incomplete_controls": [
+      "shuffled_time_control"
+    ],
+    "preregistered_status": "FAIL",
+    "statement": "The certificate verifies its stated arithmetic and theorem scope; the separate preregistered scientific comparison failed."
+  },
+  "trace": {
+    "bytes": 63631,
+    "path": "gjp-monitor-trace-v1.json",
+    "sha256": "f8f24b039121b686846a0b9ae1c0ab5b92b1c78604dc063720703ae491c3b98e"
+  },
+  "verification": {
+    "certificate_engine": {
+      "bytes": 31686,
+      "path": "scripts/formalslt_certificate.py",
+      "sha256": "e768d6c95fb149c007057a25d8641b91f94371bd3aaf8a5edd7256e68f82a47a"
+    },
+    "data_replay": {
+      "builder": {
+        "bytes": 88863,
+        "path": "scripts/build_gjp_brier_replay.py",
+        "sha256": "e9dd578f840df16c88a5cc09a4e6ea7a9ebb58d51d306bdd8760e5eba51ffbde"
+      },
+      "command": "python3 scripts/verify_gjp_brier_replay.py --inputs <pinned-input-dir> --artifacts <artifact-dir>",
+      "independent_verifier": {
+        "bytes": 95284,
+        "path": "scripts/verify_gjp_brier_replay.py",
+        "sha256": "77cb0d3bac66eddde9bdb57af2236ce6ba695b8c04bae66a0dc19f9dd9a7e8b5"
+      },
+      "scope": "pinned public GJP bytes to the quantized stream and exact summaries",
+      "status": "PASS"
+    },
+    "lean_kernel": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "checker": {
+        "bytes": 1459,
+        "path": "examples/CheckGJPBrierMonitorCountableStrategyCertificate.lean",
+        "sha256": "4aa2607e5f64cb026adc8a2323752651a938c91c1d32f360315e418887534b33"
+      },
+      "command": "~/.elan/bin/lake env lean examples/CheckGJPBrierMonitorCountableStrategyCertificate.lean",
+      "observed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "scope": "statistical theorem specialization and endpoint arithmetic from supplied exact summaries",
+      "sources": [
+        {
+          "bytes": 48479,
+          "path": "FormalSLT/Applications/GJPBrierMonitorReplayData.lean",
+          "sha256": "8dccdb27943a668f1473ef64f9472d4667d7b3900f0b9fd60ca0882d5b5bc653"
+        },
+        {
+          "bytes": 21006,
+          "path": "FormalSLT/Applications/GJPBrierMonitorCountableStrategyCertificate.lean",
+          "sha256": "1bd4c56c9f7feb1122cf37c60337431ffccfe3fe324618240bdd958f3295a2a1"
+        }
+      ],
+      "status": "PASS",
+      "theorem": "FormalSLT.Applications.GJPBrierMonitorCountableStrategyCertificate.countableStrategySummaryEndpoint_lt_oneHundredThirtyOne_thousandths"
+    },
+    "not_checked_by_lean": [
+      "raw CSV and TSV parsing",
+      "forecast aggregation and quantization",
+      "the execution of the independent Python replay",
+      "future, population, stationary, or deployment risk"
+    ]
+  }
+}

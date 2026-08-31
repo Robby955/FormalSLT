@@ -89,6 +89,10 @@ jobs:
           if [[ -f docs/site/assets/research-map.js ]]; then
             node --check docs/site/assets/research-map.js
           fi
+          if [[ -f docs/site/monitor/monitor.js ]]; then
+            node --check docs/site/monitor/monitor.js
+            python3 scripts/formalslt_certificate.py verify --skip-lean
+          fi
           if [[ -f media/formalslt-overview/extract_facts.py ]]; then
             python3 -m py_compile \
               media/formalslt-overview/extract_facts.py \
@@ -150,6 +154,12 @@ jobs:
       - name: Run repository-tool self-tests
         if: needs.scope.outputs.scope == 'full'
         run: make python-tests
+
+      - name: Verify compact GJP certificate
+        if: needs.scope.outputs.scope == 'full'
+        run: |
+          python3 scripts/formalslt_certificate.py verify --skip-lean
+          node --check docs/site/monitor/monitor.js
 
       - name: Verify documentation source anchors
         if: needs.scope.outputs.scope == 'full'
