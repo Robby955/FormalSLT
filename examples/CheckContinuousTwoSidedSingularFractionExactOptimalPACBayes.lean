@@ -1,0 +1,31 @@
+import FormalSLT.PACBayes.ContinuousTwoSidedSingularFractionExactOptimalPACBayes
+
+/-!
+# Exact two-sided continuous-posterior singular-fraction checks
+
+The checker records the all-fractions event, exact scalar optimizer bridge,
+weak dominance over the existing LIL-order envelope, and final exact-radius
+event together with their axiom surfaces.
+-/
+
+open FormalSLT.PACBayes.ContinuousTwoSidedSingularFractionBesselPACBayes
+open FormalSLT.PACBayes.ContinuousTwoSidedSingularFractionExactOptimalPACBayes
+
+#check exists_continuousTwoSidedSingularFractionBesselPACBayes_allFractions_event
+#check continuousSingularFractionBesselBoundary_eq_exactNumerator_effectiveConfidence
+#check continuousSingularFractionExactBoundary_le_pacBayesBoundary
+#check singularFractionExactBoundary_le_observableLIL
+#check continuousSingularFractionExactBoundary_le_observableLIL
+#check exists_continuousTwoSidedSingularFractionExactOptimalPACBayes_event
+
+#check (exists_continuousTwoSidedSingularFractionBesselPACBayes_allFractions_event
+  (Theta := Real))
+#check (exists_continuousTwoSidedSingularFractionExactOptimalPACBayes_event
+  (Theta := Real))
+
+#print axioms exists_continuousTwoSidedSingularFractionBesselPACBayes_allFractions_event
+#print axioms continuousSingularFractionBesselBoundary_eq_exactNumerator_effectiveConfidence
+#print axioms continuousSingularFractionExactBoundary_le_pacBayesBoundary
+#print axioms singularFractionExactBoundary_le_observableLIL
+#print axioms continuousSingularFractionExactBoundary_le_observableLIL
+#print axioms exists_continuousTwoSidedSingularFractionExactOptimalPACBayes_event

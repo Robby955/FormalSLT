@@ -81,9 +81,12 @@ import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayes
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesCountable
 import FormalSLT.PACBayes.ContinuousForwardPredictableMeanBesselPACBayesOracle
 import FormalSLT.PACBayes.ContinuousSingularFractionBesselPACBayes
+import FormalSLT.PACBayes.ContinuousTwoSidedSingularFractionBesselPACBayes
+import FormalSLT.PACBayes.ContinuousTwoSidedSingularFractionExactOptimalPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingBettingPACBayes
 import FormalSLT.PACBayes.ContinuousSleepingPredictableTiltPACBayes
 import FormalSLT.PACBayes.ContinuousFiniteStrategySleepingPACBayes
+import FormalSLT.PACBayes.ContinuousCountableSleepingEProcessPACBayes
 import FormalSLT.PACBayes.FiniteModelCountableStrategyPACBayes
 import FormalSLT.PACBayes.FiniteModelCountableSleepingEProcessPACBayes
 import FormalSLT.PACBayes.TimeUniformIIDGrid
@@ -129,5 +132,10 @@ post-data minimization over a growing prefix and an explicit observable
 variance-adaptive, iterated-logarithm-order envelope.  The continuous-model
 surface also exports a singular-fraction mixture whose one event controls
 every eligible path-selected posterior and time with an observable one-sided
-LIL-order conditional-prefix-mean bound.
+LIL-order conditional-prefix-mean bound, plus a two-sided corollary obtained by
+intersecting the original and complemented one-sided events and splitting the
+confidence budget equally between them.  The stronger two-sided event is
+simultaneous over every admissible scalar fraction; a noncomputable corollary
+then instantiates its attained scalar-fraction optimizer.  This exactness is
+only over the scalar fraction, not over arbitrary predictable strategies.
 -/

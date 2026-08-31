@@ -21,6 +21,7 @@ import FormalSLT.AnytimeValid.ContinuumPredictableBettingMixture
 import FormalSLT.AnytimeValid.SingularFractionGeometry
 import FormalSLT.AnytimeValid.SingularFractionBesselMixture
 import FormalSLT.AnytimeValid.SingularFractionObservableLIL
+import FormalSLT.AnytimeValid.SingularFractionExactOptimizer
 import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingMixture
 import FormalSLT.AnytimeValid.CountableSleepingPredictableBettingPosterior
 import FormalSLT.AnytimeValid.CountableSleepingEProcessMixture
@@ -46,6 +47,7 @@ exact rational countable sleeping-expert mixtures, exact polynomial-tail
 mixtures of arbitrary sleeping e-processes, finite-strategy/countable-wake masters, confidence
 sequences, mixtures, the predictable-residual
 forward process, predictable-tilt empirical-Bernstein e-processes, the hybrid-Bessel
-lower envelope, adaptive-selection and countable allocation cost guardrails,
+lower envelope, the attained exact scalar minimizer of the original
+singular-fraction boundary, adaptive-selection and countable allocation cost guardrails,
 and time-uniform PAC-Bayes results.
 -/

@@ -1,0 +1,38 @@
+import FormalSLT.PACBayes.ContinuousCountableSleepingEProcessPACBayes
+
+/-!
+# Continuous countable sleeping-strategy PAC-Bayes checks
+
+The checked theorem has one event before the path, continuous model posterior,
+reporting time, and posterior over the active strategy prefix.  It charges
+separate model and strategy KL terms.  It is a factorized confidence-allocation
+result, not coin betting or an ordinary-risk theorem.
+-/
+
+open FormalSLT.PACBayes.ContinuousCountableSleepingEProcessPACBayes
+
+#check parameterizedCountableSleepingEProcessMaster
+#check continuousCountableSleepingEProcessMaster
+#check parameterizedCountableSleepingEProcessMaster_eProcess
+#check parameterizedCountableSleepingEProcessMaster_nonneg
+#check parameterizedCountableSleepingEProcessMaster_pos
+#check parameterizedCountableSleepingEProcessMaster_zero
+#check activeStrategyPosteriorLogValue
+#check activeStrategyPosteriorLogValue_le_logMaster
+#check continuousCountableSleepingEProcessExceptionalEvent
+#check continuousCountableSleepingEProcessExceptionalEvent_mass_le_delta
+#check continuousCountableSleeping_allPosteriorsLogMaster_of_not_mem
+#check continuousCountableSleeping_factorizedPosteriorLogValue_of_not_mem
+#check exists_continuousCountableSleepingEProcessPACBayes_factorized_event
+
+#check (exists_continuousCountableSleepingEProcessPACBayes_factorized_event
+  (Theta := Real))
+
+#print axioms parameterizedCountableSleepingEProcessMaster_eProcess
+#print axioms parameterizedCountableSleepingEProcessMaster_nonneg
+#print axioms parameterizedCountableSleepingEProcessMaster_pos
+#print axioms activeStrategyPosteriorLogValue_le_logMaster
+#print axioms continuousCountableSleepingEProcessExceptionalEvent_mass_le_delta
+#print axioms continuousCountableSleeping_allPosteriorsLogMaster_of_not_mem
+#print axioms continuousCountableSleeping_factorizedPosteriorLogValue_of_not_mem
+#print axioms exists_continuousCountableSleepingEProcessPACBayes_factorized_event
