@@ -32,6 +32,7 @@ import FormalSLT.Applications.BrierMonitorSyntheticProofOfLifeReceipt
 import FormalSLT.Applications.GJPBrierMonitorReplayReceipt
 import FormalSLT.Applications.GJPBrierMonitorReplayPath
 import FormalSLT.Applications.GJPBrierMonitorCountableStrategyCertificate
+import FormalSLT.Applications.CompactHalfTiltBrierCertificate
 
 /-!
 # FormalSLT applications

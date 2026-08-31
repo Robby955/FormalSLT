@@ -140,4 +140,3 @@ import FormalSLT.StochasticDynamics.StationaryPoissonPACBayes
 import FormalSLT.StochasticDynamics.StationaryPoissonContraction
 import FormalSLT.StochasticDynamics.StationaryPoissonDepthSelection
 import FormalSLT.StochasticDynamics.EmpiricalStationaryCatalog
-import FormalSLT.Applications.CompactHalfTiltBrierCertificate
