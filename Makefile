@@ -208,6 +208,13 @@ verify-gjp-compact-certificate:
 	python3 scripts/formalslt_certificate.py verify
 	node --check docs/site/monitor/monitor.js
 
+# Exercise the public profile registry and compact certificate CLI without
+# repeating the raw-data replay.
+verify-formalslt-cli:
+	./bin/formalslt profiles
+	./bin/formalslt verify docs/site/monitor/gjp-certificate-v1.json --skip-lean
+	python3 -m pytest -q tests/test_formalslt_cli.py
+
 # Validate the prospective structured-OPE preregistration and fail if any
 # declared fresh trace, receipt, manifest, or generated Lean output exists.
 check-controlled-queue-structured-ope-protocol:
@@ -280,6 +287,7 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	verify-gjp-brier-lean-path \
 	issue-gjp-compact-certificate \
 	verify-gjp-compact-certificate \
+	verify-formalslt-cli \
 	check-controlled-queue-structured-ope-protocol \
 	check-controlled-queue-structured-ope-registration-binding \
 	verify-controlled-queue-structured-ope-protocol \

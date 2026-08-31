@@ -13,6 +13,21 @@ hashes, exact summaries, theorem sources, checker output, and claim scope. The
 172-point display trace is a separate hash-bound file. A normal verification
 runs in seconds and does not regenerate the 31,000-line path ledger.
 
+The user-facing command is profile-gated. It refuses unknown analyses before
+writing output; a new CSV or Parquet adapter cannot reuse the GJP verification
+badge without registering a theorem-backed profile.
+
+```bash
+./bin/formalslt profiles
+./bin/formalslt certify \
+  applications/brier_monitor/gjp-compact-certificate-protocol-v1.json \
+  /tmp/formalslt-gjp-replay-v1 \
+  --out /tmp/formalslt-certificate
+./bin/formalslt verify \
+  /tmp/formalslt-certificate/gjp-certificate-v1.json \
+  --data /tmp/formalslt-gjp-replay-v1
+```
+
 The worked real-data result is deliberately disclosed as it happened. The
 certificate verification passes; the preregistered GJP study verdict is
 `FAIL`. The newer `< 0.131` countable-strategy endpoint is retrospective and
@@ -26,7 +41,7 @@ python3 scripts/formalslt_certificate.py issue \
   --run-lean
 ```
 
-Run the compact verifier:
+Run the compact verifier directly:
 
 ```bash
 python3 scripts/formalslt_certificate.py verify
