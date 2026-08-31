@@ -16,7 +16,7 @@ import os
 import tempfile
 from fractions import Fraction
 from pathlib import Path
-from typing import Any, Iterable, Iterator
+from typing import Any, Iterator
 
 
 PROTOCOL_SCHEMA = "formalslt.brier-tabular-protocol.v1"
@@ -25,6 +25,7 @@ STATUS = "PREPARED_NOT_CERTIFIED"
 CLAIM_QUANTITY = "posterior-averaged encountered conditional prefix Brier risk"
 LOG_TERMS = 32
 SUPPORTED_FORMATS = {"csv", "parquet"}
+PROVENANCE_TIERS = {"DECLARED", "AUDITED", "SIGNED_LOG"}
 NONCLAIMS = [
     "data ingestion and exact arithmetic only; this preparation is not a certificate",
     "no Lean kernel check or statistical coverage theorem is attached",
@@ -175,7 +176,16 @@ def load_protocol(path: Path) -> tuple[dict[str, Any], bytes]:
         raise PreparationError("protocol must use .json, .yaml, or .yml")
     _keys(
         value,
-        {"analysis", "claim", "data", "models", "protocol_id", "schema_version", "statistics"},
+        {
+            "analysis",
+            "claim",
+            "data",
+            "models",
+            "protocol_id",
+            "provenance",
+            "schema_version",
+            "statistics",
+        },
         "protocol",
     )
     if value["schema_version"] != PROTOCOL_SCHEMA:
@@ -184,6 +194,27 @@ def load_protocol(path: Path) -> tuple[dict[str, Any], bytes]:
         raise PreparationError("protocol analysis must be 'brier_monitor'")
     if not isinstance(value["protocol_id"], str) or not value["protocol_id"]:
         raise PreparationError("protocol_id must be a nonempty string")
+
+    provenance = _object(value["provenance"], "protocol.provenance")
+    _keys(
+        provenance,
+        {"evidence_sha256", "prediction_timing", "tier"},
+        "protocol.provenance",
+    )
+    if provenance["tier"] not in PROVENANCE_TIERS:
+        raise PreparationError("unsupported provenance tier")
+    if provenance["prediction_timing"] != "PRE_OUTCOME":
+        raise PreparationError("prediction_timing must be PRE_OUTCOME")
+    evidence = provenance["evidence_sha256"]
+    if provenance["tier"] == "DECLARED":
+        if evidence is not None:
+            raise PreparationError("DECLARED provenance must use null evidence_sha256")
+    elif not isinstance(evidence, str) or len(evidence) != 64 or any(
+        character not in "0123456789abcdef" for character in evidence
+    ):
+        raise PreparationError(
+            "AUDITED and SIGNED_LOG provenance require lowercase SHA-256 evidence"
+        )
 
     data = _object(value["data"], "protocol.data")
     _keys(

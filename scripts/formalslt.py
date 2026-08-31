@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import formalslt_certificate as certificate_engine
+import formalslt_brier_certificate as tabular_certificate
 import formalslt_brier_tabular as tabular_brier
 import verify_formalslt_brier_tabular as tabular_replay
 
@@ -38,6 +39,17 @@ PROFILE_REGISTRY: dict[str, dict[str, str]] = {
         "coverage_use": GJP_COVERAGE_USE,
         "status": "SUPPORTED",
     }
+}
+
+AVAILABLE_PROFILES: dict[str, dict[str, str]] = {
+    **PROFILE_REGISTRY,
+    tabular_certificate.PROFILE: {
+        "analysis": "brier_monitor",
+        "input_kind": "chronological-scaled-integer-csv-or-parquet",
+        "claim_scope": tabular_brier.CLAIM_QUANTITY,
+        "coverage_use": "PROTOCOL_BOUND_PRE_OUTCOME_PREDICTIONS",
+        "status": "SUPPORTED",
+    },
 }
 
 
@@ -124,7 +136,45 @@ def _output_paths(directory: Path) -> tuple[Path, Path]:
     return directory / "gjp-certificate-v1.json", directory / "gjp-monitor-trace-v1.json"
 
 
+def _protocol_schema(path: Path) -> str:
+    if path.suffix.lower() in {".yaml", ".yml"}:
+        try:
+            protocol, _raw = tabular_brier.load_protocol(path)
+        except tabular_brier.PreparationError as error:
+            raise ToolError(str(error)) from error
+        return str(protocol["schema_version"])
+    try:
+        raw = path.read_bytes()
+        protocol = json.loads(raw.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ToolError(f"cannot read protocol schema: {path}") from error
+    if not isinstance(protocol, dict) or not isinstance(protocol.get("schema_version"), str):
+        raise ToolError("protocol must contain a string schema_version")
+    return protocol["schema_version"]
+
+
 def certify(args: argparse.Namespace) -> int:
+    schema = _protocol_schema(args.protocol)
+    if schema == tabular_brier.PROTOCOL_SCHEMA:
+        try:
+            certificate_path = tabular_certificate.issue(
+                args.protocol, args.data, args.out.resolve()
+            )
+            certificate = tabular_certificate.verify(certificate_path)
+        except tabular_certificate.CertificateError as error:
+            raise ToolError(str(error)) from error
+        print("FormalSLT compact Brier certificate: PASS")
+        print(f"Observed Brier loss:                {certificate['statistics']['posterior_empirical_brier_risk']}")
+        print(f"Certified upper bound:              {certificate['claim']['upper_bound']}")
+        print("Continuous monitoring:              allowed")
+        print("Post-data model selection:           accounted for")
+        print(f"Prediction provenance:              {certificate['data']['provenance']['tier']}")
+        print("Independent data replay:             PASS")
+        print("Lean kernel:                         PASS")
+        print(f"Wrote:                               {certificate_path}")
+        return 0
+    if schema != PROTOCOL_SCHEMA:
+        raise ToolError(f"unsupported protocol schema: {schema!r}")
     protocol, _raw = load_protocol(args.protocol)
     if protocol["input_kind"] != GJP_INPUT_KIND:
         raise ToolError(f"unsupported input kind: {protocol['input_kind']}")
@@ -157,6 +207,27 @@ def certify(args: argparse.Namespace) -> int:
 
 
 def verify(args: argparse.Namespace) -> int:
+    try:
+        certificate_value = json.loads(args.certificate.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ToolError(f"cannot read certificate: {args.certificate}") from error
+    if isinstance(certificate_value, dict) and certificate_value.get(
+        "certificate_profile"
+    ) == tabular_certificate.PROFILE:
+        if args.skip_lean:
+            raise ToolError("--skip-lean is not supported for compact tabular certificates")
+        try:
+            certificate = tabular_certificate.verify(
+                args.certificate, args.protocol, args.data
+            )
+        except tabular_certificate.CertificateError as error:
+            raise ToolError(str(error)) from error
+        replay = "PASS" if args.protocol is not None else "NOT RERUN"
+        print("FormalSLT compact Brier certificate: PASS")
+        print(f"Certified upper bound:              {certificate['claim']['upper_bound']}")
+        print(f"Independent data replay:            {replay}")
+        print("Lean kernel:                         PASS")
+        return 0
     trace = args.trace or args.certificate.with_name("gjp-monitor-trace-v1.json")
     verify_args = argparse.Namespace(
         certificate=args.certificate,
@@ -172,6 +243,19 @@ def verify(args: argparse.Namespace) -> int:
 
 def show(args: argparse.Namespace) -> int:
     try:
+        value = json.loads(args.certificate.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ToolError(f"cannot read certificate: {args.certificate}") from error
+    if isinstance(value, dict) and value.get("certificate_profile") == tabular_certificate.PROFILE:
+        print(f"Profile:                 {value['certificate_profile']}")
+        print(f"Observations:            {value['data']['observations']}")
+        print(f"Observed Brier loss:     {value['statistics']['posterior_empirical_brier_risk']}")
+        print(f"Certified upper bound:   {value['claim']['upper_bound']}")
+        print(f"Provenance:              {value['data']['provenance']['tier']}")
+        print(f"Independent replay:      {value['replay']['independent_replay']}")
+        print(f"Lean kernel:             {value['kernel']['result']}")
+        return 0
+    try:
         return certificate_engine.show(argparse.Namespace(certificate=args.certificate))
     except certificate_engine.CertificateError as error:
         raise ToolError(str(error)) from error
@@ -179,9 +263,9 @@ def show(args: argparse.Namespace) -> int:
 
 def profiles(args: argparse.Namespace) -> int:
     if args.json:
-        print(json.dumps(PROFILE_REGISTRY, indent=2, sort_keys=True))
+        print(json.dumps(AVAILABLE_PROFILES, indent=2, sort_keys=True))
         return 0
-    for name, profile in sorted(PROFILE_REGISTRY.items()):
+    for name, profile in sorted(AVAILABLE_PROFILES.items()):
         print(f"{name}\t{profile['status']}\t{profile['input_kind']}")
     return 0
 
@@ -258,6 +342,7 @@ def parser() -> argparse.ArgumentParser:
     verify_parser.add_argument("certificate", type=Path)
     verify_parser.add_argument("--trace", type=Path)
     verify_parser.add_argument("--data", type=Path, help="optional full artifact binding")
+    verify_parser.add_argument("--protocol", type=Path, help="protocol for independent tabular replay")
     verify_parser.add_argument("--skip-lean", action="store_true")
     verify_parser.set_defaults(handler=verify)
 

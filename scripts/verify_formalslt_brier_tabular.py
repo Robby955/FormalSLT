@@ -26,6 +26,7 @@ PREPARATION_SCHEMA = "formalslt.brier-tabular-preparation.v1"
 STATUS = "PREPARED_NOT_CERTIFIED"
 CLAIM_QUANTITY = "posterior-averaged encountered conditional prefix Brier risk"
 SERIES_TERMS = 32
+PROVENANCE_TIERS = {"DECLARED", "AUDITED", "SIGNED_LOG"}
 NONCLAIMS = [
     "data ingestion and exact arithmetic only; this preparation is not a certificate",
     "no Lean kernel check or statistical coverage theorem is attached",
@@ -152,18 +153,49 @@ def read_protocol(path: Path) -> tuple[dict[str, Any], bytes]:
         raise ReplayError("protocol must use .json, .yaml, or .yml")
     if protocol.get("schema_version") != PROTOCOL_SCHEMA:
         raise ReplayError("protocol schema mismatch")
+    expected_keys = {
+        "analysis",
+        "claim",
+        "data",
+        "models",
+        "protocol_id",
+        "provenance",
+        "schema_version",
+        "statistics",
+    }
+    if set(protocol) != expected_keys:
+        raise ReplayError("protocol keys mismatch")
     if protocol.get("analysis") != "brier_monitor":
         raise ReplayError("protocol analysis mismatch")
     data = protocol.get("data")
     models = protocol.get("models")
     statistics = protocol.get("statistics")
     claim = protocol.get("claim")
+    provenance = protocol.get("provenance")
     if not isinstance(data, dict) or not isinstance(statistics, dict):
         raise ReplayError("protocol data and statistics must be objects")
     if not isinstance(models, list) or not models:
         raise ReplayError("protocol models must be a nonempty array")
     if not isinstance(claim, dict) or claim.get("quantity") != CLAIM_QUANTITY:
         raise ReplayError("protocol claim quantity mismatch")
+    if not isinstance(provenance, dict) or set(provenance) != {
+        "evidence_sha256",
+        "prediction_timing",
+        "tier",
+    }:
+        raise ReplayError("protocol provenance mismatch")
+    if provenance.get("tier") not in PROVENANCE_TIERS:
+        raise ReplayError("unsupported provenance tier")
+    if provenance.get("prediction_timing") != "PRE_OUTCOME":
+        raise ReplayError("prediction timing must be PRE_OUTCOME")
+    evidence = provenance.get("evidence_sha256")
+    if provenance["tier"] == "DECLARED":
+        if evidence is not None:
+            raise ReplayError("DECLARED provenance must not name evidence")
+    elif not isinstance(evidence, str) or len(evidence) != 64 or any(
+        character not in "0123456789abcdef" for character in evidence
+    ):
+        raise ReplayError("audited provenance evidence digest mismatch")
     if data.get("input_format") not in {"csv", "parquet"}:
         raise ReplayError("unsupported input format")
     if data.get("prediction_encoding") != "scaled_integer":

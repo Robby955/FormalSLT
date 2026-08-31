@@ -38,6 +38,11 @@ def tabular_protocol(input_format: str) -> dict[str, object]:
         },
         "models": [{"column": "model_a_ppm", "id": "model-a"}],
         "protocol_id": "unit-test-brier-stream",
+        "provenance": {
+            "evidence_sha256": None,
+            "prediction_timing": "PRE_OUTCOME",
+            "tier": "DECLARED",
+        },
         "schema_version": CLI.tabular_brier.PROTOCOL_SCHEMA,
         "statistics": {
             "delta": "1/20",
@@ -161,6 +166,86 @@ def test_prepare_and_replay_commands(tmp_path: Path, capsys: pytest.CaptureFixtu
     output = capsys.readouterr().out
     assert "Certificate verification:   NOT ISSUED" in output
     assert "FormalSLT tabular replay:     PASS" in output
+
+
+def test_certify_tabular_issues_compact_lean_receipt(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(tabular_protocol("csv")))
+    data_path = tmp_path / "predictions.csv"
+    data_path.write_text(
+        "time,outcome,model_a_ppm\n"
+        "1,1,750000\n"
+        "2,1,750000\n"
+        "3,1,750000\n"
+        "4,1,750000\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "certificate"
+    assert CLI.main(
+        ["certify", str(protocol_path), str(data_path), "--out", str(output)]
+    ) == 0
+    certificate_path = output / CLI.tabular_certificate.CERTIFICATE_NAME
+    certificate = json.loads(certificate_path.read_text())
+    assert certificate["artifact_status"] == "CERTIFIED"
+    assert certificate["certificate_profile"] == CLI.tabular_certificate.PROFILE
+    assert certificate["replay"]["independent_replay"] == "PASS"
+    assert certificate["kernel"]["result"] == "PASS"
+    assert certificate["data"]["provenance"]["tier"] == "DECLARED"
+    assert CLI.main(
+        [
+            "verify",
+            str(certificate_path),
+            "--protocol",
+            str(protocol_path),
+            "--data",
+            str(data_path),
+        ]
+    ) == 0
+    rendered = capsys.readouterr().out
+    assert "FormalSLT compact Brier certificate: PASS" in rendered
+    assert "Independent data replay:             PASS" in rendered
+
+    tampered = json.loads(certificate_path.read_text())
+    tampered["claim"]["upper_bound"] = "1/100"
+    tampered_path = output / "tampered-certificate.json"
+    tampered_path.write_bytes(canonical(tampered))
+    with pytest.raises(
+        CLI.tabular_certificate.CertificateError,
+        match="certificate claim mismatch",
+    ):
+        CLI.tabular_certificate.verify(tampered_path)
+
+
+def test_compact_checker_supports_multiple_models_and_zero_posterior(
+    tmp_path: Path,
+) -> None:
+    protocol = tabular_protocol("csv")
+    protocol["models"] = [
+        {"column": "model_a_ppm", "id": "model-a"},
+        {"column": "model_b_ppm", "id": "model-b"},
+    ]
+    protocol["statistics"]["prior"] = {"model-a": "1/2", "model-b": "1/2"}
+    protocol["statistics"]["posterior"] = {"model-a": "1", "model-b": "0"}
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(protocol))
+    data_path = tmp_path / "predictions.csv"
+    data_path.write_text(
+        "time,outcome,model_a_ppm,model_b_ppm\n"
+        "1,1,750000,500000\n"
+        "2,1,750000,500000\n"
+        "3,1,750000,500000\n"
+        "4,1,750000,500000\n",
+        encoding="utf-8",
+    )
+    output = tmp_path / "certificate"
+    certificate_path = CLI.tabular_certificate.issue(protocol_path, data_path, output)
+    certificate = CLI.tabular_certificate.verify(
+        certificate_path, protocol_path, data_path
+    )
+    assert certificate["kernel"]["result"] == "PASS"
+    assert certificate["statistics"]["kl_upper"] == "7/10"
 
 
 def test_independent_replay_rejects_tampered_statistic(tmp_path: Path) -> None:

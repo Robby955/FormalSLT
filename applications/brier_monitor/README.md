@@ -14,8 +14,8 @@ hashes, exact summaries, theorem sources, checker output, and claim scope. The
 runs in seconds and does not regenerate the 31,000-line path ledger.
 
 The user-facing command is profile-gated. It refuses unknown analyses before
-writing output; a new CSV or Parquet adapter cannot reuse the GJP verification
-badge without registering a theorem-backed profile.
+writing output. The fixed GJP replay and general chronological tabular profile
+have separate theorem and receipt bindings.
 
 ```bash
 ./bin/formalslt profiles
@@ -28,13 +28,28 @@ badge without registering a theorem-backed profile.
   --data /tmp/formalslt-gjp-replay-v1
 ```
 
-For a new prediction stream, `prepare` accepts CSV with no extra dependency or
+For a new prediction stream, `certify` accepts CSV with no extra dependency or
 Parquet after installing `requirements-cli.txt`. Predictions are scaled
-integers, so the exact quantity being analyzed is unambiguous. The output
-contains exact empirical Brier risk, observable quadratic variation, KL and
-logarithm enclosures, data and protocol hashes, and a candidate bound. It is
-marked `PREPARED_NOT_CERTIFIED`; `certify` will continue to refuse it until a
-registered Lean profile and independent replay checker cover that protocol.
+integers, so the analyzed quantity is exact. The protocol must declare that
+each prediction was available before its corresponding outcome and must label
+its provenance `DECLARED`, `AUDITED`, or `SIGNED_LOG`.
+
+```bash
+./bin/formalslt certify protocol.yaml predictions.parquet \
+  --out certificate
+./bin/formalslt verify certificate/certificate.json \
+  --protocol protocol.yaml \
+  --data predictions.parquet
+./bin/formalslt show certificate/certificate.json
+```
+
+Issuance streams the table twice through independent implementations. It then
+generates a Lean checker whose size grows with the model catalog, not the row
+count. The receipt reports independent data replay and Lean verification on
+separate lines. The checked endpoint uses one predeclared half tilt and permits
+the reporting posterior over models to be chosen after observing the prefix.
+
+The lower-level preparation commands remain available for debugging:
 
 ```bash
 ./bin/formalslt prepare protocol.yaml predictions.parquet \
@@ -47,9 +62,8 @@ registered Lean profile and independent replay checker cover that protocol.
 preparation engine; it reparses the protocol and table, streams the rows again,
 recomputes the normalized-data digest, empirical loss, observable variation,
 KL term, logarithm enclosures, and candidate expression, then compares the
-entire canonical preparation. Passing this replay still does not turn the
-preparation into a certificate. The next registered profile supplies that
-Lean boundary.
+entire canonical preparation. Passing this replay alone does not turn the
+preparation into a certificate; `certify` adds the theorem-backed Lean check.
 
 The worked real-data result is deliberately disclosed as it happened. The
 certificate verification passes; the preregistered GJP study verdict is
