@@ -1,0 +1,44 @@
+{
+  "analysis": "brier_monitor",
+  "claim": {
+    "quantity": "posterior-averaged encountered conditional prefix Brier risk"
+  },
+  "data": {
+    "input_format": "csv",
+    "outcome_column": "outcome",
+    "prediction_encoding": "scaled_integer",
+    "prediction_scale": 65535,
+    "require_strict_time_order": true,
+    "time_column": "sequence_index"
+  },
+  "models": [
+    {
+      "column": "constant_train_prevalence_q",
+      "id": "constant_train_prevalence"
+    },
+    {
+      "column": "logistic_all_sensor_q",
+      "id": "logistic_all_sensor"
+    }
+  ],
+  "protocol_id": "uci357-occupancy-hard-selection-v1",
+  "provenance": {
+    "evidence_sha256": "fb231775c82031124c9b672cc49ba955c9e9869b0440c8d332444474b540a26d",
+    "prediction_timing": "PRE_OUTCOME",
+    "tier": "AUDITED"
+  },
+  "schema_version": "formalslt.brier-tabular-protocol.v1",
+  "statistics": {
+    "delta": "1/20",
+    "posterior": {
+      "constant_train_prevalence": "0",
+      "logistic_all_sensor": "1"
+    },
+    "prior": {
+      "constant_train_prevalence": "1/2",
+      "logistic_all_sensor": "1/2"
+    },
+    "tilt": "1/2",
+    "wake": 0
+  }
+}

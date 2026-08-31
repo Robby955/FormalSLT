@@ -175,3 +175,26 @@ The ignored local result contains only a training-prevalence constant and one
 deterministic all-sensor logistic baseline. A scikit-learn convergence warning
 fails the run. The result is descriptive and non-public; it is not a FormalSLT
 certificate.
+
+## Audited UCI-357 certificate application
+
+The certificate application trains the logistic model only on the frozen
+training prefix and emits predictions for the 8,224-row monitor suffix. It then
+selects the lower-Brier model after observing that suffix. The selected point
+posterior is charged against a uniform two-model prior; the receipt does not
+pretend that the logistic model was selected in advance.
+
+Install the pinned model runtime, prepare the hash-bound prediction stream, and
+issue or verify the compact certificate with:
+
+```bash
+python3 -m pip install -r requirements-uci357.txt
+python3 scripts/build_brier_monitor_uci357_certificate.py --prepare
+python3 scripts/build_brier_monitor_uci357_certificate.py --issue
+python3 scripts/build_brier_monitor_uci357_certificate.py --check
+```
+
+The tracked evidence labels this as an audited retrospective demonstration.
+The model never receives `Occupancy` as an input, but the source archive does
+not establish real-time label delay. The statistical claim remains encountered
+conditional prefix risk, not future occupancy or deployment risk.
