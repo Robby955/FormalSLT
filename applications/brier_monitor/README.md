@@ -198,3 +198,19 @@ The tracked evidence labels this as an audited retrospective demonstration.
 The model never receives `Occupancy` as an input, but the source archive does
 not establish real-time label delay. The statistical claim remains encountered
 conditional prefix risk, not future occupancy or deployment risk.
+
+The tracked 8,224-observation result selects the all-sensor logistic model after
+the monitored prefix, records observed Brier loss `0.0611976886…`, and checks a
+95% upper bound of `0.073268`; the constant training-prevalence baseline has
+loss `0.165321928…`. Reissue the same application through the public command:
+
+```bash
+./bin/formalslt certify \
+  applications/brier_monitor/uci357-certificate-protocol-v1.json \
+  applications/brier_monitor/generated/uci357-monitor-predictions-v1.csv \
+  --out /tmp/formalslt-uci357-certificate
+```
+
+The interactive, digest-bound presentation is staged from
+`docs/site/monitor/occupancy/`. Intermediate chart points are display replays;
+the final `0.073268` endpoint is the point checked by the tracked Lean file.
