@@ -1,4 +1,38 @@
-# Synthetic Brier monitor proof of life
+# Brier monitor certificates
+
+This directory separates three jobs that should not be conflated:
+
+1. raw-data replay computes exact summaries and binds them to source hashes;
+2. Lean checks the statistical theorem specialization and endpoint arithmetic
+   from those summaries;
+3. the monitor renders the result without becoming a source of truth.
+
+The public GJP viewer is under `docs/site/monitor/`. Its compact
+`formalslt.certificate.v1` receipt is constant-size in the data: it records
+hashes, exact summaries, theorem sources, checker output, and claim scope. The
+172-point display trace is a separate hash-bound file. A normal verification
+runs in seconds and does not regenerate the 31,000-line path ledger.
+
+The worked real-data result is deliberately disclosed as it happened. The
+certificate verification passes; the preregistered GJP study verdict is
+`FAIL`. The newer `< 0.131` countable-strategy endpoint is retrospective and
+is not substituted for the preregistered endpoint.
+
+Issue from a clean, independently replayed artifact directory:
+
+```bash
+python3 scripts/formalslt_certificate.py issue \
+  --artifacts /tmp/formalslt-gjp-replay-v1 \
+  --run-lean
+```
+
+Run the compact verifier:
+
+```bash
+python3 scripts/formalslt_certificate.py verify
+```
+
+## Synthetic proof of life
 
 This directory exercises the finite sleeping suffix-variance API on the
 soft-Brier branch already formalized in

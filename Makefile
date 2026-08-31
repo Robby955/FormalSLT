@@ -195,6 +195,19 @@ verify-gjp-brier-lean-path:
 	lake build FormalSLT.Applications.GJPBrierMonitorReplayPath
 	lake env lean examples/CheckGJPBrierMonitorReplayPath.lean
 
+# Issue the compact public receipt and display trace from an independently
+# verified external replay. Requires GJP_REPLAY_DIR.
+issue-gjp-compact-certificate:
+	python3 scripts/formalslt_certificate.py issue \
+		--artifacts "$(GJP_REPLAY_DIR)" \
+		--run-lean
+
+# Fast normal check: canonical receipt, hash-bound trace, source digests, and
+# one focused Lean checker. It does not repeat the raw 300 MB source replay.
+verify-gjp-compact-certificate:
+	python3 scripts/formalslt_certificate.py verify
+	node --check docs/site/monitor/monitor.js
+
 # Validate the prospective structured-OPE preregistration and fail if any
 # declared fresh trace, receipt, manifest, or generated Lean output exists.
 check-controlled-queue-structured-ope-protocol:
@@ -265,6 +278,8 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	generate-gjp-brier-lean-data \
 	verify-gjp-brier-lean-arithmetic \
 	verify-gjp-brier-lean-path \
+	issue-gjp-compact-certificate \
+	verify-gjp-compact-certificate \
 	check-controlled-queue-structured-ope-protocol \
 	check-controlled-queue-structured-ope-registration-binding \
 	verify-controlled-queue-structured-ope-protocol \

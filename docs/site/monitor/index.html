@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en" data-formalslt-site="monitor">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A replayable FormalSLT certificate for a chronological real-data Brier monitor.">
+  <meta name="theme-color" content="#07111f">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FormalSLT">
+  <meta property="og:title" content="FormalSLT | Real-data risk monitor">
+  <meta property="og:description" content="A hash-bound real-data replay with a compact Lean-checked statistical endpoint.">
+  <meta property="og:url" content="https://robby955.github.io/FormalSLT/monitor/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="FormalSLT | Real-data risk monitor">
+  <meta name="twitter:description" content="A hash-bound real-data replay with a compact Lean-checked statistical endpoint.">
+  <title>FormalSLT | Real-data risk monitor</title>
+  <link rel="canonical" href="https://robby955.github.io/FormalSLT/monitor/">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="monitor.css">
+  <script defer src="monitor.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#monitor">Skip to monitor</a>
+  <header class="site-header">
+    <a class="wordmark" href="../">FormalSLT</a>
+    <nav aria-label="Monitor navigation">
+      <a href="#trace">Trace</a>
+      <a href="#verification">Verification</a>
+      <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__/applications/brier_monitor">Source</a>
+    </nav>
+  </header>
+
+  <main id="monitor">
+    <section class="result" aria-labelledby="result-title">
+      <div class="result-heading">
+        <p class="eyebrow">Good Judgment Project · 175-question chronological replay</p>
+        <h1 id="result-title">Real data. A checked bound. A failed study.</h1>
+        <p class="lede">The certificate verified successfully. The separate preregistered comparison did not meet its win condition.</p>
+      </div>
+
+      <div class="verdict" aria-live="polite">
+        <span>Preregistered study</span>
+        <strong data-study-status>Loading</strong>
+      </div>
+
+      <dl class="headline-values" aria-label="Current monitor values">
+        <div>
+          <dt>Observed Brier loss</dt>
+          <dd data-observed-risk>—</dd>
+        </div>
+        <div>
+          <dt>Replayed anytime boundary</dt>
+          <dd data-replayed-bound>—</dd>
+        </div>
+        <div>
+          <dt>Compact Lean endpoint</dt>
+          <dd data-kernel-bound>—</dd>
+        </div>
+      </dl>
+
+      <p class="scope-note"><strong>Scope.</strong> The endpoint concerns posterior-averaged conditional loss encountered on this monitored prefix. The 0.131 theorem slice uses a retrospectively fixed strategy catalog; it is not a prospective result for this dataset and says nothing about future or deployment risk.</p>
+    </section>
+
+    <section class="trace" id="trace" aria-labelledby="trace-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Preregistered replay</p>
+          <h2 id="trace-title">The boundary contracts as evidence arrives.</h2>
+        </div>
+        <dl class="cursor-values" aria-live="polite">
+          <div><dt>Reporting time</dt><dd data-cursor-time>175</dd></div>
+          <div><dt>Observed</dt><dd data-cursor-risk>—</dd></div>
+          <div><dt>Upper boundary</dt><dd data-cursor-bound>—</dd></div>
+        </dl>
+      </div>
+
+      <div class="chart-shell" data-chart-shell>
+        <svg class="chart" data-chart viewBox="0 0 1200 520" role="img" aria-labelledby="chart-title chart-description">
+          <title id="chart-title">Brier monitor over 175 reporting steps</title>
+          <desc id="chart-description">The empirical posterior Brier loss and replayed anytime upper boundary over a chronological Good Judgment Project monitor. The vertical scale is logarithmic.</desc>
+        </svg>
+        <p class="chart-error" data-chart-error hidden>The monitor artifacts could not be verified.</p>
+      </div>
+      <div class="legend" aria-label="Chart legend">
+        <span class="legend-bound">Replayed anytime boundary</span>
+        <span class="legend-risk">Observed posterior Brier</span>
+        <span class="legend-threshold">Predeclared threshold</span>
+        <small>Log scale · scrub the chart</small>
+      </div>
+    </section>
+
+    <section class="verification" id="verification" aria-labelledby="verification-title">
+      <div class="section-heading verification-heading">
+        <div>
+          <p class="eyebrow">Trust boundary</p>
+          <h2 id="verification-title">Two checks. Two different jobs.</h2>
+        </div>
+        <div class="verification-tabs" role="tablist" aria-label="Verification layer">
+          <button type="button" role="tab" aria-selected="true" data-layer-button="data">Data replay</button>
+          <button type="button" role="tab" aria-selected="false" data-layer-button="lean">Lean kernel</button>
+        </div>
+      </div>
+
+      <div class="verification-detail" role="tabpanel" aria-live="polite">
+        <p class="verification-status"><span data-layer-label>Data replay</span><strong data-layer-status>Loading</strong></p>
+        <h3 data-layer-title>Pinned bytes become exact summaries.</h3>
+        <p data-layer-scope>The independent replay verifies chronology, predictions, quantization, losses, and artifact hashes.</p>
+        <dl>
+          <div><dt>Receipt</dt><dd><code data-receipt-digest>—</code></dd></div>
+          <div><dt>Trace binding</dt><dd data-trace-status>Checking</dd></div>
+          <div><dt>Confidence</dt><dd data-confidence>—</dd></div>
+        </dl>
+      </div>
+
+      <details>
+        <summary>What this certificate does not establish</summary>
+        <ul data-nonclaims></ul>
+      </details>
+    </section>
+
+    <footer>
+      <p>FormalSLT certificate <code data-certificate-id>—</code></p>
+      <a href="gjp-certificate-v1.json">Open the compact receipt</a>
+      <a href="gjp-monitor-trace-v1.json">Open the display trace</a>
+    </footer>
+  </main>
+
+  <noscript><p class="noscript">JavaScript is required to verify and draw the hash-bound monitor trace. The canonical JSON receipt remains available above.</p></noscript>
+</body>
+</html>

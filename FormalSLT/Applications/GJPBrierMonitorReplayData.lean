@@ -27,11 +27,11 @@ abbrev firstWeekMean : Model := (false, true)
 abbrev finalConsensusMedian : Model := (true, false)
 abbrev extremizedFinalConsensus : Model := (true, true)
 
-abbrev streamSha256 : String := "3cf4db15b11087049f479ae914153bd8d7d365fe0917ca90359115cc8dff7a21"
-abbrev receiptSha256 : String := "d14c0bace482bf0a4e111106b794ad3b9ad0dc5b70cc510738baa7337edf96eb"
+abbrev streamSha256 : String := "3e3f1985a5db7fd56faa77d395aa9b72568a19d21d963037816fdc78b503ec07"
+abbrev receiptSha256 : String := "9bb608bc559d261d62e05153f58a836121b791d712707b828280b44eaf2a4b11"
 abbrev protocolSha256 : String := "6c4e19429e3b43c2fd8676092b85b85a48283830865289fe0f44608379b9b14a"
-abbrev implementationCommit : String := "68742b5c4f26dd07e18e2ab7a44b6d00fe986c56"
-abbrev implementationTree : String := "cc239e051a43e8661ef8f21578a0e4beb49b3362"
+abbrev implementationCommit : String := "da9ce352dc5df08ad94ddeff1a6d443b4606e3c3"
+abbrev implementationTree : String := "e2ca76a65437b12cbad522006298958bcca9f5da"
 abbrev horizon : Nat := 175
 abbrev selectedWake : Nat := 0
 abbrev selectedTiltAtom : Nat := 0
