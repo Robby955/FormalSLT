@@ -1,2 +1,4 @@
+-r requirements-service.txt
+httpx==0.28.1
 py-ecc==8.0.0
 pytest==9.0.3

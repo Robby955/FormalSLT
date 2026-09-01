@@ -1,0 +1,70 @@
+{
+  "artifact_status": "CERTIFIED",
+  "certificate_profile": "finite-tabular-brier-half-tilt-v1",
+  "claim": {
+    "confidence": "19/20",
+    "quantity": "posterior-averaged encountered conditional prefix Brier risk",
+    "upper_bound": "18317/250000"
+  },
+  "data": {
+    "input_format": "csv",
+    "input_sha256": "3e6639661d43db343ffdc4d004b459505cc9f6dd91006729385f723c9a84d670",
+    "normalized_stream_sha256": "f171dfffb3c796d0259c6e8ce226144527b1c34b469791fc112bca57825ce8e4",
+    "observations": 8224,
+    "prediction_encoding": "scaled_integer",
+    "prediction_scale": 65535,
+    "provenance": {
+      "evidence_sha256": "fb231775c82031124c9b672cc49ba955c9e9869b0440c8d332444474b540a26d",
+      "prediction_timing": "PRE_OUTCOME",
+      "tier": "AUDITED"
+    }
+  },
+  "formal_slt": {
+    "commit": "6c6101012f38b902d30582a963a911a20518bfc3",
+    "lake_manifest_sha256": "52d60d1a48be7143c261c93c4f375c92a814a2499e2c320325b5f4e5855a8a66",
+    "lean_toolchain_sha256": "2bdc48adfa58d0017e538a0ad117c5d73d35deec879978f909406a80c8037273",
+    "theorem": "FormalSLT.StochasticDynamics.exists_trajectoryHalfTiltPACBayes_ordinaryRisk_selected_event",
+    "theorem_module_sha256": "0c741a59844b07815ae4949aea696588007503d4701051a0bc6d4a307c59108e"
+  },
+  "kernel": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "checker": "CheckCompactBrierCertificate.lean",
+    "checker_sha256": "15a7e6627b1c01d47a2955282a9ee11bc4d16d3acfe5d88bcbfd169ab71ac5fc",
+    "result": "PASS",
+    "summary_module_sha256": "517afcae508468b268e412c41fdd914ec268cbc3d64a06e36ee9655993cfd84d"
+  },
+  "nonclaims": [
+    "Lean checks exact summary arithmetic, not raw CSV or Parquet parsing",
+    "prediction timing and provenance are accepted at the receipt's stated tier",
+    "the bound is not future, stationary, population, or deployment risk",
+    "the fixed half tilt is not coin betting or post-hoc strategy selection"
+  ],
+  "protocol": {
+    "file": "protocol.json",
+    "protocol_id": "uci357-occupancy-hard-selection-v1",
+    "sha256": "eb01873c40cf286fed55381dae98e2767fc83d4dd4f69fb4ad7003422e10b4c3"
+  },
+  "replay": {
+    "independent_replay": "PASS",
+    "preparation": "preparation.json",
+    "preparation_sha256": "e99d223d7d45e4099f8d08f24cec95b2e4e3e4d083730e20bbc29b34b59a87dd",
+    "verifier_sha256": "a7fb87327c10741a2f75e28b2840bdb5c50340e8781b076265c0d502aaf5ba65"
+  },
+  "schema_version": "formalslt.certificate.v1",
+  "statistics": {
+    "confidence_log_upper": "61/20",
+    "delta": "1/20",
+    "kl_upper": "7/10",
+    "posterior_empirical_brier_risk": "2161547227007/35320733114400",
+    "posterior_suffix_predictor_quadratic_variation_upper": "252237278248593/1099511627776",
+    "quadratic_variation_grid_denominator": 1099511627776,
+    "quadratic_variation_maximum_rounding_slack": "257/34359738368",
+    "rational_arithmetic_upper": "1422695048907004187305501/19417778380427805012787200",
+    "tilt": "1/2",
+    "wake": 0
+  }
+}

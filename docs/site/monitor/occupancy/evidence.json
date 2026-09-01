@@ -1,0 +1,109 @@
+{
+  "artifact_status": "AUDITED RETROSPECTIVE DEMONSTRATION",
+  "data": {
+    "archive_sha256": "4ae3f46aa98eedff564a9f6924d1635173e2fd2c816004342a9be93076d3a81a",
+    "canonical_stream_sha256": "c2db5942015195266becce67b2ee882596fd17541230f483fb08a10b52553bd0",
+    "dataset_doi": "10.24432/C5X01N",
+    "dataset_license": {
+      "name": "Creative Commons Attribution 4.0 International",
+      "spdx": "CC-BY-4.0",
+      "url": "https://creativecommons.org/licenses/by/4.0/"
+    },
+    "monitor_count": 8224,
+    "monitor_first_timestamp": "2015-02-12T16:15:59",
+    "monitor_last_timestamp": "2015-02-18T09:19:00",
+    "monitor_split_sha256": "325e56c865d139ac756fd553681f95e08f763df86964096dea48d51ed38a63b2",
+    "prediction_stream_sha256": "3e6639661d43db343ffdc4d004b459505cc9f6dd91006729385f723c9a84d670"
+  },
+  "models": {
+    "constant_train_prevalence": {
+      "prediction_quantized": 16838,
+      "training_prevalence": "2113/8224"
+    },
+    "logistic_all_sensor": {
+      "coefficient_repr": [
+        "-1.2669003746852925",
+        "-0.2855497600050978",
+        "3.607599520279295",
+        "1.9410011906504308"
+      ],
+      "feature_allowlist": [
+        "Temperature",
+        "Humidity",
+        "Light",
+        "CO2"
+      ],
+      "intercept_repr": "-3.400795000093489",
+      "parameters": {
+        "C": "1",
+        "max_iter": 2000,
+        "random_state": 0,
+        "solver": "lbfgs",
+        "tol": "1e-12"
+      },
+      "scaler_mean_repr": [
+        "21.00159711124336",
+        "23.949714968965626",
+        "147.89968819483002",
+        "604.9118556895045"
+      ],
+      "scaler_scale_repr": [
+        "1.0806496456645458",
+        "3.9632820089636085",
+        "218.54807448086487",
+        "243.6079584895426"
+      ]
+    },
+    "runtime_requirements": {
+      "numpy": "2.4.4",
+      "scikit_learn": "1.9.0"
+    }
+  },
+  "nonclaims": [
+    "the analysis was assembled retrospectively and is not a prospective study",
+    "the UCI archive does not prove real-time label delay",
+    "the certificate concerns encountered conditional prefix risk, not future or deployment risk",
+    "Lean checks the compact bound arithmetic, while two Python implementations replay the rows"
+  ],
+  "schema_version": "formalslt.brier-monitor.uci357-certificate-evidence.v1",
+  "selection": {
+    "loss": "quantized Brier loss",
+    "loss_numerator_sums": {
+      "constant_train_prevalence": 5839291707856,
+      "logistic_all_sensor": 2161547227007
+    },
+    "model_order": [
+      "constant_train_prevalence",
+      "logistic_all_sensor"
+    ],
+    "posterior": {
+      "constant_train_prevalence": "0",
+      "logistic_all_sensor": "1"
+    },
+    "prior": {
+      "constant_train_prevalence": "1/2",
+      "logistic_all_sensor": "1/2"
+    },
+    "rule": "minimum monitor-prefix cumulative Brier loss; model order breaks ties",
+    "timing": "POST_DATA",
+    "winner": "logistic_all_sensor"
+  },
+  "source_bindings": {
+    "builder": {
+      "path": "scripts/build_brier_monitor_uci357_certificate.py",
+      "sha256": "c3213271829c7eea36ed0c81ea0e050901dfad50922f229bdb111189daf52440"
+    },
+    "runtime_requirements": {
+      "path": "requirements-uci357.txt",
+      "sha256": "fee5ae5c6468aaad9051ab600983b799f75c45524cfcd60cbbc502a46aeae4f1"
+    },
+    "source_manifest": {
+      "path": "applications/brier_monitor/generated/uci357-protocol-v1-manifest.json",
+      "sha256": "14f0618867463e600aa512aee113e5aca2f4c69c6197438a812f715c342c52ba"
+    },
+    "source_protocol": {
+      "path": "applications/brier_monitor/uci357-protocol-v1.json",
+      "sha256": "a1fd7948904662bf5dc82a5f0a27d259b4fb74710980211756df86153d216e87"
+    }
+  }
+}

@@ -12,12 +12,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 from typing import Any, Iterable
 
 import formalslt_certificate as certificate_engine
 import formalslt_brier_certificate as tabular_certificate
+import formalslt_brier_streaming as streaming_brier
 import formalslt_brier_tabular as tabular_brier
 import verify_formalslt_brier_tabular as tabular_replay
 
@@ -303,6 +307,100 @@ def verify_preparation(args: argparse.Namespace) -> int:
     return 0
 
 
+def monitor(args: argparse.Namespace) -> int:
+    if args.out.exists():
+        raise ToolError(f"refusing to overwrite existing output: {args.out}")
+    try:
+        trace = streaming_brier.replay(
+            args.protocol,
+            args.data,
+            every=args.every,
+        )
+        tabular_brier.atomic_write(
+            args.out,
+            tabular_brier.canonical_json_bytes(trace),
+        )
+    except (streaming_brier.StreamingMonitorError, tabular_brier.PreparationError) as error:
+        raise ToolError(str(error)) from error
+    selected = trace["final"]["selected"]
+    print("FormalSLT incremental Brier monitor")
+    print(f"Observations:                 {trace['data']['observations']}")
+    print(f"Selected model:              {selected['model_id']}")
+    print(f"Observed Brier loss:         {selected['empirical_brier_risk']}")
+    print(f"Preview upper boundary:      {selected['boundary_upper']}")
+    print("Certificate verification:    NOT ISSUED")
+    print(f"Wrote:                        {args.out}")
+    return 0
+
+
+def monitor_certify(args: argparse.Namespace) -> int:
+    """Select on the observed prefix, freeze that posterior, and certify it."""
+
+    output = args.out.resolve()
+    if output.exists():
+        raise ToolError(f"refusing to overwrite existing output: {output}")
+    try:
+        monitor_state = streaming_brier.load_monitor(args.protocol, args.data)
+        frozen = monitor_state.freeze_selected_protocol()
+    except (streaming_brier.StreamingMonitorError, tabular_brier.PreparationError) as error:
+        raise ToolError(str(error)) from error
+
+    output.parent.mkdir(parents=True, exist_ok=True)
+    staging_root = Path(
+        tempfile.mkdtemp(prefix=f".{output.name}.monitor-certify.", dir=output.parent)
+    )
+    bundle = staging_root / "bundle"
+    selected_protocol_path = staging_root / "selected-protocol.json"
+    try:
+        tabular_brier.atomic_write(selected_protocol_path, frozen.raw)
+        certificate_path = tabular_certificate.issue(
+            selected_protocol_path,
+            args.data,
+            bundle,
+        )
+        certificate = tabular_certificate.verify(
+            certificate_path,
+            selected_protocol_path,
+            args.data,
+        )
+        if certificate["protocol"]["sha256"] != frozen.record[
+            "selected_protocol_sha256"
+        ]:
+            raise ToolError("issued certificate does not bind the frozen protocol")
+        if certificate["data"]["normalized_stream_sha256"] != frozen.record[
+            "normalized_stream_sha256"
+        ]:
+            raise ToolError("issued certificate does not bind the selected stream")
+        selection_record = {
+            **frozen.record,
+            "certificate_file": tabular_certificate.CERTIFICATE_NAME,
+            "certificate_sha256": tabular_brier.sha256_file(certificate_path),
+        }
+        tabular_brier.atomic_write(
+            bundle / "selection.json",
+            tabular_brier.canonical_json_bytes(selection_record),
+        )
+        os.replace(bundle, output)
+    except (OSError, tabular_certificate.CertificateError) as error:
+        raise ToolError(str(error)) from error
+    finally:
+        shutil.rmtree(staging_root, ignore_errors=True)
+
+    selected = certificate["statistics"]
+    print("FormalSLT selected-model Brier certificate: PASS")
+    print(f"Observations:                       {certificate['data']['observations']}")
+    print(f"Selected model:                    {frozen.record['selected_model']}")
+    print(
+        "Observed Brier loss:                "
+        f"{selected['posterior_empirical_brier_risk']}"
+    )
+    print(f"Certified upper bound:              {certificate['claim']['upper_bound']}")
+    print("Independent data replay:             PASS")
+    print("Lean kernel:                         PASS")
+    print(f"Wrote:                               {output / tabular_certificate.CERTIFICATE_NAME}")
+    return 0
+
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(
         prog="formalslt",
@@ -331,6 +429,25 @@ def parser() -> argparse.ArgumentParser:
     replay_parser.add_argument("protocol", type=Path)
     replay_parser.add_argument("data", type=Path)
     replay_parser.set_defaults(handler=verify_preparation)
+
+    monitor_parser = commands.add_parser(
+        "monitor",
+        help="replay a tabular stream incrementally without claiming certification",
+    )
+    monitor_parser.add_argument("protocol", type=Path)
+    monitor_parser.add_argument("data", type=Path)
+    monitor_parser.add_argument("--every", type=int, default=100)
+    monitor_parser.add_argument("--out", type=Path, required=True)
+    monitor_parser.set_defaults(handler=monitor)
+
+    monitor_certify_parser = commands.add_parser(
+        "monitor-certify",
+        help="select the live winner, freeze its posterior, and issue a certificate",
+    )
+    monitor_certify_parser.add_argument("protocol", type=Path)
+    monitor_certify_parser.add_argument("data", type=Path)
+    monitor_certify_parser.add_argument("--out", type=Path, required=True)
+    monitor_certify_parser.set_defaults(handler=monitor_certify)
 
     certify_parser = commands.add_parser("certify", help="issue a registered certificate")
     certify_parser.add_argument("protocol", type=Path, nargs="?", default=DEFAULT_PROTOCOL)

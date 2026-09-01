@@ -35,6 +35,36 @@ integers, so the analyzed quantity is exact. The protocol must declare that
 each prediction was available before its corresponding outcome and must label
 its provenance `DECLARED`, `AUDITED`, or `SIGNED_LOG`.
 
+Replay the same protocol incrementally to produce an uncertified live trace:
+
+```bash
+./bin/formalslt monitor protocol.yaml predictions.parquet \
+  --every 100 \
+  --out monitor-trace.json
+```
+
+The incremental engine maintains exact per-model Brier loss, predictable
+quadratic-variation ceilings, a post-data selected point posterior, and the
+conservative boundary preview. Its trace deliberately says
+`PREVIEW_NOT_CERTIFIED`; use `certify` to rerun the data independently and
+invoke Lean on the final endpoint.
+
+To make the live selection and certificate handoff one operation, use
+`monitor-certify`:
+
+```bash
+./bin/formalslt monitor-certify protocol.yaml predictions.parquet \
+  --out selected-model-certificate
+```
+
+This first consumes the stream with the incremental engine, chooses the model
+with minimum cumulative prefix Brier loss, and freezes that choice as a
+one-point posterior. The frozen protocol is bound to the base protocol hash,
+normalized stream hash, prefix length, and selected model. The certifier then
+reparses the original table, independently replays the exact statistics, and
+runs the Lean checker. The output contains `selection.json`, the frozen
+protocol, exact preparation, generated checker, and `certificate.json`.
+
 ```bash
 ./bin/formalslt certify protocol.yaml predictions.parquet \
   --out certificate
@@ -43,6 +73,35 @@ its provenance `DECLARED`, `AUDITED`, or `SIGNED_LOG`.
   --data predictions.parquet
 ./bin/formalslt show certificate/certificate.json
 ```
+
+## Local streaming service
+
+The same engine is available through a small FastAPI service. It keeps active
+rows in memory and stores issued certificate bundles under a local artifact
+root. Install and run it on localhost:
+
+```bash
+python3 -m pip install -r requirements-service.txt
+FORMALSLT_CERTIFICATE_ROOT=/tmp/formalslt-service-certificates \
+  python3 -m uvicorn formalslt_monitor_service:app \
+  --app-dir scripts \
+  --host 127.0.0.1 \
+  --port 8000
+```
+
+The API exposes:
+
+- `POST /v1/monitors` to validate a protocol and open a session;
+- `POST /v1/monitors/{id}/observations` to append one pre-outcome prediction row;
+- `GET /v1/monitors/{id}` to read the current exact preview;
+- `POST /v1/monitors/{id}/freeze` to inspect the selected point-posterior protocol;
+- `POST /v1/monitors/{id}/certify` to freeze, independently replay, and run Lean;
+- `GET /v1/monitors/{id}/certificates/{n}` to retrieve an issued prefix certificate.
+
+The service is intentionally local and unauthenticated. Do not bind it to a
+public interface. Certification is synchronous and should move behind a job
+worker before a multi-user deployment; no queue or database is needed for the
+current research demo.
 
 Issuance streams the table twice through independent implementations. Each
 replay rounds every nonnegative row contribution to the same `2^-40` grid, so
@@ -143,3 +202,74 @@ also does not turn monitored conditional suffix risk into future, stationary,
 population, or deployment risk. The real-data monitor still requires a frozen
 dataset, chronological prediction protocol, and a Lean theorem/checker that
 consumes the generated data.
+
+## Frozen UCI-357 data protocol
+
+`uci357-protocol-v1.json` defines the first real-data input contract. It pins
+the UCI Occupancy Detection landing page, DOI, CC BY 4.0 metadata, archive and
+member hashes, strict parser, chronological 40/20/40 split, feature leakage
+guards, 16-bit probability quantization, exact Brier arithmetic, and the
+deterministic soft-winner posterior rule.
+
+The source archive and derived stream are deliberately untracked. Prepare and
+check them with:
+
+```bash
+python3 scripts/prepare_brier_monitor_uci357.py --download
+python3 scripts/prepare_brier_monitor_uci357.py --check
+python3 -m pytest -q tests/test_brier_monitor_uci357_protocol.py
+```
+
+The tracked `generated/uci357-protocol-v1-manifest.json` binds the observed
+source and canonical stream hashes. These default preparation and check paths
+use only the Python standard library. To explicitly compute the optional local
+baselines when NumPy and scikit-learn are already installed, run:
+
+```bash
+python3 scripts/prepare_brier_monitor_uci357.py --baselines
+python3 scripts/prepare_brier_monitor_uci357.py --check --baselines
+```
+
+The ignored local result contains only a training-prevalence constant and one
+deterministic all-sensor logistic baseline. A scikit-learn convergence warning
+fails the run. The result is descriptive and non-public; it is not a FormalSLT
+certificate.
+
+## Audited UCI-357 certificate application
+
+The certificate application trains the logistic model only on the frozen
+training prefix and emits predictions for the 8,224-row monitor suffix. It then
+selects the lower-Brier model after observing that suffix. The selected point
+posterior is charged against a uniform two-model prior; the receipt does not
+pretend that the logistic model was selected in advance.
+
+Install the pinned model runtime, prepare the hash-bound prediction stream, and
+issue or verify the compact certificate with:
+
+```bash
+python3 -m pip install -r requirements-uci357.txt
+python3 scripts/build_brier_monitor_uci357_certificate.py --prepare
+python3 scripts/build_brier_monitor_uci357_certificate.py --issue
+python3 scripts/build_brier_monitor_uci357_certificate.py --check
+```
+
+The tracked evidence labels this as an audited retrospective demonstration.
+The model never receives `Occupancy` as an input, but the source archive does
+not establish real-time label delay. The statistical claim remains encountered
+conditional prefix risk, not future occupancy or deployment risk.
+
+The tracked 8,224-observation result selects the all-sensor logistic model after
+the monitored prefix, records observed Brier loss `0.0611976886…`, and checks a
+95% upper bound of `0.073268`; the constant training-prevalence baseline has
+loss `0.165321928…`. Reissue the same application through the public command:
+
+```bash
+./bin/formalslt certify \
+  applications/brier_monitor/uci357-certificate-protocol-v1.json \
+  applications/brier_monitor/generated/uci357-monitor-predictions-v1.csv \
+  --out /tmp/formalslt-uci357-certificate
+```
+
+The interactive, digest-bound presentation is staged from
+`docs/site/monitor/occupancy/`. Intermediate chart points are display replays;
+the final `0.073268` endpoint is the point checked by the tracked Lean file.

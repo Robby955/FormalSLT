@@ -1,0 +1,4134 @@
+{
+  "artifact_status": "DISPLAY REPLAY; FINAL POINT KERNEL CHECKED",
+  "certificate_sha256": "a6faea8ab250985d21f57f758e26b6ecc104e603e458f537aeb4606c320eaced",
+  "dataset": {
+    "doi": "10.24432/C5X01N",
+    "name": "UCI Occupancy Detection"
+  },
+  "final": {
+    "boundary_upper_decimal": "0.073268",
+    "constant_brier_decimal": "0.16532193",
+    "logistic_brier_decimal": "0.06119769",
+    "n": 8224,
+    "selected_brier_decimal": "0.06119769",
+    "selected_model": "logistic_all_sensor"
+  },
+  "points": [
+    {
+      "boundary_upper_decimal": "0.884837",
+      "constant_brier_decimal": "0.55215093",
+      "logistic_brier_decimal": "0.41523807",
+      "n": 16,
+      "selected_brier_decimal": "0.41523807",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.600771",
+      "constant_brier_decimal": "0.55215093",
+      "logistic_brier_decimal": "0.36480766",
+      "n": 32,
+      "selected_brier_decimal": "0.36480766",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.500249",
+      "constant_brier_decimal": "0.55215093",
+      "logistic_brier_decimal": "0.34246688",
+      "n": 48,
+      "selected_brier_decimal": "0.34246688",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.436928",
+      "constant_brier_decimal": "0.55215093",
+      "logistic_brier_decimal": "0.31775704",
+      "n": 64,
+      "selected_brier_decimal": "0.31775704",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.403142",
+      "constant_brier_decimal": "0.55215093",
+      "logistic_brier_decimal": "0.30757047",
+      "n": 80,
+      "selected_brier_decimal": "0.30757047",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.374091",
+      "constant_brier_decimal": "0.51670343",
+      "logistic_brier_decimal": "0.29046743",
+      "n": 96,
+      "selected_brier_decimal": "0.29046743",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.324822",
+      "constant_brier_decimal": "0.45231919",
+      "logistic_brier_decimal": "0.24897218",
+      "n": 112,
+      "selected_brier_decimal": "0.24897218",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.286954",
+      "constant_brier_decimal": "0.40403101",
+      "logistic_brier_decimal": "0.21785073",
+      "n": 128,
+      "selected_brier_decimal": "0.21785073",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.256959",
+      "constant_brier_decimal": "0.36647353",
+      "logistic_brier_decimal": "0.19364516",
+      "n": 144,
+      "selected_brier_decimal": "0.19364516",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.232622",
+      "constant_brier_decimal": "0.33642756",
+      "logistic_brier_decimal": "0.17428072",
+      "n": 160,
+      "selected_brier_decimal": "0.17428072",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.212485",
+      "constant_brier_decimal": "0.31184448",
+      "logistic_brier_decimal": "0.15843709",
+      "n": 176,
+      "selected_brier_decimal": "0.15843709",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.195549",
+      "constant_brier_decimal": "0.29135859",
+      "logistic_brier_decimal": "0.14523407",
+      "n": 192,
+      "selected_brier_decimal": "0.14523407",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.181109",
+      "constant_brier_decimal": "0.27402437",
+      "logistic_brier_decimal": "0.13406229",
+      "n": 208,
+      "selected_brier_decimal": "0.13406229",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.168652",
+      "constant_brier_decimal": "0.25916647",
+      "logistic_brier_decimal": "0.12448650",
+      "n": 224,
+      "selected_brier_decimal": "0.12448650",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.157796",
+      "constant_brier_decimal": "0.24628962",
+      "logistic_brier_decimal": "0.11618749",
+      "n": 240,
+      "selected_brier_decimal": "0.11618749",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.148252",
+      "constant_brier_decimal": "0.23502238",
+      "logistic_brier_decimal": "0.10892587",
+      "n": 256,
+      "selected_brier_decimal": "0.10892587",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.139795",
+      "constant_brier_decimal": "0.22508069",
+      "logistic_brier_decimal": "0.10251855",
+      "n": 272,
+      "selected_brier_decimal": "0.10251855",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.132250",
+      "constant_brier_decimal": "0.21624364",
+      "logistic_brier_decimal": "0.09682317",
+      "n": 288,
+      "selected_brier_decimal": "0.09682317",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.125477",
+      "constant_brier_decimal": "0.20833681",
+      "logistic_brier_decimal": "0.09172731",
+      "n": 304,
+      "selected_brier_decimal": "0.09172731",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.119364",
+      "constant_brier_decimal": "0.20122065",
+      "logistic_brier_decimal": "0.08714104",
+      "n": 320,
+      "selected_brier_decimal": "0.08714104",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.113818",
+      "constant_brier_decimal": "0.19478223",
+      "logistic_brier_decimal": "0.08299157",
+      "n": 336,
+      "selected_brier_decimal": "0.08299157",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.108764",
+      "constant_brier_decimal": "0.18892912",
+      "logistic_brier_decimal": "0.07921934",
+      "n": 352,
+      "selected_brier_decimal": "0.07921934",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.104140",
+      "constant_brier_decimal": "0.18358497",
+      "logistic_brier_decimal": "0.07577514",
+      "n": 368,
+      "selected_brier_decimal": "0.07577514",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.099893",
+      "constant_brier_decimal": "0.17868617",
+      "logistic_brier_decimal": "0.07261796",
+      "n": 384,
+      "selected_brier_decimal": "0.07261796",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.095979",
+      "constant_brier_decimal": "0.17417927",
+      "logistic_brier_decimal": "0.06971337",
+      "n": 400,
+      "selected_brier_decimal": "0.06971337",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.092360",
+      "constant_brier_decimal": "0.17001906",
+      "logistic_brier_decimal": "0.06703221",
+      "n": 416,
+      "selected_brier_decimal": "0.06703221",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.089003",
+      "constant_brier_decimal": "0.16616701",
+      "logistic_brier_decimal": "0.06454966",
+      "n": 432,
+      "selected_brier_decimal": "0.06454966",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.085882",
+      "constant_brier_decimal": "0.16259011",
+      "logistic_brier_decimal": "0.06224444",
+      "n": 448,
+      "selected_brier_decimal": "0.06224444",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.082973",
+      "constant_brier_decimal": "0.15925989",
+      "logistic_brier_decimal": "0.06009821",
+      "n": 464,
+      "selected_brier_decimal": "0.06009821",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.080254",
+      "constant_brier_decimal": "0.15615169",
+      "logistic_brier_decimal": "0.05809506",
+      "n": 480,
+      "selected_brier_decimal": "0.05809506",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.077707",
+      "constant_brier_decimal": "0.15324401",
+      "logistic_brier_decimal": "0.05622115",
+      "n": 496,
+      "selected_brier_decimal": "0.05622115",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.075317",
+      "constant_brier_decimal": "0.15051806",
+      "logistic_brier_decimal": "0.05446437",
+      "n": 512,
+      "selected_brier_decimal": "0.05446437",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.073070",
+      "constant_brier_decimal": "0.14795733",
+      "logistic_brier_decimal": "0.05281407",
+      "n": 528,
+      "selected_brier_decimal": "0.05281407",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.070953",
+      "constant_brier_decimal": "0.14554722",
+      "logistic_brier_decimal": "0.05126086",
+      "n": 544,
+      "selected_brier_decimal": "0.05126086",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.068955",
+      "constant_brier_decimal": "0.14327484",
+      "logistic_brier_decimal": "0.04979639",
+      "n": 560,
+      "selected_brier_decimal": "0.04979639",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.067067",
+      "constant_brier_decimal": "0.14112870",
+      "logistic_brier_decimal": "0.04841329",
+      "n": 576,
+      "selected_brier_decimal": "0.04841329",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.065279",
+      "constant_brier_decimal": "0.13909856",
+      "logistic_brier_decimal": "0.04710496",
+      "n": 592,
+      "selected_brier_decimal": "0.04710496",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.063584",
+      "constant_brier_decimal": "0.13717528",
+      "logistic_brier_decimal": "0.04586548",
+      "n": 608,
+      "selected_brier_decimal": "0.04586548",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.061975",
+      "constant_brier_decimal": "0.13535062",
+      "logistic_brier_decimal": "0.04468958",
+      "n": 624,
+      "selected_brier_decimal": "0.04468958",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.060445",
+      "constant_brier_decimal": "0.13361720",
+      "logistic_brier_decimal": "0.04357249",
+      "n": 640,
+      "selected_brier_decimal": "0.04357249",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.058989",
+      "constant_brier_decimal": "0.13196834",
+      "logistic_brier_decimal": "0.04250989",
+      "n": 656,
+      "selected_brier_decimal": "0.04250989",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.057602",
+      "constant_brier_decimal": "0.13039799",
+      "logistic_brier_decimal": "0.04149791",
+      "n": 672,
+      "selected_brier_decimal": "0.04149791",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.056278",
+      "constant_brier_decimal": "0.12890068",
+      "logistic_brier_decimal": "0.04053300",
+      "n": 688,
+      "selected_brier_decimal": "0.04053300",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.055014",
+      "constant_brier_decimal": "0.12747143",
+      "logistic_brier_decimal": "0.03961195",
+      "n": 704,
+      "selected_brier_decimal": "0.03961195",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.053805",
+      "constant_brier_decimal": "0.12610571",
+      "logistic_brier_decimal": "0.03873184",
+      "n": 720,
+      "selected_brier_decimal": "0.03873184",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.052648",
+      "constant_brier_decimal": "0.12479936",
+      "logistic_brier_decimal": "0.03788999",
+      "n": 736,
+      "selected_brier_decimal": "0.03788999",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.051540",
+      "constant_brier_decimal": "0.12354860",
+      "logistic_brier_decimal": "0.03708396",
+      "n": 752,
+      "selected_brier_decimal": "0.03708396",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.050478",
+      "constant_brier_decimal": "0.12234996",
+      "logistic_brier_decimal": "0.03631151",
+      "n": 768,
+      "selected_brier_decimal": "0.03631151",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.049458",
+      "constant_brier_decimal": "0.12120024",
+      "logistic_brier_decimal": "0.03557058",
+      "n": 784,
+      "selected_brier_decimal": "0.03557058",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.048479",
+      "constant_brier_decimal": "0.12009651",
+      "logistic_brier_decimal": "0.03485930",
+      "n": 800,
+      "selected_brier_decimal": "0.03485930",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047538",
+      "constant_brier_decimal": "0.11903606",
+      "logistic_brier_decimal": "0.03417589",
+      "n": 816,
+      "selected_brier_decimal": "0.03417589",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046633",
+      "constant_brier_decimal": "0.11801640",
+      "logistic_brier_decimal": "0.03351878",
+      "n": 832,
+      "selected_brier_decimal": "0.03351878",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045761",
+      "constant_brier_decimal": "0.11703522",
+      "logistic_brier_decimal": "0.03288645",
+      "n": 848,
+      "selected_brier_decimal": "0.03288645",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044922",
+      "constant_brier_decimal": "0.11609038",
+      "logistic_brier_decimal": "0.03227753",
+      "n": 864,
+      "selected_brier_decimal": "0.03227753",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044113",
+      "constant_brier_decimal": "0.11517990",
+      "logistic_brier_decimal": "0.03169071",
+      "n": 880,
+      "selected_brier_decimal": "0.03169071",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043332",
+      "constant_brier_decimal": "0.11430193",
+      "logistic_brier_decimal": "0.03112485",
+      "n": 896,
+      "selected_brier_decimal": "0.03112485",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042579",
+      "constant_brier_decimal": "0.11345477",
+      "logistic_brier_decimal": "0.03057885",
+      "n": 912,
+      "selected_brier_decimal": "0.03057885",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041851",
+      "constant_brier_decimal": "0.11263682",
+      "logistic_brier_decimal": "0.03005167",
+      "n": 928,
+      "selected_brier_decimal": "0.03005167",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041148",
+      "constant_brier_decimal": "0.11184660",
+      "logistic_brier_decimal": "0.02954236",
+      "n": 944,
+      "selected_brier_decimal": "0.02954236",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040468",
+      "constant_brier_decimal": "0.11108272",
+      "logistic_brier_decimal": "0.02905003",
+      "n": 960,
+      "selected_brier_decimal": "0.02905003",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039810",
+      "constant_brier_decimal": "0.11034388",
+      "logistic_brier_decimal": "0.02857385",
+      "n": 976,
+      "selected_brier_decimal": "0.02857385",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039173",
+      "constant_brier_decimal": "0.10962888",
+      "logistic_brier_decimal": "0.02811302",
+      "n": 992,
+      "selected_brier_decimal": "0.02811302",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041113",
+      "constant_brier_decimal": "0.11134797",
+      "logistic_brier_decimal": "0.02975307",
+      "n": 1008,
+      "selected_brier_decimal": "0.02975307",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040985",
+      "constant_brier_decimal": "0.11823552",
+      "logistic_brier_decimal": "0.02980076",
+      "n": 1024,
+      "selected_brier_decimal": "0.02980076",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040456",
+      "constant_brier_decimal": "0.12491114",
+      "logistic_brier_decimal": "0.02943990",
+      "n": 1040,
+      "selected_brier_decimal": "0.02943990",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039867",
+      "constant_brier_decimal": "0.13138447",
+      "logistic_brier_decimal": "0.02901278",
+      "n": 1056,
+      "selected_brier_decimal": "0.02901278",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046606",
+      "constant_brier_decimal": "0.13494365",
+      "logistic_brier_decimal": "0.03396837",
+      "n": 1072,
+      "selected_brier_decimal": "0.03396837",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045934",
+      "constant_brier_decimal": "0.14107905",
+      "logistic_brier_decimal": "0.03347586",
+      "n": 1088,
+      "selected_brier_decimal": "0.03347586",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045278",
+      "constant_brier_decimal": "0.14703661",
+      "logistic_brier_decimal": "0.03299403",
+      "n": 1104,
+      "selected_brier_decimal": "0.03299403",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044639",
+      "constant_brier_decimal": "0.15282396",
+      "logistic_brier_decimal": "0.03252454",
+      "n": 1120,
+      "selected_brier_decimal": "0.03252454",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044017",
+      "constant_brier_decimal": "0.15844828",
+      "logistic_brier_decimal": "0.03206748",
+      "n": 1136,
+      "selected_brier_decimal": "0.03206748",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043412",
+      "constant_brier_decimal": "0.16391638",
+      "logistic_brier_decimal": "0.03162306",
+      "n": 1152,
+      "selected_brier_decimal": "0.03162306",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042824",
+      "constant_brier_decimal": "0.16923466",
+      "logistic_brier_decimal": "0.03119085",
+      "n": 1168,
+      "selected_brier_decimal": "0.03119085",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042252",
+      "constant_brier_decimal": "0.17440920",
+      "logistic_brier_decimal": "0.03077099",
+      "n": 1184,
+      "selected_brier_decimal": "0.03077099",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041697",
+      "constant_brier_decimal": "0.17944576",
+      "logistic_brier_decimal": "0.03036378",
+      "n": 1200,
+      "selected_brier_decimal": "0.03036378",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041161",
+      "constant_brier_decimal": "0.18434977",
+      "logistic_brier_decimal": "0.02997246",
+      "n": 1216,
+      "selected_brier_decimal": "0.02997246",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040651",
+      "constant_brier_decimal": "0.18912641",
+      "logistic_brier_decimal": "0.02960334",
+      "n": 1232,
+      "selected_brier_decimal": "0.02960334",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041018",
+      "constant_brier_decimal": "0.19261197",
+      "logistic_brier_decimal": "0.02990871",
+      "n": 1248,
+      "selected_brier_decimal": "0.02990871",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040503",
+      "constant_brier_decimal": "0.19100946",
+      "logistic_brier_decimal": "0.02953041",
+      "n": 1264,
+      "selected_brier_decimal": "0.02953041",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040002",
+      "constant_brier_decimal": "0.18944702",
+      "logistic_brier_decimal": "0.02916136",
+      "n": 1280,
+      "selected_brier_decimal": "0.02916136",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045671",
+      "constant_brier_decimal": "0.19017379",
+      "logistic_brier_decimal": "0.03376212",
+      "n": 1296,
+      "selected_brier_decimal": "0.03376212",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046187",
+      "constant_brier_decimal": "0.19458814",
+      "logistic_brier_decimal": "0.03440856",
+      "n": 1312,
+      "selected_brier_decimal": "0.03440856",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047431",
+      "constant_brier_decimal": "0.19889613",
+      "logistic_brier_decimal": "0.03573052",
+      "n": 1328,
+      "selected_brier_decimal": "0.03573052",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.049526",
+      "constant_brier_decimal": "0.20310154",
+      "logistic_brier_decimal": "0.03781738",
+      "n": 1344,
+      "selected_brier_decimal": "0.03781738",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.052430",
+      "constant_brier_decimal": "0.20720800",
+      "logistic_brier_decimal": "0.04059604",
+      "n": 1360,
+      "selected_brier_decimal": "0.04059604",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.056169",
+      "constant_brier_decimal": "0.21121897",
+      "logistic_brier_decimal": "0.04405875",
+      "n": 1376,
+      "selected_brier_decimal": "0.04405875",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.060424",
+      "constant_brier_decimal": "0.21513773",
+      "logistic_brier_decimal": "0.04793234",
+      "n": 1392,
+      "selected_brier_decimal": "0.04793234",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.064540",
+      "constant_brier_decimal": "0.21896742",
+      "logistic_brier_decimal": "0.05169551",
+      "n": 1408,
+      "selected_brier_decimal": "0.05169551",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.068222",
+      "constant_brier_decimal": "0.22271106",
+      "logistic_brier_decimal": "0.05510272",
+      "n": 1424,
+      "selected_brier_decimal": "0.05510272",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.071845",
+      "constant_brier_decimal": "0.22637150",
+      "logistic_brier_decimal": "0.05846605",
+      "n": 1440,
+      "selected_brier_decimal": "0.05846605",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.074510",
+      "constant_brier_decimal": "0.22995149",
+      "logistic_brier_decimal": "0.06103618",
+      "n": 1456,
+      "selected_brier_decimal": "0.06103618",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.076364",
+      "constant_brier_decimal": "0.23345366",
+      "logistic_brier_decimal": "0.06290685",
+      "n": 1472,
+      "selected_brier_decimal": "0.06290685",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.077557",
+      "constant_brier_decimal": "0.23688051",
+      "logistic_brier_decimal": "0.06418140",
+      "n": 1488,
+      "selected_brier_decimal": "0.06418140",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.078582",
+      "constant_brier_decimal": "0.24023445",
+      "logistic_brier_decimal": "0.06530001",
+      "n": 1504,
+      "selected_brier_decimal": "0.06530001",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.080511",
+      "constant_brier_decimal": "0.24287813",
+      "logistic_brier_decimal": "0.06722444",
+      "n": 1520,
+      "selected_brier_decimal": "0.06722444",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.082275",
+      "constant_brier_decimal": "0.24609972",
+      "logistic_brier_decimal": "0.06900150",
+      "n": 1536,
+      "selected_brier_decimal": "0.06900150",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.084765",
+      "constant_brier_decimal": "0.24862842",
+      "logistic_brier_decimal": "0.07125858",
+      "n": 1552,
+      "selected_brier_decimal": "0.07125858",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.083921",
+      "constant_brier_decimal": "0.24676501",
+      "logistic_brier_decimal": "0.07053146",
+      "n": 1568,
+      "selected_brier_decimal": "0.07053146",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.083093",
+      "constant_brier_decimal": "0.24493924",
+      "logistic_brier_decimal": "0.06981903",
+      "n": 1584,
+      "selected_brier_decimal": "0.06981903",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.082281",
+      "constant_brier_decimal": "0.24314998",
+      "logistic_brier_decimal": "0.06912084",
+      "n": 1600,
+      "selected_brier_decimal": "0.06912084",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.081485",
+      "constant_brier_decimal": "0.24139616",
+      "logistic_brier_decimal": "0.06843648",
+      "n": 1616,
+      "selected_brier_decimal": "0.06843648",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.080705",
+      "constant_brier_decimal": "0.23967672",
+      "logistic_brier_decimal": "0.06776554",
+      "n": 1632,
+      "selected_brier_decimal": "0.06776554",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.079939",
+      "constant_brier_decimal": "0.23799068",
+      "logistic_brier_decimal": "0.06710763",
+      "n": 1648,
+      "selected_brier_decimal": "0.06710763",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.079187",
+      "constant_brier_decimal": "0.23633705",
+      "logistic_brier_decimal": "0.06646238",
+      "n": 1664,
+      "selected_brier_decimal": "0.06646238",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.078450",
+      "constant_brier_decimal": "0.23471493",
+      "logistic_brier_decimal": "0.06582941",
+      "n": 1680,
+      "selected_brier_decimal": "0.06582941",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.077726",
+      "constant_brier_decimal": "0.23312340",
+      "logistic_brier_decimal": "0.06520840",
+      "n": 1696,
+      "selected_brier_decimal": "0.06520840",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.077015",
+      "constant_brier_decimal": "0.23156163",
+      "logistic_brier_decimal": "0.06459899",
+      "n": 1712,
+      "selected_brier_decimal": "0.06459899",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.076318",
+      "constant_brier_decimal": "0.23002878",
+      "logistic_brier_decimal": "0.06400088",
+      "n": 1728,
+      "selected_brier_decimal": "0.06400088",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.075632",
+      "constant_brier_decimal": "0.22852406",
+      "logistic_brier_decimal": "0.06341374",
+      "n": 1744,
+      "selected_brier_decimal": "0.06341374",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.074959",
+      "constant_brier_decimal": "0.22704669",
+      "logistic_brier_decimal": "0.06283728",
+      "n": 1760,
+      "selected_brier_decimal": "0.06283728",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.074298",
+      "constant_brier_decimal": "0.22559594",
+      "logistic_brier_decimal": "0.06227121",
+      "n": 1776,
+      "selected_brier_decimal": "0.06227121",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.073649",
+      "constant_brier_decimal": "0.22417110",
+      "logistic_brier_decimal": "0.06171525",
+      "n": 1792,
+      "selected_brier_decimal": "0.06171525",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.073010",
+      "constant_brier_decimal": "0.22277148",
+      "logistic_brier_decimal": "0.06116914",
+      "n": 1808,
+      "selected_brier_decimal": "0.06116914",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.072383",
+      "constant_brier_decimal": "0.22139641",
+      "logistic_brier_decimal": "0.06063260",
+      "n": 1824,
+      "selected_brier_decimal": "0.06063260",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.071766",
+      "constant_brier_decimal": "0.22004526",
+      "logistic_brier_decimal": "0.06010540",
+      "n": 1840,
+      "selected_brier_decimal": "0.06010540",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.071160",
+      "constant_brier_decimal": "0.21871740",
+      "logistic_brier_decimal": "0.05958729",
+      "n": 1856,
+      "selected_brier_decimal": "0.05958729",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.070564",
+      "constant_brier_decimal": "0.21741224",
+      "logistic_brier_decimal": "0.05907804",
+      "n": 1872,
+      "selected_brier_decimal": "0.05907804",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.069978",
+      "constant_brier_decimal": "0.21612920",
+      "logistic_brier_decimal": "0.05857741",
+      "n": 1888,
+      "selected_brier_decimal": "0.05857741",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.069401",
+      "constant_brier_decimal": "0.21486773",
+      "logistic_brier_decimal": "0.05808520",
+      "n": 1904,
+      "selected_brier_decimal": "0.05808520",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.068834",
+      "constant_brier_decimal": "0.21362728",
+      "logistic_brier_decimal": "0.05760120",
+      "n": 1920,
+      "selected_brier_decimal": "0.05760120",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.068276",
+      "constant_brier_decimal": "0.21240733",
+      "logistic_brier_decimal": "0.05712519",
+      "n": 1936,
+      "selected_brier_decimal": "0.05712519",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.067727",
+      "constant_brier_decimal": "0.21120738",
+      "logistic_brier_decimal": "0.05665699",
+      "n": 1952,
+      "selected_brier_decimal": "0.05665699",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.067187",
+      "constant_brier_decimal": "0.21002695",
+      "logistic_brier_decimal": "0.05619640",
+      "n": 1968,
+      "selected_brier_decimal": "0.05619640",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.066655",
+      "constant_brier_decimal": "0.20886555",
+      "logistic_brier_decimal": "0.05574324",
+      "n": 1984,
+      "selected_brier_decimal": "0.05574324",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.066132",
+      "constant_brier_decimal": "0.20772274",
+      "logistic_brier_decimal": "0.05529733",
+      "n": 2000,
+      "selected_brier_decimal": "0.05529733",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.065616",
+      "constant_brier_decimal": "0.20659806",
+      "logistic_brier_decimal": "0.05485849",
+      "n": 2016,
+      "selected_brier_decimal": "0.05485849",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.065109",
+      "constant_brier_decimal": "0.20549110",
+      "logistic_brier_decimal": "0.05442657",
+      "n": 2032,
+      "selected_brier_decimal": "0.05442657",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.064610",
+      "constant_brier_decimal": "0.20440143",
+      "logistic_brier_decimal": "0.05400141",
+      "n": 2048,
+      "selected_brier_decimal": "0.05400141",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.064118",
+      "constant_brier_decimal": "0.20332866",
+      "logistic_brier_decimal": "0.05358283",
+      "n": 2064,
+      "selected_brier_decimal": "0.05358283",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.063634",
+      "constant_brier_decimal": "0.20227239",
+      "logistic_brier_decimal": "0.05317069",
+      "n": 2080,
+      "selected_brier_decimal": "0.05317069",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.063156",
+      "constant_brier_decimal": "0.20123225",
+      "logistic_brier_decimal": "0.05276484",
+      "n": 2096,
+      "selected_brier_decimal": "0.05276484",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.062686",
+      "constant_brier_decimal": "0.20020787",
+      "logistic_brier_decimal": "0.05236515",
+      "n": 2112,
+      "selected_brier_decimal": "0.05236515",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.062223",
+      "constant_brier_decimal": "0.19919889",
+      "logistic_brier_decimal": "0.05197147",
+      "n": 2128,
+      "selected_brier_decimal": "0.05197147",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.061767",
+      "constant_brier_decimal": "0.19820497",
+      "logistic_brier_decimal": "0.05158367",
+      "n": 2144,
+      "selected_brier_decimal": "0.05158367",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.061317",
+      "constant_brier_decimal": "0.19722578",
+      "logistic_brier_decimal": "0.05120162",
+      "n": 2160,
+      "selected_brier_decimal": "0.05120162",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.060874",
+      "constant_brier_decimal": "0.19626098",
+      "logistic_brier_decimal": "0.05082518",
+      "n": 2176,
+      "selected_brier_decimal": "0.05082518",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.060437",
+      "constant_brier_decimal": "0.19531027",
+      "logistic_brier_decimal": "0.05045424",
+      "n": 2192,
+      "selected_brier_decimal": "0.05045424",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.060007",
+      "constant_brier_decimal": "0.19437334",
+      "logistic_brier_decimal": "0.05008868",
+      "n": 2208,
+      "selected_brier_decimal": "0.05008868",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.059582",
+      "constant_brier_decimal": "0.19344989",
+      "logistic_brier_decimal": "0.04972837",
+      "n": 2224,
+      "selected_brier_decimal": "0.04972837",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.059164",
+      "constant_brier_decimal": "0.19253963",
+      "logistic_brier_decimal": "0.04937320",
+      "n": 2240,
+      "selected_brier_decimal": "0.04937320",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.058751",
+      "constant_brier_decimal": "0.19164228",
+      "logistic_brier_decimal": "0.04902308",
+      "n": 2256,
+      "selected_brier_decimal": "0.04902308",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.058344",
+      "constant_brier_decimal": "0.19075758",
+      "logistic_brier_decimal": "0.04867789",
+      "n": 2272,
+      "selected_brier_decimal": "0.04867789",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.057943",
+      "constant_brier_decimal": "0.18988524",
+      "logistic_brier_decimal": "0.04833752",
+      "n": 2288,
+      "selected_brier_decimal": "0.04833752",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.057547",
+      "constant_brier_decimal": "0.18902502",
+      "logistic_brier_decimal": "0.04800189",
+      "n": 2304,
+      "selected_brier_decimal": "0.04800189",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.057156",
+      "constant_brier_decimal": "0.18817667",
+      "logistic_brier_decimal": "0.04767088",
+      "n": 2320,
+      "selected_brier_decimal": "0.04767088",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.056771",
+      "constant_brier_decimal": "0.18733994",
+      "logistic_brier_decimal": "0.04734441",
+      "n": 2336,
+      "selected_brier_decimal": "0.04734441",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.056391",
+      "constant_brier_decimal": "0.18651459",
+      "logistic_brier_decimal": "0.04702238",
+      "n": 2352,
+      "selected_brier_decimal": "0.04702238",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.056016",
+      "constant_brier_decimal": "0.18570039",
+      "logistic_brier_decimal": "0.04670470",
+      "n": 2368,
+      "selected_brier_decimal": "0.04670470",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.055646",
+      "constant_brier_decimal": "0.18489713",
+      "logistic_brier_decimal": "0.04639129",
+      "n": 2384,
+      "selected_brier_decimal": "0.04639129",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.055281",
+      "constant_brier_decimal": "0.18410457",
+      "logistic_brier_decimal": "0.04608205",
+      "n": 2400,
+      "selected_brier_decimal": "0.04608205",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.054920",
+      "constant_brier_decimal": "0.18332251",
+      "logistic_brier_decimal": "0.04577690",
+      "n": 2416,
+      "selected_brier_decimal": "0.04577690",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.054564",
+      "constant_brier_decimal": "0.18255075",
+      "logistic_brier_decimal": "0.04547577",
+      "n": 2432,
+      "selected_brier_decimal": "0.04547577",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.054213",
+      "constant_brier_decimal": "0.18178907",
+      "logistic_brier_decimal": "0.04517857",
+      "n": 2448,
+      "selected_brier_decimal": "0.04517857",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.053866",
+      "constant_brier_decimal": "0.18103728",
+      "logistic_brier_decimal": "0.04488523",
+      "n": 2464,
+      "selected_brier_decimal": "0.04488523",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.053524",
+      "constant_brier_decimal": "0.18029519",
+      "logistic_brier_decimal": "0.04459568",
+      "n": 2480,
+      "selected_brier_decimal": "0.04459568",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.053186",
+      "constant_brier_decimal": "0.17956262",
+      "logistic_brier_decimal": "0.04430983",
+      "n": 2496,
+      "selected_brier_decimal": "0.04430983",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.052852",
+      "constant_brier_decimal": "0.17883938",
+      "logistic_brier_decimal": "0.04402763",
+      "n": 2512,
+      "selected_brier_decimal": "0.04402763",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.052523",
+      "constant_brier_decimal": "0.17812529",
+      "logistic_brier_decimal": "0.04374901",
+      "n": 2528,
+      "selected_brier_decimal": "0.04374901",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.052197",
+      "constant_brier_decimal": "0.17742019",
+      "logistic_brier_decimal": "0.04347393",
+      "n": 2544,
+      "selected_brier_decimal": "0.04347393",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.051943",
+      "constant_brier_decimal": "0.17672390",
+      "logistic_brier_decimal": "0.04326920",
+      "n": 2560,
+      "selected_brier_decimal": "0.04326920",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.051627",
+      "constant_brier_decimal": "0.17603626",
+      "logistic_brier_decimal": "0.04300254",
+      "n": 2576,
+      "selected_brier_decimal": "0.04300254",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.051313",
+      "constant_brier_decimal": "0.17535710",
+      "logistic_brier_decimal": "0.04273749",
+      "n": 2592,
+      "selected_brier_decimal": "0.04273749",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.051002",
+      "constant_brier_decimal": "0.17468629",
+      "logistic_brier_decimal": "0.04247532",
+      "n": 2608,
+      "selected_brier_decimal": "0.04247532",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.050748",
+      "constant_brier_decimal": "0.17402365",
+      "logistic_brier_decimal": "0.04226773",
+      "n": 2624,
+      "selected_brier_decimal": "0.04226773",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.050445",
+      "constant_brier_decimal": "0.17336904",
+      "logistic_brier_decimal": "0.04201178",
+      "n": 2640,
+      "selected_brier_decimal": "0.04201178",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.050145",
+      "constant_brier_decimal": "0.17272232",
+      "logistic_brier_decimal": "0.04175903",
+      "n": 2656,
+      "selected_brier_decimal": "0.04175903",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.049849",
+      "constant_brier_decimal": "0.17208335",
+      "logistic_brier_decimal": "0.04150901",
+      "n": 2672,
+      "selected_brier_decimal": "0.04150901",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.049558",
+      "constant_brier_decimal": "0.17145198",
+      "logistic_brier_decimal": "0.04126291",
+      "n": 2688,
+      "selected_brier_decimal": "0.04126291",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.049272",
+      "constant_brier_decimal": "0.17082809",
+      "logistic_brier_decimal": "0.04102225",
+      "n": 2704,
+      "selected_brier_decimal": "0.04102225",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.048986",
+      "constant_brier_decimal": "0.17021153",
+      "logistic_brier_decimal": "0.04078098",
+      "n": 2720,
+      "selected_brier_decimal": "0.04078098",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.048703",
+      "constant_brier_decimal": "0.16960219",
+      "logistic_brier_decimal": "0.04054254",
+      "n": 2736,
+      "selected_brier_decimal": "0.04054254",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.048424",
+      "constant_brier_decimal": "0.16899993",
+      "logistic_brier_decimal": "0.04030685",
+      "n": 2752,
+      "selected_brier_decimal": "0.04030685",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.048148",
+      "constant_brier_decimal": "0.16840464",
+      "logistic_brier_decimal": "0.04007389",
+      "n": 2768,
+      "selected_brier_decimal": "0.04007389",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047875",
+      "constant_brier_decimal": "0.16781618",
+      "logistic_brier_decimal": "0.03984363",
+      "n": 2784,
+      "selected_brier_decimal": "0.03984363",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047605",
+      "constant_brier_decimal": "0.16723446",
+      "logistic_brier_decimal": "0.03961601",
+      "n": 2800,
+      "selected_brier_decimal": "0.03961601",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047338",
+      "constant_brier_decimal": "0.16665934",
+      "logistic_brier_decimal": "0.03939097",
+      "n": 2816,
+      "selected_brier_decimal": "0.03939097",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047074",
+      "constant_brier_decimal": "0.16609072",
+      "logistic_brier_decimal": "0.03916851",
+      "n": 2832,
+      "selected_brier_decimal": "0.03916851",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046813",
+      "constant_brier_decimal": "0.16552849",
+      "logistic_brier_decimal": "0.03894853",
+      "n": 2848,
+      "selected_brier_decimal": "0.03894853",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046555",
+      "constant_brier_decimal": "0.16497254",
+      "logistic_brier_decimal": "0.03873100",
+      "n": 2864,
+      "selected_brier_decimal": "0.03873100",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046300",
+      "constant_brier_decimal": "0.16442277",
+      "logistic_brier_decimal": "0.03851589",
+      "n": 2880,
+      "selected_brier_decimal": "0.03851589",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046047",
+      "constant_brier_decimal": "0.16387907",
+      "logistic_brier_decimal": "0.03830314",
+      "n": 2896,
+      "selected_brier_decimal": "0.03830314",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045798",
+      "constant_brier_decimal": "0.16334135",
+      "logistic_brier_decimal": "0.03809272",
+      "n": 2912,
+      "selected_brier_decimal": "0.03809272",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045551",
+      "constant_brier_decimal": "0.16280951",
+      "logistic_brier_decimal": "0.03788460",
+      "n": 2928,
+      "selected_brier_decimal": "0.03788460",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045306",
+      "constant_brier_decimal": "0.16228344",
+      "logistic_brier_decimal": "0.03767873",
+      "n": 2944,
+      "selected_brier_decimal": "0.03767873",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045064",
+      "constant_brier_decimal": "0.16176307",
+      "logistic_brier_decimal": "0.03747510",
+      "n": 2960,
+      "selected_brier_decimal": "0.03747510",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044825",
+      "constant_brier_decimal": "0.16124828",
+      "logistic_brier_decimal": "0.03727364",
+      "n": 2976,
+      "selected_brier_decimal": "0.03727364",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044588",
+      "constant_brier_decimal": "0.16073901",
+      "logistic_brier_decimal": "0.03707435",
+      "n": 2992,
+      "selected_brier_decimal": "0.03707435",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044354",
+      "constant_brier_decimal": "0.16023515",
+      "logistic_brier_decimal": "0.03687718",
+      "n": 3008,
+      "selected_brier_decimal": "0.03687718",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044122",
+      "constant_brier_decimal": "0.15973663",
+      "logistic_brier_decimal": "0.03668209",
+      "n": 3024,
+      "selected_brier_decimal": "0.03668209",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043893",
+      "constant_brier_decimal": "0.15924335",
+      "logistic_brier_decimal": "0.03648906",
+      "n": 3040,
+      "selected_brier_decimal": "0.03648906",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043666",
+      "constant_brier_decimal": "0.15875523",
+      "logistic_brier_decimal": "0.03629805",
+      "n": 3056,
+      "selected_brier_decimal": "0.03629805",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043441",
+      "constant_brier_decimal": "0.15827221",
+      "logistic_brier_decimal": "0.03610904",
+      "n": 3072,
+      "selected_brier_decimal": "0.03610904",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043219",
+      "constant_brier_decimal": "0.15779418",
+      "logistic_brier_decimal": "0.03592198",
+      "n": 3088,
+      "selected_brier_decimal": "0.03592198",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042999",
+      "constant_brier_decimal": "0.15732109",
+      "logistic_brier_decimal": "0.03573685",
+      "n": 3104,
+      "selected_brier_decimal": "0.03573685",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042781",
+      "constant_brier_decimal": "0.15685284",
+      "logistic_brier_decimal": "0.03555361",
+      "n": 3120,
+      "selected_brier_decimal": "0.03555361",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042565",
+      "constant_brier_decimal": "0.15638938",
+      "logistic_brier_decimal": "0.03537225",
+      "n": 3136,
+      "selected_brier_decimal": "0.03537225",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042352",
+      "constant_brier_decimal": "0.15593062",
+      "logistic_brier_decimal": "0.03519273",
+      "n": 3152,
+      "selected_brier_decimal": "0.03519273",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042141",
+      "constant_brier_decimal": "0.15547649",
+      "logistic_brier_decimal": "0.03501502",
+      "n": 3168,
+      "selected_brier_decimal": "0.03501502",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041931",
+      "constant_brier_decimal": "0.15502693",
+      "logistic_brier_decimal": "0.03483910",
+      "n": 3184,
+      "selected_brier_decimal": "0.03483910",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041724",
+      "constant_brier_decimal": "0.15458187",
+      "logistic_brier_decimal": "0.03466494",
+      "n": 3200,
+      "selected_brier_decimal": "0.03466494",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041519",
+      "constant_brier_decimal": "0.15414123",
+      "logistic_brier_decimal": "0.03449251",
+      "n": 3216,
+      "selected_brier_decimal": "0.03449251",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041316",
+      "constant_brier_decimal": "0.15370495",
+      "logistic_brier_decimal": "0.03432180",
+      "n": 3232,
+      "selected_brier_decimal": "0.03432180",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041115",
+      "constant_brier_decimal": "0.15327298",
+      "logistic_brier_decimal": "0.03415276",
+      "n": 3248,
+      "selected_brier_decimal": "0.03415276",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040915",
+      "constant_brier_decimal": "0.15284524",
+      "logistic_brier_decimal": "0.03398537",
+      "n": 3264,
+      "selected_brier_decimal": "0.03398537",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040718",
+      "constant_brier_decimal": "0.15242167",
+      "logistic_brier_decimal": "0.03381962",
+      "n": 3280,
+      "selected_brier_decimal": "0.03381962",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040523",
+      "constant_brier_decimal": "0.15200221",
+      "logistic_brier_decimal": "0.03365547",
+      "n": 3296,
+      "selected_brier_decimal": "0.03365547",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040329",
+      "constant_brier_decimal": "0.15158681",
+      "logistic_brier_decimal": "0.03349291",
+      "n": 3312,
+      "selected_brier_decimal": "0.03349291",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040137",
+      "constant_brier_decimal": "0.15117540",
+      "logistic_brier_decimal": "0.03333191",
+      "n": 3328,
+      "selected_brier_decimal": "0.03333191",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039947",
+      "constant_brier_decimal": "0.15076793",
+      "logistic_brier_decimal": "0.03317246",
+      "n": 3344,
+      "selected_brier_decimal": "0.03317246",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039759",
+      "constant_brier_decimal": "0.15036434",
+      "logistic_brier_decimal": "0.03301452",
+      "n": 3360,
+      "selected_brier_decimal": "0.03301452",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039573",
+      "constant_brier_decimal": "0.14996457",
+      "logistic_brier_decimal": "0.03285808",
+      "n": 3376,
+      "selected_brier_decimal": "0.03285808",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039388",
+      "constant_brier_decimal": "0.14956858",
+      "logistic_brier_decimal": "0.03270312",
+      "n": 3392,
+      "selected_brier_decimal": "0.03270312",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039205",
+      "constant_brier_decimal": "0.14917630",
+      "logistic_brier_decimal": "0.03254962",
+      "n": 3408,
+      "selected_brier_decimal": "0.03254962",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.039024",
+      "constant_brier_decimal": "0.14878769",
+      "logistic_brier_decimal": "0.03239756",
+      "n": 3424,
+      "selected_brier_decimal": "0.03239756",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.038845",
+      "constant_brier_decimal": "0.14840270",
+      "logistic_brier_decimal": "0.03224690",
+      "n": 3440,
+      "selected_brier_decimal": "0.03224690",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.038667",
+      "constant_brier_decimal": "0.14802127",
+      "logistic_brier_decimal": "0.03209764",
+      "n": 3456,
+      "selected_brier_decimal": "0.03209764",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.038491",
+      "constant_brier_decimal": "0.14764335",
+      "logistic_brier_decimal": "0.03194976",
+      "n": 3472,
+      "selected_brier_decimal": "0.03194976",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.038316",
+      "constant_brier_decimal": "0.14726890",
+      "logistic_brier_decimal": "0.03180324",
+      "n": 3488,
+      "selected_brier_decimal": "0.03180324",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.038143",
+      "constant_brier_decimal": "0.14689788",
+      "logistic_brier_decimal": "0.03165805",
+      "n": 3504,
+      "selected_brier_decimal": "0.03165805",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037971",
+      "constant_brier_decimal": "0.14653022",
+      "logistic_brier_decimal": "0.03151419",
+      "n": 3520,
+      "selected_brier_decimal": "0.03151419",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037801",
+      "constant_brier_decimal": "0.14616589",
+      "logistic_brier_decimal": "0.03137162",
+      "n": 3536,
+      "selected_brier_decimal": "0.03137162",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037633",
+      "constant_brier_decimal": "0.14580485",
+      "logistic_brier_decimal": "0.03123034",
+      "n": 3552,
+      "selected_brier_decimal": "0.03123034",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037466",
+      "constant_brier_decimal": "0.14544704",
+      "logistic_brier_decimal": "0.03109033",
+      "n": 3568,
+      "selected_brier_decimal": "0.03109033",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037300",
+      "constant_brier_decimal": "0.14509243",
+      "logistic_brier_decimal": "0.03095157",
+      "n": 3584,
+      "selected_brier_decimal": "0.03095157",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037136",
+      "constant_brier_decimal": "0.14474097",
+      "logistic_brier_decimal": "0.03081405",
+      "n": 3600,
+      "selected_brier_decimal": "0.03081405",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036974",
+      "constant_brier_decimal": "0.14439261",
+      "logistic_brier_decimal": "0.03067774",
+      "n": 3616,
+      "selected_brier_decimal": "0.03067774",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036813",
+      "constant_brier_decimal": "0.14404733",
+      "logistic_brier_decimal": "0.03054264",
+      "n": 3632,
+      "selected_brier_decimal": "0.03054264",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036653",
+      "constant_brier_decimal": "0.14370508",
+      "logistic_brier_decimal": "0.03040873",
+      "n": 3648,
+      "selected_brier_decimal": "0.03040873",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036494",
+      "constant_brier_decimal": "0.14336582",
+      "logistic_brier_decimal": "0.03027599",
+      "n": 3664,
+      "selected_brier_decimal": "0.03027599",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036337",
+      "constant_brier_decimal": "0.14302950",
+      "logistic_brier_decimal": "0.03014441",
+      "n": 3680,
+      "selected_brier_decimal": "0.03014441",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036182",
+      "constant_brier_decimal": "0.14269610",
+      "logistic_brier_decimal": "0.03001396",
+      "n": 3696,
+      "selected_brier_decimal": "0.03001396",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036027",
+      "constant_brier_decimal": "0.14236557",
+      "logistic_brier_decimal": "0.02988465",
+      "n": 3712,
+      "selected_brier_decimal": "0.02988465",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.035874",
+      "constant_brier_decimal": "0.14203788",
+      "logistic_brier_decimal": "0.02975645",
+      "n": 3728,
+      "selected_brier_decimal": "0.02975645",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.035723",
+      "constant_brier_decimal": "0.14171300",
+      "logistic_brier_decimal": "0.02962936",
+      "n": 3744,
+      "selected_brier_decimal": "0.02962936",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.035572",
+      "constant_brier_decimal": "0.14139087",
+      "logistic_brier_decimal": "0.02950335",
+      "n": 3760,
+      "selected_brier_decimal": "0.02950335",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.035423",
+      "constant_brier_decimal": "0.14107148",
+      "logistic_brier_decimal": "0.02937842",
+      "n": 3776,
+      "selected_brier_decimal": "0.02937842",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.035275",
+      "constant_brier_decimal": "0.14075478",
+      "logistic_brier_decimal": "0.02925455",
+      "n": 3792,
+      "selected_brier_decimal": "0.02925455",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.035128",
+      "constant_brier_decimal": "0.14044074",
+      "logistic_brier_decimal": "0.02913172",
+      "n": 3808,
+      "selected_brier_decimal": "0.02913172",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034983",
+      "constant_brier_decimal": "0.14012933",
+      "logistic_brier_decimal": "0.02900994",
+      "n": 3824,
+      "selected_brier_decimal": "0.02900994",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034839",
+      "constant_brier_decimal": "0.13982051",
+      "logistic_brier_decimal": "0.02888921",
+      "n": 3840,
+      "selected_brier_decimal": "0.02888921",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034696",
+      "constant_brier_decimal": "0.13951426",
+      "logistic_brier_decimal": "0.02876955",
+      "n": 3856,
+      "selected_brier_decimal": "0.02876955",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034554",
+      "constant_brier_decimal": "0.13921054",
+      "logistic_brier_decimal": "0.02865119",
+      "n": 3872,
+      "selected_brier_decimal": "0.02865119",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034416",
+      "constant_brier_decimal": "0.13890932",
+      "logistic_brier_decimal": "0.02853622",
+      "n": 3888,
+      "selected_brier_decimal": "0.02853622",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034279",
+      "constant_brier_decimal": "0.13861057",
+      "logistic_brier_decimal": "0.02842216",
+      "n": 3904,
+      "selected_brier_decimal": "0.02842216",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034165",
+      "constant_brier_decimal": "0.13831425",
+      "logistic_brier_decimal": "0.02833049",
+      "n": 3920,
+      "selected_brier_decimal": "0.02833049",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034055",
+      "constant_brier_decimal": "0.13802035",
+      "logistic_brier_decimal": "0.02824405",
+      "n": 3936,
+      "selected_brier_decimal": "0.02824405",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034115",
+      "constant_brier_decimal": "0.13772882",
+      "logistic_brier_decimal": "0.02832167",
+      "n": 3952,
+      "selected_brier_decimal": "0.02832167",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033984",
+      "constant_brier_decimal": "0.13743965",
+      "logistic_brier_decimal": "0.02821251",
+      "n": 3968,
+      "selected_brier_decimal": "0.02821251",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033886",
+      "constant_brier_decimal": "0.13715280",
+      "logistic_brier_decimal": "0.02813709",
+      "n": 3984,
+      "selected_brier_decimal": "0.02813709",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033752",
+      "constant_brier_decimal": "0.13686824",
+      "logistic_brier_decimal": "0.02802496",
+      "n": 4000,
+      "selected_brier_decimal": "0.02802496",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033708",
+      "constant_brier_decimal": "0.13658595",
+      "logistic_brier_decimal": "0.02799843",
+      "n": 4016,
+      "selected_brier_decimal": "0.02799843",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033764",
+      "constant_brier_decimal": "0.13630591",
+      "logistic_brier_decimal": "0.02807294",
+      "n": 4032,
+      "selected_brier_decimal": "0.02807294",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033670",
+      "constant_brier_decimal": "0.13602807",
+      "logistic_brier_decimal": "0.02800066",
+      "n": 4048,
+      "selected_brier_decimal": "0.02800066",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033540",
+      "constant_brier_decimal": "0.13575242",
+      "logistic_brier_decimal": "0.02789155",
+      "n": 4064,
+      "selected_brier_decimal": "0.02789155",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033418",
+      "constant_brier_decimal": "0.13547894",
+      "logistic_brier_decimal": "0.02779056",
+      "n": 4080,
+      "selected_brier_decimal": "0.02779056",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033295",
+      "constant_brier_decimal": "0.13520759",
+      "logistic_brier_decimal": "0.02768902",
+      "n": 4096,
+      "selected_brier_decimal": "0.02768902",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033175",
+      "constant_brier_decimal": "0.13493835",
+      "logistic_brier_decimal": "0.02758904",
+      "n": 4112,
+      "selected_brier_decimal": "0.02758904",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033049",
+      "constant_brier_decimal": "0.13467121",
+      "logistic_brier_decimal": "0.02748378",
+      "n": 4128,
+      "selected_brier_decimal": "0.02748378",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032922",
+      "constant_brier_decimal": "0.13440612",
+      "logistic_brier_decimal": "0.02737768",
+      "n": 4144,
+      "selected_brier_decimal": "0.02737768",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032797",
+      "constant_brier_decimal": "0.13414307",
+      "logistic_brier_decimal": "0.02727241",
+      "n": 4160,
+      "selected_brier_decimal": "0.02727241",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032672",
+      "constant_brier_decimal": "0.13388204",
+      "logistic_brier_decimal": "0.02716795",
+      "n": 4176,
+      "selected_brier_decimal": "0.02716795",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032549",
+      "constant_brier_decimal": "0.13362300",
+      "logistic_brier_decimal": "0.02706428",
+      "n": 4192,
+      "selected_brier_decimal": "0.02706428",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032426",
+      "constant_brier_decimal": "0.13336593",
+      "logistic_brier_decimal": "0.02696143",
+      "n": 4208,
+      "selected_brier_decimal": "0.02696143",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032305",
+      "constant_brier_decimal": "0.13311081",
+      "logistic_brier_decimal": "0.02685940",
+      "n": 4224,
+      "selected_brier_decimal": "0.02685940",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032184",
+      "constant_brier_decimal": "0.13285761",
+      "logistic_brier_decimal": "0.02675808",
+      "n": 4240,
+      "selected_brier_decimal": "0.02675808",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.032064",
+      "constant_brier_decimal": "0.13260632",
+      "logistic_brier_decimal": "0.02665754",
+      "n": 4256,
+      "selected_brier_decimal": "0.02665754",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031945",
+      "constant_brier_decimal": "0.13235691",
+      "logistic_brier_decimal": "0.02655774",
+      "n": 4272,
+      "selected_brier_decimal": "0.02655774",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031827",
+      "constant_brier_decimal": "0.13210936",
+      "logistic_brier_decimal": "0.02645868",
+      "n": 4288,
+      "selected_brier_decimal": "0.02645868",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031710",
+      "constant_brier_decimal": "0.13186365",
+      "logistic_brier_decimal": "0.02636034",
+      "n": 4304,
+      "selected_brier_decimal": "0.02636034",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031593",
+      "constant_brier_decimal": "0.13161976",
+      "logistic_brier_decimal": "0.02626275",
+      "n": 4320,
+      "selected_brier_decimal": "0.02626275",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031478",
+      "constant_brier_decimal": "0.13137767",
+      "logistic_brier_decimal": "0.02616589",
+      "n": 4336,
+      "selected_brier_decimal": "0.02616589",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031363",
+      "constant_brier_decimal": "0.13113737",
+      "logistic_brier_decimal": "0.02606975",
+      "n": 4352,
+      "selected_brier_decimal": "0.02606975",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031249",
+      "constant_brier_decimal": "0.13089882",
+      "logistic_brier_decimal": "0.02597434",
+      "n": 4368,
+      "selected_brier_decimal": "0.02597434",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031136",
+      "constant_brier_decimal": "0.13066201",
+      "logistic_brier_decimal": "0.02587964",
+      "n": 4384,
+      "selected_brier_decimal": "0.02587964",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031024",
+      "constant_brier_decimal": "0.13042693",
+      "logistic_brier_decimal": "0.02578564",
+      "n": 4400,
+      "selected_brier_decimal": "0.02578564",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030913",
+      "constant_brier_decimal": "0.13019354",
+      "logistic_brier_decimal": "0.02569232",
+      "n": 4416,
+      "selected_brier_decimal": "0.02569232",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030802",
+      "constant_brier_decimal": "0.12996185",
+      "logistic_brier_decimal": "0.02559966",
+      "n": 4432,
+      "selected_brier_decimal": "0.02559966",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030692",
+      "constant_brier_decimal": "0.12973182",
+      "logistic_brier_decimal": "0.02550766",
+      "n": 4448,
+      "selected_brier_decimal": "0.02550766",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030583",
+      "constant_brier_decimal": "0.12950344",
+      "logistic_brier_decimal": "0.02541631",
+      "n": 4464,
+      "selected_brier_decimal": "0.02541631",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030475",
+      "constant_brier_decimal": "0.12927669",
+      "logistic_brier_decimal": "0.02532559",
+      "n": 4480,
+      "selected_brier_decimal": "0.02532559",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030368",
+      "constant_brier_decimal": "0.12905156",
+      "logistic_brier_decimal": "0.02523554",
+      "n": 4496,
+      "selected_brier_decimal": "0.02523554",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030261",
+      "constant_brier_decimal": "0.12882802",
+      "logistic_brier_decimal": "0.02514613",
+      "n": 4512,
+      "selected_brier_decimal": "0.02514613",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030155",
+      "constant_brier_decimal": "0.12860606",
+      "logistic_brier_decimal": "0.02505736",
+      "n": 4528,
+      "selected_brier_decimal": "0.02505736",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.030050",
+      "constant_brier_decimal": "0.12838566",
+      "logistic_brier_decimal": "0.02496924",
+      "n": 4544,
+      "selected_brier_decimal": "0.02496924",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029945",
+      "constant_brier_decimal": "0.12816681",
+      "logistic_brier_decimal": "0.02488173",
+      "n": 4560,
+      "selected_brier_decimal": "0.02488173",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029842",
+      "constant_brier_decimal": "0.12794950",
+      "logistic_brier_decimal": "0.02479485",
+      "n": 4576,
+      "selected_brier_decimal": "0.02479485",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029739",
+      "constant_brier_decimal": "0.12773369",
+      "logistic_brier_decimal": "0.02470860",
+      "n": 4592,
+      "selected_brier_decimal": "0.02470860",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029636",
+      "constant_brier_decimal": "0.12751939",
+      "logistic_brier_decimal": "0.02462296",
+      "n": 4608,
+      "selected_brier_decimal": "0.02462296",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029535",
+      "constant_brier_decimal": "0.12730656",
+      "logistic_brier_decimal": "0.02453794",
+      "n": 4624,
+      "selected_brier_decimal": "0.02453794",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029434",
+      "constant_brier_decimal": "0.12709521",
+      "logistic_brier_decimal": "0.02445352",
+      "n": 4640,
+      "selected_brier_decimal": "0.02445352",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029334",
+      "constant_brier_decimal": "0.12688531",
+      "logistic_brier_decimal": "0.02436973",
+      "n": 4656,
+      "selected_brier_decimal": "0.02436973",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029235",
+      "constant_brier_decimal": "0.12667684",
+      "logistic_brier_decimal": "0.02428656",
+      "n": 4672,
+      "selected_brier_decimal": "0.02428656",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029136",
+      "constant_brier_decimal": "0.12646980",
+      "logistic_brier_decimal": "0.02420402",
+      "n": 4688,
+      "selected_brier_decimal": "0.02420402",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029038",
+      "constant_brier_decimal": "0.12626417",
+      "logistic_brier_decimal": "0.02412204",
+      "n": 4704,
+      "selected_brier_decimal": "0.02412204",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028941",
+      "constant_brier_decimal": "0.12605993",
+      "logistic_brier_decimal": "0.02404063",
+      "n": 4720,
+      "selected_brier_decimal": "0.02404063",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028844",
+      "constant_brier_decimal": "0.12585707",
+      "logistic_brier_decimal": "0.02395986",
+      "n": 4736,
+      "selected_brier_decimal": "0.02395986",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028748",
+      "constant_brier_decimal": "0.12565558",
+      "logistic_brier_decimal": "0.02387967",
+      "n": 4752,
+      "selected_brier_decimal": "0.02387967",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028653",
+      "constant_brier_decimal": "0.12545544",
+      "logistic_brier_decimal": "0.02380003",
+      "n": 4768,
+      "selected_brier_decimal": "0.02380003",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028559",
+      "constant_brier_decimal": "0.12525664",
+      "logistic_brier_decimal": "0.02372095",
+      "n": 4784,
+      "selected_brier_decimal": "0.02372095",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028465",
+      "constant_brier_decimal": "0.12505916",
+      "logistic_brier_decimal": "0.02364240",
+      "n": 4800,
+      "selected_brier_decimal": "0.02364240",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028371",
+      "constant_brier_decimal": "0.12486300",
+      "logistic_brier_decimal": "0.02356439",
+      "n": 4816,
+      "selected_brier_decimal": "0.02356439",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028279",
+      "constant_brier_decimal": "0.12466813",
+      "logistic_brier_decimal": "0.02348706",
+      "n": 4832,
+      "selected_brier_decimal": "0.02348706",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028188",
+      "constant_brier_decimal": "0.12447455",
+      "logistic_brier_decimal": "0.02341111",
+      "n": 4848,
+      "selected_brier_decimal": "0.02341111",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028098",
+      "constant_brier_decimal": "0.12428225",
+      "logistic_brier_decimal": "0.02333622",
+      "n": 4864,
+      "selected_brier_decimal": "0.02333622",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028013",
+      "constant_brier_decimal": "0.12409120",
+      "logistic_brier_decimal": "0.02326640",
+      "n": 4880,
+      "selected_brier_decimal": "0.02326640",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027928",
+      "constant_brier_decimal": "0.12390141",
+      "logistic_brier_decimal": "0.02319585",
+      "n": 4896,
+      "selected_brier_decimal": "0.02319585",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027841",
+      "constant_brier_decimal": "0.12371285",
+      "logistic_brier_decimal": "0.02312367",
+      "n": 4912,
+      "selected_brier_decimal": "0.02312367",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027754",
+      "constant_brier_decimal": "0.12352551",
+      "logistic_brier_decimal": "0.02305211",
+      "n": 4928,
+      "selected_brier_decimal": "0.02305211",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027669",
+      "constant_brier_decimal": "0.12333939",
+      "logistic_brier_decimal": "0.02298147",
+      "n": 4944,
+      "selected_brier_decimal": "0.02298147",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027585",
+      "constant_brier_decimal": "0.12315447",
+      "logistic_brier_decimal": "0.02291155",
+      "n": 4960,
+      "selected_brier_decimal": "0.02291155",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027501",
+      "constant_brier_decimal": "0.12297074",
+      "logistic_brier_decimal": "0.02284220",
+      "n": 4976,
+      "selected_brier_decimal": "0.02284220",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027418",
+      "constant_brier_decimal": "0.12278818",
+      "logistic_brier_decimal": "0.02277339",
+      "n": 4992,
+      "selected_brier_decimal": "0.02277339",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027335",
+      "constant_brier_decimal": "0.12260680",
+      "logistic_brier_decimal": "0.02270485",
+      "n": 5008,
+      "selected_brier_decimal": "0.02270485",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027253",
+      "constant_brier_decimal": "0.12242656",
+      "logistic_brier_decimal": "0.02263669",
+      "n": 5024,
+      "selected_brier_decimal": "0.02263669",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027170",
+      "constant_brier_decimal": "0.12224748",
+      "logistic_brier_decimal": "0.02256846",
+      "n": 5040,
+      "selected_brier_decimal": "0.02256846",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027088",
+      "constant_brier_decimal": "0.12206952",
+      "logistic_brier_decimal": "0.02250002",
+      "n": 5056,
+      "selected_brier_decimal": "0.02250002",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027005",
+      "constant_brier_decimal": "0.12189269",
+      "logistic_brier_decimal": "0.02243088",
+      "n": 5072,
+      "selected_brier_decimal": "0.02243088",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026922",
+      "constant_brier_decimal": "0.12171697",
+      "logistic_brier_decimal": "0.02236197",
+      "n": 5088,
+      "selected_brier_decimal": "0.02236197",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026840",
+      "constant_brier_decimal": "0.12154235",
+      "logistic_brier_decimal": "0.02229326",
+      "n": 5104,
+      "selected_brier_decimal": "0.02229326",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026758",
+      "constant_brier_decimal": "0.12136882",
+      "logistic_brier_decimal": "0.02222525",
+      "n": 5120,
+      "selected_brier_decimal": "0.02222525",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026677",
+      "constant_brier_decimal": "0.12119638",
+      "logistic_brier_decimal": "0.02215761",
+      "n": 5136,
+      "selected_brier_decimal": "0.02215761",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026597",
+      "constant_brier_decimal": "0.12102500",
+      "logistic_brier_decimal": "0.02209062",
+      "n": 5152,
+      "selected_brier_decimal": "0.02209062",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026517",
+      "constant_brier_decimal": "0.12085469",
+      "logistic_brier_decimal": "0.02202416",
+      "n": 5168,
+      "selected_brier_decimal": "0.02202416",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026438",
+      "constant_brier_decimal": "0.12068543",
+      "logistic_brier_decimal": "0.02195826",
+      "n": 5184,
+      "selected_brier_decimal": "0.02195826",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026359",
+      "constant_brier_decimal": "0.12051721",
+      "logistic_brier_decimal": "0.02189298",
+      "n": 5200,
+      "selected_brier_decimal": "0.02189298",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026281",
+      "constant_brier_decimal": "0.12035002",
+      "logistic_brier_decimal": "0.02182826",
+      "n": 5216,
+      "selected_brier_decimal": "0.02182826",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026204",
+      "constant_brier_decimal": "0.12018385",
+      "logistic_brier_decimal": "0.02176390",
+      "n": 5232,
+      "selected_brier_decimal": "0.02176390",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026127",
+      "constant_brier_decimal": "0.12001870",
+      "logistic_brier_decimal": "0.02169998",
+      "n": 5248,
+      "selected_brier_decimal": "0.02169998",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026051",
+      "constant_brier_decimal": "0.11985455",
+      "logistic_brier_decimal": "0.02163679",
+      "n": 5264,
+      "selected_brier_decimal": "0.02163679",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025975",
+      "constant_brier_decimal": "0.11969140",
+      "logistic_brier_decimal": "0.02157414",
+      "n": 5280,
+      "selected_brier_decimal": "0.02157414",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025901",
+      "constant_brier_decimal": "0.11952923",
+      "logistic_brier_decimal": "0.02151313",
+      "n": 5296,
+      "selected_brier_decimal": "0.02151313",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026211",
+      "constant_brier_decimal": "0.11973410",
+      "logistic_brier_decimal": "0.02174601",
+      "n": 5312,
+      "selected_brier_decimal": "0.02174601",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027087",
+      "constant_brier_decimal": "0.12066769",
+      "logistic_brier_decimal": "0.02238505",
+      "n": 5328,
+      "selected_brier_decimal": "0.02238505",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027008",
+      "constant_brier_decimal": "0.12195955",
+      "logistic_brier_decimal": "0.02232033",
+      "n": 5344,
+      "selected_brier_decimal": "0.02232033",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026929",
+      "constant_brier_decimal": "0.12324370",
+      "logistic_brier_decimal": "0.02225431",
+      "n": 5360,
+      "selected_brier_decimal": "0.02225431",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026850",
+      "constant_brier_decimal": "0.12452021",
+      "logistic_brier_decimal": "0.02218821",
+      "n": 5376,
+      "selected_brier_decimal": "0.02218821",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026771",
+      "constant_brier_decimal": "0.12578915",
+      "logistic_brier_decimal": "0.02212277",
+      "n": 5392,
+      "selected_brier_decimal": "0.02212277",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026694",
+      "constant_brier_decimal": "0.12705057",
+      "logistic_brier_decimal": "0.02205908",
+      "n": 5408,
+      "selected_brier_decimal": "0.02205908",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026617",
+      "constant_brier_decimal": "0.12830456",
+      "logistic_brier_decimal": "0.02199554",
+      "n": 5424,
+      "selected_brier_decimal": "0.02199554",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026541",
+      "constant_brier_decimal": "0.12955116",
+      "logistic_brier_decimal": "0.02193205",
+      "n": 5440,
+      "selected_brier_decimal": "0.02193205",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026464",
+      "constant_brier_decimal": "0.13079046",
+      "logistic_brier_decimal": "0.02186839",
+      "n": 5456,
+      "selected_brier_decimal": "0.02186839",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026388",
+      "constant_brier_decimal": "0.13202251",
+      "logistic_brier_decimal": "0.02180529",
+      "n": 5472,
+      "selected_brier_decimal": "0.02180529",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026313",
+      "constant_brier_decimal": "0.13324737",
+      "logistic_brier_decimal": "0.02174297",
+      "n": 5488,
+      "selected_brier_decimal": "0.02174297",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026943",
+      "constant_brier_decimal": "0.13420014",
+      "logistic_brier_decimal": "0.02219836",
+      "n": 5504,
+      "selected_brier_decimal": "0.02219836",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026867",
+      "constant_brier_decimal": "0.13541159",
+      "logistic_brier_decimal": "0.02213626",
+      "n": 5520,
+      "selected_brier_decimal": "0.02213626",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026793",
+      "constant_brier_decimal": "0.13661604",
+      "logistic_brier_decimal": "0.02207547",
+      "n": 5536,
+      "selected_brier_decimal": "0.02207547",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026721",
+      "constant_brier_decimal": "0.13781355",
+      "logistic_brier_decimal": "0.02201621",
+      "n": 5552,
+      "selected_brier_decimal": "0.02201621",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026873",
+      "constant_brier_decimal": "0.13891686",
+      "logistic_brier_decimal": "0.02212275",
+      "n": 5568,
+      "selected_brier_decimal": "0.02212275",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027020",
+      "constant_brier_decimal": "0.14001386",
+      "logistic_brier_decimal": "0.02222683",
+      "n": 5584,
+      "selected_brier_decimal": "0.02222683",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027167",
+      "constant_brier_decimal": "0.14110458",
+      "logistic_brier_decimal": "0.02233162",
+      "n": 5600,
+      "selected_brier_decimal": "0.02233162",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027103",
+      "constant_brier_decimal": "0.14227565",
+      "logistic_brier_decimal": "0.02228056",
+      "n": 5616,
+      "selected_brier_decimal": "0.02228056",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027038",
+      "constant_brier_decimal": "0.14344007",
+      "logistic_brier_decimal": "0.02222889",
+      "n": 5632,
+      "selected_brier_decimal": "0.02222889",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026972",
+      "constant_brier_decimal": "0.14459789",
+      "logistic_brier_decimal": "0.02217585",
+      "n": 5648,
+      "selected_brier_decimal": "0.02217585",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026901",
+      "constant_brier_decimal": "0.14574917",
+      "logistic_brier_decimal": "0.02211876",
+      "n": 5664,
+      "selected_brier_decimal": "0.02211876",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026832",
+      "constant_brier_decimal": "0.14689397",
+      "logistic_brier_decimal": "0.02206266",
+      "n": 5680,
+      "selected_brier_decimal": "0.02206266",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026766",
+      "constant_brier_decimal": "0.14803233",
+      "logistic_brier_decimal": "0.02200924",
+      "n": 5696,
+      "selected_brier_decimal": "0.02200924",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026712",
+      "constant_brier_decimal": "0.14916431",
+      "logistic_brier_decimal": "0.02196831",
+      "n": 5712,
+      "selected_brier_decimal": "0.02196831",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026649",
+      "constant_brier_decimal": "0.15028998",
+      "logistic_brier_decimal": "0.02191784",
+      "n": 5728,
+      "selected_brier_decimal": "0.02191784",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026590",
+      "constant_brier_decimal": "0.15140936",
+      "logistic_brier_decimal": "0.02187171",
+      "n": 5744,
+      "selected_brier_decimal": "0.02187171",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026531",
+      "constant_brier_decimal": "0.15252254",
+      "logistic_brier_decimal": "0.02182560",
+      "n": 5760,
+      "selected_brier_decimal": "0.02182560",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026469",
+      "constant_brier_decimal": "0.15362954",
+      "logistic_brier_decimal": "0.02177618",
+      "n": 5776,
+      "selected_brier_decimal": "0.02177618",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026409",
+      "constant_brier_decimal": "0.15473043",
+      "logistic_brier_decimal": "0.02172931",
+      "n": 5792,
+      "selected_brier_decimal": "0.02172931",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026353",
+      "constant_brier_decimal": "0.15582525",
+      "logistic_brier_decimal": "0.02168609",
+      "n": 5808,
+      "selected_brier_decimal": "0.02168609",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026293",
+      "constant_brier_decimal": "0.15691406",
+      "logistic_brier_decimal": "0.02163880",
+      "n": 5824,
+      "selected_brier_decimal": "0.02163880",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026235",
+      "constant_brier_decimal": "0.15799690",
+      "logistic_brier_decimal": "0.02159295",
+      "n": 5840,
+      "selected_brier_decimal": "0.02159295",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026179",
+      "constant_brier_decimal": "0.15907382",
+      "logistic_brier_decimal": "0.02154963",
+      "n": 5856,
+      "selected_brier_decimal": "0.02154963",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026121",
+      "constant_brier_decimal": "0.15989651",
+      "logistic_brier_decimal": "0.02150343",
+      "n": 5872,
+      "selected_brier_decimal": "0.02150343",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026051",
+      "constant_brier_decimal": "0.15964139",
+      "logistic_brier_decimal": "0.02144533",
+      "n": 5888,
+      "selected_brier_decimal": "0.02144533",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025981",
+      "constant_brier_decimal": "0.15938766",
+      "logistic_brier_decimal": "0.02138747",
+      "n": 5904,
+      "selected_brier_decimal": "0.02138747",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025911",
+      "constant_brier_decimal": "0.15913530",
+      "logistic_brier_decimal": "0.02132988",
+      "n": 5920,
+      "selected_brier_decimal": "0.02132988",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025842",
+      "constant_brier_decimal": "0.15888430",
+      "logistic_brier_decimal": "0.02127263",
+      "n": 5936,
+      "selected_brier_decimal": "0.02127263",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025774",
+      "constant_brier_decimal": "0.15863464",
+      "logistic_brier_decimal": "0.02121571",
+      "n": 5952,
+      "selected_brier_decimal": "0.02121571",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025705",
+      "constant_brier_decimal": "0.15838633",
+      "logistic_brier_decimal": "0.02115909",
+      "n": 5968,
+      "selected_brier_decimal": "0.02115909",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025637",
+      "constant_brier_decimal": "0.15813934",
+      "logistic_brier_decimal": "0.02110273",
+      "n": 5984,
+      "selected_brier_decimal": "0.02110273",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025569",
+      "constant_brier_decimal": "0.15789368",
+      "logistic_brier_decimal": "0.02104670",
+      "n": 6000,
+      "selected_brier_decimal": "0.02104670",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025502",
+      "constant_brier_decimal": "0.15764932",
+      "logistic_brier_decimal": "0.02099095",
+      "n": 6016,
+      "selected_brier_decimal": "0.02099095",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025435",
+      "constant_brier_decimal": "0.15740625",
+      "logistic_brier_decimal": "0.02093551",
+      "n": 6032,
+      "selected_brier_decimal": "0.02093551",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025369",
+      "constant_brier_decimal": "0.15716447",
+      "logistic_brier_decimal": "0.02088038",
+      "n": 6048,
+      "selected_brier_decimal": "0.02088038",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025302",
+      "constant_brier_decimal": "0.15692397",
+      "logistic_brier_decimal": "0.02082554",
+      "n": 6064,
+      "selected_brier_decimal": "0.02082554",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025237",
+      "constant_brier_decimal": "0.15668473",
+      "logistic_brier_decimal": "0.02077098",
+      "n": 6080,
+      "selected_brier_decimal": "0.02077098",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025171",
+      "constant_brier_decimal": "0.15644675",
+      "logistic_brier_decimal": "0.02071674",
+      "n": 6096,
+      "selected_brier_decimal": "0.02071674",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025106",
+      "constant_brier_decimal": "0.15621001",
+      "logistic_brier_decimal": "0.02066273",
+      "n": 6112,
+      "selected_brier_decimal": "0.02066273",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025041",
+      "constant_brier_decimal": "0.15597451",
+      "logistic_brier_decimal": "0.02060904",
+      "n": 6128,
+      "selected_brier_decimal": "0.02060904",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024976",
+      "constant_brier_decimal": "0.15574024",
+      "logistic_brier_decimal": "0.02055564",
+      "n": 6144,
+      "selected_brier_decimal": "0.02055564",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024912",
+      "constant_brier_decimal": "0.15550718",
+      "logistic_brier_decimal": "0.02050248",
+      "n": 6160,
+      "selected_brier_decimal": "0.02050248",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024848",
+      "constant_brier_decimal": "0.15527534",
+      "logistic_brier_decimal": "0.02044963",
+      "n": 6176,
+      "selected_brier_decimal": "0.02044963",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024785",
+      "constant_brier_decimal": "0.15504469",
+      "logistic_brier_decimal": "0.02039710",
+      "n": 6192,
+      "selected_brier_decimal": "0.02039710",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024722",
+      "constant_brier_decimal": "0.15481523",
+      "logistic_brier_decimal": "0.02034485",
+      "n": 6208,
+      "selected_brier_decimal": "0.02034485",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024659",
+      "constant_brier_decimal": "0.15458694",
+      "logistic_brier_decimal": "0.02029286",
+      "n": 6224,
+      "selected_brier_decimal": "0.02029286",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024597",
+      "constant_brier_decimal": "0.15435983",
+      "logistic_brier_decimal": "0.02024117",
+      "n": 6240,
+      "selected_brier_decimal": "0.02024117",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024534",
+      "constant_brier_decimal": "0.15413388",
+      "logistic_brier_decimal": "0.02018973",
+      "n": 6256,
+      "selected_brier_decimal": "0.02018973",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024472",
+      "constant_brier_decimal": "0.15390909",
+      "logistic_brier_decimal": "0.02013853",
+      "n": 6272,
+      "selected_brier_decimal": "0.02013853",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024411",
+      "constant_brier_decimal": "0.15368544",
+      "logistic_brier_decimal": "0.02008767",
+      "n": 6288,
+      "selected_brier_decimal": "0.02008767",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024350",
+      "constant_brier_decimal": "0.15346292",
+      "logistic_brier_decimal": "0.02003716",
+      "n": 6304,
+      "selected_brier_decimal": "0.02003716",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024289",
+      "constant_brier_decimal": "0.15324153",
+      "logistic_brier_decimal": "0.01998691",
+      "n": 6320,
+      "selected_brier_decimal": "0.01998691",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024229",
+      "constant_brier_decimal": "0.15302126",
+      "logistic_brier_decimal": "0.01993695",
+      "n": 6336,
+      "selected_brier_decimal": "0.01993695",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024169",
+      "constant_brier_decimal": "0.15280209",
+      "logistic_brier_decimal": "0.01988725",
+      "n": 6352,
+      "selected_brier_decimal": "0.01988725",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024109",
+      "constant_brier_decimal": "0.15258403",
+      "logistic_brier_decimal": "0.01983790",
+      "n": 6368,
+      "selected_brier_decimal": "0.01983790",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024049",
+      "constant_brier_decimal": "0.15236706",
+      "logistic_brier_decimal": "0.01978873",
+      "n": 6384,
+      "selected_brier_decimal": "0.01978873",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023990",
+      "constant_brier_decimal": "0.15215118",
+      "logistic_brier_decimal": "0.01973982",
+      "n": 6400,
+      "selected_brier_decimal": "0.01973982",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023931",
+      "constant_brier_decimal": "0.15193637",
+      "logistic_brier_decimal": "0.01969115",
+      "n": 6416,
+      "selected_brier_decimal": "0.01969115",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023873",
+      "constant_brier_decimal": "0.15172264",
+      "logistic_brier_decimal": "0.01964267",
+      "n": 6432,
+      "selected_brier_decimal": "0.01964267",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023814",
+      "constant_brier_decimal": "0.15150996",
+      "logistic_brier_decimal": "0.01959442",
+      "n": 6448,
+      "selected_brier_decimal": "0.01959442",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023756",
+      "constant_brier_decimal": "0.15129834",
+      "logistic_brier_decimal": "0.01954629",
+      "n": 6464,
+      "selected_brier_decimal": "0.01954629",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023698",
+      "constant_brier_decimal": "0.15108776",
+      "logistic_brier_decimal": "0.01949833",
+      "n": 6480,
+      "selected_brier_decimal": "0.01949833",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023640",
+      "constant_brier_decimal": "0.15087821",
+      "logistic_brier_decimal": "0.01945056",
+      "n": 6496,
+      "selected_brier_decimal": "0.01945056",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023583",
+      "constant_brier_decimal": "0.15066970",
+      "logistic_brier_decimal": "0.01940303",
+      "n": 6512,
+      "selected_brier_decimal": "0.01940303",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023526",
+      "constant_brier_decimal": "0.15046221",
+      "logistic_brier_decimal": "0.01935570",
+      "n": 6528,
+      "selected_brier_decimal": "0.01935570",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023469",
+      "constant_brier_decimal": "0.15025574",
+      "logistic_brier_decimal": "0.01930859",
+      "n": 6544,
+      "selected_brier_decimal": "0.01930859",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023412",
+      "constant_brier_decimal": "0.15005027",
+      "logistic_brier_decimal": "0.01926172",
+      "n": 6560,
+      "selected_brier_decimal": "0.01926172",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023356",
+      "constant_brier_decimal": "0.14984580",
+      "logistic_brier_decimal": "0.01921517",
+      "n": 6576,
+      "selected_brier_decimal": "0.01921517",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023300",
+      "constant_brier_decimal": "0.14964232",
+      "logistic_brier_decimal": "0.01916892",
+      "n": 6592,
+      "selected_brier_decimal": "0.01916892",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023244",
+      "constant_brier_decimal": "0.14943983",
+      "logistic_brier_decimal": "0.01912281",
+      "n": 6608,
+      "selected_brier_decimal": "0.01912281",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023189",
+      "constant_brier_decimal": "0.14923832",
+      "logistic_brier_decimal": "0.01907690",
+      "n": 6624,
+      "selected_brier_decimal": "0.01907690",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023133",
+      "constant_brier_decimal": "0.14903778",
+      "logistic_brier_decimal": "0.01903120",
+      "n": 6640,
+      "selected_brier_decimal": "0.01903120",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023078",
+      "constant_brier_decimal": "0.14883820",
+      "logistic_brier_decimal": "0.01898569",
+      "n": 6656,
+      "selected_brier_decimal": "0.01898569",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023024",
+      "constant_brier_decimal": "0.14863958",
+      "logistic_brier_decimal": "0.01894038",
+      "n": 6672,
+      "selected_brier_decimal": "0.01894038",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022969",
+      "constant_brier_decimal": "0.14844191",
+      "logistic_brier_decimal": "0.01889531",
+      "n": 6688,
+      "selected_brier_decimal": "0.01889531",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022915",
+      "constant_brier_decimal": "0.14824519",
+      "logistic_brier_decimal": "0.01885049",
+      "n": 6704,
+      "selected_brier_decimal": "0.01885049",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022861",
+      "constant_brier_decimal": "0.14804940",
+      "logistic_brier_decimal": "0.01880593",
+      "n": 6720,
+      "selected_brier_decimal": "0.01880593",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022807",
+      "constant_brier_decimal": "0.14785454",
+      "logistic_brier_decimal": "0.01876163",
+      "n": 6736,
+      "selected_brier_decimal": "0.01876163",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023124",
+      "constant_brier_decimal": "0.14816460",
+      "logistic_brier_decimal": "0.01899985",
+      "n": 6752,
+      "selected_brier_decimal": "0.01899985",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023084",
+      "constant_brier_decimal": "0.14911965",
+      "logistic_brier_decimal": "0.01896983",
+      "n": 6768,
+      "selected_brier_decimal": "0.01896983",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023039",
+      "constant_brier_decimal": "0.15007019",
+      "logistic_brier_decimal": "0.01893390",
+      "n": 6784,
+      "selected_brier_decimal": "0.01893390",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022988",
+      "constant_brier_decimal": "0.15101627",
+      "logistic_brier_decimal": "0.01889247",
+      "n": 6800,
+      "selected_brier_decimal": "0.01889247",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022937",
+      "constant_brier_decimal": "0.15195790",
+      "logistic_brier_decimal": "0.01885102",
+      "n": 6816,
+      "selected_brier_decimal": "0.01885102",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022887",
+      "constant_brier_decimal": "0.15289512",
+      "logistic_brier_decimal": "0.01880984",
+      "n": 6832,
+      "selected_brier_decimal": "0.01880984",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022836",
+      "constant_brier_decimal": "0.15382796",
+      "logistic_brier_decimal": "0.01876886",
+      "n": 6848,
+      "selected_brier_decimal": "0.01876886",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022786",
+      "constant_brier_decimal": "0.15475645",
+      "logistic_brier_decimal": "0.01872783",
+      "n": 6864,
+      "selected_brier_decimal": "0.01872783",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022736",
+      "constant_brier_decimal": "0.15568062",
+      "logistic_brier_decimal": "0.01868624",
+      "n": 6880,
+      "selected_brier_decimal": "0.01868624",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022684",
+      "constant_brier_decimal": "0.15660051",
+      "logistic_brier_decimal": "0.01864415",
+      "n": 6896,
+      "selected_brier_decimal": "0.01864415",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022633",
+      "constant_brier_decimal": "0.15751613",
+      "logistic_brier_decimal": "0.01860163",
+      "n": 6912,
+      "selected_brier_decimal": "0.01860163",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022581",
+      "constant_brier_decimal": "0.15842753",
+      "logistic_brier_decimal": "0.01855925",
+      "n": 6928,
+      "selected_brier_decimal": "0.01855925",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022530",
+      "constant_brier_decimal": "0.15933473",
+      "logistic_brier_decimal": "0.01851683",
+      "n": 6944,
+      "selected_brier_decimal": "0.01851683",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022479",
+      "constant_brier_decimal": "0.16023775",
+      "logistic_brier_decimal": "0.01847435",
+      "n": 6960,
+      "selected_brier_decimal": "0.01847435",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022427",
+      "constant_brier_decimal": "0.16113664",
+      "logistic_brier_decimal": "0.01843203",
+      "n": 6976,
+      "selected_brier_decimal": "0.01843203",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022377",
+      "constant_brier_decimal": "0.16203140",
+      "logistic_brier_decimal": "0.01839002",
+      "n": 6992,
+      "selected_brier_decimal": "0.01839002",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022487",
+      "constant_brier_decimal": "0.16278335",
+      "logistic_brier_decimal": "0.01847020",
+      "n": 7008,
+      "selected_brier_decimal": "0.01847020",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022451",
+      "constant_brier_decimal": "0.16256292",
+      "logistic_brier_decimal": "0.01844333",
+      "n": 7024,
+      "selected_brier_decimal": "0.01844333",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022947",
+      "constant_brier_decimal": "0.16275781",
+      "logistic_brier_decimal": "0.01880637",
+      "n": 7040,
+      "selected_brier_decimal": "0.01880637",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022895",
+      "constant_brier_decimal": "0.16364079",
+      "logistic_brier_decimal": "0.01876400",
+      "n": 7056,
+      "selected_brier_decimal": "0.01876400",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022844",
+      "constant_brier_decimal": "0.16451977",
+      "logistic_brier_decimal": "0.01872187",
+      "n": 7072,
+      "selected_brier_decimal": "0.01872187",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022793",
+      "constant_brier_decimal": "0.16539478",
+      "logistic_brier_decimal": "0.01867969",
+      "n": 7088,
+      "selected_brier_decimal": "0.01867969",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022742",
+      "constant_brier_decimal": "0.16626586",
+      "logistic_brier_decimal": "0.01863766",
+      "n": 7104,
+      "selected_brier_decimal": "0.01863766",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022691",
+      "constant_brier_decimal": "0.16713301",
+      "logistic_brier_decimal": "0.01859582",
+      "n": 7120,
+      "selected_brier_decimal": "0.01859582",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022641",
+      "constant_brier_decimal": "0.16799628",
+      "logistic_brier_decimal": "0.01855415",
+      "n": 7136,
+      "selected_brier_decimal": "0.01855415",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022591",
+      "constant_brier_decimal": "0.16885569",
+      "logistic_brier_decimal": "0.01851267",
+      "n": 7152,
+      "selected_brier_decimal": "0.01851267",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022540",
+      "constant_brier_decimal": "0.16971126",
+      "logistic_brier_decimal": "0.01847135",
+      "n": 7168,
+      "selected_brier_decimal": "0.01847135",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022491",
+      "constant_brier_decimal": "0.17056302",
+      "logistic_brier_decimal": "0.01843023",
+      "n": 7184,
+      "selected_brier_decimal": "0.01843023",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022441",
+      "constant_brier_decimal": "0.17141099",
+      "logistic_brier_decimal": "0.01838928",
+      "n": 7200,
+      "selected_brier_decimal": "0.01838928",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022391",
+      "constant_brier_decimal": "0.17225520",
+      "logistic_brier_decimal": "0.01834852",
+      "n": 7216,
+      "selected_brier_decimal": "0.01834852",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022342",
+      "constant_brier_decimal": "0.17309568",
+      "logistic_brier_decimal": "0.01830794",
+      "n": 7232,
+      "selected_brier_decimal": "0.01830794",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022293",
+      "constant_brier_decimal": "0.17393245",
+      "logistic_brier_decimal": "0.01826753",
+      "n": 7248,
+      "selected_brier_decimal": "0.01826753",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022244",
+      "constant_brier_decimal": "0.17476553",
+      "logistic_brier_decimal": "0.01822730",
+      "n": 7264,
+      "selected_brier_decimal": "0.01822730",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022196",
+      "constant_brier_decimal": "0.17559495",
+      "logistic_brier_decimal": "0.01818724",
+      "n": 7280,
+      "selected_brier_decimal": "0.01818724",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022147",
+      "constant_brier_decimal": "0.17642073",
+      "logistic_brier_decimal": "0.01814736",
+      "n": 7296,
+      "selected_brier_decimal": "0.01814736",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022320",
+      "constant_brier_decimal": "0.17710992",
+      "logistic_brier_decimal": "0.01827515",
+      "n": 7312,
+      "selected_brier_decimal": "0.01827515",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.022728",
+      "constant_brier_decimal": "0.17686736",
+      "logistic_brier_decimal": "0.01866404",
+      "n": 7328,
+      "selected_brier_decimal": "0.01866404",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023071",
+      "constant_brier_decimal": "0.17662584",
+      "logistic_brier_decimal": "0.01899493",
+      "n": 7344,
+      "selected_brier_decimal": "0.01899493",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023392",
+      "constant_brier_decimal": "0.17638538",
+      "logistic_brier_decimal": "0.01930675",
+      "n": 7360,
+      "selected_brier_decimal": "0.01930675",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.023797",
+      "constant_brier_decimal": "0.17614597",
+      "logistic_brier_decimal": "0.01969338",
+      "n": 7376,
+      "selected_brier_decimal": "0.01969338",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024307",
+      "constant_brier_decimal": "0.17590758",
+      "logistic_brier_decimal": "0.02017040",
+      "n": 7392,
+      "selected_brier_decimal": "0.02017040",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.024962",
+      "constant_brier_decimal": "0.17567023",
+      "logistic_brier_decimal": "0.02076685",
+      "n": 7408,
+      "selected_brier_decimal": "0.02076685",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.025782",
+      "constant_brier_decimal": "0.17543390",
+      "logistic_brier_decimal": "0.02149655",
+      "n": 7424,
+      "selected_brier_decimal": "0.02149655",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.026781",
+      "constant_brier_decimal": "0.17519859",
+      "logistic_brier_decimal": "0.02236402",
+      "n": 7440,
+      "selected_brier_decimal": "0.02236402",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.027740",
+      "constant_brier_decimal": "0.17496429",
+      "logistic_brier_decimal": "0.02320118",
+      "n": 7456,
+      "selected_brier_decimal": "0.02320118",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.028843",
+      "constant_brier_decimal": "0.17473099",
+      "logistic_brier_decimal": "0.02414673",
+      "n": 7472,
+      "selected_brier_decimal": "0.02414673",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.029843",
+      "constant_brier_decimal": "0.17449869",
+      "logistic_brier_decimal": "0.02501522",
+      "n": 7488,
+      "selected_brier_decimal": "0.02501522",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.031119",
+      "constant_brier_decimal": "0.17426738",
+      "logistic_brier_decimal": "0.02608520",
+      "n": 7504,
+      "selected_brier_decimal": "0.02608520",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.033393",
+      "constant_brier_decimal": "0.17403705",
+      "logistic_brier_decimal": "0.02780645",
+      "n": 7520,
+      "selected_brier_decimal": "0.02780645",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.034864",
+      "constant_brier_decimal": "0.17380770",
+      "logistic_brier_decimal": "0.02901056",
+      "n": 7536,
+      "selected_brier_decimal": "0.02901056",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.036200",
+      "constant_brier_decimal": "0.17357933",
+      "logistic_brier_decimal": "0.03012331",
+      "n": 7552,
+      "selected_brier_decimal": "0.03012331",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.037392",
+      "constant_brier_decimal": "0.17335191",
+      "logistic_brier_decimal": "0.03111616",
+      "n": 7568,
+      "selected_brier_decimal": "0.03111616",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.038422",
+      "constant_brier_decimal": "0.17312546",
+      "logistic_brier_decimal": "0.03198372",
+      "n": 7584,
+      "selected_brier_decimal": "0.03198372",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040207",
+      "constant_brier_decimal": "0.17289996",
+      "logistic_brier_decimal": "0.03339398",
+      "n": 7600,
+      "selected_brier_decimal": "0.03339398",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040556",
+      "constant_brier_decimal": "0.17267541",
+      "logistic_brier_decimal": "0.03366762",
+      "n": 7616,
+      "selected_brier_decimal": "0.03366762",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040528",
+      "constant_brier_decimal": "0.17245180",
+      "logistic_brier_decimal": "0.03365417",
+      "n": 7632,
+      "selected_brier_decimal": "0.03365417",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040535",
+      "constant_brier_decimal": "0.17222913",
+      "logistic_brier_decimal": "0.03367547",
+      "n": 7648,
+      "selected_brier_decimal": "0.03367547",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040583",
+      "constant_brier_decimal": "0.17200739",
+      "logistic_brier_decimal": "0.03373714",
+      "n": 7664,
+      "selected_brier_decimal": "0.03373714",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040661",
+      "constant_brier_decimal": "0.17178657",
+      "logistic_brier_decimal": "0.03382555",
+      "n": 7680,
+      "selected_brier_decimal": "0.03382555",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.040665",
+      "constant_brier_decimal": "0.17156666",
+      "logistic_brier_decimal": "0.03383979",
+      "n": 7696,
+      "selected_brier_decimal": "0.03383979",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.041710",
+      "constant_brier_decimal": "0.17134767",
+      "logistic_brier_decimal": "0.03465541",
+      "n": 7712,
+      "selected_brier_decimal": "0.03465541",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042116",
+      "constant_brier_decimal": "0.17112959",
+      "logistic_brier_decimal": "0.03504519",
+      "n": 7728,
+      "selected_brier_decimal": "0.03504519",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.042636",
+      "constant_brier_decimal": "0.17091241",
+      "logistic_brier_decimal": "0.03552687",
+      "n": 7744,
+      "selected_brier_decimal": "0.03552687",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.043013",
+      "constant_brier_decimal": "0.17069612",
+      "logistic_brier_decimal": "0.03589249",
+      "n": 7760,
+      "selected_brier_decimal": "0.03589249",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.044431",
+      "constant_brier_decimal": "0.17048073",
+      "logistic_brier_decimal": "0.03702448",
+      "n": 7776,
+      "selected_brier_decimal": "0.03702448",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045463",
+      "constant_brier_decimal": "0.17026622",
+      "logistic_brier_decimal": "0.03786719",
+      "n": 7792,
+      "selected_brier_decimal": "0.03786719",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045561",
+      "constant_brier_decimal": "0.17005259",
+      "logistic_brier_decimal": "0.03797818",
+      "n": 7808,
+      "selected_brier_decimal": "0.03797818",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045743",
+      "constant_brier_decimal": "0.16983983",
+      "logistic_brier_decimal": "0.03816775",
+      "n": 7824,
+      "selected_brier_decimal": "0.03816775",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.045957",
+      "constant_brier_decimal": "0.16962794",
+      "logistic_brier_decimal": "0.03838816",
+      "n": 7840,
+      "selected_brier_decimal": "0.03838816",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046119",
+      "constant_brier_decimal": "0.16941691",
+      "logistic_brier_decimal": "0.03855919",
+      "n": 7856,
+      "selected_brier_decimal": "0.03855919",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.046518",
+      "constant_brier_decimal": "0.16920674",
+      "logistic_brier_decimal": "0.03893878",
+      "n": 7872,
+      "selected_brier_decimal": "0.03893878",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047177",
+      "constant_brier_decimal": "0.16899742",
+      "logistic_brier_decimal": "0.03954122",
+      "n": 7888,
+      "selected_brier_decimal": "0.03954122",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.047907",
+      "constant_brier_decimal": "0.16878896",
+      "logistic_brier_decimal": "0.04019759",
+      "n": 7904,
+      "selected_brier_decimal": "0.04019759",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.048848",
+      "constant_brier_decimal": "0.16858133",
+      "logistic_brier_decimal": "0.04102009",
+      "n": 7920,
+      "selected_brier_decimal": "0.04102009",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.049993",
+      "constant_brier_decimal": "0.16837454",
+      "logistic_brier_decimal": "0.04199178",
+      "n": 7936,
+      "selected_brier_decimal": "0.04199178",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.051441",
+      "constant_brier_decimal": "0.16816858",
+      "logistic_brier_decimal": "0.04317616",
+      "n": 7952,
+      "selected_brier_decimal": "0.04317616",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.053086",
+      "constant_brier_decimal": "0.16796345",
+      "logistic_brier_decimal": "0.04449221",
+      "n": 7968,
+      "selected_brier_decimal": "0.04449221",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.054566",
+      "constant_brier_decimal": "0.16775914",
+      "logistic_brier_decimal": "0.04569821",
+      "n": 7984,
+      "selected_brier_decimal": "0.04569821",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.056187",
+      "constant_brier_decimal": "0.16755565",
+      "logistic_brier_decimal": "0.04699789",
+      "n": 8000,
+      "selected_brier_decimal": "0.04699789",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.057863",
+      "constant_brier_decimal": "0.16735297",
+      "logistic_brier_decimal": "0.04833405",
+      "n": 8016,
+      "selected_brier_decimal": "0.04833405",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.059501",
+      "constant_brier_decimal": "0.16715110",
+      "logistic_brier_decimal": "0.04964319",
+      "n": 8032,
+      "selected_brier_decimal": "0.04964319",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.061219",
+      "constant_brier_decimal": "0.16695004",
+      "logistic_brier_decimal": "0.05100730",
+      "n": 8048,
+      "selected_brier_decimal": "0.05100730",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.062578",
+      "constant_brier_decimal": "0.16674976",
+      "logistic_brier_decimal": "0.05213004",
+      "n": 8064,
+      "selected_brier_decimal": "0.05213004",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.063905",
+      "constant_brier_decimal": "0.16655029",
+      "logistic_brier_decimal": "0.05323224",
+      "n": 8080,
+      "selected_brier_decimal": "0.05323224",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.065331",
+      "constant_brier_decimal": "0.16635160",
+      "logistic_brier_decimal": "0.05440228",
+      "n": 8096,
+      "selected_brier_decimal": "0.05440228",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.066604",
+      "constant_brier_decimal": "0.16615369",
+      "logistic_brier_decimal": "0.05546597",
+      "n": 8112,
+      "selected_brier_decimal": "0.05546597",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.067578",
+      "constant_brier_decimal": "0.16595657",
+      "logistic_brier_decimal": "0.05631471",
+      "n": 8128,
+      "selected_brier_decimal": "0.05631471",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.068472",
+      "constant_brier_decimal": "0.16576022",
+      "logistic_brier_decimal": "0.05710359",
+      "n": 8144,
+      "selected_brier_decimal": "0.05710359",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.069414",
+      "constant_brier_decimal": "0.16556464",
+      "logistic_brier_decimal": "0.05792806",
+      "n": 8160,
+      "selected_brier_decimal": "0.05792806",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.070586",
+      "constant_brier_decimal": "0.16536982",
+      "logistic_brier_decimal": "0.05891958",
+      "n": 8176,
+      "selected_brier_decimal": "0.05891958",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.071581",
+      "constant_brier_decimal": "0.16517576",
+      "logistic_brier_decimal": "0.05978267",
+      "n": 8192,
+      "selected_brier_decimal": "0.05978267",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.072811",
+      "constant_brier_decimal": "0.16498247",
+      "logistic_brier_decimal": "0.06081532",
+      "n": 8208,
+      "selected_brier_decimal": "0.06081532",
+      "selected_model": "logistic_all_sensor"
+    },
+    {
+      "boundary_upper_decimal": "0.073268",
+      "constant_brier_decimal": "0.16532193",
+      "logistic_brier_decimal": "0.06119769",
+      "n": 8224,
+      "selected_brier_decimal": "0.06119769",
+      "selected_model": "logistic_all_sensor"
+    }
+  ],
+  "sample_stride": 16,
+  "schema_version": "formalslt.monitor.uci357-display-trace.v1",
+  "selection_switches": 0,
+  "source_prediction_sha256": "3e6639661d43db343ffdc4d004b459505cc9f6dd91006729385f723c9a84d670"
+}
