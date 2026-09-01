@@ -18,6 +18,7 @@ from typing import Any, Iterable
 
 import formalslt_certificate as certificate_engine
 import formalslt_brier_certificate as tabular_certificate
+import formalslt_brier_streaming as streaming_brier
 import formalslt_brier_tabular as tabular_brier
 import verify_formalslt_brier_tabular as tabular_replay
 
@@ -303,6 +304,32 @@ def verify_preparation(args: argparse.Namespace) -> int:
     return 0
 
 
+def monitor(args: argparse.Namespace) -> int:
+    if args.out.exists():
+        raise ToolError(f"refusing to overwrite existing output: {args.out}")
+    try:
+        trace = streaming_brier.replay(
+            args.protocol,
+            args.data,
+            every=args.every,
+        )
+        tabular_brier.atomic_write(
+            args.out,
+            tabular_brier.canonical_json_bytes(trace),
+        )
+    except (streaming_brier.StreamingMonitorError, tabular_brier.PreparationError) as error:
+        raise ToolError(str(error)) from error
+    selected = trace["final"]["selected"]
+    print("FormalSLT incremental Brier monitor")
+    print(f"Observations:                 {trace['data']['observations']}")
+    print(f"Selected model:              {selected['model_id']}")
+    print(f"Observed Brier loss:         {selected['empirical_brier_risk']}")
+    print(f"Preview upper boundary:      {selected['boundary_upper']}")
+    print("Certificate verification:    NOT ISSUED")
+    print(f"Wrote:                        {args.out}")
+    return 0
+
+
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(
         prog="formalslt",
@@ -331,6 +358,16 @@ def parser() -> argparse.ArgumentParser:
     replay_parser.add_argument("protocol", type=Path)
     replay_parser.add_argument("data", type=Path)
     replay_parser.set_defaults(handler=verify_preparation)
+
+    monitor_parser = commands.add_parser(
+        "monitor",
+        help="replay a tabular stream incrementally without claiming certification",
+    )
+    monitor_parser.add_argument("protocol", type=Path)
+    monitor_parser.add_argument("data", type=Path)
+    monitor_parser.add_argument("--every", type=int, default=100)
+    monitor_parser.add_argument("--out", type=Path, required=True)
+    monitor_parser.set_defaults(handler=monitor)
 
     certify_parser = commands.add_parser("certify", help="issue a registered certificate")
     certify_parser.add_argument("protocol", type=Path, nargs="?", default=DEFAULT_PROTOCOL)

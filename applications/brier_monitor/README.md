@@ -35,6 +35,20 @@ integers, so the analyzed quantity is exact. The protocol must declare that
 each prediction was available before its corresponding outcome and must label
 its provenance `DECLARED`, `AUDITED`, or `SIGNED_LOG`.
 
+Replay the same protocol incrementally to produce an uncertified live trace:
+
+```bash
+./bin/formalslt monitor protocol.yaml predictions.parquet \
+  --every 100 \
+  --out monitor-trace.json
+```
+
+The incremental engine maintains exact per-model Brier loss, predictable
+quadratic-variation ceilings, a post-data selected point posterior, and the
+conservative boundary preview. Its trace deliberately says
+`PREVIEW_NOT_CERTIFIED`; use `certify` to rerun the data independently and
+invoke Lean on the final endpoint.
+
 ```bash
 ./bin/formalslt certify protocol.yaml predictions.parquet \
   --out certificate

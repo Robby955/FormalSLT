@@ -211,6 +211,44 @@ def test_prepare_and_replay_commands(tmp_path: Path, capsys: pytest.CaptureFixtu
     assert "FormalSLT tabular replay:     PASS" in output
 
 
+def test_monitor_command_emits_uncertified_incremental_trace(
+    tmp_path: Path,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    protocol_path = tmp_path / "protocol.json"
+    protocol_path.write_bytes(canonical(tabular_protocol("csv")))
+    data_path = tmp_path / "predictions.csv"
+    data_path.write_text(
+        "time,outcome,model_a_ppm\n"
+        "1,1,750000\n"
+        "2,1,750000\n"
+        "3,1,750000\n"
+        "4,1,750000\n",
+        encoding="utf-8",
+    )
+    trace_path = tmp_path / "trace.json"
+
+    assert CLI.main(
+        [
+            "monitor",
+            str(protocol_path),
+            str(data_path),
+            "--every",
+            "2",
+            "--out",
+            str(trace_path),
+        ]
+    ) == 0
+    trace = json.loads(trace_path.read_bytes())
+    output = capsys.readouterr().out
+
+    assert trace["schema_version"] == CLI.streaming_brier.TRACE_SCHEMA
+    assert trace["artifact_status"] == "PREVIEW_NOT_CERTIFIED"
+    assert trace["final"]["selected"]["empirical_brier_risk"] == "1/16"
+    assert trace["final"]["claim"]["status"] == "NOT_CERTIFIED"
+    assert "Certificate verification:    NOT ISSUED" in output
+
+
 def test_certify_tabular_issues_compact_lean_receipt(
     tmp_path: Path, capsys: pytest.CaptureFixture[str]
 ) -> None:
