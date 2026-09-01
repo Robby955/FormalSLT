@@ -57,6 +57,50 @@
         </div>
       </dl>
 
+      <section class="decomposition" aria-labelledby="decomposition-title">
+        <div class="decomposition-heading">
+          <div>
+            <p class="section-label">Exact bound decomposition</p>
+            <h2 id="decomposition-title">Where the margin comes from.</h2>
+          </div>
+          <p>The gap above observed loss is driven mostly by observable path variation, not the cost of selecting between these models.</p>
+        </div>
+        <div class="decomposition-equation" aria-label="Observed risk plus variation, model selection, and confidence costs equals the checked endpoint">
+          <div class="decomposition-term observed-term">
+            <span>Observed</span>
+            <strong data-component-observed>—</strong>
+          </div>
+          <span class="equation-mark" aria-hidden="true">+</span>
+          <div class="decomposition-term variation-term">
+            <span>Observable variation</span>
+            <strong data-component-variation>—</strong>
+          </div>
+          <span class="equation-mark" aria-hidden="true">+</span>
+          <div class="decomposition-term selection-term">
+            <span>Model selection</span>
+            <strong data-component-selection>—</strong>
+          </div>
+          <span class="equation-mark" aria-hidden="true">+</span>
+          <div class="decomposition-term confidence-term">
+            <span>Confidence</span>
+            <strong data-component-confidence>—</strong>
+          </div>
+          <span class="equation-mark" aria-hidden="true">=</span>
+          <div class="decomposition-term endpoint-term">
+            <span>Checked endpoint</span>
+            <strong data-component-upper>—</strong>
+          </div>
+        </div>
+        <div class="decomposition-track" data-decomposition-track aria-hidden="true">
+          <span class="track-observed" data-track-observed></span>
+          <span class="track-variation" data-track-variation></span>
+          <span class="track-selection" data-track-selection></span>
+          <span class="track-confidence" data-track-confidence></span>
+          <span class="track-rounding" data-track-rounding></span>
+        </div>
+        <p class="rounding-note">Strict decimal rounding adds <strong data-component-rounding>—</strong>.</p>
+      </section>
+
       <div class="monitor-grid">
         <section class="trace" aria-labelledby="trace-title">
           <div class="trace-heading">
@@ -121,6 +165,7 @@
       <div><span>Certificate</span><code data-certificate-id>formalslt.certificate.v1</code></div>
       <nav aria-label="Certificate files">
         <a href="certificate.json">Receipt</a>
+        <a href="summary.json">Exact summary</a>
         <a href="trace.json">Display trace</a>
         <a href="manifest.json">Site manifest</a>
         <a href="https://doi.org/10.24432/C5X01N">Dataset</a>

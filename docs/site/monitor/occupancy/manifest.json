@@ -2,11 +2,11 @@
   "files": [
     {
       "path": "monitor.css",
-      "sha256": "2589da6878132212d31191deb63333a194b09677b432ce81b0d5ee35b20aa4e6"
+      "sha256": "f3fd48a365de3ffcaee2e149524cc6dd08e6dc8cd6ab5e508bad7ecaee784e65"
     },
     {
       "path": "monitor.js",
-      "sha256": "56803155fe2ca9ff0f0b055b3008d9cf89eafeaee8be3b78949bee61802fa084"
+      "sha256": "cb1ea012817decfbc5f8d53ca7f2fbb40f0ce722451861dd10a54cf149ae5df9"
     },
     {
       "path": "certificate.json",
@@ -17,6 +17,10 @@
       "sha256": "fb231775c82031124c9b672cc49ba955c9e9869b0440c8d332444474b540a26d"
     },
     {
+      "path": "summary.json",
+      "sha256": "089090378a8361a1d357ec74e4c3f5941965b999e4cae88855cb2b41289f0676"
+    },
+    {
       "path": "trace.json",
       "sha256": "2ddd114b8508a15076f3278d7232cec90243f367af32a5987cb515212762d2c7"
     }
@@ -25,6 +29,6 @@
   "source_certificate_commit": "6c6101012f38b902d30582a963a911a20518bfc3",
   "source_html_template": {
     "path": "index.html",
-    "sha256": "91a9dd82332d3ab827a3c2169b2919f47e4a423973e913bb7770f273b9b0b1f6"
+    "sha256": "6b2ca23d4920917c2944b51bf73a722f1f9e3cbd96a8e77bf485600374b4d464"
   }
 }

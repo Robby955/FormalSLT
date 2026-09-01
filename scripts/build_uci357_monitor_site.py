@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import formalslt_brier_certificate as certificate_engine
+import formalslt_brier_summary as summary_engine
 import formalslt_brier_tabular as tabular_engine
 
 
@@ -27,6 +28,7 @@ SITE = ROOT / "docs/site/monitor/occupancy"
 TRACE = SITE / "trace.json"
 CERTIFICATE = SITE / "certificate.json"
 EVIDENCE = SITE / "evidence.json"
+SUMMARY = SITE / "summary.json"
 MANIFEST = SITE / "manifest.json"
 TRACE_SCHEMA = "formalslt.monitor.uci357-display-trace.v1"
 MANIFEST_SCHEMA = "formalslt.monitor.uci357-site-manifest.v1"
@@ -172,9 +174,18 @@ def build_trace() -> dict[str, Any]:
 
 
 def build_assets() -> dict[Path, bytes]:
+    certificate_raw = SOURCE_CERTIFICATE.read_bytes()
+    certificate = json.loads(certificate_raw)
+    evidence = json.loads(SOURCE_EVIDENCE.read_bytes())
+    summary = summary_engine.certificate_summary(
+        certificate,
+        certificate_sha256=sha256_bytes(certificate_raw),
+        selected_model=evidence["selection"]["winner"],
+    )
     return {
-        CERTIFICATE: SOURCE_CERTIFICATE.read_bytes(),
+        CERTIFICATE: certificate_raw,
         EVIDENCE: SOURCE_EVIDENCE.read_bytes(),
+        SUMMARY: canonical_json_bytes(summary),
         TRACE: canonical_json_bytes(build_trace()),
     }
 
@@ -241,7 +252,12 @@ def main(argv: Iterable[str] | None = None) -> int:
     arguments = parser.parse_args(list(argv) if argv is not None else None)
     try:
         run(check=arguments.check)
-    except (OSError, KeyError, ValueError, json.JSONDecodeError) as error:
+    except (
+        OSError,
+        KeyError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as error:
         print(f"ERROR: UCI monitor site refused: {error}")
         return 1
     print("UCI-357 monitor site: PASS" if arguments.check else "UCI-357 monitor site built")

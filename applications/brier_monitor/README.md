@@ -94,9 +94,18 @@ The API exposes:
 - `POST /v1/monitors` to validate a protocol and open a session;
 - `POST /v1/monitors/{id}/observations` to append one pre-outcome prediction row;
 - `GET /v1/monitors/{id}` to read the current exact preview;
+- `GET /v1/monitors/{id}/events` to stream changed previews as server-sent events;
 - `POST /v1/monitors/{id}/freeze` to inspect the selected point-posterior protocol;
 - `POST /v1/monitors/{id}/certify` to freeze, independently replay, and run Lean;
 - `GET /v1/monitors/{id}/certificates/{n}` to retrieve an issued prefix certificate.
+
+Every accepted prefix response includes an append-only SHA-256 chain head bound
+to the protocol and model order. This is an unsigned integrity commitment, not
+proof of data provenance or prediction timing. Live responses also include an
+exact rational decomposition marked `PREVIEW_NOT_CERTIFIED`. After
+certification, the same decomposition is bound to `certificate.json` by its
+SHA-256 digest and reports independent replay and Lean-kernel status
+separately.
 
 The service is intentionally local and unauthenticated. Do not bind it to a
 public interface. Certification is synchronous and should move behind a job

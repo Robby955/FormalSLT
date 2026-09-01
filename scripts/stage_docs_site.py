@@ -48,6 +48,7 @@ SITE_FILES = (
     "monitor/occupancy/manifest.json",
     "monitor/occupancy/monitor.css",
     "monitor/occupancy/monitor.js",
+    "monitor/occupancy/summary.json",
     "monitor/occupancy/trace.json",
     "readers/stats-ml/index.html",
     "readers/probability/index.html",

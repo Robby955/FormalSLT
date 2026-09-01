@@ -49,17 +49,21 @@
     }
   };
 
-  const decimalFromRational = (value) => {
-    const [numeratorText, denominatorText = "1"] = value.split("/");
-    const numerator = Number(numeratorText);
-    const denominator = Number(denominatorText);
-    if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator <= 0) {
-      throw new Error(`invalid rational ${value}`);
-    }
-    return numerator / denominator;
-  };
-
   const percent = (value) => `${(100 * Number(value)).toFixed(2)}%`;
+  const percentRecord = (record, places = 2) => {
+    const value = Number(record?.percent_decimal);
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("summary contains an invalid percentage");
+    }
+    return `${value.toFixed(places)}%`;
+  };
+  const pointRecord = (record, places = 4) => {
+    const value = Number(record?.percent_decimal);
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("summary contains an invalid percentage-point cost");
+    }
+    return `${value.toFixed(places)} pp`;
+  };
   const integer = new Intl.NumberFormat("en-US", {maximumFractionDigits: 0});
 
   const loadArtifacts = async () => {
@@ -71,7 +75,7 @@
     const declaredHashes = new Map(
       manifest.files.map(({path, sha256: hash}) => [path, hash]),
     );
-    const paths = ["certificate.json", "evidence.json", "trace.json"];
+    const paths = ["certificate.json", "evidence.json", "summary.json", "trace.json"];
     const loaded = await Promise.all(paths.map(async (path) => [path, await fetchBytes(path)]));
     for (const [path, bytes] of loaded) {
       const expected = declaredHashes.get(path);
@@ -82,12 +86,19 @@
     const byPath = new Map(loaded);
     const certificate = parseJson("certificate.json", byPath.get("certificate.json"));
     const evidence = parseJson("evidence.json", byPath.get("evidence.json"));
+    const summary = parseJson("summary.json", byPath.get("summary.json"));
     const trace = parseJson("trace.json", byPath.get("trace.json"));
     const certificateHash = await sha256(byPath.get("certificate.json"));
     const evidenceHash = await sha256(byPath.get("evidence.json"));
 
     if (trace.certificate_sha256 !== certificateHash) {
       throw new Error("display trace is not bound to this certificate");
+    }
+    if (
+      summary.schema_version !== "formalslt.brier-certificate-summary.v1"
+      || summary.certificate?.sha256 !== certificateHash
+    ) {
+      throw new Error("summary is not bound to this certificate");
     }
     if (certificate.data.provenance.evidence_sha256 !== evidenceHash) {
       throw new Error("certificate is not bound to this evidence file");
@@ -107,18 +118,72 @@
     if (evidence.selection.winner !== trace.final.selected_model) {
       throw new Error("selection evidence and final trace disagree");
     }
-    return {certificate, evidence, trace};
+    if (
+      summary.selected_model !== evidence.selection.winner
+      || summary.components?.observed_risk?.rational
+        !== certificate.statistics.posterior_empirical_brier_risk
+      || summary.components?.arithmetic_upper?.rational
+        !== certificate.statistics.rational_arithmetic_upper
+      || summary.claim?.upper_bound?.rational !== certificate.claim.upper_bound
+      || summary.claim?.quantity !== certificate.claim.quantity
+      || summary.verification?.lean_kernel !== certificate.kernel.result
+      || summary.verification?.independent_replay
+        !== certificate.replay.independent_replay
+    ) {
+      throw new Error("summary and checked certificate disagree");
+    }
+    return {certificate, evidence, summary, trace};
   };
 
-  const bindReceipt = ({certificate, evidence, trace}) => {
-    const observed = decimalFromRational(
-      certificate.statistics.posterior_empirical_brier_risk,
-    );
-    const upper = decimalFromRational(certificate.claim.upper_bound);
-    setText("[data-observed-risk]", percent(observed));
-    setText("[data-upper-bound]", percent(upper));
+  const bindReceipt = ({certificate, evidence, summary, trace}) => {
+    setText("[data-observed-risk]", percentRecord(summary.components.observed_risk));
+    setText("[data-upper-bound]", percentRecord(summary.claim.upper_bound));
     setText("[data-baseline-risk]", percent(trace.final.constant_brier_decimal));
     setText("[data-selected-model]", MODEL_LABELS[evidence.selection.winner]);
+    setText(
+      "[data-component-observed]",
+      percentRecord(summary.components.observed_risk, 4),
+    );
+    setText(
+      "[data-component-variation]",
+      pointRecord(summary.components.variation_cost),
+    );
+    setText(
+      "[data-component-selection]",
+      pointRecord(summary.components.selection_cost),
+    );
+    setText(
+      "[data-component-confidence]",
+      pointRecord(summary.components.confidence_cost),
+    );
+    setText(
+      "[data-component-upper]",
+      `≤ ${percentRecord(summary.claim.upper_bound, 4)}`,
+    );
+    setText(
+      "[data-component-rounding]",
+      pointRecord(summary.components.rounding_slack, 6),
+    );
+
+    const upper = Number(summary.claim.upper_bound.decimal);
+    const trackParts = [
+      ["[data-track-observed]", summary.components.observed_risk],
+      ["[data-track-variation]", summary.components.variation_cost],
+      ["[data-track-selection]", summary.components.selection_cost],
+      ["[data-track-confidence]", summary.components.confidence_cost],
+      ["[data-track-rounding]", summary.components.rounding_slack],
+    ];
+    if (!Number.isFinite(upper) || upper <= 0) {
+      throw new Error("summary contains an invalid checked endpoint");
+    }
+    for (const [selector, record] of trackParts) {
+      const value = Number(record.decimal);
+      if (!Number.isFinite(value) || value < 0) {
+        throw new Error("summary contains an invalid decomposition term");
+      }
+      const node = document.querySelector(selector);
+      if (node) node.style.width = `${100 * value / upper}%`;
+    }
     setText("[data-certificate-status]", "CHECKED");
     setText("[data-replay-status]", certificate.replay.independent_replay);
     setText("[data-kernel-status]", certificate.kernel.result);
