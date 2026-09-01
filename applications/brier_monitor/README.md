@@ -49,6 +49,22 @@ conservative boundary preview. Its trace deliberately says
 `PREVIEW_NOT_CERTIFIED`; use `certify` to rerun the data independently and
 invoke Lean on the final endpoint.
 
+To make the live selection and certificate handoff one operation, use
+`monitor-certify`:
+
+```bash
+./bin/formalslt monitor-certify protocol.yaml predictions.parquet \
+  --out selected-model-certificate
+```
+
+This first consumes the stream with the incremental engine, chooses the model
+with minimum cumulative prefix Brier loss, and freezes that choice as a
+one-point posterior. The frozen protocol is bound to the base protocol hash,
+normalized stream hash, prefix length, and selected model. The certifier then
+reparses the original table, independently replays the exact statistics, and
+runs the Lean checker. The output contains `selection.json`, the frozen
+protocol, exact preparation, generated checker, and `certificate.json`.
+
 ```bash
 ./bin/formalslt certify protocol.yaml predictions.parquet \
   --out certificate
@@ -57,6 +73,35 @@ invoke Lean on the final endpoint.
   --data predictions.parquet
 ./bin/formalslt show certificate/certificate.json
 ```
+
+## Local streaming service
+
+The same engine is available through a small FastAPI service. It keeps active
+rows in memory and stores issued certificate bundles under a local artifact
+root. Install and run it on localhost:
+
+```bash
+python3 -m pip install -r requirements-service.txt
+FORMALSLT_CERTIFICATE_ROOT=/tmp/formalslt-service-certificates \
+  python3 -m uvicorn formalslt_monitor_service:app \
+  --app-dir scripts \
+  --host 127.0.0.1 \
+  --port 8000
+```
+
+The API exposes:
+
+- `POST /v1/monitors` to validate a protocol and open a session;
+- `POST /v1/monitors/{id}/observations` to append one pre-outcome prediction row;
+- `GET /v1/monitors/{id}` to read the current exact preview;
+- `POST /v1/monitors/{id}/freeze` to inspect the selected point-posterior protocol;
+- `POST /v1/monitors/{id}/certify` to freeze, independently replay, and run Lean;
+- `GET /v1/monitors/{id}/certificates/{n}` to retrieve an issued prefix certificate.
+
+The service is intentionally local and unauthenticated. Do not bind it to a
+public interface. Certification is synchronous and should move behind a job
+worker before a multi-user deployment; no queue or database is needed for the
+current research demo.
 
 Issuance streams the table twice through independent implementations. Each
 replay rounds every nonnegative row contribution to the same `2^-40` grid, so

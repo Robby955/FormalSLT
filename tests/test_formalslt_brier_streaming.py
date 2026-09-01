@@ -125,6 +125,59 @@ def test_hundred_model_state_is_exact_and_compact(tmp_path: Path) -> None:
     assert snapshot["selected"]["boundary_upper"] is not None
 
 
+def test_selected_posterior_freeze_is_deterministic_and_stream_bound(
+    tmp_path: Path,
+) -> None:
+    base = protocol()
+    monitor = streaming.StreamingBrierMonitor.from_protocol_path(
+        write_protocol(tmp_path, base)
+    )
+    for time, outcome in enumerate((1, 1, 1, 1), start=1):
+        monitor.update(
+            time=time,
+            outcome=outcome,
+            predictions={"model-0": 0, "model-1": 100},
+        )
+
+    frozen = monitor.freeze_selected_protocol(input_format="csv")
+    repeated = monitor.freeze_selected_protocol(input_format="csv")
+    assert frozen == repeated
+    assert frozen.protocol["statistics"]["posterior"] == {
+        "model-0": "0",
+        "model-1": "1",
+    }
+    assert base["statistics"]["posterior"] == {"model-0": "1", "model-1": "0"}
+    assert frozen.record["observations"] == 4
+    assert frozen.record["selected_model"] == "model-1"
+    assert frozen.record["normalized_stream_sha256"] == monitor.snapshot()[
+        "normalized_stream_sha256"
+    ]
+    assert frozen.record["selected_protocol_sha256"] == tabular.sha256_bytes(
+        frozen.raw
+    )
+
+    frozen_path = tmp_path / "frozen.json"
+    frozen_path.write_bytes(frozen.raw)
+    validated, validated_raw = tabular.load_protocol(frozen_path)
+    assert validated == frozen.protocol
+    assert validated_raw == frozen.raw
+
+
+def test_selected_posterior_freeze_requires_certifiable_prefix(
+    tmp_path: Path,
+) -> None:
+    monitor = streaming.StreamingBrierMonitor.from_protocol_path(
+        write_protocol(tmp_path, protocol())
+    )
+    monitor.update(
+        time=1,
+        outcome=0,
+        predictions={"model-0": 10, "model-1": 20},
+    )
+    with pytest.raises(streaming.StreamingMonitorError, match="at least 4"):
+        monitor.freeze_selected_protocol()
+
+
 def test_uci_streaming_preview_matches_checked_certificate() -> None:
     trace = streaming.replay(UCI_PROTOCOL, UCI_PREDICTIONS, every=512)
     certificate = json.loads(UCI_CERTIFICATE.read_bytes())

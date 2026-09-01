@@ -11,6 +11,7 @@ Independent replay and Lean verification remain separate operations.
 from __future__ import annotations
 
 import hashlib
+from copy import deepcopy
 from dataclasses import dataclass
 from fractions import Fraction
 from pathlib import Path
@@ -21,9 +22,12 @@ import formalslt_brier_tabular as tabular
 
 TRACE_SCHEMA = "formalslt.brier-monitor-trace.v1"
 SNAPSHOT_SCHEMA = "formalslt.brier-monitor-snapshot.v1"
+SELECTION_SCHEMA = "formalslt.brier-monitor-selection.v1"
 STATUS = "PREVIEW_NOT_CERTIFIED"
+FROZEN_STATUS = "FROZEN_NOT_CERTIFIED"
 BOUND_SCALE = 1_000_000
 MINIMUM_CERTIFICATE_HORIZON = 4
+SELECTION_RULE = "minimum prefix cumulative Brier loss; protocol order breaks ties"
 NONCLAIMS = [
     "online arithmetic only; preview boundaries are not Lean certificates",
     "prediction timing and provenance retain the protocol's stated evidence tier",
@@ -40,6 +44,15 @@ class StreamingMonitorError(ValueError):
 class _ModelState:
     loss_sum: Fraction = Fraction(0)
     quadratic_variation_upper: Fraction = Fraction(0)
+
+
+@dataclass(frozen=True)
+class FrozenSelection:
+    """Canonical point-posterior protocol and its live-selection binding."""
+
+    protocol: dict[str, Any]
+    raw: bytes
+    record: dict[str, Any]
 
 
 def _integer(value: Any, label: str) -> int:
@@ -304,7 +317,7 @@ class StreamingBrierMonitor:
         }
         selected = {
             "model_id": self.selected_model,
-            "rule": "minimum prefix cumulative Brier loss; protocol order breaks ties",
+            "rule": SELECTION_RULE,
             **self._preview(
                 selected_state.loss_sum / self.observations,
                 selected_state.quadratic_variation_upper,
@@ -332,6 +345,80 @@ class StreamingBrierMonitor:
             "selected": selected,
             "selection_switches": self.selection_switches,
         }
+
+    def freeze_selected_protocol(
+        self,
+        *,
+        input_format: str | None = None,
+    ) -> FrozenSelection:
+        """Freeze the current selected model as a canonical point posterior.
+
+        This operation binds the selection to the consumed normalized prefix,
+        but it does not issue a statistical certificate.  The returned
+        protocol must still be independently replayed and checked by
+        ``formalslt certify``.
+        """
+
+        if self.observations < MINIMUM_CERTIFICATE_HORIZON:
+            raise StreamingMonitorError(
+                f"at least {MINIMUM_CERTIFICATE_HORIZON} observations are required"
+            )
+        if self.selected_model is None:
+            raise StreamingMonitorError("cannot freeze an empty monitor")
+        selected_format = input_format or self.protocol["data"]["input_format"]
+        if selected_format not in tabular.SUPPORTED_FORMATS:
+            raise StreamingMonitorError(
+                f"unsupported frozen input format: {selected_format!r}"
+            )
+
+        stream_sha256 = self._normalized_stream.hexdigest()
+        identity = {
+            "base_protocol_sha256": self.protocol_sha256,
+            "input_format": selected_format,
+            "normalized_stream_sha256": stream_sha256,
+            "observations": self.observations,
+            "selected_model": self.selected_model,
+            "selection_rule": SELECTION_RULE,
+        }
+        selection_sha256 = tabular.sha256_bytes(
+            tabular.canonical_json_bytes(identity)
+        )
+        frozen = deepcopy(self.protocol)
+        frozen["data"]["input_format"] = selected_format
+        frozen["protocol_id"] = (
+            f"{self.protocol['protocol_id']}.selected.{selection_sha256[:24]}"
+        )
+        frozen["statistics"]["posterior"] = {
+            model_id: "1" if model_id == self.selected_model else "0"
+            for model_id in self.model_ids
+        }
+        raw = tabular.canonical_json_bytes(frozen)
+        frozen_sha256 = tabular.sha256_bytes(raw)
+        record = {
+            "artifact_status": FROZEN_STATUS,
+            **identity,
+            "protocol_id": frozen["protocol_id"],
+            "schema_version": SELECTION_SCHEMA,
+            "selected_protocol_sha256": frozen_sha256,
+            "selection_sha256": selection_sha256,
+        }
+        return FrozenSelection(protocol=frozen, raw=raw, record=record)
+
+
+def load_monitor(protocol_path: Path, data_path: Path) -> StreamingBrierMonitor:
+    """Consume one complete table through the incremental monitor."""
+
+    monitor = StreamingBrierMonitor.from_protocol_path(protocol_path)
+    try:
+        for row in tabular.iter_rows(monitor.protocol, data_path):
+            monitor.update_row(row)
+    except tabular.PreparationError as error:
+        raise StreamingMonitorError(str(error)) from error
+    if monitor.observations < MINIMUM_CERTIFICATE_HORIZON:
+        raise StreamingMonitorError(
+            f"at least {MINIMUM_CERTIFICATE_HORIZON} observations are required"
+        )
+    return monitor
 
 
 def replay(
