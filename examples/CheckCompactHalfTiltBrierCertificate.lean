@@ -1,0 +1,21 @@
+import FormalSLT.Applications.CompactHalfTiltBrierCertificate
+
+open FormalSLT.Applications.CompactHalfTiltBrierCertificate
+
+#check dyadicLogUpper
+#check log_two_pow_mul_le_dyadicLogUpper
+#check klDiv_le_dyadicLogUpper
+#check psi_half_lt_one_fifth
+#check summaryEndpoint
+#check summaryEndpoint_lt_of_bounds
+#check summaryEndpoint_mono_quadraticVariation
+#check conditionalRisk_lt_of_summary
+#check conditionalRisk_lt_of_quadraticVariation_upper
+
+#print axioms log_two_pow_mul_le_dyadicLogUpper
+#print axioms klDiv_le_dyadicLogUpper
+#print axioms psi_half_lt_one_fifth
+#print axioms summaryEndpoint_lt_of_bounds
+#print axioms summaryEndpoint_mono_quadraticVariation
+#print axioms conditionalRisk_lt_of_summary
+#print axioms conditionalRisk_lt_of_quadraticVariation_upper

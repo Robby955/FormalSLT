@@ -2,7 +2,8 @@
 
 This directory separates three jobs that should not be conflated:
 
-1. raw-data replay computes exact summaries and binds them to source hashes;
+1. raw-data replay computes exact losses and a conservative observable-variation
+   bound, then binds them to source hashes;
 2. Lean checks the statistical theorem specialization and endpoint arithmetic
    from those summaries;
 3. the monitor renders the result without becoming a source of truth.
@@ -12,6 +13,62 @@ The public GJP viewer is under `docs/site/monitor/`. Its compact
 hashes, exact summaries, theorem sources, checker output, and claim scope. The
 172-point display trace is a separate hash-bound file. A normal verification
 runs in seconds and does not regenerate the 31,000-line path ledger.
+
+The user-facing command is profile-gated. It refuses unknown analyses before
+writing output. The fixed GJP replay and general chronological tabular profile
+have separate theorem and receipt bindings.
+
+```bash
+./bin/formalslt profiles
+./bin/formalslt certify \
+  applications/brier_monitor/gjp-compact-certificate-protocol-v1.json \
+  /tmp/formalslt-gjp-replay-v1 \
+  --out /tmp/formalslt-certificate
+./bin/formalslt verify \
+  /tmp/formalslt-certificate/gjp-certificate-v1.json \
+  --data /tmp/formalslt-gjp-replay-v1
+```
+
+For a new prediction stream, `certify` accepts CSV with no extra dependency or
+Parquet after installing `requirements-cli.txt`. Predictions are scaled
+integers, so the analyzed quantity is exact. The protocol must declare that
+each prediction was available before its corresponding outcome and must label
+its provenance `DECLARED`, `AUDITED`, or `SIGNED_LOG`.
+
+```bash
+./bin/formalslt certify protocol.yaml predictions.parquet \
+  --out certificate
+./bin/formalslt verify certificate/certificate.json \
+  --protocol protocol.yaml \
+  --data predictions.parquet
+./bin/formalslt show certificate/certificate.json
+```
+
+Issuance streams the table twice through independent implementations. Each
+replay rounds every nonnegative row contribution to the same `2^-40` grid, so
+the accumulated quadratic-variation input is a compact conservative upper
+bound rather than a fraction whose denominator grows with the row count. The
+maximum rounding slack is recorded in the receipt. The generated Lean checker
+therefore grows with the model catalog, not the row count. Independent data
+replay and Lean verification remain separate receipt lines. The checked
+endpoint uses one predeclared half tilt and permits the reporting posterior over
+models to be chosen after observing the prefix.
+
+The lower-level preparation commands remain available for debugging:
+
+```bash
+./bin/formalslt prepare protocol.yaml predictions.parquet \
+  --out preparation.json
+./bin/formalslt verify-preparation \
+  preparation.json protocol.yaml predictions.parquet
+```
+
+`verify-preparation` uses a separate implementation. It does not import the
+preparation engine; it reparses the protocol and table, streams the rows again,
+recomputes the normalized-data digest, empirical loss, observable variation,
+KL term, logarithm enclosures, and candidate expression, then compares the
+entire canonical preparation. Passing this replay alone does not turn the
+preparation into a certificate; `certify` adds the theorem-backed Lean check.
 
 The worked real-data result is deliberately disclosed as it happened. The
 certificate verification passes; the preregistered GJP study verdict is
@@ -26,7 +83,7 @@ python3 scripts/formalslt_certificate.py issue \
   --run-lean
 ```
 
-Run the compact verifier:
+Run the compact verifier directly:
 
 ```bash
 python3 scripts/formalslt_certificate.py verify

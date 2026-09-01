@@ -1,0 +1,15 @@
+{
+  "analysis": "brier_monitor",
+  "certificate_profile": "gjp-brier-countable-strategy-retrospective-v1",
+  "claim_scope": "posterior-averaged encountered conditional prefix Brier risk",
+  "coverage_use": "RETROSPECTIVE_FIXED_CATALOG_ONLY",
+  "expected_artifacts": {
+    "manifest_sha256": "cc5789f33f9465c10a8fd1e3d25600ad1dd6d44f0cea3b91db21ab61533ab64c",
+    "protocol_sha256": "6c4e19429e3b43c2fd8676092b85b85a48283830865289fe0f44608379b9b14a",
+    "receipt_sha256": "9bb608bc559d261d62e05153f58a836121b791d712707b828280b44eaf2a4b11",
+    "stream_sha256": "3e3f1985a5db7fd56faa77d395aa9b72568a19d21d963037816fdc78b503ec07"
+  },
+  "input_kind": "gjp-replay-artifact-directory",
+  "protocol_id": "gjp-compact-certificate-2026-08-30",
+  "schema_version": "formalslt.certify-protocol.v1"
+}
