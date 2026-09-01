@@ -92,7 +92,9 @@ FORMALSLT_CERTIFICATE_ROOT=/tmp/formalslt-service-certificates \
 The API exposes:
 
 - `POST /v1/monitors` to validate a protocol and open a session;
-- `POST /v1/monitors/{id}/observations` to append one pre-outcome prediction row;
+- `POST /v1/monitors/{id}/predictions` to commit predictions before an outcome;
+- `POST /v1/monitors/{id}/outcomes` to resolve the matching committed prediction;
+- `POST /v1/monitors/{id}/observations` for declared single-request ingestion;
 - `GET /v1/monitors/{id}` to read the current exact preview;
 - `GET /v1/monitors/{id}/events` to stream changed previews as server-sent events;
 - `POST /v1/monitors/{id}/freeze` to inspect the selected point-posterior protocol;
@@ -106,6 +108,13 @@ exact rational decomposition marked `PREVIEW_NOT_CERTIFIED`. After
 certification, the same decomposition is bound to `certificate.json` by its
 SHA-256 digest and reports independent replay and Lean-kernel status
 separately.
+
+The two-phase route additionally records an unsigned prediction commitment
+before accepting the corresponding outcome. It rejects outcomes with no
+pending prediction, mismatched times, a second prediction while one is
+pending, and certification of an unresolved prefix. This establishes request
+order inside this service process. It does not authenticate the external model
+or data source; use a separately audited or signed log for that stronger claim.
 
 The service is intentionally local and unauthenticated. Do not bind it to a
 public interface. Certification is synchronous and should move behind a job

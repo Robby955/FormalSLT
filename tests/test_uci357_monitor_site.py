@@ -26,7 +26,9 @@ def test_display_trace_replays_checked_final_point() -> None:
     assert trace["points"][-1] == trace["final"]
     assert trace["final"] == {
         "boundary_upper_decimal": "0.073268",
+        "constant_boundary_upper_decimal": "0.181611",
         "constant_brier_decimal": "0.16532193",
+        "logistic_boundary_upper_decimal": "0.073268",
         "logistic_brier_decimal": "0.06119769",
         "n": 8_224,
         "selected_brier_decimal": "0.06119769",
@@ -92,9 +94,14 @@ def test_monitor_copy_keeps_claim_scope_and_source_binding() -> None:
     assert "does not establish future occupancy" in html
     assert "data-certificate-status" in html
     assert "data-component-variation" in html
+    assert "data-playback" in html
+    assert "data-report-model" in html
+    assert "data-timing-illegal" in html
     assert "data-scrubber" in html
     assert "site-manifest digest mismatch" in javascript
     assert "certificate is not bound to this evidence file" in javascript
     assert "summary is not bound to this certificate" in javascript
+    assert "commit predictions for this time before revealing" in javascript
+    assert "uci357-display-trace.v2" in javascript
     assert "overflow: hidden" not in stylesheet
     assert 'href="monitor/occupancy/">Open the checked monitor</a>' in landing_html

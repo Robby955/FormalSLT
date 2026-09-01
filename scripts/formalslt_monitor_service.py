@@ -34,8 +34,11 @@ import formalslt_brier_tabular as tabular
 MAX_MODELS = 1_000
 MAX_OBSERVATIONS = 1_000_000
 SERVICE_STATUS = "LIVE_NOT_CERTIFIED"
+PENDING_STATUS = "PREDICTION_COMMITTED_AWAITING_OUTCOME"
 PREFIX_CHAIN_SCHEMA = "formalslt.monitor-prefix-chain.v1"
 PREFIX_CHAIN_STATUS = "COMMITTED_PREFIX_UNSIGNED"
+PREDICTION_COMMITMENT_SCHEMA = "formalslt.prediction-commitment.v1"
+PREDICTION_COMMITMENT_STATUS = "PREDICTION_COMMITTED_UNSIGNED"
 EVENT_POLL_SECONDS = 0.25
 EVENT_KEEPALIVE_SECONDS = 15.0
 
@@ -54,11 +57,22 @@ class ObservationRequest(StrictModel):
     predictions: dict[str, StrictInt]
 
 
+class PredictionRequest(StrictModel):
+    time: StrictInt
+    predictions: dict[str, StrictInt]
+
+
+class OutcomeRequest(StrictModel):
+    time: StrictInt
+    outcome: StrictInt
+
+
 class MonitorResponse(StrictModel):
     commitment: dict[str, JsonValue]
     monitor_id: str
     model_count: int
     observations: int
+    pending_prediction: dict[str, JsonValue] | None
     protocol_sha256: str
     snapshot: dict[str, JsonValue] | None
     status: str
@@ -79,12 +93,28 @@ class CertificateResponse(StrictModel):
     summary: dict[str, JsonValue]
 
 
+@dataclass(frozen=True)
+class PendingPrediction:
+    time: int
+    predictions: dict[str, int]
+    sha256: str
+
+
+@dataclass(frozen=True)
+class StoredObservation:
+    time: int
+    outcome: int
+    predictions: dict[str, int]
+    prediction_commitment_sha256: str | None
+
+
 @dataclass
 class MonitorSession:
     monitor: streaming.StreamingBrierMonitor
     chain_genesis: str
     chain_head: str
-    rows: list[dict[str, int | dict[str, int]]] = field(default_factory=list)
+    pending_prediction: PendingPrediction | None = None
+    rows: list[StoredObservation] = field(default_factory=list)
     certificates: dict[
         int,
         tuple[Path, dict[str, JsonValue], dict[str, JsonValue]],
@@ -159,21 +189,62 @@ def _prefix_chain_genesis(monitor: streaming.StreamingBrierMonitor) -> str:
 
 def _prefix_chain_step(
     session: MonitorSession,
-    row: dict[str, int | dict[str, int]],
+    row: StoredObservation,
 ) -> str:
-    predictions = row["predictions"]
-    if not isinstance(predictions, dict):
-        raise RuntimeError("stored prediction row is malformed")
     entry = {
-        "outcome": row["outcome"],
+        "outcome": row.outcome,
         "predictions": [
-            predictions[model_id] for model_id in session.monitor.model_ids
+            row.predictions[model_id] for model_id in session.monitor.model_ids
         ],
         "previous_sha256": session.chain_head,
         "sequence": session.monitor.observations,
-        "time": row["time"],
+        "time": row.time,
     }
+    if row.prediction_commitment_sha256 is not None:
+        entry["prediction_commitment_sha256"] = row.prediction_commitment_sha256
     return hashlib.sha256(tabular.canonical_json_bytes(entry)).hexdigest()
+
+
+def _prediction_commitment(
+    session: MonitorSession,
+    *,
+    time_value: int,
+    predictions: dict[str, int],
+) -> PendingPrediction:
+    identity = {
+        "model_ids": list(session.monitor.model_ids),
+        "predictions": [
+            predictions[model_id] for model_id in session.monitor.model_ids
+        ],
+        "prefix_sha256": session.chain_head,
+        "protocol_sha256": session.monitor.protocol_sha256,
+        "schema_version": PREDICTION_COMMITMENT_SCHEMA,
+        "sequence": session.monitor.observations + 1,
+        "time": time_value,
+    }
+    sha256 = hashlib.sha256(tabular.canonical_json_bytes(identity)).hexdigest()
+    return PendingPrediction(
+        time=time_value,
+        predictions=predictions,
+        sha256=sha256,
+    )
+
+
+def _pending_record(session: MonitorSession) -> dict[str, JsonValue] | None:
+    pending = session.pending_prediction
+    if pending is None:
+        return None
+    return {
+        "artifact_status": PREDICTION_COMMITMENT_STATUS,
+        "model_count": len(session.monitor.model_ids),
+        "prefix_sha256": session.chain_head,
+        "protocol_sha256": session.monitor.protocol_sha256,
+        "schema_version": PREDICTION_COMMITMENT_SCHEMA,
+        "sequence": session.monitor.observations + 1,
+        "sha256": pending.sha256,
+        "signed": False,
+        "time": pending.time,
+    }
 
 
 def _commitment(session: MonitorSession) -> dict[str, JsonValue]:
@@ -216,11 +287,84 @@ def _monitor_response(
         monitor_id=monitor_id,
         model_count=len(monitor.model_ids),
         observations=monitor.observations,
+        pending_prediction=_pending_record(session),
         protocol_sha256=monitor.protocol_sha256,
         snapshot=snapshot,
-        status=SERVICE_STATUS,
+        status=(
+            PENDING_STATUS
+            if session.pending_prediction is not None
+            else SERVICE_STATUS
+        ),
         summary=summary,
     )
+
+
+def _validated_predictions(
+    session: MonitorSession,
+    *,
+    time_value: int,
+    predictions: dict[str, int],
+) -> dict[str, int]:
+    monitor = session.monitor
+    if monitor.observations >= MAX_OBSERVATIONS:
+        raise HTTPException(
+            status_code=409,
+            detail=f"monitor reached the {MAX_OBSERVATIONS} observation limit",
+        )
+    if monitor.last_time is not None and time_value <= monitor.last_time:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"row {monitor.observations + 1} time is not strictly increasing"
+            ),
+        )
+    if set(predictions) != set(monitor.model_ids):
+        missing = sorted(set(monitor.model_ids) - set(predictions))
+        extra = sorted(set(predictions) - set(monitor.model_ids))
+        raise HTTPException(
+            status_code=422,
+            detail=f"prediction keys mismatch; missing={missing}, extra={extra}",
+        )
+    normalized = {
+        model_id: int(predictions[model_id]) for model_id in monitor.model_ids
+    }
+    for model_id, value in normalized.items():
+        if not 0 <= value <= monitor.scale:
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"row {monitor.observations + 1} prediction {model_id} "
+                    f"must lie in [0,{monitor.scale}]"
+                ),
+            )
+    return normalized
+
+
+def _accept_observation(
+    session: MonitorSession,
+    *,
+    time_value: int,
+    outcome_value: int,
+    predictions: dict[str, int],
+    prediction_commitment_sha256: str | None,
+) -> None:
+    try:
+        session.monitor.update(
+            time=time_value,
+            outcome=outcome_value,
+            predictions=predictions,
+        )
+    except streaming.StreamingMonitorError as error:
+        raise HTTPException(status_code=422, detail=str(error)) from error
+    row = StoredObservation(
+        time=time_value,
+        outcome=outcome_value,
+        predictions=predictions,
+        prediction_commitment_sha256=prediction_commitment_sha256,
+    )
+    next_head = _prefix_chain_step(session, row)
+    session.rows.append(row)
+    session.chain_head = next_head
 
 
 def _write_rows(path: Path, session: MonitorSession) -> None:
@@ -238,15 +382,12 @@ def _write_rows(path: Path, session: MonitorSession) -> None:
             writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
             writer.writeheader()
             for row in session.rows:
-                predictions = row["predictions"]
-                if not isinstance(predictions, dict):
-                    raise RuntimeError("stored prediction row is malformed")
                 writer.writerow(
                     {
-                        data["time_column"]: row["time"],
-                        data["outcome_column"]: row["outcome"],
+                        data["time_column"]: row.time,
+                        data["outcome_column"]: row.outcome,
                         **{
-                            monitor.columns[model_id]: predictions[model_id]
+                            monitor.columns[model_id]: row.predictions[model_id]
                             for model_id in monitor.model_ids
                         },
                     }
@@ -398,7 +539,9 @@ def create_app(output_root: Path | None = None) -> FastAPI:
                         include_models=include_models,
                     )
                     payload = response.model_dump(mode="json")
-                head = str(payload["commitment"]["head_sha256"])
+                pending = payload.get("pending_prediction")
+                pending_sha = "" if pending is None else str(pending["sha256"])
+                head = f'{payload["commitment"]["head_sha256"]}:{pending_sha}'
                 now = time.monotonic()
                 if head != previous_head:
                     encoded = json.dumps(
@@ -426,6 +569,81 @@ def create_app(output_root: Path | None = None) -> FastAPI:
         )
 
     @app.post(
+        "/v1/monitors/{monitor_id}/predictions",
+        response_model=MonitorResponse,
+    )
+    def commit_prediction(
+        monitor_id: str,
+        request: PredictionRequest,
+    ) -> MonitorResponse:
+        try:
+            session = state.get(monitor_id)
+        except KeyError as error:
+            raise HTTPException(status_code=404, detail="monitor not found") from error
+        with session.lock:
+            if session.pending_prediction is not None:
+                raise HTTPException(
+                    status_code=409,
+                    detail="prediction refused: resolve the pending outcome first",
+                )
+            predictions = _validated_predictions(
+                session,
+                time_value=int(request.time),
+                predictions={
+                    model_id: int(value)
+                    for model_id, value in request.predictions.items()
+                },
+            )
+            session.pending_prediction = _prediction_commitment(
+                session,
+                time_value=int(request.time),
+                predictions=predictions,
+            )
+            return _monitor_response(monitor_id, session, include_models=False)
+
+    @app.post(
+        "/v1/monitors/{monitor_id}/outcomes",
+        response_model=MonitorResponse,
+    )
+    def reveal_outcome(
+        monitor_id: str,
+        request: OutcomeRequest,
+    ) -> MonitorResponse:
+        try:
+            session = state.get(monitor_id)
+        except KeyError as error:
+            raise HTTPException(status_code=404, detail="monitor not found") from error
+        with session.lock:
+            pending = session.pending_prediction
+            if pending is None:
+                raise HTTPException(
+                    status_code=409,
+                    detail=(
+                        "outcome refused: commit predictions for this time before "
+                        "revealing the outcome"
+                    ),
+                )
+            if int(request.time) != pending.time:
+                raise HTTPException(
+                    status_code=409,
+                    detail="outcome refused: time does not match pending prediction",
+                )
+            if int(request.outcome) not in (0, 1):
+                raise HTTPException(
+                    status_code=422,
+                    detail="outcome must be 0 or 1",
+                )
+            _accept_observation(
+                session,
+                time_value=pending.time,
+                outcome_value=int(request.outcome),
+                predictions=pending.predictions,
+                prediction_commitment_sha256=pending.sha256,
+            )
+            session.pending_prediction = None
+            return _monitor_response(monitor_id, session, include_models=False)
+
+    @app.post(
         "/v1/monitors/{monitor_id}/observations",
         response_model=MonitorResponse,
     )
@@ -438,29 +656,26 @@ def create_app(output_root: Path | None = None) -> FastAPI:
         except KeyError as error:
             raise HTTPException(status_code=404, detail="monitor not found") from error
         with session.lock:
-            if session.monitor.observations >= MAX_OBSERVATIONS:
+            if session.pending_prediction is not None:
                 raise HTTPException(
                     status_code=409,
-                    detail=f"monitor reached the {MAX_OBSERVATIONS} observation limit",
+                    detail="observation refused: resolve the pending outcome first",
                 )
-            try:
-                session.monitor.update(
-                    time=request.time,
-                    outcome=request.outcome,
-                    predictions=request.predictions,
-                )
-            except streaming.StreamingMonitorError as error:
-                raise HTTPException(status_code=422, detail=str(error)) from error
-            row: dict[str, int | dict[str, int]] = {
-                "time": int(request.time),
-                "outcome": int(request.outcome),
-                "predictions": {
-                    model_id: int(request.predictions[model_id])
-                    for model_id in session.monitor.model_ids
+            predictions = _validated_predictions(
+                session,
+                time_value=int(request.time),
+                predictions={
+                    model_id: int(value)
+                    for model_id, value in request.predictions.items()
                 },
-            }
-            session.rows.append(row)
-            session.chain_head = _prefix_chain_step(session, row)
+            )
+            _accept_observation(
+                session,
+                time_value=int(request.time),
+                outcome_value=int(request.outcome),
+                predictions=predictions,
+                prediction_commitment_sha256=None,
+            )
             return _monitor_response(monitor_id, session, include_models=False)
 
     @app.post(
@@ -473,6 +688,11 @@ def create_app(output_root: Path | None = None) -> FastAPI:
         except KeyError as error:
             raise HTTPException(status_code=404, detail="monitor not found") from error
         with session.lock:
+            if session.pending_prediction is not None:
+                raise HTTPException(
+                    status_code=409,
+                    detail="freeze refused: resolve the pending outcome first",
+                )
             try:
                 frozen = session.monitor.freeze_selected_protocol(input_format="csv")
             except streaming.StreamingMonitorError as error:
@@ -493,6 +713,11 @@ def create_app(output_root: Path | None = None) -> FastAPI:
         except KeyError as error:
             raise HTTPException(status_code=404, detail="monitor not found") from error
         with session.lock:
+            if session.pending_prediction is not None:
+                raise HTTPException(
+                    status_code=409,
+                    detail="certification refused: resolve the pending outcome first",
+                )
             try:
                 (
                     certificate_id,

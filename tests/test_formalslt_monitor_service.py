@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -71,6 +72,7 @@ def test_service_updates_are_transactional(tmp_path: Path) -> None:
         "signed": False,
     }
     assert created["summary"] is None
+    assert created["pending_prediction"] is None
     valid = {
         "time": 1,
         "outcome": 0,
@@ -82,7 +84,18 @@ def test_service_updates_are_transactional(tmp_path: Path) -> None:
     assert accepted.status_code == 200
     accepted_payload = accepted.json()
     committed_head = accepted_payload["commitment"]["head_sha256"]
-    assert committed_head != genesis
+    expected_direct_head = hashlib.sha256(
+        tabular.canonical_json_bytes(
+            {
+                "outcome": 0,
+                "predictions": [10, 20],
+                "previous_sha256": genesis,
+                "sequence": 1,
+                "time": 1,
+            }
+        )
+    ).hexdigest()
+    assert committed_head == expected_direct_head
     assert accepted_payload["commitment"]["observations"] == 1
     assert accepted_payload["summary"]["artifact_status"] == (
         service.streaming.STATUS
@@ -102,6 +115,108 @@ def test_service_updates_are_transactional(tmp_path: Path) -> None:
     assert current["commitment"]["observations"] == 1
 
 
+def test_two_phase_ingestion_commits_prediction_before_outcome(
+    tmp_path: Path,
+) -> None:
+    client = TestClient(service.create_app(tmp_path / "artifacts"))
+    monitor_id = create_monitor(client)
+    created = client.get(f"/v1/monitors/{monitor_id}").json()
+    genesis = created["commitment"]["head_sha256"]
+
+    early_outcome = client.post(
+        f"/v1/monitors/{monitor_id}/outcomes",
+        json={"time": 1, "outcome": 0},
+    )
+    assert early_outcome.status_code == 409
+    assert "commit predictions" in early_outcome.json()["detail"]
+
+    committed = client.post(
+        f"/v1/monitors/{monitor_id}/predictions",
+        json={
+            "time": 1,
+            "predictions": {"model-0": 10, "model-1": 20},
+        },
+    )
+    assert committed.status_code == 200, committed.text
+    commitment = committed.json()
+    pending = commitment["pending_prediction"]
+    assert commitment["status"] == service.PENDING_STATUS
+    assert commitment["observations"] == 0
+    assert commitment["commitment"]["head_sha256"] == genesis
+    assert pending["artifact_status"] == service.PREDICTION_COMMITMENT_STATUS
+    assert pending["schema_version"] == service.PREDICTION_COMMITMENT_SCHEMA
+    assert pending["sequence"] == 1
+    assert pending["time"] == 1
+    assert pending["signed"] is False
+    assert len(pending["sha256"]) == 64
+
+    second_prediction = client.post(
+        f"/v1/monitors/{monitor_id}/predictions",
+        json={
+            "time": 2,
+            "predictions": {"model-0": 30, "model-1": 40},
+        },
+    )
+    assert second_prediction.status_code == 409
+
+    direct = client.post(
+        f"/v1/monitors/{monitor_id}/observations",
+        json={
+            "time": 1,
+            "outcome": 0,
+            "predictions": {"model-0": 10, "model-1": 20},
+        },
+    )
+    assert direct.status_code == 409
+    wrong_time = client.post(
+        f"/v1/monitors/{monitor_id}/outcomes",
+        json={"time": 2, "outcome": 0},
+    )
+    assert wrong_time.status_code == 409
+    assert (
+        client.get(f"/v1/monitors/{monitor_id}").json()["pending_prediction"]
+        == pending
+    )
+
+    resolved = client.post(
+        f"/v1/monitors/{monitor_id}/outcomes",
+        json={"time": 1, "outcome": 0},
+    )
+    assert resolved.status_code == 200, resolved.text
+    resolved_payload = resolved.json()
+    assert resolved_payload["status"] == service.SERVICE_STATUS
+    assert resolved_payload["observations"] == 1
+    assert resolved_payload["pending_prediction"] is None
+    assert resolved_payload["commitment"]["head_sha256"] != genesis
+    assert resolved_payload["snapshot"]["normalized_stream_sha256"]
+
+    repeated_outcome = client.post(
+        f"/v1/monitors/{monitor_id}/outcomes",
+        json={"time": 1, "outcome": 0},
+    )
+    assert repeated_outcome.status_code == 409
+
+
+def test_unresolved_prediction_blocks_freeze_and_certification(tmp_path: Path) -> None:
+    client = TestClient(service.create_app(tmp_path / "artifacts"))
+    monitor_id = create_monitor(client)
+    committed = client.post(
+        f"/v1/monitors/{monitor_id}/predictions",
+        json={
+            "time": 1,
+            "predictions": {"model-0": 10, "model-1": 20},
+        },
+    )
+    assert committed.status_code == 200
+
+    frozen = client.post(f"/v1/monitors/{monitor_id}/freeze")
+    certified = client.post(f"/v1/monitors/{monitor_id}/certify")
+    assert frozen.status_code == 409
+    assert certified.status_code == 409
+    assert "pending outcome" in frozen.json()["detail"]
+    assert "pending outcome" in certified.json()["detail"]
+
+
 def test_service_emits_one_hash_bound_snapshot_event(tmp_path: Path) -> None:
     client = TestClient(service.create_app(tmp_path / "artifacts"))
     monitor_id = create_monitor(client)
@@ -118,6 +233,19 @@ def test_service_emits_one_hash_bound_snapshot_event(tmp_path: Path) -> None:
     assert payload["commitment"]["head_sha256"] == (
         payload["commitment"]["genesis_sha256"]
     )
+
+    committed = client.post(
+        f"/v1/monitors/{monitor_id}/predictions",
+        json={
+            "time": 1,
+            "predictions": {"model-0": 10, "model-1": 20},
+        },
+    )
+    pending_event = client.get(f"/v1/monitors/{monitor_id}/events?once=true")
+    pending_payload = json.loads(pending_event.text.splitlines()[1][6:])
+    assert pending_payload["pending_prediction"] == committed.json()[
+        "pending_prediction"
+    ]
 
 
 def test_service_freezes_live_winner_and_issues_lean_certificate(

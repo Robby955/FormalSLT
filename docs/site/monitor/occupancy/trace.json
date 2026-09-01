@@ -7,7 +7,9 @@
   },
   "final": {
     "boundary_upper_decimal": "0.073268",
+    "constant_boundary_upper_decimal": "0.181611",
     "constant_brier_decimal": "0.16532193",
+    "logistic_boundary_upper_decimal": "0.073268",
     "logistic_brier_decimal": "0.06119769",
     "n": 8224,
     "selected_brier_decimal": "0.06119769",
@@ -16,7 +18,9 @@
   "points": [
     {
       "boundary_upper_decimal": "0.884837",
+      "constant_boundary_upper_decimal": "1.020969",
       "constant_brier_decimal": "0.55215093",
+      "logistic_boundary_upper_decimal": "0.884837",
       "logistic_brier_decimal": "0.41523807",
       "n": 16,
       "selected_brier_decimal": "0.41523807",
@@ -24,7 +28,9 @@
     },
     {
       "boundary_upper_decimal": "0.600771",
+      "constant_boundary_upper_decimal": "0.786560",
       "constant_brier_decimal": "0.55215093",
+      "logistic_boundary_upper_decimal": "0.600771",
       "logistic_brier_decimal": "0.36480766",
       "n": 32,
       "selected_brier_decimal": "0.36480766",
@@ -32,7 +38,9 @@
     },
     {
       "boundary_upper_decimal": "0.500249",
+      "constant_boundary_upper_decimal": "0.708424",
       "constant_brier_decimal": "0.55215093",
+      "logistic_boundary_upper_decimal": "0.500249",
       "logistic_brier_decimal": "0.34246688",
       "n": 48,
       "selected_brier_decimal": "0.34246688",
@@ -40,7 +48,9 @@
     },
     {
       "boundary_upper_decimal": "0.436928",
+      "constant_boundary_upper_decimal": "0.669356",
       "constant_brier_decimal": "0.55215093",
+      "logistic_boundary_upper_decimal": "0.436928",
       "logistic_brier_decimal": "0.31775704",
       "n": 64,
       "selected_brier_decimal": "0.31775704",
@@ -48,7 +58,9 @@
     },
     {
       "boundary_upper_decimal": "0.403142",
+      "constant_boundary_upper_decimal": "0.645915",
       "constant_brier_decimal": "0.55215093",
+      "logistic_boundary_upper_decimal": "0.403142",
       "logistic_brier_decimal": "0.30757047",
       "n": 80,
       "selected_brier_decimal": "0.30757047",
@@ -56,7 +68,9 @@
     },
     {
       "boundary_upper_decimal": "0.374091",
+      "constant_boundary_upper_decimal": "0.601300",
       "constant_brier_decimal": "0.51670343",
+      "logistic_boundary_upper_decimal": "0.374091",
       "logistic_brier_decimal": "0.29046743",
       "n": 96,
       "selected_brier_decimal": "0.29046743",
@@ -64,7 +78,9 @@
     },
     {
       "boundary_upper_decimal": "0.324822",
+      "constant_boundary_upper_decimal": "0.534876",
       "constant_brier_decimal": "0.45231919",
+      "logistic_boundary_upper_decimal": "0.324822",
       "logistic_brier_decimal": "0.24897218",
       "n": 112,
       "selected_brier_decimal": "0.24897218",
@@ -72,7 +88,9 @@
     },
     {
       "boundary_upper_decimal": "0.286954",
+      "constant_boundary_upper_decimal": "0.482852",
       "constant_brier_decimal": "0.40403101",
+      "logistic_boundary_upper_decimal": "0.286954",
       "logistic_brier_decimal": "0.21785073",
       "n": 128,
       "selected_brier_decimal": "0.21785073",
@@ -80,7 +98,9 @@
     },
     {
       "boundary_upper_decimal": "0.256959",
+      "constant_boundary_upper_decimal": "0.441084",
       "constant_brier_decimal": "0.36647353",
+      "logistic_boundary_upper_decimal": "0.256959",
       "logistic_brier_decimal": "0.19364516",
       "n": 144,
       "selected_brier_decimal": "0.19364516",
@@ -88,7 +108,9 @@
     },
     {
       "boundary_upper_decimal": "0.232622",
+      "constant_boundary_upper_decimal": "0.406849",
       "constant_brier_decimal": "0.33642756",
+      "logistic_boundary_upper_decimal": "0.232622",
       "logistic_brier_decimal": "0.17428072",
       "n": 160,
       "selected_brier_decimal": "0.17428072",
@@ -96,7 +118,9 @@
     },
     {
       "boundary_upper_decimal": "0.212485",
+      "constant_boundary_upper_decimal": "0.378295",
       "constant_brier_decimal": "0.31184448",
+      "logistic_boundary_upper_decimal": "0.212485",
       "logistic_brier_decimal": "0.15843709",
       "n": 176,
       "selected_brier_decimal": "0.15843709",
@@ -104,7 +128,9 @@
     },
     {
       "boundary_upper_decimal": "0.195549",
+      "constant_boundary_upper_decimal": "0.354129",
       "constant_brier_decimal": "0.29135859",
+      "logistic_boundary_upper_decimal": "0.195549",
       "logistic_brier_decimal": "0.14523407",
       "n": 192,
       "selected_brier_decimal": "0.14523407",
@@ -112,7 +138,9 @@
     },
     {
       "boundary_upper_decimal": "0.181109",
+      "constant_boundary_upper_decimal": "0.333416",
       "constant_brier_decimal": "0.27402437",
+      "logistic_boundary_upper_decimal": "0.181109",
       "logistic_brier_decimal": "0.13406229",
       "n": 208,
       "selected_brier_decimal": "0.13406229",
@@ -120,7 +148,9 @@
     },
     {
       "boundary_upper_decimal": "0.168652",
+      "constant_boundary_upper_decimal": "0.315469",
       "constant_brier_decimal": "0.25916647",
+      "logistic_boundary_upper_decimal": "0.168652",
       "logistic_brier_decimal": "0.12448650",
       "n": 224,
       "selected_brier_decimal": "0.12448650",
@@ -128,7 +158,9 @@
     },
     {
       "boundary_upper_decimal": "0.157796",
+      "constant_boundary_upper_decimal": "0.299771",
       "constant_brier_decimal": "0.24628962",
+      "logistic_boundary_upper_decimal": "0.157796",
       "logistic_brier_decimal": "0.11618749",
       "n": 240,
       "selected_brier_decimal": "0.11618749",
@@ -136,7 +168,9 @@
     },
     {
       "boundary_upper_decimal": "0.148252",
+      "constant_boundary_upper_decimal": "0.285926",
       "constant_brier_decimal": "0.23502238",
+      "logistic_boundary_upper_decimal": "0.148252",
       "logistic_brier_decimal": "0.10892587",
       "n": 256,
       "selected_brier_decimal": "0.10892587",
@@ -144,7 +178,9 @@
     },
     {
       "boundary_upper_decimal": "0.139795",
+      "constant_boundary_upper_decimal": "0.273625",
       "constant_brier_decimal": "0.22508069",
+      "logistic_boundary_upper_decimal": "0.139795",
       "logistic_brier_decimal": "0.10251855",
       "n": 272,
       "selected_brier_decimal": "0.10251855",
@@ -152,7 +188,9 @@
     },
     {
       "boundary_upper_decimal": "0.132250",
+      "constant_boundary_upper_decimal": "0.262624",
       "constant_brier_decimal": "0.21624364",
+      "logistic_boundary_upper_decimal": "0.132250",
       "logistic_brier_decimal": "0.09682317",
       "n": 288,
       "selected_brier_decimal": "0.09682317",
@@ -160,7 +198,9 @@
     },
     {
       "boundary_upper_decimal": "0.125477",
+      "constant_boundary_upper_decimal": "0.252728",
       "constant_brier_decimal": "0.20833681",
+      "logistic_boundary_upper_decimal": "0.125477",
       "logistic_brier_decimal": "0.09172731",
       "n": 304,
       "selected_brier_decimal": "0.09172731",
@@ -168,7 +208,9 @@
     },
     {
       "boundary_upper_decimal": "0.119364",
+      "constant_boundary_upper_decimal": "0.243778",
       "constant_brier_decimal": "0.20122065",
+      "logistic_boundary_upper_decimal": "0.119364",
       "logistic_brier_decimal": "0.08714104",
       "n": 320,
       "selected_brier_decimal": "0.08714104",
@@ -176,7 +218,9 @@
     },
     {
       "boundary_upper_decimal": "0.113818",
+      "constant_boundary_upper_decimal": "0.235646",
       "constant_brier_decimal": "0.19478223",
+      "logistic_boundary_upper_decimal": "0.113818",
       "logistic_brier_decimal": "0.08299157",
       "n": 336,
       "selected_brier_decimal": "0.08299157",
@@ -184,7 +228,9 @@
     },
     {
       "boundary_upper_decimal": "0.108764",
+      "constant_boundary_upper_decimal": "0.228224",
       "constant_brier_decimal": "0.18892912",
+      "logistic_boundary_upper_decimal": "0.108764",
       "logistic_brier_decimal": "0.07921934",
       "n": 352,
       "selected_brier_decimal": "0.07921934",
@@ -192,7 +238,9 @@
     },
     {
       "boundary_upper_decimal": "0.104140",
+      "constant_boundary_upper_decimal": "0.221423",
       "constant_brier_decimal": "0.18358497",
+      "logistic_boundary_upper_decimal": "0.104140",
       "logistic_brier_decimal": "0.07577514",
       "n": 368,
       "selected_brier_decimal": "0.07577514",
@@ -200,7 +248,9 @@
     },
     {
       "boundary_upper_decimal": "0.099893",
+      "constant_boundary_upper_decimal": "0.215169",
       "constant_brier_decimal": "0.17868617",
+      "logistic_boundary_upper_decimal": "0.099893",
       "logistic_brier_decimal": "0.07261796",
       "n": 384,
       "selected_brier_decimal": "0.07261796",
@@ -208,7 +258,9 @@
     },
     {
       "boundary_upper_decimal": "0.095979",
+      "constant_boundary_upper_decimal": "0.209399",
       "constant_brier_decimal": "0.17417927",
+      "logistic_boundary_upper_decimal": "0.095979",
       "logistic_brier_decimal": "0.06971337",
       "n": 400,
       "selected_brier_decimal": "0.06971337",
@@ -216,7 +268,9 @@
     },
     {
       "boundary_upper_decimal": "0.092360",
+      "constant_boundary_upper_decimal": "0.204057",
       "constant_brier_decimal": "0.17001906",
+      "logistic_boundary_upper_decimal": "0.092360",
       "logistic_brier_decimal": "0.06703221",
       "n": 416,
       "selected_brier_decimal": "0.06703221",
@@ -224,7 +278,9 @@
     },
     {
       "boundary_upper_decimal": "0.089003",
+      "constant_boundary_upper_decimal": "0.199099",
       "constant_brier_decimal": "0.16616701",
+      "logistic_boundary_upper_decimal": "0.089003",
       "logistic_brier_decimal": "0.06454966",
       "n": 432,
       "selected_brier_decimal": "0.06454966",
@@ -232,7 +288,9 @@
     },
     {
       "boundary_upper_decimal": "0.085882",
+      "constant_boundary_upper_decimal": "0.194485",
       "constant_brier_decimal": "0.16259011",
+      "logistic_boundary_upper_decimal": "0.085882",
       "logistic_brier_decimal": "0.06224444",
       "n": 448,
       "selected_brier_decimal": "0.06224444",
@@ -240,7 +298,9 @@
     },
     {
       "boundary_upper_decimal": "0.082973",
+      "constant_boundary_upper_decimal": "0.190179",
       "constant_brier_decimal": "0.15925989",
+      "logistic_boundary_upper_decimal": "0.082973",
       "logistic_brier_decimal": "0.06009821",
       "n": 464,
       "selected_brier_decimal": "0.06009821",
@@ -248,7 +308,9 @@
     },
     {
       "boundary_upper_decimal": "0.080254",
+      "constant_boundary_upper_decimal": "0.186153",
       "constant_brier_decimal": "0.15615169",
+      "logistic_boundary_upper_decimal": "0.080254",
       "logistic_brier_decimal": "0.05809506",
       "n": 480,
       "selected_brier_decimal": "0.05809506",
@@ -256,7 +318,9 @@
     },
     {
       "boundary_upper_decimal": "0.077707",
+      "constant_boundary_upper_decimal": "0.182379",
       "constant_brier_decimal": "0.15324401",
+      "logistic_boundary_upper_decimal": "0.077707",
       "logistic_brier_decimal": "0.05622115",
       "n": 496,
       "selected_brier_decimal": "0.05622115",
@@ -264,7 +328,9 @@
     },
     {
       "boundary_upper_decimal": "0.075317",
+      "constant_boundary_upper_decimal": "0.178835",
       "constant_brier_decimal": "0.15051806",
+      "logistic_boundary_upper_decimal": "0.075317",
       "logistic_brier_decimal": "0.05446437",
       "n": 512,
       "selected_brier_decimal": "0.05446437",
@@ -272,7 +338,9 @@
     },
     {
       "boundary_upper_decimal": "0.073070",
+      "constant_boundary_upper_decimal": "0.175500",
       "constant_brier_decimal": "0.14795733",
+      "logistic_boundary_upper_decimal": "0.073070",
       "logistic_brier_decimal": "0.05281407",
       "n": 528,
       "selected_brier_decimal": "0.05281407",
@@ -280,7 +348,9 @@
     },
     {
       "boundary_upper_decimal": "0.070953",
+      "constant_boundary_upper_decimal": "0.172357",
       "constant_brier_decimal": "0.14554722",
+      "logistic_boundary_upper_decimal": "0.070953",
       "logistic_brier_decimal": "0.05126086",
       "n": 544,
       "selected_brier_decimal": "0.05126086",
@@ -288,7 +358,9 @@
     },
     {
       "boundary_upper_decimal": "0.068955",
+      "constant_boundary_upper_decimal": "0.169389",
       "constant_brier_decimal": "0.14327484",
+      "logistic_boundary_upper_decimal": "0.068955",
       "logistic_brier_decimal": "0.04979639",
       "n": 560,
       "selected_brier_decimal": "0.04979639",
@@ -296,7 +368,9 @@
     },
     {
       "boundary_upper_decimal": "0.067067",
+      "constant_boundary_upper_decimal": "0.166582",
       "constant_brier_decimal": "0.14112870",
+      "logistic_boundary_upper_decimal": "0.067067",
       "logistic_brier_decimal": "0.04841329",
       "n": 576,
       "selected_brier_decimal": "0.04841329",
@@ -304,7 +378,9 @@
     },
     {
       "boundary_upper_decimal": "0.065279",
+      "constant_boundary_upper_decimal": "0.163923",
       "constant_brier_decimal": "0.13909856",
+      "logistic_boundary_upper_decimal": "0.065279",
       "logistic_brier_decimal": "0.04710496",
       "n": 592,
       "selected_brier_decimal": "0.04710496",
@@ -312,7 +388,9 @@
     },
     {
       "boundary_upper_decimal": "0.063584",
+      "constant_boundary_upper_decimal": "0.161402",
       "constant_brier_decimal": "0.13717528",
+      "logistic_boundary_upper_decimal": "0.063584",
       "logistic_brier_decimal": "0.04586548",
       "n": 608,
       "selected_brier_decimal": "0.04586548",
@@ -320,7 +398,9 @@
     },
     {
       "boundary_upper_decimal": "0.061975",
+      "constant_boundary_upper_decimal": "0.159006",
       "constant_brier_decimal": "0.13535062",
+      "logistic_boundary_upper_decimal": "0.061975",
       "logistic_brier_decimal": "0.04468958",
       "n": 624,
       "selected_brier_decimal": "0.04468958",
@@ -328,7 +408,9 @@
     },
     {
       "boundary_upper_decimal": "0.060445",
+      "constant_boundary_upper_decimal": "0.156729",
       "constant_brier_decimal": "0.13361720",
+      "logistic_boundary_upper_decimal": "0.060445",
       "logistic_brier_decimal": "0.04357249",
       "n": 640,
       "selected_brier_decimal": "0.04357249",
@@ -336,7 +418,9 @@
     },
     {
       "boundary_upper_decimal": "0.058989",
+      "constant_boundary_upper_decimal": "0.154560",
       "constant_brier_decimal": "0.13196834",
+      "logistic_boundary_upper_decimal": "0.058989",
       "logistic_brier_decimal": "0.04250989",
       "n": 656,
       "selected_brier_decimal": "0.04250989",
@@ -344,7 +428,9 @@
     },
     {
       "boundary_upper_decimal": "0.057602",
+      "constant_boundary_upper_decimal": "0.152492",
       "constant_brier_decimal": "0.13039799",
+      "logistic_boundary_upper_decimal": "0.057602",
       "logistic_brier_decimal": "0.04149791",
       "n": 672,
       "selected_brier_decimal": "0.04149791",
@@ -352,7 +438,9 @@
     },
     {
       "boundary_upper_decimal": "0.056278",
+      "constant_boundary_upper_decimal": "0.150518",
       "constant_brier_decimal": "0.12890068",
+      "logistic_boundary_upper_decimal": "0.056278",
       "logistic_brier_decimal": "0.04053300",
       "n": 688,
       "selected_brier_decimal": "0.04053300",
@@ -360,7 +448,9 @@
     },
     {
       "boundary_upper_decimal": "0.055014",
+      "constant_boundary_upper_decimal": "0.148633",
       "constant_brier_decimal": "0.12747143",
+      "logistic_boundary_upper_decimal": "0.055014",
       "logistic_brier_decimal": "0.03961195",
       "n": 704,
       "selected_brier_decimal": "0.03961195",
@@ -368,7 +458,9 @@
     },
     {
       "boundary_upper_decimal": "0.053805",
+      "constant_boundary_upper_decimal": "0.146830",
       "constant_brier_decimal": "0.12610571",
+      "logistic_boundary_upper_decimal": "0.053805",
       "logistic_brier_decimal": "0.03873184",
       "n": 720,
       "selected_brier_decimal": "0.03873184",
@@ -376,7 +468,9 @@
     },
     {
       "boundary_upper_decimal": "0.052648",
+      "constant_boundary_upper_decimal": "0.145104",
       "constant_brier_decimal": "0.12479936",
+      "logistic_boundary_upper_decimal": "0.052648",
       "logistic_brier_decimal": "0.03788999",
       "n": 736,
       "selected_brier_decimal": "0.03788999",
@@ -384,7 +478,9 @@
     },
     {
       "boundary_upper_decimal": "0.051540",
+      "constant_boundary_upper_decimal": "0.143450",
       "constant_brier_decimal": "0.12354860",
+      "logistic_boundary_upper_decimal": "0.051540",
       "logistic_brier_decimal": "0.03708396",
       "n": 752,
       "selected_brier_decimal": "0.03708396",
@@ -392,7 +488,9 @@
     },
     {
       "boundary_upper_decimal": "0.050478",
+      "constant_boundary_upper_decimal": "0.141864",
       "constant_brier_decimal": "0.12234996",
+      "logistic_boundary_upper_decimal": "0.050478",
       "logistic_brier_decimal": "0.03631151",
       "n": 768,
       "selected_brier_decimal": "0.03631151",
@@ -400,7 +498,9 @@
     },
     {
       "boundary_upper_decimal": "0.049458",
+      "constant_boundary_upper_decimal": "0.140341",
       "constant_brier_decimal": "0.12120024",
+      "logistic_boundary_upper_decimal": "0.049458",
       "logistic_brier_decimal": "0.03557058",
       "n": 784,
       "selected_brier_decimal": "0.03557058",
@@ -408,7 +508,9 @@
     },
     {
       "boundary_upper_decimal": "0.048479",
+      "constant_boundary_upper_decimal": "0.138879",
       "constant_brier_decimal": "0.12009651",
+      "logistic_boundary_upper_decimal": "0.048479",
       "logistic_brier_decimal": "0.03485930",
       "n": 800,
       "selected_brier_decimal": "0.03485930",
@@ -416,7 +518,9 @@
     },
     {
       "boundary_upper_decimal": "0.047538",
+      "constant_boundary_upper_decimal": "0.137472",
       "constant_brier_decimal": "0.11903606",
+      "logistic_boundary_upper_decimal": "0.047538",
       "logistic_brier_decimal": "0.03417589",
       "n": 816,
       "selected_brier_decimal": "0.03417589",
@@ -424,7 +528,9 @@
     },
     {
       "boundary_upper_decimal": "0.046633",
+      "constant_boundary_upper_decimal": "0.136119",
       "constant_brier_decimal": "0.11801640",
+      "logistic_boundary_upper_decimal": "0.046633",
       "logistic_brier_decimal": "0.03351878",
       "n": 832,
       "selected_brier_decimal": "0.03351878",
@@ -432,7 +538,9 @@
     },
     {
       "boundary_upper_decimal": "0.045761",
+      "constant_boundary_upper_decimal": "0.134817",
       "constant_brier_decimal": "0.11703522",
+      "logistic_boundary_upper_decimal": "0.045761",
       "logistic_brier_decimal": "0.03288645",
       "n": 848,
       "selected_brier_decimal": "0.03288645",
@@ -440,7 +548,9 @@
     },
     {
       "boundary_upper_decimal": "0.044922",
+      "constant_boundary_upper_decimal": "0.133562",
       "constant_brier_decimal": "0.11609038",
+      "logistic_boundary_upper_decimal": "0.044922",
       "logistic_brier_decimal": "0.03227753",
       "n": 864,
       "selected_brier_decimal": "0.03227753",
@@ -448,7 +558,9 @@
     },
     {
       "boundary_upper_decimal": "0.044113",
+      "constant_boundary_upper_decimal": "0.132351",
       "constant_brier_decimal": "0.11517990",
+      "logistic_boundary_upper_decimal": "0.044113",
       "logistic_brier_decimal": "0.03169071",
       "n": 880,
       "selected_brier_decimal": "0.03169071",
@@ -456,7 +568,9 @@
     },
     {
       "boundary_upper_decimal": "0.043332",
+      "constant_boundary_upper_decimal": "0.131184",
       "constant_brier_decimal": "0.11430193",
+      "logistic_boundary_upper_decimal": "0.043332",
       "logistic_brier_decimal": "0.03112485",
       "n": 896,
       "selected_brier_decimal": "0.03112485",
@@ -464,7 +578,9 @@
     },
     {
       "boundary_upper_decimal": "0.042579",
+      "constant_boundary_upper_decimal": "0.130057",
       "constant_brier_decimal": "0.11345477",
+      "logistic_boundary_upper_decimal": "0.042579",
       "logistic_brier_decimal": "0.03057885",
       "n": 912,
       "selected_brier_decimal": "0.03057885",
@@ -472,7 +588,9 @@
     },
     {
       "boundary_upper_decimal": "0.041851",
+      "constant_boundary_upper_decimal": "0.128968",
       "constant_brier_decimal": "0.11263682",
+      "logistic_boundary_upper_decimal": "0.041851",
       "logistic_brier_decimal": "0.03005167",
       "n": 928,
       "selected_brier_decimal": "0.03005167",
@@ -480,7 +598,9 @@
     },
     {
       "boundary_upper_decimal": "0.041148",
+      "constant_boundary_upper_decimal": "0.127915",
       "constant_brier_decimal": "0.11184660",
+      "logistic_boundary_upper_decimal": "0.041148",
       "logistic_brier_decimal": "0.02954236",
       "n": 944,
       "selected_brier_decimal": "0.02954236",
@@ -488,7 +608,9 @@
     },
     {
       "boundary_upper_decimal": "0.040468",
+      "constant_boundary_upper_decimal": "0.126897",
       "constant_brier_decimal": "0.11108272",
+      "logistic_boundary_upper_decimal": "0.040468",
       "logistic_brier_decimal": "0.02905003",
       "n": 960,
       "selected_brier_decimal": "0.02905003",
@@ -496,7 +618,9 @@
     },
     {
       "boundary_upper_decimal": "0.039810",
+      "constant_boundary_upper_decimal": "0.125912",
       "constant_brier_decimal": "0.11034388",
+      "logistic_boundary_upper_decimal": "0.039810",
       "logistic_brier_decimal": "0.02857385",
       "n": 976,
       "selected_brier_decimal": "0.02857385",
@@ -504,7 +628,9 @@
     },
     {
       "boundary_upper_decimal": "0.039173",
+      "constant_boundary_upper_decimal": "0.124959",
       "constant_brier_decimal": "0.10962888",
+      "logistic_boundary_upper_decimal": "0.039173",
       "logistic_brier_decimal": "0.02811302",
       "n": 992,
       "selected_brier_decimal": "0.02811302",
@@ -512,7 +638,9 @@
     },
     {
       "boundary_upper_decimal": "0.041113",
+      "constant_boundary_upper_decimal": "0.126830",
       "constant_brier_decimal": "0.11134797",
+      "logistic_boundary_upper_decimal": "0.041113",
       "logistic_brier_decimal": "0.02975307",
       "n": 1008,
       "selected_brier_decimal": "0.02975307",
@@ -520,7 +648,9 @@
     },
     {
       "boundary_upper_decimal": "0.040985",
+      "constant_boundary_upper_decimal": "0.134673",
       "constant_brier_decimal": "0.11823552",
+      "logistic_boundary_upper_decimal": "0.040985",
       "logistic_brier_decimal": "0.02980076",
       "n": 1024,
       "selected_brier_decimal": "0.02980076",
@@ -528,7 +658,9 @@
     },
     {
       "boundary_upper_decimal": "0.040456",
+      "constant_boundary_upper_decimal": "0.142237",
       "constant_brier_decimal": "0.12491114",
+      "logistic_boundary_upper_decimal": "0.040456",
       "logistic_brier_decimal": "0.02943990",
       "n": 1040,
       "selected_brier_decimal": "0.02943990",
@@ -536,7 +668,9 @@
     },
     {
       "boundary_upper_decimal": "0.039867",
+      "constant_boundary_upper_decimal": "0.149539",
       "constant_brier_decimal": "0.13138447",
+      "logistic_boundary_upper_decimal": "0.039867",
       "logistic_brier_decimal": "0.02901278",
       "n": 1056,
       "selected_brier_decimal": "0.02901278",
@@ -544,7 +678,9 @@
     },
     {
       "boundary_upper_decimal": "0.046606",
+      "constant_boundary_upper_decimal": "0.153493",
       "constant_brier_decimal": "0.13494365",
+      "logistic_boundary_upper_decimal": "0.046606",
       "logistic_brier_decimal": "0.03396837",
       "n": 1072,
       "selected_brier_decimal": "0.03396837",
@@ -552,7 +688,9 @@
     },
     {
       "boundary_upper_decimal": "0.045934",
+      "constant_boundary_upper_decimal": "0.160365",
       "constant_brier_decimal": "0.14107905",
+      "logistic_boundary_upper_decimal": "0.045934",
       "logistic_brier_decimal": "0.03347586",
       "n": 1088,
       "selected_brier_decimal": "0.03347586",
@@ -560,7 +698,9 @@
     },
     {
       "boundary_upper_decimal": "0.045278",
+      "constant_boundary_upper_decimal": "0.167010",
       "constant_brier_decimal": "0.14703661",
+      "logistic_boundary_upper_decimal": "0.045278",
       "logistic_brier_decimal": "0.03299403",
       "n": 1104,
       "selected_brier_decimal": "0.03299403",
@@ -568,7 +708,9 @@
     },
     {
       "boundary_upper_decimal": "0.044639",
+      "constant_boundary_upper_decimal": "0.173437",
       "constant_brier_decimal": "0.15282396",
+      "logistic_boundary_upper_decimal": "0.044639",
       "logistic_brier_decimal": "0.03252454",
       "n": 1120,
       "selected_brier_decimal": "0.03252454",
@@ -576,7 +718,9 @@
     },
     {
       "boundary_upper_decimal": "0.044017",
+      "constant_boundary_upper_decimal": "0.179657",
       "constant_brier_decimal": "0.15844828",
+      "logistic_boundary_upper_decimal": "0.044017",
       "logistic_brier_decimal": "0.03206748",
       "n": 1136,
       "selected_brier_decimal": "0.03206748",
@@ -584,7 +728,9 @@
     },
     {
       "boundary_upper_decimal": "0.043412",
+      "constant_boundary_upper_decimal": "0.185681",
       "constant_brier_decimal": "0.16391638",
+      "logistic_boundary_upper_decimal": "0.043412",
       "logistic_brier_decimal": "0.03162306",
       "n": 1152,
       "selected_brier_decimal": "0.03162306",
@@ -592,7 +738,9 @@
     },
     {
       "boundary_upper_decimal": "0.042824",
+      "constant_boundary_upper_decimal": "0.191516",
       "constant_brier_decimal": "0.16923466",
+      "logistic_boundary_upper_decimal": "0.042824",
       "logistic_brier_decimal": "0.03119085",
       "n": 1168,
       "selected_brier_decimal": "0.03119085",
@@ -600,7 +748,9 @@
     },
     {
       "boundary_upper_decimal": "0.042252",
+      "constant_boundary_upper_decimal": "0.197172",
       "constant_brier_decimal": "0.17440920",
+      "logistic_boundary_upper_decimal": "0.042252",
       "logistic_brier_decimal": "0.03077099",
       "n": 1184,
       "selected_brier_decimal": "0.03077099",
@@ -608,7 +758,9 @@
     },
     {
       "boundary_upper_decimal": "0.041697",
+      "constant_boundary_upper_decimal": "0.202657",
       "constant_brier_decimal": "0.17944576",
+      "logistic_boundary_upper_decimal": "0.041697",
       "logistic_brier_decimal": "0.03036378",
       "n": 1200,
       "selected_brier_decimal": "0.03036378",
@@ -616,7 +768,9 @@
     },
     {
       "boundary_upper_decimal": "0.041161",
+      "constant_boundary_upper_decimal": "0.207977",
       "constant_brier_decimal": "0.18434977",
+      "logistic_boundary_upper_decimal": "0.041161",
       "logistic_brier_decimal": "0.02997246",
       "n": 1216,
       "selected_brier_decimal": "0.02997246",
@@ -624,7 +778,9 @@
     },
     {
       "boundary_upper_decimal": "0.040651",
+      "constant_boundary_upper_decimal": "0.213141",
       "constant_brier_decimal": "0.18912641",
+      "logistic_boundary_upper_decimal": "0.040651",
       "logistic_brier_decimal": "0.02960334",
       "n": 1232,
       "selected_brier_decimal": "0.02960334",
@@ -632,7 +788,9 @@
     },
     {
       "boundary_upper_decimal": "0.041018",
+      "constant_boundary_upper_decimal": "0.216878",
       "constant_brier_decimal": "0.19261197",
+      "logistic_boundary_upper_decimal": "0.041018",
       "logistic_brier_decimal": "0.02990871",
       "n": 1248,
       "selected_brier_decimal": "0.02990871",
@@ -640,7 +798,9 @@
     },
     {
       "boundary_upper_decimal": "0.040503",
+      "constant_boundary_upper_decimal": "0.215049",
       "constant_brier_decimal": "0.19100946",
+      "logistic_boundary_upper_decimal": "0.040503",
       "logistic_brier_decimal": "0.02953041",
       "n": 1264,
       "selected_brier_decimal": "0.02953041",
@@ -648,7 +808,9 @@
     },
     {
       "boundary_upper_decimal": "0.040002",
+      "constant_boundary_upper_decimal": "0.213263",
       "constant_brier_decimal": "0.18944702",
+      "logistic_boundary_upper_decimal": "0.040002",
       "logistic_brier_decimal": "0.02916136",
       "n": 1280,
       "selected_brier_decimal": "0.02916136",
@@ -656,7 +818,9 @@
     },
     {
       "boundary_upper_decimal": "0.045671",
+      "constant_boundary_upper_decimal": "0.213987",
       "constant_brier_decimal": "0.19017379",
+      "logistic_boundary_upper_decimal": "0.045671",
       "logistic_brier_decimal": "0.03376212",
       "n": 1296,
       "selected_brier_decimal": "0.03376212",
@@ -664,7 +828,9 @@
     },
     {
       "boundary_upper_decimal": "0.046187",
+      "constant_boundary_upper_decimal": "0.218742",
       "constant_brier_decimal": "0.19458814",
+      "logistic_boundary_upper_decimal": "0.046187",
       "logistic_brier_decimal": "0.03440856",
       "n": 1312,
       "selected_brier_decimal": "0.03440856",
@@ -672,7 +838,9 @@
     },
     {
       "boundary_upper_decimal": "0.047431",
+      "constant_boundary_upper_decimal": "0.223368",
       "constant_brier_decimal": "0.19889613",
+      "logistic_boundary_upper_decimal": "0.047431",
       "logistic_brier_decimal": "0.03573052",
       "n": 1328,
       "selected_brier_decimal": "0.03573052",
@@ -680,7 +848,9 @@
     },
     {
       "boundary_upper_decimal": "0.049526",
+      "constant_boundary_upper_decimal": "0.227870",
       "constant_brier_decimal": "0.20310154",
+      "logistic_boundary_upper_decimal": "0.049526",
       "logistic_brier_decimal": "0.03781738",
       "n": 1344,
       "selected_brier_decimal": "0.03781738",
@@ -688,7 +858,9 @@
     },
     {
       "boundary_upper_decimal": "0.052430",
+      "constant_boundary_upper_decimal": "0.232252",
       "constant_brier_decimal": "0.20720800",
+      "logistic_boundary_upper_decimal": "0.052430",
       "logistic_brier_decimal": "0.04059604",
       "n": 1360,
       "selected_brier_decimal": "0.04059604",
@@ -696,7 +868,9 @@
     },
     {
       "boundary_upper_decimal": "0.056169",
+      "constant_boundary_upper_decimal": "0.236519",
       "constant_brier_decimal": "0.21121897",
+      "logistic_boundary_upper_decimal": "0.056169",
       "logistic_brier_decimal": "0.04405875",
       "n": 1376,
       "selected_brier_decimal": "0.04405875",
@@ -704,7 +878,9 @@
     },
     {
       "boundary_upper_decimal": "0.060424",
+      "constant_boundary_upper_decimal": "0.240676",
       "constant_brier_decimal": "0.21513773",
+      "logistic_boundary_upper_decimal": "0.060424",
       "logistic_brier_decimal": "0.04793234",
       "n": 1392,
       "selected_brier_decimal": "0.04793234",
@@ -712,7 +888,9 @@
     },
     {
       "boundary_upper_decimal": "0.064540",
+      "constant_boundary_upper_decimal": "0.244726",
       "constant_brier_decimal": "0.21896742",
+      "logistic_boundary_upper_decimal": "0.064540",
       "logistic_brier_decimal": "0.05169551",
       "n": 1408,
       "selected_brier_decimal": "0.05169551",
@@ -720,7 +898,9 @@
     },
     {
       "boundary_upper_decimal": "0.068222",
+      "constant_boundary_upper_decimal": "0.248674",
       "constant_brier_decimal": "0.22271106",
+      "logistic_boundary_upper_decimal": "0.068222",
       "logistic_brier_decimal": "0.05510272",
       "n": 1424,
       "selected_brier_decimal": "0.05510272",
@@ -728,7 +908,9 @@
     },
     {
       "boundary_upper_decimal": "0.071845",
+      "constant_boundary_upper_decimal": "0.252523",
       "constant_brier_decimal": "0.22637150",
+      "logistic_boundary_upper_decimal": "0.071845",
       "logistic_brier_decimal": "0.05846605",
       "n": 1440,
       "selected_brier_decimal": "0.05846605",
@@ -736,7 +918,9 @@
     },
     {
       "boundary_upper_decimal": "0.074510",
+      "constant_boundary_upper_decimal": "0.256278",
       "constant_brier_decimal": "0.22995149",
+      "logistic_boundary_upper_decimal": "0.074510",
       "logistic_brier_decimal": "0.06103618",
       "n": 1456,
       "selected_brier_decimal": "0.06103618",
@@ -744,7 +928,9 @@
     },
     {
       "boundary_upper_decimal": "0.076364",
+      "constant_boundary_upper_decimal": "0.259941",
       "constant_brier_decimal": "0.23345366",
+      "logistic_boundary_upper_decimal": "0.076364",
       "logistic_brier_decimal": "0.06290685",
       "n": 1472,
       "selected_brier_decimal": "0.06290685",
@@ -752,7 +938,9 @@
     },
     {
       "boundary_upper_decimal": "0.077557",
+      "constant_boundary_upper_decimal": "0.263515",
       "constant_brier_decimal": "0.23688051",
+      "logistic_boundary_upper_decimal": "0.077557",
       "logistic_brier_decimal": "0.06418140",
       "n": 1488,
       "selected_brier_decimal": "0.06418140",
@@ -760,7 +948,9 @@
     },
     {
       "boundary_upper_decimal": "0.078582",
+      "constant_boundary_upper_decimal": "0.267004",
       "constant_brier_decimal": "0.24023445",
+      "logistic_boundary_upper_decimal": "0.078582",
       "logistic_brier_decimal": "0.06530001",
       "n": 1504,
       "selected_brier_decimal": "0.06530001",
@@ -768,7 +958,9 @@
     },
     {
       "boundary_upper_decimal": "0.080511",
+      "constant_boundary_upper_decimal": "0.269738",
       "constant_brier_decimal": "0.24287813",
+      "logistic_boundary_upper_decimal": "0.080511",
       "logistic_brier_decimal": "0.06722444",
       "n": 1520,
       "selected_brier_decimal": "0.06722444",
@@ -776,7 +968,9 @@
     },
     {
       "boundary_upper_decimal": "0.082275",
+      "constant_boundary_upper_decimal": "0.273075",
       "constant_brier_decimal": "0.24609972",
+      "logistic_boundary_upper_decimal": "0.082275",
       "logistic_brier_decimal": "0.06900150",
       "n": 1536,
       "selected_brier_decimal": "0.06900150",
@@ -784,7 +978,9 @@
     },
     {
       "boundary_upper_decimal": "0.084765",
+      "constant_boundary_upper_decimal": "0.275678",
       "constant_brier_decimal": "0.24862842",
+      "logistic_boundary_upper_decimal": "0.084765",
       "logistic_brier_decimal": "0.07125858",
       "n": 1552,
       "selected_brier_decimal": "0.07125858",
@@ -792,7 +988,9 @@
     },
     {
       "boundary_upper_decimal": "0.083921",
+      "constant_boundary_upper_decimal": "0.273673",
       "constant_brier_decimal": "0.24676501",
+      "logistic_boundary_upper_decimal": "0.083921",
       "logistic_brier_decimal": "0.07053146",
       "n": 1568,
       "selected_brier_decimal": "0.07053146",
@@ -800,7 +998,9 @@
     },
     {
       "boundary_upper_decimal": "0.083093",
+      "constant_boundary_upper_decimal": "0.271706",
       "constant_brier_decimal": "0.24493924",
+      "logistic_boundary_upper_decimal": "0.083093",
       "logistic_brier_decimal": "0.06981903",
       "n": 1584,
       "selected_brier_decimal": "0.06981903",
@@ -808,7 +1008,9 @@
     },
     {
       "boundary_upper_decimal": "0.082281",
+      "constant_boundary_upper_decimal": "0.269776",
       "constant_brier_decimal": "0.24314998",
+      "logistic_boundary_upper_decimal": "0.082281",
       "logistic_brier_decimal": "0.06912084",
       "n": 1600,
       "selected_brier_decimal": "0.06912084",
@@ -816,7 +1018,9 @@
     },
     {
       "boundary_upper_decimal": "0.081485",
+      "constant_boundary_upper_decimal": "0.267882",
       "constant_brier_decimal": "0.24139616",
+      "logistic_boundary_upper_decimal": "0.081485",
       "logistic_brier_decimal": "0.06843648",
       "n": 1616,
       "selected_brier_decimal": "0.06843648",
@@ -824,7 +1028,9 @@
     },
     {
       "boundary_upper_decimal": "0.080705",
+      "constant_boundary_upper_decimal": "0.266022",
       "constant_brier_decimal": "0.23967672",
+      "logistic_boundary_upper_decimal": "0.080705",
       "logistic_brier_decimal": "0.06776554",
       "n": 1632,
       "selected_brier_decimal": "0.06776554",
@@ -832,7 +1038,9 @@
     },
     {
       "boundary_upper_decimal": "0.079939",
+      "constant_boundary_upper_decimal": "0.264196",
       "constant_brier_decimal": "0.23799068",
+      "logistic_boundary_upper_decimal": "0.079939",
       "logistic_brier_decimal": "0.06710763",
       "n": 1648,
       "selected_brier_decimal": "0.06710763",
@@ -840,7 +1048,9 @@
     },
     {
       "boundary_upper_decimal": "0.079187",
+      "constant_boundary_upper_decimal": "0.262404",
       "constant_brier_decimal": "0.23633705",
+      "logistic_boundary_upper_decimal": "0.079187",
       "logistic_brier_decimal": "0.06646238",
       "n": 1664,
       "selected_brier_decimal": "0.06646238",
@@ -848,7 +1058,9 @@
     },
     {
       "boundary_upper_decimal": "0.078450",
+      "constant_boundary_upper_decimal": "0.260643",
       "constant_brier_decimal": "0.23471493",
+      "logistic_boundary_upper_decimal": "0.078450",
       "logistic_brier_decimal": "0.06582941",
       "n": 1680,
       "selected_brier_decimal": "0.06582941",
@@ -856,7 +1068,9 @@
     },
     {
       "boundary_upper_decimal": "0.077726",
+      "constant_boundary_upper_decimal": "0.258913",
       "constant_brier_decimal": "0.23312340",
+      "logistic_boundary_upper_decimal": "0.077726",
       "logistic_brier_decimal": "0.06520840",
       "n": 1696,
       "selected_brier_decimal": "0.06520840",
@@ -864,7 +1078,9 @@
     },
     {
       "boundary_upper_decimal": "0.077015",
+      "constant_boundary_upper_decimal": "0.257214",
       "constant_brier_decimal": "0.23156163",
+      "logistic_boundary_upper_decimal": "0.077015",
       "logistic_brier_decimal": "0.06459899",
       "n": 1712,
       "selected_brier_decimal": "0.06459899",
@@ -872,7 +1088,9 @@
     },
     {
       "boundary_upper_decimal": "0.076318",
+      "constant_boundary_upper_decimal": "0.255544",
       "constant_brier_decimal": "0.23002878",
+      "logistic_boundary_upper_decimal": "0.076318",
       "logistic_brier_decimal": "0.06400088",
       "n": 1728,
       "selected_brier_decimal": "0.06400088",
@@ -880,7 +1098,9 @@
     },
     {
       "boundary_upper_decimal": "0.075632",
+      "constant_boundary_upper_decimal": "0.253903",
       "constant_brier_decimal": "0.22852406",
+      "logistic_boundary_upper_decimal": "0.075632",
       "logistic_brier_decimal": "0.06341374",
       "n": 1744,
       "selected_brier_decimal": "0.06341374",
@@ -888,7 +1108,9 @@
     },
     {
       "boundary_upper_decimal": "0.074959",
+      "constant_boundary_upper_decimal": "0.252290",
       "constant_brier_decimal": "0.22704669",
+      "logistic_boundary_upper_decimal": "0.074959",
       "logistic_brier_decimal": "0.06283728",
       "n": 1760,
       "selected_brier_decimal": "0.06283728",
@@ -896,7 +1118,9 @@
     },
     {
       "boundary_upper_decimal": "0.074298",
+      "constant_boundary_upper_decimal": "0.250705",
       "constant_brier_decimal": "0.22559594",
+      "logistic_boundary_upper_decimal": "0.074298",
       "logistic_brier_decimal": "0.06227121",
       "n": 1776,
       "selected_brier_decimal": "0.06227121",
@@ -904,7 +1128,9 @@
     },
     {
       "boundary_upper_decimal": "0.073649",
+      "constant_boundary_upper_decimal": "0.249146",
       "constant_brier_decimal": "0.22417110",
+      "logistic_boundary_upper_decimal": "0.073649",
       "logistic_brier_decimal": "0.06171525",
       "n": 1792,
       "selected_brier_decimal": "0.06171525",
@@ -912,7 +1138,9 @@
     },
     {
       "boundary_upper_decimal": "0.073010",
+      "constant_boundary_upper_decimal": "0.247613",
       "constant_brier_decimal": "0.22277148",
+      "logistic_boundary_upper_decimal": "0.073010",
       "logistic_brier_decimal": "0.06116914",
       "n": 1808,
       "selected_brier_decimal": "0.06116914",
@@ -920,7 +1148,9 @@
     },
     {
       "boundary_upper_decimal": "0.072383",
+      "constant_boundary_upper_decimal": "0.246106",
       "constant_brier_decimal": "0.22139641",
+      "logistic_boundary_upper_decimal": "0.072383",
       "logistic_brier_decimal": "0.06063260",
       "n": 1824,
       "selected_brier_decimal": "0.06063260",
@@ -928,7 +1158,9 @@
     },
     {
       "boundary_upper_decimal": "0.071766",
+      "constant_boundary_upper_decimal": "0.244623",
       "constant_brier_decimal": "0.22004526",
+      "logistic_boundary_upper_decimal": "0.071766",
       "logistic_brier_decimal": "0.06010540",
       "n": 1840,
       "selected_brier_decimal": "0.06010540",
@@ -936,7 +1168,9 @@
     },
     {
       "boundary_upper_decimal": "0.071160",
+      "constant_boundary_upper_decimal": "0.243164",
       "constant_brier_decimal": "0.21871740",
+      "logistic_boundary_upper_decimal": "0.071160",
       "logistic_brier_decimal": "0.05958729",
       "n": 1856,
       "selected_brier_decimal": "0.05958729",
@@ -944,7 +1178,9 @@
     },
     {
       "boundary_upper_decimal": "0.070564",
+      "constant_boundary_upper_decimal": "0.241729",
       "constant_brier_decimal": "0.21741224",
+      "logistic_boundary_upper_decimal": "0.070564",
       "logistic_brier_decimal": "0.05907804",
       "n": 1872,
       "selected_brier_decimal": "0.05907804",
@@ -952,7 +1188,9 @@
     },
     {
       "boundary_upper_decimal": "0.069978",
+      "constant_boundary_upper_decimal": "0.240317",
       "constant_brier_decimal": "0.21612920",
+      "logistic_boundary_upper_decimal": "0.069978",
       "logistic_brier_decimal": "0.05857741",
       "n": 1888,
       "selected_brier_decimal": "0.05857741",
@@ -960,7 +1198,9 @@
     },
     {
       "boundary_upper_decimal": "0.069401",
+      "constant_boundary_upper_decimal": "0.238928",
       "constant_brier_decimal": "0.21486773",
+      "logistic_boundary_upper_decimal": "0.069401",
       "logistic_brier_decimal": "0.05808520",
       "n": 1904,
       "selected_brier_decimal": "0.05808520",
@@ -968,7 +1208,9 @@
     },
     {
       "boundary_upper_decimal": "0.068834",
+      "constant_boundary_upper_decimal": "0.237560",
       "constant_brier_decimal": "0.21362728",
+      "logistic_boundary_upper_decimal": "0.068834",
       "logistic_brier_decimal": "0.05760120",
       "n": 1920,
       "selected_brier_decimal": "0.05760120",
@@ -976,7 +1218,9 @@
     },
     {
       "boundary_upper_decimal": "0.068276",
+      "constant_boundary_upper_decimal": "0.236214",
       "constant_brier_decimal": "0.21240733",
+      "logistic_boundary_upper_decimal": "0.068276",
       "logistic_brier_decimal": "0.05712519",
       "n": 1936,
       "selected_brier_decimal": "0.05712519",
@@ -984,7 +1228,9 @@
     },
     {
       "boundary_upper_decimal": "0.067727",
+      "constant_boundary_upper_decimal": "0.234888",
       "constant_brier_decimal": "0.21120738",
+      "logistic_boundary_upper_decimal": "0.067727",
       "logistic_brier_decimal": "0.05665699",
       "n": 1952,
       "selected_brier_decimal": "0.05665699",
@@ -992,7 +1238,9 @@
     },
     {
       "boundary_upper_decimal": "0.067187",
+      "constant_boundary_upper_decimal": "0.233583",
       "constant_brier_decimal": "0.21002695",
+      "logistic_boundary_upper_decimal": "0.067187",
       "logistic_brier_decimal": "0.05619640",
       "n": 1968,
       "selected_brier_decimal": "0.05619640",
@@ -1000,7 +1248,9 @@
     },
     {
       "boundary_upper_decimal": "0.066655",
+      "constant_boundary_upper_decimal": "0.232298",
       "constant_brier_decimal": "0.20886555",
+      "logistic_boundary_upper_decimal": "0.066655",
       "logistic_brier_decimal": "0.05574324",
       "n": 1984,
       "selected_brier_decimal": "0.05574324",
@@ -1008,7 +1258,9 @@
     },
     {
       "boundary_upper_decimal": "0.066132",
+      "constant_boundary_upper_decimal": "0.231033",
       "constant_brier_decimal": "0.20772274",
+      "logistic_boundary_upper_decimal": "0.066132",
       "logistic_brier_decimal": "0.05529733",
       "n": 2000,
       "selected_brier_decimal": "0.05529733",
@@ -1016,7 +1268,9 @@
     },
     {
       "boundary_upper_decimal": "0.065616",
+      "constant_boundary_upper_decimal": "0.229787",
       "constant_brier_decimal": "0.20659806",
+      "logistic_boundary_upper_decimal": "0.065616",
       "logistic_brier_decimal": "0.05485849",
       "n": 2016,
       "selected_brier_decimal": "0.05485849",
@@ -1024,7 +1278,9 @@
     },
     {
       "boundary_upper_decimal": "0.065109",
+      "constant_boundary_upper_decimal": "0.228559",
       "constant_brier_decimal": "0.20549110",
+      "logistic_boundary_upper_decimal": "0.065109",
       "logistic_brier_decimal": "0.05442657",
       "n": 2032,
       "selected_brier_decimal": "0.05442657",
@@ -1032,7 +1288,9 @@
     },
     {
       "boundary_upper_decimal": "0.064610",
+      "constant_boundary_upper_decimal": "0.227349",
       "constant_brier_decimal": "0.20440143",
+      "logistic_boundary_upper_decimal": "0.064610",
       "logistic_brier_decimal": "0.05400141",
       "n": 2048,
       "selected_brier_decimal": "0.05400141",
@@ -1040,7 +1298,9 @@
     },
     {
       "boundary_upper_decimal": "0.064118",
+      "constant_boundary_upper_decimal": "0.226158",
       "constant_brier_decimal": "0.20332866",
+      "logistic_boundary_upper_decimal": "0.064118",
       "logistic_brier_decimal": "0.05358283",
       "n": 2064,
       "selected_brier_decimal": "0.05358283",
@@ -1048,7 +1308,9 @@
     },
     {
       "boundary_upper_decimal": "0.063634",
+      "constant_boundary_upper_decimal": "0.224983",
       "constant_brier_decimal": "0.20227239",
+      "logistic_boundary_upper_decimal": "0.063634",
       "logistic_brier_decimal": "0.05317069",
       "n": 2080,
       "selected_brier_decimal": "0.05317069",
@@ -1056,7 +1318,9 @@
     },
     {
       "boundary_upper_decimal": "0.063156",
+      "constant_boundary_upper_decimal": "0.223826",
       "constant_brier_decimal": "0.20123225",
+      "logistic_boundary_upper_decimal": "0.063156",
       "logistic_brier_decimal": "0.05276484",
       "n": 2096,
       "selected_brier_decimal": "0.05276484",
@@ -1064,7 +1328,9 @@
     },
     {
       "boundary_upper_decimal": "0.062686",
+      "constant_boundary_upper_decimal": "0.222686",
       "constant_brier_decimal": "0.20020787",
+      "logistic_boundary_upper_decimal": "0.062686",
       "logistic_brier_decimal": "0.05236515",
       "n": 2112,
       "selected_brier_decimal": "0.05236515",
@@ -1072,7 +1338,9 @@
     },
     {
       "boundary_upper_decimal": "0.062223",
+      "constant_boundary_upper_decimal": "0.221561",
       "constant_brier_decimal": "0.19919889",
+      "logistic_boundary_upper_decimal": "0.062223",
       "logistic_brier_decimal": "0.05197147",
       "n": 2128,
       "selected_brier_decimal": "0.05197147",
@@ -1080,7 +1348,9 @@
     },
     {
       "boundary_upper_decimal": "0.061767",
+      "constant_boundary_upper_decimal": "0.220453",
       "constant_brier_decimal": "0.19820497",
+      "logistic_boundary_upper_decimal": "0.061767",
       "logistic_brier_decimal": "0.05158367",
       "n": 2144,
       "selected_brier_decimal": "0.05158367",
@@ -1088,7 +1358,9 @@
     },
     {
       "boundary_upper_decimal": "0.061317",
+      "constant_boundary_upper_decimal": "0.219361",
       "constant_brier_decimal": "0.19722578",
+      "logistic_boundary_upper_decimal": "0.061317",
       "logistic_brier_decimal": "0.05120162",
       "n": 2160,
       "selected_brier_decimal": "0.05120162",
@@ -1096,7 +1368,9 @@
     },
     {
       "boundary_upper_decimal": "0.060874",
+      "constant_boundary_upper_decimal": "0.218283",
       "constant_brier_decimal": "0.19626098",
+      "logistic_boundary_upper_decimal": "0.060874",
       "logistic_brier_decimal": "0.05082518",
       "n": 2176,
       "selected_brier_decimal": "0.05082518",
@@ -1104,7 +1378,9 @@
     },
     {
       "boundary_upper_decimal": "0.060437",
+      "constant_boundary_upper_decimal": "0.217221",
       "constant_brier_decimal": "0.19531027",
+      "logistic_boundary_upper_decimal": "0.060437",
       "logistic_brier_decimal": "0.05045424",
       "n": 2192,
       "selected_brier_decimal": "0.05045424",
@@ -1112,7 +1388,9 @@
     },
     {
       "boundary_upper_decimal": "0.060007",
+      "constant_boundary_upper_decimal": "0.216173",
       "constant_brier_decimal": "0.19437334",
+      "logistic_boundary_upper_decimal": "0.060007",
       "logistic_brier_decimal": "0.05008868",
       "n": 2208,
       "selected_brier_decimal": "0.05008868",
@@ -1120,7 +1398,9 @@
     },
     {
       "boundary_upper_decimal": "0.059582",
+      "constant_boundary_upper_decimal": "0.215140",
       "constant_brier_decimal": "0.19344989",
+      "logistic_boundary_upper_decimal": "0.059582",
       "logistic_brier_decimal": "0.04972837",
       "n": 2224,
       "selected_brier_decimal": "0.04972837",
@@ -1128,7 +1408,9 @@
     },
     {
       "boundary_upper_decimal": "0.059164",
+      "constant_boundary_upper_decimal": "0.214121",
       "constant_brier_decimal": "0.19253963",
+      "logistic_boundary_upper_decimal": "0.059164",
       "logistic_brier_decimal": "0.04937320",
       "n": 2240,
       "selected_brier_decimal": "0.04937320",
@@ -1136,7 +1418,9 @@
     },
     {
       "boundary_upper_decimal": "0.058751",
+      "constant_boundary_upper_decimal": "0.213116",
       "constant_brier_decimal": "0.19164228",
+      "logistic_boundary_upper_decimal": "0.058751",
       "logistic_brier_decimal": "0.04902308",
       "n": 2256,
       "selected_brier_decimal": "0.04902308",
@@ -1144,7 +1428,9 @@
     },
     {
       "boundary_upper_decimal": "0.058344",
+      "constant_boundary_upper_decimal": "0.212124",
       "constant_brier_decimal": "0.19075758",
+      "logistic_boundary_upper_decimal": "0.058344",
       "logistic_brier_decimal": "0.04867789",
       "n": 2272,
       "selected_brier_decimal": "0.04867789",
@@ -1152,7 +1438,9 @@
     },
     {
       "boundary_upper_decimal": "0.057943",
+      "constant_boundary_upper_decimal": "0.211146",
       "constant_brier_decimal": "0.18988524",
+      "logistic_boundary_upper_decimal": "0.057943",
       "logistic_brier_decimal": "0.04833752",
       "n": 2288,
       "selected_brier_decimal": "0.04833752",
@@ -1160,7 +1448,9 @@
     },
     {
       "boundary_upper_decimal": "0.057547",
+      "constant_boundary_upper_decimal": "0.210180",
       "constant_brier_decimal": "0.18902502",
+      "logistic_boundary_upper_decimal": "0.057547",
       "logistic_brier_decimal": "0.04800189",
       "n": 2304,
       "selected_brier_decimal": "0.04800189",
@@ -1168,7 +1458,9 @@
     },
     {
       "boundary_upper_decimal": "0.057156",
+      "constant_boundary_upper_decimal": "0.209227",
       "constant_brier_decimal": "0.18817667",
+      "logistic_boundary_upper_decimal": "0.057156",
       "logistic_brier_decimal": "0.04767088",
       "n": 2320,
       "selected_brier_decimal": "0.04767088",
@@ -1176,7 +1468,9 @@
     },
     {
       "boundary_upper_decimal": "0.056771",
+      "constant_boundary_upper_decimal": "0.208287",
       "constant_brier_decimal": "0.18733994",
+      "logistic_boundary_upper_decimal": "0.056771",
       "logistic_brier_decimal": "0.04734441",
       "n": 2336,
       "selected_brier_decimal": "0.04734441",
@@ -1184,7 +1478,9 @@
     },
     {
       "boundary_upper_decimal": "0.056391",
+      "constant_boundary_upper_decimal": "0.207359",
       "constant_brier_decimal": "0.18651459",
+      "logistic_boundary_upper_decimal": "0.056391",
       "logistic_brier_decimal": "0.04702238",
       "n": 2352,
       "selected_brier_decimal": "0.04702238",
@@ -1192,7 +1488,9 @@
     },
     {
       "boundary_upper_decimal": "0.056016",
+      "constant_boundary_upper_decimal": "0.206443",
       "constant_brier_decimal": "0.18570039",
+      "logistic_boundary_upper_decimal": "0.056016",
       "logistic_brier_decimal": "0.04670470",
       "n": 2368,
       "selected_brier_decimal": "0.04670470",
@@ -1200,7 +1498,9 @@
     },
     {
       "boundary_upper_decimal": "0.055646",
+      "constant_boundary_upper_decimal": "0.205539",
       "constant_brier_decimal": "0.18489713",
+      "logistic_boundary_upper_decimal": "0.055646",
       "logistic_brier_decimal": "0.04639129",
       "n": 2384,
       "selected_brier_decimal": "0.04639129",
@@ -1208,7 +1508,9 @@
     },
     {
       "boundary_upper_decimal": "0.055281",
+      "constant_boundary_upper_decimal": "0.204646",
       "constant_brier_decimal": "0.18410457",
+      "logistic_boundary_upper_decimal": "0.055281",
       "logistic_brier_decimal": "0.04608205",
       "n": 2400,
       "selected_brier_decimal": "0.04608205",
@@ -1216,7 +1518,9 @@
     },
     {
       "boundary_upper_decimal": "0.054920",
+      "constant_boundary_upper_decimal": "0.203765",
       "constant_brier_decimal": "0.18332251",
+      "logistic_boundary_upper_decimal": "0.054920",
       "logistic_brier_decimal": "0.04577690",
       "n": 2416,
       "selected_brier_decimal": "0.04577690",
@@ -1224,7 +1528,9 @@
     },
     {
       "boundary_upper_decimal": "0.054564",
+      "constant_boundary_upper_decimal": "0.202894",
       "constant_brier_decimal": "0.18255075",
+      "logistic_boundary_upper_decimal": "0.054564",
       "logistic_brier_decimal": "0.04547577",
       "n": 2432,
       "selected_brier_decimal": "0.04547577",
@@ -1232,7 +1538,9 @@
     },
     {
       "boundary_upper_decimal": "0.054213",
+      "constant_boundary_upper_decimal": "0.202035",
       "constant_brier_decimal": "0.18178907",
+      "logistic_boundary_upper_decimal": "0.054213",
       "logistic_brier_decimal": "0.04517857",
       "n": 2448,
       "selected_brier_decimal": "0.04517857",
@@ -1240,7 +1548,9 @@
     },
     {
       "boundary_upper_decimal": "0.053866",
+      "constant_boundary_upper_decimal": "0.201186",
       "constant_brier_decimal": "0.18103728",
+      "logistic_boundary_upper_decimal": "0.053866",
       "logistic_brier_decimal": "0.04488523",
       "n": 2464,
       "selected_brier_decimal": "0.04488523",
@@ -1248,7 +1558,9 @@
     },
     {
       "boundary_upper_decimal": "0.053524",
+      "constant_boundary_upper_decimal": "0.200348",
       "constant_brier_decimal": "0.18029519",
+      "logistic_boundary_upper_decimal": "0.053524",
       "logistic_brier_decimal": "0.04459568",
       "n": 2480,
       "selected_brier_decimal": "0.04459568",
@@ -1256,7 +1568,9 @@
     },
     {
       "boundary_upper_decimal": "0.053186",
+      "constant_boundary_upper_decimal": "0.199520",
       "constant_brier_decimal": "0.17956262",
+      "logistic_boundary_upper_decimal": "0.053186",
       "logistic_brier_decimal": "0.04430983",
       "n": 2496,
       "selected_brier_decimal": "0.04430983",
@@ -1264,7 +1578,9 @@
     },
     {
       "boundary_upper_decimal": "0.052852",
+      "constant_boundary_upper_decimal": "0.198703",
       "constant_brier_decimal": "0.17883938",
+      "logistic_boundary_upper_decimal": "0.052852",
       "logistic_brier_decimal": "0.04402763",
       "n": 2512,
       "selected_brier_decimal": "0.04402763",
@@ -1272,7 +1588,9 @@
     },
     {
       "boundary_upper_decimal": "0.052523",
+      "constant_boundary_upper_decimal": "0.197895",
       "constant_brier_decimal": "0.17812529",
+      "logistic_boundary_upper_decimal": "0.052523",
       "logistic_brier_decimal": "0.04374901",
       "n": 2528,
       "selected_brier_decimal": "0.04374901",
@@ -1280,7 +1598,9 @@
     },
     {
       "boundary_upper_decimal": "0.052197",
+      "constant_boundary_upper_decimal": "0.197097",
       "constant_brier_decimal": "0.17742019",
+      "logistic_boundary_upper_decimal": "0.052197",
       "logistic_brier_decimal": "0.04347393",
       "n": 2544,
       "selected_brier_decimal": "0.04347393",
@@ -1288,7 +1608,9 @@
     },
     {
       "boundary_upper_decimal": "0.051943",
+      "constant_boundary_upper_decimal": "0.196309",
       "constant_brier_decimal": "0.17672390",
+      "logistic_boundary_upper_decimal": "0.051943",
       "logistic_brier_decimal": "0.04326920",
       "n": 2560,
       "selected_brier_decimal": "0.04326920",
@@ -1296,7 +1618,9 @@
     },
     {
       "boundary_upper_decimal": "0.051627",
+      "constant_boundary_upper_decimal": "0.195530",
       "constant_brier_decimal": "0.17603626",
+      "logistic_boundary_upper_decimal": "0.051627",
       "logistic_brier_decimal": "0.04300254",
       "n": 2576,
       "selected_brier_decimal": "0.04300254",
@@ -1304,7 +1628,9 @@
     },
     {
       "boundary_upper_decimal": "0.051313",
+      "constant_boundary_upper_decimal": "0.194760",
       "constant_brier_decimal": "0.17535710",
+      "logistic_boundary_upper_decimal": "0.051313",
       "logistic_brier_decimal": "0.04273749",
       "n": 2592,
       "selected_brier_decimal": "0.04273749",
@@ -1312,7 +1638,9 @@
     },
     {
       "boundary_upper_decimal": "0.051002",
+      "constant_boundary_upper_decimal": "0.193999",
       "constant_brier_decimal": "0.17468629",
+      "logistic_boundary_upper_decimal": "0.051002",
       "logistic_brier_decimal": "0.04247532",
       "n": 2608,
       "selected_brier_decimal": "0.04247532",
@@ -1320,7 +1648,9 @@
     },
     {
       "boundary_upper_decimal": "0.050748",
+      "constant_boundary_upper_decimal": "0.193247",
       "constant_brier_decimal": "0.17402365",
+      "logistic_boundary_upper_decimal": "0.050748",
       "logistic_brier_decimal": "0.04226773",
       "n": 2624,
       "selected_brier_decimal": "0.04226773",
@@ -1328,7 +1658,9 @@
     },
     {
       "boundary_upper_decimal": "0.050445",
+      "constant_boundary_upper_decimal": "0.192504",
       "constant_brier_decimal": "0.17336904",
+      "logistic_boundary_upper_decimal": "0.050445",
       "logistic_brier_decimal": "0.04201178",
       "n": 2640,
       "selected_brier_decimal": "0.04201178",
@@ -1336,7 +1668,9 @@
     },
     {
       "boundary_upper_decimal": "0.050145",
+      "constant_boundary_upper_decimal": "0.191770",
       "constant_brier_decimal": "0.17272232",
+      "logistic_boundary_upper_decimal": "0.050145",
       "logistic_brier_decimal": "0.04175903",
       "n": 2656,
       "selected_brier_decimal": "0.04175903",
@@ -1344,7 +1678,9 @@
     },
     {
       "boundary_upper_decimal": "0.049849",
+      "constant_boundary_upper_decimal": "0.191044",
       "constant_brier_decimal": "0.17208335",
+      "logistic_boundary_upper_decimal": "0.049849",
       "logistic_brier_decimal": "0.04150901",
       "n": 2672,
       "selected_brier_decimal": "0.04150901",
@@ -1352,7 +1688,9 @@
     },
     {
       "boundary_upper_decimal": "0.049558",
+      "constant_boundary_upper_decimal": "0.190326",
       "constant_brier_decimal": "0.17145198",
+      "logistic_boundary_upper_decimal": "0.049558",
       "logistic_brier_decimal": "0.04126291",
       "n": 2688,
       "selected_brier_decimal": "0.04126291",
@@ -1360,7 +1698,9 @@
     },
     {
       "boundary_upper_decimal": "0.049272",
+      "constant_boundary_upper_decimal": "0.189617",
       "constant_brier_decimal": "0.17082809",
+      "logistic_boundary_upper_decimal": "0.049272",
       "logistic_brier_decimal": "0.04102225",
       "n": 2704,
       "selected_brier_decimal": "0.04102225",
@@ -1368,7 +1708,9 @@
     },
     {
       "boundary_upper_decimal": "0.048986",
+      "constant_boundary_upper_decimal": "0.188916",
       "constant_brier_decimal": "0.17021153",
+      "logistic_boundary_upper_decimal": "0.048986",
       "logistic_brier_decimal": "0.04078098",
       "n": 2720,
       "selected_brier_decimal": "0.04078098",
@@ -1376,7 +1718,9 @@
     },
     {
       "boundary_upper_decimal": "0.048703",
+      "constant_boundary_upper_decimal": "0.188222",
       "constant_brier_decimal": "0.16960219",
+      "logistic_boundary_upper_decimal": "0.048703",
       "logistic_brier_decimal": "0.04054254",
       "n": 2736,
       "selected_brier_decimal": "0.04054254",
@@ -1384,7 +1728,9 @@
     },
     {
       "boundary_upper_decimal": "0.048424",
+      "constant_boundary_upper_decimal": "0.187537",
       "constant_brier_decimal": "0.16899993",
+      "logistic_boundary_upper_decimal": "0.048424",
       "logistic_brier_decimal": "0.04030685",
       "n": 2752,
       "selected_brier_decimal": "0.04030685",
@@ -1392,7 +1738,9 @@
     },
     {
       "boundary_upper_decimal": "0.048148",
+      "constant_boundary_upper_decimal": "0.186858",
       "constant_brier_decimal": "0.16840464",
+      "logistic_boundary_upper_decimal": "0.048148",
       "logistic_brier_decimal": "0.04007389",
       "n": 2768,
       "selected_brier_decimal": "0.04007389",
@@ -1400,7 +1748,9 @@
     },
     {
       "boundary_upper_decimal": "0.047875",
+      "constant_boundary_upper_decimal": "0.186188",
       "constant_brier_decimal": "0.16781618",
+      "logistic_boundary_upper_decimal": "0.047875",
       "logistic_brier_decimal": "0.03984363",
       "n": 2784,
       "selected_brier_decimal": "0.03984363",
@@ -1408,7 +1758,9 @@
     },
     {
       "boundary_upper_decimal": "0.047605",
+      "constant_boundary_upper_decimal": "0.185525",
       "constant_brier_decimal": "0.16723446",
+      "logistic_boundary_upper_decimal": "0.047605",
       "logistic_brier_decimal": "0.03961601",
       "n": 2800,
       "selected_brier_decimal": "0.03961601",
@@ -1416,7 +1768,9 @@
     },
     {
       "boundary_upper_decimal": "0.047338",
+      "constant_boundary_upper_decimal": "0.184869",
       "constant_brier_decimal": "0.16665934",
+      "logistic_boundary_upper_decimal": "0.047338",
       "logistic_brier_decimal": "0.03939097",
       "n": 2816,
       "selected_brier_decimal": "0.03939097",
@@ -1424,7 +1778,9 @@
     },
     {
       "boundary_upper_decimal": "0.047074",
+      "constant_boundary_upper_decimal": "0.184220",
       "constant_brier_decimal": "0.16609072",
+      "logistic_boundary_upper_decimal": "0.047074",
       "logistic_brier_decimal": "0.03916851",
       "n": 2832,
       "selected_brier_decimal": "0.03916851",
@@ -1432,7 +1788,9 @@
     },
     {
       "boundary_upper_decimal": "0.046813",
+      "constant_boundary_upper_decimal": "0.183578",
       "constant_brier_decimal": "0.16552849",
+      "logistic_boundary_upper_decimal": "0.046813",
       "logistic_brier_decimal": "0.03894853",
       "n": 2848,
       "selected_brier_decimal": "0.03894853",
@@ -1440,7 +1798,9 @@
     },
     {
       "boundary_upper_decimal": "0.046555",
+      "constant_boundary_upper_decimal": "0.182944",
       "constant_brier_decimal": "0.16497254",
+      "logistic_boundary_upper_decimal": "0.046555",
       "logistic_brier_decimal": "0.03873100",
       "n": 2864,
       "selected_brier_decimal": "0.03873100",
@@ -1448,7 +1808,9 @@
     },
     {
       "boundary_upper_decimal": "0.046300",
+      "constant_boundary_upper_decimal": "0.182316",
       "constant_brier_decimal": "0.16442277",
+      "logistic_boundary_upper_decimal": "0.046300",
       "logistic_brier_decimal": "0.03851589",
       "n": 2880,
       "selected_brier_decimal": "0.03851589",
@@ -1456,7 +1818,9 @@
     },
     {
       "boundary_upper_decimal": "0.046047",
+      "constant_boundary_upper_decimal": "0.181695",
       "constant_brier_decimal": "0.16387907",
+      "logistic_boundary_upper_decimal": "0.046047",
       "logistic_brier_decimal": "0.03830314",
       "n": 2896,
       "selected_brier_decimal": "0.03830314",
@@ -1464,7 +1828,9 @@
     },
     {
       "boundary_upper_decimal": "0.045798",
+      "constant_boundary_upper_decimal": "0.181080",
       "constant_brier_decimal": "0.16334135",
+      "logistic_boundary_upper_decimal": "0.045798",
       "logistic_brier_decimal": "0.03809272",
       "n": 2912,
       "selected_brier_decimal": "0.03809272",
@@ -1472,7 +1838,9 @@
     },
     {
       "boundary_upper_decimal": "0.045551",
+      "constant_boundary_upper_decimal": "0.180472",
       "constant_brier_decimal": "0.16280951",
+      "logistic_boundary_upper_decimal": "0.045551",
       "logistic_brier_decimal": "0.03788460",
       "n": 2928,
       "selected_brier_decimal": "0.03788460",
@@ -1480,7 +1848,9 @@
     },
     {
       "boundary_upper_decimal": "0.045306",
+      "constant_boundary_upper_decimal": "0.179870",
       "constant_brier_decimal": "0.16228344",
+      "logistic_boundary_upper_decimal": "0.045306",
       "logistic_brier_decimal": "0.03767873",
       "n": 2944,
       "selected_brier_decimal": "0.03767873",
@@ -1488,7 +1858,9 @@
     },
     {
       "boundary_upper_decimal": "0.045064",
+      "constant_boundary_upper_decimal": "0.179274",
       "constant_brier_decimal": "0.16176307",
+      "logistic_boundary_upper_decimal": "0.045064",
       "logistic_brier_decimal": "0.03747510",
       "n": 2960,
       "selected_brier_decimal": "0.03747510",
@@ -1496,7 +1868,9 @@
     },
     {
       "boundary_upper_decimal": "0.044825",
+      "constant_boundary_upper_decimal": "0.178685",
       "constant_brier_decimal": "0.16124828",
+      "logistic_boundary_upper_decimal": "0.044825",
       "logistic_brier_decimal": "0.03727364",
       "n": 2976,
       "selected_brier_decimal": "0.03727364",
@@ -1504,7 +1878,9 @@
     },
     {
       "boundary_upper_decimal": "0.044588",
+      "constant_boundary_upper_decimal": "0.178102",
       "constant_brier_decimal": "0.16073901",
+      "logistic_boundary_upper_decimal": "0.044588",
       "logistic_brier_decimal": "0.03707435",
       "n": 2992,
       "selected_brier_decimal": "0.03707435",
@@ -1512,7 +1888,9 @@
     },
     {
       "boundary_upper_decimal": "0.044354",
+      "constant_boundary_upper_decimal": "0.177525",
       "constant_brier_decimal": "0.16023515",
+      "logistic_boundary_upper_decimal": "0.044354",
       "logistic_brier_decimal": "0.03687718",
       "n": 3008,
       "selected_brier_decimal": "0.03687718",
@@ -1520,7 +1898,9 @@
     },
     {
       "boundary_upper_decimal": "0.044122",
+      "constant_boundary_upper_decimal": "0.176953",
       "constant_brier_decimal": "0.15973663",
+      "logistic_boundary_upper_decimal": "0.044122",
       "logistic_brier_decimal": "0.03668209",
       "n": 3024,
       "selected_brier_decimal": "0.03668209",
@@ -1528,7 +1908,9 @@
     },
     {
       "boundary_upper_decimal": "0.043893",
+      "constant_boundary_upper_decimal": "0.176388",
       "constant_brier_decimal": "0.15924335",
+      "logistic_boundary_upper_decimal": "0.043893",
       "logistic_brier_decimal": "0.03648906",
       "n": 3040,
       "selected_brier_decimal": "0.03648906",
@@ -1536,7 +1918,9 @@
     },
     {
       "boundary_upper_decimal": "0.043666",
+      "constant_boundary_upper_decimal": "0.175828",
       "constant_brier_decimal": "0.15875523",
+      "logistic_boundary_upper_decimal": "0.043666",
       "logistic_brier_decimal": "0.03629805",
       "n": 3056,
       "selected_brier_decimal": "0.03629805",
@@ -1544,7 +1928,9 @@
     },
     {
       "boundary_upper_decimal": "0.043441",
+      "constant_boundary_upper_decimal": "0.175274",
       "constant_brier_decimal": "0.15827221",
+      "logistic_boundary_upper_decimal": "0.043441",
       "logistic_brier_decimal": "0.03610904",
       "n": 3072,
       "selected_brier_decimal": "0.03610904",
@@ -1552,7 +1938,9 @@
     },
     {
       "boundary_upper_decimal": "0.043219",
+      "constant_boundary_upper_decimal": "0.174725",
       "constant_brier_decimal": "0.15779418",
+      "logistic_boundary_upper_decimal": "0.043219",
       "logistic_brier_decimal": "0.03592198",
       "n": 3088,
       "selected_brier_decimal": "0.03592198",
@@ -1560,7 +1948,9 @@
     },
     {
       "boundary_upper_decimal": "0.042999",
+      "constant_boundary_upper_decimal": "0.174182",
       "constant_brier_decimal": "0.15732109",
+      "logistic_boundary_upper_decimal": "0.042999",
       "logistic_brier_decimal": "0.03573685",
       "n": 3104,
       "selected_brier_decimal": "0.03573685",
@@ -1568,7 +1958,9 @@
     },
     {
       "boundary_upper_decimal": "0.042781",
+      "constant_boundary_upper_decimal": "0.173645",
       "constant_brier_decimal": "0.15685284",
+      "logistic_boundary_upper_decimal": "0.042781",
       "logistic_brier_decimal": "0.03555361",
       "n": 3120,
       "selected_brier_decimal": "0.03555361",
@@ -1576,7 +1968,9 @@
     },
     {
       "boundary_upper_decimal": "0.042565",
+      "constant_boundary_upper_decimal": "0.173112",
       "constant_brier_decimal": "0.15638938",
+      "logistic_boundary_upper_decimal": "0.042565",
       "logistic_brier_decimal": "0.03537225",
       "n": 3136,
       "selected_brier_decimal": "0.03537225",
@@ -1584,7 +1978,9 @@
     },
     {
       "boundary_upper_decimal": "0.042352",
+      "constant_boundary_upper_decimal": "0.172585",
       "constant_brier_decimal": "0.15593062",
+      "logistic_boundary_upper_decimal": "0.042352",
       "logistic_brier_decimal": "0.03519273",
       "n": 3152,
       "selected_brier_decimal": "0.03519273",
@@ -1592,7 +1988,9 @@
     },
     {
       "boundary_upper_decimal": "0.042141",
+      "constant_boundary_upper_decimal": "0.172063",
       "constant_brier_decimal": "0.15547649",
+      "logistic_boundary_upper_decimal": "0.042141",
       "logistic_brier_decimal": "0.03501502",
       "n": 3168,
       "selected_brier_decimal": "0.03501502",
@@ -1600,7 +1998,9 @@
     },
     {
       "boundary_upper_decimal": "0.041931",
+      "constant_boundary_upper_decimal": "0.171546",
       "constant_brier_decimal": "0.15502693",
+      "logistic_boundary_upper_decimal": "0.041931",
       "logistic_brier_decimal": "0.03483910",
       "n": 3184,
       "selected_brier_decimal": "0.03483910",
@@ -1608,7 +2008,9 @@
     },
     {
       "boundary_upper_decimal": "0.041724",
+      "constant_boundary_upper_decimal": "0.171034",
       "constant_brier_decimal": "0.15458187",
+      "logistic_boundary_upper_decimal": "0.041724",
       "logistic_brier_decimal": "0.03466494",
       "n": 3200,
       "selected_brier_decimal": "0.03466494",
@@ -1616,7 +2018,9 @@
     },
     {
       "boundary_upper_decimal": "0.041519",
+      "constant_boundary_upper_decimal": "0.170527",
       "constant_brier_decimal": "0.15414123",
+      "logistic_boundary_upper_decimal": "0.041519",
       "logistic_brier_decimal": "0.03449251",
       "n": 3216,
       "selected_brier_decimal": "0.03449251",
@@ -1624,7 +2028,9 @@
     },
     {
       "boundary_upper_decimal": "0.041316",
+      "constant_boundary_upper_decimal": "0.170025",
       "constant_brier_decimal": "0.15370495",
+      "logistic_boundary_upper_decimal": "0.041316",
       "logistic_brier_decimal": "0.03432180",
       "n": 3232,
       "selected_brier_decimal": "0.03432180",
@@ -1632,7 +2038,9 @@
     },
     {
       "boundary_upper_decimal": "0.041115",
+      "constant_boundary_upper_decimal": "0.169528",
       "constant_brier_decimal": "0.15327298",
+      "logistic_boundary_upper_decimal": "0.041115",
       "logistic_brier_decimal": "0.03415276",
       "n": 3248,
       "selected_brier_decimal": "0.03415276",
@@ -1640,7 +2048,9 @@
     },
     {
       "boundary_upper_decimal": "0.040915",
+      "constant_boundary_upper_decimal": "0.169035",
       "constant_brier_decimal": "0.15284524",
+      "logistic_boundary_upper_decimal": "0.040915",
       "logistic_brier_decimal": "0.03398537",
       "n": 3264,
       "selected_brier_decimal": "0.03398537",
@@ -1648,7 +2058,9 @@
     },
     {
       "boundary_upper_decimal": "0.040718",
+      "constant_boundary_upper_decimal": "0.168548",
       "constant_brier_decimal": "0.15242167",
+      "logistic_boundary_upper_decimal": "0.040718",
       "logistic_brier_decimal": "0.03381962",
       "n": 3280,
       "selected_brier_decimal": "0.03381962",
@@ -1656,7 +2068,9 @@
     },
     {
       "boundary_upper_decimal": "0.040523",
+      "constant_boundary_upper_decimal": "0.168064",
       "constant_brier_decimal": "0.15200221",
+      "logistic_boundary_upper_decimal": "0.040523",
       "logistic_brier_decimal": "0.03365547",
       "n": 3296,
       "selected_brier_decimal": "0.03365547",
@@ -1664,7 +2078,9 @@
     },
     {
       "boundary_upper_decimal": "0.040329",
+      "constant_boundary_upper_decimal": "0.167586",
       "constant_brier_decimal": "0.15158681",
+      "logistic_boundary_upper_decimal": "0.040329",
       "logistic_brier_decimal": "0.03349291",
       "n": 3312,
       "selected_brier_decimal": "0.03349291",
@@ -1672,7 +2088,9 @@
     },
     {
       "boundary_upper_decimal": "0.040137",
+      "constant_boundary_upper_decimal": "0.167111",
       "constant_brier_decimal": "0.15117540",
+      "logistic_boundary_upper_decimal": "0.040137",
       "logistic_brier_decimal": "0.03333191",
       "n": 3328,
       "selected_brier_decimal": "0.03333191",
@@ -1680,7 +2098,9 @@
     },
     {
       "boundary_upper_decimal": "0.039947",
+      "constant_boundary_upper_decimal": "0.166641",
       "constant_brier_decimal": "0.15076793",
+      "logistic_boundary_upper_decimal": "0.039947",
       "logistic_brier_decimal": "0.03317246",
       "n": 3344,
       "selected_brier_decimal": "0.03317246",
@@ -1688,7 +2108,9 @@
     },
     {
       "boundary_upper_decimal": "0.039759",
+      "constant_boundary_upper_decimal": "0.166176",
       "constant_brier_decimal": "0.15036434",
+      "logistic_boundary_upper_decimal": "0.039759",
       "logistic_brier_decimal": "0.03301452",
       "n": 3360,
       "selected_brier_decimal": "0.03301452",
@@ -1696,7 +2118,9 @@
     },
     {
       "boundary_upper_decimal": "0.039573",
+      "constant_boundary_upper_decimal": "0.165714",
       "constant_brier_decimal": "0.14996457",
+      "logistic_boundary_upper_decimal": "0.039573",
       "logistic_brier_decimal": "0.03285808",
       "n": 3376,
       "selected_brier_decimal": "0.03285808",
@@ -1704,7 +2128,9 @@
     },
     {
       "boundary_upper_decimal": "0.039388",
+      "constant_boundary_upper_decimal": "0.165257",
       "constant_brier_decimal": "0.14956858",
+      "logistic_boundary_upper_decimal": "0.039388",
       "logistic_brier_decimal": "0.03270312",
       "n": 3392,
       "selected_brier_decimal": "0.03270312",
@@ -1712,7 +2138,9 @@
     },
     {
       "boundary_upper_decimal": "0.039205",
+      "constant_boundary_upper_decimal": "0.164805",
       "constant_brier_decimal": "0.14917630",
+      "logistic_boundary_upper_decimal": "0.039205",
       "logistic_brier_decimal": "0.03254962",
       "n": 3408,
       "selected_brier_decimal": "0.03254962",
@@ -1720,7 +2148,9 @@
     },
     {
       "boundary_upper_decimal": "0.039024",
+      "constant_boundary_upper_decimal": "0.164356",
       "constant_brier_decimal": "0.14878769",
+      "logistic_boundary_upper_decimal": "0.039024",
       "logistic_brier_decimal": "0.03239756",
       "n": 3424,
       "selected_brier_decimal": "0.03239756",
@@ -1728,7 +2158,9 @@
     },
     {
       "boundary_upper_decimal": "0.038845",
+      "constant_boundary_upper_decimal": "0.163911",
       "constant_brier_decimal": "0.14840270",
+      "logistic_boundary_upper_decimal": "0.038845",
       "logistic_brier_decimal": "0.03224690",
       "n": 3440,
       "selected_brier_decimal": "0.03224690",
@@ -1736,7 +2168,9 @@
     },
     {
       "boundary_upper_decimal": "0.038667",
+      "constant_boundary_upper_decimal": "0.163470",
       "constant_brier_decimal": "0.14802127",
+      "logistic_boundary_upper_decimal": "0.038667",
       "logistic_brier_decimal": "0.03209764",
       "n": 3456,
       "selected_brier_decimal": "0.03209764",
@@ -1744,7 +2178,9 @@
     },
     {
       "boundary_upper_decimal": "0.038491",
+      "constant_boundary_upper_decimal": "0.163034",
       "constant_brier_decimal": "0.14764335",
+      "logistic_boundary_upper_decimal": "0.038491",
       "logistic_brier_decimal": "0.03194976",
       "n": 3472,
       "selected_brier_decimal": "0.03194976",
@@ -1752,7 +2188,9 @@
     },
     {
       "boundary_upper_decimal": "0.038316",
+      "constant_boundary_upper_decimal": "0.162601",
       "constant_brier_decimal": "0.14726890",
+      "logistic_boundary_upper_decimal": "0.038316",
       "logistic_brier_decimal": "0.03180324",
       "n": 3488,
       "selected_brier_decimal": "0.03180324",
@@ -1760,7 +2198,9 @@
     },
     {
       "boundary_upper_decimal": "0.038143",
+      "constant_boundary_upper_decimal": "0.162172",
       "constant_brier_decimal": "0.14689788",
+      "logistic_boundary_upper_decimal": "0.038143",
       "logistic_brier_decimal": "0.03165805",
       "n": 3504,
       "selected_brier_decimal": "0.03165805",
@@ -1768,7 +2208,9 @@
     },
     {
       "boundary_upper_decimal": "0.037971",
+      "constant_boundary_upper_decimal": "0.161746",
       "constant_brier_decimal": "0.14653022",
+      "logistic_boundary_upper_decimal": "0.037971",
       "logistic_brier_decimal": "0.03151419",
       "n": 3520,
       "selected_brier_decimal": "0.03151419",
@@ -1776,7 +2218,9 @@
     },
     {
       "boundary_upper_decimal": "0.037801",
+      "constant_boundary_upper_decimal": "0.161325",
       "constant_brier_decimal": "0.14616589",
+      "logistic_boundary_upper_decimal": "0.037801",
       "logistic_brier_decimal": "0.03137162",
       "n": 3536,
       "selected_brier_decimal": "0.03137162",
@@ -1784,7 +2228,9 @@
     },
     {
       "boundary_upper_decimal": "0.037633",
+      "constant_boundary_upper_decimal": "0.160907",
       "constant_brier_decimal": "0.14580485",
+      "logistic_boundary_upper_decimal": "0.037633",
       "logistic_brier_decimal": "0.03123034",
       "n": 3552,
       "selected_brier_decimal": "0.03123034",
@@ -1792,7 +2238,9 @@
     },
     {
       "boundary_upper_decimal": "0.037466",
+      "constant_boundary_upper_decimal": "0.160493",
       "constant_brier_decimal": "0.14544704",
+      "logistic_boundary_upper_decimal": "0.037466",
       "logistic_brier_decimal": "0.03109033",
       "n": 3568,
       "selected_brier_decimal": "0.03109033",
@@ -1800,7 +2248,9 @@
     },
     {
       "boundary_upper_decimal": "0.037300",
+      "constant_boundary_upper_decimal": "0.160082",
       "constant_brier_decimal": "0.14509243",
+      "logistic_boundary_upper_decimal": "0.037300",
       "logistic_brier_decimal": "0.03095157",
       "n": 3584,
       "selected_brier_decimal": "0.03095157",
@@ -1808,7 +2258,9 @@
     },
     {
       "boundary_upper_decimal": "0.037136",
+      "constant_boundary_upper_decimal": "0.159675",
       "constant_brier_decimal": "0.14474097",
+      "logistic_boundary_upper_decimal": "0.037136",
       "logistic_brier_decimal": "0.03081405",
       "n": 3600,
       "selected_brier_decimal": "0.03081405",
@@ -1816,7 +2268,9 @@
     },
     {
       "boundary_upper_decimal": "0.036974",
+      "constant_boundary_upper_decimal": "0.159272",
       "constant_brier_decimal": "0.14439261",
+      "logistic_boundary_upper_decimal": "0.036974",
       "logistic_brier_decimal": "0.03067774",
       "n": 3616,
       "selected_brier_decimal": "0.03067774",
@@ -1824,7 +2278,9 @@
     },
     {
       "boundary_upper_decimal": "0.036813",
+      "constant_boundary_upper_decimal": "0.158872",
       "constant_brier_decimal": "0.14404733",
+      "logistic_boundary_upper_decimal": "0.036813",
       "logistic_brier_decimal": "0.03054264",
       "n": 3632,
       "selected_brier_decimal": "0.03054264",
@@ -1832,7 +2288,9 @@
     },
     {
       "boundary_upper_decimal": "0.036653",
+      "constant_boundary_upper_decimal": "0.158475",
       "constant_brier_decimal": "0.14370508",
+      "logistic_boundary_upper_decimal": "0.036653",
       "logistic_brier_decimal": "0.03040873",
       "n": 3648,
       "selected_brier_decimal": "0.03040873",
@@ -1840,7 +2298,9 @@
     },
     {
       "boundary_upper_decimal": "0.036494",
+      "constant_boundary_upper_decimal": "0.158082",
       "constant_brier_decimal": "0.14336582",
+      "logistic_boundary_upper_decimal": "0.036494",
       "logistic_brier_decimal": "0.03027599",
       "n": 3664,
       "selected_brier_decimal": "0.03027599",
@@ -1848,7 +2308,9 @@
     },
     {
       "boundary_upper_decimal": "0.036337",
+      "constant_boundary_upper_decimal": "0.157692",
       "constant_brier_decimal": "0.14302950",
+      "logistic_boundary_upper_decimal": "0.036337",
       "logistic_brier_decimal": "0.03014441",
       "n": 3680,
       "selected_brier_decimal": "0.03014441",
@@ -1856,7 +2318,9 @@
     },
     {
       "boundary_upper_decimal": "0.036182",
+      "constant_boundary_upper_decimal": "0.157305",
       "constant_brier_decimal": "0.14269610",
+      "logistic_boundary_upper_decimal": "0.036182",
       "logistic_brier_decimal": "0.03001396",
       "n": 3696,
       "selected_brier_decimal": "0.03001396",
@@ -1864,7 +2328,9 @@
     },
     {
       "boundary_upper_decimal": "0.036027",
+      "constant_boundary_upper_decimal": "0.156922",
       "constant_brier_decimal": "0.14236557",
+      "logistic_boundary_upper_decimal": "0.036027",
       "logistic_brier_decimal": "0.02988465",
       "n": 3712,
       "selected_brier_decimal": "0.02988465",
@@ -1872,7 +2338,9 @@
     },
     {
       "boundary_upper_decimal": "0.035874",
+      "constant_boundary_upper_decimal": "0.156542",
       "constant_brier_decimal": "0.14203788",
+      "logistic_boundary_upper_decimal": "0.035874",
       "logistic_brier_decimal": "0.02975645",
       "n": 3728,
       "selected_brier_decimal": "0.02975645",
@@ -1880,7 +2348,9 @@
     },
     {
       "boundary_upper_decimal": "0.035723",
+      "constant_boundary_upper_decimal": "0.156165",
       "constant_brier_decimal": "0.14171300",
+      "logistic_boundary_upper_decimal": "0.035723",
       "logistic_brier_decimal": "0.02962936",
       "n": 3744,
       "selected_brier_decimal": "0.02962936",
@@ -1888,7 +2358,9 @@
     },
     {
       "boundary_upper_decimal": "0.035572",
+      "constant_boundary_upper_decimal": "0.155791",
       "constant_brier_decimal": "0.14139087",
+      "logistic_boundary_upper_decimal": "0.035572",
       "logistic_brier_decimal": "0.02950335",
       "n": 3760,
       "selected_brier_decimal": "0.02950335",
@@ -1896,7 +2368,9 @@
     },
     {
       "boundary_upper_decimal": "0.035423",
+      "constant_boundary_upper_decimal": "0.155420",
       "constant_brier_decimal": "0.14107148",
+      "logistic_boundary_upper_decimal": "0.035423",
       "logistic_brier_decimal": "0.02937842",
       "n": 3776,
       "selected_brier_decimal": "0.02937842",
@@ -1904,7 +2378,9 @@
     },
     {
       "boundary_upper_decimal": "0.035275",
+      "constant_boundary_upper_decimal": "0.155052",
       "constant_brier_decimal": "0.14075478",
+      "logistic_boundary_upper_decimal": "0.035275",
       "logistic_brier_decimal": "0.02925455",
       "n": 3792,
       "selected_brier_decimal": "0.02925455",
@@ -1912,7 +2388,9 @@
     },
     {
       "boundary_upper_decimal": "0.035128",
+      "constant_boundary_upper_decimal": "0.154688",
       "constant_brier_decimal": "0.14044074",
+      "logistic_boundary_upper_decimal": "0.035128",
       "logistic_brier_decimal": "0.02913172",
       "n": 3808,
       "selected_brier_decimal": "0.02913172",
@@ -1920,7 +2398,9 @@
     },
     {
       "boundary_upper_decimal": "0.034983",
+      "constant_boundary_upper_decimal": "0.154326",
       "constant_brier_decimal": "0.14012933",
+      "logistic_boundary_upper_decimal": "0.034983",
       "logistic_brier_decimal": "0.02900994",
       "n": 3824,
       "selected_brier_decimal": "0.02900994",
@@ -1928,7 +2408,9 @@
     },
     {
       "boundary_upper_decimal": "0.034839",
+      "constant_boundary_upper_decimal": "0.153967",
       "constant_brier_decimal": "0.13982051",
+      "logistic_boundary_upper_decimal": "0.034839",
       "logistic_brier_decimal": "0.02888921",
       "n": 3840,
       "selected_brier_decimal": "0.02888921",
@@ -1936,7 +2418,9 @@
     },
     {
       "boundary_upper_decimal": "0.034696",
+      "constant_boundary_upper_decimal": "0.153611",
       "constant_brier_decimal": "0.13951426",
+      "logistic_boundary_upper_decimal": "0.034696",
       "logistic_brier_decimal": "0.02876955",
       "n": 3856,
       "selected_brier_decimal": "0.02876955",
@@ -1944,7 +2428,9 @@
     },
     {
       "boundary_upper_decimal": "0.034554",
+      "constant_boundary_upper_decimal": "0.153258",
       "constant_brier_decimal": "0.13921054",
+      "logistic_boundary_upper_decimal": "0.034554",
       "logistic_brier_decimal": "0.02865119",
       "n": 3872,
       "selected_brier_decimal": "0.02865119",
@@ -1952,7 +2438,9 @@
     },
     {
       "boundary_upper_decimal": "0.034416",
+      "constant_boundary_upper_decimal": "0.152908",
       "constant_brier_decimal": "0.13890932",
+      "logistic_boundary_upper_decimal": "0.034416",
       "logistic_brier_decimal": "0.02853622",
       "n": 3888,
       "selected_brier_decimal": "0.02853622",
@@ -1960,7 +2448,9 @@
     },
     {
       "boundary_upper_decimal": "0.034279",
+      "constant_boundary_upper_decimal": "0.152560",
       "constant_brier_decimal": "0.13861057",
+      "logistic_boundary_upper_decimal": "0.034279",
       "logistic_brier_decimal": "0.02842216",
       "n": 3904,
       "selected_brier_decimal": "0.02842216",
@@ -1968,7 +2458,9 @@
     },
     {
       "boundary_upper_decimal": "0.034165",
+      "constant_boundary_upper_decimal": "0.152216",
       "constant_brier_decimal": "0.13831425",
+      "logistic_boundary_upper_decimal": "0.034165",
       "logistic_brier_decimal": "0.02833049",
       "n": 3920,
       "selected_brier_decimal": "0.02833049",
@@ -1976,7 +2468,9 @@
     },
     {
       "boundary_upper_decimal": "0.034055",
+      "constant_boundary_upper_decimal": "0.151874",
       "constant_brier_decimal": "0.13802035",
+      "logistic_boundary_upper_decimal": "0.034055",
       "logistic_brier_decimal": "0.02824405",
       "n": 3936,
       "selected_brier_decimal": "0.02824405",
@@ -1984,7 +2478,9 @@
     },
     {
       "boundary_upper_decimal": "0.034115",
+      "constant_boundary_upper_decimal": "0.151534",
       "constant_brier_decimal": "0.13772882",
+      "logistic_boundary_upper_decimal": "0.034115",
       "logistic_brier_decimal": "0.02832167",
       "n": 3952,
       "selected_brier_decimal": "0.02832167",
@@ -1992,7 +2488,9 @@
     },
     {
       "boundary_upper_decimal": "0.033984",
+      "constant_boundary_upper_decimal": "0.151198",
       "constant_brier_decimal": "0.13743965",
+      "logistic_boundary_upper_decimal": "0.033984",
       "logistic_brier_decimal": "0.02821251",
       "n": 3968,
       "selected_brier_decimal": "0.02821251",
@@ -2000,7 +2498,9 @@
     },
     {
       "boundary_upper_decimal": "0.033886",
+      "constant_boundary_upper_decimal": "0.150864",
       "constant_brier_decimal": "0.13715280",
+      "logistic_boundary_upper_decimal": "0.033886",
       "logistic_brier_decimal": "0.02813709",
       "n": 3984,
       "selected_brier_decimal": "0.02813709",
@@ -2008,7 +2508,9 @@
     },
     {
       "boundary_upper_decimal": "0.033752",
+      "constant_boundary_upper_decimal": "0.150533",
       "constant_brier_decimal": "0.13686824",
+      "logistic_boundary_upper_decimal": "0.033752",
       "logistic_brier_decimal": "0.02802496",
       "n": 4000,
       "selected_brier_decimal": "0.02802496",
@@ -2016,7 +2518,9 @@
     },
     {
       "boundary_upper_decimal": "0.033708",
+      "constant_boundary_upper_decimal": "0.150204",
       "constant_brier_decimal": "0.13658595",
+      "logistic_boundary_upper_decimal": "0.033708",
       "logistic_brier_decimal": "0.02799843",
       "n": 4016,
       "selected_brier_decimal": "0.02799843",
@@ -2024,7 +2528,9 @@
     },
     {
       "boundary_upper_decimal": "0.033764",
+      "constant_boundary_upper_decimal": "0.149878",
       "constant_brier_decimal": "0.13630591",
+      "logistic_boundary_upper_decimal": "0.033764",
       "logistic_brier_decimal": "0.02807294",
       "n": 4032,
       "selected_brier_decimal": "0.02807294",
@@ -2032,7 +2538,9 @@
     },
     {
       "boundary_upper_decimal": "0.033670",
+      "constant_boundary_upper_decimal": "0.149554",
       "constant_brier_decimal": "0.13602807",
+      "logistic_boundary_upper_decimal": "0.033670",
       "logistic_brier_decimal": "0.02800066",
       "n": 4048,
       "selected_brier_decimal": "0.02800066",
@@ -2040,7 +2548,9 @@
     },
     {
       "boundary_upper_decimal": "0.033540",
+      "constant_boundary_upper_decimal": "0.149233",
       "constant_brier_decimal": "0.13575242",
+      "logistic_boundary_upper_decimal": "0.033540",
       "logistic_brier_decimal": "0.02789155",
       "n": 4064,
       "selected_brier_decimal": "0.02789155",
@@ -2048,7 +2558,9 @@
     },
     {
       "boundary_upper_decimal": "0.033418",
+      "constant_boundary_upper_decimal": "0.148914",
       "constant_brier_decimal": "0.13547894",
+      "logistic_boundary_upper_decimal": "0.033418",
       "logistic_brier_decimal": "0.02779056",
       "n": 4080,
       "selected_brier_decimal": "0.02779056",
@@ -2056,7 +2568,9 @@
     },
     {
       "boundary_upper_decimal": "0.033295",
+      "constant_boundary_upper_decimal": "0.148598",
       "constant_brier_decimal": "0.13520759",
+      "logistic_boundary_upper_decimal": "0.033295",
       "logistic_brier_decimal": "0.02768902",
       "n": 4096,
       "selected_brier_decimal": "0.02768902",
@@ -2064,7 +2578,9 @@
     },
     {
       "boundary_upper_decimal": "0.033175",
+      "constant_boundary_upper_decimal": "0.148284",
       "constant_brier_decimal": "0.13493835",
+      "logistic_boundary_upper_decimal": "0.033175",
       "logistic_brier_decimal": "0.02758904",
       "n": 4112,
       "selected_brier_decimal": "0.02758904",
@@ -2072,7 +2588,9 @@
     },
     {
       "boundary_upper_decimal": "0.033049",
+      "constant_boundary_upper_decimal": "0.147972",
       "constant_brier_decimal": "0.13467121",
+      "logistic_boundary_upper_decimal": "0.033049",
       "logistic_brier_decimal": "0.02748378",
       "n": 4128,
       "selected_brier_decimal": "0.02748378",
@@ -2080,7 +2598,9 @@
     },
     {
       "boundary_upper_decimal": "0.032922",
+      "constant_boundary_upper_decimal": "0.147663",
       "constant_brier_decimal": "0.13440612",
+      "logistic_boundary_upper_decimal": "0.032922",
       "logistic_brier_decimal": "0.02737768",
       "n": 4144,
       "selected_brier_decimal": "0.02737768",
@@ -2088,7 +2608,9 @@
     },
     {
       "boundary_upper_decimal": "0.032797",
+      "constant_boundary_upper_decimal": "0.147356",
       "constant_brier_decimal": "0.13414307",
+      "logistic_boundary_upper_decimal": "0.032797",
       "logistic_brier_decimal": "0.02727241",
       "n": 4160,
       "selected_brier_decimal": "0.02727241",
@@ -2096,7 +2618,9 @@
     },
     {
       "boundary_upper_decimal": "0.032672",
+      "constant_boundary_upper_decimal": "0.147052",
       "constant_brier_decimal": "0.13388204",
+      "logistic_boundary_upper_decimal": "0.032672",
       "logistic_brier_decimal": "0.02716795",
       "n": 4176,
       "selected_brier_decimal": "0.02716795",
@@ -2104,7 +2628,9 @@
     },
     {
       "boundary_upper_decimal": "0.032549",
+      "constant_boundary_upper_decimal": "0.146749",
       "constant_brier_decimal": "0.13362300",
+      "logistic_boundary_upper_decimal": "0.032549",
       "logistic_brier_decimal": "0.02706428",
       "n": 4192,
       "selected_brier_decimal": "0.02706428",
@@ -2112,7 +2638,9 @@
     },
     {
       "boundary_upper_decimal": "0.032426",
+      "constant_boundary_upper_decimal": "0.146449",
       "constant_brier_decimal": "0.13336593",
+      "logistic_boundary_upper_decimal": "0.032426",
       "logistic_brier_decimal": "0.02696143",
       "n": 4208,
       "selected_brier_decimal": "0.02696143",
@@ -2120,7 +2648,9 @@
     },
     {
       "boundary_upper_decimal": "0.032305",
+      "constant_boundary_upper_decimal": "0.146151",
       "constant_brier_decimal": "0.13311081",
+      "logistic_boundary_upper_decimal": "0.032305",
       "logistic_brier_decimal": "0.02685940",
       "n": 4224,
       "selected_brier_decimal": "0.02685940",
@@ -2128,7 +2658,9 @@
     },
     {
       "boundary_upper_decimal": "0.032184",
+      "constant_boundary_upper_decimal": "0.145856",
       "constant_brier_decimal": "0.13285761",
+      "logistic_boundary_upper_decimal": "0.032184",
       "logistic_brier_decimal": "0.02675808",
       "n": 4240,
       "selected_brier_decimal": "0.02675808",
@@ -2136,7 +2668,9 @@
     },
     {
       "boundary_upper_decimal": "0.032064",
+      "constant_boundary_upper_decimal": "0.145562",
       "constant_brier_decimal": "0.13260632",
+      "logistic_boundary_upper_decimal": "0.032064",
       "logistic_brier_decimal": "0.02665754",
       "n": 4256,
       "selected_brier_decimal": "0.02665754",
@@ -2144,7 +2678,9 @@
     },
     {
       "boundary_upper_decimal": "0.031945",
+      "constant_boundary_upper_decimal": "0.145271",
       "constant_brier_decimal": "0.13235691",
+      "logistic_boundary_upper_decimal": "0.031945",
       "logistic_brier_decimal": "0.02655774",
       "n": 4272,
       "selected_brier_decimal": "0.02655774",
@@ -2152,7 +2688,9 @@
     },
     {
       "boundary_upper_decimal": "0.031827",
+      "constant_boundary_upper_decimal": "0.144982",
       "constant_brier_decimal": "0.13210936",
+      "logistic_boundary_upper_decimal": "0.031827",
       "logistic_brier_decimal": "0.02645868",
       "n": 4288,
       "selected_brier_decimal": "0.02645868",
@@ -2160,7 +2698,9 @@
     },
     {
       "boundary_upper_decimal": "0.031710",
+      "constant_boundary_upper_decimal": "0.144695",
       "constant_brier_decimal": "0.13186365",
+      "logistic_boundary_upper_decimal": "0.031710",
       "logistic_brier_decimal": "0.02636034",
       "n": 4304,
       "selected_brier_decimal": "0.02636034",
@@ -2168,7 +2708,9 @@
     },
     {
       "boundary_upper_decimal": "0.031593",
+      "constant_boundary_upper_decimal": "0.144410",
       "constant_brier_decimal": "0.13161976",
+      "logistic_boundary_upper_decimal": "0.031593",
       "logistic_brier_decimal": "0.02626275",
       "n": 4320,
       "selected_brier_decimal": "0.02626275",
@@ -2176,7 +2718,9 @@
     },
     {
       "boundary_upper_decimal": "0.031478",
+      "constant_boundary_upper_decimal": "0.144127",
       "constant_brier_decimal": "0.13137767",
+      "logistic_boundary_upper_decimal": "0.031478",
       "logistic_brier_decimal": "0.02616589",
       "n": 4336,
       "selected_brier_decimal": "0.02616589",
@@ -2184,7 +2728,9 @@
     },
     {
       "boundary_upper_decimal": "0.031363",
+      "constant_boundary_upper_decimal": "0.143846",
       "constant_brier_decimal": "0.13113737",
+      "logistic_boundary_upper_decimal": "0.031363",
       "logistic_brier_decimal": "0.02606975",
       "n": 4352,
       "selected_brier_decimal": "0.02606975",
@@ -2192,7 +2738,9 @@
     },
     {
       "boundary_upper_decimal": "0.031249",
+      "constant_boundary_upper_decimal": "0.143567",
       "constant_brier_decimal": "0.13089882",
+      "logistic_boundary_upper_decimal": "0.031249",
       "logistic_brier_decimal": "0.02597434",
       "n": 4368,
       "selected_brier_decimal": "0.02597434",
@@ -2200,7 +2748,9 @@
     },
     {
       "boundary_upper_decimal": "0.031136",
+      "constant_boundary_upper_decimal": "0.143290",
       "constant_brier_decimal": "0.13066201",
+      "logistic_boundary_upper_decimal": "0.031136",
       "logistic_brier_decimal": "0.02587964",
       "n": 4384,
       "selected_brier_decimal": "0.02587964",
@@ -2208,7 +2758,9 @@
     },
     {
       "boundary_upper_decimal": "0.031024",
+      "constant_boundary_upper_decimal": "0.143015",
       "constant_brier_decimal": "0.13042693",
+      "logistic_boundary_upper_decimal": "0.031024",
       "logistic_brier_decimal": "0.02578564",
       "n": 4400,
       "selected_brier_decimal": "0.02578564",
@@ -2216,7 +2768,9 @@
     },
     {
       "boundary_upper_decimal": "0.030913",
+      "constant_boundary_upper_decimal": "0.142742",
       "constant_brier_decimal": "0.13019354",
+      "logistic_boundary_upper_decimal": "0.030913",
       "logistic_brier_decimal": "0.02569232",
       "n": 4416,
       "selected_brier_decimal": "0.02569232",
@@ -2224,7 +2778,9 @@
     },
     {
       "boundary_upper_decimal": "0.030802",
+      "constant_boundary_upper_decimal": "0.142471",
       "constant_brier_decimal": "0.12996185",
+      "logistic_boundary_upper_decimal": "0.030802",
       "logistic_brier_decimal": "0.02559966",
       "n": 4432,
       "selected_brier_decimal": "0.02559966",
@@ -2232,7 +2788,9 @@
     },
     {
       "boundary_upper_decimal": "0.030692",
+      "constant_boundary_upper_decimal": "0.142202",
       "constant_brier_decimal": "0.12973182",
+      "logistic_boundary_upper_decimal": "0.030692",
       "logistic_brier_decimal": "0.02550766",
       "n": 4448,
       "selected_brier_decimal": "0.02550766",
@@ -2240,7 +2798,9 @@
     },
     {
       "boundary_upper_decimal": "0.030583",
+      "constant_boundary_upper_decimal": "0.141935",
       "constant_brier_decimal": "0.12950344",
+      "logistic_boundary_upper_decimal": "0.030583",
       "logistic_brier_decimal": "0.02541631",
       "n": 4464,
       "selected_brier_decimal": "0.02541631",
@@ -2248,7 +2808,9 @@
     },
     {
       "boundary_upper_decimal": "0.030475",
+      "constant_boundary_upper_decimal": "0.141669",
       "constant_brier_decimal": "0.12927669",
+      "logistic_boundary_upper_decimal": "0.030475",
       "logistic_brier_decimal": "0.02532559",
       "n": 4480,
       "selected_brier_decimal": "0.02532559",
@@ -2256,7 +2818,9 @@
     },
     {
       "boundary_upper_decimal": "0.030368",
+      "constant_boundary_upper_decimal": "0.141406",
       "constant_brier_decimal": "0.12905156",
+      "logistic_boundary_upper_decimal": "0.030368",
       "logistic_brier_decimal": "0.02523554",
       "n": 4496,
       "selected_brier_decimal": "0.02523554",
@@ -2264,7 +2828,9 @@
     },
     {
       "boundary_upper_decimal": "0.030261",
+      "constant_boundary_upper_decimal": "0.141144",
       "constant_brier_decimal": "0.12882802",
+      "logistic_boundary_upper_decimal": "0.030261",
       "logistic_brier_decimal": "0.02514613",
       "n": 4512,
       "selected_brier_decimal": "0.02514613",
@@ -2272,7 +2838,9 @@
     },
     {
       "boundary_upper_decimal": "0.030155",
+      "constant_boundary_upper_decimal": "0.140884",
       "constant_brier_decimal": "0.12860606",
+      "logistic_boundary_upper_decimal": "0.030155",
       "logistic_brier_decimal": "0.02505736",
       "n": 4528,
       "selected_brier_decimal": "0.02505736",
@@ -2280,7 +2848,9 @@
     },
     {
       "boundary_upper_decimal": "0.030050",
+      "constant_boundary_upper_decimal": "0.140626",
       "constant_brier_decimal": "0.12838566",
+      "logistic_boundary_upper_decimal": "0.030050",
       "logistic_brier_decimal": "0.02496924",
       "n": 4544,
       "selected_brier_decimal": "0.02496924",
@@ -2288,7 +2858,9 @@
     },
     {
       "boundary_upper_decimal": "0.029945",
+      "constant_boundary_upper_decimal": "0.140369",
       "constant_brier_decimal": "0.12816681",
+      "logistic_boundary_upper_decimal": "0.029945",
       "logistic_brier_decimal": "0.02488173",
       "n": 4560,
       "selected_brier_decimal": "0.02488173",
@@ -2296,7 +2868,9 @@
     },
     {
       "boundary_upper_decimal": "0.029842",
+      "constant_boundary_upper_decimal": "0.140115",
       "constant_brier_decimal": "0.12794950",
+      "logistic_boundary_upper_decimal": "0.029842",
       "logistic_brier_decimal": "0.02479485",
       "n": 4576,
       "selected_brier_decimal": "0.02479485",
@@ -2304,7 +2878,9 @@
     },
     {
       "boundary_upper_decimal": "0.029739",
+      "constant_boundary_upper_decimal": "0.139862",
       "constant_brier_decimal": "0.12773369",
+      "logistic_boundary_upper_decimal": "0.029739",
       "logistic_brier_decimal": "0.02470860",
       "n": 4592,
       "selected_brier_decimal": "0.02470860",
@@ -2312,7 +2888,9 @@
     },
     {
       "boundary_upper_decimal": "0.029636",
+      "constant_boundary_upper_decimal": "0.139611",
       "constant_brier_decimal": "0.12751939",
+      "logistic_boundary_upper_decimal": "0.029636",
       "logistic_brier_decimal": "0.02462296",
       "n": 4608,
       "selected_brier_decimal": "0.02462296",
@@ -2320,7 +2898,9 @@
     },
     {
       "boundary_upper_decimal": "0.029535",
+      "constant_boundary_upper_decimal": "0.139361",
       "constant_brier_decimal": "0.12730656",
+      "logistic_boundary_upper_decimal": "0.029535",
       "logistic_brier_decimal": "0.02453794",
       "n": 4624,
       "selected_brier_decimal": "0.02453794",
@@ -2328,7 +2908,9 @@
     },
     {
       "boundary_upper_decimal": "0.029434",
+      "constant_boundary_upper_decimal": "0.139114",
       "constant_brier_decimal": "0.12709521",
+      "logistic_boundary_upper_decimal": "0.029434",
       "logistic_brier_decimal": "0.02445352",
       "n": 4640,
       "selected_brier_decimal": "0.02445352",
@@ -2336,7 +2918,9 @@
     },
     {
       "boundary_upper_decimal": "0.029334",
+      "constant_boundary_upper_decimal": "0.138868",
       "constant_brier_decimal": "0.12688531",
+      "logistic_boundary_upper_decimal": "0.029334",
       "logistic_brier_decimal": "0.02436973",
       "n": 4656,
       "selected_brier_decimal": "0.02436973",
@@ -2344,7 +2928,9 @@
     },
     {
       "boundary_upper_decimal": "0.029235",
+      "constant_boundary_upper_decimal": "0.138623",
       "constant_brier_decimal": "0.12667684",
+      "logistic_boundary_upper_decimal": "0.029235",
       "logistic_brier_decimal": "0.02428656",
       "n": 4672,
       "selected_brier_decimal": "0.02428656",
@@ -2352,7 +2938,9 @@
     },
     {
       "boundary_upper_decimal": "0.029136",
+      "constant_boundary_upper_decimal": "0.138380",
       "constant_brier_decimal": "0.12646980",
+      "logistic_boundary_upper_decimal": "0.029136",
       "logistic_brier_decimal": "0.02420402",
       "n": 4688,
       "selected_brier_decimal": "0.02420402",
@@ -2360,7 +2948,9 @@
     },
     {
       "boundary_upper_decimal": "0.029038",
+      "constant_boundary_upper_decimal": "0.138139",
       "constant_brier_decimal": "0.12626417",
+      "logistic_boundary_upper_decimal": "0.029038",
       "logistic_brier_decimal": "0.02412204",
       "n": 4704,
       "selected_brier_decimal": "0.02412204",
@@ -2368,7 +2958,9 @@
     },
     {
       "boundary_upper_decimal": "0.028941",
+      "constant_boundary_upper_decimal": "0.137900",
       "constant_brier_decimal": "0.12605993",
+      "logistic_boundary_upper_decimal": "0.028941",
       "logistic_brier_decimal": "0.02404063",
       "n": 4720,
       "selected_brier_decimal": "0.02404063",
@@ -2376,7 +2968,9 @@
     },
     {
       "boundary_upper_decimal": "0.028844",
+      "constant_boundary_upper_decimal": "0.137662",
       "constant_brier_decimal": "0.12585707",
+      "logistic_boundary_upper_decimal": "0.028844",
       "logistic_brier_decimal": "0.02395986",
       "n": 4736,
       "selected_brier_decimal": "0.02395986",
@@ -2384,7 +2978,9 @@
     },
     {
       "boundary_upper_decimal": "0.028748",
+      "constant_boundary_upper_decimal": "0.137425",
       "constant_brier_decimal": "0.12565558",
+      "logistic_boundary_upper_decimal": "0.028748",
       "logistic_brier_decimal": "0.02387967",
       "n": 4752,
       "selected_brier_decimal": "0.02387967",
@@ -2392,7 +2988,9 @@
     },
     {
       "boundary_upper_decimal": "0.028653",
+      "constant_boundary_upper_decimal": "0.137190",
       "constant_brier_decimal": "0.12545544",
+      "logistic_boundary_upper_decimal": "0.028653",
       "logistic_brier_decimal": "0.02380003",
       "n": 4768,
       "selected_brier_decimal": "0.02380003",
@@ -2400,7 +2998,9 @@
     },
     {
       "boundary_upper_decimal": "0.028559",
+      "constant_boundary_upper_decimal": "0.136957",
       "constant_brier_decimal": "0.12525664",
+      "logistic_boundary_upper_decimal": "0.028559",
       "logistic_brier_decimal": "0.02372095",
       "n": 4784,
       "selected_brier_decimal": "0.02372095",
@@ -2408,7 +3008,9 @@
     },
     {
       "boundary_upper_decimal": "0.028465",
+      "constant_boundary_upper_decimal": "0.136725",
       "constant_brier_decimal": "0.12505916",
+      "logistic_boundary_upper_decimal": "0.028465",
       "logistic_brier_decimal": "0.02364240",
       "n": 4800,
       "selected_brier_decimal": "0.02364240",
@@ -2416,7 +3018,9 @@
     },
     {
       "boundary_upper_decimal": "0.028371",
+      "constant_boundary_upper_decimal": "0.136495",
       "constant_brier_decimal": "0.12486300",
+      "logistic_boundary_upper_decimal": "0.028371",
       "logistic_brier_decimal": "0.02356439",
       "n": 4816,
       "selected_brier_decimal": "0.02356439",
@@ -2424,7 +3028,9 @@
     },
     {
       "boundary_upper_decimal": "0.028279",
+      "constant_boundary_upper_decimal": "0.136266",
       "constant_brier_decimal": "0.12466813",
+      "logistic_boundary_upper_decimal": "0.028279",
       "logistic_brier_decimal": "0.02348706",
       "n": 4832,
       "selected_brier_decimal": "0.02348706",
@@ -2432,7 +3038,9 @@
     },
     {
       "boundary_upper_decimal": "0.028188",
+      "constant_boundary_upper_decimal": "0.136039",
       "constant_brier_decimal": "0.12447455",
+      "logistic_boundary_upper_decimal": "0.028188",
       "logistic_brier_decimal": "0.02341111",
       "n": 4848,
       "selected_brier_decimal": "0.02341111",
@@ -2440,7 +3048,9 @@
     },
     {
       "boundary_upper_decimal": "0.028098",
+      "constant_boundary_upper_decimal": "0.135813",
       "constant_brier_decimal": "0.12428225",
+      "logistic_boundary_upper_decimal": "0.028098",
       "logistic_brier_decimal": "0.02333622",
       "n": 4864,
       "selected_brier_decimal": "0.02333622",
@@ -2448,7 +3058,9 @@
     },
     {
       "boundary_upper_decimal": "0.028013",
+      "constant_boundary_upper_decimal": "0.135588",
       "constant_brier_decimal": "0.12409120",
+      "logistic_boundary_upper_decimal": "0.028013",
       "logistic_brier_decimal": "0.02326640",
       "n": 4880,
       "selected_brier_decimal": "0.02326640",
@@ -2456,7 +3068,9 @@
     },
     {
       "boundary_upper_decimal": "0.027928",
+      "constant_boundary_upper_decimal": "0.135365",
       "constant_brier_decimal": "0.12390141",
+      "logistic_boundary_upper_decimal": "0.027928",
       "logistic_brier_decimal": "0.02319585",
       "n": 4896,
       "selected_brier_decimal": "0.02319585",
@@ -2464,7 +3078,9 @@
     },
     {
       "boundary_upper_decimal": "0.027841",
+      "constant_boundary_upper_decimal": "0.135144",
       "constant_brier_decimal": "0.12371285",
+      "logistic_boundary_upper_decimal": "0.027841",
       "logistic_brier_decimal": "0.02312367",
       "n": 4912,
       "selected_brier_decimal": "0.02312367",
@@ -2472,7 +3088,9 @@
     },
     {
       "boundary_upper_decimal": "0.027754",
+      "constant_boundary_upper_decimal": "0.134924",
       "constant_brier_decimal": "0.12352551",
+      "logistic_boundary_upper_decimal": "0.027754",
       "logistic_brier_decimal": "0.02305211",
       "n": 4928,
       "selected_brier_decimal": "0.02305211",
@@ -2480,7 +3098,9 @@
     },
     {
       "boundary_upper_decimal": "0.027669",
+      "constant_boundary_upper_decimal": "0.134705",
       "constant_brier_decimal": "0.12333939",
+      "logistic_boundary_upper_decimal": "0.027669",
       "logistic_brier_decimal": "0.02298147",
       "n": 4944,
       "selected_brier_decimal": "0.02298147",
@@ -2488,7 +3108,9 @@
     },
     {
       "boundary_upper_decimal": "0.027585",
+      "constant_boundary_upper_decimal": "0.134488",
       "constant_brier_decimal": "0.12315447",
+      "logistic_boundary_upper_decimal": "0.027585",
       "logistic_brier_decimal": "0.02291155",
       "n": 4960,
       "selected_brier_decimal": "0.02291155",
@@ -2496,7 +3118,9 @@
     },
     {
       "boundary_upper_decimal": "0.027501",
+      "constant_boundary_upper_decimal": "0.134272",
       "constant_brier_decimal": "0.12297074",
+      "logistic_boundary_upper_decimal": "0.027501",
       "logistic_brier_decimal": "0.02284220",
       "n": 4976,
       "selected_brier_decimal": "0.02284220",
@@ -2504,7 +3128,9 @@
     },
     {
       "boundary_upper_decimal": "0.027418",
+      "constant_boundary_upper_decimal": "0.134057",
       "constant_brier_decimal": "0.12278818",
+      "logistic_boundary_upper_decimal": "0.027418",
       "logistic_brier_decimal": "0.02277339",
       "n": 4992,
       "selected_brier_decimal": "0.02277339",
@@ -2512,7 +3138,9 @@
     },
     {
       "boundary_upper_decimal": "0.027335",
+      "constant_boundary_upper_decimal": "0.133844",
       "constant_brier_decimal": "0.12260680",
+      "logistic_boundary_upper_decimal": "0.027335",
       "logistic_brier_decimal": "0.02270485",
       "n": 5008,
       "selected_brier_decimal": "0.02270485",
@@ -2520,7 +3148,9 @@
     },
     {
       "boundary_upper_decimal": "0.027253",
+      "constant_boundary_upper_decimal": "0.133632",
       "constant_brier_decimal": "0.12242656",
+      "logistic_boundary_upper_decimal": "0.027253",
       "logistic_brier_decimal": "0.02263669",
       "n": 5024,
       "selected_brier_decimal": "0.02263669",
@@ -2528,7 +3158,9 @@
     },
     {
       "boundary_upper_decimal": "0.027170",
+      "constant_boundary_upper_decimal": "0.133421",
       "constant_brier_decimal": "0.12224748",
+      "logistic_boundary_upper_decimal": "0.027170",
       "logistic_brier_decimal": "0.02256846",
       "n": 5040,
       "selected_brier_decimal": "0.02256846",
@@ -2536,7 +3168,9 @@
     },
     {
       "boundary_upper_decimal": "0.027088",
+      "constant_boundary_upper_decimal": "0.133212",
       "constant_brier_decimal": "0.12206952",
+      "logistic_boundary_upper_decimal": "0.027088",
       "logistic_brier_decimal": "0.02250002",
       "n": 5056,
       "selected_brier_decimal": "0.02250002",
@@ -2544,7 +3178,9 @@
     },
     {
       "boundary_upper_decimal": "0.027005",
+      "constant_boundary_upper_decimal": "0.133004",
       "constant_brier_decimal": "0.12189269",
+      "logistic_boundary_upper_decimal": "0.027005",
       "logistic_brier_decimal": "0.02243088",
       "n": 5072,
       "selected_brier_decimal": "0.02243088",
@@ -2552,7 +3188,9 @@
     },
     {
       "boundary_upper_decimal": "0.026922",
+      "constant_boundary_upper_decimal": "0.132797",
       "constant_brier_decimal": "0.12171697",
+      "logistic_boundary_upper_decimal": "0.026922",
       "logistic_brier_decimal": "0.02236197",
       "n": 5088,
       "selected_brier_decimal": "0.02236197",
@@ -2560,7 +3198,9 @@
     },
     {
       "boundary_upper_decimal": "0.026840",
+      "constant_boundary_upper_decimal": "0.132592",
       "constant_brier_decimal": "0.12154235",
+      "logistic_boundary_upper_decimal": "0.026840",
       "logistic_brier_decimal": "0.02229326",
       "n": 5104,
       "selected_brier_decimal": "0.02229326",
@@ -2568,7 +3208,9 @@
     },
     {
       "boundary_upper_decimal": "0.026758",
+      "constant_boundary_upper_decimal": "0.132387",
       "constant_brier_decimal": "0.12136882",
+      "logistic_boundary_upper_decimal": "0.026758",
       "logistic_brier_decimal": "0.02222525",
       "n": 5120,
       "selected_brier_decimal": "0.02222525",
@@ -2576,7 +3218,9 @@
     },
     {
       "boundary_upper_decimal": "0.026677",
+      "constant_boundary_upper_decimal": "0.132184",
       "constant_brier_decimal": "0.12119638",
+      "logistic_boundary_upper_decimal": "0.026677",
       "logistic_brier_decimal": "0.02215761",
       "n": 5136,
       "selected_brier_decimal": "0.02215761",
@@ -2584,7 +3228,9 @@
     },
     {
       "boundary_upper_decimal": "0.026597",
+      "constant_boundary_upper_decimal": "0.131983",
       "constant_brier_decimal": "0.12102500",
+      "logistic_boundary_upper_decimal": "0.026597",
       "logistic_brier_decimal": "0.02209062",
       "n": 5152,
       "selected_brier_decimal": "0.02209062",
@@ -2592,7 +3238,9 @@
     },
     {
       "boundary_upper_decimal": "0.026517",
+      "constant_boundary_upper_decimal": "0.131782",
       "constant_brier_decimal": "0.12085469",
+      "logistic_boundary_upper_decimal": "0.026517",
       "logistic_brier_decimal": "0.02202416",
       "n": 5168,
       "selected_brier_decimal": "0.02202416",
@@ -2600,7 +3248,9 @@
     },
     {
       "boundary_upper_decimal": "0.026438",
+      "constant_boundary_upper_decimal": "0.131583",
       "constant_brier_decimal": "0.12068543",
+      "logistic_boundary_upper_decimal": "0.026438",
       "logistic_brier_decimal": "0.02195826",
       "n": 5184,
       "selected_brier_decimal": "0.02195826",
@@ -2608,7 +3258,9 @@
     },
     {
       "boundary_upper_decimal": "0.026359",
+      "constant_boundary_upper_decimal": "0.131385",
       "constant_brier_decimal": "0.12051721",
+      "logistic_boundary_upper_decimal": "0.026359",
       "logistic_brier_decimal": "0.02189298",
       "n": 5200,
       "selected_brier_decimal": "0.02189298",
@@ -2616,7 +3268,9 @@
     },
     {
       "boundary_upper_decimal": "0.026281",
+      "constant_boundary_upper_decimal": "0.131188",
       "constant_brier_decimal": "0.12035002",
+      "logistic_boundary_upper_decimal": "0.026281",
       "logistic_brier_decimal": "0.02182826",
       "n": 5216,
       "selected_brier_decimal": "0.02182826",
@@ -2624,7 +3278,9 @@
     },
     {
       "boundary_upper_decimal": "0.026204",
+      "constant_boundary_upper_decimal": "0.130992",
       "constant_brier_decimal": "0.12018385",
+      "logistic_boundary_upper_decimal": "0.026204",
       "logistic_brier_decimal": "0.02176390",
       "n": 5232,
       "selected_brier_decimal": "0.02176390",
@@ -2632,7 +3288,9 @@
     },
     {
       "boundary_upper_decimal": "0.026127",
+      "constant_boundary_upper_decimal": "0.130798",
       "constant_brier_decimal": "0.12001870",
+      "logistic_boundary_upper_decimal": "0.026127",
       "logistic_brier_decimal": "0.02169998",
       "n": 5248,
       "selected_brier_decimal": "0.02169998",
@@ -2640,7 +3298,9 @@
     },
     {
       "boundary_upper_decimal": "0.026051",
+      "constant_boundary_upper_decimal": "0.130604",
       "constant_brier_decimal": "0.11985455",
+      "logistic_boundary_upper_decimal": "0.026051",
       "logistic_brier_decimal": "0.02163679",
       "n": 5264,
       "selected_brier_decimal": "0.02163679",
@@ -2648,7 +3308,9 @@
     },
     {
       "boundary_upper_decimal": "0.025975",
+      "constant_boundary_upper_decimal": "0.130412",
       "constant_brier_decimal": "0.11969140",
+      "logistic_boundary_upper_decimal": "0.025975",
       "logistic_brier_decimal": "0.02157414",
       "n": 5280,
       "selected_brier_decimal": "0.02157414",
@@ -2656,7 +3318,9 @@
     },
     {
       "boundary_upper_decimal": "0.025901",
+      "constant_boundary_upper_decimal": "0.130221",
       "constant_brier_decimal": "0.11952923",
+      "logistic_boundary_upper_decimal": "0.025901",
       "logistic_brier_decimal": "0.02151313",
       "n": 5296,
       "selected_brier_decimal": "0.02151313",
@@ -2664,7 +3328,9 @@
     },
     {
       "boundary_upper_decimal": "0.026211",
+      "constant_boundary_upper_decimal": "0.130453",
       "constant_brier_decimal": "0.11973410",
+      "logistic_boundary_upper_decimal": "0.026211",
       "logistic_brier_decimal": "0.02174601",
       "n": 5312,
       "selected_brier_decimal": "0.02174601",
@@ -2672,7 +3338,9 @@
     },
     {
       "boundary_upper_decimal": "0.027087",
+      "constant_boundary_upper_decimal": "0.131523",
       "constant_brier_decimal": "0.12066769",
+      "logistic_boundary_upper_decimal": "0.027087",
       "logistic_brier_decimal": "0.02238505",
       "n": 5328,
       "selected_brier_decimal": "0.02238505",
@@ -2680,7 +3348,9 @@
     },
     {
       "boundary_upper_decimal": "0.027008",
+      "constant_boundary_upper_decimal": "0.133005",
       "constant_brier_decimal": "0.12195955",
+      "logistic_boundary_upper_decimal": "0.027008",
       "logistic_brier_decimal": "0.02232033",
       "n": 5344,
       "selected_brier_decimal": "0.02232033",
@@ -2688,7 +3358,9 @@
     },
     {
       "boundary_upper_decimal": "0.026929",
+      "constant_boundary_upper_decimal": "0.134476",
       "constant_brier_decimal": "0.12324370",
+      "logistic_boundary_upper_decimal": "0.026929",
       "logistic_brier_decimal": "0.02225431",
       "n": 5360,
       "selected_brier_decimal": "0.02225431",
@@ -2696,7 +3368,9 @@
     },
     {
       "boundary_upper_decimal": "0.026850",
+      "constant_boundary_upper_decimal": "0.135938",
       "constant_brier_decimal": "0.12452021",
+      "logistic_boundary_upper_decimal": "0.026850",
       "logistic_brier_decimal": "0.02218821",
       "n": 5376,
       "selected_brier_decimal": "0.02218821",
@@ -2704,7 +3378,9 @@
     },
     {
       "boundary_upper_decimal": "0.026771",
+      "constant_boundary_upper_decimal": "0.137389",
       "constant_brier_decimal": "0.12578915",
+      "logistic_boundary_upper_decimal": "0.026771",
       "logistic_brier_decimal": "0.02212277",
       "n": 5392,
       "selected_brier_decimal": "0.02212277",
@@ -2712,7 +3388,9 @@
     },
     {
       "boundary_upper_decimal": "0.026694",
+      "constant_boundary_upper_decimal": "0.138831",
       "constant_brier_decimal": "0.12705057",
+      "logistic_boundary_upper_decimal": "0.026694",
       "logistic_brier_decimal": "0.02205908",
       "n": 5408,
       "selected_brier_decimal": "0.02205908",
@@ -2720,7 +3398,9 @@
     },
     {
       "boundary_upper_decimal": "0.026617",
+      "constant_boundary_upper_decimal": "0.140263",
       "constant_brier_decimal": "0.12830456",
+      "logistic_boundary_upper_decimal": "0.026617",
       "logistic_brier_decimal": "0.02199554",
       "n": 5424,
       "selected_brier_decimal": "0.02199554",
@@ -2728,7 +3408,9 @@
     },
     {
       "boundary_upper_decimal": "0.026541",
+      "constant_boundary_upper_decimal": "0.141685",
       "constant_brier_decimal": "0.12955116",
+      "logistic_boundary_upper_decimal": "0.026541",
       "logistic_brier_decimal": "0.02193205",
       "n": 5440,
       "selected_brier_decimal": "0.02193205",
@@ -2736,7 +3418,9 @@
     },
     {
       "boundary_upper_decimal": "0.026464",
+      "constant_boundary_upper_decimal": "0.143098",
       "constant_brier_decimal": "0.13079046",
+      "logistic_boundary_upper_decimal": "0.026464",
       "logistic_brier_decimal": "0.02186839",
       "n": 5456,
       "selected_brier_decimal": "0.02186839",
@@ -2744,7 +3428,9 @@
     },
     {
       "boundary_upper_decimal": "0.026388",
+      "constant_boundary_upper_decimal": "0.144501",
       "constant_brier_decimal": "0.13202251",
+      "logistic_boundary_upper_decimal": "0.026388",
       "logistic_brier_decimal": "0.02180529",
       "n": 5472,
       "selected_brier_decimal": "0.02180529",
@@ -2752,7 +3438,9 @@
     },
     {
       "boundary_upper_decimal": "0.026313",
+      "constant_boundary_upper_decimal": "0.145895",
       "constant_brier_decimal": "0.13324737",
+      "logistic_boundary_upper_decimal": "0.026313",
       "logistic_brier_decimal": "0.02174297",
       "n": 5488,
       "selected_brier_decimal": "0.02174297",
@@ -2760,7 +3448,9 @@
     },
     {
       "boundary_upper_decimal": "0.026943",
+      "constant_boundary_upper_decimal": "0.146977",
       "constant_brier_decimal": "0.13420014",
+      "logistic_boundary_upper_decimal": "0.026943",
       "logistic_brier_decimal": "0.02219836",
       "n": 5504,
       "selected_brier_decimal": "0.02219836",
@@ -2768,7 +3458,9 @@
     },
     {
       "boundary_upper_decimal": "0.026867",
+      "constant_boundary_upper_decimal": "0.148353",
       "constant_brier_decimal": "0.13541159",
+      "logistic_boundary_upper_decimal": "0.026867",
       "logistic_brier_decimal": "0.02213626",
       "n": 5520,
       "selected_brier_decimal": "0.02213626",
@@ -2776,7 +3468,9 @@
     },
     {
       "boundary_upper_decimal": "0.026793",
+      "constant_boundary_upper_decimal": "0.149721",
       "constant_brier_decimal": "0.13661604",
+      "logistic_boundary_upper_decimal": "0.026793",
       "logistic_brier_decimal": "0.02207547",
       "n": 5536,
       "selected_brier_decimal": "0.02207547",
@@ -2784,7 +3478,9 @@
     },
     {
       "boundary_upper_decimal": "0.026721",
+      "constant_boundary_upper_decimal": "0.151079",
       "constant_brier_decimal": "0.13781355",
+      "logistic_boundary_upper_decimal": "0.026721",
       "logistic_brier_decimal": "0.02201621",
       "n": 5552,
       "selected_brier_decimal": "0.02201621",
@@ -2792,7 +3488,9 @@
     },
     {
       "boundary_upper_decimal": "0.026873",
+      "constant_boundary_upper_decimal": "0.152329",
       "constant_brier_decimal": "0.13891686",
+      "logistic_boundary_upper_decimal": "0.026873",
       "logistic_brier_decimal": "0.02212275",
       "n": 5568,
       "selected_brier_decimal": "0.02212275",
@@ -2800,7 +3498,9 @@
     },
     {
       "boundary_upper_decimal": "0.027020",
+      "constant_boundary_upper_decimal": "0.153571",
       "constant_brier_decimal": "0.14001386",
+      "logistic_boundary_upper_decimal": "0.027020",
       "logistic_brier_decimal": "0.02222683",
       "n": 5584,
       "selected_brier_decimal": "0.02222683",
@@ -2808,7 +3508,9 @@
     },
     {
       "boundary_upper_decimal": "0.027167",
+      "constant_boundary_upper_decimal": "0.154805",
       "constant_brier_decimal": "0.14110458",
+      "logistic_boundary_upper_decimal": "0.027167",
       "logistic_brier_decimal": "0.02233162",
       "n": 5600,
       "selected_brier_decimal": "0.02233162",
@@ -2816,7 +3518,9 @@
     },
     {
       "boundary_upper_decimal": "0.027103",
+      "constant_boundary_upper_decimal": "0.156129",
       "constant_brier_decimal": "0.14227565",
+      "logistic_boundary_upper_decimal": "0.027103",
       "logistic_brier_decimal": "0.02228056",
       "n": 5616,
       "selected_brier_decimal": "0.02228056",
@@ -2824,7 +3528,9 @@
     },
     {
       "boundary_upper_decimal": "0.027038",
+      "constant_boundary_upper_decimal": "0.157444",
       "constant_brier_decimal": "0.14344007",
+      "logistic_boundary_upper_decimal": "0.027038",
       "logistic_brier_decimal": "0.02222889",
       "n": 5632,
       "selected_brier_decimal": "0.02222889",
@@ -2832,7 +3538,9 @@
     },
     {
       "boundary_upper_decimal": "0.026972",
+      "constant_boundary_upper_decimal": "0.158751",
       "constant_brier_decimal": "0.14459789",
+      "logistic_boundary_upper_decimal": "0.026972",
       "logistic_brier_decimal": "0.02217585",
       "n": 5648,
       "selected_brier_decimal": "0.02217585",
@@ -2840,7 +3548,9 @@
     },
     {
       "boundary_upper_decimal": "0.026901",
+      "constant_boundary_upper_decimal": "0.160050",
       "constant_brier_decimal": "0.14574917",
+      "logistic_boundary_upper_decimal": "0.026901",
       "logistic_brier_decimal": "0.02211876",
       "n": 5664,
       "selected_brier_decimal": "0.02211876",
@@ -2848,7 +3558,9 @@
     },
     {
       "boundary_upper_decimal": "0.026832",
+      "constant_boundary_upper_decimal": "0.161340",
       "constant_brier_decimal": "0.14689397",
+      "logistic_boundary_upper_decimal": "0.026832",
       "logistic_brier_decimal": "0.02206266",
       "n": 5680,
       "selected_brier_decimal": "0.02206266",
@@ -2856,7 +3568,9 @@
     },
     {
       "boundary_upper_decimal": "0.026766",
+      "constant_boundary_upper_decimal": "0.162622",
       "constant_brier_decimal": "0.14803233",
+      "logistic_boundary_upper_decimal": "0.026766",
       "logistic_brier_decimal": "0.02200924",
       "n": 5696,
       "selected_brier_decimal": "0.02200924",
@@ -2864,7 +3578,9 @@
     },
     {
       "boundary_upper_decimal": "0.026712",
+      "constant_boundary_upper_decimal": "0.163895",
       "constant_brier_decimal": "0.14916431",
+      "logistic_boundary_upper_decimal": "0.026712",
       "logistic_brier_decimal": "0.02196831",
       "n": 5712,
       "selected_brier_decimal": "0.02196831",
@@ -2872,7 +3588,9 @@
     },
     {
       "boundary_upper_decimal": "0.026649",
+      "constant_boundary_upper_decimal": "0.165161",
       "constant_brier_decimal": "0.15028998",
+      "logistic_boundary_upper_decimal": "0.026649",
       "logistic_brier_decimal": "0.02191784",
       "n": 5728,
       "selected_brier_decimal": "0.02191784",
@@ -2880,7 +3598,9 @@
     },
     {
       "boundary_upper_decimal": "0.026590",
+      "constant_boundary_upper_decimal": "0.166418",
       "constant_brier_decimal": "0.15140936",
+      "logistic_boundary_upper_decimal": "0.026590",
       "logistic_brier_decimal": "0.02187171",
       "n": 5744,
       "selected_brier_decimal": "0.02187171",
@@ -2888,7 +3608,9 @@
     },
     {
       "boundary_upper_decimal": "0.026531",
+      "constant_boundary_upper_decimal": "0.167668",
       "constant_brier_decimal": "0.15252254",
+      "logistic_boundary_upper_decimal": "0.026531",
       "logistic_brier_decimal": "0.02182560",
       "n": 5760,
       "selected_brier_decimal": "0.02182560",
@@ -2896,7 +3618,9 @@
     },
     {
       "boundary_upper_decimal": "0.026469",
+      "constant_boundary_upper_decimal": "0.168909",
       "constant_brier_decimal": "0.15362954",
+      "logistic_boundary_upper_decimal": "0.026469",
       "logistic_brier_decimal": "0.02177618",
       "n": 5776,
       "selected_brier_decimal": "0.02177618",
@@ -2904,7 +3628,9 @@
     },
     {
       "boundary_upper_decimal": "0.026409",
+      "constant_boundary_upper_decimal": "0.170143",
       "constant_brier_decimal": "0.15473043",
+      "logistic_boundary_upper_decimal": "0.026409",
       "logistic_brier_decimal": "0.02172931",
       "n": 5792,
       "selected_brier_decimal": "0.02172931",
@@ -2912,7 +3638,9 @@
     },
     {
       "boundary_upper_decimal": "0.026353",
+      "constant_boundary_upper_decimal": "0.171369",
       "constant_brier_decimal": "0.15582525",
+      "logistic_boundary_upper_decimal": "0.026353",
       "logistic_brier_decimal": "0.02168609",
       "n": 5808,
       "selected_brier_decimal": "0.02168609",
@@ -2920,7 +3648,9 @@
     },
     {
       "boundary_upper_decimal": "0.026293",
+      "constant_boundary_upper_decimal": "0.172587",
       "constant_brier_decimal": "0.15691406",
+      "logistic_boundary_upper_decimal": "0.026293",
       "logistic_brier_decimal": "0.02163880",
       "n": 5824,
       "selected_brier_decimal": "0.02163880",
@@ -2928,7 +3658,9 @@
     },
     {
       "boundary_upper_decimal": "0.026235",
+      "constant_boundary_upper_decimal": "0.173798",
       "constant_brier_decimal": "0.15799690",
+      "logistic_boundary_upper_decimal": "0.026235",
       "logistic_brier_decimal": "0.02159295",
       "n": 5840,
       "selected_brier_decimal": "0.02159295",
@@ -2936,7 +3668,9 @@
     },
     {
       "boundary_upper_decimal": "0.026179",
+      "constant_boundary_upper_decimal": "0.175001",
       "constant_brier_decimal": "0.15907382",
+      "logistic_boundary_upper_decimal": "0.026179",
       "logistic_brier_decimal": "0.02154963",
       "n": 5856,
       "selected_brier_decimal": "0.02154963",
@@ -2944,7 +3678,9 @@
     },
     {
       "boundary_upper_decimal": "0.026121",
+      "constant_boundary_upper_decimal": "0.175919",
       "constant_brier_decimal": "0.15989651",
+      "logistic_boundary_upper_decimal": "0.026121",
       "logistic_brier_decimal": "0.02150343",
       "n": 5872,
       "selected_brier_decimal": "0.02150343",
@@ -2952,7 +3688,9 @@
     },
     {
       "boundary_upper_decimal": "0.026051",
+      "constant_boundary_upper_decimal": "0.175630",
       "constant_brier_decimal": "0.15964139",
+      "logistic_boundary_upper_decimal": "0.026051",
       "logistic_brier_decimal": "0.02144533",
       "n": 5888,
       "selected_brier_decimal": "0.02144533",
@@ -2960,7 +3698,9 @@
     },
     {
       "boundary_upper_decimal": "0.025981",
+      "constant_boundary_upper_decimal": "0.175342",
       "constant_brier_decimal": "0.15938766",
+      "logistic_boundary_upper_decimal": "0.025981",
       "logistic_brier_decimal": "0.02138747",
       "n": 5904,
       "selected_brier_decimal": "0.02138747",
@@ -2968,7 +3708,9 @@
     },
     {
       "boundary_upper_decimal": "0.025911",
+      "constant_boundary_upper_decimal": "0.175056",
       "constant_brier_decimal": "0.15913530",
+      "logistic_boundary_upper_decimal": "0.025911",
       "logistic_brier_decimal": "0.02132988",
       "n": 5920,
       "selected_brier_decimal": "0.02132988",
@@ -2976,7 +3718,9 @@
     },
     {
       "boundary_upper_decimal": "0.025842",
+      "constant_boundary_upper_decimal": "0.174771",
       "constant_brier_decimal": "0.15888430",
+      "logistic_boundary_upper_decimal": "0.025842",
       "logistic_brier_decimal": "0.02127263",
       "n": 5936,
       "selected_brier_decimal": "0.02127263",
@@ -2984,7 +3728,9 @@
     },
     {
       "boundary_upper_decimal": "0.025774",
+      "constant_boundary_upper_decimal": "0.174488",
       "constant_brier_decimal": "0.15863464",
+      "logistic_boundary_upper_decimal": "0.025774",
       "logistic_brier_decimal": "0.02121571",
       "n": 5952,
       "selected_brier_decimal": "0.02121571",
@@ -2992,7 +3738,9 @@
     },
     {
       "boundary_upper_decimal": "0.025705",
+      "constant_boundary_upper_decimal": "0.174207",
       "constant_brier_decimal": "0.15838633",
+      "logistic_boundary_upper_decimal": "0.025705",
       "logistic_brier_decimal": "0.02115909",
       "n": 5968,
       "selected_brier_decimal": "0.02115909",
@@ -3000,7 +3748,9 @@
     },
     {
       "boundary_upper_decimal": "0.025637",
+      "constant_boundary_upper_decimal": "0.173926",
       "constant_brier_decimal": "0.15813934",
+      "logistic_boundary_upper_decimal": "0.025637",
       "logistic_brier_decimal": "0.02110273",
       "n": 5984,
       "selected_brier_decimal": "0.02110273",
@@ -3008,7 +3758,9 @@
     },
     {
       "boundary_upper_decimal": "0.025569",
+      "constant_boundary_upper_decimal": "0.173648",
       "constant_brier_decimal": "0.15789368",
+      "logistic_boundary_upper_decimal": "0.025569",
       "logistic_brier_decimal": "0.02104670",
       "n": 6000,
       "selected_brier_decimal": "0.02104670",
@@ -3016,7 +3768,9 @@
     },
     {
       "boundary_upper_decimal": "0.025502",
+      "constant_boundary_upper_decimal": "0.173370",
       "constant_brier_decimal": "0.15764932",
+      "logistic_boundary_upper_decimal": "0.025502",
       "logistic_brier_decimal": "0.02099095",
       "n": 6016,
       "selected_brier_decimal": "0.02099095",
@@ -3024,7 +3778,9 @@
     },
     {
       "boundary_upper_decimal": "0.025435",
+      "constant_boundary_upper_decimal": "0.173095",
       "constant_brier_decimal": "0.15740625",
+      "logistic_boundary_upper_decimal": "0.025435",
       "logistic_brier_decimal": "0.02093551",
       "n": 6032,
       "selected_brier_decimal": "0.02093551",
@@ -3032,7 +3788,9 @@
     },
     {
       "boundary_upper_decimal": "0.025369",
+      "constant_boundary_upper_decimal": "0.172820",
       "constant_brier_decimal": "0.15716447",
+      "logistic_boundary_upper_decimal": "0.025369",
       "logistic_brier_decimal": "0.02088038",
       "n": 6048,
       "selected_brier_decimal": "0.02088038",
@@ -3040,7 +3798,9 @@
     },
     {
       "boundary_upper_decimal": "0.025302",
+      "constant_boundary_upper_decimal": "0.172547",
       "constant_brier_decimal": "0.15692397",
+      "logistic_boundary_upper_decimal": "0.025302",
       "logistic_brier_decimal": "0.02082554",
       "n": 6064,
       "selected_brier_decimal": "0.02082554",
@@ -3048,7 +3808,9 @@
     },
     {
       "boundary_upper_decimal": "0.025237",
+      "constant_boundary_upper_decimal": "0.172275",
       "constant_brier_decimal": "0.15668473",
+      "logistic_boundary_upper_decimal": "0.025237",
       "logistic_brier_decimal": "0.02077098",
       "n": 6080,
       "selected_brier_decimal": "0.02077098",
@@ -3056,7 +3818,9 @@
     },
     {
       "boundary_upper_decimal": "0.025171",
+      "constant_boundary_upper_decimal": "0.172005",
       "constant_brier_decimal": "0.15644675",
+      "logistic_boundary_upper_decimal": "0.025171",
       "logistic_brier_decimal": "0.02071674",
       "n": 6096,
       "selected_brier_decimal": "0.02071674",
@@ -3064,7 +3828,9 @@
     },
     {
       "boundary_upper_decimal": "0.025106",
+      "constant_boundary_upper_decimal": "0.171736",
       "constant_brier_decimal": "0.15621001",
+      "logistic_boundary_upper_decimal": "0.025106",
       "logistic_brier_decimal": "0.02066273",
       "n": 6112,
       "selected_brier_decimal": "0.02066273",
@@ -3072,7 +3838,9 @@
     },
     {
       "boundary_upper_decimal": "0.025041",
+      "constant_boundary_upper_decimal": "0.171469",
       "constant_brier_decimal": "0.15597451",
+      "logistic_boundary_upper_decimal": "0.025041",
       "logistic_brier_decimal": "0.02060904",
       "n": 6128,
       "selected_brier_decimal": "0.02060904",
@@ -3080,7 +3848,9 @@
     },
     {
       "boundary_upper_decimal": "0.024976",
+      "constant_boundary_upper_decimal": "0.171202",
       "constant_brier_decimal": "0.15574024",
+      "logistic_boundary_upper_decimal": "0.024976",
       "logistic_brier_decimal": "0.02055564",
       "n": 6144,
       "selected_brier_decimal": "0.02055564",
@@ -3088,7 +3858,9 @@
     },
     {
       "boundary_upper_decimal": "0.024912",
+      "constant_boundary_upper_decimal": "0.170937",
       "constant_brier_decimal": "0.15550718",
+      "logistic_boundary_upper_decimal": "0.024912",
       "logistic_brier_decimal": "0.02050248",
       "n": 6160,
       "selected_brier_decimal": "0.02050248",
@@ -3096,7 +3868,9 @@
     },
     {
       "boundary_upper_decimal": "0.024848",
+      "constant_boundary_upper_decimal": "0.170674",
       "constant_brier_decimal": "0.15527534",
+      "logistic_boundary_upper_decimal": "0.024848",
       "logistic_brier_decimal": "0.02044963",
       "n": 6176,
       "selected_brier_decimal": "0.02044963",
@@ -3104,7 +3878,9 @@
     },
     {
       "boundary_upper_decimal": "0.024785",
+      "constant_boundary_upper_decimal": "0.170412",
       "constant_brier_decimal": "0.15504469",
+      "logistic_boundary_upper_decimal": "0.024785",
       "logistic_brier_decimal": "0.02039710",
       "n": 6192,
       "selected_brier_decimal": "0.02039710",
@@ -3112,7 +3888,9 @@
     },
     {
       "boundary_upper_decimal": "0.024722",
+      "constant_boundary_upper_decimal": "0.170151",
       "constant_brier_decimal": "0.15481523",
+      "logistic_boundary_upper_decimal": "0.024722",
       "logistic_brier_decimal": "0.02034485",
       "n": 6208,
       "selected_brier_decimal": "0.02034485",
@@ -3120,7 +3898,9 @@
     },
     {
       "boundary_upper_decimal": "0.024659",
+      "constant_boundary_upper_decimal": "0.169891",
       "constant_brier_decimal": "0.15458694",
+      "logistic_boundary_upper_decimal": "0.024659",
       "logistic_brier_decimal": "0.02029286",
       "n": 6224,
       "selected_brier_decimal": "0.02029286",
@@ -3128,7 +3908,9 @@
     },
     {
       "boundary_upper_decimal": "0.024597",
+      "constant_boundary_upper_decimal": "0.169633",
       "constant_brier_decimal": "0.15435983",
+      "logistic_boundary_upper_decimal": "0.024597",
       "logistic_brier_decimal": "0.02024117",
       "n": 6240,
       "selected_brier_decimal": "0.02024117",
@@ -3136,7 +3918,9 @@
     },
     {
       "boundary_upper_decimal": "0.024534",
+      "constant_boundary_upper_decimal": "0.169376",
       "constant_brier_decimal": "0.15413388",
+      "logistic_boundary_upper_decimal": "0.024534",
       "logistic_brier_decimal": "0.02018973",
       "n": 6256,
       "selected_brier_decimal": "0.02018973",
@@ -3144,7 +3928,9 @@
     },
     {
       "boundary_upper_decimal": "0.024472",
+      "constant_boundary_upper_decimal": "0.169120",
       "constant_brier_decimal": "0.15390909",
+      "logistic_boundary_upper_decimal": "0.024472",
       "logistic_brier_decimal": "0.02013853",
       "n": 6272,
       "selected_brier_decimal": "0.02013853",
@@ -3152,7 +3938,9 @@
     },
     {
       "boundary_upper_decimal": "0.024411",
+      "constant_boundary_upper_decimal": "0.168866",
       "constant_brier_decimal": "0.15368544",
+      "logistic_boundary_upper_decimal": "0.024411",
       "logistic_brier_decimal": "0.02008767",
       "n": 6288,
       "selected_brier_decimal": "0.02008767",
@@ -3160,7 +3948,9 @@
     },
     {
       "boundary_upper_decimal": "0.024350",
+      "constant_boundary_upper_decimal": "0.168612",
       "constant_brier_decimal": "0.15346292",
+      "logistic_boundary_upper_decimal": "0.024350",
       "logistic_brier_decimal": "0.02003716",
       "n": 6304,
       "selected_brier_decimal": "0.02003716",
@@ -3168,7 +3958,9 @@
     },
     {
       "boundary_upper_decimal": "0.024289",
+      "constant_boundary_upper_decimal": "0.168360",
       "constant_brier_decimal": "0.15324153",
+      "logistic_boundary_upper_decimal": "0.024289",
       "logistic_brier_decimal": "0.01998691",
       "n": 6320,
       "selected_brier_decimal": "0.01998691",
@@ -3176,7 +3968,9 @@
     },
     {
       "boundary_upper_decimal": "0.024229",
+      "constant_boundary_upper_decimal": "0.168109",
       "constant_brier_decimal": "0.15302126",
+      "logistic_boundary_upper_decimal": "0.024229",
       "logistic_brier_decimal": "0.01993695",
       "n": 6336,
       "selected_brier_decimal": "0.01993695",
@@ -3184,7 +3978,9 @@
     },
     {
       "boundary_upper_decimal": "0.024169",
+      "constant_boundary_upper_decimal": "0.167860",
       "constant_brier_decimal": "0.15280209",
+      "logistic_boundary_upper_decimal": "0.024169",
       "logistic_brier_decimal": "0.01988725",
       "n": 6352,
       "selected_brier_decimal": "0.01988725",
@@ -3192,7 +3988,9 @@
     },
     {
       "boundary_upper_decimal": "0.024109",
+      "constant_boundary_upper_decimal": "0.167612",
       "constant_brier_decimal": "0.15258403",
+      "logistic_boundary_upper_decimal": "0.024109",
       "logistic_brier_decimal": "0.01983790",
       "n": 6368,
       "selected_brier_decimal": "0.01983790",
@@ -3200,7 +3998,9 @@
     },
     {
       "boundary_upper_decimal": "0.024049",
+      "constant_boundary_upper_decimal": "0.167364",
       "constant_brier_decimal": "0.15236706",
+      "logistic_boundary_upper_decimal": "0.024049",
       "logistic_brier_decimal": "0.01978873",
       "n": 6384,
       "selected_brier_decimal": "0.01978873",
@@ -3208,7 +4008,9 @@
     },
     {
       "boundary_upper_decimal": "0.023990",
+      "constant_boundary_upper_decimal": "0.167119",
       "constant_brier_decimal": "0.15215118",
+      "logistic_boundary_upper_decimal": "0.023990",
       "logistic_brier_decimal": "0.01973982",
       "n": 6400,
       "selected_brier_decimal": "0.01973982",
@@ -3216,7 +4018,9 @@
     },
     {
       "boundary_upper_decimal": "0.023931",
+      "constant_boundary_upper_decimal": "0.166874",
       "constant_brier_decimal": "0.15193637",
+      "logistic_boundary_upper_decimal": "0.023931",
       "logistic_brier_decimal": "0.01969115",
       "n": 6416,
       "selected_brier_decimal": "0.01969115",
@@ -3224,7 +4028,9 @@
     },
     {
       "boundary_upper_decimal": "0.023873",
+      "constant_boundary_upper_decimal": "0.166630",
       "constant_brier_decimal": "0.15172264",
+      "logistic_boundary_upper_decimal": "0.023873",
       "logistic_brier_decimal": "0.01964267",
       "n": 6432,
       "selected_brier_decimal": "0.01964267",
@@ -3232,7 +4038,9 @@
     },
     {
       "boundary_upper_decimal": "0.023814",
+      "constant_boundary_upper_decimal": "0.166388",
       "constant_brier_decimal": "0.15150996",
+      "logistic_boundary_upper_decimal": "0.023814",
       "logistic_brier_decimal": "0.01959442",
       "n": 6448,
       "selected_brier_decimal": "0.01959442",
@@ -3240,7 +4048,9 @@
     },
     {
       "boundary_upper_decimal": "0.023756",
+      "constant_boundary_upper_decimal": "0.166147",
       "constant_brier_decimal": "0.15129834",
+      "logistic_boundary_upper_decimal": "0.023756",
       "logistic_brier_decimal": "0.01954629",
       "n": 6464,
       "selected_brier_decimal": "0.01954629",
@@ -3248,7 +4058,9 @@
     },
     {
       "boundary_upper_decimal": "0.023698",
+      "constant_boundary_upper_decimal": "0.165907",
       "constant_brier_decimal": "0.15108776",
+      "logistic_boundary_upper_decimal": "0.023698",
       "logistic_brier_decimal": "0.01949833",
       "n": 6480,
       "selected_brier_decimal": "0.01949833",
@@ -3256,7 +4068,9 @@
     },
     {
       "boundary_upper_decimal": "0.023640",
+      "constant_boundary_upper_decimal": "0.165668",
       "constant_brier_decimal": "0.15087821",
+      "logistic_boundary_upper_decimal": "0.023640",
       "logistic_brier_decimal": "0.01945056",
       "n": 6496,
       "selected_brier_decimal": "0.01945056",
@@ -3264,7 +4078,9 @@
     },
     {
       "boundary_upper_decimal": "0.023583",
+      "constant_boundary_upper_decimal": "0.165430",
       "constant_brier_decimal": "0.15066970",
+      "logistic_boundary_upper_decimal": "0.023583",
       "logistic_brier_decimal": "0.01940303",
       "n": 6512,
       "selected_brier_decimal": "0.01940303",
@@ -3272,7 +4088,9 @@
     },
     {
       "boundary_upper_decimal": "0.023526",
+      "constant_boundary_upper_decimal": "0.165193",
       "constant_brier_decimal": "0.15046221",
+      "logistic_boundary_upper_decimal": "0.023526",
       "logistic_brier_decimal": "0.01935570",
       "n": 6528,
       "selected_brier_decimal": "0.01935570",
@@ -3280,7 +4098,9 @@
     },
     {
       "boundary_upper_decimal": "0.023469",
+      "constant_boundary_upper_decimal": "0.164958",
       "constant_brier_decimal": "0.15025574",
+      "logistic_boundary_upper_decimal": "0.023469",
       "logistic_brier_decimal": "0.01930859",
       "n": 6544,
       "selected_brier_decimal": "0.01930859",
@@ -3288,7 +4108,9 @@
     },
     {
       "boundary_upper_decimal": "0.023412",
+      "constant_boundary_upper_decimal": "0.164723",
       "constant_brier_decimal": "0.15005027",
+      "logistic_boundary_upper_decimal": "0.023412",
       "logistic_brier_decimal": "0.01926172",
       "n": 6560,
       "selected_brier_decimal": "0.01926172",
@@ -3296,7 +4118,9 @@
     },
     {
       "boundary_upper_decimal": "0.023356",
+      "constant_boundary_upper_decimal": "0.164490",
       "constant_brier_decimal": "0.14984580",
+      "logistic_boundary_upper_decimal": "0.023356",
       "logistic_brier_decimal": "0.01921517",
       "n": 6576,
       "selected_brier_decimal": "0.01921517",
@@ -3304,7 +4128,9 @@
     },
     {
       "boundary_upper_decimal": "0.023300",
+      "constant_boundary_upper_decimal": "0.164258",
       "constant_brier_decimal": "0.14964232",
+      "logistic_boundary_upper_decimal": "0.023300",
       "logistic_brier_decimal": "0.01916892",
       "n": 6592,
       "selected_brier_decimal": "0.01916892",
@@ -3312,7 +4138,9 @@
     },
     {
       "boundary_upper_decimal": "0.023244",
+      "constant_boundary_upper_decimal": "0.164027",
       "constant_brier_decimal": "0.14943983",
+      "logistic_boundary_upper_decimal": "0.023244",
       "logistic_brier_decimal": "0.01912281",
       "n": 6608,
       "selected_brier_decimal": "0.01912281",
@@ -3320,7 +4148,9 @@
     },
     {
       "boundary_upper_decimal": "0.023189",
+      "constant_boundary_upper_decimal": "0.163797",
       "constant_brier_decimal": "0.14923832",
+      "logistic_boundary_upper_decimal": "0.023189",
       "logistic_brier_decimal": "0.01907690",
       "n": 6624,
       "selected_brier_decimal": "0.01907690",
@@ -3328,7 +4158,9 @@
     },
     {
       "boundary_upper_decimal": "0.023133",
+      "constant_boundary_upper_decimal": "0.163568",
       "constant_brier_decimal": "0.14903778",
+      "logistic_boundary_upper_decimal": "0.023133",
       "logistic_brier_decimal": "0.01903120",
       "n": 6640,
       "selected_brier_decimal": "0.01903120",
@@ -3336,7 +4168,9 @@
     },
     {
       "boundary_upper_decimal": "0.023078",
+      "constant_boundary_upper_decimal": "0.163340",
       "constant_brier_decimal": "0.14883820",
+      "logistic_boundary_upper_decimal": "0.023078",
       "logistic_brier_decimal": "0.01898569",
       "n": 6656,
       "selected_brier_decimal": "0.01898569",
@@ -3344,7 +4178,9 @@
     },
     {
       "boundary_upper_decimal": "0.023024",
+      "constant_boundary_upper_decimal": "0.163113",
       "constant_brier_decimal": "0.14863958",
+      "logistic_boundary_upper_decimal": "0.023024",
       "logistic_brier_decimal": "0.01894038",
       "n": 6672,
       "selected_brier_decimal": "0.01894038",
@@ -3352,7 +4188,9 @@
     },
     {
       "boundary_upper_decimal": "0.022969",
+      "constant_boundary_upper_decimal": "0.162887",
       "constant_brier_decimal": "0.14844191",
+      "logistic_boundary_upper_decimal": "0.022969",
       "logistic_brier_decimal": "0.01889531",
       "n": 6688,
       "selected_brier_decimal": "0.01889531",
@@ -3360,7 +4198,9 @@
     },
     {
       "boundary_upper_decimal": "0.022915",
+      "constant_boundary_upper_decimal": "0.162662",
       "constant_brier_decimal": "0.14824519",
+      "logistic_boundary_upper_decimal": "0.022915",
       "logistic_brier_decimal": "0.01885049",
       "n": 6704,
       "selected_brier_decimal": "0.01885049",
@@ -3368,7 +4208,9 @@
     },
     {
       "boundary_upper_decimal": "0.022861",
+      "constant_boundary_upper_decimal": "0.162439",
       "constant_brier_decimal": "0.14804940",
+      "logistic_boundary_upper_decimal": "0.022861",
       "logistic_brier_decimal": "0.01880593",
       "n": 6720,
       "selected_brier_decimal": "0.01880593",
@@ -3376,7 +4218,9 @@
     },
     {
       "boundary_upper_decimal": "0.022807",
+      "constant_boundary_upper_decimal": "0.162216",
       "constant_brier_decimal": "0.14785454",
+      "logistic_boundary_upper_decimal": "0.022807",
       "logistic_brier_decimal": "0.01876163",
       "n": 6736,
       "selected_brier_decimal": "0.01876163",
@@ -3384,7 +4228,9 @@
     },
     {
       "boundary_upper_decimal": "0.023124",
+      "constant_boundary_upper_decimal": "0.162563",
       "constant_brier_decimal": "0.14816460",
+      "logistic_boundary_upper_decimal": "0.023124",
       "logistic_brier_decimal": "0.01899985",
       "n": 6752,
       "selected_brier_decimal": "0.01899985",
@@ -3392,7 +4238,9 @@
     },
     {
       "boundary_upper_decimal": "0.023084",
+      "constant_boundary_upper_decimal": "0.163638",
       "constant_brier_decimal": "0.14911965",
+      "logistic_boundary_upper_decimal": "0.023084",
       "logistic_brier_decimal": "0.01896983",
       "n": 6768,
       "selected_brier_decimal": "0.01896983",
@@ -3400,7 +4248,9 @@
     },
     {
       "boundary_upper_decimal": "0.023039",
+      "constant_boundary_upper_decimal": "0.164708",
       "constant_brier_decimal": "0.15007019",
+      "logistic_boundary_upper_decimal": "0.023039",
       "logistic_brier_decimal": "0.01893390",
       "n": 6784,
       "selected_brier_decimal": "0.01893390",
@@ -3408,7 +4258,9 @@
     },
     {
       "boundary_upper_decimal": "0.022988",
+      "constant_boundary_upper_decimal": "0.165771",
       "constant_brier_decimal": "0.15101627",
+      "logistic_boundary_upper_decimal": "0.022988",
       "logistic_brier_decimal": "0.01889247",
       "n": 6800,
       "selected_brier_decimal": "0.01889247",
@@ -3416,7 +4268,9 @@
     },
     {
       "boundary_upper_decimal": "0.022937",
+      "constant_boundary_upper_decimal": "0.166829",
       "constant_brier_decimal": "0.15195790",
+      "logistic_boundary_upper_decimal": "0.022937",
       "logistic_brier_decimal": "0.01885102",
       "n": 6816,
       "selected_brier_decimal": "0.01885102",
@@ -3424,7 +4278,9 @@
     },
     {
       "boundary_upper_decimal": "0.022887",
+      "constant_boundary_upper_decimal": "0.167881",
       "constant_brier_decimal": "0.15289512",
+      "logistic_boundary_upper_decimal": "0.022887",
       "logistic_brier_decimal": "0.01880984",
       "n": 6832,
       "selected_brier_decimal": "0.01880984",
@@ -3432,7 +4288,9 @@
     },
     {
       "boundary_upper_decimal": "0.022836",
+      "constant_boundary_upper_decimal": "0.168927",
       "constant_brier_decimal": "0.15382796",
+      "logistic_boundary_upper_decimal": "0.022836",
       "logistic_brier_decimal": "0.01876886",
       "n": 6848,
       "selected_brier_decimal": "0.01876886",
@@ -3440,7 +4298,9 @@
     },
     {
       "boundary_upper_decimal": "0.022786",
+      "constant_boundary_upper_decimal": "0.169968",
       "constant_brier_decimal": "0.15475645",
+      "logistic_boundary_upper_decimal": "0.022786",
       "logistic_brier_decimal": "0.01872783",
       "n": 6864,
       "selected_brier_decimal": "0.01872783",
@@ -3448,7 +4308,9 @@
     },
     {
       "boundary_upper_decimal": "0.022736",
+      "constant_boundary_upper_decimal": "0.171004",
       "constant_brier_decimal": "0.15568062",
+      "logistic_boundary_upper_decimal": "0.022736",
       "logistic_brier_decimal": "0.01868624",
       "n": 6880,
       "selected_brier_decimal": "0.01868624",
@@ -3456,7 +4318,9 @@
     },
     {
       "boundary_upper_decimal": "0.022684",
+      "constant_boundary_upper_decimal": "0.172034",
       "constant_brier_decimal": "0.15660051",
+      "logistic_boundary_upper_decimal": "0.022684",
       "logistic_brier_decimal": "0.01864415",
       "n": 6896,
       "selected_brier_decimal": "0.01864415",
@@ -3464,7 +4328,9 @@
     },
     {
       "boundary_upper_decimal": "0.022633",
+      "constant_boundary_upper_decimal": "0.173058",
       "constant_brier_decimal": "0.15751613",
+      "logistic_boundary_upper_decimal": "0.022633",
       "logistic_brier_decimal": "0.01860163",
       "n": 6912,
       "selected_brier_decimal": "0.01860163",
@@ -3472,7 +4338,9 @@
     },
     {
       "boundary_upper_decimal": "0.022581",
+      "constant_boundary_upper_decimal": "0.174077",
       "constant_brier_decimal": "0.15842753",
+      "logistic_boundary_upper_decimal": "0.022581",
       "logistic_brier_decimal": "0.01855925",
       "n": 6928,
       "selected_brier_decimal": "0.01855925",
@@ -3480,7 +4348,9 @@
     },
     {
       "boundary_upper_decimal": "0.022530",
+      "constant_boundary_upper_decimal": "0.175091",
       "constant_brier_decimal": "0.15933473",
+      "logistic_boundary_upper_decimal": "0.022530",
       "logistic_brier_decimal": "0.01851683",
       "n": 6944,
       "selected_brier_decimal": "0.01851683",
@@ -3488,7 +4358,9 @@
     },
     {
       "boundary_upper_decimal": "0.022479",
+      "constant_boundary_upper_decimal": "0.176099",
       "constant_brier_decimal": "0.16023775",
+      "logistic_boundary_upper_decimal": "0.022479",
       "logistic_brier_decimal": "0.01847435",
       "n": 6960,
       "selected_brier_decimal": "0.01847435",
@@ -3496,7 +4368,9 @@
     },
     {
       "boundary_upper_decimal": "0.022427",
+      "constant_boundary_upper_decimal": "0.177102",
       "constant_brier_decimal": "0.16113664",
+      "logistic_boundary_upper_decimal": "0.022427",
       "logistic_brier_decimal": "0.01843203",
       "n": 6976,
       "selected_brier_decimal": "0.01843203",
@@ -3504,7 +4378,9 @@
     },
     {
       "boundary_upper_decimal": "0.022377",
+      "constant_boundary_upper_decimal": "0.178100",
       "constant_brier_decimal": "0.16203140",
+      "logistic_boundary_upper_decimal": "0.022377",
       "logistic_brier_decimal": "0.01839002",
       "n": 6992,
       "selected_brier_decimal": "0.01839002",
@@ -3512,7 +4388,9 @@
     },
     {
       "boundary_upper_decimal": "0.022487",
+      "constant_boundary_upper_decimal": "0.178938",
       "constant_brier_decimal": "0.16278335",
+      "logistic_boundary_upper_decimal": "0.022487",
       "logistic_brier_decimal": "0.01847020",
       "n": 7008,
       "selected_brier_decimal": "0.01847020",
@@ -3520,7 +4398,9 @@
     },
     {
       "boundary_upper_decimal": "0.022451",
+      "constant_boundary_upper_decimal": "0.178689",
       "constant_brier_decimal": "0.16256292",
+      "logistic_boundary_upper_decimal": "0.022451",
       "logistic_brier_decimal": "0.01844333",
       "n": 7024,
       "selected_brier_decimal": "0.01844333",
@@ -3528,7 +4408,9 @@
     },
     {
       "boundary_upper_decimal": "0.022947",
+      "constant_boundary_upper_decimal": "0.178904",
       "constant_brier_decimal": "0.16275781",
+      "logistic_boundary_upper_decimal": "0.022947",
       "logistic_brier_decimal": "0.01880637",
       "n": 7040,
       "selected_brier_decimal": "0.01880637",
@@ -3536,7 +4418,9 @@
     },
     {
       "boundary_upper_decimal": "0.022895",
+      "constant_boundary_upper_decimal": "0.179888",
       "constant_brier_decimal": "0.16364079",
+      "logistic_boundary_upper_decimal": "0.022895",
       "logistic_brier_decimal": "0.01876400",
       "n": 7056,
       "selected_brier_decimal": "0.01876400",
@@ -3544,7 +4428,9 @@
     },
     {
       "boundary_upper_decimal": "0.022844",
+      "constant_boundary_upper_decimal": "0.180867",
       "constant_brier_decimal": "0.16451977",
+      "logistic_boundary_upper_decimal": "0.022844",
       "logistic_brier_decimal": "0.01872187",
       "n": 7072,
       "selected_brier_decimal": "0.01872187",
@@ -3552,7 +4438,9 @@
     },
     {
       "boundary_upper_decimal": "0.022793",
+      "constant_boundary_upper_decimal": "0.181840",
       "constant_brier_decimal": "0.16539478",
+      "logistic_boundary_upper_decimal": "0.022793",
       "logistic_brier_decimal": "0.01867969",
       "n": 7088,
       "selected_brier_decimal": "0.01867969",
@@ -3560,7 +4448,9 @@
     },
     {
       "boundary_upper_decimal": "0.022742",
+      "constant_boundary_upper_decimal": "0.182809",
       "constant_brier_decimal": "0.16626586",
+      "logistic_boundary_upper_decimal": "0.022742",
       "logistic_brier_decimal": "0.01863766",
       "n": 7104,
       "selected_brier_decimal": "0.01863766",
@@ -3568,7 +4458,9 @@
     },
     {
       "boundary_upper_decimal": "0.022691",
+      "constant_boundary_upper_decimal": "0.183772",
       "constant_brier_decimal": "0.16713301",
+      "logistic_boundary_upper_decimal": "0.022691",
       "logistic_brier_decimal": "0.01859582",
       "n": 7120,
       "selected_brier_decimal": "0.01859582",
@@ -3576,7 +4468,9 @@
     },
     {
       "boundary_upper_decimal": "0.022641",
+      "constant_boundary_upper_decimal": "0.184731",
       "constant_brier_decimal": "0.16799628",
+      "logistic_boundary_upper_decimal": "0.022641",
       "logistic_brier_decimal": "0.01855415",
       "n": 7136,
       "selected_brier_decimal": "0.01855415",
@@ -3584,7 +4478,9 @@
     },
     {
       "boundary_upper_decimal": "0.022591",
+      "constant_boundary_upper_decimal": "0.185684",
       "constant_brier_decimal": "0.16885569",
+      "logistic_boundary_upper_decimal": "0.022591",
       "logistic_brier_decimal": "0.01851267",
       "n": 7152,
       "selected_brier_decimal": "0.01851267",
@@ -3592,7 +4488,9 @@
     },
     {
       "boundary_upper_decimal": "0.022540",
+      "constant_boundary_upper_decimal": "0.186633",
       "constant_brier_decimal": "0.16971126",
+      "logistic_boundary_upper_decimal": "0.022540",
       "logistic_brier_decimal": "0.01847135",
       "n": 7168,
       "selected_brier_decimal": "0.01847135",
@@ -3600,7 +4498,9 @@
     },
     {
       "boundary_upper_decimal": "0.022491",
+      "constant_boundary_upper_decimal": "0.187577",
       "constant_brier_decimal": "0.17056302",
+      "logistic_boundary_upper_decimal": "0.022491",
       "logistic_brier_decimal": "0.01843023",
       "n": 7184,
       "selected_brier_decimal": "0.01843023",
@@ -3608,7 +4508,9 @@
     },
     {
       "boundary_upper_decimal": "0.022441",
+      "constant_boundary_upper_decimal": "0.188517",
       "constant_brier_decimal": "0.17141099",
+      "logistic_boundary_upper_decimal": "0.022441",
       "logistic_brier_decimal": "0.01838928",
       "n": 7200,
       "selected_brier_decimal": "0.01838928",
@@ -3616,7 +4518,9 @@
     },
     {
       "boundary_upper_decimal": "0.022391",
+      "constant_boundary_upper_decimal": "0.189451",
       "constant_brier_decimal": "0.17225520",
+      "logistic_boundary_upper_decimal": "0.022391",
       "logistic_brier_decimal": "0.01834852",
       "n": 7216,
       "selected_brier_decimal": "0.01834852",
@@ -3624,7 +4528,9 @@
     },
     {
       "boundary_upper_decimal": "0.022342",
+      "constant_boundary_upper_decimal": "0.190381",
       "constant_brier_decimal": "0.17309568",
+      "logistic_boundary_upper_decimal": "0.022342",
       "logistic_brier_decimal": "0.01830794",
       "n": 7232,
       "selected_brier_decimal": "0.01830794",
@@ -3632,7 +4538,9 @@
     },
     {
       "boundary_upper_decimal": "0.022293",
+      "constant_boundary_upper_decimal": "0.191307",
       "constant_brier_decimal": "0.17393245",
+      "logistic_boundary_upper_decimal": "0.022293",
       "logistic_brier_decimal": "0.01826753",
       "n": 7248,
       "selected_brier_decimal": "0.01826753",
@@ -3640,7 +4548,9 @@
     },
     {
       "boundary_upper_decimal": "0.022244",
+      "constant_boundary_upper_decimal": "0.192227",
       "constant_brier_decimal": "0.17476553",
+      "logistic_boundary_upper_decimal": "0.022244",
       "logistic_brier_decimal": "0.01822730",
       "n": 7264,
       "selected_brier_decimal": "0.01822730",
@@ -3648,7 +4558,9 @@
     },
     {
       "boundary_upper_decimal": "0.022196",
+      "constant_boundary_upper_decimal": "0.193143",
       "constant_brier_decimal": "0.17559495",
+      "logistic_boundary_upper_decimal": "0.022196",
       "logistic_brier_decimal": "0.01818724",
       "n": 7280,
       "selected_brier_decimal": "0.01818724",
@@ -3656,7 +4568,9 @@
     },
     {
       "boundary_upper_decimal": "0.022147",
+      "constant_boundary_upper_decimal": "0.194055",
       "constant_brier_decimal": "0.17642073",
+      "logistic_boundary_upper_decimal": "0.022147",
       "logistic_brier_decimal": "0.01814736",
       "n": 7296,
       "selected_brier_decimal": "0.01814736",
@@ -3664,7 +4578,9 @@
     },
     {
       "boundary_upper_decimal": "0.022320",
+      "constant_boundary_upper_decimal": "0.194814",
       "constant_brier_decimal": "0.17710992",
+      "logistic_boundary_upper_decimal": "0.022320",
       "logistic_brier_decimal": "0.01827515",
       "n": 7312,
       "selected_brier_decimal": "0.01827515",
@@ -3672,7 +4588,9 @@
     },
     {
       "boundary_upper_decimal": "0.022728",
+      "constant_boundary_upper_decimal": "0.194544",
       "constant_brier_decimal": "0.17686736",
+      "logistic_boundary_upper_decimal": "0.022728",
       "logistic_brier_decimal": "0.01866404",
       "n": 7328,
       "selected_brier_decimal": "0.01866404",
@@ -3680,7 +4598,9 @@
     },
     {
       "boundary_upper_decimal": "0.023071",
+      "constant_boundary_upper_decimal": "0.194275",
       "constant_brier_decimal": "0.17662584",
+      "logistic_boundary_upper_decimal": "0.023071",
       "logistic_brier_decimal": "0.01899493",
       "n": 7344,
       "selected_brier_decimal": "0.01899493",
@@ -3688,7 +4608,9 @@
     },
     {
       "boundary_upper_decimal": "0.023392",
+      "constant_boundary_upper_decimal": "0.194006",
       "constant_brier_decimal": "0.17638538",
+      "logistic_boundary_upper_decimal": "0.023392",
       "logistic_brier_decimal": "0.01930675",
       "n": 7360,
       "selected_brier_decimal": "0.01930675",
@@ -3696,7 +4618,9 @@
     },
     {
       "boundary_upper_decimal": "0.023797",
+      "constant_boundary_upper_decimal": "0.193739",
       "constant_brier_decimal": "0.17614597",
+      "logistic_boundary_upper_decimal": "0.023797",
       "logistic_brier_decimal": "0.01969338",
       "n": 7376,
       "selected_brier_decimal": "0.01969338",
@@ -3704,7 +4628,9 @@
     },
     {
       "boundary_upper_decimal": "0.024307",
+      "constant_boundary_upper_decimal": "0.193473",
       "constant_brier_decimal": "0.17590758",
+      "logistic_boundary_upper_decimal": "0.024307",
       "logistic_brier_decimal": "0.02017040",
       "n": 7392,
       "selected_brier_decimal": "0.02017040",
@@ -3712,7 +4638,9 @@
     },
     {
       "boundary_upper_decimal": "0.024962",
+      "constant_boundary_upper_decimal": "0.193208",
       "constant_brier_decimal": "0.17567023",
+      "logistic_boundary_upper_decimal": "0.024962",
       "logistic_brier_decimal": "0.02076685",
       "n": 7408,
       "selected_brier_decimal": "0.02076685",
@@ -3720,7 +4648,9 @@
     },
     {
       "boundary_upper_decimal": "0.025782",
+      "constant_boundary_upper_decimal": "0.192945",
       "constant_brier_decimal": "0.17543390",
+      "logistic_boundary_upper_decimal": "0.025782",
       "logistic_brier_decimal": "0.02149655",
       "n": 7424,
       "selected_brier_decimal": "0.02149655",
@@ -3728,7 +4658,9 @@
     },
     {
       "boundary_upper_decimal": "0.026781",
+      "constant_boundary_upper_decimal": "0.192682",
       "constant_brier_decimal": "0.17519859",
+      "logistic_boundary_upper_decimal": "0.026781",
       "logistic_brier_decimal": "0.02236402",
       "n": 7440,
       "selected_brier_decimal": "0.02236402",
@@ -3736,7 +4668,9 @@
     },
     {
       "boundary_upper_decimal": "0.027740",
+      "constant_boundary_upper_decimal": "0.192420",
       "constant_brier_decimal": "0.17496429",
+      "logistic_boundary_upper_decimal": "0.027740",
       "logistic_brier_decimal": "0.02320118",
       "n": 7456,
       "selected_brier_decimal": "0.02320118",
@@ -3744,7 +4678,9 @@
     },
     {
       "boundary_upper_decimal": "0.028843",
+      "constant_boundary_upper_decimal": "0.192160",
       "constant_brier_decimal": "0.17473099",
+      "logistic_boundary_upper_decimal": "0.028843",
       "logistic_brier_decimal": "0.02414673",
       "n": 7472,
       "selected_brier_decimal": "0.02414673",
@@ -3752,7 +4688,9 @@
     },
     {
       "boundary_upper_decimal": "0.029843",
+      "constant_boundary_upper_decimal": "0.191900",
       "constant_brier_decimal": "0.17449869",
+      "logistic_boundary_upper_decimal": "0.029843",
       "logistic_brier_decimal": "0.02501522",
       "n": 7488,
       "selected_brier_decimal": "0.02501522",
@@ -3760,7 +4698,9 @@
     },
     {
       "boundary_upper_decimal": "0.031119",
+      "constant_boundary_upper_decimal": "0.191642",
       "constant_brier_decimal": "0.17426738",
+      "logistic_boundary_upper_decimal": "0.031119",
       "logistic_brier_decimal": "0.02608520",
       "n": 7504,
       "selected_brier_decimal": "0.02608520",
@@ -3768,7 +4708,9 @@
     },
     {
       "boundary_upper_decimal": "0.033393",
+      "constant_boundary_upper_decimal": "0.191385",
       "constant_brier_decimal": "0.17403705",
+      "logistic_boundary_upper_decimal": "0.033393",
       "logistic_brier_decimal": "0.02780645",
       "n": 7520,
       "selected_brier_decimal": "0.02780645",
@@ -3776,7 +4718,9 @@
     },
     {
       "boundary_upper_decimal": "0.034864",
+      "constant_boundary_upper_decimal": "0.191128",
       "constant_brier_decimal": "0.17380770",
+      "logistic_boundary_upper_decimal": "0.034864",
       "logistic_brier_decimal": "0.02901056",
       "n": 7536,
       "selected_brier_decimal": "0.02901056",
@@ -3784,7 +4728,9 @@
     },
     {
       "boundary_upper_decimal": "0.036200",
+      "constant_boundary_upper_decimal": "0.190873",
       "constant_brier_decimal": "0.17357933",
+      "logistic_boundary_upper_decimal": "0.036200",
       "logistic_brier_decimal": "0.03012331",
       "n": 7552,
       "selected_brier_decimal": "0.03012331",
@@ -3792,7 +4738,9 @@
     },
     {
       "boundary_upper_decimal": "0.037392",
+      "constant_boundary_upper_decimal": "0.190619",
       "constant_brier_decimal": "0.17335191",
+      "logistic_boundary_upper_decimal": "0.037392",
       "logistic_brier_decimal": "0.03111616",
       "n": 7568,
       "selected_brier_decimal": "0.03111616",
@@ -3800,7 +4748,9 @@
     },
     {
       "boundary_upper_decimal": "0.038422",
+      "constant_boundary_upper_decimal": "0.190366",
       "constant_brier_decimal": "0.17312546",
+      "logistic_boundary_upper_decimal": "0.038422",
       "logistic_brier_decimal": "0.03198372",
       "n": 7584,
       "selected_brier_decimal": "0.03198372",
@@ -3808,7 +4758,9 @@
     },
     {
       "boundary_upper_decimal": "0.040207",
+      "constant_boundary_upper_decimal": "0.190114",
       "constant_brier_decimal": "0.17289996",
+      "logistic_boundary_upper_decimal": "0.040207",
       "logistic_brier_decimal": "0.03339398",
       "n": 7600,
       "selected_brier_decimal": "0.03339398",
@@ -3816,7 +4768,9 @@
     },
     {
       "boundary_upper_decimal": "0.040556",
+      "constant_boundary_upper_decimal": "0.189862",
       "constant_brier_decimal": "0.17267541",
+      "logistic_boundary_upper_decimal": "0.040556",
       "logistic_brier_decimal": "0.03366762",
       "n": 7616,
       "selected_brier_decimal": "0.03366762",
@@ -3824,7 +4778,9 @@
     },
     {
       "boundary_upper_decimal": "0.040528",
+      "constant_boundary_upper_decimal": "0.189612",
       "constant_brier_decimal": "0.17245180",
+      "logistic_boundary_upper_decimal": "0.040528",
       "logistic_brier_decimal": "0.03365417",
       "n": 7632,
       "selected_brier_decimal": "0.03365417",
@@ -3832,7 +4788,9 @@
     },
     {
       "boundary_upper_decimal": "0.040535",
+      "constant_boundary_upper_decimal": "0.189363",
       "constant_brier_decimal": "0.17222913",
+      "logistic_boundary_upper_decimal": "0.040535",
       "logistic_brier_decimal": "0.03367547",
       "n": 7648,
       "selected_brier_decimal": "0.03367547",
@@ -3840,7 +4798,9 @@
     },
     {
       "boundary_upper_decimal": "0.040583",
+      "constant_boundary_upper_decimal": "0.189115",
       "constant_brier_decimal": "0.17200739",
+      "logistic_boundary_upper_decimal": "0.040583",
       "logistic_brier_decimal": "0.03373714",
       "n": 7664,
       "selected_brier_decimal": "0.03373714",
@@ -3848,7 +4808,9 @@
     },
     {
       "boundary_upper_decimal": "0.040661",
+      "constant_boundary_upper_decimal": "0.188868",
       "constant_brier_decimal": "0.17178657",
+      "logistic_boundary_upper_decimal": "0.040661",
       "logistic_brier_decimal": "0.03382555",
       "n": 7680,
       "selected_brier_decimal": "0.03382555",
@@ -3856,7 +4818,9 @@
     },
     {
       "boundary_upper_decimal": "0.040665",
+      "constant_boundary_upper_decimal": "0.188622",
       "constant_brier_decimal": "0.17156666",
+      "logistic_boundary_upper_decimal": "0.040665",
       "logistic_brier_decimal": "0.03383979",
       "n": 7696,
       "selected_brier_decimal": "0.03383979",
@@ -3864,7 +4828,9 @@
     },
     {
       "boundary_upper_decimal": "0.041710",
+      "constant_boundary_upper_decimal": "0.188377",
       "constant_brier_decimal": "0.17134767",
+      "logistic_boundary_upper_decimal": "0.041710",
       "logistic_brier_decimal": "0.03465541",
       "n": 7712,
       "selected_brier_decimal": "0.03465541",
@@ -3872,7 +4838,9 @@
     },
     {
       "boundary_upper_decimal": "0.042116",
+      "constant_boundary_upper_decimal": "0.188133",
       "constant_brier_decimal": "0.17112959",
+      "logistic_boundary_upper_decimal": "0.042116",
       "logistic_brier_decimal": "0.03504519",
       "n": 7728,
       "selected_brier_decimal": "0.03504519",
@@ -3880,7 +4848,9 @@
     },
     {
       "boundary_upper_decimal": "0.042636",
+      "constant_boundary_upper_decimal": "0.187889",
       "constant_brier_decimal": "0.17091241",
+      "logistic_boundary_upper_decimal": "0.042636",
       "logistic_brier_decimal": "0.03552687",
       "n": 7744,
       "selected_brier_decimal": "0.03552687",
@@ -3888,7 +4858,9 @@
     },
     {
       "boundary_upper_decimal": "0.043013",
+      "constant_boundary_upper_decimal": "0.187647",
       "constant_brier_decimal": "0.17069612",
+      "logistic_boundary_upper_decimal": "0.043013",
       "logistic_brier_decimal": "0.03589249",
       "n": 7760,
       "selected_brier_decimal": "0.03589249",
@@ -3896,7 +4868,9 @@
     },
     {
       "boundary_upper_decimal": "0.044431",
+      "constant_boundary_upper_decimal": "0.187406",
       "constant_brier_decimal": "0.17048073",
+      "logistic_boundary_upper_decimal": "0.044431",
       "logistic_brier_decimal": "0.03702448",
       "n": 7776,
       "selected_brier_decimal": "0.03702448",
@@ -3904,7 +4878,9 @@
     },
     {
       "boundary_upper_decimal": "0.045463",
+      "constant_boundary_upper_decimal": "0.187166",
       "constant_brier_decimal": "0.17026622",
+      "logistic_boundary_upper_decimal": "0.045463",
       "logistic_brier_decimal": "0.03786719",
       "n": 7792,
       "selected_brier_decimal": "0.03786719",
@@ -3912,7 +4888,9 @@
     },
     {
       "boundary_upper_decimal": "0.045561",
+      "constant_boundary_upper_decimal": "0.186926",
       "constant_brier_decimal": "0.17005259",
+      "logistic_boundary_upper_decimal": "0.045561",
       "logistic_brier_decimal": "0.03797818",
       "n": 7808,
       "selected_brier_decimal": "0.03797818",
@@ -3920,7 +4898,9 @@
     },
     {
       "boundary_upper_decimal": "0.045743",
+      "constant_boundary_upper_decimal": "0.186688",
       "constant_brier_decimal": "0.16983983",
+      "logistic_boundary_upper_decimal": "0.045743",
       "logistic_brier_decimal": "0.03816775",
       "n": 7824,
       "selected_brier_decimal": "0.03816775",
@@ -3928,7 +4908,9 @@
     },
     {
       "boundary_upper_decimal": "0.045957",
+      "constant_boundary_upper_decimal": "0.186450",
       "constant_brier_decimal": "0.16962794",
+      "logistic_boundary_upper_decimal": "0.045957",
       "logistic_brier_decimal": "0.03838816",
       "n": 7840,
       "selected_brier_decimal": "0.03838816",
@@ -3936,7 +4918,9 @@
     },
     {
       "boundary_upper_decimal": "0.046119",
+      "constant_boundary_upper_decimal": "0.186214",
       "constant_brier_decimal": "0.16941691",
+      "logistic_boundary_upper_decimal": "0.046119",
       "logistic_brier_decimal": "0.03855919",
       "n": 7856,
       "selected_brier_decimal": "0.03855919",
@@ -3944,7 +4928,9 @@
     },
     {
       "boundary_upper_decimal": "0.046518",
+      "constant_boundary_upper_decimal": "0.185978",
       "constant_brier_decimal": "0.16920674",
+      "logistic_boundary_upper_decimal": "0.046518",
       "logistic_brier_decimal": "0.03893878",
       "n": 7872,
       "selected_brier_decimal": "0.03893878",
@@ -3952,7 +4938,9 @@
     },
     {
       "boundary_upper_decimal": "0.047177",
+      "constant_boundary_upper_decimal": "0.185743",
       "constant_brier_decimal": "0.16899742",
+      "logistic_boundary_upper_decimal": "0.047177",
       "logistic_brier_decimal": "0.03954122",
       "n": 7888,
       "selected_brier_decimal": "0.03954122",
@@ -3960,7 +4948,9 @@
     },
     {
       "boundary_upper_decimal": "0.047907",
+      "constant_boundary_upper_decimal": "0.185510",
       "constant_brier_decimal": "0.16878896",
+      "logistic_boundary_upper_decimal": "0.047907",
       "logistic_brier_decimal": "0.04019759",
       "n": 7904,
       "selected_brier_decimal": "0.04019759",
@@ -3968,7 +4958,9 @@
     },
     {
       "boundary_upper_decimal": "0.048848",
+      "constant_boundary_upper_decimal": "0.185277",
       "constant_brier_decimal": "0.16858133",
+      "logistic_boundary_upper_decimal": "0.048848",
       "logistic_brier_decimal": "0.04102009",
       "n": 7920,
       "selected_brier_decimal": "0.04102009",
@@ -3976,7 +4968,9 @@
     },
     {
       "boundary_upper_decimal": "0.049993",
+      "constant_boundary_upper_decimal": "0.185045",
       "constant_brier_decimal": "0.16837454",
+      "logistic_boundary_upper_decimal": "0.049993",
       "logistic_brier_decimal": "0.04199178",
       "n": 7936,
       "selected_brier_decimal": "0.04199178",
@@ -3984,7 +4978,9 @@
     },
     {
       "boundary_upper_decimal": "0.051441",
+      "constant_boundary_upper_decimal": "0.184814",
       "constant_brier_decimal": "0.16816858",
+      "logistic_boundary_upper_decimal": "0.051441",
       "logistic_brier_decimal": "0.04317616",
       "n": 7952,
       "selected_brier_decimal": "0.04317616",
@@ -3992,7 +4988,9 @@
     },
     {
       "boundary_upper_decimal": "0.053086",
+      "constant_boundary_upper_decimal": "0.184583",
       "constant_brier_decimal": "0.16796345",
+      "logistic_boundary_upper_decimal": "0.053086",
       "logistic_brier_decimal": "0.04449221",
       "n": 7968,
       "selected_brier_decimal": "0.04449221",
@@ -4000,7 +4998,9 @@
     },
     {
       "boundary_upper_decimal": "0.054566",
+      "constant_boundary_upper_decimal": "0.184354",
       "constant_brier_decimal": "0.16775914",
+      "logistic_boundary_upper_decimal": "0.054566",
       "logistic_brier_decimal": "0.04569821",
       "n": 7984,
       "selected_brier_decimal": "0.04569821",
@@ -4008,7 +5008,9 @@
     },
     {
       "boundary_upper_decimal": "0.056187",
+      "constant_boundary_upper_decimal": "0.184126",
       "constant_brier_decimal": "0.16755565",
+      "logistic_boundary_upper_decimal": "0.056187",
       "logistic_brier_decimal": "0.04699789",
       "n": 8000,
       "selected_brier_decimal": "0.04699789",
@@ -4016,7 +5018,9 @@
     },
     {
       "boundary_upper_decimal": "0.057863",
+      "constant_boundary_upper_decimal": "0.183898",
       "constant_brier_decimal": "0.16735297",
+      "logistic_boundary_upper_decimal": "0.057863",
       "logistic_brier_decimal": "0.04833405",
       "n": 8016,
       "selected_brier_decimal": "0.04833405",
@@ -4024,7 +5028,9 @@
     },
     {
       "boundary_upper_decimal": "0.059501",
+      "constant_boundary_upper_decimal": "0.183672",
       "constant_brier_decimal": "0.16715110",
+      "logistic_boundary_upper_decimal": "0.059501",
       "logistic_brier_decimal": "0.04964319",
       "n": 8032,
       "selected_brier_decimal": "0.04964319",
@@ -4032,7 +5038,9 @@
     },
     {
       "boundary_upper_decimal": "0.061219",
+      "constant_boundary_upper_decimal": "0.183446",
       "constant_brier_decimal": "0.16695004",
+      "logistic_boundary_upper_decimal": "0.061219",
       "logistic_brier_decimal": "0.05100730",
       "n": 8048,
       "selected_brier_decimal": "0.05100730",
@@ -4040,7 +5048,9 @@
     },
     {
       "boundary_upper_decimal": "0.062578",
+      "constant_boundary_upper_decimal": "0.183221",
       "constant_brier_decimal": "0.16674976",
+      "logistic_boundary_upper_decimal": "0.062578",
       "logistic_brier_decimal": "0.05213004",
       "n": 8064,
       "selected_brier_decimal": "0.05213004",
@@ -4048,7 +5058,9 @@
     },
     {
       "boundary_upper_decimal": "0.063905",
+      "constant_boundary_upper_decimal": "0.182997",
       "constant_brier_decimal": "0.16655029",
+      "logistic_boundary_upper_decimal": "0.063905",
       "logistic_brier_decimal": "0.05323224",
       "n": 8080,
       "selected_brier_decimal": "0.05323224",
@@ -4056,7 +5068,9 @@
     },
     {
       "boundary_upper_decimal": "0.065331",
+      "constant_boundary_upper_decimal": "0.182774",
       "constant_brier_decimal": "0.16635160",
+      "logistic_boundary_upper_decimal": "0.065331",
       "logistic_brier_decimal": "0.05440228",
       "n": 8096,
       "selected_brier_decimal": "0.05440228",
@@ -4064,7 +5078,9 @@
     },
     {
       "boundary_upper_decimal": "0.066604",
+      "constant_boundary_upper_decimal": "0.182551",
       "constant_brier_decimal": "0.16615369",
+      "logistic_boundary_upper_decimal": "0.066604",
       "logistic_brier_decimal": "0.05546597",
       "n": 8112,
       "selected_brier_decimal": "0.05546597",
@@ -4072,7 +5088,9 @@
     },
     {
       "boundary_upper_decimal": "0.067578",
+      "constant_boundary_upper_decimal": "0.182330",
       "constant_brier_decimal": "0.16595657",
+      "logistic_boundary_upper_decimal": "0.067578",
       "logistic_brier_decimal": "0.05631471",
       "n": 8128,
       "selected_brier_decimal": "0.05631471",
@@ -4080,7 +5098,9 @@
     },
     {
       "boundary_upper_decimal": "0.068472",
+      "constant_boundary_upper_decimal": "0.182109",
       "constant_brier_decimal": "0.16576022",
+      "logistic_boundary_upper_decimal": "0.068472",
       "logistic_brier_decimal": "0.05710359",
       "n": 8144,
       "selected_brier_decimal": "0.05710359",
@@ -4088,7 +5108,9 @@
     },
     {
       "boundary_upper_decimal": "0.069414",
+      "constant_boundary_upper_decimal": "0.181889",
       "constant_brier_decimal": "0.16556464",
+      "logistic_boundary_upper_decimal": "0.069414",
       "logistic_brier_decimal": "0.05792806",
       "n": 8160,
       "selected_brier_decimal": "0.05792806",
@@ -4096,7 +5118,9 @@
     },
     {
       "boundary_upper_decimal": "0.070586",
+      "constant_boundary_upper_decimal": "0.181670",
       "constant_brier_decimal": "0.16536982",
+      "logistic_boundary_upper_decimal": "0.070586",
       "logistic_brier_decimal": "0.05891958",
       "n": 8176,
       "selected_brier_decimal": "0.05891958",
@@ -4104,7 +5128,9 @@
     },
     {
       "boundary_upper_decimal": "0.071581",
+      "constant_boundary_upper_decimal": "0.181452",
       "constant_brier_decimal": "0.16517576",
+      "logistic_boundary_upper_decimal": "0.071581",
       "logistic_brier_decimal": "0.05978267",
       "n": 8192,
       "selected_brier_decimal": "0.05978267",
@@ -4112,7 +5138,9 @@
     },
     {
       "boundary_upper_decimal": "0.072811",
+      "constant_boundary_upper_decimal": "0.181235",
       "constant_brier_decimal": "0.16498247",
+      "logistic_boundary_upper_decimal": "0.072811",
       "logistic_brier_decimal": "0.06081532",
       "n": 8208,
       "selected_brier_decimal": "0.06081532",
@@ -4120,7 +5148,9 @@
     },
     {
       "boundary_upper_decimal": "0.073268",
+      "constant_boundary_upper_decimal": "0.181611",
       "constant_brier_decimal": "0.16532193",
+      "logistic_boundary_upper_decimal": "0.073268",
       "logistic_brier_decimal": "0.06119769",
       "n": 8224,
       "selected_brier_decimal": "0.06119769",
@@ -4128,7 +5158,7 @@
     }
   ],
   "sample_stride": 16,
-  "schema_version": "formalslt.monitor.uci357-display-trace.v1",
+  "schema_version": "formalslt.monitor.uci357-display-trace.v2",
   "selection_switches": 0,
   "source_prediction_sha256": "3e6639661d43db343ffdc4d004b459505cc9f6dd91006729385f723c9a84d670"
 }

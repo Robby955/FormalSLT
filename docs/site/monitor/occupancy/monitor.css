@@ -108,6 +108,7 @@ footer nav {
 }
 
 .monitor,
+.timing-gate,
 .verification,
 footer {
   width: min(calc(100% - 2rem), var(--measure));
@@ -419,6 +420,68 @@ h2 {
   font-variant-numeric: tabular-nums;
 }
 
+.playback-controls {
+  display: flex;
+  min-height: 2.65rem;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.playback-button,
+.speed-control button,
+.model-choice button,
+.timing-actions button {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.playback-button {
+  padding: 0.62rem 0.85rem;
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+.playback-button:hover,
+.playback-button.is-running {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.speed-control {
+  display: inline-flex;
+}
+
+.speed-control button {
+  min-width: 2.5rem;
+  padding: 0.43rem 0.55rem;
+  border-right: 0;
+  color: var(--muted);
+}
+
+.speed-control button:last-child {
+  border-right: 1px solid var(--line);
+}
+
+.speed-control button[aria-pressed="true"] {
+  background: var(--line);
+  color: var(--ink);
+}
+
+.playback-controls > span {
+  margin-left: auto;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .chart-shell {
   position: relative;
   width: 100%;
@@ -558,15 +621,6 @@ h2 {
   font-size: 0.75rem;
 }
 
-button.legend-item {
-  cursor: pointer;
-}
-
-.legend-item.selected,
-.legend-item:hover {
-  color: var(--ink);
-}
-
 .legend-line {
   width: 1.55rem;
   border-top: 2px solid;
@@ -599,6 +653,56 @@ button.legend-item {
 
 .selection h2 {
   max-width: 12ch;
+}
+
+.model-choice {
+  margin-top: 1.7rem;
+  border-block: 1px solid var(--line);
+}
+
+.model-choice button {
+  display: block;
+  width: 100%;
+  padding: 0.78rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  text-align: left;
+}
+
+.model-choice button:last-child {
+  border-bottom: 0;
+}
+
+.model-choice button::before {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.65rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  content: "";
+}
+
+.model-choice button[aria-pressed="true"] {
+  color: var(--accent);
+}
+
+.model-choice button[aria-pressed="true"]::before {
+  background: currentColor;
+  box-shadow: inset 0 0 0 2px var(--surface);
+}
+
+.report-state {
+  min-height: 1.4em;
+  margin: 0.7rem 0 0 !important;
+  color: var(--accent) !important;
+  font-family: var(--mono);
+  font-size: 0.7rem !important;
+}
+
+.report-state.is-preview {
+  color: var(--amber) !important;
 }
 
 .selection dl {
@@ -634,6 +738,140 @@ button.legend-item {
 .selection > a {
   font-size: 0.78rem;
   font-weight: 690;
+}
+
+.timing-gate {
+  display: grid;
+  grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  margin-top: clamp(4rem, 8vw, 8rem);
+  padding-block: clamp(4rem, 8vw, 7rem);
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 5rem;
+}
+
+.timing-copy h2 {
+  max-width: 14ch;
+}
+
+.timing-copy > p:last-child {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+.timing-workspace {
+  align-self: center;
+}
+
+.timing-sequence {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-block: 1px solid var(--line);
+  list-style: none;
+}
+
+.timing-sequence li {
+  position: relative;
+  padding: 1.2rem 1rem;
+  border-right: 1px solid var(--line);
+  color: var(--muted);
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+.timing-sequence li:last-child {
+  border-right: 0;
+}
+
+.timing-sequence li::after {
+  position: absolute;
+  right: -0.38rem;
+  bottom: 1.5rem;
+  z-index: 1;
+  color: var(--line);
+  content: "→";
+}
+
+.timing-sequence li:last-child::after {
+  content: none;
+}
+
+.timing-sequence span,
+.timing-sequence strong {
+  display: block;
+}
+
+.timing-sequence span {
+  margin-bottom: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+}
+
+.timing-sequence strong {
+  font-size: 0.9rem;
+}
+
+.timing-sequence li.is-active,
+.timing-sequence li.is-complete {
+  color: var(--accent);
+}
+
+.timing-sequence li.is-active {
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+
+.timing-sequence li.is-refused {
+  background: color-mix(in srgb, var(--amber) 8%, transparent);
+  color: var(--amber);
+}
+
+.timing-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1rem;
+}
+
+.timing-actions button {
+  padding: 0.68rem 0.85rem;
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+.timing-actions button:hover {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.timing-actions .quiet-action {
+  border-color: var(--line);
+  color: var(--muted);
+}
+
+.timing-actions .quiet-action:hover {
+  border-color: var(--amber);
+  background: transparent;
+  color: var(--amber);
+}
+
+.timing-result {
+  display: block;
+  min-height: 1.5em;
+  margin-top: 0.8rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+}
+
+.timing-result.is-pass {
+  color: var(--accent);
+}
+
+.timing-result.is-refused {
+  color: var(--amber);
 }
 
 .verification {
@@ -765,6 +1003,7 @@ footer code {
   }
 
   .monitor-grid,
+  .timing-gate,
   .verification,
   .decomposition-heading {
     grid-template-columns: 1fr;
@@ -796,6 +1035,7 @@ footer code {
   }
 
   .selection h2,
+  .timing-copy h2,
   .verification h2 {
     max-width: 18ch;
   }
@@ -811,6 +1051,7 @@ footer code {
   }
 
   .monitor,
+  .timing-gate,
   .verification,
   footer {
     width: min(calc(100% - 1.4rem), var(--measure));
@@ -874,6 +1115,20 @@ footer code {
     font-size: 0.82rem;
   }
 
+  .playback-controls {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .playback-button {
+    flex: 1 1 auto;
+  }
+
+  .playback-controls > span {
+    width: 100%;
+    margin-left: 0;
+  }
+
   .chart-shell,
   .chart {
     min-height: 17rem;
@@ -882,6 +1137,19 @@ footer code {
   .legend small {
     width: 100%;
     margin-left: 0;
+  }
+
+  .timing-sequence li {
+    padding-inline: 0.65rem;
+  }
+
+  .timing-sequence strong {
+    font-size: 0.78rem;
+  }
+
+  .timing-actions {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .verification-flow li {

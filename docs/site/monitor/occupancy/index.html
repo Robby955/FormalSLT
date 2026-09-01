@@ -23,6 +23,7 @@
     <a class="wordmark" href="../../">FormalSLT</a>
     <nav aria-label="Monitor navigation">
       <a href="#selection">Selection</a>
+      <a href="#timing">Timing</a>
       <a href="#verification">Verification</a>
       <a href="https://github.com/Robby955/FormalSLT/tree/__FORMALSLT_SOURCE_REF__/applications/brier_monitor">Source</a>
     </nav>
@@ -60,7 +61,7 @@
       <section class="decomposition" aria-labelledby="decomposition-title">
         <div class="decomposition-heading">
           <div>
-            <p class="section-label">Exact bound decomposition</p>
+            <p class="section-label">Published receipt decomposition</p>
             <h2 id="decomposition-title">Where the margin comes from.</h2>
           </div>
           <p>The gap above observed loss is driven mostly by observable path variation, not the cost of selecting between these models.</p>
@@ -115,10 +116,19 @@
             </dl>
           </div>
 
+          <div class="playback-controls" aria-label="Trace playback controls">
+            <button type="button" class="playback-button" data-playback>Replay stream</button>
+            <div class="speed-control" role="group" aria-label="Replay speed">
+              <button type="button" data-speed="1" aria-pressed="true">1×</button>
+              <button type="button" data-speed="4" aria-pressed="false">4×</button>
+            </div>
+            <span data-playback-status>Final checked point</span>
+          </div>
+
           <div class="chart-shell">
             <svg class="chart" data-chart viewBox="0 0 1200 500" role="img" aria-labelledby="chart-title chart-description">
               <title id="chart-title">Brier risk and upper boundary over time</title>
-              <desc id="chart-description">Replayed selected-model Brier loss, its certificate boundary preview, and the constant-model Brier baseline over 8,224 chronological observations. The final boundary point is checked by Lean.</desc>
+              <desc id="chart-description">Replayed model Brier losses and boundary previews over 8,224 chronological observations. The published logistic final boundary is checked by Lean; other candidate boundaries are previews.</desc>
             </svg>
             <div class="final-marker" data-final-marker>Final point checked</div>
             <p class="chart-error" data-chart-error hidden>The monitor assets could not be verified.</p>
@@ -126,16 +136,21 @@
 
           <input class="scrubber" data-scrubber type="range" min="0" max="1" value="1" step="1" aria-label="Choose reporting time">
           <div class="legend" aria-label="Chart legend">
-            <button type="button" class="legend-item selected" data-series="selected" aria-pressed="true"><span class="legend-line selected-line"></span>Selected model</button>
-            <button type="button" class="legend-item" data-series="constant" aria-pressed="false"><span class="legend-line baseline-line"></span>Constant baseline</button>
-            <span class="legend-item static"><span class="legend-line boundary-line"></span>Boundary preview</span>
-            <small>Log scale · final boundary is kernel checked</small>
+            <span class="legend-item static"><span class="legend-line selected-line"></span>All-sensor logistic</span>
+            <span class="legend-item static"><span class="legend-line baseline-line"></span>Constant baseline</span>
+            <span class="legend-item static"><span class="legend-line boundary-line"></span><span data-boundary-label>Logistic boundary</span></span>
+            <small data-legend-scope>Log scale · published logistic endpoint checked</small>
           </div>
         </section>
 
         <aside class="selection" id="selection" aria-labelledby="selection-title">
           <p class="section-label">Selection receipt</p>
           <h2 id="selection-title">The better model was chosen after inspection.</h2>
+          <div class="model-choice" role="group" aria-label="Choose reporting model">
+            <button type="button" data-report-model="logistic_all_sensor" aria-pressed="true">All-sensor logistic</button>
+            <button type="button" data-report-model="constant_train_prevalence" aria-pressed="false">Constant baseline</button>
+          </div>
+          <p class="report-state" data-report-state>Published endpoint checked.</p>
           <dl>
             <div><dt>Selected</dt><dd data-selected-model>—</dd></div>
             <div><dt>Candidate models</dt><dd>2</dd></div>
@@ -145,6 +160,26 @@
           <p>The theorem controls every supported posterior on one event. Selecting the lower-loss model does not get a free pass; its complexity appears in the bound.</p>
           <a href="evidence.json">Open selection evidence</a>
         </aside>
+      </div>
+    </section>
+
+    <section class="timing-gate" id="timing" aria-labelledby="timing-title">
+      <div class="timing-copy">
+        <p class="section-label">Prediction timing</p>
+        <h2 id="timing-title">The outcome cannot arrive first.</h2>
+        <p>The service accepts a monitored row only after its predictions have been committed for that time. The commitment is unsigned; it proves request order inside the service, not external data provenance.</p>
+      </div>
+      <div class="timing-workspace">
+        <ol class="timing-sequence" aria-label="Legal monitored-row order">
+          <li data-timing-step="prediction"><span>01</span><strong>Prediction</strong></li>
+          <li data-timing-step="commit"><span>02</span><strong>Commit</strong></li>
+          <li data-timing-step="outcome"><span>03</span><strong>Outcome</strong></li>
+        </ol>
+        <div class="timing-actions">
+          <button type="button" data-timing-legal>Run legal order</button>
+          <button type="button" class="quiet-action" data-timing-illegal>Try outcome first</button>
+        </div>
+        <output class="timing-result" data-timing-result aria-live="polite">Choose an order.</output>
       </div>
     </section>
 
