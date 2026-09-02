@@ -2,11 +2,11 @@
   "files": [
     {
       "path": "monitor.css",
-      "sha256": "2589da6878132212d31191deb63333a194b09677b432ce81b0d5ee35b20aa4e6"
+      "sha256": "fb25d83bb38a91ed18836f8139e1a59cdf00d2f0532333be0d8b4f008980fd49"
     },
     {
       "path": "monitor.js",
-      "sha256": "56803155fe2ca9ff0f0b055b3008d9cf89eafeaee8be3b78949bee61802fa084"
+      "sha256": "68e3f042fcd2440647f87684ec9587afac58c48953f57a7ff46d9eed9ad14d87"
     },
     {
       "path": "certificate.json",
@@ -17,14 +17,18 @@
       "sha256": "fb231775c82031124c9b672cc49ba955c9e9869b0440c8d332444474b540a26d"
     },
     {
+      "path": "summary.json",
+      "sha256": "089090378a8361a1d357ec74e4c3f5941965b999e4cae88855cb2b41289f0676"
+    },
+    {
       "path": "trace.json",
-      "sha256": "2ddd114b8508a15076f3278d7232cec90243f367af32a5987cb515212762d2c7"
+      "sha256": "f8b2388f0ac6cc0ad998ce350547dcaacd4ba147dbed7f8a0686778e6132b3cc"
     }
   ],
   "schema_version": "formalslt.monitor.uci357-site-manifest.v1",
   "source_certificate_commit": "6c6101012f38b902d30582a963a911a20518bfc3",
   "source_html_template": {
     "path": "index.html",
-    "sha256": "91a9dd82332d3ab827a3c2169b2919f47e4a423973e913bb7770f273b9b0b1f6"
+    "sha256": "6145fe0a38db93650cc8b64f408af057490b17eae41c2388c18f511d5852fe4c"
   }
 }

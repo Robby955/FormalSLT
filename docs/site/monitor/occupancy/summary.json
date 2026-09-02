@@ -1,0 +1,71 @@
+{
+  "artifact_status": "DERIVED_FROM_CERTIFICATE",
+  "certificate": {
+    "artifact_status": "CERTIFIED",
+    "schema_version": "formalslt.certificate.v1",
+    "sha256": "a6faea8ab250985d21f57f758e26b6ecc104e603e458f537aeb4606c320eaced"
+  },
+  "claim": {
+    "confidence": {
+      "decimal": "0.950000000000",
+      "percent_decimal": "95.0000000000",
+      "rational": "19/20"
+    },
+    "quantity": "posterior-averaged encountered conditional prefix Brier risk",
+    "upper_bound": {
+      "decimal": "0.073268000000",
+      "percent_decimal": "7.3268000000",
+      "rational": "18317/250000"
+    }
+  },
+  "components": {
+    "arithmetic_upper": {
+      "decimal": "0.073267653026",
+      "percent_decimal": "7.3267653026",
+      "rational": "1422695048907004187305501/19417778380427805012787200"
+    },
+    "confidence_cost": {
+      "decimal": "0.000741731518",
+      "percent_decimal": "0.0741731518",
+      "rational": "61/82240"
+    },
+    "observed_risk": {
+      "decimal": "0.061197688621",
+      "percent_decimal": "6.1197688621",
+      "rational": "2161547227007/35320733114400"
+    },
+    "rounding_slack": {
+      "decimal": "0.000000346974",
+      "percent_decimal": "0.0000346974",
+      "rational": "4210918862643982119731/12136111487767378132992000000"
+    },
+    "selection_cost": {
+      "decimal": "0.000170233463",
+      "percent_decimal": "0.0170233463",
+      "rational": "7/41120"
+    },
+    "total_margin": {
+      "decimal": "0.012070311379",
+      "percent_decimal": "1.2070311379",
+      "rational": "266457654261787/22075458196500000"
+    },
+    "variation_cost": {
+      "decimal": "0.011157999424",
+      "percent_decimal": "1.1157999424",
+      "rational": "252237278248593/22605959067074560"
+    }
+  },
+  "observations": 8224,
+  "provenance": {
+    "evidence_sha256": "fb231775c82031124c9b672cc49ba955c9e9869b0440c8d332444474b540a26d",
+    "prediction_timing": "PRE_OUTCOME",
+    "tier": "AUDITED"
+  },
+  "schema_version": "formalslt.brier-certificate-summary.v1",
+  "selected_model": "logistic_all_sensor",
+  "verification": {
+    "independent_replay": "PASS",
+    "lean_kernel": "PASS",
+    "scope": "derived view; exact values are bound to certificate.sha256"
+  }
+}

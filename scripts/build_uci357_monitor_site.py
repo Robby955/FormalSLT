@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 import formalslt_brier_certificate as certificate_engine
+import formalslt_brier_summary as summary_engine
 import formalslt_brier_tabular as tabular_engine
 
 
@@ -27,8 +28,9 @@ SITE = ROOT / "docs/site/monitor/occupancy"
 TRACE = SITE / "trace.json"
 CERTIFICATE = SITE / "certificate.json"
 EVIDENCE = SITE / "evidence.json"
+SUMMARY = SITE / "summary.json"
 MANIFEST = SITE / "manifest.json"
-TRACE_SCHEMA = "formalslt.monitor.uci357-display-trace.v1"
+TRACE_SCHEMA = "formalslt.monitor.uci357-display-trace.v2"
 MANIFEST_SCHEMA = "formalslt.monitor.uci357-site-manifest.v1"
 SAMPLE_STRIDE = 16
 MODEL_IDS = ("constant_train_prevalence", "logistic_all_sensor")
@@ -121,17 +123,29 @@ def build_trace() -> dict[str, Any]:
             if n < 4 or (n % SAMPLE_STRIDE != 0 and n != certificate["data"]["observations"]):
                 continue
             empirical = prefix_loss[selected] / n
-            arithmetic_upper = empirical + (
-                Fraction(7, 10)
-                + Fraction(61, 20)
-                + Fraction(1, 5) * prefix_variation[selected]
-            ) / (Fraction(1, 2) * n)
-            boundary = certificate_engine.strict_decimal_ceiling(arithmetic_upper)
+            boundaries = {}
+            for model_id in MODEL_IDS:
+                model_empirical = prefix_loss[model_id] / n
+                arithmetic_upper = model_empirical + (
+                    Fraction(7, 10)
+                    + Fraction(61, 20)
+                    + Fraction(1, 5) * prefix_variation[model_id]
+                ) / (Fraction(1, 2) * n)
+                boundaries[model_id] = certificate_engine.strict_decimal_ceiling(
+                    arithmetic_upper
+                )
+            boundary = boundaries[selected]
             points.append(
                 {
                     "boundary_upper_decimal": decimal_text(boundary, 6, upward=True),
+                    "constant_boundary_upper_decimal": decimal_text(
+                        boundaries["constant_train_prevalence"], 6, upward=True
+                    ),
                     "constant_brier_decimal": decimal_text(
                         prefix_loss["constant_train_prevalence"] / n
+                    ),
+                    "logistic_boundary_upper_decimal": decimal_text(
+                        boundaries["logistic_all_sensor"], 6, upward=True
                     ),
                     "logistic_brier_decimal": decimal_text(
                         prefix_loss["logistic_all_sensor"] / n
@@ -172,9 +186,18 @@ def build_trace() -> dict[str, Any]:
 
 
 def build_assets() -> dict[Path, bytes]:
+    certificate_raw = SOURCE_CERTIFICATE.read_bytes()
+    certificate = json.loads(certificate_raw)
+    evidence = json.loads(SOURCE_EVIDENCE.read_bytes())
+    summary = summary_engine.certificate_summary(
+        certificate,
+        certificate_sha256=sha256_bytes(certificate_raw),
+        selected_model=evidence["selection"]["winner"],
+    )
     return {
-        CERTIFICATE: SOURCE_CERTIFICATE.read_bytes(),
+        CERTIFICATE: certificate_raw,
         EVIDENCE: SOURCE_EVIDENCE.read_bytes(),
+        SUMMARY: canonical_json_bytes(summary),
         TRACE: canonical_json_bytes(build_trace()),
     }
 
@@ -241,7 +264,12 @@ def main(argv: Iterable[str] | None = None) -> int:
     arguments = parser.parse_args(list(argv) if argv is not None else None)
     try:
         run(check=arguments.check)
-    except (OSError, KeyError, ValueError, json.JSONDecodeError) as error:
+    except (
+        OSError,
+        KeyError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as error:
         print(f"ERROR: UCI monitor site refused: {error}")
         return 1
     print("UCI-357 monitor site: PASS" if arguments.check else "UCI-357 monitor site built")

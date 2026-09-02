@@ -26,7 +26,9 @@ def test_display_trace_replays_checked_final_point() -> None:
     assert trace["points"][-1] == trace["final"]
     assert trace["final"] == {
         "boundary_upper_decimal": "0.073268",
+        "constant_boundary_upper_decimal": "0.181611",
         "constant_brier_decimal": "0.16532193",
+        "logistic_boundary_upper_decimal": "0.073268",
         "logistic_brier_decimal": "0.06119769",
         "n": 8_224,
         "selected_brier_decimal": "0.06119769",
@@ -36,6 +38,26 @@ def test_display_trace_replays_checked_final_point() -> None:
         trace["final"]["boundary_upper_decimal"]
     )
     assert evidence["selection"]["winner"] == trace["final"]["selected_model"]
+
+
+def test_display_summary_is_exact_and_certificate_bound() -> None:
+    assets = site_builder.build_assets()
+    summary = json.loads(assets[site_builder.SUMMARY])
+
+    assert summary["schema_version"] == site_builder.summary_engine.SUMMARY_SCHEMA
+    assert summary["certificate"]["sha256"] == hashlib.sha256(
+        site_builder.SOURCE_CERTIFICATE.read_bytes()
+    ).hexdigest()
+    assert summary["components"]["variation_cost"]["percent_decimal"] == (
+        "1.1157999424"
+    )
+    assert summary["components"]["selection_cost"]["percent_decimal"] == (
+        "0.0170233463"
+    )
+    assert summary["components"]["confidence_cost"]["percent_decimal"] == (
+        "0.0741731518"
+    )
+    assert summary["claim"]["upper_bound"]["percent_decimal"] == "7.3268000000"
 
 
 def test_site_assets_are_current_and_hash_bound() -> None:
@@ -71,8 +93,15 @@ def test_monitor_copy_keeps_claim_scope_and_source_binding() -> None:
     assert "posterior-averaged conditional Brier risk" in html
     assert "does not establish future occupancy" in html
     assert "data-certificate-status" in html
+    assert "data-component-variation" in html
+    assert "data-playback" in html
+    assert "data-report-model" in html
+    assert "data-timing-illegal" in html
     assert "data-scrubber" in html
     assert "site-manifest digest mismatch" in javascript
     assert "certificate is not bound to this evidence file" in javascript
+    assert "summary is not bound to this certificate" in javascript
+    assert "commit predictions for this time before revealing" in javascript
+    assert "uci357-display-trace.v2" in javascript
     assert "overflow: hidden" not in stylesheet
     assert 'href="monitor/occupancy/">Open the checked monitor</a>' in landing_html

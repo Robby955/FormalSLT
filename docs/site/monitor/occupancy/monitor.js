@@ -5,6 +5,14 @@
   const scrubber = document.querySelector("[data-scrubber]");
   const errorMessage = document.querySelector("[data-chart-error]");
   const finalMarker = document.querySelector("[data-final-marker]");
+  const playbackButton = document.querySelector("[data-playback]");
+  const playbackStatus = document.querySelector("[data-playback-status]");
+  const speedButtons = [...document.querySelectorAll("button[data-speed]")];
+  const reportButtons = [...document.querySelectorAll("button[data-report-model]")];
+  const timingLegal = document.querySelector("[data-timing-legal]");
+  const timingIllegal = document.querySelector("[data-timing-illegal]");
+  const timingResult = document.querySelector("[data-timing-result]");
+  const timingSteps = [...document.querySelectorAll("[data-timing-step]")];
   const decoder = new TextDecoder();
   const NS = "http://www.w3.org/2000/svg";
   const WIDTH = 1200;
@@ -49,17 +57,21 @@
     }
   };
 
-  const decimalFromRational = (value) => {
-    const [numeratorText, denominatorText = "1"] = value.split("/");
-    const numerator = Number(numeratorText);
-    const denominator = Number(denominatorText);
-    if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator <= 0) {
-      throw new Error(`invalid rational ${value}`);
-    }
-    return numerator / denominator;
-  };
-
   const percent = (value) => `${(100 * Number(value)).toFixed(2)}%`;
+  const percentRecord = (record, places = 2) => {
+    const value = Number(record?.percent_decimal);
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("summary contains an invalid percentage");
+    }
+    return `${value.toFixed(places)}%`;
+  };
+  const pointRecord = (record, places = 4) => {
+    const value = Number(record?.percent_decimal);
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error("summary contains an invalid percentage-point cost");
+    }
+    return `${value.toFixed(places)} pp`;
+  };
   const integer = new Intl.NumberFormat("en-US", {maximumFractionDigits: 0});
 
   const loadArtifacts = async () => {
@@ -71,7 +83,7 @@
     const declaredHashes = new Map(
       manifest.files.map(({path, sha256: hash}) => [path, hash]),
     );
-    const paths = ["certificate.json", "evidence.json", "trace.json"];
+    const paths = ["certificate.json", "evidence.json", "summary.json", "trace.json"];
     const loaded = await Promise.all(paths.map(async (path) => [path, await fetchBytes(path)]));
     for (const [path, bytes] of loaded) {
       const expected = declaredHashes.get(path);
@@ -82,12 +94,22 @@
     const byPath = new Map(loaded);
     const certificate = parseJson("certificate.json", byPath.get("certificate.json"));
     const evidence = parseJson("evidence.json", byPath.get("evidence.json"));
+    const summary = parseJson("summary.json", byPath.get("summary.json"));
     const trace = parseJson("trace.json", byPath.get("trace.json"));
     const certificateHash = await sha256(byPath.get("certificate.json"));
     const evidenceHash = await sha256(byPath.get("evidence.json"));
 
+    if (trace.schema_version !== "formalslt.monitor.uci357-display-trace.v2") {
+      throw new Error("unsupported display trace");
+    }
     if (trace.certificate_sha256 !== certificateHash) {
       throw new Error("display trace is not bound to this certificate");
+    }
+    if (
+      summary.schema_version !== "formalslt.brier-certificate-summary.v1"
+      || summary.certificate?.sha256 !== certificateHash
+    ) {
+      throw new Error("summary is not bound to this certificate");
     }
     if (certificate.data.provenance.evidence_sha256 !== evidenceHash) {
       throw new Error("certificate is not bound to this evidence file");
@@ -107,18 +129,72 @@
     if (evidence.selection.winner !== trace.final.selected_model) {
       throw new Error("selection evidence and final trace disagree");
     }
-    return {certificate, evidence, trace};
+    if (
+      summary.selected_model !== evidence.selection.winner
+      || summary.components?.observed_risk?.rational
+        !== certificate.statistics.posterior_empirical_brier_risk
+      || summary.components?.arithmetic_upper?.rational
+        !== certificate.statistics.rational_arithmetic_upper
+      || summary.claim?.upper_bound?.rational !== certificate.claim.upper_bound
+      || summary.claim?.quantity !== certificate.claim.quantity
+      || summary.verification?.lean_kernel !== certificate.kernel.result
+      || summary.verification?.independent_replay
+        !== certificate.replay.independent_replay
+    ) {
+      throw new Error("summary and checked certificate disagree");
+    }
+    return {certificate, evidence, summary, trace};
   };
 
-  const bindReceipt = ({certificate, evidence, trace}) => {
-    const observed = decimalFromRational(
-      certificate.statistics.posterior_empirical_brier_risk,
-    );
-    const upper = decimalFromRational(certificate.claim.upper_bound);
-    setText("[data-observed-risk]", percent(observed));
-    setText("[data-upper-bound]", percent(upper));
+  const bindReceipt = ({certificate, evidence, summary, trace}) => {
+    setText("[data-observed-risk]", percentRecord(summary.components.observed_risk));
+    setText("[data-upper-bound]", percentRecord(summary.claim.upper_bound));
     setText("[data-baseline-risk]", percent(trace.final.constant_brier_decimal));
     setText("[data-selected-model]", MODEL_LABELS[evidence.selection.winner]);
+    setText(
+      "[data-component-observed]",
+      percentRecord(summary.components.observed_risk, 4),
+    );
+    setText(
+      "[data-component-variation]",
+      pointRecord(summary.components.variation_cost),
+    );
+    setText(
+      "[data-component-selection]",
+      pointRecord(summary.components.selection_cost),
+    );
+    setText(
+      "[data-component-confidence]",
+      pointRecord(summary.components.confidence_cost),
+    );
+    setText(
+      "[data-component-upper]",
+      `≤ ${percentRecord(summary.claim.upper_bound, 4)}`,
+    );
+    setText(
+      "[data-component-rounding]",
+      pointRecord(summary.components.rounding_slack, 6),
+    );
+
+    const upper = Number(summary.claim.upper_bound.decimal);
+    const trackParts = [
+      ["[data-track-observed]", summary.components.observed_risk],
+      ["[data-track-variation]", summary.components.variation_cost],
+      ["[data-track-selection]", summary.components.selection_cost],
+      ["[data-track-confidence]", summary.components.confidence_cost],
+      ["[data-track-rounding]", summary.components.rounding_slack],
+    ];
+    if (!Number.isFinite(upper) || upper <= 0) {
+      throw new Error("summary contains an invalid checked endpoint");
+    }
+    for (const [selector, record] of trackParts) {
+      const value = Number(record.decimal);
+      if (!Number.isFinite(value) || value < 0) {
+        throw new Error("summary contains an invalid decomposition term");
+      }
+      const node = document.querySelector(selector);
+      if (node) node.style.width = `${100 * value / upper}%`;
+    }
     setText("[data-certificate-status]", "CHECKED");
     setText("[data-replay-status]", certificate.replay.independent_replay);
     setText("[data-kernel-status]", certificate.kernel.result);
@@ -129,17 +205,20 @@
   const renderChart = (trace) => {
     const points = trace.points.map((point) => ({
       ...point,
-      boundary: Number(point.boundary_upper_decimal),
       constant: Number(point.constant_brier_decimal),
-      selected: Number(point.selected_brier_decimal),
+      constantBoundary: Number(point.constant_boundary_upper_decimal),
+      logistic: Number(point.logistic_brier_decimal),
+      logisticBoundary: Number(point.logistic_boundary_upper_decimal),
     }));
     if (points.length < 2 || points.some((point) =>
-      !Number.isFinite(point.boundary)
-      || !Number.isFinite(point.constant)
-      || !Number.isFinite(point.selected)
-      || point.boundary <= 0
+      !Number.isFinite(point.constant)
+      || !Number.isFinite(point.constantBoundary)
+      || !Number.isFinite(point.logistic)
+      || !Number.isFinite(point.logisticBoundary)
       || point.constant <= 0
-      || point.selected <= 0
+      || point.constantBoundary <= 0
+      || point.logistic <= 0
+      || point.logisticBoundary <= 0
     )) {
       throw new Error("display trace contains invalid chart values");
     }
@@ -217,13 +296,13 @@
       }),
       svgNode("path", {
         class: "selected-path animated-path",
-        d: pathFor("selected"),
+        d: pathFor("logistic"),
         pathLength: 1,
         "data-series-path": "selected",
       }),
       svgNode("path", {
         class: "boundary-path animated-path",
-        d: pathFor("boundary"),
+        d: pathFor("logisticBoundary"),
         pathLength: 1,
         "data-series-path": "boundary",
       }),
@@ -242,31 +321,138 @@
     cursor.append(cursorLine, constantDot, selectedDot, boundaryDot);
     svg.append(cursor);
 
+    const boundaryPath = series.querySelector("[data-series-path='boundary']");
+    const reportState = document.querySelector("[data-report-state]");
+    let activeModel = "logistic_all_sensor";
+    let currentIndex = points.length - 1;
+    let playbackFrame = null;
+    let playbackSpeed = 1;
+
+    const valuesFor = (point) => activeModel === "logistic_all_sensor"
+      ? {boundary: point.logisticBoundary, risk: point.logistic}
+      : {boundary: point.constantBoundary, risk: point.constant};
+
+    const stopPlayback = () => {
+      if (playbackFrame !== null) cancelAnimationFrame(playbackFrame);
+      playbackFrame = null;
+      playbackButton.classList.remove("is-running");
+      playbackButton.textContent = currentIndex === points.length - 1
+        ? "Replay stream"
+        : "Resume replay";
+    };
+
     scrubber.max = String(points.length - 1);
     scrubber.value = String(points.length - 1);
     const update = (index) => {
       const boundedIndex = Math.max(0, Math.min(points.length - 1, Number(index)));
       const point = points[boundedIndex];
+      const active = valuesFor(point);
+      currentIndex = boundedIndex;
       const xPosition = x(point.n);
       cursorLine.setAttribute("x1", xPosition);
       cursorLine.setAttribute("x2", xPosition);
       for (const [dot, value] of [
-        [selectedDot, point.selected],
-        [boundaryDot, point.boundary],
+        [selectedDot, point.logistic],
+        [boundaryDot, active.boundary],
         [constantDot, point.constant],
       ]) {
         dot.setAttribute("cx", xPosition);
         dot.setAttribute("cy", y(value));
       }
       setText("[data-cursor-time]", integer.format(point.n));
-      setText("[data-cursor-risk]", percent(point.selected));
-      setText("[data-cursor-bound]", percent(point.boundary));
+      setText("[data-cursor-risk]", percent(active.risk));
+      setText("[data-cursor-bound]", percent(active.boundary));
       finalMarker.hidden = boundedIndex !== points.length - 1;
+      finalMarker.textContent = activeModel === "logistic_all_sensor"
+        ? "Final point checked"
+        : "Final point is a preview";
+      playbackStatus.textContent = boundedIndex === points.length - 1
+        ? activeModel === "logistic_all_sensor"
+          ? "Final checked point"
+          : "Final preview · no issued receipt"
+        : `Observation ${integer.format(point.n)} of ${integer.format(maxN)}`;
       scrubber.value = String(boundedIndex);
     };
 
-    scrubber.addEventListener("input", () => update(scrubber.value));
+    const setReportModel = (modelId) => {
+      if (!(modelId in MODEL_LABELS)) return;
+      activeModel = modelId;
+      const isChecked = modelId === "logistic_all_sensor";
+      boundaryPath.setAttribute(
+        "d",
+        pathFor(isChecked ? "logisticBoundary" : "constantBoundary"),
+      );
+      svg.dataset.focus = isChecked ? "selected" : "constant";
+      setText("[data-boundary-label]", isChecked
+        ? "Logistic boundary"
+        : "Constant-model boundary");
+      setText("[data-legend-scope]", isChecked
+        ? "Log scale · published logistic endpoint checked"
+        : "Log scale · constant-model boundary is a preview");
+      setText("[data-selected-model]", MODEL_LABELS[modelId]);
+      reportState.textContent = isChecked
+        ? "Published endpoint checked."
+        : "Preview only. Issue a new receipt to certify this report.";
+      reportState.classList.toggle("is-preview", !isChecked);
+      for (const button of reportButtons) {
+        button.setAttribute("aria-pressed", String(button.dataset.reportModel === modelId));
+      }
+      update(currentIndex);
+    };
+
+    const beginPlayback = () => {
+      if (playbackFrame !== null) {
+        stopPlayback();
+        return;
+      }
+      if (currentIndex === points.length - 1) update(0);
+      const startIndex = currentIndex;
+      const startedAt = performance.now();
+      const remainingFraction = (points.length - 1 - startIndex) / (points.length - 1);
+      const duration = Math.max(350, 12000 * remainingFraction / playbackSpeed);
+      playbackButton.classList.add("is-running");
+      playbackButton.textContent = "Pause replay";
+      const tick = (now) => {
+        const progress = Math.min(1, (now - startedAt) / duration);
+        const nextIndex = Math.round(
+          startIndex + progress * (points.length - 1 - startIndex),
+        );
+        update(nextIndex);
+        if (progress < 1) {
+          playbackFrame = requestAnimationFrame(tick);
+        } else {
+          playbackFrame = null;
+          playbackButton.classList.remove("is-running");
+          playbackButton.textContent = "Replay stream";
+        }
+      };
+      playbackFrame = requestAnimationFrame(tick);
+    };
+
+    scrubber.addEventListener("input", () => {
+      stopPlayback();
+      update(scrubber.value);
+    });
+    playbackButton.addEventListener("click", beginPlayback);
+    for (const button of speedButtons) {
+      button.addEventListener("click", () => {
+        playbackSpeed = Number(button.dataset.speed);
+        speedButtons.forEach((candidate) => candidate.setAttribute(
+          "aria-pressed",
+          String(candidate === button),
+        ));
+        if (playbackFrame !== null) {
+          stopPlayback();
+          beginPlayback();
+        }
+      });
+    }
+    for (const button of reportButtons) {
+      button.addEventListener("click", () => setReportModel(button.dataset.reportModel));
+    }
+
     const chooseFromPointer = (event) => {
+      stopPlayback();
       const bounds = svg.getBoundingClientRect();
       const localX = (event.clientX - bounds.left) / bounds.width * WIDTH;
       const fraction = Math.max(0, Math.min(1, (localX - MARGIN.left) / plotWidth));
@@ -291,17 +477,49 @@
     svg.addEventListener("pointermove", (event) => {
       if (svg.hasPointerCapture(event.pointerId)) chooseFromPointer(event);
     });
-
-    for (const button of document.querySelectorAll("button[data-series]")) {
-      button.addEventListener("click", () => {
-        document.querySelectorAll("button[data-series]").forEach((candidate) => {
-          candidate.classList.toggle("selected", candidate === button);
-          candidate.setAttribute("aria-pressed", String(candidate === button));
-        });
-        svg.dataset.focus = button.dataset.series;
-      });
-    }
+    setReportModel(activeModel);
     update(points.length - 1);
+  };
+
+  const setupTimingGate = () => {
+    let runId = 0;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const pause = (milliseconds) => new Promise((resolve) => {
+      window.setTimeout(resolve, reducedMotion ? 0 : milliseconds);
+    });
+    const reset = () => {
+      timingSteps.forEach((step) => step.classList.remove(
+        "is-active",
+        "is-complete",
+        "is-refused",
+      ));
+      timingResult.classList.remove("is-pass", "is-refused");
+    };
+    const run = async (legal) => {
+      const currentRun = ++runId;
+      reset();
+      timingResult.textContent = legal ? "Committing prediction…" : "Revealing outcome…";
+      if (!legal) {
+        const outcome = timingSteps.find((step) => step.dataset.timingStep === "outcome");
+        outcome.classList.add("is-refused");
+        await pause(220);
+        if (runId !== currentRun) return;
+        timingResult.textContent = "REFUSED — commit predictions for this time before revealing the outcome.";
+        timingResult.classList.add("is-refused");
+        return;
+      }
+      for (const step of timingSteps) {
+        step.classList.add("is-active");
+        await pause(260);
+        if (runId !== currentRun) return;
+        step.classList.remove("is-active");
+        step.classList.add("is-complete");
+      }
+      timingResult.textContent = "ACCEPTED — prediction commitment precedes the outcome.";
+      timingResult.classList.add("is-pass");
+    };
+    timingLegal.addEventListener("click", () => run(true));
+    timingIllegal.addEventListener("click", () => run(false));
   };
 
   const fail = (error) => {
@@ -314,7 +532,21 @@
     document.querySelector(".checked-status")?.classList.add("is-error");
   };
 
-  if (!svg || !scrubber || !errorMessage || !finalMarker || !window.crypto?.subtle) {
+  if (
+    !svg
+    || !scrubber
+    || !errorMessage
+    || !finalMarker
+    || !playbackButton
+    || !playbackStatus
+    || speedButtons.length !== 2
+    || reportButtons.length !== 2
+    || !timingLegal
+    || !timingIllegal
+    || !timingResult
+    || timingSteps.length !== 3
+    || !window.crypto?.subtle
+  ) {
     fail(new Error("required browser APIs are unavailable"));
     return;
   }
@@ -323,6 +555,7 @@
     .then((artifacts) => {
       bindReceipt(artifacts);
       renderChart(artifacts.trace);
+      setupTimingGate();
     })
     .catch(fail);
 })();
