@@ -1,0 +1,123 @@
+{
+  "schema": "formalslt-stitched-lil-delivery-receipt-v1",
+  "theorem_source_commit": "44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "theorem_blob_oid": "932aacd8f31d48223b4e95c23493ee1911c7486f",
+  "render_source_commit": "84a174d2de2e5e3d555b20b790b60b2cc40cd2f5",
+  "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
+  "posters": {
+    "main": {
+      "codec": "png",
+      "width": 1920,
+      "height": 1080,
+      "file": "stitched-lil-result-poster-1920x1080.png",
+      "bytes": 139376,
+      "sha256": "7582860fbc724718b81f4497dcf620a2946caabe8aee8f5e55ee8993100d10fe"
+    },
+    "social": {
+      "codec": "png",
+      "width": 1080,
+      "height": 1350,
+      "file": "stitched-lil-result-poster-1080x1350.png",
+      "bytes": 138419,
+      "sha256": "c9b1ddf0cfbe234587ded09c447c9e134fe64dc43c5b8f12ffd2dda7fd9335a2"
+    }
+  },
+  "cuts": {
+    "main": {
+      "video": {
+        "file": "stitched-lil-result-1920x1080.mp4",
+        "bytes": 2424022,
+        "sha256": "8fa445d867478f7f6d3c55fb1dedbcd9cc36fce6dccc94da1a38eee2b002ca22",
+        "duration_seconds": 86.0,
+        "width": 1920,
+        "height": 1080,
+        "frame_rate": "30",
+        "video_codec": "h264",
+        "audio_streams": 0
+      },
+      "soundtrack": {
+        "soundtrack_mode": "silent",
+        "third_party_audio": false
+      }
+    },
+    "social": {
+      "video": {
+        "file": "stitched-lil-result-1080x1350.mp4",
+        "bytes": 1565934,
+        "sha256": "7f1c05305543451e5463e3e9c4ca4630b4cd34de16bf2e0a4e79312a54dcdb46",
+        "duration_seconds": 43.966667,
+        "width": 1080,
+        "height": 1350,
+        "frame_rate": "30",
+        "video_codec": "h264",
+        "audio_streams": 0
+      },
+      "soundtrack": {
+        "soundtrack_mode": "silent",
+        "third_party_audio": false
+      }
+    }
+  },
+  "files": {
+    "DELIVERY.md": {
+      "bytes": 1218,
+      "sha256": "ce03bbd35255fd788d64e166e9a6cb6945c668d71915a845965bb1d58e6ebe28"
+    },
+    "README.md": {
+      "bytes": 6179,
+      "sha256": "946bf1965c683c9c418be9e75c53f4c8b15410822021d148388a04871609b506"
+    },
+    "SOUNDTRACK.md": {
+      "bytes": 3555,
+      "sha256": "b1bed3f0016707e1c45302be95cf913d9b52c0e995dbecbf04ea295de78c2198"
+    },
+    "TRANSCRIPT-SOCIAL.md": {
+      "bytes": 1711,
+      "sha256": "5bc3e96039f95326fc2bcf6c4e5b4585afc37451744e1a9028b230c71c3fdc96"
+    },
+    "TRANSCRIPT.md": {
+      "bytes": 3091,
+      "sha256": "a3acdc27a6e4c711981ba28379862fd4cd41c2f0df98b9ee77dbcadf4c2f16eb"
+    },
+    "captions-main.vtt": {
+      "bytes": 870,
+      "sha256": "1dc73bf90cd619dd326c8eccf619ef0430d682c8695d0f6c16c4f673e4f53f9e"
+    },
+    "captions-social.vtt": {
+      "bytes": 520,
+      "sha256": "b1a449522985f4388a96c36d8c85d8fa0a434cfcc9de2dcbe8de4b113ac83583"
+    },
+    "claim-receipt.json": {
+      "bytes": 3664,
+      "sha256": "819eb4c1276cb5eb4e29ca4d277cafd8e55ba4ddc27b4c8b780e34cbd201d017"
+    },
+    "facts.json": {
+      "bytes": 4876,
+      "sha256": "28dac29bae903c47ec2ac7bcf96aace13db736f52a8ffeb9d642d0ed40e83d32"
+    },
+    "stitched-lil-result-1080x1350-receipt.json": {
+      "bytes": 3610,
+      "sha256": "f0947e77db07b50ab5c63babbe2dbb76469c6238c48a16b9cb1a7ee697f99f92"
+    },
+    "stitched-lil-result-1080x1350.mp4": {
+      "bytes": 1565934,
+      "sha256": "7f1c05305543451e5463e3e9c4ca4630b4cd34de16bf2e0a4e79312a54dcdb46"
+    },
+    "stitched-lil-result-1920x1080-receipt.json": {
+      "bytes": 3603,
+      "sha256": "ddc148211c467bc61f03000612c146194f516d059df197cf16b779e01fa9e179"
+    },
+    "stitched-lil-result-1920x1080.mp4": {
+      "bytes": 2424022,
+      "sha256": "8fa445d867478f7f6d3c55fb1dedbcd9cc36fce6dccc94da1a38eee2b002ca22"
+    },
+    "stitched-lil-result-poster-1080x1350.png": {
+      "bytes": 138419,
+      "sha256": "c9b1ddf0cfbe234587ded09c447c9e134fe64dc43c5b8f12ffd2dda7fd9335a2"
+    },
+    "stitched-lil-result-poster-1920x1080.png": {
+      "bytes": 139376,
+      "sha256": "7582860fbc724718b81f4497dcf620a2946caabe8aee8f5e55ee8993100d10fe"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+WEBVTT
+
+00:00.000 --> 00:08.000
+A fixed-time guarantee assumes one fixed look.
+This theorem controls every sample size from four onward on one event.
+
+00:08.000 --> 00:20.000
+The process Lean checks: adapted, measurable, integrable increments;
+boundedness, conditional centering, and a conditional moment bound almost everywhere.
+
+00:20.000 --> 00:33.000
+Every sample size n >= 4 belongs to one checked factor-four epoch.
+
+00:33.000 --> 00:46.000
+Polynomial confidence weights telescope exactly to one.
+
+00:46.000 --> 01:00.000
+One fixed tilt per epoch, chosen before observing the path.
+
+01:00.000 --> 01:14.000
+Countable subadditivity yields one two-sided event.
+The width is evaluated at each plotted integer; the path is illustrative.
+
+01:14.000 --> 01:26.000
+A checked log-log confidence sequence: every sample size n >= 4,
+with complement real mass at most delta.

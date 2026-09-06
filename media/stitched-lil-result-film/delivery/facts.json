@@ -1,0 +1,128 @@
+{
+  "schema": "formalslt-stitched-lil-facts-v2",
+  "commit": "44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "short_commit": "44ebbff",
+  "source_ref": "origin/main@44ebbff74aea1dcd5b25592aefb561aeede51696",
+  "release_tag": null,
+  "source_profile": "measurable-probability-event-v1",
+  "blob_oids": {
+    "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean": "932aacd8f31d48223b4e95c23493ee1911c7486f",
+    "FormalSLT/AnytimeValid/AllocationLogLog.lean": "14e4dee6b93e61f118043abbd35a34a8303d7ee0",
+    "FormalSLT/AnytimeValid/MixtureCS.lean": "6ac332127962a99e3e48c4100b15307171c55cab",
+    "FormalSLT/AnytimeValid/SubGaussianCS.lean": "f1d4989f692e0f903943a018b96a30afcc5f451d",
+    "examples/CheckPolynomialStitchedLIL.lean": "fddc9b7f5e912c32f79179a1e7f27ddf1265ec6c",
+    "docs/proof-frontier.md": "5e4fd9a17235f475470771c5bd11d804d1fa9092",
+    "docs/assumptions-and-nonclaims.md": "a538c550e9fe81132757f8a091f93299f9f27ff3",
+    "docs/related-work.md": "be99cee162129b831827d020283cbfda02bd6b60",
+    "examples/CheckPolynomialStitchedLILMeasurableEvent.lean": "533f57addceff7bf550504df382aa80d8f814085"
+  },
+  "public_claim": "An explicit two-sided confidence sequence for bounded increments revealed at time k+1 and centered given F_k; one measurable event of probability at least 1 - delta controls every n >= 4 with an exact iterated-logarithm-order budget.",
+  "classification": "FORMALIZED COMPOSITION; NO PRIORITY CLAIM",
+  "process_model": [
+    "mu is a probability measure",
+    "X_k is measurable and integrable",
+    "X_k is revealed at time k+1 (strongly measurable with respect to F_(k+1))",
+    "|X_k| <= b almost everywhere",
+    "E[X_k | F_k] = 0 almost everywhere",
+    "E[X_k^2 | F_k] <= sigma^2 almost everywhere",
+    "0 < delta <= 1, b > 0, sigma^2 > 0"
+  ],
+  "epochs": {
+    "floor": "4^(j+1)",
+    "exclusive_horizon": "4^(j+2)",
+    "selected_index": "(Nat.log 4 n).pred",
+    "examples": [
+      "[4,16)",
+      "[16,64)",
+      "[64,256)",
+      "[256,1024)"
+    ]
+  },
+  "allocation": {
+    "weight": "1 / ((j+1)(j+2))",
+    "telescoping_form": "1/(j+1) - 1/(j+2)",
+    "total_mass": "sum_j w_j = 1",
+    "two_sided_epoch_budget": "log(2/delta) + log(j+1) + log(j+2)"
+  },
+  "result": {
+    "module": "FormalSLT.AnytimeValid.PolynomialStitchedLIL",
+    "theorem": "polynomialStitchedLIL_explicit_measurable_event",
+    "minimum_n": 4,
+    "failure_mass": null,
+    "confidence_statement": "1 - delta <= mu.real goodEvent",
+    "confidence_tex": "\\mu_{\\mathbb R}(G)\\ge 1-\\delta",
+    "event_measurable": true,
+    "budget_symbol": "B_j",
+    "budget": "log(2/delta) + log(j+1) + log(j+2)",
+    "width_symbol": "W_n",
+    "width": "2 sqrt(2 sigma^2 B_j / n) + 4 b B_j / (3n)",
+    "conclusion": "|runningMean X n| < W_n for every n >= 4"
+  },
+  "checker": {
+    "file": "examples/CheckPolynomialStitchedLILMeasurableEvent.lean",
+    "first_epoch_index": "j(4) = 0",
+    "first_epoch_floor": "N_0 = 4",
+    "first_epoch_budget": "delta = 1/2, j = 0: B_0 = log 8",
+    "queries_public_axioms": true
+  },
+  "nonclaims": [
+    "not the law of the iterated logarithm",
+    "not a sharp-constant or optimality result",
+    "the countable confidence allocation is not itself an e-process",
+    "not an optional-stopping theorem",
+    "not a predictable or data-selected tilt construction",
+    "no first-formalization or priority claim"
+  ],
+  "anchors": [
+    {
+      "file": "FormalSLT/AnytimeValid/MixtureCS.lean",
+      "line": 522,
+      "name": "IncrementAdapted"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 62,
+      "name": "polynomialGeometricEpochIndex_spec"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 83,
+      "name": "polynomialGeometricEpochBudget_eq"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 290,
+      "name": "polynomialStitchedLILFailure_mass_le"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 592,
+      "name": "exists_polynomialStitchedLIL_explicit_event"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/AllocationLogLog.lean",
+      "line": 252,
+      "name": "polynomialEpochWeight_hasSum"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLIL.lean",
+      "line": 27,
+      "name": "first_epoch_budget"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLIL.lean",
+      "line": 83,
+      "name": "axioms:exists_polynomialStitchedLIL_explicit_event"
+    },
+    {
+      "file": "FormalSLT/AnytimeValid/PolynomialStitchedLIL.lean",
+      "line": 519,
+      "name": "polynomialStitchedLIL_explicit_measurable_event"
+    },
+    {
+      "file": "examples/CheckPolynomialStitchedLILMeasurableEvent.lean",
+      "line": 26,
+      "name": "axioms:polynomialStitchedLIL_explicit_measurable_event"
+    }
+  ]
+}

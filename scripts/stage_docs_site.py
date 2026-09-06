@@ -34,6 +34,12 @@ SITE_FILES = (
     "assets/formalslt-overview.mp4",
     "assets/formalslt-overview-poster.jpg",
     "assets/formalslt-overview.vtt",
+    "assets/stitched-lil-result-1920x1080.mp4",
+    "assets/stitched-lil-result-1080x1350.mp4",
+    "assets/stitched-lil-result-poster-1920x1080.png",
+    "assets/stitched-lil-result-poster-1080x1350.png",
+    "assets/captions-main.vtt",
+    "assets/captions-social.vtt",
     "assets/research-map.js",
     "assets/site.css",
     "assets/theorem-chain.svg",
@@ -108,7 +114,7 @@ class SiteHTMLParser(HTMLParser):
         values = dict(attrs)
         if tag == "a" and values.get("href"):
             self.targets.append(values["href"] or "")
-        if tag in {"link", "script", "img", "source"}:
+        if tag in {"link", "script", "img", "source", "track"}:
             target = values.get("href") if tag == "link" else values.get("src")
             if target:
                 self.targets.append(target)

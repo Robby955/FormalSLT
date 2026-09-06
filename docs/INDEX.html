@@ -545,6 +545,56 @@ h3 {
   font-size: 0.75rem;
 }
 
+.theorem-film {
+  align-items: start;
+}
+
+.theorem-film-scope {
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent-light);
+  font-size: 0.9rem;
+}
+
+.theorem-film-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+  margin-bottom: 0;
+}
+
+.theorem-film-links .text-link {
+  color: var(--accent-light);
+}
+
+.theorem-film-social {
+  grid-column: 1 / -1;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line-dark);
+}
+
+.theorem-film-social summary {
+  color: var(--paper-bright);
+  font-size: 0.82rem;
+  font-weight: 720;
+  letter-spacing: 0.025em;
+  cursor: pointer;
+}
+
+.theorem-film-social summary span {
+  margin-left: 0.45rem;
+  color: var(--muted-light);
+  font-weight: 500;
+}
+
+.theorem-film-social figure {
+  width: min(100%, 27rem);
+  margin: 1.25rem auto 0;
+}
+
+.theorem-film-social video {
+  aspect-ratio: 4 / 5;
+}
+
 @keyframes route-flow {
   to {
     stroke-dashoffset: -34;
