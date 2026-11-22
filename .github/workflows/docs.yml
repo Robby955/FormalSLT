@@ -21,7 +21,7 @@ concurrency:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     env:
       LEAN_NUM_THREADS: "1"
     steps:

@@ -133,7 +133,7 @@ jobs:
     name: package deterministic release assets
     needs: [resolve_tag, verify_receipts]
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 240
     env:
       LEAN_NUM_THREADS: "1"
       FORMALSLT_RELEASE_TAG: ${{ needs.resolve_tag.outputs.release_tag }}
