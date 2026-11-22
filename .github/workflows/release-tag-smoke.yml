@@ -135,7 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     env:
-      LEAN_NUM_THREADS: "2"
+      LEAN_NUM_THREADS: "1"
       FORMALSLT_RELEASE_TAG: ${{ needs.resolve_tag.outputs.release_tag }}
       FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
       FORMALSLT_EXPECTED_TAG_OBJECT: ${{ needs.resolve_tag.outputs.tag_object }}
@@ -165,12 +165,27 @@ jobs:
       - name: Get Mathlib cache and resolve doc-gen4
         run: lake -R -Kenv=dev exe cache get
 
+      # Lake forks short-lived doc-gen4 processes from a large parent.
+      # Let Linux share those pages on fork and provide swap on the hosted VM.
+      - name: Configure memory for documentation workers
+        run: |
+          sudo sysctl -w vm.overcommit_memory=1
+          if [ "$(df --output=avail -k /mnt | tail -1)" -gt 16777216 ]; then
+            sudo fallocate -l 6G /mnt/formalslt-docs.swap
+            sudo chmod 600 /mnt/formalslt-docs.swap
+            sudo mkswap /mnt/formalslt-docs.swap
+            sudo swapon /mnt/formalslt-docs.swap
+          fi
+          free -h
+          df -h /mnt "$RUNNER_TEMP"
+
       # Build the proofs before doc-gen4 starts its per-module workers. Running
       # both phases concurrently exhausted memory on cold Ubuntu runners.
       - name: Build the library and core documentation in sequence
         run: |
           lake -Kenv=dev build FormalSLT
           lake -Kenv=dev build @doc-gen4/coreDocs
+          lake -Kenv=dev build +Aesop:docInfo
 
       - name: Build and stage exact-commit docs
         run: |
