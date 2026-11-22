@@ -73,8 +73,10 @@ The tag workflow:
 - The release page resolves and lists the intended tag and assets.
 - The README install command uses that tag.
 - A fresh downstream Lake project resolves the tag to the release commit.
-- GitHub Pages is green and its generated source links point to the same
-  release commit.
+- Source links in the downloadable documentation point to the release commit.
+- GitHub Pages serves its latest successful `main` deployment. Check that its
+  source links match the commit recorded for that deployment. If `main` is
+  still at the release tag, both sets of links should identify the same commit.
 - The overview film and poster load from a versioned URL.
 
 ## Optional archival deposit
