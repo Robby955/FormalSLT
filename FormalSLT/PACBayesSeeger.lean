@@ -1148,21 +1148,26 @@ theorem BernoulliKLMomentTypeCountingBound_of_64_le {n : ℕ} (hn : 64 ≤ n) :
         2 + ((7 : ℝ) / 4) * Real.sqrt (n : ℝ) := hbase
     _ ≤ 2 * Real.sqrt (n : ℝ) := by nlinarith
 
-set_option maxHeartbeats 1600000 in
 private theorem BernoulliKLMomentTypeCountingBound_of_pos_lt_64
     {n : ℕ} (hpos : 0 < n) (hlt : n < 64) :
     BernoulliKLMomentTypeCountingBound n := by
-  interval_cases n <;>
-    unfold BernoulliKLMomentTypeCountingBound bernoulliKLMomentTypeSum
-      bernoulliKLMomentTypeTerm bernoulliKLMomentTypeMass <;>
-    norm_num [Finset.sum_range_succ, Nat.choose]
-  all_goals
-    apply le_of_sq_le_sq
-    · ring_nf
-      rw [Real.sq_sqrt]
-      · norm_num
-      · norm_num
-    · positivity
+  -- Evaluate the finite sums over ℚ, where squaring removes the square root.
+  let rationalTypeSum (m : ℕ) : ℚ := ∑ k ∈ range (m + 1), (Nat.fast_choose m k : ℚ) *
+    (((k : ℚ) / m) ^ k * (1 - (k : ℚ) / m) ^ (m - k))
+  have hcast (m : ℕ) : (rationalTypeSum m : ℝ) = bernoulliKLMomentTypeSum m := by
+    unfold rationalTypeSum bernoulliKLMomentTypeSum bernoulliKLMomentTypeTerm bernoulliKLMomentTypeMass
+    push_cast
+    simp only [Nat.choose_eq_fast_choose]
+  have hsmall : ∀ i : Fin 63, rationalTypeSum (i.val + 1) ^ 2 ≤ 4 * ((i.val : ℚ) + 1) := by
+    decide +kernel
+  obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hpos.ne'
+  have hq := hsmall ⟨m, by omega⟩
+  have hr : (rationalTypeSum (m + 1) : ℝ) ^ 2 ≤ 4 * ((m : ℝ) + 1) := by exact_mod_cast hq
+  unfold BernoulliKLMomentTypeCountingBound
+  rw [← hcast]
+  apply le_of_sq_le_sq _ (by positivity)
+  simpa [mul_pow, show (2 : ℝ) ^ 2 = 4 by norm_num, Real.sq_sqrt,
+    show (0 : ℝ) ≤ m + 1 by positivity] using hr
 
 /--
 Exact Bernoulli-KL type-counting estimate for every positive sample size.
