@@ -21,7 +21,9 @@ concurrency:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
+    env:
+      LEAN_NUM_THREADS: "2"
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -54,6 +56,13 @@ jobs:
       # doc-gen4 and causing "unknown lean_lib facet `docs`" in the next step.
       - name: Get Mathlib cache and resolve doc-gen4
         run: lake -R -Kenv=dev exe cache get
+
+      # Build the proofs before doc-gen4 starts its per-module workers. Running
+      # both phases concurrently exhausted memory on cold Ubuntu runners.
+      - name: Build the library and core documentation in sequence
+        run: |
+          lake -Kenv=dev build FormalSLT
+          lake -Kenv=dev build @doc-gen4/coreDocs
 
       - name: Build docs
         run: lake -Kenv=dev build FormalSLT:docs

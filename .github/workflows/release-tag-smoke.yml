@@ -133,8 +133,9 @@ jobs:
     name: package deterministic release assets
     needs: [resolve_tag, verify_receipts]
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 120
     env:
+      LEAN_NUM_THREADS: "2"
       FORMALSLT_RELEASE_TAG: ${{ needs.resolve_tag.outputs.release_tag }}
       FORMALSLT_REPOSITORY_URL: https://github.com/${{ github.repository }}.git
       FORMALSLT_EXPECTED_TAG_OBJECT: ${{ needs.resolve_tag.outputs.tag_object }}
@@ -163,6 +164,13 @@ jobs:
 
       - name: Get Mathlib cache and resolve doc-gen4
         run: lake -R -Kenv=dev exe cache get
+
+      # Build the proofs before doc-gen4 starts its per-module workers. Running
+      # both phases concurrently exhausted memory on cold Ubuntu runners.
+      - name: Build the library and core documentation in sequence
+        run: |
+          lake -Kenv=dev build FormalSLT
+          lake -Kenv=dev build @doc-gen4/coreDocs
 
       - name: Build and stage exact-commit docs
         run: |
