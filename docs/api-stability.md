@@ -1,6 +1,10 @@
 # Public API stability
 
-Status: compatibility policy for FormalSLT v0.2.0.
+FormalSLT v0.3 retains the four v0.2 imports and the 19 checked signatures
+below. Its downstream package also checks a
+[worked predictor selection proof](../tests/downstream/Downstream/SelectedPredictor.lean)
+through the stochastic-dynamics import. It specializes
+`exists_trajectoryHalfTiltPACBayes_ordinaryRisk_selected_event` to two models.
 
 ## Supported imports
 
@@ -48,7 +52,7 @@ statements.
 - `FormalSLT.VC.VCRademacher.empiricalRademacherComplexity_le_massart_effective`
 - `FormalSLT.VC.VCSampleComplexity.vc_erm_excessRisk_tail`
 
-For patch releases in the v0.2.x line, supported import paths and allowlisted
+For patch releases in the v0.2.x and v0.3.x lines, supported import paths and allowlisted
 declaration names and types will remain source compatible. Their public axiom
 set will not expand beyond `propext`, `Classical.choice`, and `Quot.sound`.
 Proof bodies and internal import structure may change.
@@ -60,11 +64,9 @@ compatibility promise.
 
 ## Current `main` additions
 
-The following endpoints are imported by the supported topic umbrellas on
-`main`, but were merged after the `v0.2.0` tag. They are therefore not part of
-the 19-declaration v0.2 compatibility allowlist above. This separation keeps
-the tagged release record exact while making the current research surface
-discoverable.
+The following endpoints joined the public topic umbrellas between v0.2.0 and
+v0.3.0. Their proof checkers and the downstream example exercise specific
+uses. The patch-level signature guarantee covers the 19 declarations above.
 
 ### Sequential inference
 

@@ -208,6 +208,14 @@ verify-gjp-compact-certificate:
 	python3 scripts/formalslt_certificate.py verify
 	node --check docs/site/monitor/monitor.js
 
+# Replay the tracked occupancy prediction table and check its bound in Lean.
+replay-uci357-brier:
+	lake build FormalSLT.Applications.CompactHalfTiltBrierCertificate
+	./bin/formalslt verify \
+		applications/brier_monitor/generated/uci357-certificate-v1/certificate.json \
+		--protocol applications/brier_monitor/uci357-certificate-protocol-v1.json \
+		--data applications/brier_monitor/generated/uci357-monitor-predictions-v1.csv
+
 # Exercise the public profile registry and compact certificate CLI without
 # repeating the raw-data replay.
 verify-formalslt-cli:
@@ -287,6 +295,7 @@ verify-controlled-queue-structured-ope-prospective-receipt:
 	verify-gjp-brier-lean-path \
 	issue-gjp-compact-certificate \
 	verify-gjp-compact-certificate \
+	replay-uci357-brier \
 	verify-formalslt-cli \
 	check-controlled-queue-structured-ope-protocol \
 	check-controlled-queue-structured-ope-registration-binding \

@@ -7,9 +7,4 @@ require «formal-slt» from "../.."
 
 @[default_target]
 lean_lib Downstream where
-  roots := #[
-    `Downstream.PACBayes,
-    `Downstream.Sequential,
-    `Downstream.StochasticDynamics,
-    `Downstream.VC
-  ]
+  globs := #[`Downstream.+]

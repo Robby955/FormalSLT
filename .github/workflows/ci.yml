@@ -161,6 +161,10 @@ jobs:
           python3 scripts/formalslt_certificate.py verify --skip-lean
           node --check docs/site/monitor/monitor.js
 
+      - name: Replay UCI occupancy Brier certificate
+        if: needs.scope.outputs.scope == 'full'
+        run: make replay-uci357-brier
+
       - name: Verify documentation source anchors
         if: needs.scope.outputs.scope == 'full'
         run: |

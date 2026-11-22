@@ -16,7 +16,13 @@ from adaptive or dependent trajectories. The goal is a coherent Lean
 foundation in which classical learning theory and newer sequential methods can
 be composed and extended.
 
-Worked applications show how these parts of the library combine.
+For a worked example, start with two predictors scored on the same stream.
+At each reporting time, select the one with lower observed loss. The
+[downstream Lean example](./tests/downstream/Downstream/SelectedPredictor.lean)
+bounds that predictor’s average conditional risk along the observed prefix.
+The [occupancy replay](./applications/brier_monitor/README.md#replay-the-occupancy-certificate)
+uses the same theorem to check a Brier-risk upper bound of 0.073268 over
+8,224 observations.
 
 [Documentation](https://robby955.github.io/FormalSLT/) ·
 [Theorem map](./docs/theorem-map.md) ·
@@ -63,7 +69,7 @@ keeping the required boundary, separability, and modulus assumptions explicit.
 For an infinite IID sequence, one event controls every sample size `n ≥ 2` and
 every admissible posterior. The bound uses Bessel sample variance and
 measure-theoretic KL divergence. A separate forward construction handles
-predictable residuals for sequential use. On current `main`, one countable
+predictable residuals for sequential use. One countable
 master e-process can also cover a fixed catalog of history-dependent,
 predictable tilt strategies. A finite product-catalog theorem goes further:
 both the model and strategy posterior may be chosen after observing the path,
@@ -141,11 +147,11 @@ import FormalSLT.StochasticDynamics
 import FormalSLT.VC
 ```
 
-Add the latest tagged release to a Lake project:
+To use v0.3.0 from a Lake project after the tag is published:
 
 ```lean
 require «formal-slt» from git
-  "https://github.com/Robby955/FormalSLT.git" @ "v0.2.0"
+  "https://github.com/Robby955/FormalSLT.git" @ "v0.3.0"
 ```
 
 For unreleased work, pin a full commit SHA that you have reviewed rather than
@@ -159,7 +165,8 @@ lake exe cache get
 lake build
 ```
 
-[v0.2.0 release notes](./docs/releases/v0.2.0.md)
+[v0.3.0 release notes](./docs/releases/v0.3.0.md) ·
+[Published releases](https://github.com/Robby955/FormalSLT/releases)
 
 ## Repository layout
 
@@ -188,8 +195,7 @@ make downstream
 ## Papers and references
 
 - [A Machine-Checked Anytime-Valid Confidence Sequence by the Method of Mixtures](https://github.com/Robby955/anytime-valid-mixture-cs/blob/main/paper/sneiderman-copa2026-anytime-valid-mixture-cs.pdf),
-  accepted poster at [COPA 2026](https://copa-conference.com/#nav-program);
-  forthcoming in PMLR 329
+  accepted poster at [COPA 2026](https://copa-conference.com/copa2026/)
   ([artifact and reproduction](https://github.com/Robby955/anytime-valid-mixture-cs))
 - [From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory](https://openreview.net/pdf?id=EsEqPLc0ef), ICML 2026 AI for Math workshop
 - [Literature notes](./docs/LITERATURE.md)

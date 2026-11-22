@@ -8,6 +8,42 @@ This directory separates three jobs that should not be conflated:
    from those summaries;
 3. the monitor renders the result without becoming a source of truth.
 
+## Replay the occupancy certificate
+
+The UCI Occupancy Detection example asks how much Brier risk a forecaster can
+certify after choosing the better of two models on the same 8,224 observations.
+The repository includes the chronological predictions and outcomes, the
+two-model protocol, and the issued certificate. With elan's `lake`, Python 3.10+
+and Make available, run from the checkout root:
+
+```bash
+lake exe cache get
+make replay-uci357-brier
+```
+
+The target builds the Lean module, rechecks the certificate and independently
+reads the tracked prediction CSV to reproduce its summary. The CSV replay
+uses the Python standard library. A successful run ends with:
+
+```text
+FormalSLT compact Brier certificate: PASS
+Certified upper bound:              18317/250000
+Independent data replay:            PASS
+Lean kernel:                         PASS
+```
+
+The logistic model had the smaller observed Brier loss (about 0.061198).
+Its selection after seeing the prefix is covered by the theorem's simultaneous
+bound over model posteriors, with a uniform prior on the two candidates.
+At 95% confidence the upper bound on the selected model's average conditional
+Brier risk over this monitored prefix is 0.073268. Lean checks the numerical
+endpoint from the replayed summaries. Prediction availability before the
+corresponding outcomes is a premise of this retrospective analysis. The
+[application details](#audited-uci-357-certificate-application) describe
+how to regenerate the predictions from the source archive.
+
+## Certificate CLI
+
 The public GJP viewer is under `docs/site/monitor/`. Its compact
 `formalslt.certificate.v1` receipt is constant-size in the data: it records
 hashes, exact summaries, theorem sources, checker output, and claim scope. The
