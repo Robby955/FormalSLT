@@ -147,7 +147,7 @@ import FormalSLT.StochasticDynamics
 import FormalSLT.VC
 ```
 
-To use v0.3.0 from a Lake project after the tag is published:
+To install v0.3.0, add the tagged dependency to your Lake project.
 
 ```lean
 require «formal-slt» from git
@@ -197,10 +197,15 @@ make downstream
 - [A Machine-Checked Anytime-Valid Confidence Sequence by the Method of Mixtures](https://github.com/Robby955/anytime-valid-mixture-cs/blob/main/paper/sneiderman-copa2026-anytime-valid-mixture-cs.pdf),
   accepted poster at [COPA 2026](https://copa-conference.com/copa2026/)
   ([artifact and reproduction](https://github.com/Robby955/anytime-valid-mixture-cs))
-- [From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory](https://openreview.net/pdf?id=EsEqPLc0ef), ICML 2026 AI for Math workshop
+- [From Agents to Axioms: Verifier-Gated Lean Formalization for Statistical Learning Theory](https://openreview.net/pdf?id=EsEqPLc0ef),
+  [ICML 2026 AI for Math workshop](https://icml.cc/virtual/2026/82571)
 - [Literature notes](./docs/LITERATURE.md)
 - [Source map](./docs/references.md)
-- [Citation metadata](./CITATION.cff)
+
+To cite the v0.3.0 software, use Robert Sneiderman (2026),
+*FormalSLT: Formal Statistical Learning Theory in Lean 4*, version 0.3.0.
+[Tagged source](https://github.com/Robby955/FormalSLT/tree/v0.3.0) ·
+[Citation metadata](./CITATION.cff)
 
 ## Contributing
 
