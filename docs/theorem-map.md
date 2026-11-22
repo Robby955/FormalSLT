@@ -9,7 +9,7 @@ This compact index mirrors the 19-declaration stable allowlist in
 [`api-stability.md`](api-stability.md). Topic imports are the supported public
 entry points; implementation modules are relative to `FormalSLT`. The
 committed signature snapshot remains normative for declaration types and
-axiom sets. The `v0.2.0` tag and GitHub Release are the release boundary. The
+axiom sets. The v0.3 release retains the v0.2 signatures. The
 three VC names are public aliases; the table lists their canonical
 implementation modules.
 
@@ -37,9 +37,10 @@ implementation modules.
 
 ## Current `main` endpoint index
 
-These declarations are imported by the topic umbrellas on `main` but were
-merged after `v0.2.0`. They are checked current endpoints, not retroactive
-members of the tagged v0.2 compatibility surface.
+The v0.3 topic umbrellas expose these additional results. The
+[downstream predictor example](../tests/downstream/Downstream/SelectedPredictor.lean)
+specializes the half-tilt trajectory theorem to the predictor with lower
+empirical risk at each reporting time.
 
 | Declaration | Topic import | Implementation module | Role |
 |---|---|---|---|

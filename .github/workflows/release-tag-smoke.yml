@@ -9,7 +9,6 @@ on:
       release_tag:
         description: Existing FormalSLT release tag to install and verify
         required: true
-        default: v0.2.0
         type: string
 
 permissions:

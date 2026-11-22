@@ -44,14 +44,14 @@
     <section class="reader-section" aria-labelledby="lean-install">
       <h2 id="lean-install">Pin the dependency</h2>
       <div class="reading">
-        <p>Use the v0.2 release tag:</p>
+        <p>To install v0.3.0 after its tag is published, use:</p>
         <pre><code>require «formal-slt» from git
-  "https://github.com/Robby955/FormalSLT.git" @ "v0.2.0"</code></pre>
+  "https://github.com/Robby955/FormalSLT.git" @ "v0.3.0"</code></pre>
         <p>To reproduce this documentation build exactly:</p>
         <pre><code>require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @
   "__FORMALSLT_SOURCE_REF__"</code></pre>
-        <div class="callout"><p><strong>Pin unreleased work by commit.</strong> The generated site replaces <code>__FORMALSLT_SOURCE_REF__</code> with its full source commit. Use that commit for development beyond v0.2.0 rather than a moving branch.</p></div>
+        <p>The <a href="https://github.com/Robby955/FormalSLT/blob/__FORMALSLT_SOURCE_REF__/tests/downstream/Downstream/SelectedPredictor.lean">downstream predictor example</a> applies the trajectory theorem to a model selected using the observed losses.</p>
       </div>
     </section>
 

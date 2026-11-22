@@ -2,8 +2,7 @@ cff-version: 1.2.0
 message: "If you use FormalSLT, please cite it as below."
 type: software
 title: "FormalSLT: Formal Statistical Learning Theory in Lean 4"
-version: 0.2.0
-date-released: "2026-08-24"
+version: 0.3.0
 authors:
   - family-names: Sneiderman
     given-names: Robert
@@ -14,5 +13,6 @@ abstract: >-
   Lean 4 formalization of statistical learning theory and sequential
   inference, including all-sample-size empirical-Bernstein PAC-Bayes bounds,
   adaptive trajectory inference, finite-state stationary and unknown-kernel
-  certification, and finite-sample Rademacher, VC, stability, and chaining
-  results with explicit assumptions and axiom audits.
+  certification, and finite-sample Rademacher, VC, stability, and chaining.
+  A downstream Lean example bounds conditional risk after model selection.
+  A replayable Brier-score certificate checks a retrospective occupancy example.

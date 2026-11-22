@@ -1,8 +1,20 @@
 # Changelog
 
-## Unreleased
+## v0.3.0
 
-No entries yet.
+- Added all-time trajectory risk bounds that allow model selection after
+  observing a prefix. A downstream Lean example compares two predictors and
+  derives the selected predictor’s conditional-risk bound with a `log 2`
+  selection cost.
+- Added predictable betting mixtures, including a computable mixture over
+  countably many sleeping experts, and bounds that account separately for
+  the choice of model and betting strategy.
+- Added the Brier monitor CLI and retrospective GJP and UCI occupancy
+  applications. The occupancy replay checks a bound of `18317/250000`
+  from the tracked protocol, certificate and 8,224-row prediction stream.
+
+See the [v0.3.0 release notes](docs/releases/v0.3.0.md) for the Lean
+example, replay command, assumptions and compatibility details.
 
 ## v0.2.0 - 2026-08-24
 
@@ -58,6 +70,7 @@ verification, and scope boundaries.
   complexity, VC theory, concentration, PAC-Bayes, stability, and initial
   sequential-inference interfaces.
 
-[Unreleased]: https://github.com/Robby955/FormalSLT/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Robby955/FormalSLT/compare/v0.3.0...HEAD
+[v0.3.0]: https://github.com/Robby955/FormalSLT/compare/v0.2.0...v0.3.0
 [v0.2.0]: https://github.com/Robby955/FormalSLT/compare/v0.1.0...v0.2.0
 [v0.1.0]: https://github.com/Robby955/FormalSLT/tree/v0.1.0

@@ -78,12 +78,7 @@ cp -R "$ROOT/tests/downstream/Downstream" "$WORKDIR/Downstream"
   printf '\n'
   printf '%s\n' '@[default_target]'
   printf '%s\n' 'lean_lib Downstream where'
-  printf '%s\n' '  roots := #['
-  printf '%s\n' '    `Downstream.PACBayes,'
-  printf '%s\n' '    `Downstream.Sequential,'
-  printf '%s\n' '    `Downstream.StochasticDynamics,'
-  printf '%s\n' '    `Downstream.VC'
-  printf '%s\n' '  ]'
+  printf '%s\n' '  globs := #[`Downstream.+]'
 } > "$WORKDIR/lakefile.lean"
 
 cd "$WORKDIR"
