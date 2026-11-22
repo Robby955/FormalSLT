@@ -438,22 +438,6 @@ theorem continuous_dudley_rademacher_complexity_bound
     hradiusScale hmetric hvariance hcover_antitone hcover_pos
     hcover_dominates hchoose'
 
-/-- Instantiation of the bridge on the two-point hypothesis class `Bool`. -/
-example {Z : Type*} (ℓ : Bool → Z → ℝ) {n : ℕ} (z : Fin n → Z)
-    {A : ℕ → Type*} [∀ j : ℕ, Fintype (A j)]
-    (N : ∀ j : ℕ, FiniteNet Bool (A j))
-    (m : ℕ) (t₀ : Bool) (radiusScale : ℝ) (coveringNumberAtRadius : ℝ → ℕ) :=
-  dudley_rademacher_complexity_bound (ι := Bool) ℓ z N m t₀ radiusScale
-    coveringNumberAtRadius
-
 end
-
-#check @dudley_rademacher_complexity_bound
-
-#check @continuous_dudley_rademacher_complexity_bound
-
-#print axioms dudley_rademacher_complexity_bound
-
-#print axioms continuous_dudley_rademacher_complexity_bound
 
 end FormalSLT.Covering.DudleyToRademacher

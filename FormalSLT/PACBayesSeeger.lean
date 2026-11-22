@@ -1148,7 +1148,7 @@ theorem BernoulliKLMomentTypeCountingBound_of_64_le {n : ℕ} (hn : 64 ≤ n) :
         2 + ((7 : ℝ) / 4) * Real.sqrt (n : ℝ) := hbase
     _ ≤ 2 * Real.sqrt (n : ℝ) := by nlinarith
 
-set_option maxHeartbeats 0 in
+set_option maxHeartbeats 1600000 in
 private theorem BernoulliKLMomentTypeCountingBound_of_pos_lt_64
     {n : ℕ} (hpos : 0 < n) (hlt : n < 64) :
     BernoulliKLMomentTypeCountingBound n := by

@@ -933,6 +933,8 @@ THEOREMS=(
   "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorAverageConditionalRisk_eq_generic"
   "FormalSLT.StochasticDynamics.continuousTrajectoryPosteriorEmpiricalPrequentialRisk_eq_generic"
   "FormalSLT.StochasticDynamics.exists_continuousTrajectoryEmpiricalBernsteinPACBayes_event"
+  "FormalSLT.Covering.DudleyToRademacher.dudley_rademacher_complexity_bound"
+  "FormalSLT.Covering.DudleyToRademacher.continuous_dudley_rademacher_complexity_bound"
   "FormalSLT.Covering.MeasureDudley.MeasureSubGaussianProcess.integral_projectionPairSup_le_coveringNumber_sqrt"
   "FormalSLT.Covering.MeasureDudley.integral_boolProjectionPairSup_eq_half"
   # examples/CheckBrierMonitorSyntheticProofOfLifeReceipt.lean
@@ -1117,6 +1119,7 @@ CHECK="$WORK/CheckAxiomsGate.lean"
 
 {
   echo "import FormalSLT.Stability.BousquetElisseeff"
+  echo "import FormalSLT.Covering.DudleyToRademacher"
   echo "import FormalSLT.Covering.MeasureDudley"
   echo "import FormalSLT.AnytimeValid.EProcess"
   echo "import FormalSLT.VC"

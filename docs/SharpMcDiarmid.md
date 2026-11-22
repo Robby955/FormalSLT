@@ -85,7 +85,7 @@ This repository proves two product-measure bounded-differences tails in
 
 These declarations are axiom-clean (`[propext, Classical.choice, Quot.sound]`).
 The two standard additive instances are checked in
-`FormalSLT/Test/SharpMcDiarmidTest.lean`:
+`examples/CheckSharpMcDiarmid.lean`:
 `c_i = 1` (unit-range, `exp(-2 t^2 / n)`) and `c_i = 1/n` (sample-mean scaling,
 `exp(-2 n t^2)`). The same checker file also checks the general one-sided,
 lower-tail, and two-sided product-measure declarations.
