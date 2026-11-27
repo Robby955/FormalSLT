@@ -25,7 +25,7 @@
     <section class="reader-hero">
       <p class="eyebrow">Reader route · Lean</p>
       <h1>Import a topic, then narrow to a theorem.</h1>
-      <p>The v0.2 API is organized around four topic umbrellas. They remain the supported discovery surface; current-main endpoints added after the release are listed separately in the API-stability page, and individual implementation modules remain available when a downstream proof needs a smaller import.</p>
+      <p>FormalSLT v0.3.0 provides four supported topic imports. The <a href="https://github.com/Robby955/FormalSLT/blob/__FORMALSLT_SOURCE_REF__/docs/api-stability.md">API policy</a> lists the 19 declarations with patch-level signature guarantees and the additional results available in v0.3.0.</p>
     </section>
 
     <section class="reader-intro" aria-labelledby="lean-imports">
@@ -44,10 +44,10 @@
     <section class="reader-section" aria-labelledby="lean-install">
       <h2 id="lean-install">Pin the dependency</h2>
       <div class="reading">
-        <p>To install v0.3.0 after its tag is published, use:</p>
+        <p>Add this dependency to your <code>lakefile.lean</code> to use v0.3.0.</p>
         <pre><code>require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @ "v0.3.0"</code></pre>
-        <p>To reproduce this documentation build exactly:</p>
+        <p>To use the exact source shown in these docs, pin its commit.</p>
         <pre><code>require «formal-slt» from git
   "https://github.com/Robby955/FormalSLT.git" @
   "__FORMALSLT_SOURCE_REF__"</code></pre>

@@ -114,9 +114,6 @@ import FormalSLT.OnlineToPAC.RegretConversion
 import FormalSLT.OnlineToPAC.CesaBianchi
 import FormalSLT.OnlineToPAC.IIDConcentration
 
-import FormalSLT.Test.PACBayesBernsteinTest
-import FormalSLT.Test.SharpMcDiarmidTest
-
 import FormalSLT.TestTimeMeta.Assumptions
 import FormalSLT.TestTimeMeta.CompositionLemmas
 import FormalSLT.TestTimeMeta.MainTheorem
